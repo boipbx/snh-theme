@@ -1,0 +1,382 @@
+{%- if section.settings.text != blank -%}
+  {%- render 'section-spacing-collapsing' -%}
+
+  {%- liquid
+    assign is_tight = false
+    if section.settings.text_size == 'xsmall'
+      assign is_tight = true
+    endif
+  -%}
+
+  <style>
+    #shopify-section-{{ section.id }} {
+      --snh-marquee-orange: {{ section.settings.accent_color | default: '#ff5a00' }};
+      --snh-marquee-dark: {{ section.settings.dark_color | default: '#130b08' }};
+      --snh-marquee-text: {{ section.settings.text_color | default: '#fff8f2' }};
+      --snh-marquee-speed: {{ section.settings.scrolling_speed | default: 10 }}s;
+      --snh-marquee-size: {% if section.settings.text_size == 'xsmall' %}1.15rem{% elsif section.settings.text_size == 'small' %}1.9rem{% elsif section.settings.text_size == 'medium' %}2.7rem{% elsif section.settings.text_size == 'large' %}3.55rem{% else %}4.5rem{% endif %};
+      --section-spacing-inline: 0;
+      overflow: clip;
+    }
+
+    #shopify-section-{{ section.id }} *,
+    #shopify-section-{{ section.id }} *::before,
+    #shopify-section-{{ section.id }} *::after {
+      box-sizing: border-box;
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee {
+      position: relative;
+      isolation: isolate;
+      min-height: clamp(128px, 14vw, 210px);
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      color: var(--snh-marquee-text);
+      background:
+        radial-gradient(circle at 12% 22%, rgba(255, 137, 55, 0.32), transparent 22%),
+        radial-gradient(circle at 86% 74%, rgba(255, 90, 0, 0.20), transparent 24%),
+        {{ section.settings.background_gradient | default: 'linear-gradient(108deg, #110a08 0%, #2b1008 38%, #cf3c08 76%, #ff6a00 100%)' }};
+      border-block: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.36;
+      background-image:
+        linear-gradient(116deg, transparent 0 40%, rgba(255,255,255,0.065) 40% 41%, transparent 41% 100%),
+        radial-gradient(circle at 28% 35%, rgba(255,255,255,0.52) 0 1px, transparent 2px),
+        radial-gradient(circle at 72% 66%, rgba(255,255,255,0.34) 0 1px, transparent 2px);
+      background-size: auto, 86px 86px, 112px 112px;
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__label {
+      position: absolute;
+      inset-block-start: clamp(14px, 1.7vw, 24px);
+      inset-inline-start: max(var(--container-gutter, 20px), calc((100vw - 1480px) / 2));
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__label::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--snh-marquee-orange);
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgba(255, 90, 0, 0.15);
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__stage {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding-block: clamp(40px, 4.2vw, 64px) clamp(26px, 3vw, 46px);
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee .scrolling-text__wrapper {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      width: max-content;
+      min-width: 100%;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee .scrolling-text__text {
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(20px, 2.8vw, 48px);
+      padding-inline-end: clamp(20px, 2.8vw, 48px);
+      color: var(--snh-marquee-text);
+      font-family: Arial Black, Arial, Helvetica, sans-serif;
+      font-size: var(--snh-marquee-size);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.052em;
+      text-transform: uppercase;
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.20);
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__separator {
+      display: inline-grid;
+      place-items: center;
+      width: 0.22em;
+      height: 0.22em;
+      flex: 0 0 auto;
+      border-radius: 2px;
+      background: var(--snh-marquee-orange);
+      box-shadow: 0 0 0 0.1em rgba(255, 90, 0, 0.14);
+      transform: rotate(45deg);
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__float {
+      --float-size: 88px;
+      --float-opacity: 0.32;
+      --float-delay: 0s;
+      position: absolute;
+      z-index: 3;
+      width: min(var(--float-size), 12vw);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      opacity: var(--float-opacity);
+      filter: saturate(0.88) drop-shadow(0 16px 20px rgba(0, 0, 0, 0.25));
+      animation: snh-marquee-float-{{ section.id }} 6.5s ease-in-out var(--float-delay) infinite alternate;
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} a.snh-marquee__float {
+      pointer-events: auto;
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__float img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #shopify-section-{{ section.id }} .snh-marquee__float--top-left { inset: 8% auto auto 7%; }
+    #shopify-section-{{ section.id }} .snh-marquee__float--top-right { inset: 7% 8% auto auto; }
+    #shopify-section-{{ section.id }} .snh-marquee__float--bottom-left { inset: auto auto 4% 20%; }
+    #shopify-section-{{ section.id }} .snh-marquee__float--bottom-right { inset: auto 22% 2% auto; }
+
+    @keyframes snh-marquee-float-{{ section.id }} {
+      from { transform: translate3d(0, -4px, 0) rotate(-2deg); }
+      to { transform: translate3d(8px, 7px, 0) rotate(3deg); }
+    }
+
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} {
+        --snh-marquee-size: {% if section.settings.text_size == 'xsmall' %}1.45rem{% elsif section.settings.text_size == 'small' %}2.65rem{% elsif section.settings.text_size == 'medium' %}3.7rem{% elsif section.settings.text_size == 'large' %}5rem{% else %}6.5rem{% endif %};
+      }
+    }
+
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .snh-marquee {
+        min-height: 126px;
+      }
+
+      #shopify-section-{{ section.id }} .snh-marquee__label {
+        inset-block-start: 13px;
+        font-size: 9px;
+      }
+
+      #shopify-section-{{ section.id }} .snh-marquee__stage {
+        padding-block: 42px 24px;
+      }
+
+      #shopify-section-{{ section.id }} .snh-marquee__float {
+        width: min(calc(var(--float-size) * 0.66), 54px);
+        opacity: calc(var(--float-opacity) * 0.78);
+      }
+
+      #shopify-section-{{ section.id }} .snh-marquee__float--bottom-left,
+      #shopify-section-{{ section.id }} .snh-marquee__float--bottom-right {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .snh-marquee__float {
+        animation: none !important;
+      }
+    }
+  </style>
+
+  <div {% render 'section-properties', tight: is_tight %}>
+    <div class="snh-marquee">
+      {%- if section.settings.label != blank -%}
+        <p class="snh-marquee__label">{{ section.settings.label | escape }}</p>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image != blank -%}
+          {%- assign float_delay = forloop.index0 | times: -1.25 -%}
+          {%- capture float_style -%}--float-size: {{ block.settings.width }}px; --float-opacity: {{ block.settings.opacity | divided_by: 100.0 }}; --float-delay: {{ float_delay }}s;{%- endcapture -%}
+          {%- if block.settings.link != blank -%}
+            <a class="snh-marquee__float snh-marquee__float--{{ block.settings.position }}" href="{{ block.settings.link }}" style="{{ float_style }}" aria-label="{{ block.settings.alt | default: 'Shop featured product' | escape }}" {{ block.shopify_attributes }}>
+          {%- else -%}
+            <span class="snh-marquee__float snh-marquee__float--{{ block.settings.position }}" style="{{ float_style }}" aria-hidden="true" {{ block.shopify_attributes }}>
+          {%- endif -%}
+            {{- block.settings.image | image_url: width: 420 | image_tag: loading: 'lazy', widths: '100, 160, 240, 320, 420', sizes: '(max-width: 699px) 54px, 110px', alt: block.settings.alt -}}
+          {%- if block.settings.link != blank -%}</a>{%- else -%}</span>{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- capture section_content -%}
+        {%- for i in (1..8) -%}
+          <span class="scrolling-text__text heading {% unless forloop.first %}motion-reduce:hidden{% endunless %}" {% unless forloop.first %}aria-hidden="true"{% endunless %}>
+            <span>{%- render 'styled-text', content: section.settings.text, gradient: section.settings.text_gradient, style: section.settings.text_style -%}</span>
+            <span class="snh-marquee__separator" aria-hidden="true"></span>
+          </span>
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      <div class="snh-marquee__stage scrolling-text {% if section.settings.scrolling_mode == 'scroll' %}scrolling-text--scroll{% else %}scrolling-text--auto{% endif %}">
+        {%- if section.settings.scrolling_mode == 'scroll' -%}
+          <scrolling-text class="scrolling-text__wrapper">
+            {{- section_content -}}
+          </scrolling-text>
+        {%- else -%}
+          <marquee-text scrolling-speed="{{ section.settings.scrolling_speed }}" class="scrolling-text__wrapper">
+            {{- section_content -}}
+          </marquee-text>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SNH premium statement",
+  "class": "shopify-section--scrolling-text",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Small label",
+      "default": "Sports Nutrition Hub"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Sri Lanka's health and fitness store"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "xsmall", "label": "X-Small" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "xlarge", "label": "X-Large" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "Text style",
+      "options": [
+        { "value": "outline", "label": "Outline" },
+        { "value": "fill", "label": "Fill" }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "select",
+      "id": "scrolling_mode",
+      "label": "Scrolling mode",
+      "options": [
+        { "value": "auto", "label": "Automatic" },
+        { "value": "scroll", "label": "On scroll" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "scrolling_speed",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "unit": "s",
+      "label": "Automatic scrolling speed",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient",
+      "default": "linear-gradient(108deg, #110a08 0%, #2b1008 38%, #cf3c08 76%, #ff6a00 100%)"
+    },
+    {
+      "type": "color",
+      "id": "dark_color",
+      "label": "Dark color",
+      "default": "#130b08"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#ff5a00"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#fff8f2"
+    },
+    {
+      "type": "color_background",
+      "id": "text_gradient",
+      "label": "Text gradient"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "floating_product",
+      "name": "Floating product",
+      "limit": 4,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Product image" },
+        { "type": "text", "id": "alt", "label": "Alt text", "default": "Featured SNH product" },
+        { "type": "url", "id": "link", "label": "Optional product link" },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            { "value": "top-left", "label": "Top left" },
+            { "value": "top-right", "label": "Top right" },
+            { "value": "bottom-left", "label": "Bottom left" },
+            { "value": "bottom-right", "label": "Bottom right" }
+          ],
+          "default": "top-right"
+        },
+        { "type": "range", "id": "width", "min": 48, "max": 160, "step": 4, "unit": "px", "label": "Image size", "default": 88 },
+        { "type": "range", "id": "opacity", "min": 15, "max": 60, "step": 5, "unit": "%", "label": "Image opacity", "default": 35 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SNH premium statement"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,480 @@
+{%- render 'section-spacing-collapsing' -%}
+
+{%- comment -%}
+  SNH FAQ — dark ember edition
+  - Same dark black→brown→orange gradient as brand rail / Shop by Goal / Bundle & Save
+  - SNH Elite display voice (Archivo 900, tight, uppercase, cream)
+  - Left: support image card (girl with phone) + hours + contact CTA, sticky on desktop
+  - Right: accordion — one open at a time (auto-closes others), smooth slide animation
+  - Blocks-driven with SNH defaults preloaded; FAQPage JSON-LD kept for SEO
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --faq-orange: {{ section.settings.accent_color | default: '#e0521c' }};
+    --faq-orange-soft: #ff8a3d;
+    --faq-ink: #fdf6ef;
+    --faq-muted: rgba(253, 246, 239, 0.62);
+    --faq-line: rgba(255, 122, 50, 0.20);
+    --faq-radius: 8px;
+    overflow-x: clip;
+  }
+
+  #shopify-section-{{ section.id }} *,
+  #shopify-section-{{ section.id }} *::before,
+  #shopify-section-{{ section.id }} *::after { box-sizing: border-box; }
+
+  #shopify-section-{{ section.id }} .snh-faq {
+    background: linear-gradient(112deg, #0f0a07 0%, #1b0e08 46%, #33150a 78%, #4a1c0a 100%);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__inner {
+    max-width: 1500px;
+    margin-inline: auto;
+    padding: clamp(40px, 4.5vw, 76px) clamp(18px, 4vw, 64px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(24px, 3.4vw, 56px);
+  }
+
+  /* ---------- intro / support column ---------- */
+  #shopify-section-{{ section.id }} .snh-faq__intro {
+    position: sticky;
+    top: calc(var(--sticky-area-height, 0px) + 24px);
+    display: grid;
+    gap: clamp(18px, 2vw, 26px);
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__title {
+    margin: 0;
+    color: var(--faq-ink);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(28px, 3.4vw, 46px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__content {
+    margin-block-start: 14px;
+    max-width: 360px;
+    color: var(--faq-muted);
+    font-size: clamp(14px, 1.05vw, 16px);
+    font-weight: 500;
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__content strong { color: var(--faq-ink); font-weight: 700; }
+  #shopify-section-{{ section.id }} .snh-faq__hours {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-block-start: 12px;
+    color: var(--faq-ink);
+    font-size: clamp(13px, 1vw, 14.5px);
+    font-weight: 600;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__hours::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--faq-orange);
+    box-shadow: 0 0 10px rgba(224, 82, 28, 0.9);
+  }
+  #shopify-section-{{ section.id }} .snh-faq__content p { margin: 0; }
+
+  /* free-floating support image */
+  #shopify-section-{{ section.id }} .snh-faq__card {
+    display: grid;
+    gap: 4px;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__card-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 4.6;
+    overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__card-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 12%;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 99%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 99%);
+  }
+  #shopify-section-{{ section.id }} .snh-faq__card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 6px;
+    background: var(--faq-orange);
+    color: #ffffff;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 180ms ease, transform 180ms ease;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__card-btn:hover {
+    background: #b23c11;
+    transform: translateY(-2px);
+  }
+  #shopify-section-{{ section.id }} .snh-faq__card-btn svg { width: 15px; height: 15px; flex: 0 0 auto; }
+
+  /* ---------- accordion ---------- */
+  #shopify-section-{{ section.id }} .snh-faq__list {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__item {
+    border: 1px solid var(--faq-line);
+    border-radius: var(--faq-radius);
+    background: rgba(253, 246, 239, 0.03);
+    overflow: hidden;
+    transition: border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__item.is-open {
+    border-color: rgba(255, 122, 50, 0.5);
+    background: rgba(253, 246, 239, 0.05);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__question {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 32px;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 62px;
+    padding: 16px clamp(16px, 1.6vw, 24px);
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    color: var(--faq-ink);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(14px, 1.1vw, 17px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    transition: color 180ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__question:hover,
+  #shopify-section-{{ section.id }} .snh-faq__item.is-open .snh-faq__question { color: var(--faq-orange-soft); }
+  #shopify-section-{{ section.id }} .snh-faq__question:focus-visible {
+    outline: 2px solid var(--faq-orange);
+    outline-offset: -2px;
+    border-radius: var(--faq-radius);
+  }
+  #shopify-section-{{ section.id }} .snh-faq__question > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__toggle {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--faq-line);
+    background: rgba(10, 8, 6, 0.4);
+    color: var(--faq-orange-soft);
+    transition: transform 320ms cubic-bezier(0.22, 0.61, 0.21, 1), background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__toggle svg { width: 13px; height: 13px; stroke-width: 2.4; }
+  #shopify-section-{{ section.id }} .snh-faq__item.is-open .snh-faq__toggle {
+    transform: rotate(45deg);
+    background: var(--faq-orange);
+    border-color: var(--faq-orange);
+    color: #ffffff;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 420ms cubic-bezier(0.22, 0.61, 0.21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-faq__item.is-open .snh-faq__panel { grid-template-rows: 1fr; }
+  #shopify-section-{{ section.id }} .snh-faq__panel-clip { overflow: hidden; min-height: 0; }
+
+  #shopify-section-{{ section.id }} .snh-faq__answer {
+    padding: 2px clamp(16px, 1.6vw, 24px) 20px;
+    color: var(--faq-muted);
+    font-size: clamp(13px, 1vw, 14.5px);
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 320ms ease, transform 320ms ease;
+    overflow-wrap: anywhere;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__item.is-open .snh-faq__answer {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 90ms;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__answer p { margin: 0 0 10px; }
+  #shopify-section-{{ section.id }} .snh-faq__answer p:last-child { margin-block-end: 0; }
+  #shopify-section-{{ section.id }} .snh-faq__answer strong { color: rgba(253, 246, 239, 0.88); }
+  #shopify-section-{{ section.id }} .snh-faq__answer a {
+    color: var(--faq-orange-soft);
+    font-weight: 800;
+    text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} .snh-faq__answer a:hover { text-decoration: underline; }
+
+  /* ---------- responsive ---------- */
+  @media screen and (max-width: 1040px) {
+    #shopify-section-{{ section.id }} .snh-faq__layout {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    #shopify-section-{{ section.id }} .snh-faq__intro {
+      position: static;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+      align-items: end;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .snh-faq__inner {
+      padding: 36px clamp(16px, 5vw, 22px) 44px;
+    }
+    #shopify-section-{{ section.id }} .snh-faq__intro { grid-template-columns: 1fr; }
+    #shopify-section-{{ section.id }} .snh-faq__content { max-width: none; }
+    #shopify-section-{{ section.id }} .snh-faq__card-media { aspect-ratio: 4 / 3.4; }
+    #shopify-section-{{ section.id }} .snh-faq__card-media img { object-position: 50% 8%; }
+    #shopify-section-{{ section.id }} .snh-faq__question { min-height: 56px; padding: 14px 16px; }
+    #shopify-section-{{ section.id }} .snh-faq__answer { padding: 0 16px 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .snh-faq__panel,
+    #shopify-section-{{ section.id }} .snh-faq__answer,
+    #shopify-section-{{ section.id }} .snh-faq__toggle { transition: none !important; }
+  }
+</style>
+
+<section class="snh-faq" aria-labelledby="snh-faq-title-{{ section.id }}">
+  <div class="snh-faq__inner">
+    <div class="snh-faq__layout">
+
+      <div class="snh-faq__intro">
+        <div>
+          <h2 class="snh-faq__title" id="snh-faq-title-{{ section.id }}">{{ section.settings.title | default: "FAQ'S" | escape }}</h2>
+          {%- if section.settings.content != blank -%}
+            <div class="snh-faq__content rte">{{ section.settings.content }}</div>
+          {%- endif -%}
+          <span class="snh-faq__hours">{{ section.settings.support_hours | default: 'Everyday: 10am–7.00pm' | escape }}</span>
+        </div>
+
+        <div class="snh-faq__card">
+          <span class="snh-faq__card-media">
+            {%- if section.settings.support_image != blank -%}
+              {{- section.settings.support_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400,600,900', sizes: '(max-width: 1040px) 90vw, 400px' -}}
+            {%- else -%}
+              <img src="{{ section.settings.support_image_url }}" alt="SNH customer support" loading="lazy">
+            {%- endif -%}
+          </span>
+          {%- if section.settings.button_text != blank -%}
+            {%- assign wa_link = section.settings.button_url | default: 'https://wa.me/94764863359' -%}
+            <a class="snh-faq__card-btn" href="{{ wa_link }}" target="_blank" rel="noopener">
+              <span>{{ section.settings.button_text | escape }}</span>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M4 10h11M11 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="snh-faq__list" id="snh-faq-list-{{ section.id }}" data-snh-faq>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.title != blank and block.settings.content != blank -%}
+            <div class="snh-faq__item {% if forloop.first %}is-open{% endif %}" {{ block.shopify_attributes }}>
+              <button type="button" class="snh-faq__question" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="snh-faq-a-{{ section.id }}-{{ forloop.index }}">
+                <span>{{ block.settings.title }}</span>
+                <span class="snh-faq__toggle" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><path d="M8 3.5v9M3.5 8h9" stroke-linecap="round"/></svg>
+                </span>
+              </button>
+              <div class="snh-faq__panel" id="snh-faq-a-{{ section.id }}-{{ forloop.index }}">
+                <div class="snh-faq__panel-clip">
+                  <div class="snh-faq__answer rte">{{ block.settings.content }}</div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const init = (list) => {
+      if (!list || list.dataset.faqInit) return;
+      list.dataset.faqInit = '1';
+      const items = Array.from(list.querySelectorAll('.snh-faq__item'));
+      items.forEach((item) => {
+        const btn = item.querySelector('.snh-faq__question');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const willOpen = !item.classList.contains('is-open');
+          items.forEach((it) => {
+            it.classList.remove('is-open');
+            const b = it.querySelector('.snh-faq__question');
+            if (b) b.setAttribute('aria-expanded', 'false');
+          });
+          if (willOpen) {
+            item.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    };
+    init(document.getElementById('snh-faq-list-{{ section.id }}'));
+    document.addEventListener('shopify:section:load', (e) => {
+      const el = e.target && e.target.querySelector && e.target.querySelector('[data-snh-faq]');
+      if (el) init(el);
+    });
+  })();
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for block in section.blocks -%}
+        {
+          "@type": "Question",
+          "name": {{ block.settings.title | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ block.settings.content | strip_html | json }}
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "FAQ (SNH Dark)",
+  "class": "shopify-section--snh-faq-dark",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Structured data is automatically created to improve SEO."
+    },
+    { "type": "text", "id": "title", "label": "Heading", "default": "FAQ'S" },
+    { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Our customer support is available</p>" },
+    { "type": "header", "content": "Support card" },
+    { "type": "image_picker", "id": "support_image", "label": "Support image (overrides URL)" },
+    { "type": "text", "id": "support_image_url", "label": "Support image URL", "default": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/3rdcrd.png?v=1784028499" },
+    { "type": "text", "id": "support_hours", "label": "Support hours", "default": "Everyday: 10am–7.00pm" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Contact for more" },
+    { "type": "url", "id": "button_url", "label": "Button link (defaults to WhatsApp +94 76 486 3359)" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#E0521C" }
+  ],
+  "blocks": [
+    {
+      "name": "Item",
+      "type": "item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Question", "default": "Question" },
+        { "type": "richtext", "id": "content", "label": "Answer", "default": "<p>Write the answer to a common question here.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ (SNH Dark)",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "How long will it take to get my order?",
+            "content": "<p>Delivery depends on your location and the shipping method selected at checkout.</p><p><strong>Colombo and suburbs:</strong> usually within 24 hours.</p><p><strong>Outside Colombo:</strong> typically 2–4 business days.</p><p>Once your order is dispatched, we'll share tracking details where available. If you need your order urgently, contact our team and we'll do our best to help.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Where can I visit SNH in person?",
+            "content": "<p>You're welcome to visit any of our stores during opening hours. Search <strong>Sports Nutrition Hub (SNH)</strong> on Google Maps and choose the location closest to you.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "I want to know more before ordering. Who can I contact?",
+            "content": "<p>Our team is happy to guide you. Call or WhatsApp us on <a href=\"tel:+94764863359\">+94 76 486 3359</a> and we'll help with product advice, availability, delivery, or store directions.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Are your supplements genuine?",
+            "content": "<p>Yes. We only stock genuine products sourced through authorised distributors and trusted international brands. Your health and safety always come first.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "How do I know which supplement is right for me?",
+            "content": "<p>Tell us your fitness goal, diet, training routine, experience level, and any medical conditions or dietary restrictions. We'll recommend suitable options without pushing products you do not need.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "What payment methods do you accept?",
+            "content": "<p>We accept card payments, bank transfers, cash on delivery, and Koko.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Can I return or exchange a product?",
+            "content": "<p>We accept returns and exchanges only for products that are unopened, unused, and still in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we'll sort it out promptly.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

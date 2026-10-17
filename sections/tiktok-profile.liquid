@@ -1,0 +1,391 @@
+{%- comment -%}
+  ══════════════════════════════════════════════════════════════════
+  SNH — TikTok live feed  (simple, working)
+
+  TikTok's Creator Profile embed: paste a handle, it crawls the account
+  live and new videos appear on their own. Free, no token.
+
+  Why the previous version showed only the footer bar: it forced
+  position/height onto TikTok's iframe. Their embed.js sets that iframe's
+  height itself (postMessage) — overriding it collapsed the video grid.
+  This version never touches the iframe's own geometry. Cropping is done
+  with negative margins on a WRAPPER around it, so TikTok's layout is
+  left completely alone.
+
+  Install: Edit code → Sections → Add a new section → name it
+  snh-tiktok-videos → paste this whole file → Save.
+  ══════════════════════════════════════════════════════════════════
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://www.tiktok.com" crossorigin>
+
+{%- liquid
+  assign tt_handle = section.settings.handle | default: 'sportsnutritionhub.lk' | replace: '@', '' | strip
+  assign tt_profile = 'https://www.tiktok.com/@' | append: tt_handle
+-%}
+
+<section id="snh-tt-{{ section.id }}" class="snh-tt">
+  <div class="snh-tt__inner">
+    <header class="snh-tt__head">
+      <div>
+        <span class="snh-tt__handle">@{{ tt_handle }}</span>
+        <h2 class="snh-tt__title">{{ section.settings.title | default: 'Seen on TikTok' }}</h2>
+      </div>
+      <a class="snh-tt__follow" href="{{ tt_profile }}" target="_blank" rel="noopener">
+        {{ section.settings.cta_label | default: 'See all videos' }}
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </header>
+
+    <div class="snh-tt__win" data-tt-win>
+      <div class="snh-tt__scale" data-tt-scale>
+        <div class="snh-tt__crop">
+        <blockquote class="tiktok-embed"
+                    cite="{{ tt_profile }}"
+                    data-unique-id="{{ tt_handle }}"
+                    data-embed-type="creator"
+                    style="max-width:780px; min-width:288px;">
+          <section><a target="_blank" rel="noopener" href="{{ tt_profile }}?refer=creator_embed">@{{ tt_handle }}</a></section>
+          </blockquote>
+        </div>
+      </div>
+      <span class="snh-tt__skeleton" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  #snh-tt-{{ section.id }}, #snh-tt-{{ section.id }} * { box-sizing: border-box; }
+  #snh-tt-{{ section.id }} {
+    --tt-orange: #e0521c;
+    --tt-hide-top: {{ section.settings.hide_top | default: 0 }}px;
+    --tt-hide-bottom: {{ section.settings.hide_bottom | default: 0 }}px;
+    --tt-feed-width: {{ section.settings.feed_width | default: 780 }}px;
+    display: block;
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: {{ section.settings.background | default: '#0f0a07' }};
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    color: #fff2e6;
+  }
+  #snh-tt-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(620px 240px at 88% 108%, rgba(224, 82, 28, .26), transparent 70%),
+      radial-gradient(420px 180px at 4% -30%, rgba(255, 140, 70, .09), transparent 70%);
+  }
+  #snh-tt-{{ section.id }} .snh-tt__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1420px;
+    margin-inline: auto;
+    padding: clamp(32px, 4.2vw, 64px) clamp(16px, 4vw, 56px) clamp(28px, 3.4vw, 52px);
+  }
+
+  #snh-tt-{{ section.id }} .snh-tt__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: clamp(16px, 2vw, 26px);
+  }
+  #snh-tt-{{ section.id }} .snh-tt__handle {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--tt-orange);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  #snh-tt-{{ section.id }} .snh-tt__title {
+    margin: 0;
+    max-width: 22ch;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(26px, 3.6vw, 48px);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    text-transform: uppercase;
+  }
+  #snh-tt-{{ section.id }} .snh-tt__follow {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(255, 242, 230, .28);
+    color: #fff2e6;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color .22s ease, border-color .22s ease;
+  }
+  #snh-tt-{{ section.id }} .snh-tt__follow svg { width: 15px; height: 15px; }
+  #snh-tt-{{ section.id }} .snh-tt__follow:hover { color: var(--tt-orange); border-bottom-color: var(--tt-orange); }
+
+  /* ── the embed window ─────────────────────────────────────────────
+     The window clips; the crop wrapper shifts. TikTok's iframe keeps
+     every dimension it gives itself — nothing here overrides it. */
+  #snh-tt-{{ section.id }} .snh-tt__win {
+    position: relative;
+    overflow: hidden;
+    inline-size: 100%;
+    max-inline-size: var(--tt-feed-width);
+    {% if section.settings.align == 'center' %}margin-inline: auto;{% endif %}
+    block-size: var(--tt-win-h, auto);
+    border-radius: 14px;
+    background: #16100c;
+  }
+  /* TikTok's grid is hard-capped at 780px, so filling a wider frame means
+     scaling that 780px layer up — anything else just adds white either side */
+  #snh-tt-{{ section.id }} .snh-tt__scale {
+    inline-size: var(--tt-base, 780px);
+    transform-origin: top left;
+    transform: scale(var(--tt-scale, 1));
+  }
+  #snh-tt-{{ section.id }} .snh-tt__crop {
+    margin-block-start: calc(var(--tt-hide-top) * -1);
+    margin-block-end: calc(var(--tt-hide-bottom) * -1);
+  }
+  /* full-width blockquote so the grid uses the space; height stays TikTok's */
+  #snh-tt-{{ section.id }} .snh-tt__crop .tiktok-embed {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+  #snh-tt-{{ section.id }} .snh-tt__crop iframe {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+  #snh-tt-{{ section.id }} .snh-tt__crop .tiktok-embed section { padding: 18px; }
+  #snh-tt-{{ section.id }} .snh-tt__crop .tiktok-embed a {
+    color: rgba(255, 242, 230, .6);
+    font-size: 13px;
+    text-decoration: none;
+  }
+
+  /* soft bottom edge instead of a hard cut */
+  #snh-tt-{{ section.id }} .snh-tt__win::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 64px;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, {{ section.settings.background | default: '#0f0a07' }});
+    opacity: {% if section.settings.fade_bottom %}1{% else %}0{% endif %};
+  }
+
+  /* skeleton, removed the moment the iframe reports in */
+  #snh-tt-{{ section.id }} .snh-tt__skeleton {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: block;
+    min-block-size: 380px;
+    background: linear-gradient(100deg, #16100c 30%, #241a14 50%, #16100c 70%);
+    background-size: 220% 100%;
+    animation: snhTtShimmer 1.5s linear infinite;
+    transition: opacity .45s ease;
+    pointer-events: none;
+  }
+  #snh-tt-{{ section.id }} .snh-tt__win.is-ready .snh-tt__skeleton { opacity: 0; }
+  @keyframes snhTtShimmer {
+    0% { background-position: 120% 0; }
+    100% { background-position: -120% 0; }
+  }
+
+  @media screen and (max-width: 749px) {
+    #snh-tt-{{ section.id }} {
+      --tt-hide-top: {{ section.settings.hide_top_mobile | default: 0 }}px;
+      --tt-feed-width: 100%;
+    }
+    #snh-tt-{{ section.id }} .snh-tt__inner { padding-inline: 0; }
+    /* heading keeps the page gutter, the feed runs edge to edge */
+    #snh-tt-{{ section.id }} .snh-tt__head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin-inline: 16px;
+    }
+    #snh-tt-{{ section.id }} .snh-tt__title { max-width: 100%; }
+    #snh-tt-{{ section.id }} .snh-tt__win {
+      max-inline-size: none;
+      margin-inline: 8px;
+      border-radius: 12px;
+    }
+    #snh-tt-{{ section.id }} .snh-tt__skeleton { min-block-size: 300px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #snh-tt-{{ section.id }} .snh-tt__skeleton { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.getElementById('snh-tt-{{ section.id }}');
+  if (!root || root.dataset.ttInit) return;
+  root.dataset.ttInit = '1';
+
+  var win = root.querySelector('[data-tt-win]');
+  if (!win) return;
+
+  function reveal() { win.classList.add('is-ready'); }
+
+  /* one embed.js for the whole page */
+  function loadEmbed() {
+    if (window.__snhTtEmbed) {
+      /* already loaded by another section — ask it to render this one */
+      if (window.tiktokEmbed && window.tiktokEmbed.lib && window.tiktokEmbed.lib.render) {
+        window.tiktokEmbed.lib.render(win.querySelectorAll('.tiktok-embed'));
+      }
+      return;
+    }
+    window.__snhTtEmbed = true;
+    var s = document.createElement('script');
+    s.src = 'https://www.tiktok.com/embed.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+
+  /* fill the frame: scale the 780px layer to the window width, then give the
+     window the scaled height so nothing is clipped and nothing overlaps */
+  var layer = root.querySelector('[data-tt-scale]');
+  var BASE = 780;
+  var stretch = {{ section.settings.stretch | default: true | json }};
+
+  function fit() {
+    if (!layer) return;
+    var w = win.clientWidth;
+    if (!w) return;
+    var scale = stretch ? (w / BASE) : 1;
+    root.style.setProperty('--tt-scale', scale.toFixed(4));
+    var frame = win.querySelector('iframe');
+    var inner = frame ? frame.offsetHeight : layer.offsetHeight;
+    if (inner > 80) {
+      var hideTop = parseFloat(getComputedStyle(root).getPropertyValue('--tt-hide-top')) || 0;
+      var hideBot = parseFloat(getComputedStyle(root).getPropertyValue('--tt-hide-bottom')) || 0;
+      root.style.setProperty('--tt-win-h', Math.round((inner - hideTop - hideBot) * scale) + 'px');
+    }
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(fit).observe(win);
+    var ro = new ResizeObserver(fit);
+    var watch = setInterval(function () {
+      var f = win.querySelector('iframe');
+      if (!f) return;
+      clearInterval(watch);
+      ro.observe(f);
+      fit();
+    }, 300);
+    setTimeout(function () { clearInterval(watch); }, 15000);
+  }
+  window.addEventListener('resize', fit);
+  setInterval(fit, 1200);
+
+  /* the shimmer lifts as soon as TikTok's iframe exists and has height */
+  var tries = 0;
+  var poll = setInterval(function () {
+    var f = win.querySelector('iframe');
+    if (f && f.offsetHeight > 120) { clearInterval(poll); fit(); reveal(); return; }
+    if (++tries > 40) { clearInterval(poll); reveal(); }
+  }, 250);
+
+  /* load only when the section is near the viewport — embed.js is heavy */
+  if (window.IntersectionObserver) {
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries.some(function (e) { return e.isIntersecting; })) return;
+      io.disconnect();
+      loadEmbed();
+    }, { rootMargin: '700px' });
+    io.observe(win);
+  } else {
+    loadEmbed();
+  }
+
+  /* theme editor re-render */
+  document.addEventListener('shopify:section:load', function () {
+    if (window.tiktokEmbed && window.tiktokEmbed.lib && window.tiktokEmbed.lib.render) {
+      window.tiktokEmbed.lib.render(document.querySelectorAll('.tiktok-embed'));
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SNH TikTok videos",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "TikTok handle",
+      "default": "sportsnutritionhub.lk",
+      "info": "Without the @. Videos are pulled live — new posts appear on their own."
+    },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Seen on TikTok" },
+    { "type": "text", "id": "cta_label", "label": "Link text", "default": "See all videos" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0f0a07" },
+    {
+      "type": "checkbox",
+      "id": "stretch",
+      "label": "Stretch feed to fill the width",
+      "default": true,
+      "info": "Scales TikTok's 780px grid up so the videos fill the frame instead of sitting in a narrow box."
+    },
+    {
+      "type": "range",
+      "id": "feed_width",
+      "label": "Feed width",
+      "min": 600,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1400,
+      "info": "How wide the feed may run. With Stretch on, the videos scale up to fill it."
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Feed position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }
+      ],
+      "default": "left"
+    },
+    { "type": "checkbox", "id": "fade_bottom", "label": "Fade the bottom edge", "default": true },
+    { "type": "header", "content": "Optional cropping" },
+    {
+      "type": "paragraph",
+      "content": "Leave these at 0 first and check the feed loads. Only then raise them to hide TikTok's own profile header or footer bar. Too much here can hide the videos."
+    },
+    { "type": "range", "id": "hide_top", "label": "Hide from top", "min": 0, "max": 320, "step": 10, "unit": "px", "default": 0 },
+    { "type": "range", "id": "hide_bottom", "label": "Hide from bottom", "min": 0, "max": 160, "step": 10, "unit": "px", "default": 0 },
+    { "type": "range", "id": "hide_top_mobile", "label": "Hide from top (mobile)", "min": 0, "max": 360, "step": 10, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "SNH TikTok videos" }]
+}
+{% endschema %}

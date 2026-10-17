@@ -1,0 +1,309 @@
+{% comment %}
+SNH Header (standalone, self-contained)
+- Row 1: Orange logo bar with optional hover logo on Supplements
+- Row 2: 50/50 split: left = Supplements (orange), right = Health (purple) + icons
+- Uses OS2.0 menu objects; no external snippets or theme files needed
+- Mobile drawer with two tabs
+- Includes a “Hide theme header” option to prevent the old header overlapping
+{% endcomment %}
+
+<header class="snhx {% if section.settings.sticky %}snhx--sticky{% endif %} {% if section.settings.hide_theme_header %}snhx--hide-theme{% endif %}">
+  <!-- Utility bar -->
+  {% if section.settings.utility_menu %}
+  <div class="snhx-utility">
+    <div class="snhx-container">
+      <nav class="snhx-utility__nav" aria-label="Utility">
+        {% for link in section.settings.utility_menu.links %}
+          <a class="snhx-utility__link" href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Row 1: Orange logo bar -->
+  <div class="snhx-logo-bar">
+    <div class="snhx-container snhx-logo__wrap">
+      <a class="snhx-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+        {% if section.settings.logo %}
+          {{ section.settings.logo | image_url: width: 260 | image_tag: class: 'snhx-logo__img snhx-logo__img--default', alt: shop.name, loading: 'eager' }}
+        {% endif %}
+        {% if section.settings.logo_hover %}
+          {{ section.settings.logo_hover | image_url: width: 260 | image_tag: class: 'snhx-logo__img snhx-logo__img--supp', alt: shop.name, loading: 'eager' }}
+        {% endif %}
+        {% unless section.settings.logo %}
+          <span class="snhx-logo__text">{{ shop.name }}</span>
+        {% endunless %}
+      </a>
+    </div>
+  </div>
+
+  <!-- Row 2: Split ribbon -->
+  <div class="snhx-band">
+    <!-- Left (Supplements) -->
+    <div class="snhx-band__half snhx-band__half--supp">
+      <button class="snhx-primary__btn" data-mega="supp" aria-expanded="false" aria-controls="snhx-mega-supp">SUPPLEMENTS</button>
+    </div>
+
+    <!-- Right (Health + actions) -->
+    <div class="snhx-band__half snhx-band__half--health">
+      <div class="snhx-band__inner">
+        <button class="snhx-primary__btn" data-mega="health" aria-expanded="false" aria-controls="snhx-mega-health">HEALTH</button>
+        <div class="snhx-actions">
+          <a class="snhx-icon" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}">
+            <!-- Search icon -->
+            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16a6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          </a>
+          {% if shop.customer_accounts_enabled %}
+          <a class="snhx-icon" href="{{ routes.account_url }}" aria-label="{{ 'customer.account.title' | t }}">
+            <!-- Account icon -->
+            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/></svg>
+          </a>
+          {% endif %}
+          <a class="snhx-icon snhx-cart" href="{{ routes.cart_url }}" aria-label="{{ 'general.cart.title' | t }}">
+            <!-- Cart icon -->
+            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 18a2 2 0 1 0 2 2S8.1 18 7 18zm10 0a2 2 0 1 0 2 2S17.1 18 17 18zM6 6h14l-2 8H8L6 6z"/></svg>
+            <span class="snhx-cart__count" data-cart-count>{{ cart.item_count }}</span>
+          </a>
+          {% if section.settings.instagram_url != blank %}
+          <a class="snhx-icon" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+            <!-- Instagram icon -->
+            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm5.5-.75a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"/></svg>
+          </a>
+          {% endif %}
+          <button class="snhx-burger" data-drawer-open aria-label="Open menu"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega menus -->
+  <div id="snhx-mega-supp" class="snhx-mega" data-mega-panel="supp" aria-hidden="true">
+    <div class="snhx-mega__inner snhx-mega__inner--supp">
+      <div class="snhx-mega__cols">
+        {% if section.settings.menu_supplements %}
+          {% for col in section.settings.menu_supplements.links %}
+          <div class="snhx-mega__col">
+            <h4 class="snhx-mega__heading">{{ col.title }}</h4>
+            <ul class="snhx-mega__list">
+              {% for item in col.links %}
+                <li><a class="snhx-mega__link" href="{{ item.url }}">{{ item.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div id="snhx-mega-health" class="snhx-mega" data-mega-panel="health" aria-hidden="true">
+    <div class="snhx-mega__inner snhx-mega__inner--health">
+      <div class="snhx-mega__cols">
+        {% if section.settings.menu_health %}
+          {% for col in section.settings.menu_health.links %}
+          <div class="snhx-mega__col">
+            <h4 class="snhx-mega__heading">{{ col.title }}</h4>
+            <ul class="snhx-mega__list">
+              {% for item in col.links %}
+                <li><a class="snhx-mega__link" href="{{ item.url }}">{{ item.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="snhx-drawer" data-drawer aria-hidden="true">
+    <div class="snhx-drawer__panel">
+      <div class="snhx-drawer__head">
+        <div class="snhx-tabs" role="tablist">
+          <button class="snhx-tab snhx-tab--active" role="tab" data-tab="supp">SUPPLEMENTS</button>
+          <button class="snhx-tab" role="tab" data-tab="health">HEALTH</button>
+        </div>
+        <button class="snhx-drawer__close" data-drawer-close aria-label="Close">×</button>
+      </div>
+      <div class="snhx-drawer__body">
+        <div class="snhx-tabpanel snhx-tabpanel--active" data-panel="supp">
+          {% if section.settings.menu_supplements %}
+            {% for link in section.settings.menu_supplements.links %}
+              <details class="snhx-acc">
+                <summary class="snhx-acc__summary">{{ link.title }}</summary>
+                <ul class="snhx-acc__list">
+                  {% for item in link.links %}
+                    <li><a class="snhx-acc__link" href="{{ item.url }}">{{ item.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              </details>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="snhx-tabpanel" data-panel="health">
+          {% if section.settings.menu_health %}
+            {% for link in section.settings.menu_health.links %}
+              <details class="snhx-acc">
+                <summary class="snhx-acc__summary">{{ link.title }}</summary>
+                <ul class="snhx-acc__list">
+                  {% for item in link.links %}
+                    <li><a class="snhx-acc__link" href="{{ item.url }}">{{ item.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              </details>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline CSS -->
+  <style>
+    /* Container & layout variables */
+    .snhx-container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+    /* Utility bar */
+    .snhx-utility { background:#f7f6f2; font-size:13px; }
+    .snhx-utility__nav { display:flex; gap:16px; justify-content:flex-end; padding:6px 0; }
+    .snhx-utility__link { color:#4b4b4b; text-decoration:none; }
+    /* Row 1: logo bar */
+    .snhx-logo-bar { background:#fe6002; }
+    .snhx-logo__wrap { min-height:60px; display:flex; align-items:center; }
+    .snhx-logo { position:relative; display:inline-block; height:44px; }
+    .snhx-logo__img { position:absolute; inset:0; display:flex; align-items:center; }
+    .snhx-logo__img img { height:44px; width:auto; display:block; }
+    .snhx-logo__img--default { opacity:1; transition:opacity .25s ease; }
+    .snhx-logo__img--supp { opacity:0; transition:opacity .25s ease; }
+    .snhx-logo__text { color:#fff; font-weight:700; font-size:22px; }
+    /* Row 2: split band */
+    .snhx-band { display:grid; grid-template-columns:1fr 1fr; }
+    .snhx-band__half { min-height:56px; display:flex; align-items:center; justify-content:center; color:#fff; }
+    .snhx-band__half--supp { background:#fe6002; }
+    .snhx-band__half--health { background:#af77bf; }
+    .snhx-band__inner { display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center; width:100%; max-width:1280px; padding:0 20px; }
+    .snhx-primary__btn { background:none; border:0; color:#fff; font-weight:800; cursor:pointer; }
+    /* Actions */
+    .snhx-actions { display:flex; align-items:center; gap:14px; justify-self:end; }
+    .snhx-icon { color:#fff; display:inline-flex; align-items:center; }
+    .snhx-cart__count { margin-left:4px; font-size:12px; font-weight:600; }
+    .snhx-burger { display:none; border:0; background:none; }
+    .snhx-burger span { display:block; width:22px; height:2px; background:#fff; margin:4px 0; }
+    /* Mega menus */
+    .snhx-mega { position:absolute; left:0; right:0; top:100%; transform:translateY(10px); opacity:0; pointer-events:none; z-index:60; }
+    .snhx-mega[aria-hidden="false"] { opacity:1; pointer-events:auto; transform:none; }
+    .snhx-mega__inner { background:#fff; box-shadow:0 20px 40px rgba(0,0,0,.12); border-top:4px solid transparent; padding:24px 0; }
+    .snhx-mega__inner--supp { border-top-color:#fe6002; }
+    .snhx-mega__inner--health { border-top-color:#af77bf; }
+    .snhx-mega__cols { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; max-width:1280px; margin:0 auto; padding:0 20px; }
+    .snhx-mega__heading { margin:0 0 10px; font-weight:800; }
+    .snhx-mega__list { display:grid; gap:8px; list-style:none; padding:0; margin:0; }
+    .snhx-mega__link { text-decoration:none; color:#1b1b1b; }
+    /* Mobile drawer */
+    .snhx-drawer { position:fixed; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; z-index:70; }
+    .snhx-drawer[aria-hidden="false"] { opacity:1; pointer-events:auto; }
+    .snhx-drawer__panel { position:absolute; right:0; top:0; bottom:0; width:min(420px,90vw); background:#fff; display:flex; flex-direction:column; }
+    .snhx-drawer__head { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e9ecef; }
+    .snhx-drawer__close { font-size:26px; line-height:1; background:none; border:0; padding:4px 8px; }
+    .snhx-tabs { display:flex; gap:10px; }
+    .snhx-tab { background:none; border:0; font-weight:800; padding:8px 10px; }
+    .snhx-tab--active { border-bottom:2px solid #111; }
+    .snhx-drawer__body { overflow:auto; padding:14px 16px; }
+    .snhx-acc { border-bottom:1px solid #e9ecef; }
+    .snhx-acc__summary { list-style:none; cursor:pointer; padding:14px 0; font-weight:800; }
+    .snhx-acc__list { display:grid; gap:10px; padding:0 0 14px; list-style:none; }
+    .snhx-acc__link { text-decoration:none; color:#111; }
+    /* Hide theme header if toggled */
+    .snhx--hide-theme .section-header,
+    .snhx--hide-theme .header,
+    .snhx--hide-theme .header-wrapper { display:none!important; }
+    @media (max-width:990px) {
+      .snhx-actions .snhx-icon { display:none; }
+      .snhx-burger { display:inline-block; }
+      .snhx-mega { display:none; }
+    }
+    /* Logo swap on Supplements open */
+    .snhx.is-supp-open .snhx-logo__img--default { opacity:0; }
+    .snhx.is-supp-open .snhx-logo__img--supp { opacity:1; }
+  </style>
+
+  <!-- Inline JS for toggling -->
+  <script>
+  (function() {
+    const header = document.currentScript.closest('.snhx');
+    if (!header) return;
+
+    // Mega toggling
+    const suppBtn   = header.querySelector('[data-mega="supp"]');
+    const healthBtn = header.querySelector('[data-mega="health"]');
+    const megaSupp   = document.getElementById('snhx-mega-supp');
+    const megaHealth = document.getElementById('snhx-mega-health');
+
+    function openMega(which) {
+      closeMega();
+      if (which === 'supp')   { megaSupp.setAttribute('aria-hidden','false'); header.classList.add('is-supp-open'); suppBtn.setAttribute('aria-expanded','true'); }
+      if (which === 'health') { megaHealth.setAttribute('aria-hidden','false'); healthBtn.setAttribute('aria-expanded','true'); }
+    }
+    function closeMega() {
+      megaSupp.setAttribute('aria-hidden','true');
+      megaHealth.setAttribute('aria-hidden','true');
+      header.classList.remove('is-supp-open');
+      suppBtn.setAttribute('aria-expanded','false');
+      healthBtn.setAttribute('aria-expanded','false');
+    }
+
+    suppBtn.addEventListener('mouseenter', () => openMega('supp'));
+    suppBtn.addEventListener('click', (e) => { e.preventDefault(); (suppBtn.getAttribute('aria-expanded') === 'true') ? closeMega() : openMega('supp'); });
+    healthBtn.addEventListener('mouseenter', () => openMega('health'));
+    healthBtn.addEventListener('click', (e) => { e.preventDefault(); (healthBtn.getAttribute('aria-expanded') === 'true') ? closeMega() : openMega('health'); });
+    header.addEventListener('mouseleave', () => closeMega());
+    document.addEventListener('scroll', () => closeMega(), { passive:true });
+
+    // Mobile drawer
+    const drawer    = header.querySelector('[data-drawer]');
+    const openBtn   = header.querySelector('[data-drawer-open]');
+    const closeBtn  = header.querySelector('[data-drawer-close]');
+    const tabs      = header.querySelectorAll('.snhx-tab');
+    const panels    = header.querySelectorAll('.snhx-tabpanel');
+
+    const setDrawer = (on) => drawer.setAttribute('aria-hidden', on ? 'false' : 'true');
+    openBtn && openBtn.addEventListener('click', () => setDrawer(true));
+    closeBtn && closeBtn.addEventListener('click', () => setDrawer(false));
+    drawer.addEventListener('click', (e) => { if (e.target === drawer) setDrawer(false); });
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.toggle('snhx-tab--active', t === tab));
+        panels.forEach(p => p.classList.toggle('snhx-tabpanel--active', p.dataset.panel === tab.dataset.tab));
+      });
+    });
+
+    // Live cart count update (optional)
+    document.addEventListener('cart:refresh', (e) => {
+      const count = e.detail?.item_count;
+      const el = header.querySelector('[data-cart-count]');
+      if (typeof count === 'number' && el) el.textContent = count;
+    });
+
+  })();
+  </script>
+
+{% schema %}
+{
+  "name": "SNH Header (standalone)",
+  "class": "section-snhx",
+  "settings": [
+    { "type": "checkbox", "id": "sticky", "label": "Sticky on scroll", "default": true },
+    { "type": "checkbox", "id": "hide_theme_header", "label": "Hide theme's default header", "default": false },
+    { "type": "image_picker", "id": "logo", "label": "Logo (row 1)" },
+    { "type": "image_picker", "id": "logo_hover", "label": "Logo when Supplements is open (optional)" },
+    { "type": "link_list", "id": "utility_menu", "label": "Top utility menu (optional)" },
+    { "type": "link_list", "id": "menu_supplements", "label": "Supplements mega menu" },
+    { "type": "link_list", "id": "menu_health", "label": "Health mega menu" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" }
+  ],
+  "presets": [
+    { "name": "SNH Header (standalone)" }
+  ]
+}
+{% endschema %}

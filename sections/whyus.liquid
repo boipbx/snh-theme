@@ -1,0 +1,809 @@
+{% comment %}
+  SNH Why Choose Us — Proof Grid V5
+
+  Changes from V4:
+  - The orange rule on every card is gone (both the top border and the floating
+    dash). Accent now appears only on hover, as the card's own border warming.
+  - Trust figures get real placement: a stat rail under the subheading, set in
+    the Archivo display voice, editable in the theme editor.
+  - Copy sits at the foot of each card instead of the head, and the overlay is
+    lighter, so the product silhouette reads instead of being flattened.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign stat_values = ''
+  assign stat_labels = ''
+  for i in (1..3)
+    assign vkey = 'stat_' | append: i | append: '_value'
+    assign lkey = 'stat_' | append: i | append: '_label'
+    assign v = section.settings[vkey]
+    assign l = section.settings[lkey]
+    if v != blank
+      assign stat_values = stat_values | append: v | append: '|'
+      assign stat_labels = stat_labels | append: l | append: '|'
+    endif
+  endfor
+  assign stat_value_list = stat_values | split: '|'
+  assign stat_label_list = stat_labels | split: '|'
+-%}
+
+<section
+  data-snh-proof
+  id="snh-proof-{{ section.id }}"
+  style="
+    --snh-proof-bg: {{ section.settings.bg }};
+    --snh-proof-accent: {{ section.settings.accent }};
+    --snh-proof-heading: {{ section.settings.heading_color }};
+    --snh-proof-card: {{ section.settings.card_bg }};
+  "
+  aria-labelledby="snh-proof-title-{{ section.id }}"
+>
+  <div class="snh-proof__shell">
+    <header class="snh-proof__header">
+      {% if section.settings.heading != blank %}
+        <h2 id="snh-proof-title-{{ section.id }}" class="snh-proof__title">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      <div class="snh-proof__aside">
+        {% if section.settings.subheading != blank %}
+          <p class="snh-proof__subheading">{{ section.settings.subheading }}</p>
+        {% endif %}
+
+        {% if stat_value_list.size > 0 %}
+          <dl class="snh-proof__stats">
+            {% for value in stat_value_list %}
+              <div class="snh-proof__stat" style="--snh-stat-order: {{ forloop.index0 }};">
+                <dt class="snh-proof__stat-value">
+                  {%- if value contains '★' -%}
+                    <span class="snh-proof__stat-num" data-snh-count>{{ value | split: '★' | first }}</span><em>★</em>
+                  {%- else -%}
+                    <span class="snh-proof__stat-num" data-snh-count>{{ value }}</span>
+                  {%- endif -%}
+                </dt>
+                {% if stat_label_list[forloop.index0] != blank %}
+                  <dd class="snh-proof__stat-label">{{ stat_label_list[forloop.index0] }}</dd>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </dl>
+        {% endif %}
+      </div>
+    </header>
+
+    {% assign proof_images = 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1stcard.png?v=1784028499|https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2nd_crd.png?v=1784028499|https://cdn.shopify.com/s/files/1/0258/9625/5550/files/3rdcrd.png?v=1784028499|https://cdn.shopify.com/s/files/1/0258/9625/5550/files/4th_card.png?v=1784028499' | split: '|' %}
+    {% assign proof_widths = '356|472|564|321' | split: '|' %}
+    {% assign proof_heights = '720|745|724|736' | split: '|' %}
+
+    <div class="snh-proof__grid" role="list">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks limit: 4 %}
+          <article
+            class="snh-proof__card snh-proof__card--{{ forloop.index }}"
+            role="listitem"
+            style="--snh-proof-order: {{ forloop.index0 }};"
+            {{ block.shopify_attributes }}
+          >
+            <div class="snh-proof__visual" aria-hidden="true">
+              <img
+                class="snh-proof__image"
+                src="{{ proof_images[forloop.index0] }}"
+                width="{{ proof_widths[forloop.index0] }}"
+                height="{{ proof_heights[forloop.index0] }}"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+
+            <div class="snh-proof__copy">
+              {% if block.settings.title != blank %}
+                <h3 class="snh-proof__card-title">{{ block.settings.title }}</h3>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <p class="snh-proof__desc">{{ block.settings.text }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {% assign fallback_titles = '100% Authentic|Fair Pricing|Expert Support|Secure Payments' | split: '|' %}
+        {% assign fallback_texts = 'Genuine products from trusted, authorized sources.|Clear prices with strong everyday value.|Practical help from people who know the products.|Protected checkout across every supported payment method.' | split: '|' %}
+
+        {% for title in fallback_titles %}
+          <article
+            class="snh-proof__card snh-proof__card--{{ forloop.index }}"
+            role="listitem"
+            style="--snh-proof-order: {{ forloop.index0 }};"
+          >
+            <div class="snh-proof__visual" aria-hidden="true">
+              <img
+                class="snh-proof__image"
+                src="{{ proof_images[forloop.index0] }}"
+                width="{{ proof_widths[forloop.index0] }}"
+                height="{{ proof_heights[forloop.index0] }}"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+
+            <div class="snh-proof__copy">
+              <h3 class="snh-proof__card-title">{{ title }}</h3>
+              <p class="snh-proof__desc">{{ fallback_texts[forloop.index0] }}</p>
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #snh-proof-{{ section.id }},
+  #snh-proof-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #snh-proof-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(44px, 4.5vw, 72px);
+    padding-inline: var(--container-gutter, var(--page-gutter, var(--spacing-container-gutter, clamp(18px, 4vw, 64px))));
+    background:
+      radial-gradient(circle at 10% 8%, rgba(255, 106, 0, 0.06), transparent 30rem),
+      linear-gradient(180deg, rgba(255,255,255,.68), rgba(255,255,255,0)),
+      var(--snh-proof-bg);
+    color: var(--snh-proof-heading);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+
+  #snh-proof-{{ section.id }}::before {
+    content: "";
+    position: absolute;
+    inset-inline: var(--container-gutter, var(--page-gutter, var(--spacing-container-gutter, clamp(18px, 4vw, 64px))));
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(18,18,18,.14), transparent);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__shell {
+    width: min(100%, var(--page-width, var(--container-max-width, 1500px)));
+    margin-inline: auto;
+  }
+
+  /* ── header: heading left, supporting copy + proof figures right ── */
+  #snh-proof-{{ section.id }} .snh-proof__header {
+    display: grid;
+    grid-template-columns: minmax(0, .86fr) minmax(400px, 1.14fr);
+    gap: clamp(28px, 5vw, 76px);
+    align-items: start;
+    margin-bottom: clamp(28px, 3.2vw, 44px);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__aside {
+    min-width: 0;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__title {
+    /* trims the line box so the cap top sits level with the copy opposite */
+    margin: -0.06em 0 0;
+    color: var(--snh-proof-heading);
+    font-family: 'Archivo', Arial, sans-serif;
+    max-width: 12ch;
+    font-size: clamp(38px, 5.4vw, 74px);
+    font-weight: 900;
+    line-height: .94;
+    letter-spacing: -.03em;
+    text-transform: uppercase;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__subheading {
+    max-width: 62ch;
+    margin: 0;
+    color: rgba(69, 59, 50, .78);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: clamp(14px, 1.02vw, 16px);
+    font-weight: 500;
+    line-height: 1.55;
+    letter-spacing: -.01em;
+  }
+
+  /* ── proof figures ── */
+  #snh-proof-{{ section.id }} .snh-proof__stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 0;
+    margin: clamp(14px, 1.5vw, 19px) 0 0;
+    padding-top: clamp(13px, 1.4vw, 18px);
+    border-top: 1px solid rgba(23, 19, 15, .13);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__stat {
+    padding-right: clamp(22px, 2.6vw, 40px);
+    margin-right: clamp(22px, 2.6vw, 40px);
+    border-right: 1px solid rgba(23, 19, 15, .13);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__stat:last-child {
+    padding-right: 0;
+    margin-right: 0;
+    border-right: 0;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__stat-value {
+    margin: 0;
+    color: var(--snh-proof-heading);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(26px, 2.5vw, 38px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.035em;
+    white-space: nowrap;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__stat-num {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    text-align: left;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__stat-value em {
+    margin-left: 2px;
+    color: var(--snh-proof-accent);
+    font-style: normal;
+    font-size: .78em;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__stat-label {
+    margin: 7px 0 0;
+    color: rgba(69, 59, 50, .55);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+  /* ── cards ── */
+  #snh-proof-{{ section.id }} .snh-proof__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(12px, 1.3vw, 20px);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: clamp(244px, 17.5vw, 302px);
+    /* no permanent accent rule — the border warms on hover instead */
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 6px;
+    background:
+      radial-gradient(circle at 84% 20%, rgba(235,87,20,.20), transparent 48%),
+      linear-gradient(155deg, #1a1411, var(--snh-proof-card));
+    box-shadow: 0 14px 36px rgba(18,18,18,.10);
+    transition:
+      transform 420ms cubic-bezier(.22,1,.36,1),
+      border-color 300ms ease,
+      box-shadow 420ms ease;
+  }
+
+  /* lighter, bottom-weighted scrim: the product reads, the copy stays legible */
+  #snh-proof-{{ section.id }} .snh-proof__card::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(to top, rgba(9,8,7,.97) 0%, rgba(9,8,7,.86) 30%, rgba(9,8,7,.34) 62%, rgba(9,8,7,0) 100%),
+      linear-gradient(90deg, rgba(9,8,7,.62) 0%, rgba(9,8,7,.20) 46%, rgba(9,8,7,0) 74%);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__visual {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__image {
+    position: absolute;
+    display: block;
+    width: auto;
+    max-width: none;
+    height: 112%;
+    right: -3%;
+    bottom: -6%;
+    opacity: .9;
+    filter: saturate(.9) brightness(.94) contrast(1.02);
+    transform: translate3d(0, 6px, 0) scale(.98);
+    transform-origin: center bottom;
+    transition:
+      transform 620ms cubic-bezier(.22,1,.36,1),
+      opacity 320ms ease,
+      filter 320ms ease;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--1 .snh-proof__image {
+    height: 117%;
+    right: 0;
+    bottom: -10%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--2 .snh-proof__image {
+    height: 112%;
+    right: -10%;
+    bottom: -8%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--3 .snh-proof__image {
+    height: 110%;
+    right: -14%;
+    bottom: -7%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--4 .snh-proof__image {
+    height: 117%;
+    right: 2%;
+    bottom: -10%;
+  }
+
+  /* copy anchored to the foot, clear of the product on the right */
+  #snh-proof-{{ section.id }} .snh-proof__copy {
+    position: absolute;
+    z-index: 3;
+    left: clamp(18px, 1.55vw, 24px);
+    right: clamp(18px, 3vw, 46px);
+    bottom: clamp(18px, 1.7vw, 26px);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card-title {
+    margin: 0 0 8px;
+    color: #fff2e6;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(16px, 1.08vw, 21px);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    text-transform: uppercase;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__desc {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 30ch;
+    margin: 0;
+    color: rgba(255,255,255,.66);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: clamp(12px, .83vw, 14px);
+    font-weight: 500;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(224,106,0,.55);
+    box-shadow: 0 26px 60px rgba(18,18,18,.18);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card:hover .snh-proof__image {
+    opacity: 1;
+    filter: saturate(1) brightness(1) contrast(1.02);
+    transform: translate3d(0, 0, 0) scale(1.035);
+  }
+
+  /* ── scroll reveal ── */
+  #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__header,
+  #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__card {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__stat {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__stat {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 520ms ease calc(260ms + var(--snh-stat-order, 0) * 130ms),
+      transform 660ms cubic-bezier(.22,1,.36,1) calc(260ms + var(--snh-stat-order, 0) * 130ms);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__header {
+    opacity: 1;
+    transform: none;
+    transition: opacity 620ms ease, transform 620ms cubic-bezier(.22,1,.36,1);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__card {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 560ms ease calc(100ms + var(--snh-proof-order) * 85ms),
+      transform 620ms cubic-bezier(.22,1,.36,1) calc(100ms + var(--snh-proof-order) * 85ms),
+      border-color 300ms ease,
+      box-shadow 420ms ease;
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__card:hover {
+    transform: translateY(-5px);
+  }
+
+  @media screen and (max-width: 1080px) {
+    #snh-proof-{{ section.id }} .snh-proof__header {
+      grid-template-columns: 1fr;
+      gap: clamp(18px, 2.4vw, 26px);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__title {
+      max-width: 14ch;
+      font-size: clamp(36px, 6.4vw, 62px);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__subheading {
+      max-width: 78ch;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card {
+      min-height: 250px;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #snh-proof-{{ section.id }} {
+      padding-block: 36px 40px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__header {
+      margin-bottom: 22px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__title {
+      font-size: clamp(30px, 9vw, 40px);
+      letter-spacing: -.025em;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__subheading {
+      max-width: 42ch;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__stats {
+      padding-top: 14px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__stat {
+      padding-right: 18px;
+      margin-right: 18px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__stat-value {
+      font-size: clamp(23px, 7vw, 30px);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__stat-label {
+      margin-top: 5px;
+      font-size: 9px;
+      letter-spacing: .11em;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card {
+      min-height: 196px;
+      border-radius: 5px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card::before {
+      background: linear-gradient(0deg, rgba(8,8,8,.98) 0%, rgba(8,8,8,.88) 42%, rgba(8,8,8,.26) 72%, rgba(8,8,8,.02) 100%);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__copy {
+      left: 13px;
+      right: 11px;
+      bottom: 14px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card-title {
+      margin-bottom: 5px;
+      font-size: clamp(12px, 3.65vw, 15px);
+      line-height: 1.04;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__desc {
+      max-width: none;
+      font-size: 10.5px;
+      line-height: 1.35;
+      -webkit-line-clamp: 2;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--1 .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--2 .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--3 .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--4 .snh-proof__image {
+      height: 100%;
+      right: 50%;
+      bottom: 2%;
+      opacity: .86;
+      transform: translate3d(50%, 5px, 0) scale(.96);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card:hover .snh-proof__image {
+      transform: translate3d(50%, 0, 0) scale(1);
+    }
+  }
+
+  @media screen and (max-width: 370px) {
+    #snh-proof-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card {
+      min-height: 180px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__header,
+    #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__card {
+      opacity: 1;
+      transform: none;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card,
+    #snh-proof-{{ section.id }} .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__header {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('snh-proof-{{ section.id }}');
+    if (!root || root.dataset.motionBound === 'true') return;
+
+    root.dataset.motionBound = 'true';
+
+    /* Each figure is authored as plain text, so the target is read back from
+       the markup: any prefix, the number itself, and any trailing sign are
+       kept, along with its decimal places and thousands grouping. */
+    const prepareCounts = () => {
+      return [...root.querySelectorAll('[data-snh-count]')].map((el) => {
+        const raw = el.textContent.trim();
+        const parts = raw.match(/^([^\d]*)([\d.,]+)(.*)$/);
+        if (!parts) return null;
+
+        const digits = parts[2];
+        const dot = digits.lastIndexOf('.');
+        const decimals = dot === -1 ? 0 : digits.length - dot - 1;
+        const target = parseFloat(digits.replace(/,/g, ''));
+        if (!isFinite(target)) return null;
+
+        const format = (n) => parts[1] + n.toLocaleString('en-US', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+          useGrouping: digits.includes(',')
+        }) + parts[3];
+
+        /* hold the finished width so the star and divider never shuffle */
+        el.style.minWidth = el.getBoundingClientRect().width + 'px';
+        el.textContent = format(0);
+
+        return { el, target, format };
+      }).filter(Boolean);
+    };
+
+    const runCounts = (items) => {
+      if (!items.length) return;
+      const DURATION = 1500;
+      const start = performance.now();
+
+      const tick = (now) => {
+        const t = Math.min((now - start) / DURATION, 1);
+        /* ease-out: quick off the mark, settling gently on the figure */
+        const eased = 1 - Math.pow(1 - t, 4);
+        items.forEach((item) => {
+          item.el.textContent = item.format(item.target * eased);
+        });
+        if (t < 1) requestAnimationFrame(tick);
+        else items.forEach((item) => { item.el.textContent = item.format(item.target); });
+      };
+
+      requestAnimationFrame(tick);
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      root.classList.add('is-visible');
+      return;
+    }
+
+    root.classList.add('snh-motion-ready');
+
+    const counts = prepareCounts();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        root.classList.add('is-visible');
+        observer.disconnect();
+        /* starts once the figures have risen into place */
+        setTimeout(() => runCounts(counts), 340);
+      });
+    }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+
+    observer.observe(root);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Why choose us refined",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "WHY CHOOSE US?"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#17130F"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka."
+    },
+    {
+      "type": "header",
+      "content": "Proof figures"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shown under the subheading. Leave a value blank to hide that figure. A ★ typed in the value is picked out in the accent colour."
+    },
+    {
+      "type": "text",
+      "id": "stat_1_value",
+      "label": "Figure 1",
+      "default": "50,000+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Figure 1 label",
+      "default": "Orders delivered"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_value",
+      "label": "Figure 2",
+      "default": "4.9★"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Figure 2 label",
+      "default": "From 2,000+ reviews"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_value",
+      "label": "Figure 3"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Figure 3 label"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Section background",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#0E0E0F"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent color",
+      "default": "#E0521C"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Proof point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "100% Authentic"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Genuine products from trusted, authorized sources."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why choose us refined",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "100% Authentic",
+            "text": "Genuine products from trusted, authorized sources."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Fair Pricing",
+            "text": "Clear prices with strong everyday value."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Expert Support",
+            "text": "Practical help from people who know the products."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Secure Payments",
+            "text": "Protected checkout across every supported payment method."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

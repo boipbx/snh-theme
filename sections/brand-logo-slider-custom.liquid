@@ -1,0 +1,365 @@
+{% comment %}
+  SNH brand rail — cinematic full-bleed strip
+  - Full-width dark brown/orange band, no card edges
+  - Label set in the SNH Elite "BRONZE MEMBER" display style (Archivo 900, cream)
+  - Logos auto-flow as dimmed white silhouettes, full color on hover
+  - Mobile optimized; reduced-motion safe
+{% endcomment %}
+
+{%- liquid
+  assign logo_count = section.blocks.size
+  assign rail_label = section.settings.label | default: 'Trusted by leading brands' | strip
+  assign drift_speed = section.settings.animation_speed | default: 130 | times: 0.34
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+
+<section
+  id="{{ section.id }}"
+  class="snh-rail"
+  style="
+    --rail-accent: {{ section.settings.accent_color | default: '#e0521c' }};
+    --rail-ink: {{ section.settings.rail_text_color | default: '#fff2e6' }};
+    --rail-max: {{ section.settings.max_width | default: 1460 }}px; /* used only in contained mode */
+    --rail-logo-h: {{ section.settings.logo_max_height | default: 44 }}px;
+    --rail-logo-w: {{ section.settings.logo_max_width | default: 150 }}px;
+    --rail-gap: {{ section.settings.logo_gap | default: 64 }}px;
+    --rail-speed: {{ drift_speed }}s;
+  "
+  aria-label="{{ rail_label | escape }}"
+>
+  <div class="snh-rail__glow" aria-hidden="true"></div>
+  <div class="snh-rail__topline" aria-hidden="true"></div>
+
+  <div class="snh-rail__inner">
+    <div class="snh-rail__label-group">
+      <span class="snh-rail__label">{{ rail_label | escape }}</span>
+    </div>
+
+    <div class="snh-rail__divider" aria-hidden="true"></div>
+
+    {%- if logo_count > 0 -%}
+      <div class="snh-rail__viewport" tabindex="0" aria-label="{{ rail_label | escape }}">
+        <div class="snh-rail__track">
+          {%- for repeat in (1..2) -%}
+            <ul class="snh-rail__list" role="list" {% if repeat == 2 %}aria-hidden="true"{% endif %}>
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign logo_image = block.settings.image
+                  assign logo_href = ''
+                  if block.settings.link != blank
+                    assign logo_href = block.settings.link
+                  elsif block.settings.collection != blank
+                    assign logo_href = block.settings.collection.url
+                  endif
+                  assign logo_alt = block.settings.alt | default: logo_image.alt | default: 'Brand logo'
+                -%}
+                <li class="snh-rail__item" role="listitem" {% if repeat == 1 %}{{ block.shopify_attributes }}{% endif %}>
+                  {%- if logo_href != blank -%}
+                    <a class="snh-rail__logo-wrap" href="{{ logo_href }}" {% if repeat == 2 %}tabindex="-1"{% endif %} {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ logo_alt | escape }}">
+                  {%- else -%}
+                    <div class="snh-rail__logo-wrap" aria-label="{{ logo_alt | escape }}">
+                  {%- endif -%}
+                    {%- if logo_image != blank -%}
+                      <img
+                        class="snh-rail__logo"
+                        src="{{ logo_image | image_url: width: 600 }}"
+                        srcset="{{ logo_image | image_url: width: 300 }} 300w, {{ logo_image | image_url: width: 600 }} 600w"
+                        sizes="180px"
+                        width="180"
+                        height="60"
+                        alt="{{ logo_alt | escape }}"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      <span class="snh-rail__placeholder">Brand</span>
+                    {%- endif -%}
+                  {%- if logo_href != blank -%}</a>{%- else -%}</div>{%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="snh-rail__empty">Add logo blocks to build the brand rail.</div>
+    {%- endif -%}
+
+    {%- if section.settings.show_count -%}
+      <div class="snh-rail__count" aria-hidden="true">
+        <span class="snh-rail__count-num">{{ logo_count }}</span>
+        <span class="snh-rail__count-word">Brands</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <style>
+    #{{ section.id }},
+    #{{ section.id }} * { box-sizing: border-box; }
+
+    /* Full-bleed band — the section IS the surface, no card edges */
+    #{{ section.id }} {
+      position: relative;
+      isolation: isolate;
+      overflow: clip;
+      max-width: 100vw;
+      background: linear-gradient(112deg, #0f0a07 0%, #1b0e08 46%, #33150a 78%, #4a1c0a 100%);
+    }
+
+    #{{ section.id }} .snh-rail__glow {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(620px 220px at 92% 115%, rgba(224, 82, 28, 0.30), transparent 70%),
+        radial-gradient(460px 170px at 4% -35%, rgba(255, 140, 70, 0.10), transparent 70%);
+    }
+
+    #{{ section.id }} .snh-rail__topline {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(224, 82, 28, 0.85) 40%, rgba(255, 150, 80, 0.9) 55%, transparent 82%);
+    }
+
+    #{{ section.id }} .snh-rail__inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1500px;
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      gap: clamp(22px, 3vw, 44px);
+      padding: clamp(30px, 3vw, 44px) clamp(18px, 4vw, 64px);
+    }
+
+    #{{ section.id }} .snh-rail__label-group {
+      flex: 0 0 auto;
+      max-width: 220px;
+    }
+
+    /* "BRONZE MEMBER" voice — Archivo 900, cream, tight and uppercase */
+    #{{ section.id }} .snh-rail__label {
+      display: block;
+      font-family: 'Archivo', Arial, sans-serif;
+      font-size: clamp(19px, 1.6vw, 24px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.98;
+      text-transform: uppercase;
+      color: var(--rail-ink);
+    }
+
+    #{{ section.id }} .snh-rail__divider {
+      flex: 0 0 1px;
+      align-self: stretch;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    }
+
+    #{{ section.id }} .snh-rail__viewport {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    }
+
+    #{{ section.id }} .snh-rail__track {
+      display: flex;
+      width: max-content;
+      gap: var(--rail-gap);
+      animation: snh-rail-drift-{{ section.id }} var(--rail-speed) linear infinite;
+      will-change: transform;
+    }
+
+    #{{ section.id }} .snh-rail__viewport:hover .snh-rail__track,
+    #{{ section.id }} .snh-rail__viewport:focus-within .snh-rail__track {
+      animation-play-state: paused;
+    }
+
+    #{{ section.id }} .snh-rail__list {
+      display: flex;
+      align-items: center;
+      gap: var(--rail-gap);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #{{ section.id }} .snh-rail__item { flex: 0 0 auto; }
+
+    #{{ section.id }} .snh-rail__logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    #{{ section.id }} .snh-rail__logo {
+      display: block;
+      width: auto;
+      max-width: var(--rail-logo-w);
+      height: var(--rail-logo-h);
+      object-fit: contain;
+      filter: brightness(0) invert(0.94);
+      opacity: 0.5;
+      transition: filter 220ms ease, opacity 220ms ease, transform 220ms ease;
+    }
+
+    {%- if section.settings.hover_treatment == 'white' -%}
+    #{{ section.id }} .snh-rail__logo-wrap:hover .snh-rail__logo,
+    #{{ section.id }} .snh-rail__logo-wrap:focus-visible .snh-rail__logo {
+      filter: brightness(0) invert(1);
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    {%- else -%}
+    #{{ section.id }} .snh-rail__logo-wrap:hover .snh-rail__logo,
+    #{{ section.id }} .snh-rail__logo-wrap:focus-visible .snh-rail__logo {
+      filter: none;
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    {%- endif -%}
+
+    #{{ section.id }} .snh-rail__placeholder {
+      color: rgba(255, 242, 230, 0.4);
+      font-family: 'Archivo', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    #{{ section.id }} .snh-rail__count {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    #{{ section.id }} .snh-rail__count-num {
+      font-family: 'Archivo', Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--rail-accent);
+    }
+
+    #{{ section.id }} .snh-rail__count-word {
+      font-family: 'Archivo', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 242, 230, 0.5);
+    }
+
+    #{{ section.id }} .snh-rail__empty {
+      padding: 10px 0;
+      color: rgba(255, 242, 230, 0.7);
+      font-weight: 650;
+    }
+
+    @keyframes snh-rail-drift-{{ section.id }} {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(calc(-50% - (var(--rail-gap) / 2)), 0, 0); }
+    }
+
+    @media screen and (max-width: 749px) {
+      #{{ section.id }} .snh-rail__inner {
+        flex-wrap: wrap;
+        gap: 16px 12px;
+        padding: 26px 18px 28px;
+      }
+
+      #{{ section.id }} .snh-rail__label-group {
+        max-width: none;
+        flex: 1 1 100%;
+      }
+
+      #{{ section.id }} .snh-rail__label {
+        font-size: clamp(22px, 6.4vw, 27px);
+        letter-spacing: -0.025em;
+      }
+
+      #{{ section.id }} .snh-rail__divider { display: none; }
+
+      /* no brand count on mobile */
+      #{{ section.id }} .snh-rail__count { display: none; }
+
+      #{{ section.id }} .snh-rail__viewport {
+        flex-basis: 100%;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+      }
+
+      #{{ section.id }} .snh-rail__logo {
+        height: calc(var(--rail-logo-h) * 0.8);
+        max-width: calc(var(--rail-logo-w) * 0.85);
+      }
+
+      #{{ section.id }} .snh-rail__track {
+        gap: calc(var(--rail-gap) * 0.6);
+        animation-duration: calc(var(--rail-speed) * 0.8);
+      }
+
+      #{{ section.id }} .snh-rail__list { gap: calc(var(--rail-gap) * 0.6); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #{{ section.id }} .snh-rail__track { animation: none !important; }
+      #{{ section.id }} .snh-rail__logo { transition: none !important; }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Brand rail (Cinematic)",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Rail label", "default": "Trusted by leading brands" },
+    { "type": "checkbox", "id": "show_count", "label": "Show brand count", "default": true },
+    {
+      "type": "select",
+      "id": "hover_treatment",
+      "label": "Logo hover",
+      "default": "color",
+      "options": [
+        { "value": "color", "label": "Reveal original colors" },
+        { "value": "white", "label": "Brighten to white" }
+      ]
+    },
+    { "type": "range", "id": "max_width", "min": 1080, "max": 1680, "step": 20, "unit": "px", "label": "Content max width", "default": 1460 },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#E0521C" },
+    { "type": "color", "id": "rail_text_color", "label": "Rail text", "default": "#FFF2E6" },
+    { "type": "range", "id": "logo_max_height", "min": 28, "max": 64, "step": 2, "unit": "px", "label": "Logo height", "default": 44 },
+    { "type": "range", "id": "logo_max_width", "min": 100, "max": 220, "step": 5, "unit": "px", "label": "Logo max width", "default": 150 },
+    { "type": "range", "id": "logo_gap", "min": 32, "max": 110, "step": 2, "unit": "px", "label": "Space between logos", "default": 64 },
+    { "type": "range", "id": "animation_speed", "min": 90, "max": 220, "step": 2, "label": "Animation speed", "default": 130 }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Logo image" },
+        { "type": "text", "id": "alt", "label": "Alt text" },
+        { "type": "url", "id": "link", "label": "Link URL" },
+        { "type": "collection", "id": "collection", "label": "OR link to collection" },
+        { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    { "name": "Brand rail (Cinematic)", "category": "Logos" }
+  ]
+}
+{% endschema %}

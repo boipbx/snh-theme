@@ -1,0 +1,998 @@
+{% comment %}
+  SNH Collection Deck — Refined v4
+  Same coverflow deck, same legacy `slide` blocks and setting IDs.
+  Refined: compact desktop header with live category summary, seven-card
+  desktop spread, readable side cards, and thumbnail category navigation.
+{% endcomment %}
+
+{%- liquid
+  assign card_count = section.blocks.size
+  assign loading_attr = 'lazy'
+  if section.settings.lazy == false
+    assign loading_attr = 'eager'
+  endif
+  assign title_tag = section.settings.heading_tag | default: 'h2'
+  assign show_header = true
+  if section.settings.heading == blank and section.settings.subheading == blank and section.settings.eyebrow == blank
+    assign show_header = false
+  endif
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  #snh-deck-{{ section.id }} {
+    --dk-orange: {{ section.settings.accent_color | default: '#ff6b00' }};
+    --dk-orange-dark: {{ section.settings.accent_dark_color | default: '#a43d00' }};
+    --dk-bg: {{ section.settings.background_color | default: '#0f0a07' }};
+    --dk-bg-2: {{ section.settings.background_color_2 | default: '#4a1c0a' }};
+    --dk-ink: #fff2e6;
+    --dk-ease: cubic-bezier(.22, .8, .22, 1);
+    --dk-stage-h: 392px;
+    --dk-card-w: min(338px, 24vw);
+    --dk-card-h: 356px;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    color: var(--dk-ink);
+    background:
+      radial-gradient(620px 220px at 92% 108%, rgba(224, 82, 28, 0.28), transparent 70%),
+      radial-gradient(460px 170px at 4% -30%, rgba(255, 140, 70, 0.10), transparent 70%),
+      linear-gradient(112deg, var(--dk-bg) 0%, #1b0e08 46%, #33150a 78%, var(--dk-bg-2) 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #snh-deck-{{ section.id }} * { box-sizing: border-box; }
+
+  #snh-deck-{{ section.id }} .dk__inner {
+    width: min(100%, 1500px);
+    margin: 0 auto;
+    padding: clamp(30px, 3.4vw, 52px) clamp(18px, 4vw, 64px);
+  }
+
+  /* ---------- header ---------- */
+  #snh-deck-{{ section.id }} .dk__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: stretch;
+    width: min(100%, 1320px);
+    margin: 0 auto 14px;
+  }
+  #snh-deck-{{ section.id }} .dk__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    padding: 4px 0;
+    text-align: left;
+  }
+  #snh-deck-{{ section.id }} .dk__eyebrow {
+    display: inline-block;
+    margin: 0 0 12px;
+    color: #ff8a3d;
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  #snh-deck-{{ section.id }} .dk__title {
+    margin: 0;
+    color: #fff2e6;
+    font-size: clamp(36px, 3.8vw, 56px);
+    line-height: .98;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  #snh-deck-{{ section.id }} .dk__subtitle {
+    width: min(100%, 590px);
+    margin: 12px 0 0;
+    color: rgba(255,242,230,.62);
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  #snh-deck-{{ section.id }} .dk__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "badge action"
+      "title action"
+      "text action";
+    align-content: center;
+    gap: 7px 22px;
+    min-height: 132px;
+    padding: 22px 24px;
+    border: 1px solid rgba(255,122,50,.26);
+    border-radius: 6px;
+    background:
+      radial-gradient(circle at 88% 20%, rgba(255,107,0,.18), transparent 34%),
+      linear-gradient(135deg, #191009 0%, #2c1509 100%);
+    color: #fff;
+    box-shadow: 0 20px 50px rgba(40,18,4,.13);
+  }
+  #snh-deck-{{ section.id }} .dk__summary-badge {
+    grid-area: badge;
+    margin: 0;
+    color: #ff8a3d;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+  #snh-deck-{{ section.id }} .dk__summary-title {
+    grid-area: title;
+    margin: 0;
+    color: #fff2e6;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(22px, 2vw, 30px);
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -.035em;
+    text-transform: uppercase;
+  }
+  #snh-deck-{{ section.id }} .dk__summary-text {
+    grid-area: text;
+    max-width: 40ch;
+    margin: 0;
+    overflow: hidden;
+    color: rgba(255,255,255,.68);
+    font-size: 12px;
+    line-height: 1.42;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  #snh-deck-{{ section.id }} .dk__summary-action {
+    grid-area: action;
+    align-self: center;
+    display: inline-grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background: var(--dk-orange);
+    color: #fff;
+    text-decoration: none;
+    transition: transform .2s var(--dk-ease), background-color .2s var(--dk-ease);
+  }
+  #snh-deck-{{ section.id }} .dk__summary-action:hover {
+    transform: translateX(3px);
+    background: #fff;
+    color: #141414;
+  }
+  #snh-deck-{{ section.id }} .dk__summary-action svg { width: 19px; height: 19px; }
+
+  /* ---------- stage ---------- */
+  #snh-deck-{{ section.id }} .dk__stage-wrap {
+    position: relative;
+    width: min(100%, 1420px);
+    margin: 0 auto;
+  }
+  #snh-deck-{{ section.id }} .dk__stage {
+    position: relative;
+    height: var(--dk-stage-h);
+    perspective: 1800px;
+    user-select: none;
+    touch-action: pan-y;
+    overflow: visible;
+  }
+  #snh-deck-{{ section.id }} .dk__stage::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 2%;
+    width: min(66vw, 780px);
+    height: 54px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, .55), transparent 70%);
+    filter: blur(14px);
+  }
+
+  #snh-deck-{{ section.id }} .dk__card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--dk-card-w);
+    height: min(var(--dk-card-h), calc(var(--dk-stage-h) - 34px));
+    transform:
+      translate3d(calc(-50% + var(--x, 0px)), -50%, var(--z, 0px))
+      rotateY(var(--ry, 0deg))
+      scale(var(--s, 1));
+    z-index: var(--zi, 1);
+    opacity: var(--o, 1);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    background: #161310;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow: 0 20px 48px rgba(45, 20, 2, .20);
+    transition:
+      transform {{ section.settings.motion_speed | default: 500 }}ms var(--dk-ease),
+      opacity {{ section.settings.motion_speed | default: 500 }}ms var(--dk-ease),
+      box-shadow {{ section.settings.motion_speed | default: 500 }}ms var(--dk-ease);
+    will-change: transform, opacity;
+    cursor: pointer;
+    outline: none;
+  }
+  #snh-deck-{{ section.id }} .dk__card.is-active {
+    box-shadow: 0 30px 74px rgba(45, 20, 2, .3);
+    border-color: rgba(255, 255, 255, .22);
+  }
+  #snh-deck-{{ section.id }} .dk__card.is-hidden { pointer-events: none; }
+  #snh-deck-{{ section.id }} .dk__card:focus-visible {
+    outline: 3px solid var(--dk-orange);
+    outline-offset: 3px;
+  }
+
+  #snh-deck-{{ section.id }} .dk__media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #1b1712;
+  }
+  #snh-deck-{{ section.id }} .dk__media img,
+  #snh-deck-{{ section.id }} .dk__media svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(var(--img-s, 1.05));
+    transition: transform 800ms var(--dk-ease);
+  }
+  #snh-deck-{{ section.id }} .dk__card.is-active .dk__media img { transform: scale(1); }
+
+  #snh-deck-{{ section.id }} .dk__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(0,0,0,.14) 0%, transparent 38%, rgba(0,0,0,.62) 100%);
+    pointer-events: none;
+  }
+
+  #snh-deck-{{ section.id }} .dk__badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    max-width: calc(100% - 32px);
+    min-height: 28px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(14, 11, 8, .5);
+    border: 1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #snh-deck-{{ section.id }} .dk__badge::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--block-accent, var(--dk-orange));
+    flex: 0 0 auto;
+  }
+
+  #snh-deck-{{ section.id }} .dk__card-body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 20px;
+  }
+  #snh-deck-{{ section.id }} .dk__card-title {
+    margin: 0;
+    color: #fff;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(20px, 1.8vw, 26px);
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 14px rgba(0,0,0,.35);
+  }
+  #snh-deck-{{ section.id }} .dk__card-text {
+    margin: 7px 0 0;
+    color: rgba(255,255,255,.82);
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 500;
+    max-width: 30ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #snh-deck-{{ section.id }} .dk__card-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 0 17px;
+    border-radius: 6px;
+    background: rgba(255,255,255,.95);
+    color: #131313;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: .02em;
+    transition: transform .2s var(--dk-ease), background .2s var(--dk-ease);
+  }
+  #snh-deck-{{ section.id }} .dk__card-btn svg { width: 14px; height: 14px; }
+  #snh-deck-{{ section.id }} .dk__card.is-active:hover .dk__card-btn {
+    transform: translateY(-2px);
+    background: var(--block-accent, var(--dk-orange));
+    color: #131313;
+  }
+
+  /* Desktop side cards remain solid and named; secondary copy stays focused. */
+  #snh-deck-{{ section.id }} .dk__card-body,
+  #snh-deck-{{ section.id }} .dk__badge {
+    opacity: 1;
+    transition: opacity 320ms var(--dk-ease);
+  }
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active) .dk__card-body {
+    padding: 16px;
+  }
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active).is-right .dk__card-body {
+    justify-content: flex-end;
+    text-align: right;
+  }
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active).is-right .dk__badge {
+    right: 16px;
+    left: auto;
+  }
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active) .dk__card-text,
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active) .dk__card-btn {
+    display: none;
+  }
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active) .dk__card-title {
+    font-size: 17px;
+    line-height: 1.02;
+    text-shadow: 0 2px 16px rgba(0,0,0,.75);
+  }
+  #snh-deck-{{ section.id }} .dk__card:not(.is-active) .dk__badge {
+    background: rgba(12,10,8,.78);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* ---------- control row ---------- */
+  #snh-deck-{{ section.id }} .dk__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: min(100%, 460px);
+    margin: 10px auto 0;
+  }
+  #snh-deck-{{ section.id }} .dk__arrow {
+    appearance: none;
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.94);
+    color: #141414;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(45, 20, 2, .12);
+    transition: transform .18s var(--dk-ease), background .18s var(--dk-ease), color .18s var(--dk-ease);
+  }
+  #snh-deck-{{ section.id }} .dk__arrow:hover { background: var(--dk-orange); color: #fff; transform: scale(1.05); }
+  #snh-deck-{{ section.id }} .dk__arrow svg { width: 20px; height: 20px; }
+  #snh-deck-{{ section.id }} .dk__meter {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    color: rgba(255,242,230,.75);
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: .1em;
+    font-variant-numeric: tabular-nums;
+  }
+  #snh-deck-{{ section.id }} .dk__progress {
+    height: 3px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255,255,255,.18);
+  }
+  #snh-deck-{{ section.id }} .dk__progress span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: var(--dk-orange);
+    transition: width .35s var(--dk-ease);
+  }
+
+  /* ---------- thumbnail navigation ---------- */
+  #snh-deck-{{ section.id }} .dk__thumbs {
+    display: flex;
+    gap: 10px;
+    width: min(100%, 1380px);
+    margin: 14px auto 0;
+    padding: 2px 2px 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #snh-deck-{{ section.id }} .dk__thumbs::-webkit-scrollbar { display: none; }
+  #snh-deck-{{ section.id }} .dk__thumb {
+    appearance: none;
+    flex: 0 0 clamp(168px, 13.2vw, 198px);
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    min-height: 58px;
+    padding: 7px 12px 7px 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 6px;
+    background: rgba(255,255,255,.06);
+    color: #fff2e6;
+    cursor: pointer;
+    scroll-snap-align: start;
+    box-shadow: none;
+    transition: transform .2s var(--dk-ease), border-color .2s var(--dk-ease), background-color .2s var(--dk-ease);
+  }
+  #snh-deck-{{ section.id }} .dk__thumb.is-active {
+    border-color: var(--dk-orange);
+    background: rgba(255,255,255,.12);
+    box-shadow: 0 12px 28px rgba(224,82,28,.18);
+  }
+  #snh-deck-{{ section.id }} .dk__thumb:hover { transform: translateY(-2px); }
+  #snh-deck-{{ section.id }} .dk__thumb:focus-visible {
+    outline: 3px solid var(--dk-orange);
+    outline-offset: 2px;
+  }
+  #snh-deck-{{ section.id }} .dk__thumb-media {
+    display: block;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #1a1713;
+  }
+  #snh-deck-{{ section.id }} .dk__thumb-media img,
+  #snh-deck-{{ section.id }} .dk__thumb-media svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  #snh-deck-{{ section.id }} .dk__thumb-title {
+    min-width: 0;
+    overflow: hidden;
+    color: #fff2e6;
+    font-size: 10px;
+    line-height: 1.15;
+    font-weight: 850;
+    letter-spacing: -.01em;
+    text-align: left;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #snh-deck-{{ section.id }} .dk__empty {
+    border-radius: 6px;
+    padding: 40px 24px;
+    background: rgba(255,255,255,.05);
+    border: 1px dashed rgba(255,255,255,.24);
+    text-align: center;
+    color: rgba(255,242,230,.7);
+    font-size: 14px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 989px) {
+    #snh-deck-{{ section.id }} {
+      --dk-stage-h: 372px;
+      --dk-card-w: min(320px, 42vw);
+      --dk-card-h: 338px;
+    }
+    #snh-deck-{{ section.id }} .dk__top {
+      grid-template-columns: minmax(0, 1fr) minmax(320px, .9fr);
+      gap: 28px;
+    }
+  }
+  @media (max-width: 749px) {
+    #snh-deck-{{ section.id }} {
+      --dk-stage-h: 360px;
+      --dk-card-w: min(276px, 74vw);
+      --dk-card-h: 322px;
+    }
+    #snh-deck-{{ section.id }} .dk__inner { padding: 28px 18px; }
+    #snh-deck-{{ section.id }} .dk__top { display: block; margin-bottom: 12px; }
+    #snh-deck-{{ section.id }} .dk__header { margin: 0; text-align: left; }
+    #snh-deck-{{ section.id }} .dk__summary { display: none; }
+    #snh-deck-{{ section.id }} .dk__eyebrow { font-size: 10px; margin-bottom: 10px; }
+    #snh-deck-{{ section.id }} .dk__title { font-size: clamp(30px, 9vw, 40px); }
+    #snh-deck-{{ section.id }} .dk__subtitle { margin: 10px 0 0; font-size: 13.5px; max-width: 340px; }
+    #snh-deck-{{ section.id }} .dk__card { border-radius: 8px; }
+    #snh-deck-{{ section.id }} .dk__badge { top: 12px; left: 12px; font-size: 9px; min-height: 25px; padding: 5px 10px; }
+    #snh-deck-{{ section.id }} .dk__card-body { padding: 14px; }
+    #snh-deck-{{ section.id }} .dk__card-title { font-size: 20px; }
+    #snh-deck-{{ section.id }} .dk__card-text { display: none; }
+    #snh-deck-{{ section.id }} .dk__card-btn { min-height: 40px; padding: 0 14px; font-size: 11px; }
+    #snh-deck-{{ section.id }} .dk__controls { width: 100%; gap: 12px; margin-top: 12px; }
+    #snh-deck-{{ section.id }} .dk__arrow { width: 42px; height: 42px; }
+    #snh-deck-{{ section.id }} .dk__meter { font-size: 11px; gap: 10px; }
+    #snh-deck-{{ section.id }} .dk__card-body,
+    #snh-deck-{{ section.id }} .dk__badge { opacity: 0; }
+    #snh-deck-{{ section.id }} .dk__card.is-active .dk__card-body,
+    #snh-deck-{{ section.id }} .dk__card.is-active .dk__badge { opacity: 1; }
+    #snh-deck-{{ section.id }} .dk__thumbs {
+      width: calc(100% + 16px);
+      margin-top: 12px;
+      padding-right: 16px;
+    }
+    #snh-deck-{{ section.id }} .dk__thumb {
+      flex-basis: 154px;
+      min-height: 54px;
+      grid-template-columns: 38px minmax(0, 1fr);
+    }
+    #snh-deck-{{ section.id }} .dk__thumb-media { width: 38px; height: 38px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #snh-deck-{{ section.id }} .dk__card,
+    #snh-deck-{{ section.id }} .dk__media img,
+    #snh-deck-{{ section.id }} .dk__card-body,
+    #snh-deck-{{ section.id }} .dk__badge,
+    #snh-deck-{{ section.id }} .dk__arrow,
+    #snh-deck-{{ section.id }} .dk__progress span,
+    #snh-deck-{{ section.id }} .dk__thumb { transition: none !important; }
+  }
+</style>
+
+<section id="snh-deck-{{ section.id }}" class="snh-deck"
+  data-loop="{{ section.settings.loop }}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-autoplay-ms="{{ section.settings.autoplay_speed }}"
+  data-pause-hover="{{ section.settings.pause_on_hover }}"
+  data-start="{{ section.settings.start_index }}"
+  aria-labelledby="snh-deck-title-{{ section.id }}">
+  <div class="dk__inner">
+    {%- if show_header or card_count > 0 -%}
+      <div class="dk__top">
+        {%- if show_header -%}
+          <header class="dk__header">
+            {%- if section.settings.eyebrow != blank -%}
+              {%- assign clean_eyebrow = section.settings.eyebrow | replace: '💪', '' | replace: '⚡', '' | replace: '🛡️', '' | replace: '🌸', '' | replace: '💎', '' | replace: '🥤', '' | replace: '🧬', '' | replace: '🍃', '' | replace: '🔥', '' | replace: '🌿', '' | replace: '✨', '' | replace: '⭐', '' | replace: '🏋️‍♂️', '' | replace: '🏋️‍♀️', '' | replace: '🥛', '' | replace: '🍫', '' | replace: '🏆', '' | replace: '🎯', '' | replace: '🚀', '' | replace: '💥', '' | replace: '🥇', '' | replace: '💯', '' | replace: '🧠', '' | replace: '💧', '' | strip -%}
+              <span class="dk__eyebrow">{{ clean_eyebrow }}</span>
+            {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <{{ title_tag }} id="snh-deck-title-{{ section.id }}" class="dk__title">{{ section.settings.heading }}</{{ title_tag }}>
+            {%- endif -%}
+            {%- if section.settings.subheading != blank -%}
+              <p class="dk__subtitle">{{ section.settings.subheading }}</p>
+            {%- endif -%}
+          </header>
+        {%- endif -%}
+
+        {%- if card_count > 0 -%}
+          {%- liquid
+            assign first_card = section.blocks.first
+            assign first_button_label = first_card.settings.button | default: section.settings.default_button_label
+            assign first_badge = first_card.settings.badge | default: '' | replace: '💪', '' | replace: '⚡', '' | replace: '🛡️', '' | replace: '🌸', '' | replace: '💎', '' | replace: '🥤', '' | replace: '🧬', '' | replace: '🍃', '' | replace: '🔥', '' | replace: '🌿', '' | replace: '✨', '' | replace: '⭐', '' | replace: '🏋️‍♂️', '' | replace: '🏋️‍♀️', '' | replace: '🥛', '' | replace: '🍫', '' | replace: '🏆', '' | replace: '🎯', '' | replace: '🚀', '' | replace: '💥', '' | replace: '🥇', '' | replace: '💯', '' | replace: '🧠', '' | replace: '💧', '' | strip
+          -%}
+          <aside class="dk__summary" data-dk-summary aria-live="polite">
+            <p class="dk__summary-badge" data-dk-summary-badge>{{ first_badge }}</p>
+            <h3 class="dk__summary-title" data-dk-summary-title>{{ first_card.settings.title }}</h3>
+            <p class="dk__summary-text" data-dk-summary-text>{{ first_card.settings.text | strip_html }}</p>
+            <a class="dk__summary-action" data-dk-summary-link href="{{ first_card.settings.button_url | default: '#' }}" aria-label="{{ first_button_label | escape }} {{ first_card.settings.title | escape }}">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </aside>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if card_count > 0 -%}
+      <div class="dk__stage-wrap">
+        <div class="dk__stage" data-dk-stage>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign card_url = block.settings.button_url
+              assign button_label = block.settings.button | default: section.settings.default_button_label
+              assign image_alt = block.settings.image.alt | default: block.settings.title | escape
+              assign block_accent = block.settings.accent_color | default: section.settings.accent_color
+              assign clean_badge = block.settings.badge | default: '' | replace: '💪', '' | replace: '⚡', '' | replace: '🛡️', '' | replace: '🌸', '' | replace: '💎', '' | replace: '🥤', '' | replace: '🧬', '' | replace: '🍃', '' | replace: '🔥', '' | replace: '🌿', '' | replace: '✨', '' | replace: '⭐', '' | replace: '🏋️‍♂️', '' | replace: '🏋️‍♀️', '' | replace: '🥛', '' | replace: '🍫', '' | replace: '🏆', '' | replace: '🎯', '' | replace: '🚀', '' | replace: '💥', '' | replace: '🥇', '' | replace: '💯', '' | replace: '🧠', '' | replace: '💧', '' | strip
+            -%}
+            <a href="{{ card_url | default: '#' }}" class="dk__card" data-dk-card data-index="{{ forloop.index0 }}"
+              data-title="{{ block.settings.title | escape }}"
+              data-text="{{ block.settings.text | strip_html | escape }}"
+              data-badge="{{ clean_badge | escape }}"
+              data-url="{{ card_url | default: '#' }}"
+              data-button="{{ button_label | escape }}"
+              style="--block-accent: {{ block_accent }};" {{ block.shopify_attributes }}>
+              <div class="dk__media">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 1200 | image_tag: loading: loading_attr, widths: '400, 600, 800, 1000, 1200', sizes: '(min-width: 990px) 400px, (min-width: 750px) 44vw, 74vw', alt: image_alt }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </div>
+              <span class="dk__shade" aria-hidden="true"></span>
+              {%- if clean_badge != blank -%}
+                <span class="dk__badge">{{ clean_badge }}</span>
+              {%- endif -%}
+              <div class="dk__card-body">
+                <div>
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="dk__card-title">{{ block.settings.title }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <div class="dk__card-text">{{ block.settings.text | strip_html }}</div>
+                  {%- endif -%}
+                </div>
+                {%- if button_label != blank -%}
+                  <span class="dk__card-btn">
+                    {{ button_label }}
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                {%- endif -%}
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="dk__controls">
+        <button class="dk__arrow" type="button" data-dk-prev aria-label="Previous collection">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 6-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dk__meter">
+          <span data-dk-current>01</span>
+          <div class="dk__progress" aria-hidden="true"><span data-dk-progress></span></div>
+          <span>{{ card_count | prepend: '00' | slice: -2, 2 }}</span>
+        </div>
+        <button class="dk__arrow" type="button" data-dk-next aria-label="Next collection">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="dk__thumbs" data-dk-thumbs aria-label="Choose a collection">
+        {%- for block in section.blocks -%}
+          {%- assign thumb_alt = block.settings.image.alt | default: block.settings.title | escape -%}
+          <button class="dk__thumb{% if forloop.first %} is-active{% endif %}" type="button"
+            data-dk-go="{{ forloop.index0 }}"
+            aria-label="Show {{ block.settings.title | escape }}"
+            aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="dk__thumb-media" aria-hidden="true">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 120, 160', sizes: '42px', alt: thumb_alt }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </span>
+            <span class="dk__thumb-title">{{ block.settings.title }}</span>
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="dk__empty">Add collection cards in the Theme Editor to build this deck.</div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (() => {
+    const init = (sectionId) => {
+      const root = document.getElementById(`snh-deck-${sectionId}`);
+      if (!root) return;
+      if (root.__dkDestroy) root.__dkDestroy();
+
+      const cards = Array.from(root.querySelectorAll('[data-dk-card]'));
+      const stage = root.querySelector('[data-dk-stage]');
+      const prev = root.querySelector('[data-dk-prev]');
+      const next = root.querySelector('[data-dk-next]');
+      const progress = root.querySelector('[data-dk-progress]');
+      const currentEl = root.querySelector('[data-dk-current]');
+      const thumbs = Array.from(root.querySelectorAll('[data-dk-go]'));
+      const summaryBadge = root.querySelector('[data-dk-summary-badge]');
+      const summaryTitle = root.querySelector('[data-dk-summary-title]');
+      const summaryText = root.querySelector('[data-dk-summary-text]');
+      const summaryLink = root.querySelector('[data-dk-summary-link]');
+      if (!cards.length || !stage) return;
+
+      const loop = root.dataset.loop === 'true';
+      const autoplay = root.dataset.autoplay === 'true';
+      const pauseHover = root.dataset.pauseHover === 'true';
+      const autoplayMs = Math.max(2200, Number(root.dataset.autoplayMs || 4500));
+      const count = cards.length;
+      let index = Math.min(Math.max(Number(root.dataset.start || 0), 0), count - 1);
+      let timer = null, isHover = false;
+      let drag = null;
+
+      const two = (n) => String(n + 1).padStart(2, '0');
+      const dist = (i) => {
+        let d = i - index;
+        if (loop && count > 2) {
+          const half = count / 2;
+          if (d > half) d -= count;
+          if (d < -half) d += count;
+        }
+        return d;
+      };
+
+      const updateDetails = () => {
+        const activeCard = cards[index];
+        if (!activeCard) return;
+
+        if (summaryBadge) {
+          summaryBadge.textContent = activeCard.dataset.badge || '';
+          summaryBadge.hidden = !activeCard.dataset.badge;
+        }
+        if (summaryTitle) summaryTitle.textContent = activeCard.dataset.title || '';
+        if (summaryText) {
+          summaryText.textContent = activeCard.dataset.text || '';
+          summaryText.hidden = !activeCard.dataset.text;
+        }
+        if (summaryLink) {
+          const url = activeCard.dataset.url || '#';
+          summaryLink.href = url;
+          summaryLink.hidden = url === '#';
+          summaryLink.setAttribute('aria-label', `${activeCard.dataset.button || 'View'} ${activeCard.dataset.title || 'collection'}`);
+        }
+
+        thumbs.forEach((thumb, i) => {
+          const selected = i === index;
+          thumb.classList.toggle('is-active', selected);
+          thumb.setAttribute('aria-current', selected ? 'true' : 'false');
+        });
+      };
+
+      const render = () => {
+        const mobile = window.innerWidth < 750;
+        const tablet = !mobile && window.innerWidth < 1100;
+        const cw = cards[0].getBoundingClientRect().width || (mobile ? 276 : 338);
+        const spread = mobile
+          ? Math.min(cw * 0.48, 128)
+          : tablet
+            ? Math.min(cw * 0.5, 160)
+            : Math.min(cw * 0.54, 184);
+        cards.forEach((card, i) => {
+          const d = dist(i), abs = Math.abs(d);
+          const active = d === 0;
+          const hidden = mobile ? abs > 1 : tablet ? abs > 2 : abs > 3;
+          const opacity = active
+            ? 1
+            : mobile
+              ? 0.46
+              : tablet
+                ? Math.max(0.64, 0.86 - (abs - 1) * 0.18)
+                : Math.max(0.72, 0.94 - (abs - 1) * 0.11);
+          const rotation = mobile ? 7 : tablet ? 4 : 2.2;
+          const scaleStep = mobile ? 0.1 : tablet ? 0.075 : 0.055;
+          card.classList.toggle('is-active', active);
+          card.classList.toggle('is-hidden', hidden);
+          card.classList.toggle('is-left', d < 0);
+          card.classList.toggle('is-right', d > 0);
+          card.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+          card.tabIndex = active ? 0 : -1;
+          card.style.setProperty('--x', (d * spread) + 'px');
+          card.style.setProperty('--z', (active ? 90 : -abs * (mobile ? 105 : tablet ? 78 : 58)) + 'px');
+          card.style.setProperty('--ry', (active ? 0 : (d < 0 ? rotation : -rotation)) + 'deg');
+          card.style.setProperty('--s', String(Math.max(0.8, 1 - abs * scaleStep)));
+          card.style.setProperty('--o', String(hidden ? 0 : opacity));
+          card.style.setProperty('--zi', String(active ? 60 : 40 - abs));
+        });
+        if (progress) progress.style.width = ((index + 1) / count * 100) + '%';
+        if (currentEl) currentEl.textContent = two(index);
+        updateDetails();
+      };
+
+      const revealThumb = () => {
+        const thumb = thumbs[index];
+        if (!thumb) return;
+        // Scroll ONLY the thumb rail horizontally — never the page
+        const rail = thumb.closest('[data-thumbs], .snh-deck__thumbs') || thumb.parentElement;
+        if (!rail) return;
+        const target = thumb.offsetLeft - (rail.clientWidth - thumb.offsetWidth) / 2;
+        rail.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+      };
+
+      const goTo = (t, reveal = true) => {
+        index = loop ? (t + count) % count : Math.min(Math.max(t, 0), count - 1);
+        render();
+        if (reveal) requestAnimationFrame(revealThumb);
+      };
+      const goNext = () => goTo(index + 1);
+      const goPrev = () => goTo(index - 1);
+
+      const stopAuto = () => { if (timer) { clearInterval(timer); timer = null; } };
+      const startAuto = () => {
+        stopAuto();
+        if (!autoplay || count < 2) return;
+        timer = setInterval(() => { if (!(pauseHover && isHover)) goNext(); }, autoplayMs);
+      };
+
+      // Click a side card -> bring it to front instead of navigating
+      const onCardClick = (e) => {
+        const card = e.currentTarget;
+        if (!card.classList.contains('is-active')) {
+          e.preventDefault();
+          goTo(Number(card.dataset.index || 0));
+          startAuto();
+        } else if (drag && drag.moved) {
+          e.preventDefault();
+        }
+      };
+      cards.forEach((c) => c.addEventListener('click', onCardClick));
+
+      const onDown = (e) => {
+        drag = { x: e.clientX ?? (e.touches && e.touches[0].clientX) ?? 0, y: e.clientY ?? (e.touches && e.touches[0].clientY) ?? 0, moved: false };
+      };
+      const onMove = (e) => {
+        if (!drag) return;
+        const x = e.clientX ?? (e.touches && e.touches[0].clientX) ?? 0;
+        const y = e.clientY ?? (e.touches && e.touches[0].clientY) ?? 0;
+        if (Math.abs(x - drag.x) > Math.abs(y - drag.y) && Math.abs(x - drag.x) > 9) drag.moved = true;
+      };
+      const onUp = (e) => {
+        if (!drag) return;
+        const x = e.clientX ?? (e.changedTouches && e.changedTouches[0].clientX) ?? drag.x;
+        const dx = x - drag.x;
+        if (drag.moved && Math.abs(dx) > 40) { dx < 0 ? goNext() : goPrev(); startAuto(); }
+        setTimeout(() => { drag = null; }, 0);
+      };
+      const onKey = (e) => {
+        if (!root.contains(document.activeElement)) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+      };
+      const onResize = () => render();
+      const onPrevClick = () => { goPrev(); startAuto(); };
+      const onNextClick = () => { goNext(); startAuto(); };
+      const onThumbClick = (e) => {
+        goTo(Number(e.currentTarget.dataset.dkGo || 0));
+        startAuto();
+      };
+      const onEnter = () => { isHover = true; };
+      const onLeave = () => { isHover = false; };
+
+      prev && prev.addEventListener('click', onPrevClick);
+      next && next.addEventListener('click', onNextClick);
+      thumbs.forEach((thumb) => thumb.addEventListener('click', onThumbClick));
+      stage.addEventListener('pointerdown', onDown);
+      stage.addEventListener('pointermove', onMove);
+      stage.addEventListener('pointerup', onUp);
+      stage.addEventListener('pointercancel', onUp);
+      root.addEventListener('mouseenter', onEnter);
+      root.addEventListener('mouseleave', onLeave);
+      document.addEventListener('keydown', onKey);
+      window.addEventListener('resize', onResize);
+
+      render();
+      startAuto();
+
+      root.__dkDestroy = () => {
+        stopAuto();
+        cards.forEach((c) => c.removeEventListener('click', onCardClick));
+        prev && prev.removeEventListener('click', onPrevClick);
+        next && next.removeEventListener('click', onNextClick);
+        thumbs.forEach((thumb) => thumb.removeEventListener('click', onThumbClick));
+        stage.removeEventListener('pointerdown', onDown);
+        stage.removeEventListener('pointermove', onMove);
+        stage.removeEventListener('pointerup', onUp);
+        stage.removeEventListener('pointercancel', onUp);
+        root.removeEventListener('mouseenter', onEnter);
+        root.removeEventListener('mouseleave', onLeave);
+        document.removeEventListener('keydown', onKey);
+        window.removeEventListener('resize', onResize);
+        root.__dkDestroy = null;
+      };
+    };
+
+    const sectionId = '{{ section.id }}';
+    init(sectionId);
+    if (window.Shopify && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', (e) => { if (e.detail && e.detail.sectionId === sectionId) init(sectionId); });
+      document.addEventListener('shopify:section:unload', (e) => {
+        if (e.detail && e.detail.sectionId === sectionId) {
+          const root = document.getElementById(`snh-deck-${sectionId}`);
+          if (root && root.__dkDestroy) root.__dkDestroy();
+        }
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SS - Slider #2 pro",
+  "settings": [
+    { "type": "paragraph", "content": "SNH refined deck v4. Heavy loyalty-style heading and reduced corner radii while preserving the existing collection deck." },
+    { "type": "header", "content": "Header" },
+  
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Collection" },
+    { "type": "select", "id": "heading_tag", "label": "Heading tag", "default": "h2", "options": [
+      { "label": "H1", "value": "h1" }, { "label": "H2", "value": "h2" }, { "label": "H3", "value": "h3" } ] },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Navigate SNH essentials by category, goal, and daily routine." },
+    { "type": "header", "content": "Slider behaviour" },
+    { "type": "checkbox", "id": "loop", "label": "Loop cards", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
+    { "type": "checkbox", "id": "pause_on_hover", "label": "Pause autoplay on hover", "default": true },
+    { "type": "range", "id": "autoplay_speed", "label": "Autoplay speed", "min": 2000, "max": 8000, "step": 500, "unit": "ms", "default": 4500 },
+    { "type": "range", "id": "motion_speed", "label": "Motion speed", "min": 250, "max": 900, "step": 50, "unit": "ms", "default": 500 },
+    { "type": "range", "id": "start_index", "label": "Starting card index", "min": 0, "max": 10, "step": 1, "default": 0 },
+    { "type": "text", "id": "default_button_label", "label": "Default card button label", "default": "View" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background start", "default": "#0F0A07" },
+    { "type": "color", "id": "background_color_2", "label": "Background end", "default": "#4A1C0A" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E0521C" },
+    { "type": "color", "id": "accent_dark_color", "label": "Accent dark color", "default": "#B23C11" },
+    { "type": "checkbox", "id": "lazy", "label": "Lazy load images", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Collection card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "badge", "label": "Badge", "default": "Performance" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Whey Protein" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Fuel your goals with SNH essentials.</p>" },
+        { "type": "text", "id": "button", "label": "Button label", "default": "View" },
+        { "type": "url", "id": "button_url", "label": "Button link" },
+        { "type": "color", "id": "content_bg_color", "label": "Legacy content background", "default": "#121212" },
+        { "type": "color", "id": "accent_color", "label": "Card accent color", "default": "#ff6b00" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SS - Slider #2 pro",
+      "blocks": [
+        { "type": "slide", "settings": { "badge": "Protein", "title": "Whey Protein", "button": "View" } },
+        { "type": "slide", "settings": { "badge": "Strength", "title": "Creatine", "button": "View" } },
+        { "type": "slide", "settings": { "badge": "Energy", "title": "Pre Workout", "button": "View" } },
+        { "type": "slide", "settings": { "badge": "Wellness", "title": "Vitamins", "button": "View" } },
+        { "type": "slide", "settings": { "badge": "Hydration", "title": "Shakers", "button": "View" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

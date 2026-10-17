@@ -1,0 +1,970 @@
+{%- comment -%}
+------------------------------------------------------------------------------------------------------------------------
+SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
+- Hero rebuilt around the campaign banner: "Fuel your goals. Earn your rewards."
+- Black benefit pills + floating 3D coins/gift + girl & boy cutouts (Shopify CDN)
+- Smaller form heading, tighter card, same 2-step form + validation as V3
+- Mobile order: hero -> form -> tiers -> FAQ
+------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  html, body { overflow-x: hidden; width: 100%; }
+
+  .snh-page, .snh-page * { box-sizing: border-box; }
+  .snh-page {
+    --snh-black: #17130f;
+    --snh-panel: #211a15;
+    --snh-panel-2: #17130f;
+    --snh-ink: #17130f;
+    --snh-ink-soft: #453b32;
+    --snh-muted: #736657;
+    --snh-line: #e7e0d6;
+    --snh-paper: #faf7f2;
+    --snh-white: #ffffff;
+    --snh-orange: #e0521c;
+    --snh-orange-soft: #f2723d;
+    --snh-orange-dark: #b23c11;
+    --snh-orange-tint: #fbeee7;
+    --tier-bronze-1: #c47b45; --tier-bronze-2: #b06a34; --tier-bronze-3: #5e3417;
+    --tier-silver-1: #aab6c4; --tier-silver-2: #8e9cad; --tier-silver-3: #3f4a58;
+    --tier-gold-1: #e3ab3d;  --tier-gold-2: #c68e22;  --tier-gold-3: #5f3f0c;
+    --snh-display: 'Archivo', system-ui, sans-serif;
+    --snh-sans: 'Inter', system-ui, sans-serif;
+    background: var(--snh-paper);
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    color: var(--snh-ink);
+    font-family: var(--snh-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .snh-page h1, .snh-page h2, .snh-page h3 {
+    font-family: var(--snh-display) !important;
+    letter-spacing: -0.02em;
+  }
+
+  @keyframes snhRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes snhFloat { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-16px) rotate(4deg); } }
+  @keyframes snhFloat2 { 0%,100% { transform: translateY(0) rotate(6deg); } 50% { transform: translateY(-11px) rotate(-4deg); } }
+  @keyframes snhPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(224,82,28,.5); } 50% { box-shadow: 0 0 0 9px rgba(224,82,28,0); } }
+  @keyframes snhGlow { 0%,100% { opacity: .55; } 50% { opacity: .9; } }
+  .snh-rise { animation: snhRise .6s cubic-bezier(.2,.8,.2,1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .snh-rise, .snh-hero-accent, .snh-faq-accent, .snh-glow { animation: none !important; }
+  }
+
+  /* ── Shell ─────────────────────────────────────────────────────── */
+  .snh-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(440px, 0.95fr);
+    width: 100%;
+    min-height: 720px;
+    background: linear-gradient(150deg, var(--snh-panel) 0%, var(--snh-panel-2) 62%, #120f0c 100%);
+    position: relative;
+  }
+
+  .snh-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 12% 6%, rgba(224, 82, 28, 0.18), transparent 42%),
+      radial-gradient(ellipse at 78% 96%, rgba(0, 0, 0, 0.30), transparent 52%);
+    pointer-events: none;
+  }
+
+  .snh-left {
+    position: relative;
+    z-index: 1;
+    padding: clamp(44px, 5vw, 84px) clamp(22px, 4.5vw, 64px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .snh-hero-row { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end; }
+  .snh-hero-copy { flex: 1 1 340px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+
+  .snh-badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(242, 114, 61, .86);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+  }
+
+  .snh-hero-copy h1 {
+    color: #fff;
+    font-size: clamp(38px, 5.2vw, 70px);
+    font-weight: 900;
+    line-height: 0.94;
+    margin: 0;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .snh-hero-copy h1 span { color: var(--snh-orange); }
+
+  .snh-hero-copy > p {
+    color: #b9a996;
+    font-size: clamp(14.5px, 1.3vw, 16.5px);
+    line-height: 1.55;
+    font-weight: 500;
+    margin: 0;
+    max-width: 480px;
+  }
+
+  /* ── Black benefit pills (from the campaign banner) ────────────── */
+  .snh-pills { display: flex; flex-direction: column; gap: 11px; width: 100%; max-width: 430px; }
+
+  .snh-pill {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: #0c0a08;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 999px;
+    padding: 9px 20px 9px 9px;
+    box-shadow: 0 14px 30px rgba(0,0,0,.35);
+  }
+  .snh-pill-icon {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: linear-gradient(150deg, var(--snh-orange-soft), var(--snh-orange));
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 14px rgba(224,82,28,.4);
+  }
+  .snh-pill-icon svg { width: 18px; height: 18px; }
+  .snh-pill span:last-child {
+    color: #fff;
+    font-family: var(--snh-display);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+  }
+
+  /* ── Girl + restrained floating 3D elements ───────────────────── */
+  .snh-hero-visual {
+    position: relative;
+    flex: 0 1 300px;
+    min-width: 220px;
+    margin: 26px auto 0;
+    align-self: flex-end;
+    isolation: isolate;
+  }
+  .snh-hero-visual::before {
+    content: none;
+  }
+  .snh-glow {
+    position: absolute;
+    left: 13%; right: 3%; bottom: 0;
+    height: 62%;
+    background: radial-gradient(ellipse at 50% 100%, rgba(224,82,28,.26), transparent 72%);
+    animation: snhGlow 5s ease-in-out infinite;
+  }
+  .snh-girl {
+    position: relative;
+    display: block;
+    width: 100%;
+    z-index: 1;
+    filter: saturate(.8) contrast(.94) drop-shadow(0 24px 40px rgba(0,0,0,.46));
+    opacity: .9;
+  }
+  .snh-hero-accent {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    filter: saturate(.82) drop-shadow(0 12px 22px rgba(0,0,0,.38));
+  }
+  .snh-coins-a {
+    top: -12px; right: -6px;
+    width: 72px;
+    opacity: .72;
+    animation: snhFloat 7.4s ease-in-out infinite;
+  }
+  .snh-coins-b {
+    top: 17%; left: -31px;
+    width: 42px;
+    opacity: .35;
+    animation: snhFloat2 8.1s ease-in-out infinite;
+    animation-delay: -3.2s;
+  }
+  .snh-gift-a {
+    bottom: 13px; left: -13px;
+    width: 66px;
+    opacity: .68;
+    animation: snhFloat2 7s ease-in-out infinite;
+  }
+  .snh-gift-b {
+    top: 7%; right: 27%;
+    width: 34px;
+    opacity: .28;
+    animation: snhFloat 8.8s ease-in-out infinite;
+    animation-delay: -4.4s;
+  }
+
+  /* ── Tier chips ────────────────────────────────────────────────── */
+  .snh-tierband { display: flex; flex-direction: column; gap: 12px; }
+  .snh-tierband-label {
+    color: #fff;
+    font-family: var(--snh-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+  }
+  .snh-tierband-label span { color: var(--snh-orange); }
+
+  .snh-tierchips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .snh-tierchip {
+    flex: 1 1 170px;
+    min-width: 160px;
+    border-radius: 15px;
+    padding: 15px 17px;
+    box-shadow: 0 14px 30px rgba(0,0,0,.32);
+    position: relative;
+    overflow: hidden;
+    transition: transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .snh-tierchip:hover { transform: translateY(-3px); }
+  .snh-tierchip::after {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 82% 2%, rgba(255,255,255,.2), transparent 46%),
+      radial-gradient(ellipse at 14% 106%, rgba(0,0,0,.26), transparent 52%);
+  }
+  .snh-tierchip > * { position: relative; z-index: 1; }
+  .snh-tierchip.bronze { color: #fff2e6; background: linear-gradient(150deg, var(--tier-bronze-1) 0%, var(--tier-bronze-2) 40%, var(--tier-bronze-3) 100%); }
+  .snh-tierchip.silver { color: #f3f7fb; background: linear-gradient(150deg, var(--tier-silver-1) 0%, var(--tier-silver-2) 40%, var(--tier-silver-3) 100%); }
+  .snh-tierchip.gold   { color: #fff6df; background: linear-gradient(150deg, var(--tier-gold-1) 0%, var(--tier-gold-2) 42%, var(--tier-gold-3) 100%); }
+
+  .snh-tierchip-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 5px; }
+  .snh-tierchip-head h3 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: -.5px;
+    text-transform: uppercase;
+    color: inherit;
+  }
+  .snh-tierchip-rate { font-family: var(--snh-display); font-size: 17px; font-weight: 800; opacity: .92; }
+  .snh-tierchip p { margin: 0; font-size: 12px; line-height: 1.45; font-weight: 500; opacity: .92; }
+
+  /* ── Form zone ─────────────────────────────────────────────────── */
+  .snh-form-zone {
+    position: relative;
+    z-index: 2;
+    background:
+      radial-gradient(ellipse at 85% 8%, rgba(224, 82, 28, 0.05), transparent 42%),
+      linear-gradient(180deg, #fdfbf8 0%, var(--snh-paper) 100%);
+    padding: clamp(30px, 4vw, 64px) clamp(18px, 3.5vw, 48px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .snh-form-wrap { width: 100%; max-width: 520px; }
+
+  .snh-card {
+    width: 100%;
+    background: var(--snh-white);
+    border: 1px solid var(--snh-line);
+    border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(23, 19, 15, 0.07);
+    padding: clamp(26px, 3.4vw, 40px);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .snh-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--snh-orange), #f0a575);
+  }
+  .snh-card .text-center,
+  .snh-card .customer-form__box-inner { text-align: left !important; }
+
+  /* smaller, single-line heading */
+  .snh-card h2 {
+    margin: 0 0 8px;
+    text-align: left;
+    font-size: clamp(26px, 2.6vw, 33px);
+    line-height: 0.96;
+    letter-spacing: -1px;
+    color: var(--snh-ink);
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .snh-h2-accent { color: var(--snh-orange); }
+
+  .snh-card-copy {
+    margin: 0 0 18px;
+    max-width: 440px;
+    color: var(--snh-ink-soft);
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 450;
+  }
+  .snh-card-copy strong { color: var(--snh-orange-dark); font-weight: 700; }
+
+  .snh-reward-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0 0 20px;
+  }
+  .snh-reward-chip {
+    min-height: 58px;
+    padding: 9px 10px;
+    border-radius: 12px;
+    background: var(--snh-orange-tint);
+    border: 1px solid #f2ddd0;
+    display: grid;
+    align-content: center;
+    gap: 2px;
+  }
+  .snh-reward-chip strong {
+    color: var(--snh-orange-dark);
+    font-family: var(--snh-display);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.4px;
+  }
+  .snh-reward-chip span {
+    color: var(--snh-muted);
+    font-size: 9.5px;
+    line-height: 1.2;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+
+  .snh-step-indicator { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; }
+  .snh-step-dot { flex: 1; height: 4px; border-radius: 999px; background: var(--snh-line); transition: background .3s ease; }
+  .snh-step-dot.active { background: var(--snh-orange); }
+  .snh-step-label { font-size: 11px; font-weight: 600; color: var(--snh-muted); letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; }
+
+  .snh-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .snh-field { width: 100%; margin-bottom: 0; }
+
+  .snh-label {
+    display: block;
+    margin: 0 0 6px;
+    color: #5d5142;
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 800;
+  }
+
+  .snh-input {
+    width: 100%;
+    min-height: 54px;
+    padding: 14px 16px;
+    border: 1px solid var(--snh-line);
+    border-radius: 12px;
+    background: var(--snh-paper);
+    color: var(--snh-ink);
+    font-family: var(--snh-sans);
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    transition: border-color .2s ease, background .2s ease;
+    margin-bottom: 14px;
+  }
+  .snh-input::placeholder { color: #a89a8a; font-weight: 500; }
+  .snh-input:focus { border-color: var(--snh-orange); background-color: #fff; box-shadow: 0 0 0 4px rgba(224, 82, 28, 0.1); }
+
+  .snh-birthday-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 13px;
+    align-items: center;
+    min-height: 68px;
+    padding: 9px 13px;
+    border: 2px solid #eadfd2;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--snh-paper) 100%);
+    box-shadow: 0 14px 28px rgba(23, 19, 15, .05);
+    transition: border-color .2s ease, box-shadow .2s ease;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .snh-birthday-card:focus-within,
+  .snh-birthday-card:hover {
+    border-color: var(--snh-orange);
+    box-shadow: 0 0 0 5px rgba(224, 82, 28, .10);
+  }
+  .snh-birthday-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(224, 82, 28, .10);
+    border: 1px solid rgba(224, 82, 28, .22);
+    color: var(--snh-orange);
+  }
+  .snh-birthday-icon svg { width: 22px; height: 22px; fill: currentColor; }
+  .snh-birthday-input-wrap { min-width: 0; text-align: left; }
+  .snh-birthday-mini {
+    display: block;
+    color: #8a7c69;
+    font-size: 10.5px;
+    line-height: 1.2;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 4px;
+  }
+  .snh-date-input {
+    width: 100%;
+    min-height: 32px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--snh-ink);
+    font: inherit;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .snh-date-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: .88;
+    filter: invert(44%) sepia(96%) saturate(2349%) hue-rotate(347deg) brightness(98%) contrast(94%);
+  }
+
+  .snh-help { margin: 0 0 16px; color: #8a7c69; font-size: 12.5px; line-height: 1.45; font-weight: 500; }
+  .snh-micro { text-align: center; color: var(--snh-muted); font-size: 12.5px; line-height: 1.45; font-weight: 600; margin: 0 0 14px; }
+
+  .snh-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 14px;
+    min-height: 56px;
+    padding: 15px 20px;
+    font: inherit;
+    cursor: pointer;
+    font-size: 14.5px;
+    font-weight: 800;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .snh-btn:hover { transform: translateY(-2px); }
+  .snh-btn-primary { background: var(--snh-orange); color: #fff; box-shadow: 0 14px 28px rgba(224,82,28,.24); }
+  .snh-btn-primary:hover { box-shadow: 0 20px 38px rgba(224, 82, 28, 0.32); }
+  .snh-btn-light { margin-top: 11px; min-height: 52px; background: #fff1eb; color: var(--snh-orange-dark); border: 2px solid rgba(224, 82, 28, .22); box-shadow: none; }
+
+  .snh-link {
+    color: var(--snh-orange);
+    font-weight: 800;
+    font-size: 13px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  .snh-link:hover { color: var(--snh-orange-dark); text-decoration: underline; text-underline-offset: 4px; }
+
+  .snh-error {
+    display: none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin: -2px 0 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    background: #fff1f0;
+    border: 1px solid #fecaca;
+    color: #b42318;
+  }
+  .snh-shopify-error {
+    border-radius: 12px;
+    padding: 13px 15px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    font-weight: 700;
+    background: #fff1f0;
+    border: 1px solid #fecaca;
+    color: #b42318;
+  }
+
+  .snh-form-foot { margin-top: 22px; padding-top: 18px; border-top: 1px solid #efe8dd; text-align: center; }
+  .snh-form-foot span { display: block; margin-bottom: 5px; color: var(--snh-muted); font-size: 13px; font-weight: 500; }
+
+  /* ── FAQ with boy cutout ───────────────────────────────────────── */
+  .snh-faq-section {
+    background: linear-gradient(150deg, var(--snh-panel) 0%, var(--snh-panel-2) 100%);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: clamp(48px, 6vw, 80px) clamp(20px, 4vw, 48px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .snh-faq-visual {
+    position: relative;
+    isolation: isolate;
+    flex: 0 1 280px;
+    min-width: 220px;
+    align-self: flex-end;
+    margin-bottom: -1px;
+    padding: 26px 18px 0;
+  }
+  .snh-faq-visual::before {
+    content: none;
+  }
+  .snh-faq-visual .snh-glow { height: 56%; left: 14%; right: 14%; animation: none; opacity: .58; }
+  .snh-boy {
+    position: relative;
+    display: block;
+    width: 92%;
+    margin: 0 auto;
+    z-index: 1;
+    opacity: .86;
+    filter: saturate(.78) contrast(.95) drop-shadow(0 24px 40px rgba(0,0,0,.46));
+  }
+  .snh-faq-accent {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    filter: saturate(.8) drop-shadow(0 12px 20px rgba(0,0,0,.4));
+  }
+  .snh-faq-coins-a {
+    top: 4%; left: -10px;
+    width: 56px;
+    opacity: .55;
+    animation: snhFloat2 7.8s ease-in-out infinite;
+  }
+  .snh-faq-coins-b {
+    top: 31%; right: -15px;
+    width: 34px;
+    opacity: .3;
+    animation: snhFloat 8.4s ease-in-out infinite;
+    animation-delay: -3.8s;
+  }
+  .snh-faq-gift {
+    bottom: 7%; left: -8px;
+    width: 49px;
+    opacity: .52;
+    animation: snhFloat2 8.8s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  .snh-faq-inner { flex: 1 1 480px; max-width: 760px; padding-bottom: 8px; }
+  .snh-faq-inner h2 {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: clamp(24px, 3.4vw, 36px);
+    margin: 0 0 26px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .snh-faq-inner h2 span { color: var(--snh-orange); }
+  .snh-faq-item { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s ease; }
+  .snh-faq-item:hover { border-color: rgba(224, 82, 28, 0.55); }
+  .snh-faq-summary { list-style: none; cursor: pointer; color: #fff; padding: 18px 20px; font-size: 14.5px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .snh-faq-summary::-webkit-details-marker { display: none; }
+  .snh-faq-summary::after { content: '+'; color: var(--snh-orange); font-size: 24px; font-weight: 400; line-height: 1; transition: transform .2s ease; }
+  .snh-faq-item[open] .snh-faq-summary::after { transform: rotate(45deg); }
+  .snh-faq-content { padding: 0 20px 20px; color: #b9a996; font-size: 13.5px; line-height: 1.65; font-weight: 450; }
+
+  /* ── Tablet / mobile: hero -> form -> tiers ────────────────────── */
+  @media (max-width: 920px) {
+    .snh-page { background: #17130f; }
+    .snh-shell { display: flex; flex-direction: column; min-height: auto; }
+    .snh-left { display: contents; }
+    .snh-hero-row { display: contents; }
+    .snh-hero-copy { order: 1; padding: 40px 22px 12px; }
+    .snh-form-zone { order: 2; border-left: 0; padding: 16px 16px 30px; background: #17130f; scroll-margin-top: 170px; }
+    .snh-hero-visual { order: 3; width: min(310px, 82vw); flex: none; min-width: 0; margin: 0 auto; padding-top: 24px; }
+    .snh-tierband { order: 4; padding: 4px 22px 48px; background: transparent; }
+    .snh-shell { background: #17130f; }
+    .snh-tierband { background: #17130f; margin-top: -1px; padding-top: 26px; }
+    .snh-card { border-radius: 22px; box-shadow: 0 18px 50px rgba(23,19,15,.10); }
+    .snh-faq-visual { display: none !important; }
+    .snh-faq-section { background: #17130f; }
+  }
+
+  @media (max-width: 600px) {
+    .snh-hero-copy { padding: 34px 18px 12px; gap: 18px; }
+    .snh-hero-copy h1 { font-size: clamp(36px, 10.5vw, 48px); letter-spacing: -1.6px; }
+    .snh-hero-copy > p { font-size: 14px; }
+    .snh-pills { max-width: none; }
+    .snh-pill span:last-child { font-size: 12.5px; letter-spacing: .5px; }
+    .snh-pill-icon { width: 34px; height: 34px; }
+    .snh-hero-visual { width: min(280px, 78vw); }
+    .snh-coins-a { width: 58px; top: 10px; right: -2px; }
+    .snh-coins-b { width: 34px; left: -18px; }
+    .snh-gift-a { width: 54px; left: -4px; }
+    .snh-gift-b { width: 28px; }
+    .snh-form-zone { padding: 14px 12px 26px; }
+    .snh-card { padding: 24px 18px; }
+    .snh-card h2 { font-size: 31px; }
+    .snh-card-copy { font-size: 13px; margin-bottom: 14px; }
+    .snh-reward-strip { gap: 6px; margin-bottom: 16px; }
+    .snh-reward-chip { min-height: 54px; padding: 8px 6px; border-radius: 10px; }
+    .snh-reward-chip strong { font-size: 14px; }
+    .snh-reward-chip span { font-size: 7.6px; line-height: 1.12; letter-spacing: .14px; }
+    .snh-form-row { grid-template-columns: 1fr; gap: 0; }
+    .snh-input { min-height: 52px; padding: 14px 15px; margin-bottom: 13px; }
+    .snh-birthday-card { grid-template-columns: 44px minmax(0, 1fr); padding: 8px 11px; border-radius: 14px; }
+    .snh-birthday-icon { width: 44px; height: 44px; border-radius: 12px; }
+    .snh-date-input { font-size: 16px; }
+    .snh-btn { min-height: 54px; }
+    .snh-tierchips { gap: 8px; }
+    .snh-tierchip { flex-basis: 100%; }
+  }
+</style>
+
+<div class="snh-page">
+  <div class="snh-shell">
+    <section class="snh-left" aria-label="SNH Elite benefits">
+
+      <div class="snh-hero-row">
+        <div class="snh-hero-copy snh-rise">
+          <div class="snh-badge">Sri Lanka's 1st Premium VIP Club</div>
+
+          <h1>Fuel your goals.<br><span>Earn your rewards.</span></h1>
+
+          <p>Create your free account, claim 500 welcome points, and earn 3% to 10% back in points on every single order.</p>
+
+          <div class="snh-pills" aria-label="SNH Elite benefits">
+            <div class="snh-pill snh-rise" style="animation-delay:.1s">
+              <span class="snh-pill-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4"></rect><path d="M5 12v8h14v-8"></path><path d="M12 8v12"></path><path d="M12 8c-1.5-3.5-6-3.5-6-1s4 2.5 6 1Zm0 0c1.5-3.5 6-3.5 6-1s-4 2.5-6 1Z"></path></svg>
+              </span>
+              <span>Enjoy 500 welcome points</span>
+            </div>
+            <div class="snh-pill snh-rise" style="animation-delay:.2s">
+              <span class="snh-pill-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M19 5 5 19"></path><circle cx="7.5" cy="7.5" r="2.5"></circle><circle cx="16.5" cy="16.5" r="2.5"></circle></svg>
+              </span>
+              <span>Up to 10% in cashbacks</span>
+            </div>
+            <div class="snh-pill snh-rise" style="animation-delay:.3s">
+              <span class="snh-pill-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1 13H5L6 7Z"></path><path d="M9 10V6a3 3 0 0 1 6 0v4"></path></svg>
+              </span>
+              <span>Redeemable at 2500 points</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="snh-hero-visual" aria-hidden="true">
+          <div class="snh-glow"></div>
+          <img class="snh-hero-accent snh-coins-a" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_37969279-4a78-43c8-8fdf-5256e55c6030.png?v=1783764457" alt="" loading="lazy">
+          <img class="snh-hero-accent snh-coins-b" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_37969279-4a78-43c8-8fdf-5256e55c6030.png?v=1783764457" alt="" loading="lazy">
+          <img class="snh-hero-accent snh-gift-a" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png?v=1783764454" alt="" loading="lazy">
+          <img class="snh-hero-accent snh-gift-b" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png?v=1783764454" alt="" loading="lazy">
+          <img class="snh-girl" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/girl.png?v=1783764656" alt="SNH Elite member checking her points" loading="lazy">
+        </div>
+      </div>
+
+      <div class="snh-tierband snh-rise" style="animation-delay:.35s" aria-label="SNH Elite tiers">
+        <div class="snh-tierband-label">3 tiers, <span>one climb.</span></div>
+        <div class="snh-tierchips">
+          <article class="snh-tierchip bronze">
+            <div class="snh-tierchip-head">
+              <h3>Bronze</h3>
+              <span class="snh-tierchip-rate">3%</span>
+            </div>
+            <p>Free to join, plus 500 welcome points.</p>
+          </article>
+          <article class="snh-tierchip silver">
+            <div class="snh-tierchip-head">
+              <h3>Silver</h3>
+              <span class="snh-tierchip-rate">7%</span>
+            </div>
+            <p>At Rs. 198k spend. Birthday reward + vouchers.</p>
+          </article>
+          <article class="snh-tierchip gold">
+            <div class="snh-tierchip-head">
+              <h3>Gold</h3>
+              <span class="snh-tierchip-rate">10%</span>
+            </div>
+            <p>At Rs. 300k spend. Free shipping + 15% birthday.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="snh-form-zone" aria-label="Customer registration form">
+      <div class="snh-form-wrap">
+        <div class="customer-form">
+          <div class="snh-card customer-form__box">
+            <div class="customer-form__box-inner text-center">
+              <h2>Join SNH <span class="snh-h2-accent">Elite</span></h2>
+              <p class="snh-card-copy">Free account, <strong>500 welcome points</strong>, and 3–10% back on everything you buy.</p>
+              <div class="snh-reward-strip" aria-label="SNH Elite signup benefits">
+                <div class="snh-reward-chip"><strong>500</strong><span>Welcome points</span></div>
+                <div class="snh-reward-chip"><strong>3%</strong><span>Cash back day one</span></div>
+                <div class="snh-reward-chip"><strong>Free</strong><span>No card needed</span></div>
+              </div>
+              <div class="snh-step-indicator">
+                <span id="snh-step-dot-1" class="snh-step-dot active"></span>
+                <span id="snh-step-dot-2" class="snh-step-dot"></span>
+                <span class="snh-step-label" id="snh-step-label">Step 1 of 2</span>
+              </div>
+
+              {%- form 'create_customer', class: 'form', id: 'snh-register-form' -%}
+                <input type="hidden" name="return_to" value="{{ routes.account_url }}">
+                <input type="hidden" name="checkout_url" value="{{ routes.account_url }}">
+                {%- if form.errors -%}
+                  <div class="snh-shopify-error">{{ form.errors | default_errors }}</div>
+                {%- endif -%}
+
+                <div id="snh-step-1">
+                  <div class="snh-form-row">
+                    <div class="snh-field">
+                      <label class="snh-label" for="snh_first_name">First name</label>
+                      <input id="snh_first_name" type="text" name="customer[first_name]" class="snh-input" placeholder="John" autocomplete="given-name" required>
+                    </div>
+                    <div class="snh-field">
+                      <label class="snh-label" for="snh_last_name">Last name</label>
+                      <input id="snh_last_name" type="text" name="customer[last_name]" class="snh-input" placeholder="Smith" autocomplete="family-name" required>
+                    </div>
+                  </div>
+
+                  <label class="snh-label" for="snh_register_email">Email address</label>
+                  <input id="snh_register_email" type="email" name="customer[email]" class="snh-input" placeholder="you@email.com" autocomplete="email" required>
+
+                  <div class="snh-form-row">
+                    <div class="snh-field">
+                      <label class="snh-label" for="snh_reg_pwd">Password</label>
+                      <input type="password" name="customer[password]" id="snh_reg_pwd" class="snh-input" placeholder="Minimum 5 characters" autocomplete="new-password" minlength="5" required>
+                    </div>
+                    <div class="snh-field">
+                      <label class="snh-label" for="snh_reg_pwd_confirm">Confirm password</label>
+                      <input type="password" id="snh_reg_pwd_confirm" class="snh-input" placeholder="Repeat password" autocomplete="new-password" minlength="5" required>
+                    </div>
+                  </div>
+                  <p id="snh-pwd-error" class="snh-error">Passwords do not match.</p>
+
+                  <button type="button" onclick="nextSNHStep()" class="snh-btn snh-btn-primary">Continue &nbsp;&rarr;</button>
+
+                  <div class="snh-form-foot">
+                    <span>Already have an account?</span>
+                    <a href="{{ routes.account_login_url }}" class="snh-link">Log In Here</a>
+                  </div>
+                </div>
+
+                <div id="snh-step-2" style="display:none;">
+                  <label class="snh-label" for="snh_phone">Phone Number For Delivery Updates</label>
+                  <input type="tel" id="snh_phone" name="customer[note][Phone]" class="snh-input" placeholder="+94 77 123 4567" autocomplete="tel" required>
+
+                  <div class="snh-form-row">
+                    <div class="snh-field">
+                      <label class="snh-label" for="snh_address">Primary Address</label>
+                      <input type="text" id="snh_address" name="customer[note][Address]" class="snh-input" placeholder="Street address" autocomplete="address-line1" required>
+                    </div>
+                    <div class="snh-field">
+                      <label class="snh-label" for="snh_city">City</label>
+                      <input type="text" id="snh_city" name="customer[note][City]" class="snh-input" placeholder="Colombo" autocomplete="address-level2" required>
+                    </div>
+                  </div>
+
+                  <label class="snh-label" for="snh_birthday_value">Birthday for rewards</label>
+                  <div class="snh-birthday-card" onclick="openSNHDatePicker()">
+                    <div class="snh-birthday-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V2Zm12 8H5v10h14V10ZM5 8h14V6H5v2Zm3 5h3v3H8v-3Z"/></svg>
+                    </div>
+                    <div class="snh-birthday-input-wrap">
+                      <span class="snh-birthday-mini">Tap to choose date</span>
+                      <input type="date" id="snh_birthday_value" name="customer[note][Birthday]" class="snh-date-input" min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" autocomplete="bday" required>
+                    </div>
+                  </div>
+                  <p class="snh-help">Used only for birthday rewards. Tap the field and choose the date from the calendar.</p>
+                  <p id="snh-birthday-error" class="snh-error">Please enter a valid birthday in DD / MM / YYYY format.</p>
+
+                  <p class="snh-micro">Free forever. Takes 30 seconds. No credit card.</p>
+
+                  <button type="submit" class="snh-btn snh-btn-primary">Create VIP Account</button>
+                  <button type="button" onclick="prevSNHStep()" class="snh-btn snh-btn-light">&larr; &nbsp;Back</button>
+                </div>
+              {%- endform -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="snh-faq-section" aria-label="SNH Elite frequently asked questions">
+    <div class="snh-faq-visual" aria-hidden="true">
+      <div class="snh-glow"></div>
+      <img class="snh-faq-accent snh-faq-coins-a" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_37969279-4a78-43c8-8fdf-5256e55c6030.png?v=1783764457" alt="" loading="lazy">
+      <img class="snh-faq-accent snh-faq-coins-b" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_37969279-4a78-43c8-8fdf-5256e55c6030.png?v=1783764457" alt="" loading="lazy">
+      <img class="snh-faq-accent snh-faq-gift" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png?v=1783764454" alt="" loading="lazy">
+      <img class="snh-boy" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/boy.png?v=1783764655" alt="SNH Elite member" loading="lazy">
+    </div>
+
+    <div class="snh-faq-inner">
+      <h2>Frequently asked <span>questions</span></h2>
+      <details class="snh-faq-item">
+        <summary class="snh-faq-summary">Is SNH Elite really free?</summary>
+        <div class="snh-faq-content">Yes. Creating an account is free and automatically starts you at Bronze with 500 welcome points.</div>
+      </details>
+      <details class="snh-faq-item">
+        <summary class="snh-faq-summary">How do I earn SNH Elite points?</summary>
+        <div class="snh-faq-content">Make sure you are logged in before checkout. Bronze earns 3%, Silver earns 7%, and Gold earns 10% back in points based on your order subtotal.</div>
+      </details>
+      <details class="snh-faq-item">
+        <summary class="snh-faq-summary">How do I upgrade to Silver or Gold?</summary>
+        <div class="snh-faq-content">Your annual spend updates after paid orders. Silver unlocks at Rs. 198,000 annual spend and Gold unlocks at Rs. 300,000 annual spend.</div>
+      </details>
+      <details class="snh-faq-item">
+        <summary class="snh-faq-summary">What happens when I refund an order?</summary>
+        <div class="snh-faq-content">The points earned from the refunded amount are deducted from your available points balance.</div>
+      </details>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    setupSNHBirthdayInput();
+
+    var regForm = document.getElementById('snh-register-form');
+    if (!regForm) return;
+
+    regForm.addEventListener('submit', function(e) {
+      var pwd = document.getElementById('snh_reg_pwd');
+      var confirm = document.getElementById('snh_reg_pwd_confirm');
+      var pwdError = document.getElementById('snh-pwd-error');
+      var birthdayError = document.getElementById('snh-birthday-error');
+
+      if (pwd && confirm && pwd.value !== confirm.value) {
+        e.preventDefault();
+        pwdError.style.display = 'block';
+        prevSNHStep();
+        confirm.focus();
+        return false;
+      }
+
+      if (!setSNHBirthdayValue()) {
+        e.preventDefault();
+        birthdayError.style.display = 'block';
+        return false;
+      }
+
+      birthdayError.style.display = 'none';
+      sessionStorage.setItem('snh_after_register_redirect', 'account');
+    });
+  });
+
+  function setupSNHBirthdayInput() {
+    var input = document.getElementById('snh_birthday_value');
+    if (!input) return;
+
+    input.addEventListener('change', function() {
+      var birthdayError = document.getElementById('snh-birthday-error');
+      if (birthdayError && setSNHBirthdayValue()) birthdayError.style.display = 'none';
+    });
+  }
+
+  function openSNHDatePicker() {
+    var input = document.getElementById('snh_birthday_value');
+    if (!input) return;
+    input.focus();
+    if (typeof input.showPicker === 'function') {
+      try { input.showPicker(); } catch (e) {}
+    }
+  }
+
+  function setSNHBirthdayValue() {
+    var input = document.getElementById('snh_birthday_value');
+    if (!input) return true;
+
+    if (!input.value) return false;
+
+    var selected = new Date(input.value + 'T00:00:00');
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (Number.isNaN(selected.getTime())) return false;
+    if (selected > today) return false;
+    if (selected.getFullYear() < 1930) return false;
+
+    return true;
+  }
+
+  function nextSNHStep() {
+    var inputs = document.querySelectorAll('#snh-step-1 input[required]');
+    var pwd = document.getElementById('snh_reg_pwd');
+    var confirm = document.getElementById('snh_reg_pwd_confirm');
+    var errorText = document.getElementById('snh-pwd-error');
+    var allValid = true;
+
+    inputs.forEach(function(input) {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        allValid = false;
+        return;
+      }
+    });
+
+    if (pwd && confirm && pwd.value !== confirm.value) {
+      errorText.style.display = 'block';
+      confirm.focus();
+      allValid = false;
+    } else if (errorText) {
+      errorText.style.display = 'none';
+    }
+
+    if (!allValid) return;
+
+    document.getElementById('snh-step-1').style.display = 'none';
+    document.getElementById('snh-step-2').style.display = 'block';
+    document.getElementById('snh-step-dot-1').classList.remove('active');
+    document.getElementById('snh-step-dot-2').classList.add('active');
+    var lbl2 = document.getElementById('snh-step-label');
+    if (lbl2) lbl2.textContent = 'Step 2 of 2';
+
+    var zone = document.querySelector('.snh-form-zone');
+    if (zone) {
+      var offset = window.innerWidth <= 920 ? 150 : 40;
+      var top = zone.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+    }
+  }
+
+  function prevSNHStep() {
+    document.getElementById('snh-step-2').style.display = 'none';
+    document.getElementById('snh-step-1').style.display = 'block';
+    document.getElementById('snh-step-dot-2').classList.remove('active');
+    document.getElementById('snh-step-dot-1').classList.add('active');
+    var lbl1 = document.getElementById('snh-step-label');
+    if (lbl1) lbl1.textContent = 'Step 1 of 2';
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Customer register",
+  "class": "shopify-section--main-customers-register",
+  "tag": "section"
+}
+{% endschema %}

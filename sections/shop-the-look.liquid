@@ -1,0 +1,449 @@
+{%- render 'section-spacing-collapsing' -%}
+
+{%- comment -%}
+------------------------------------------------------------------------------------------------------------------------
+SNH "Shop the look" — Brand of the Month refinement
+- Heading in the SNH Elite display voice (Archivo 900, tight, uppercase)
+- Content frame aligned with the other SNH sections (1500px / clamp side padding)
+- Loyalty points strip under each product card: guests are invited to sign in,
+  logged-in members see what they'll earn (tier-aware via spend thresholds)
+------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --shop-the-look-dot-background: {{ section.settings.background_dots.rgb }};
+    --shop-the-look-carousel-grid: {% if section.settings.stack_mobile %}auto-flow / auto{% else %}auto / auto-flow 75vw{% endif %};
+  }
+
+  /* SNH frame — match Why Choose Us / brand rail */
+  #shopify-section-{{ section.id }} .container {
+    max-width: 1500px;
+    padding-inline: clamp(18px, 4vw, 64px);
+  }
+
+  /* Heading in the SNH Elite display voice */
+  #shopify-section-{{ section.id }} .section-header :is(h1, h2, h3),
+  #shopify-section-{{ section.id }} .section-header .heading {
+    font-family: 'Archivo', Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    line-height: .98;
+    text-transform: uppercase;
+  }
+
+  /* Less curvy */
+  #shopify-section-{{ section.id }} .shop-the-look img.rounded,
+  #shopify-section-{{ section.id }} .placeholder.rounded {
+    border-radius: 8px;
+  }
+
+  /* ---------- loyalty points strip ---------- */
+  #shopify-section-{{ section.id }} .snh-points {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 10px;
+    padding: 11px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 122, 50, 0.22);
+    background: linear-gradient(105deg, #17130f 0%, #241209 100%);
+    color: #fff2e6;
+    text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} .snh-points__tag {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255, 242, 230, .55);
+  }
+  #shopify-section-{{ section.id }} .snh-points__tag::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #e0521c;
+  }
+  #shopify-section-{{ section.id }} .snh-points__text {
+    margin: 0;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: right;
+    color: rgba(255, 242, 230, .82);
+  }
+  #shopify-section-{{ section.id }} .snh-points__text strong {
+    font-weight: 800;
+    color: #ff8a3d;
+  }
+  #shopify-section-{{ section.id }} a.snh-points:hover .snh-points__text {
+    color: #fff2e6;
+  }
+  #shopify-section-{{ section.id }} .snh-points--mobile {
+    margin: 8px 0 0;
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .snh-points {
+      padding: 10px 12px;
+    }
+    #shopify-section-{{ section.id }} .snh-points__text {
+      font-size: 11.5px;
+    }
+  }
+</style>
+
+{%- comment -%} Tier-aware earn rate {%- endcomment -%}
+{%- liquid
+  assign points_rate = section.settings.rate_bronze | default: 3
+  if customer
+    assign spent_rs = customer.total_spent | divided_by: 100
+    if spent_rs >= section.settings.gold_threshold
+      assign points_rate = section.settings.rate_gold | default: 10
+    elsif spent_rs >= section.settings.silver_threshold
+      assign points_rate = section.settings.rate_silver | default: 7
+    endif
+  endif
+-%}
+
+<div {% render 'section-properties' %}>
+  <div class="section-stack">
+
+    {%- render 'section-header', heading: section.settings.title, heading_color: section.settings.heading_color, heading_gradient: section.settings.heading_gradient, content: section.settings.content -%}
+
+    <div class="shop-the-look">
+      <div class="relative">
+        {%- if section.settings.image != blank -%}
+          {%- capture sizes -%}(max-width:700px) 100vw, min({{ settings.page_width | divided_by: 2 }}px, 50vw){%- endcapture -%}
+          {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: widths: '300,400,500,600,800,1000', class: 'rounded', sizes: sizes -}}
+        {%- else -%}
+          {{- 'image' | placeholder_svg_tag: 'placeholder rounded' -}}
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          {%- capture dots -%}
+            {%- for block in section.blocks -%}
+              <button type="button" style="--shop-the-look-dot-top: {{ block.settings.vertical_position }}%; --shop-the-look-dot-left: {{ block.settings.horizontal_position }}%;" class="shop-the-look__dot" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+              </button>
+            {%- endfor -%}
+          {%- endcapture -%}
+          <shop-the-look-dots>
+            <page-dots aria-controls="scroll-carousel-{{ section.id }}" class="sm:hidden">
+              {{ dots }}
+            </page-dots>
+            <page-dots aria-controls="effect-carousel-{{ section.id }}" class="sm-max:hidden">
+              {{ dots }}
+            </page-dots>
+          </shop-the-look-dots>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="shop-the-look__products">
+          {%- assign horizontal_products_blends = true -%}
+          {%- assign section_background = section.settings.background_gradient | default: section.settings.background | default: settings.background -%}
+
+          {%- if section.settings.product_card_mobile_background != blank and section.settings.product_card_mobile_background != 'rgba(0,0,0,0)' and section.settings.product_card_mobile_background != section_background -%}
+            {%- assign horizontal_products_blends = false -%}
+          {%- endif -%}
+
+          <scroll-carousel selector=".horizontal-product" class="shop-the-look__carousel sm:hidden {% unless section.settings.stack_mobile %}scroll-area bleed sm:unbleed{% endunless %}" id="scroll-carousel-{{ section.id }}" role="region">
+            <div class="horizontal-product-list {% if horizontal_products_blends %}border {% if section.settings.stack_mobile %}divide-y{% else %}divide-x{% endif %}{% else %}separate{% endif %}">
+              {%- for block in section.blocks -%}
+                {%- if block.settings.product != blank -%}
+                  {%- render 'horizontal-product', product: block.settings.product, show_add_to_cart: true, background: section.settings.product_card_mobile_background, text_color: section.settings.product_card_mobile_text_color -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </scroll-carousel>
+
+          {%- comment -%} Mobile loyalty strip (stacked layout): one per section, follows the list {%- endcomment -%}
+          {%- if section.settings.show_points and section.settings.stack_mobile and section.blocks.size > 0 -%}
+            {%- assign first_product = section.blocks.first.settings.product -%}
+            {%- if first_product != blank -%}
+              {%- assign points_value_m = first_product.price | times: points_rate | divided_by: 100 -%}
+              {%- if customer -%}
+                <div class="snh-points snh-points--mobile sm:hidden">
+                  <span class="snh-points__tag">SNH Elite</span>
+                  <p class="snh-points__text">You'll earn <strong>{{ points_value_m | money }}</strong> back in points</p>
+                </div>
+              {%- else -%}
+                <a class="snh-points snh-points--mobile sm:hidden" href="{{ routes.account_login_url }}">
+                  <span class="snh-points__tag">SNH Elite</span>
+                  <p class="snh-points__text">Sign in to earn <strong>{{ points_value_m | money }}</strong> back in points</p>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+
+          <effect-carousel class="shop-the-look__carousel sm-max:hidden" id="effect-carousel-{{ section.id }}" role="region">
+            {%- for block in section.blocks -%}
+              <div {% unless forloop.first %}class="reveal-invisible"{% endunless %} {{ block.shopify_attributes }}>
+                {%- if block.settings.product != blank -%}
+                  {%- render 'product-card', product: block.settings.product, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, show_badges: true -%}
+
+                  {%- if section.settings.show_points -%}
+                    {%- assign points_value = block.settings.product.price | times: points_rate | divided_by: 100 -%}
+                    {%- if customer -%}
+                      <div class="snh-points">
+                        <span class="snh-points__tag">SNH Elite</span>
+                        <p class="snh-points__text">You'll earn <strong>{{ points_value | money }}</strong> back in points</p>
+                      </div>
+                    {%- else -%}
+                      <a class="snh-points" href="{{ routes.account_login_url }}">
+                        <span class="snh-points__tag">SNH Elite</span>
+                        <p class="snh-points__text">Sign in to earn <strong>{{ points_value | money }}</strong> back in points</p>
+                      </a>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- else -%}
+                  {%- capture placeholder_image -%}product-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
+                  {%- render 'product-card-placeholder', placeholder_image: placeholder_image, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color -%}
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </effect-carousel>
+
+          {%- if section.blocks.size > 1 -%}
+            <div class="shop-the-look__controls sm-max:hidden">
+              <button is="prev-button" class="circle-button ring group" aria-controls="effect-carousel-{{ section.id }}">
+                <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                <span class="animated-arrow animated-arrow--reverse"></span>
+              </button>
+
+              <button is="next-button" class="circle-button ring group" aria-controls="effect-carousel-{{ section.id }}">
+                <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                <span class="animated-arrow"></span>
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop the look",
+  "class": "shopify-section--shop-the-look",
+  "max_blocks": 4,
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_mobile",
+      "label": "Stack on mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "2000 x 2000px .jpg recommended"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop the look"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "header",
+      "content": "Loyalty points strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_points",
+      "label": "Show points strip",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rate_bronze",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "unit": "%",
+      "label": "Bronze earn rate",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "rate_silver",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "unit": "%",
+      "label": "Silver earn rate",
+      "default": 7
+    },
+    {
+      "type": "range",
+      "id": "rate_gold",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "unit": "%",
+      "label": "Gold earn rate",
+      "default": 10
+    },
+    {
+      "type": "number",
+      "id": "silver_threshold",
+      "label": "Silver spend threshold (Rs)",
+      "default": 200000
+    },
+    {
+      "type": "number",
+      "id": "gold_threshold",
+      "label": "Gold spend threshold (Rs)",
+      "default": 500000
+    },
+    {
+      "type": "header",
+      "content": "Colors",
+      "info": "Gradient replaces solid colors when set."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "color",
+      "id": "product_card_background",
+      "label": "Product card background (desktop)"
+    },
+    {
+      "type": "color",
+      "id": "product_card_text_color",
+      "label": "Product card text (desktop)"
+    },
+    {
+      "type": "color",
+      "id": "product_card_mobile_background",
+      "label": "Product card background (mobile)"
+    },
+    {
+      "type": "color",
+      "id": "product_card_mobile_text_color",
+      "label": "Product card text (mobile)"
+    },
+    {
+      "type": "color",
+      "id": "background_dots",
+      "label": "Dots background",
+      "default": "#FFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "label": "Horizontal position",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "vertical_position",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "label": "Vertical position",
+          "default": 30
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop the look",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "horizontal_position": 52,
+            "vertical_position": 25
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "horizontal_position": 75,
+            "vertical_position": 53
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "horizontal_position": 33,
+            "vertical_position": 73
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

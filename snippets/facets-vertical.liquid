@@ -1,0 +1,1173 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SNH COLLECTION FILTER BAR
+----------------------------------------------------------------------------------------------------------------------
+Drop-in replacement for snippets/facets-vertical.liquid.
+Variables: results, show_sort_by, show_filters, update_on_change.
+
+Four bands, in the order a customer actually decides:
+
+  QUICK FIND   one field that narrows the goal and brand rails as you type,
+               and offers full product search on Enter
+  GOALS        context-aware shortcuts into your real collections. On Whey
+               Protein it offers Isolate / Blend / Clear / Casein; on Vitamins
+               it offers Multivitamins / Minerals / Omega. Anywhere unmapped it
+               falls back to the nine shop-by-goal collections.
+  BRANDS       every mark, resolved automatically from <brand-handle>-logo.webp
+  CONTROLS     in stock, filter groups, sort — then active filters as chips
+
+Sticky on every device, and it condenses to a single slim band once you scroll,
+so it never eats a phone screen.
+
+THE ONLY THING TO EDIT is the goal map below. A collection named there that
+does not exist, or holds no products, is skipped silently — so a wrong guess
+can never show a dead link.
+{%- endcomment -%}
+
+{%- capture goal_map -%}
+whey-protein>isolate-protein|Isolate,whey-protein-blend|Blend,clear-protein|Clear,hydrolysed-protein|Hydrolysed,casein|Casein,vegan-protein|Vegan,protein-bars-snacks|Bars & snacks,protein-oats|Oats;
+proteins>isolate-protein|Isolate,whey-protein-blend|Blend,clear-protein|Clear,hydrolysed-protein|Hydrolysed,casein|Casein,vegan-protein|Vegan,mass-gainers|Mass gainers;
+creatine>muscle-strength|Muscle & strength,recovery|Recovery,informed-sports|Informed Sport,pre-workout|Pre-workout;
+pre-workout>with-caffeine|With caffeine,without-caffeine|Caffeine free,non-stim|Non-stim,stimulant|Stimulant,energy-endurance|Energy;
+fat-burners>fat-loss|Fat loss,weight-management|Weight management,with-caffeine|With caffeine,without-caffeine|Caffeine free;
+vitamins>multivitamins|Multivitamins,mens-multivitamins|Men's,womens-multivitamins|Women's,kids-multivitamins|Kids,letter-vitamins|Letter vitamins,minerals|Minerals,fish-oil-omega|Omega,probiotics|Probiotics;
+minerals>magnesium|Magnesium,zinc|Zinc,calcium|Calcium,iron|Iron,vitamin-k|Vitamin K;
+letter-vitamins>vitamin-b|Vitamin B,vitamin-c|Vitamin C,vitamin-d|Vitamin D,vitamin-k|Vitamin K;
+multivitamins>mens-multivitamins|Men's,womens-multivitamins|Women's,kids-multivitamins|Kids,daily-wellness|Daily wellness;
+endurance-energy>energy-gels|Energy gels,electrolytes|Electrolytes,carb-powders-snacks|Carbs,hydration-recovery|Hydration;
+energy-endurance>energy-gels|Energy gels,electrolytes|Electrolytes,carb-powders-snacks|Carbs,hydration-recovery|Hydration;
+electrolytes>hydration-recovery|Hydration,energy-gels|Energy gels,endurance-energy|Endurance;
+recovery>recovery-powders|Recovery powders,amino-bcaa|Amino & BCAA,glutamine|Glutamine,hydration-recovery|Hydration,joint-mobility|Joint & mobility;
+accessories>shakers|Shakers,lifting-straps|Lifting straps,wrist-wraps|Wrist wraps;
+beauty-skin-care>collagen-supplements|Collagen,skin-nails-supplement|Skin & nails,hair-supplement|Hair;
+collagen>beauty-skin-care|Beauty & skin,skin-nails-supplement|Skin & nails,hair-supplement|Hair;
+sexual-health>testosterone-supplements|Testosterone,herbs-natural-solution|Herbs,shilajit|Shilajit,ashwagandha|Ashwagandha;
+herbs-natural-solution>ashwagandha|Ashwagandha,shilajit|Shilajit,sea-moss|Sea moss,greens|Greens;
+womens-health>womens-multivitamins|Multivitamins,beauty-hair-skin|Beauty & skin,collagen-supplements|Collagen,iron|Iron;
+daily-wellness>multivitamins|Multivitamins,fish-oil-omega|Omega,probiotics|Probiotics,gut-health|Gut health,sleep-relaxation|Sleep;
+joint-mobility>joint-support-supplements|Joint support,collagen-supplements|Collagen,fish-oil-omega|Omega,minerals|Minerals;
+bundle-offers>training-strength-bundles|Training & strength,endurance-bundles|Endurance,daily-health-wellness-bundles|Daily health;
+default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Energy & endurance,recovery|Recovery,daily-wellness|Daily wellness,womens-health|Women's health,joint-mobility|Joint & mobility,beauty-hair-skin|Beauty & skin,gut-health|Gut health
+{%- endcapture -%}
+
+{%- liquid
+  assign here = collection.handle | default: ''
+  assign goal_rows = goal_map | strip | split: ';'
+  assign goal_line = ''
+  for row in goal_rows
+    assign parts = row | strip | split: '>'
+    assign key = parts[0] | strip
+    if key == here and goal_line == ''
+      assign goal_line = parts[1]
+    endif
+  endfor
+  if goal_line == ''
+    for row in goal_rows
+      assign parts = row | strip | split: '>'
+      assign key = parts[0] | strip
+      if key == 'default'
+        assign goal_line = parts[1]
+      endif
+    endfor
+  endif
+  assign goal_items = goal_line | strip | split: ','
+-%}
+
+{%- comment -%}
+  Paste this same file into BOTH snippets/facets-vertical.liquid and
+  snippets/facets-horizontal.liquid — the theme picks a different one per
+  layout setting, and these guards let one file serve either slot.
+{%- endcomment -%}
+{%- if show_filters == nil -%}{%- assign show_filters = true -%}{%- endif -%}
+{%- if show_sort_by == nil -%}{%- assign show_sort_by = true -%}{%- endif -%}
+{%- if update_on_change == nil -%}{%- assign update_on_change = true -%}{%- endif -%}
+
+{%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
+{%- capture id_prefix -%}snhbar-{{ section.id }}{%- endcapture -%}
+
+{%- comment -%} which groups are worth showing, and which one is the brand {%- endcomment -%}
+{%- assign brand_param = '' -%}
+{%- assign useful_params = '' -%}
+{%- assign active_total = 0 -%}
+{%- for filter in results.filters -%}
+  {%- assign lbl = filter.label | downcase -%}
+  {%- assign active_total = active_total | plus: filter.active_values.size -%}
+  {%- if filter.type == 'boolean' or filter.param_name == 'filter.v.availability' -%}
+    {%- assign useful_params = useful_params | append: filter.param_name | append: ',' -%}
+  {%- elsif filter.type == 'price_range' -%}
+    {%- if filter.range_max > 0 -%}
+      {%- assign useful_params = useful_params | append: filter.param_name | append: ',' -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign pickable = 0 -%}
+    {%- for v in filter.values -%}
+      {%- if v.count > 0 or v.active -%}{%- assign pickable = pickable | plus: 1 -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if pickable > 1 -%}
+      {%- assign useful_params = useful_params | append: filter.param_name | append: ',' -%}
+      {%- if brand_param == '' -%}
+        {%- if lbl contains 'brand' or lbl contains 'vendor' -%}
+          {%- assign brand_param = filter.param_name -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign useful_list = useful_params | split: ',' -%}
+
+<form id="facet-form" is="facet-form" section-id="{{ section.id }}" {% if update_on_change %}update-on-change{% endif %} method="GET" action="{{ request.path }}" class="snh-bar-form">
+  <input type="hidden" name="page" value="">
+  <input type="hidden" name="section_id" value="{{ section.id }}" disabled>
+
+  {%- if results.current_type != blank or results.current_vendor != blank -%}
+    <input type="hidden" name="q" value="{{ results.current_vendor | default: results.current_type | escape }}">
+  {%- endif -%}
+  {%- if request.page_type == 'search' -%}
+    <input type="hidden" name="q" value="{{ results.terms | escape }}">
+    <input type="hidden" name="type" value="product">
+  {%- endif -%}
+  {%- unless show_sort_by -%}
+    {%- if results.sort_by != blank -%}<input type="hidden" name="sort_by" value="{{ results.sort_by }}">{%- endif -%}
+  {%- endunless -%}
+
+  <div class="snh-bar" data-snh-bar>
+
+    {%- comment -%} ── quick find: narrows the rails below, or searches the store ── {%- endcomment -%}
+    <div class="snh-find" data-snh-find-wrap>
+      <svg class="snh-find__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/><path d="m20 20-3.4-3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <input class="snh-find__input" type="text" data-snh-quick autocomplete="off"
+             placeholder="{% if collection.title != blank %}Narrow {{ collection.title | downcase | escape }} &mdash; brand, goal or product{% else %}Find a brand, goal or product{% endif %}"
+             aria-label="Narrow this collection">
+      <button type="button" class="snh-find__clear" data-snh-quick-clear aria-label="Clear" hidden>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+      <span class="snh-find__count" data-snh-quick-count hidden></span>
+      <a class="snh-find__all" href="{{ routes.search_url }}?q=" data-snh-quick-search hidden>
+        Search all products <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    {%- comment -%} ── goals: real collections, so they work without JS ── {%- endcomment -%}
+    {%- capture goal_chips -%}
+      {%- for item in goal_items -%}
+        {%- liquid
+          assign bits = item | strip | split: '|'
+          assign gh = bits[0] | strip
+          assign gl = bits[1] | strip | default: gh
+          assign gc = collections[gh]
+        -%}
+        {%- if gc != blank and gc.all_products_count > 0 -%}
+          <a class="snh-goal{% if gh == here %} is-on{% endif %}" href="{{ gc.url }}" data-snh-tag data-snh-label="{{ gl | downcase | escape }} {{ gh }}">{{ gl }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if goal_chips != blank -%}
+      <div class="snh-goals" data-snh-goals>
+        <span class="snh-goals__label">{% if here != '' and goal_line != '' %}Refine{% else %}Shop by goal{% endif %}</span>
+        <div class="snh-goals__rail">{{ goal_chips }}</div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── brands ── {%- endcomment -%}
+    {%- if show_filters and brand_param != '' -%}
+      {%- for filter in results.filters -%}
+        {%- if filter.param_name != brand_param -%}{%- continue -%}{%- endif -%}
+        <div class="snh-brands">
+          <button type="button" class="snh-brands__nudge is-prev" data-snh-scroll="-1" aria-label="Scroll brands left" tabindex="-1">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <div class="snh-brands__rail" data-snh-rail>
+            {%- for fv in filter.values -%}
+              {%- if fv.count == 0 and fv.active == false -%}{%- continue -%}{%- endif -%}
+              {%- liquid
+                assign bh = fv.label | handleize
+                assign cdn = 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/'
+                assign webp = bh | append: '-logo.webp'
+                assign png = bh | append: '-logo.png'
+                assign logo_src = cdn | append: webp
+                assign fallbacks = cdn | append: png
+                assign alt_webp = webp | file_url
+                assign alt_png = png | file_url
+                if alt_webp != blank
+                  assign fallbacks = fallbacks | append: '|' | append: alt_webp
+                endif
+                if alt_png != blank
+                  assign fallbacks = fallbacks | append: '|' | append: alt_png
+                endif
+                assign bcol = collections[bh]
+                if bcol.image != blank
+                  assign col_img = bcol.image | image_url: width: 320
+                  assign fallbacks = fallbacks | append: '|' | append: col_img
+                endif
+              -%}
+              <label class="snh-brand{% if fv.active %} is-on{% endif %}" data-snh-tag data-snh-label="{{ fv.label | downcase | escape }}">
+                <input class="snh-brand__input" type="checkbox" name="{{ fv.param_name }}" value="{{ fv.value }}" {% if fv.active %}checked{% endif %}>
+                <span class="snh-brand__face">
+                  <span class="snh-brand__plate">
+                    <img src="{{ logo_src }}" alt="{{ fv.label | escape }}" loading="lazy" decoding="async"
+                         data-snh-alts="{{ fallbacks | escape }}"
+                         onerror="window.__snhLogoFallback &amp;&amp; window.__snhLogoFallback(this)">
+                    <em>{{ fv.label }}</em>
+                  </span>
+                </span>
+              </label>
+            {%- endfor -%}
+          </div>
+
+          <button type="button" class="snh-brands__nudge is-next" data-snh-scroll="1" aria-label="Scroll brands right" tabindex="-1">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+    <p class="snh-nomatch" data-snh-nomatch hidden>No brand or goal matches that &mdash; try searching all products.</p>
+    <div class="snh-recs" data-snh-recs hidden>
+      <span class="snh-recs__label">SNH recommends</span>
+      <div class="snh-recs__rail" data-snh-recs-rail></div>
+    </div>
+
+    {%- comment -%} ── controls ── {%- endcomment -%}
+    <div class="snh-bar__row">
+      {%- if show_filters -%}
+        {%- for filter in results.filters -%}
+          {%- unless useful_list contains filter.param_name -%}{%- continue -%}{%- endunless -%}
+          {%- if filter.param_name == brand_param -%}{%- continue -%}{%- endif -%}
+
+          {%- if filter.type == 'boolean' or filter.param_name == 'filter.v.availability' -%}
+            <label class="snh-switch">
+              <input type="checkbox" name="{{ filter.param_name }}" value="1" {% if filter.param_name == 'filter.v.availability' %}{% if filter.active_values.size > 0 %}checked{% endif %}{% else %}{% if filter.true_value.active %}checked{% endif %}{% endif %}>
+              <span class="snh-switch__track"><span class="snh-switch__knob"></span></span>
+              <span class="snh-switch__text">{% if filter.param_name == 'filter.v.availability' %}In stock{% else %}{{ filter.label }}{% endif %}</span>
+            </label>
+
+          {%- else -%}
+            {%- assign downcase_label = filter.label | downcase -%}
+            {%- assign active_count = filter.active_values.size -%}
+            {%- assign pickable = 0 -%}
+            {%- for v in filter.values -%}
+              {%- if v.count > 0 or v.active -%}{%- assign pickable = pickable | plus: 1 -%}{%- endif -%}
+            {%- endfor -%}
+
+            <details class="snh-drop" data-snh-drop>
+              <summary class="snh-drop__pill">
+                <span>{{ filter.label }}</span>
+                {%- if active_count > 0 -%}<b>{{ active_count }}</b>{%- endif -%}
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </summary>
+              <div class="snh-drop__panel">
+                {%- case filter.type -%}
+                  {%- when 'list' -%}
+                    {%- if filter.presentation == 'swatch' or color_label_list contains downcase_label -%}
+                      <div class="snh-drop__swatches">
+                        {%- for filter_value in filter.values -%}
+                          {%- render 'option-value', type: 'swatch', filter_value: filter_value, show_tooltip: true, id_prefix: id_prefix -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      {%- if pickable > 10 -%}
+                        <input type="search" class="snh-drop__find" data-snh-listfind placeholder="Search {{ filter.label | downcase | escape }}" aria-label="Search {{ filter.label | escape }}" autocomplete="off">
+                      {%- endif -%}
+                      <div class="snh-drop__list{% if pickable > 8 %} is-scroll{% endif %}">
+                        {%- for filter_value in filter.values -%}
+                          {%- if filter_value.count == 0 and filter_value.active == false -%}{%- continue -%}{%- endif -%}
+                          <label class="snh-opt" data-snh-row data-snh-label="{{ filter_value.label | downcase | escape }}">
+                            <input type="checkbox" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" {% if filter_value.active %}checked{% endif %}>
+                            <span>{{ filter_value.label }}</span>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  {%- when 'price_range' -%}
+                    {%- render 'price-range', filter: filter -%}
+                {%- endcase -%}
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if show_sort_by -%}
+        {%- assign selected_sort_by = results.sort_by | default: results.default_sort_by -%}
+        <label class="snh-sort">
+          <select name="sort_by">
+            {%- for option in results.sort_options -%}
+              {%- if option.name != blank -%}
+                <option value="{{ option.value }}" {% if option.value == selected_sort_by %}selected{% endif %}>{{ option.name }}</option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+        </label>
+      {%- endif -%}
+    </div>
+
+    {%- if show_filters and active_total > 0 -%}
+      <div class="snh-active">
+        <div class="snh-active__chips">
+          {%- for filter in results.filters -%}
+            {%- for av in filter.active_values -%}
+              <a class="snh-chip" href="{{ av.url_to_remove }}">
+                {{ av.label }}
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              </a>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+        <a class="snh-active__clear" href="{{ results.url | default: request.path }}">Clear all</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- unless update_on_change -%}
+    <noscript style="display:block;margin-top:12px">
+      {%- assign button_content = 'collection.faceting.apply_filters' | t -%}
+      {%- render 'button', type: 'submit', content: button_content, size: 'lg', stretch: true -%}
+    </noscript>
+  {%- endunless -%}
+</form>
+
+<style>
+  .snh-bar-form {
+    --snh-o: #e0521c;
+    --snh-ink: #17130f;
+    --snh-line: rgba(23, 19, 15, .1);
+    --snh-ease: cubic-bezier(.22, 1, .36, 1);
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+  }
+  [is="facet-drawer-opener"],
+  [class*="facets-drawer"],
+  [class*="filter-and-sort"],
+  [class*="mobile-filter"],
+  [class*="filters-toggle"],
+  facets-horizontal,
+  .facets-horizontal,
+  .facets-vertical { display: none !important; }
+
+  .snh-bar-form {
+    position: sticky;
+    /* set from the real header height at runtime, so it pins below it */
+    top: var(--snh-bar-top, 0px);
+    z-index: 12;
+    background: #fff;
+  }
+  .snh-bar {
+    display: grid;
+    margin-block-end: 20px;
+    background: #fff;
+  }
+
+  /* ── quick find ─────────────────────────────────────────────────── */
+  .snh-bar > * { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
+  .snh-brands { padding-inline: 0; }
+  .snh-brands__rail { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
+
+  .snh-find { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; padding-block: 12px; border-block-end: 1px solid var(--snh-line); }
+  .snh-find__input { flex: 1 1 240px; }
+  .snh-find__all { order: 9; flex: 1 0 100%; }
+  .snh-find__icon { width: 17px; height: 17px; color: rgba(23, 19, 15, .35); }
+  .snh-find__input { min-width: 0; min-block-size: 26px; border: 0; background: none; font-family: inherit; font-size: 14.5px; font-weight: 600; color: var(--snh-ink); }
+  .snh-find__input::placeholder { color: rgba(23, 19, 15, .34); font-weight: 550; }
+  .snh-find__input:focus { outline: none; }
+  .snh-find__clear { display: grid; place-items: center; inline-size: 26px; block-size: 26px; padding: 0; border: 0; border-radius: 50%; background: rgba(23, 19, 15, .07); color: var(--snh-ink); cursor: pointer; }
+  .snh-find__clear svg { width: 12px; height: 12px; }
+  .snh-find__count { font-size: 12px; font-weight: 700; color: rgba(23, 19, 15, .45); white-space: nowrap; }
+  .snh-find__count[hidden] { display: none; }
+  .snh-find__all { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 800; color: #b23c11; text-decoration: none; white-space: nowrap; }
+  .snh-find__all svg { width: 13px; height: 13px; opacity: .8; }
+  .snh-find__clear[hidden], .snh-find__all[hidden] { display: none; }
+
+  /* ── goals ──────────────────────────────────────────────────────── */
+  .snh-goals { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px; padding-block: 11px; border-block-end: 1px solid var(--snh-line); }
+  .snh-goals__label { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(23, 19, 15, .4); white-space: nowrap; }
+  .snh-goals__rail { display: flex; gap: 6px; min-width: 0; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .snh-goals__rail::-webkit-scrollbar { display: none; }
+  .snh-goal {
+    flex: 0 0 auto; display: inline-flex; align-items: center; min-block-size: 32px; padding: 0 13px;
+    border: 1px solid var(--snh-line); border-radius: 99px; background: #fff;
+    font-size: 12.5px; font-weight: 700; letter-spacing: -.005em; color: var(--snh-ink); text-decoration: none;
+    transition: border-color .22s var(--snh-ease), background .22s var(--snh-ease), color .22s var(--snh-ease);
+  }
+  .snh-goal:hover { border-color: var(--snh-o); color: #b23c11; }
+  .snh-goal.is-on { background: var(--snh-ink); border-color: var(--snh-ink); color: #fff; }
+  .snh-goal[hidden] { display: none; }
+
+  /* ── brand plates ───────────────────────────────────────────────── */
+  .snh-brands { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); border-block-end: 1px solid var(--snh-line); }
+  .snh-brands__rail {
+    display: flex;
+    min-width: 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    /* fade where the rail runs off the edge instead of cutting a logo in half */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  }
+  .snh-brands__rail::-webkit-scrollbar { display: none; }
+  .snh-brand { flex: 0 0 auto; cursor: pointer; }
+  .snh-brand[hidden] { display: none; }
+  .snh-brand__input { position: absolute; opacity: 0; pointer-events: none; }
+  .snh-brand__face {
+    position: relative; display: grid; place-items: center;
+    min-inline-size: 108px; padding: 16px 20px;
+    border-block-end: 2px solid transparent;
+    border-inline-end: 1px solid var(--snh-line);
+    transition: border-color .26s var(--snh-ease), background .26s var(--snh-ease);
+  }
+  .snh-brand:first-child .snh-brand__face { border-inline-start: 1px solid var(--snh-line); }
+  .snh-brand:last-child .snh-brand__face { border-inline-end-color: transparent; }
+  .snh-brand__plate { display: grid; place-items: center; block-size: 26px; }
+  .snh-brand__plate img {
+    display: block; max-block-size: 26px; max-inline-size: 106px; width: auto; height: auto; object-fit: contain;
+    /* one neutral treatment, so marks in wildly different colours sit level */
+    filter: grayscale(1) brightness(.35);
+    opacity: .55;
+    transition: filter .26s var(--snh-ease), opacity .26s var(--snh-ease);
+  }
+  .snh-brand__plate em {
+    display: none; font-style: normal; font-size: 12.5px; font-weight: 800; letter-spacing: .05em;
+    text-transform: uppercase; color: rgba(23, 19, 15, .55); white-space: nowrap; transition: color .26s var(--snh-ease);
+  }
+  .snh-brand__plate.is-text em { display: block; }
+  .snh-brand:hover .snh-brand__face { background: rgba(23, 19, 15, .025); }
+  .snh-brand:hover .snh-brand__plate img { filter: grayscale(1) brightness(.2); opacity: .85; }
+  .snh-brand:hover .snh-brand__plate em { color: rgba(23, 19, 15, .85); }
+  .snh-brand__input:checked + .snh-brand__face { border-block-end-color: var(--snh-o); background: rgba(224, 82, 28, .05); }
+  .snh-brand__input:checked + .snh-brand__face .snh-brand__plate img { filter: none; opacity: 1; }
+  .snh-brand__input:checked + .snh-brand__face .snh-brand__plate em { color: var(--snh-ink); }
+  .snh-brand__input:focus-visible + .snh-brand__face { outline: 2px solid var(--snh-o); outline-offset: -3px; }
+
+  .snh-brands__nudge {
+    position: absolute; inset-block: 0; z-index: 3; display: none; place-items: center;
+    inline-size: 38px; padding: 0; border: 0; color: var(--snh-ink); cursor: pointer;
+    background: linear-gradient(90deg, #fff 40%, rgba(255, 255, 255, 0));
+  }
+  .snh-brands__nudge.is-prev { inset-inline-start: 0; }
+  .snh-brands__nudge.is-next { inset-inline-end: 0; background: linear-gradient(270deg, #fff 40%, rgba(255, 255, 255, 0)); }
+  .snh-brands__nudge svg { width: 17px; height: 17px; opacity: .7; }
+  .snh-brands__nudge[hidden] { display: none !important; }
+  @media (hover: hover) and (min-width: 1000px) { .snh-brands__nudge { display: grid; } }
+
+  .snh-nomatch { margin: 0; padding-block: 12px; font-size: 13px; font-weight: 600; color: rgba(23, 19, 15, .5); }
+  .snh-nomatch[hidden] { display: none; }
+
+  .snh-recs { display: grid; gap: 9px; padding-block: 14px; border-block-start: 1px solid var(--snh-line); }
+  .snh-recs[hidden] { display: none; }
+  .snh-recs__label { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--snh-o); }
+  .snh-recs__rail { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+  .snh-recs__rail::-webkit-scrollbar { display: none; }
+  .snh-rec {
+    flex: 0 0 auto; display: grid; grid-template-columns: 46px minmax(0, 1fr); align-items: center; gap: 11px;
+    inline-size: 258px; padding: 9px 13px 9px 9px;
+    border: 1px solid var(--snh-line); border-radius: 10px; background: #fff; text-decoration: none;
+    transition: border-color .22s var(--snh-ease), box-shadow .22s var(--snh-ease);
+  }
+  .snh-rec:hover { border-color: rgba(23, 19, 15, .26); box-shadow: 0 8px 22px rgba(23, 19, 15, .07); }
+  .snh-rec img { inline-size: 46px; block-size: 46px; border-radius: 7px; object-fit: cover; background: #f2eee7; }
+  .snh-rec__copy { display: grid; gap: 2px; min-width: 0; }
+  .snh-rec__title { font-size: 13px; font-weight: 700; line-height: 1.25; color: var(--snh-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .snh-rec__price { font-size: 12px; font-weight: 800; color: rgba(23, 19, 15, .5); }
+
+  /* ── controls ───────────────────────────────────────────────────── */
+  .snh-bar__row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding-block: 12px; }
+  .snh-switch { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; }
+  .snh-switch input { position: absolute; opacity: 0; pointer-events: none; }
+  .snh-switch__track { position: relative; display: block; inline-size: 36px; block-size: 21px; border-radius: 99px; background: rgba(23, 19, 15, .15); transition: background .24s var(--snh-ease); }
+  .snh-switch__knob { position: absolute; inset-block-start: 3px; inset-inline-start: 3px; inline-size: 15px; block-size: 15px; border-radius: 50%; background: #fff; transition: transform .24s var(--snh-ease); }
+  .snh-switch input:checked + .snh-switch__track { background: var(--snh-o); }
+  .snh-switch input:checked + .snh-switch__track .snh-switch__knob { transform: translateX(15px); }
+  .snh-switch__text { font-size: 13.5px; font-weight: 700; color: var(--snh-ink); }
+
+  .snh-drop { position: relative; }
+  .snh-drop__pill {
+    display: inline-flex; align-items: center; gap: 7px; min-block-size: 36px; padding: 0 14px;
+    border: 1px solid var(--snh-line); border-radius: 8px; background: #fff;
+    font-size: 13px; font-weight: 700; color: var(--snh-ink); cursor: pointer; list-style: none;
+    transition: border-color .22s var(--snh-ease), background .22s var(--snh-ease), color .22s var(--snh-ease);
+  }
+  .snh-drop__pill::-webkit-details-marker { display: none; }
+  .snh-drop__pill:hover { border-color: rgba(23, 19, 15, .3); }
+  .snh-drop[open] .snh-drop__pill { border-color: var(--snh-ink); background: var(--snh-ink); color: #fff; }
+  .snh-drop__pill svg { width: 14px; height: 14px; opacity: .5; transition: transform .24s var(--snh-ease); }
+  .snh-drop[open] .snh-drop__pill svg { transform: rotate(180deg); opacity: 1; }
+  .snh-drop__pill b { display: inline-grid; place-items: center; min-inline-size: 17px; block-size: 17px; padding: 0 4px; border-radius: 99px; background: var(--snh-o); color: #fff; font-size: 10.5px; font-weight: 800; }
+  .snh-drop__panel {
+    position: absolute; z-index: 20; inset-block-start: calc(100% + 7px); inset-inline-start: 0;
+    min-inline-size: 258px; max-inline-size: 340px; padding: 12px;
+    border: 1px solid var(--snh-line); border-radius: 12px; background: #fff;
+    box-shadow: 0 20px 48px rgba(23, 19, 15, .13);
+  }
+  .snh-drop__find { inline-size: 100%; min-block-size: 36px; margin-block-end: 8px; padding: 0 11px; border: 1px solid var(--snh-line); border-radius: 8px; font-family: inherit; font-size: 13px; }
+  .snh-drop__find:focus { outline: none; border-color: var(--snh-o); }
+  .snh-drop__list { display: grid; gap: 1px; }
+  .snh-drop__list.is-scroll { max-block-size: 238px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(224, 82, 28, .4) transparent; }
+  .snh-drop__list.is-scroll::-webkit-scrollbar { width: 4px; }
+  .snh-drop__list.is-scroll::-webkit-scrollbar-thumb { background: rgba(224, 82, 28, .38); border-radius: 2px; }
+  .snh-drop__swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+  .snh-opt { display: grid; grid-template-columns: 16px minmax(0, 1fr); align-items: center; gap: 10px; min-block-size: 34px; padding: 0 6px; border-radius: 7px; font-size: 13.5px; font-weight: 550; color: var(--snh-ink); cursor: pointer; }
+  .snh-opt:hover { background: rgba(23, 19, 15, .04); }
+  .snh-opt input { accent-color: var(--snh-o); width: 16px; height: 16px; }
+  .snh-opt[hidden] { display: none; }
+
+  .snh-sort { margin-inline-start: auto; }
+  .snh-sort select {
+    appearance: none; min-block-size: 36px; padding: 0 26px 0 10px;
+    inline-size: var(--snh-sort-w, auto);
+    border: 1px solid transparent; border-radius: 8px;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317130f' stroke-width='1.7'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center/13px;
+    font-family: inherit; font-size: 13px; font-weight: 700; color: var(--snh-ink); cursor: pointer;
+  }
+  .snh-sort select:hover { border-color: var(--snh-line); }
+
+  /* ── active filters ─────────────────────────────────────────────── */
+  .snh-active { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding-block-end: 12px; }
+  .snh-active__chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .snh-chip {
+    display: inline-flex; align-items: center; gap: 7px; min-block-size: 30px; padding: 0 11px;
+    border-radius: 99px; background: rgba(23, 19, 15, .06);
+    font-size: 12.5px; font-weight: 700; color: var(--snh-ink); text-decoration: none;
+    transition: background .2s var(--snh-ease), color .2s var(--snh-ease);
+  }
+  .snh-chip:hover { background: rgba(224, 82, 28, .14); color: #b23c11; }
+  .snh-chip svg { width: 13px; height: 13px; opacity: .45; }
+  .snh-active__clear { margin-inline-start: auto; font-size: 12.5px; font-weight: 800; color: #b23c11; text-decoration: none; border-block-end: 1px solid rgba(178, 60, 17, .3); }
+  .snh-active__clear:hover { border-block-end-color: #b23c11; }
+
+  /* ── condensed: once scrolled, only what you need to keep filtering ── */
+  .snh-bar.is-busy { opacity: .55; pointer-events: none; }
+
+  @media screen and (max-width: 999px) {
+    .snh-bar { margin-block-end: 16px; }
+    .snh-find { padding-block: 11px; }
+    .snh-find__input { font-size: 14px; }
+    .snh-find__all { justify-content: flex-start; padding-inline-start: 25px; }
+    .snh-goals { grid-template-columns: minmax(0, 1fr); gap: 7px; }
+    .snh-goals__label { display: none; }
+    .snh-brands__rail { -webkit-mask-image: none; mask-image: none; }
+    .snh-brand__face { min-inline-size: 94px; padding: 13px 15px; }
+    .snh-brand__plate { block-size: 22px; }
+    .snh-brand__plate img { max-block-size: 22px; max-inline-size: 90px; }
+    .snh-bar__row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .snh-bar__row::-webkit-scrollbar { display: none; }
+    .snh-bar__row > * { flex: 0 0 auto; }
+    .snh-sort { margin-inline-start: 0; }
+    /* fixed, because the controls row scrolls sideways and would clip an
+       absolute panel — the top is set from the pill when it opens */
+    .snh-drop__panel { position: fixed; inset-inline: 12px; inset-block-start: var(--snh-panel-top, 0px); min-inline-size: 0; max-inline-size: none; max-block-size: 58vh; overflow-y: auto; }
+    /* hidden until it has been told where the pill is */
+    .snh-drop[open] .snh-drop__panel:not([data-snh-placed]) { visibility: hidden; }
+    .snh-active__clear { margin-inline-start: 0; }
+
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .snh-bar-form *, .snh-bar-form *::before { transition: none !important; }
+    .snh-brands__rail { scroll-behavior: auto; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__snhBar) return;
+    window.__snhBar = true;
+    var SEARCH = {{ routes.search_url | json }};
+
+    /* a mark may be .webp, .png, or the collection image — try each, then
+       set the brand name rather than leave a broken image */
+    window.__snhLogoFallback = function (img) {
+      var alts = (img.dataset.snhAlts || '').split('|').filter(Boolean);
+      var i = Number(img.dataset.snhTry || 0);
+      if (i < alts.length) {
+        img.dataset.snhTry = String(i + 1);
+        img.src = alts[i];
+        return;
+      }
+      var plate = img.closest('.snh-brand__plate');
+      img.remove();
+      if (plate) plate.classList.add('is-text');
+    };
+
+    /* one panel at a time; click away or Escape closes */
+    document.addEventListener('click', function (e) {
+      var here = e.target.closest('[data-snh-drop]');
+      document.querySelectorAll('[data-snh-drop][open]').forEach(function (d) {
+        if (d !== here) d.open = false;
+      });
+    });
+
+    function placePanel(drop) {
+      var pill = drop.querySelector('summary');
+      var panel = drop.querySelector('.snh-drop__panel');
+      if (!pill || !panel) return;
+      if (window.innerWidth > 999) { panel.removeAttribute('data-snh-placed'); return; }
+      var top = Math.round(pill.getBoundingClientRect().bottom + 6);
+      panel.style.setProperty('--snh-panel-top', top + 'px');
+      panel.setAttribute('data-snh-placed', '');
+    }
+
+    function wirePanels() {
+      document.querySelectorAll('[data-snh-drop]').forEach(function (drop) {
+        if (drop.dataset.snhPanel) return;
+        drop.dataset.snhPanel = '1';
+        drop.addEventListener('toggle', function () {
+          var panel = drop.querySelector('.snh-drop__panel');
+          if (!drop.open) {
+            if (panel) panel.removeAttribute('data-snh-placed');
+            if (drop.__snhTrack) { drop.__snhTrack(); drop.__snhTrack = null; }
+            return;
+          }
+          placePanel(drop);
+          /* the bar is pinned, so the pill moves as the page scrolls —
+             the open panel follows it instead of drifting away */
+          var frame = 0;
+          var follow = function () {
+            if (frame) return;
+            frame = requestAnimationFrame(function () { frame = 0; placePanel(drop); });
+          };
+          window.addEventListener('scroll', follow, { passive: true });
+          window.addEventListener('resize', follow);
+          drop.__snhTrack = function () {
+            window.removeEventListener('scroll', follow);
+            window.removeEventListener('resize', follow);
+          };
+        });
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-snh-drop][open]').forEach(function (d) { d.open = false; });
+    });
+
+    /* live search inside a long value list */
+    document.addEventListener('input', function (e) {
+      var box = e.target.closest('[data-snh-listfind]');
+      if (!box) return;
+      var q = box.value.trim().toLowerCase();
+      box.parentElement.querySelectorAll('[data-snh-row]').forEach(function (row) {
+        row.hidden = q !== '' && (row.dataset.snhLabel || '').indexOf(q) === -1;
+      });
+    });
+
+    function wireQuickFind(bar) {
+      var input = bar.querySelector('[data-snh-quick]');
+      if (!input || input.dataset.snhWired) return;
+      input.dataset.snhWired = '1';
+      var clear = bar.querySelector('[data-snh-quick-clear]');
+      var all = bar.querySelector('[data-snh-quick-search]');
+      var none = bar.querySelector('[data-snh-nomatch]');
+      var count = bar.querySelector('[data-snh-quick-count]');
+      var tags = bar.querySelectorAll('[data-snh-tag]');
+
+      function cards() {
+        var grid = document.querySelector('#product-grid, .product-list, [class*="product-grid" i]');
+        return grid ? Array.prototype.slice.call(grid.children) : [];
+      }
+
+      var recs = bar.querySelector('[data-snh-recs]');
+      var recsRail = bar.querySelector('[data-snh-recs-rail]');
+      var lookupTimer = null;
+      var lookupFor = '';
+      var lookupHits = null;
+
+      function handleOf(card) {
+        var a = card.querySelector('a[href*="/products/"]');
+        if (!a) return '';
+        return (a.getAttribute('href') || '').split('/products/')[1].split('?')[0].split('#')[0];
+      }
+
+      /* Card text is only the title, so "fat loss" matched nothing even though
+         the description says exactly that. The store's search index does cover
+         descriptions, tags and type — so it is asked, and its verdict is merged
+         with the instant local match. */
+      var SYN = {
+        'fat loss': ['fat', 'lean', 'diet', 'cutting', 'burner', 'thermogenic', 'shred'],
+        'fat': ['fat', 'lean', 'diet', 'burner', 'shred'],
+        'weight loss': ['fat', 'lean', 'diet', 'burner', 'shred'],
+        'bulking': ['mass', 'gainer', 'bulk', 'weight gain', 'calorie'],
+        'bulk': ['mass', 'gainer', 'bulk', 'calorie'],
+        'maintain': ['whey', 'isolate', 'daily', 'maintenance'],
+        'muscle': ['whey', 'isolate', 'creatine', 'mass', 'strength'],
+        'strength': ['creatine', 'pre-workout', 'strength', 'power'],
+        'recovery': ['bcaa', 'eaa', 'glutamine', 'recovery', 'repair'],
+        'endurance': ['electrolyte', 'carb', 'energy', 'gel', 'hydration'],
+        'energy': ['pre-workout', 'caffeine', 'energy', 'gel'],
+        'sleep': ['sleep', 'magnesium', 'zma', 'ashwagandha'],
+        'immunity': ['vitamin c', 'zinc', 'immune', 'multivitamin'],
+        'joints': ['collagen', 'glucosamine', 'joint', 'omega'],
+        'skin': ['collagen', 'biotin', 'skin', 'hair']
+      };
+
+      function terms(q) {
+        var list = [q];
+        if (SYN[q]) list = list.concat(SYN[q]);
+        q.split(/\s+/).forEach(function (w) {
+          if (w.length < 3) return;
+          if (list.indexOf(w) === -1) list.push(w);
+          if (SYN[w]) SYN[w].forEach(function (x) { if (list.indexOf(x) === -1) list.push(x); });
+        });
+        return list.slice(0, 5);
+      }
+
+      function lookup(q) {
+        if (!q || q.length < 3 || lookupFor === q) return;
+        lookupFor = q;
+        var base = '/search/suggest.json?resources[type]=product&resources[limit]=8' +
+                   '&resources[options][fields]=title,product_type,variants.title,vendor,tag,body&q=';
+        Promise.all(terms(q).map(function (t) {
+          return fetch(base + encodeURIComponent(t), { headers: { 'Accept': 'application/json' } })
+            .then(function (r) { return r.json(); })
+            .then(function (d) { return (d.resources && d.resources.results && d.resources.results.products) || []; })
+            .catch(function () { return []; });
+        })).then(function (sets) {
+          if (input.value.trim().toLowerCase() !== q) return;
+          lookupHits = {};
+          var found = [];
+          sets.forEach(function (set) {
+            set.forEach(function (p) {
+              var h = (p.url || '').split('/products/')[1];
+              if (!h) return;
+              h = h.split('?')[0];
+              if (lookupHits[h]) return;
+              lookupHits[h] = p;
+              found.push(p);
+            });
+          });
+          render(q, found);
+        });
+      }
+
+      function render(q, found) {
+        var shown = 0;
+        cards().forEach(function (card) {
+          var byText = card.dataset.snhText && card.dataset.snhText.indexOf(q) !== -1;
+          var byIndex = lookupHits && lookupHits[handleOf(card)];
+          var match = q === '' || byText || byIndex;
+          card.style.display = match ? '' : 'none';
+          if (match) shown++;
+        });
+        if (count) {
+          /* no query, no tally — it described a search that is over */
+          count.hidden = q === '';
+          count.textContent = shown + (shown === 1 ? ' match' : ' matches');
+        }
+        /* cards hidden by a previous query are released when it is cleared */
+        if (q === '') {
+          cards().forEach(function (card) { card.style.display = ''; });
+        }
+        /* nothing here fits, but the store has something that does */
+        var offsite = (found || []).filter(function (p) {
+          return !document.querySelector('[data-snh-bar]') ? false : true;
+        }).slice(0, 8);
+        if (recs && recsRail) {
+          if (shown === 0 && offsite.length) {
+            recsRail.innerHTML = offsite.map(function (p) {
+              var img = p.image ? '<img src="' + p.image + '" alt="" loading="lazy">' : '<span class="snh-rec__ph"></span>';
+              return '<a class="snh-rec" href="' + p.url + '">' + img +
+                     '<span class="snh-rec__copy"><span class="snh-rec__title">' + p.title +
+                     '</span><span class="snh-rec__price">' + (p.price ? 'Rs ' + p.price : '') + '</span></span></a>';
+            }).join('');
+            recs.hidden = false;
+          } else {
+            recs.hidden = true;
+          }
+        }
+        if (none) {
+          var empty = q !== '' && shown === 0 && !(offsite && offsite.length);
+          none.hidden = !empty;
+          if (empty) none.textContent = 'Nothing matches that.';
+        }
+      }
+
+      function quickState() {
+        var q = input.value.trim();
+        if (clear) clear.hidden = q === '';
+        if (all) {
+          all.hidden = q === '';
+          all.href = SEARCH + '?q=' + encodeURIComponent(q) + '&type=product';
+        }
+      }
+
+      function run() {
+        var q = input.value.trim().toLowerCase();
+
+        if (q === '') { lookupHits = null; lookupFor = ''; }
+
+        var tagHits = 0;
+        var goalHits = 0;
+        var brandHits = 0;
+        tags.forEach(function (t) {
+          var match = q === '' || (t.dataset.snhLabel || '').indexOf(q) !== -1;
+          t.hidden = !match;
+          if (!match) return;
+          tagHits++;
+          if (t.classList.contains('snh-goal')) goalHits++; else brandHits++;
+        });
+        /* an emptied rail collapses rather than leaving a blank band */
+        var goalsRow = bar.querySelector('[data-snh-goals]');
+        var brandsRow = bar.querySelector('.snh-brands');
+        if (goalsRow) goalsRow.hidden = goalHits === 0;
+        if (brandsRow) brandsRow.hidden = brandHits === 0;
+
+        cards().forEach(function (card) {
+          if (!card.dataset.snhText) {
+            card.dataset.snhText = (card.textContent || '').replace(/\s+/g, ' ').toLowerCase();
+          }
+        });
+
+        if (clear) clear.hidden = q === '';
+        if (all) {
+          all.hidden = q === '';
+          all.href = SEARCH + '?q=' + encodeURIComponent(input.value.trim()) + '&type=product';
+        }
+
+        render(q, null);
+
+        clearTimeout(lookupTimer);
+        if (q.length >= 3) {
+          lookupTimer = setTimeout(function () { lookup(q); }, 220);
+        } else if (recs) {
+          recs.hidden = true;
+        }
+      }
+
+      /* the facet form submits on change, so these events must not reach it */
+      bar.__snhRerun = run;
+      var runTimer = null;
+      function schedule(e) {
+        if (e) e.stopPropagation();
+        quickState();
+        clearTimeout(runTimer);
+        runTimer = setTimeout(run, 200);
+      }
+      ['input', 'change', 'keyup'].forEach(function (type) {
+        input.addEventListener(type, schedule, true);
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter') return;
+        /* stay here — the grid is already filtered as they typed */
+        e.preventDefault();
+        e.stopPropagation();
+        input.blur();
+      }, true);
+      if (clear) {
+        clear.addEventListener('click', function () { input.value = ''; run(); input.focus(); });
+      }
+      run();
+    }
+
+    /* brand rail arrows, hidden when there is nothing further that way */
+    function wireRail(rail) {
+      if (!rail || rail.dataset.snhWired) return;
+      rail.dataset.snhWired = '1';
+      var wrap = rail.parentElement;
+      var prev = wrap.querySelector('[data-snh-scroll="-1"]');
+      var next = wrap.querySelector('[data-snh-scroll="1"]');
+      function sync() {
+        var over = rail.scrollWidth - rail.clientWidth;
+        if (prev) prev.hidden = over < 8 || rail.scrollLeft < 8;
+        if (next) next.hidden = over < 8 || rail.scrollLeft > over - 8;
+      }
+      [prev, next].forEach(function (btn) {
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          rail.scrollBy({ left: Number(btn.dataset.snhScroll) * Math.max(220, rail.clientWidth * 0.7), behavior: 'smooth' });
+        });
+      });
+      var frame = 0;
+      function onScroll() {
+        if (frame) return;
+        frame = requestAnimationFrame(function () { frame = 0; sync(); });
+      }
+      rail.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      sync();
+
+      /* keep the chosen brand in view after the grid re-renders */
+      var on = rail.querySelector('.snh-brand__input:checked');
+      if (on && on.parentElement) {
+        var box = on.parentElement.getBoundingClientRect();
+        var rbox = rail.getBoundingClientRect();
+        if (box.left < rbox.left || box.right > rbox.right) rail.scrollLeft += box.left - rbox.left - 40;
+      }
+    }
+
+    /* pin below whatever sticky header the theme has, and condense on scroll */
+    function wireSticky(bar) {
+      if (bar.dataset.snhSticky) return;
+      bar.dataset.snhSticky = '1';
+
+      /* position:sticky is cancelled by ANY ancestor with a clipping overflow,
+         which is why the bar scrolled away. The offenders are opened up. */
+      var node = (bar.closest('form') || bar).parentElement;
+      while (node && node !== document.body) {
+        var cs = getComputedStyle(node);
+        if (/(auto|hidden|scroll|clip)/.test(cs.overflowX + cs.overflowY)) {
+          node.style.setProperty('overflow-x', 'clip', 'important');
+          node.style.setProperty('overflow-y', 'visible', 'important');
+        }
+        node = node.parentElement;
+      }
+      var host = bar.closest('form') || bar;
+      function offset() {
+        var head = document.querySelector('[id*="header" i] .header, header.header, #shopify-section-header, sticky-header, .header-wrapper');
+        var h = 0;
+        if (head) {
+          var pos = getComputedStyle(head).position;
+          if (pos === 'sticky' || pos === 'fixed') h = head.offsetHeight || 0;
+        }
+        host.style.setProperty('--snh-bar-top', h + 'px');
+      }
+      /* nothing listens to scroll any more — a pinned bar that resizes itself
+         forces a reflow on every frame, which is what made scrolling stutter */
+      offset();
+      window.addEventListener('resize', offset);
+    }
+
+    /* With the theme's filter layout set to Drawer, this bar is rendered inside
+       that drawer — invisible until the customer opens it. It belongs in the
+       page, between the collection banner and the grid, so it is moved there
+       and the now-pointless drawer trigger is hidden. */
+    function dock() {
+      var bars = Array.prototype.slice.call(document.querySelectorAll('[data-snh-bar]'));
+      if (!bars.length) return;
+      var inPage = bars.filter(function (b) { return !inDrawer(b); });
+      bars.forEach(function (bar) {
+        if (!inDrawer(bar)) return;
+        /* an in-page copy already exists — leave the drawer one alone */
+        if (inPage.length) return;
+        var host = bar.closest('form') || bar;
+        if (host.dataset.snhDocked) return;
+        var grid = document.querySelector('#product-grid, .product-list, [class*="product-grid" i]');
+        if (!grid) return;
+        var anchor = grid;
+        while (anchor.parentElement && anchor.parentElement.tagName !== 'MAIN' && !/section/i.test(anchor.parentElement.className || '')) {
+          anchor = anchor.parentElement;
+          if (anchor === document.body) return;
+        }
+        if (!anchor.parentElement) return;
+        host.dataset.snhDocked = '1';
+        anchor.parentElement.insertBefore(host, anchor);
+        host.style.display = 'block';
+        document.querySelectorAll('[is="facet-drawer-opener"], [class*="facets-drawer__opener" i], [class*="mobile-filter" i]').forEach(function (btn) {
+          btn.style.setProperty('display', 'none', 'important');
+        });
+      });
+    }
+    function inDrawer(el) {
+      return !!el.closest('dialog, facets-drawer, [class*="drawer" i], [class*="modal" i], [id*="facets-drawer" i]');
+    }
+
+    /* The theme renders its own filter row from a different snippet, so with
+       this bar in place there were two. The theme's is removed, along with the
+       floating "Filter and sort" trigger it pairs with. */
+    var purged = false;
+    function purgeThemeFilters() {
+      if (purged) return;
+      var mine = document.querySelector('[data-snh-bar]');
+      if (!mine) return;
+      purged = true;
+      var mineHost = mine.closest('form') || mine;
+      var sel = 'form#facet-form, form[is="facet-form"], facets-horizontal, facets-vertical,' +
+                '[class*="facets-horizontal" i], [class*="facets__form" i], [class*="collection__facets" i]';
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (el === mineHost || el.contains(mine) || mineHost.contains(el)) return;
+        el.style.setProperty('display', 'none', 'important');
+      });
+      document.querySelectorAll('[class*="facet" i], [is="facet-drawer-opener"], [class*="mobile-filter" i], [class*="filter-and-sort" i], [class*="filters-toggle" i], [class*="applied-filters" i], [class*="selected-filters" i]').forEach(function (el) {
+        if (mineHost.contains(el) || el.contains(mineHost)) return;
+        el.style.setProperty('display', 'none', 'important');
+      });
+      document.querySelectorAll('button, a').forEach(function (b) {
+        var t = (b.textContent || '').trim().toLowerCase();
+        if (t !== 'filter and sort' && t !== 'filter & sort' && t !== 'filters') return;
+        if (mineHost.contains(b)) return;
+        var host = b.closest('[class*="sticky" i], [class*="float" i], [class*="toolbar" i]') || b;
+        host.style.setProperty('display', 'none', 'important');
+      });
+    }
+
+    /* match the grid's gutters exactly, whatever container the bar lands in */
+    function alignToGrid(bar) {
+      var grid = document.querySelector('#product-grid, .product-list, [class*="product-grid" i]');
+      if (!grid) return;
+      var gb = grid.getBoundingClientRect();
+      var bb = bar.getBoundingClientRect();
+      if (!bb.width || !gb.width) return;
+      bar.style.setProperty('--snh-pad-l', Math.max(0, Math.round(gb.left - bb.left)) + 'px');
+      bar.style.setProperty('--snh-pad-r', Math.max(0, Math.round(bb.right - gb.right)) + 'px');
+    }
+
+    /* measure the visible option and size the control to it */
+    function fitSort(bar) {
+      var sel = bar.querySelector('.snh-sort select');
+      if (!sel) return;
+      var probe = document.getElementById('snh-sort-probe');
+      if (!probe) {
+        probe = document.createElement('span');
+        probe.id = 'snh-sort-probe';
+        probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;left:-9999px';
+        document.body.appendChild(probe);
+      }
+      var cs = getComputedStyle(sel);
+      probe.style.font = cs.fontWeight + ' ' + cs.fontSize + '/' + cs.lineHeight + ' ' + cs.fontFamily;
+      probe.style.letterSpacing = cs.letterSpacing;
+      probe.textContent = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
+      sel.style.setProperty('--snh-sort-w', Math.ceil(probe.getBoundingClientRect().width) + 38 + 'px');
+      if (!sel.dataset.snhFit) {
+        sel.dataset.snhFit = '1';
+        sel.addEventListener('change', function () { fitSort(bar); });
+      }
+    }
+
+    function wireApply(bar) {
+      if (bar.dataset.snhApply) return;
+      bar.dataset.snhApply = '1';
+      var form = bar.closest('form');
+      if (!form) return;
+
+      function apply() {
+        var params = [];
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (!el.name || el.disabled) return;
+          if (el.name === 'page' || el.name === 'section_id') return;
+          if (el.hasAttribute('data-snh-quick')) return;
+          if ((el.type === 'checkbox' || el.type === 'radio') && !el.checked) return;
+          if (el.value === '' || el.value == null) return;
+          params.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value));
+        });
+        var base = form.getAttribute('action') || window.location.pathname;
+        go(params.length ? base + '?' + params.join('&') : base);
+      }
+
+      var GRID = '#product-grid, .product-list, [class*="product-grid" i]';
+      /* Only the grid changes, so only the grid is fetched and swapped. The
+         bar keeps its rail scroll position and the page does not jump. */
+      function go(url) {
+        bar.classList.add('is-busy');
+        var fetchUrl = url + (url.indexOf('?') === -1 ? '?' : '&') + 'section_id={{ section.id }}';
+        fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+          .then(function (r) { return r.text(); })
+          .then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var fresh = doc.querySelector(GRID);
+            var current = document.querySelector(GRID);
+            if (!fresh || !current) { window.location.href = url; return; }
+            current.replaceWith(fresh);
+
+            /* mirror the new state onto the bar without rebuilding it */
+            var nb = doc.querySelector('[data-snh-bar]');
+            if (nb) {
+              var newChips = nb.querySelector('.snh-active');
+              var oldChips = bar.querySelector('.snh-active');
+              if (newChips && oldChips) oldChips.replaceWith(newChips);
+              else if (newChips && !oldChips) bar.appendChild(newChips);
+              else if (!newChips && oldChips) oldChips.remove();
+
+              nb.querySelectorAll('.snh-brand__input').forEach(function (src, i) {
+                var mineBox = bar.querySelectorAll('.snh-brand__input')[i];
+                if (mineBox) mineBox.checked = src.checked;
+              });
+              nb.querySelectorAll('.snh-goal').forEach(function (src, i) {
+                var g = bar.querySelectorAll('.snh-goal')[i];
+                if (g) g.classList.toggle('is-on', src.classList.contains('is-on'));
+              });
+            }
+
+            /* the theme prints its own tally outside the grid, so it has to
+               be refreshed too or it contradicts what is on screen */
+            var countSel = '[class*="product-count" i], [id*="product-count" i], [class*="results-count" i], [class*="collection__count" i]';
+            var freshCounts = doc.querySelectorAll(countSel);
+            var liveCounts = document.querySelectorAll(countSel);
+            for (var ci = 0; ci < liveCounts.length; ci++) {
+              if (freshCounts[ci]) liveCounts[ci].innerHTML = freshCounts[ci].innerHTML;
+            }
+
+            history.pushState({ snh: 1 }, '', url);
+            bar.classList.remove('is-busy');
+            boot();
+
+            /* a query typed before the filter was applied must be re-run
+               against the cards that just arrived */
+            if (typeof bar.__snhRerun === 'function') bar.__snhRerun();
+          })
+          .catch(function () { window.location.href = url; });
+      }
+
+      /* back button returns to the previous filter state */
+      if (!window.__snhPop) {
+        window.__snhPop = true;
+        window.addEventListener('popstate', function () { window.location.reload(); });
+      }
+
+      bar.addEventListener('change', function (e) {
+        var el = e.target;
+        if (!el.name || el.hasAttribute('data-snh-quick') || el.hasAttribute('data-snh-listfind')) return;
+        apply();
+      });
+      /* a label wrapping a checkbox fires change, but Safari needs the click
+         on the plate to register before the navigation is queued */
+      bar.addEventListener('click', function (e) {
+        var link = e.target.closest('.snh-active__clear, .snh-chip');
+        if (link && link.getAttribute('href')) {
+          e.preventDefault();
+          go(link.getAttribute('href'));
+          return;
+        }
+        var plate = e.target.closest('.snh-brand');
+        if (!plate) return;
+        var box = plate.querySelector('input[type="checkbox"]');
+        if (!box) return;
+        setTimeout(apply, 0);
+      });
+    }
+
+    function boot() {
+      /* the theme may render both slots; a hidden duplicate would double the
+         sticky bar and the event wiring, so it is dropped */
+      var all = document.querySelectorAll('[data-snh-bar]');
+      if (all.length > 1) {
+        var keeper = null;
+        all.forEach(function (b) {
+          if (!keeper && b.offsetParent !== null && !inDrawer(b)) keeper = b;
+        });
+        if (keeper) {
+          all.forEach(function (b) {
+            if (b === keeper) return;
+            var host = b.closest('form') || b;
+            host.remove();
+          });
+        }
+      }
+      dock();
+      purgeThemeFilters();
+      wirePanels();
+      document.querySelectorAll('[data-snh-bar]').forEach(function (bar) {
+        wireQuickFind(bar);
+        wireApply(bar);
+        wireSticky(bar);
+        fitSort(bar);
+        alignToGrid(bar);
+        if (!bar.dataset.snhAligned) {
+          bar.dataset.snhAligned = '1';
+          window.addEventListener('resize', function () { alignToGrid(bar); });
+        }
+      });
+      document.querySelectorAll('[data-snh-rail]').forEach(wireRail);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+    document.addEventListener('shopify:section:load', boot);
+    if (window.MutationObserver) {
+      var t;
+      var mo = new MutationObserver(function () { clearTimeout(t); t = setTimeout(boot, 400); });
+      /* watch only where products live, not the entire document */
+      var watch = document.querySelector('#product-grid, .product-list, [class*="product-grid" i]');
+      var scope = watch && watch.parentElement ? watch.parentElement : null;
+      if (scope) mo.observe(scope, { childList: true });
+    }
+  })();
+</script>

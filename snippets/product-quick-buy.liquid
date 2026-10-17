@@ -1,0 +1,228 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PRODUCT QUICK BUY — SNH
+----------------------------------------------------------------------------------------------------------------------
+
+Same mechanics as the theme original (template + product-rerender + variant-picker + buy-buttons, driven by the
+product section's blocks) with SNH styling: Satoshi type, hairline pills, ink Add to cart, KOKO + loyalty line.
+
+* product: the product to render
+* section: implicitly available (always a product template section)
+{%- endcomment -%}
+
+<template id="quick-buy-content">
+  {%- capture product_form_id -%}quick-buy-form-{{ product.id }}-{{ section.id }}{%- endcapture -%}
+
+  {%- liquid
+    assign v = product.selected_or_first_available_variant
+    assign third = v.price | divided_by: 3
+    assign points_rate = 3
+    if customer
+      assign spent_rs = customer.total_spent | divided_by: 100
+      if spent_rs >= 150000
+        assign points_rate = 10
+      elsif spent_rs >= 50000
+        assign points_rate = 7
+      endif
+    endif
+    assign points_value = v.price | times: points_rate | divided_by: 100
+  -%}
+
+  {%- comment -%} bundle contents: any global offer whose product list contains this product {%- endcomment -%}
+  {%- capture snh_bundle_items -%}
+    {%- for i in (1..20) -%}
+      {%- assign pkey = 'bundle_' | append: i | append: '_products' -%}
+      {%- assign plist = settings[pkey] -%}
+      {%- if plist.size > 1 -%}
+        {%- assign holds = false -%}
+        {%- for bp in plist -%}{%- if bp.id == product.id -%}{%- assign holds = true -%}{%- endif -%}{%- endfor -%}
+        {%- if holds -%}
+          {%- for bp in plist -%}
+            {%- if bp.id != product.id -%}
+              <li class="snh-qb__inc">
+                {%- if bp.featured_image -%}<img src="{{ bp.featured_image | image_url: width: 96 }}" alt="" loading="lazy" width="34" height="34">{%- endif -%}
+                <span>{{ bp.title }}</span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  <product-rerender id="quick-buy-modal-content" observe-form="{{ product_form_id }}">
+    <div class="snh-qb__head text-start" slot="header">
+      {%- assign image = v.featured_media | default: product.featured_media -%}
+
+      {%- if image != blank -%}
+        <variant-media widths="120,240" form="{{ product_form_id }}" class="snh-qb__media">
+          {{- image | image_url: width: image.width | image_tag: loading: 'lazy', sizes: '84px', widths: '84,168,252', class: 'snh-qb__img' -}}
+        </variant-media>
+      {%- endif -%}
+
+      <div class="snh-qb__ident">
+        <a href="{{ product.url }}" class="snh-qb__title">{{ product.title }}</a>
+        {%- if product.vendor != blank -%}<span class="snh-qb__vendor">{{ product.vendor }}</span>{%- endif -%}
+        <div class="snh-qb__price">
+          {%- render 'price-list', product: product, variant: v, form_id: product_form_id -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="snh-qb__body quick-buy-drawer__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {%- render block -%}
+
+          {%- when 'variant_picker' -%}
+            <div class="snh-qb__picker">
+              {%- render 'variant-picker', product: product, form_id: product_form_id, update_url: false, hide_sold_out_variants: block.settings.hide_sold_out_variants, hide_size_chart: true, force_dropdown_as_block: true, block: block -%}
+            </div>
+
+          {%- when 'buy_buttons' -%}
+            <div class="snh-qb__buy">
+              {%- render 'buy-buttons', product: product, form_id: product_form_id, show_payment_button: block.settings.show_payment_button, button_size: 'lg' -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+
+      {%- if snh_bundle_items != blank -%}
+        <div class="snh-qb__included">
+          <span class="snh-qb__included-label">What's inside</span>
+          <ul class="snh-qb__inc-list">{{ snh_bundle_items }}</ul>
+        </div>
+      {%- endif -%}
+
+      <div class="snh-qb__foot">
+        <span class="snh-qb__koko">OR 3 &times; {{ third | money }} <img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="KOKO" loading="lazy" width="46" height="13"></span>
+        {%- if customer -%}
+          <span class="snh-qb__earn">Earn <strong>{{ points_value | money }}</strong> back</span>
+        {%- else -%}
+          <a class="snh-qb__earn" href="{{ routes.account_login_url }}">Sign in &mdash; earn <strong>{{ points_value | money }}</strong> back</a>
+        {%- endif -%}
+        <a class="snh-qb__full" href="{{ product.url }}">See full details &rarr;</a>
+      </div>
+    </div>
+  </product-rerender>
+
+  <style>
+    quick-buy-drawer {
+      --snh-ink: #17130f;
+      --snh-orange: #e0521c;
+      --snh-line: #e7e0d6;
+      --snh-font: 'Satoshi', 'Inter', system-ui, sans-serif;
+      --snh-ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    /* ── header: thumbnail + identity ── */
+    .snh-qb__head { display: flex; align-items: center; gap: 16px; padding: 4px 0; font-family: var(--snh-font); }
+    .snh-qb__media { flex: 0 0 120px; display: block; width: 120px; align-self: stretch; }
+    .snh-qb__img { display: block; width: 120px; height: 120px; object-fit: cover; border-radius: 14px; background: #f2eee7; }
+    .snh-qb__ident { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .snh-qb__title { font-family: var(--snh-font); font-size: 19px; font-weight: 900; line-height: 1.2; letter-spacing: -.02em; color: var(--snh-ink); text-decoration: none; text-wrap: pretty; }
+    .snh-qb__title:hover { color: var(--snh-orange); }
+    .snh-qb__vendor { font-size: 13px; font-weight: 500; color: #a09484; }
+    .snh-qb__price { margin-top: 4px; font-family: var(--snh-font); }
+    .snh-qb__price .price-list { font-family: var(--snh-font); font-weight: 900; letter-spacing: -.02em; }
+    .snh-qb__price sale-price, .snh-qb__price .price, .snh-qb__price .price-list > * { font-size: 24px; line-height: 1.15; }
+    .snh-qb__price compare-at-price, .snh-qb__price s { font-size: 14px; font-weight: 500; color: #a09484; }
+
+    /* ── body ── */
+    .snh-qb__body { display: flex; flex-direction: column; gap: 20px; font-family: var(--snh-font); }
+
+    /* variant pills: hairline unselected, solid ink selected — same language as the product page */
+    .snh-qb__picker .variant-picker__option { display: grid; gap: 9px; }
+    .snh-qb__picker .variant-picker__option-info,
+    .snh-qb__picker legend { justify-content: flex-start !important; text-align: left !important; font-family: var(--snh-font); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #a09484; }
+    .snh-qb__picker .variant-picker__option-values { display: flex !important; flex-wrap: wrap; gap: 8px; justify-content: flex-start !important; }
+    .snh-qb__picker .block-swatch,
+    .snh-qb__picker .opt-label,
+    .snh-qb__picker [class*="block-swatch"] label,
+    .snh-qb__picker .variant-picker__option-values label {
+      min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--snh-line) !important; border-radius: 10px !important; background: #fff !important;
+      font-family: var(--snh-font) !important; font-size: 14px !important; font-weight: 600 !important;
+      color: var(--snh-ink) !important; box-shadow: none !important;
+      transition: border-color .25s var(--snh-ease), background .25s var(--snh-ease), color .25s var(--snh-ease);
+    }
+    .snh-qb__picker .variant-picker__option-values label:hover { border-color: rgba(23,19,15,.32) !important; }
+    .snh-qb__picker input:checked + label,
+    .snh-qb__picker input:checked + .block-swatch,
+    .snh-qb__picker [aria-checked="true"] { background: var(--snh-ink) !important; border-color: var(--snh-ink) !important; color: #fff !important; }
+    .snh-qb__picker input:disabled + label,
+    .snh-qb__picker [aria-disabled="true"] { opacity: .42; }
+
+    /* buy buttons */
+    .snh-qb__buy { display: block; }
+    .snh-qb__buy buy-buttons,
+    .snh-qb__buy .buy-buttons,
+    .snh-qb__buy > form {
+      display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px !important; align-items: stretch !important;
+    }
+    .snh-qb__buy buy-buttons > *,
+    .snh-qb__buy .buy-buttons > *,
+    .snh-qb__buy > form > * { min-width: 0; margin: 0 !important; }
+    .snh-qb__buy .shopify-payment-button { display: grid !important; }
+    .snh-qb__buy button[type="submit"],
+    .snh-qb__buy .button {
+      border-radius: 12px !important; min-height: 54px !important;
+      font-family: var(--snh-font) !important; font-size: 15px !important; font-weight: 800 !important;
+      letter-spacing: -.01em !important; box-shadow: none !important;
+    }
+    .snh-qb__buy .button--primary,
+    .snh-qb__buy button[type="submit"]:not(.shopify-payment-button__button) {
+      background: var(--snh-ink) !important; border-color: var(--snh-ink) !important; color: #fff !important;
+      transition: background .3s var(--snh-ease) !important;
+    }
+    .snh-qb__buy .button--primary:hover,
+    .snh-qb__buy button[type="submit"]:not(.shopify-payment-button__button):hover { background: var(--snh-orange) !important; border-color: var(--snh-orange) !important; }
+    .snh-qb__buy .shopify-payment-button__button,
+    .snh-qb__buy .shopify-payment-button__button--unbranded {
+      width: 100% !important; min-height: 54px !important; border-radius: 12px !important;
+      background: var(--snh-orange) !important; border: 1px solid var(--snh-orange) !important;
+      color: #fff !important; font-family: var(--snh-font) !important; font-size: 15px !important; font-weight: 800 !important;
+    }
+    .snh-qb__buy .shopify-payment-button__button:hover { background: #b23c11 !important; border-color: #b23c11 !important; color: #fff !important; }
+    .snh-qb__buy button[type="submit"] { width: 100% !important; }
+
+    /* bundle contents */
+    .snh-qb__included { display: flex; flex-direction: column; gap: 10px; padding: 16px; border: 1px solid var(--snh-line); border-radius: 12px; background: #faf7f2; }
+    .snh-qb__included-label { font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #a09484; }
+    .snh-qb__inc-list { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0; list-style: none; }
+    .snh-qb__inc { display: flex; align-items: center; gap: 11px; font-size: 14px; font-weight: 600; color: var(--snh-ink); }
+    .snh-qb__inc img { flex: 0 0 34px; width: 34px; height: 34px; object-fit: cover; border-radius: 8px; background: #f2eee7; }
+
+    /* stronger, persistent backdrop */
+    quick-buy-drawer::part(overlay),
+    quick-buy-drawer::backdrop { background: rgba(15,10,7,.55) !important; -webkit-backdrop-filter: blur(10px) !important; backdrop-filter: blur(10px) !important; }
+
+    /* footer */
+    .snh-qb__foot { display: flex; flex-direction: column; gap: 9px; padding-top: 16px; border-top: 1px solid var(--snh-line); }
+    .snh-qb__koko { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500; color: #a09484; }
+    .snh-qb__koko img { display: block; height: 13px; width: auto; }
+    .snh-qb__earn { font-size: 12.5px; font-weight: 500; color: #a09484; text-decoration: none; }
+    .snh-qb__earn strong { color: var(--snh-orange); font-weight: 800; }
+    a.snh-qb__earn:hover strong { text-decoration: underline; }
+    .snh-qb__full { margin-top: 2px; font-size: 13px; font-weight: 700; color: var(--snh-ink); text-decoration: none; }
+    .snh-qb__full:hover { color: var(--snh-orange); }
+
+    @media screen and (max-width: 699px) {
+      .snh-qb__head { gap: 13px; }
+      .snh-qb__media { flex: 0 0 92px; width: 92px; }
+      .snh-qb__img { width: 92px; height: 92px; border-radius: 12px; }
+      .snh-qb__buy buy-buttons,
+      .snh-qb__buy .buy-buttons,
+      .snh-qb__buy > form { grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; }
+      .snh-qb__price sale-price, .snh-qb__price .price, .snh-qb__price .price-list > * { font-size: 21px; }
+      .snh-qb__title { font-size: 17px; }
+      .snh-qb__body { gap: 17px; }
+      .snh-qb__buy button[type="submit"], .snh-qb__buy .button { min-height: 50px !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      quick-buy-drawer * { transition: none !important; }
+    }
+  </style>
+</template>

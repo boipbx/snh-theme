@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "blocks": {
+        "totals": {
+          "type": "totals",
+          "settings": {
+            "show_order_weight": false,
+            "show_shipping_text": true
+          }
+        },
+        "cart_note": {
+          "type": "cart_note",
+          "settings": {}
+        },
+        "checkout_button": {
+          "type": "checkout_button",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "totals",
+        "cart_note",
+        "checkout_button"
+      ],
+      "settings": {
+        "crosssell_title": "Complete your order",
+        "crosssell_subtitle": "Popular add-ons other athletes pair with this.",
+        "crosssell_products": [
+          "applied-nutrition-diet-protein-bar",
+          "applied-nutrition-protein-cheese-bites",
+          "applied-nutrition-protein-chips",
+          "myprotein-extra-protein-cookie",
+          "myprotein-gooey-filled-cookie",
+          "myprotein-pop-roll",
+          "myprotein-popped-protein-crisps",
+          "myprotein-protein-brownie",
+          "myprotein-the-myprotein-bar",
+          "myprotein-layered-bar"
+        ],
+        "trending_title": "Trending this month",
+        "trending_subtitle": "What other athletes are stocking up on right now.",
+        "trending_products": [
+          "applied-nutrition-black-stak-health-pack",
+          "sis-beta-fuel-gel",
+          "sis-go-isotonic-energy-gel"
+        ],
+        "show_shipping_estimator": true,
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

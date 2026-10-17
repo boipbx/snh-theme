@@ -1,0 +1,690 @@
+{%- comment -%}
+  SNH — Shop by Brand (full page section) v3
+  - Products rendered server-side in Liquid (no products.json fetch → no truncated rows)
+  - Minimal card: title, vendor, product shot, price, KOKO line, smooth add-to-basket reveal
+  - Brand-matched journal cards woven into the row (tag an article with the brand name)
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<section id="snh-sbb-{{ section.id }}" class="snh-sbb">
+  {%- comment -%}
+    Retired brands: named once in the section settings, dropped from the bar,
+    the body and the count in one place. Matching is handleized, so "Seven Seas"
+    and "seven-seas" are the same thing.
+  {%- endcomment -%}
+  {%- assign sbb_drop = '' -%}
+  {%- assign sbb_drop_raw = section.settings.hidden_brands | default: '' | split: ',' -%}
+  {%- for d in sbb_drop_raw -%}
+    {%- assign dh = d | strip | handleize -%}
+    {%- if dh != blank -%}{%- assign sbb_drop = sbb_drop | append: ',' | append: dh | append: ',' -%}{%- endif -%}
+  {%- endfor -%}
+
+  {%- assign sbb_live = '' -%}
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign bn = block.settings.name | default: block.settings.collection.title | default: 'brand'
+      assign bn_key = bn | handleize
+      assign bh_key = block.settings.collection.handle | default: bn_key
+    -%}
+    {%- comment -%}
+      Exact handles missed "Trace" against "Trace Minerals". An entry now matches
+      when either name begins with the other, so the short or the full form both
+      work, while a partial word still cannot match by accident.
+    {%- endcomment -%}
+    {%- assign is_dropped = false -%}
+    {%- for d in sbb_drop_raw -%}
+      {%- assign dh = d | strip | handleize -%}
+      {%- if dh != blank -%}
+        {%- assign dh_pre = dh | append: '-' -%}
+        {%- assign bn_pre = bn_key | append: '-' -%}
+        {%- assign bh_pre = bh_key | append: '-' -%}
+        {%- if bn_key == dh or bh_key == dh -%}{%- assign is_dropped = true -%}{%- endif -%}
+        {%- if bn_pre contains dh_pre or bh_pre contains dh_pre -%}{%- assign is_dropped = true -%}{%- endif -%}
+        {%- if dh_pre contains bn_pre or dh_pre contains bh_pre -%}{%- assign is_dropped = true -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- unless is_dropped -%}
+      {%- assign has_stock = false -%}
+      {%- for p in block.settings.collection.products -%}
+        {%- if p.available -%}
+          {%- assign has_stock = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if has_stock -%}
+        {%- assign sbb_live = sbb_live | append: ',' | append: forloop.index0 | append: ',' -%}
+      {%- endif -%}
+    {%- endunless -%}
+  {%- endfor -%}
+
+  <div class="snh-sbb__hero">
+    <div class="snh-sbb__glow" aria-hidden="true"></div>
+    <div class="snh-sbb__topline" aria-hidden="true"></div>
+    <div class="snh-sbb__hero-inner">
+      <h1 class="snh-sbb__title">{{ section.settings.title | default: 'Shop by brand' }}</h1>
+      <p class="snh-sbb__sub"><b>{{ sbb_live | split: ',' | uniq | size }}</b> brands, every product 100% genuine. Pick a brand to see everything we stock from it.</p>
+    </div>
+  </div>
+
+  <nav class="snh-sbb__nav" aria-label="Filter by brand">
+    <div class="snh-sbb__nav-inner">
+      <button type="button" class="snh-sbb__chip snh-sbb__chip--all is-active" data-sbb-chip="all">All brands</button>
+      {%- for block in section.blocks -%}
+        {%- capture sbb_key -%},{{ forloop.index0 }},{%- endcapture -%}
+        {%- unless sbb_live contains sbb_key -%}{%- continue -%}{%- endunless -%}
+        {%- liquid
+          assign b_col = block.settings.collection
+          assign b_name = block.settings.name | default: b_col.title | default: 'Brand'
+          assign b_handle = b_col.handle | default: b_name | handleize
+        -%}
+        <button type="button" class="snh-sbb__chip" data-sbb-chip="{{ b_handle }}" aria-label="{{ b_name | escape }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ b_name | escape }}" loading="lazy" width="120" height="34">
+          {%- else -%}
+            <span>{{ b_name }}</span>
+          {%- endif -%}
+        </button>
+      {%- endfor -%}
+    </div>
+    <p class="snh-sbb__hint">Swipe the logos to browse every brand &rarr;</p>
+  </nav>
+
+  {%- comment -%} brands run A–Z. The key is handleized so a name containing a
+    comma or a dash cannot corrupt the sort. {%- endcomment -%}
+  {%- assign sbb_order = '' -%}
+  {%- for block in section.blocks -%}
+    {%- assign bn = block.settings.name | default: block.settings.collection.title | default: 'brand' | handleize -%}
+    {%- assign sbb_order = sbb_order | append: bn | append: '~' | append: forloop.index0 | append: ',' -%}
+  {%- endfor -%}
+  {%- assign sbb_order = sbb_order | split: ',' | sort -%}
+
+  <div class="snh-sbb__body">
+    {%- for key in sbb_order -%}
+      {%- liquid
+        assign idx = key | split: '~' | last | times: 1
+        assign block = section.blocks[idx]
+        assign b_col = block.settings.collection
+        assign b_name = block.settings.name | default: b_col.title | default: 'Brand'
+        assign b_handle = b_col.handle | default: b_name | handleize
+        assign b_total = b_col.all_products_count
+        assign blog_handle = section.settings.blog
+        assign journal_slot = section.settings.journal_after | default: 4
+      -%}
+      {%- capture sbb_body_key -%},{{ idx }},{%- endcapture -%}
+      {%- unless sbb_live contains sbb_body_key -%}{%- continue -%}{%- endunless -%}
+      {%- assign journal_printed = false -%}
+      {%- assign in_stock = 0 -%}
+      {%- capture sbb_cards -%}
+        {%- for product in b_col.products -%}
+          {%- if product.available -%}
+            {%- liquid
+              assign in_stock = in_stock | plus: 1
+              assign v = product.selected_or_first_available_variant
+              assign third = product.price | divided_by: 3
+            -%}
+            {%- liquid
+              assign badge = ''
+              if product.tags contains 'Best Seller' or product.tags contains 'best-seller'
+                assign badge = 'Best seller'
+              elsif product.tags contains 'New' or product.tags contains 'new'
+                assign badge = 'New in'
+              elsif product.compare_at_price > product.price
+                assign badge = 'On offer'
+              endif
+              assign multi = false
+              if product.variants.size > 1
+                assign multi = true
+              endif
+            -%}
+            <div class="sbb-card" data-sbb-item data-handle="{{ product.handle }}" data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-order="{{ in_stock }}">
+              <a class="sbb-card__shot" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                <span class="sbb-card__media">
+                  {%- if product.featured_image -%}
+                    <img src="{{ product.featured_image | image_url: width: 620 }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async" width="310" height="310">
+                  {%- endif -%}
+                </span>
+                {%- if badge != blank -%}<span class="sbb-card__badge">{{ badge }}</span>{%- endif -%}
+              </a>
+              <div class="sbb-card__body">
+                <a class="sbb-card__link" href="{{ product.url }}"><h3 class="sbb-card__title">{{ product.title }}</h3></a>
+                <p class="sbb-card__sub">{% if multi %}{{ product.variants.size }} options{% else %}{{ product.type | default: b_name }}{% endif %}</p>
+                <div class="sbb-card__foot">
+                  <span class="sbb-card__price">{{ product.price | money }}</span>
+                  <button type="button" class="sbb-card__add" data-sbb-add="{{ v.id }}" data-sbb-multi="{% if multi %}{{ product.url }}{% endif %}">
+                    <span>{% if multi %}Choose{% else %}Add{% endif %}</span>
+                    <span class="sbb-card__add-dot" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M6 12h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+                <span class="sbb-card__koko">OR 3 &times; {{ third | money }} <img class="sbb-card__koko-logo" src="https://paykoko.com/img/logo1.7ff549c0.png" alt="KOKO" loading="lazy" width="46" height="13"></span>
+              </div>
+            </div>
+
+            {%- liquid
+              assign at_slot = false
+              if blog_handle != blank and journal_printed != true
+                if in_stock == journal_slot or forloop.last
+                  assign at_slot = true
+                endif
+              endif
+            -%}
+            {%- if at_slot -%}
+              {%- assign printed = false -%}
+              {%- assign b_key = b_name | handleize -%}
+              {%- for a in blogs[blog_handle].articles limit: 30 -%}
+                {%- liquid
+                  assign hit = false
+                  for t in a.tags
+                    assign tk = t | handleize
+                    if tk == b_key
+                      assign hit = true
+                    endif
+                  endfor
+                  assign title_key = a.title | handleize
+                  if title_key contains b_key
+                    assign hit = true
+                  endif
+                -%}
+                {%- if printed == false and hit -%}
+                  <a class="sbb-note" href="{{ a.url }}" data-sbb-note>
+                    <span class="sbb-note__media">
+                      {%- if a.image -%}<img src="{{ a.image | image_url: width: 560 }}" alt="{{ a.title | escape }}" loading="lazy">{%- endif -%}
+                    </span>
+                    <span class="sbb-note__body">
+                      <span class="sbb-note__label">Journal &middot; {{ b_name }}</span>
+                      <span class="sbb-note__title">{{ a.title }}</span>
+                      <span class="sbb-note__read">Read article</span>
+                    </span>
+                  </a>
+                  {%- assign printed = true -%}
+                  {%- assign journal_printed = true -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- for product in b_col.products -%}
+          {%- unless product.available -%}
+            {%- assign third = product.price | divided_by: 3 -%}
+            <div class="sbb-card sbb-card--out" data-sbb-item data-sbb-out data-handle="{{ product.handle }}" data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-order="9999">
+              <a class="sbb-card__shot" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                <span class="sbb-card__media">
+                  {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 620 }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async" width="310" height="310">{%- endif -%}
+                </span>
+                <span class="sbb-card__badge">Sold out</span>
+              </a>
+              <div class="sbb-card__body">
+                <a class="sbb-card__link" href="{{ product.url }}"><h3 class="sbb-card__title">{{ product.title }}</h3></a>
+                <p class="sbb-card__sub">{% if product.variants.size > 1 %}{{ product.variants.size }} options{% else %}{{ product.type | default: b_name }}{% endif %}</p>
+                <div class="sbb-card__foot">
+                  <span class="sbb-card__price">{{ product.price | money }}</span>
+                  <span class="sbb-card__add is-out"><span>Sold out</span></span>
+                </div>
+                <span class="sbb-card__koko">OR 3 &times; {{ third | money }} <img class="sbb-card__koko-logo" src="https://paykoko.com/img/logo1.7ff549c0.png" alt="KOKO" loading="lazy" width="46" height="13"></span>
+              </div>
+            </div>
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      {%- comment -%} brands with nothing actually in stock never render {%- endcomment -%}
+      {%- if in_stock > 0 -%}
+      <article class="snh-sbb-brand" data-sbb-brand="{{ b_handle }}" data-sbb-name="{{ b_name | escape }}" {{ block.shopify_attributes }}>
+        <header class="snh-sbb-brand__head">
+          <div class="snh-sbb-brand__id">
+            {%- if block.settings.image != blank -%}
+              <img class="snh-sbb-brand__logo" src="{{ block.settings.image | image_url: width: 480 }}" alt="{{ b_name | escape }}" loading="eager" fetchpriority="high" decoding="sync" width="180" height="44">
+            {%- else -%}
+              <h2 class="snh-sbb-brand__name">{{ b_name }}</h2>
+            {%- endif -%}
+          </div>
+          {%- liquid
+            assign b_vendor = b_col.products.first.vendor
+            if b_vendor != blank
+              assign b_all_url = b_vendor | url_for_vendor
+            else
+              assign b_all_url = b_col.url
+            endif
+          -%}
+          {%- if b_col != blank -%}
+            <a class="snh-sbb-brand__all" href="{{ b_all_url }}">View all <svg viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          {%- endif -%}
+        </header>
+
+        <div class="snh-sbb-brand__filters" data-sbb-filters hidden>
+          <div class="snh-sbb__fbar">
+            <div class="snh-sbb__fscroll">
+              <button type="button" class="snh-sbb__fchip is-on" data-sbb-f="price" data-sbb-val="all">Any price</button>
+              <button type="button" class="snh-sbb__fchip" data-sbb-f="price" data-sbb-val="under5">Under Rs 5,000</button>
+              <button type="button" class="snh-sbb__fchip" data-sbb-f="price" data-sbb-val="5to15">Rs 5,000&ndash;15,000</button>
+              <button type="button" class="snh-sbb__fchip" data-sbb-f="price" data-sbb-val="over15">Over Rs 15,000</button>
+            </div>
+            <span class="snh-sbb__fcount" data-sbb-fcount></span>
+            <select class="snh-sbb__fsort" data-sbb-sort aria-label="Sort products">
+              <option value="featured">Sort: Featured</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name A&ndash;Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="snh-sbb-brand__products">
+          <div class="snh-sbb__row" data-sbb-row data-sbb-col="{{ b_col.handle }}" data-sbb-total="{{ b_col.all_products_count }}" data-sbb-name="{{ b_name | escape }}" data-sbb-vendor="{{ b_col.products.first.vendor | escape }}">{{ sbb_cards }}</div>
+          <p class="snh-sbb__empty" data-sbb-empty hidden>Nothing matches these filters &mdash; try widening them.</p>
+        </div>
+      </article>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+<style>
+  .snh-sbb, .snh-sbb * { box-sizing: border-box; }
+  .snh-sbb {
+    --sbb-orange: #e0521c;
+    --sbb-orange-dark: #b23c11;
+    --sbb-ink: #17130f;
+    --sbb-muted: #736657;
+    --sbb-line: #e7e0d6;
+    --sbb-paper: #faf7f2;
+    --sbb-display: 'Archivo', Arial, sans-serif;
+    --sbb-card: 'Satoshi', 'Inter', system-ui, sans-serif;
+    --sbb-sans: 'Inter', system-ui, sans-serif;
+    --sbb-ease: cubic-bezier(.22, 1, .36, 1);
+    font-family: var(--sbb-sans);
+    color: var(--sbb-ink);
+    background: var(--sbb-paper);
+    max-inline-size: 100%;
+    overflow-x: clip;
+  }
+
+  /* ── hero ── */
+  .snh-sbb__hero { position: relative; isolation: isolate; overflow: clip; background: linear-gradient(112deg, #0f0a07 0%, #1b0e08 46%, #33150a 78%, #4a1c0a 100%); }
+  .snh-sbb__glow { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(620px 220px at 92% 115%, rgba(224,82,28,.30), transparent 70%), radial-gradient(460px 170px at 4% -35%, rgba(255,140,70,.10), transparent 70%); }
+  .snh-sbb__topline { position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 1; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(224,82,28,.85) 40%, rgba(255,150,80,.9) 55%, transparent 82%); }
+  .snh-sbb__hero-inner { position: relative; z-index: 2; max-width: 1500px; margin-inline: auto; padding: clamp(38px,5vw,72px) clamp(18px,4vw,64px) clamp(30px,4vw,54px); }
+  .snh-sbb__title { margin: 0; font-family: var(--sbb-display); font-size: clamp(38px,5.4vw,72px); font-weight: 900; letter-spacing: -.03em; line-height: .95; text-transform: uppercase; color: #fff2e6; }
+  .snh-sbb__sub { margin: 14px 0 0; max-width: 520px; font-size: clamp(13px,1.1vw,15px); line-height: 1.55; color: rgba(255,242,230,.72); }
+  .snh-sbb__sub b { color: #fff2e6; font-weight: 700; }
+
+  /* ── sticky brand bar ── */
+  .snh-sbb__nav { position: sticky; top: 0; z-index: 20; background: rgba(15,10,7,.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,242,230,.1); }
+  .snh-sbb__nav-inner { max-width: 1500px; margin-inline: auto; display: flex; align-items: stretch; gap: 4px; padding: 0 clamp(18px,4vw,64px); overflow-x: auto; scrollbar-width: none; }
+  .snh-sbb__nav-inner::-webkit-scrollbar { display: none; }
+  .snh-sbb__chip { flex: 0 0 auto; appearance: none; display: inline-flex; align-items: center; justify-content: center; min-height: 58px; padding: 0 18px; border: 0; border-bottom: 2px solid transparent; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .snh-sbb__chip img { display: block; height: 26px; width: auto; max-width: 118px; object-fit: contain; filter: brightness(0) invert(.94); opacity: .45; transition: filter .22s ease, opacity .22s ease; }
+  .snh-sbb__chip span, .snh-sbb__chip--all { font-family: var(--sbb-display); font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,242,230,.5); transition: color .22s ease; white-space: nowrap; }
+  .snh-sbb__chip:hover img { opacity: .85; }
+  .snh-sbb__chip:hover span { color: rgba(255,242,230,.85); }
+  .snh-sbb__chip.is-active { border-bottom-color: var(--sbb-orange); }
+  .snh-sbb__chip.is-active img { filter: brightness(0) invert(1); opacity: 1; }
+  .snh-sbb__chip.is-active span, .snh-sbb__chip--all.is-active { color: #fff2e6; }
+  .snh-sbb__chip.snh-sbb__chip--all {
+    align-self: center; min-height: 32px; margin-inline-end: 8px; padding: 0 14px;
+    border: 1px solid rgba(255,242,230,.22); border-radius: 99px;
+    font-size: 10.5px; letter-spacing: .12em;
+    transition: background .22s ease, color .22s ease, border-color .22s ease;
+  }
+  .snh-sbb__chip.snh-sbb__chip--all:hover { border-color: rgba(255,242,230,.5); color: #fff2e6; }
+  .snh-sbb__chip.snh-sbb__chip--all.is-active { background: #fff2e6; border-color: #fff2e6; color: var(--sbb-ink); }
+  .snh-sbb__hint { max-width: 1500px; margin: 0 auto; padding: 0 clamp(18px,4vw,64px) 8px; font-family: var(--sbb-card); font-size: 10px; font-weight: 500; letter-spacing: .04em; color: rgba(255,242,230,.38); }
+  @media (min-width: 1000px) { .snh-sbb__hint { display: none; } }
+
+  /* sold-out cards: visible but quiet, never buyable */
+  .sbb-card--out:hover { transform: none; box-shadow: none; }
+  #snh-sbb-{{ section.id }} .sbb-card__add.is-out { background: #f2eee7; justify-content: center; padding: 0 16px; cursor: default; }
+  #snh-sbb-{{ section.id }} .sbb-card__add.is-out > span { color: #736657; }
+
+  /* ── body ── */
+  .snh-sbb__body { max-width: 1500px; margin-inline: auto; padding: clamp(8px,1.6vw,20px) clamp(18px,4vw,64px) clamp(48px,5vw,80px); }
+  .snh-sbb-brand { padding: clamp(22px,3vw,36px) 0; border-bottom: 1px solid var(--sbb-line); }
+  .snh-sbb-brand:last-child { border-bottom: 0; }
+  .snh-sbb-brand[hidden] { display: none; }
+  .snh-sbb-brand__head { display: flex; align-items: center; justify-content: flex-start; gap: 20px; margin-bottom: 14px; }
+  .snh-sbb-brand__id { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+  .snh-sbb-brand__logo { align-self: center; height: 42px; width: auto; max-width: 210px; object-fit: contain; }
+  .snh-sbb-brand__name { margin: 0; font-family: var(--sbb-display); font-size: clamp(19px,2vw,26px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .snh-sbb-brand__count { flex: 0 0 auto; font-size: 12px; font-weight: 550; color: var(--sbb-muted); }
+  .snh-sbb-brand__all { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; color: var(--sbb-ink); text-decoration: none; border-bottom: 1px solid var(--sbb-line); padding-bottom: 2px; white-space: nowrap; }
+  .snh-sbb-brand__all:hover { color: var(--sbb-orange-dark); border-bottom-color: var(--sbb-orange); }
+
+  /* ── filters (focused brand only) ── */
+  .snh-sbb-brand__filters { margin: 0 0 16px; }
+  .snh-sbb__fbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 0 0; }
+  .snh-sbb__fscroll { display: flex; gap: 8px; min-width: 0; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .snh-sbb__fscroll::-webkit-scrollbar { display: none; }
+  .snh-sbb__fchip { flex: 0 0 auto; appearance: none; padding: 8px 14px; border: 1px solid var(--sbb-line); border-radius: 8px; background: #fff; color: var(--sbb-ink); font-family: var(--sbb-sans); font-size: 12.5px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: border-color .2s ease, background .2s ease, color .2s ease; }
+  .snh-sbb__fchip:hover { border-color: var(--sbb-orange); }
+  .snh-sbb__fchip.is-on { background: var(--sbb-ink); border-color: var(--sbb-ink); color: #fff; }
+  .snh-sbb__fcount { margin-left: auto; font-size: 12px; font-weight: 550; color: var(--sbb-muted); white-space: nowrap; }
+  .snh-sbb__fsort { appearance: none; padding: 8px 30px 8px 12px; border: 1px solid var(--sbb-line); border-radius: 8px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23736657' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 9px center/13px; color: var(--sbb-ink); font-family: var(--sbb-sans); font-size: 12.5px; font-weight: 600; cursor: pointer; }
+
+  /* ── row ── */
+  .snh-sbb__row { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(280px, 23vw, 340px); gap: 18px; overflow-x: auto; padding: 2px 2px 14px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(224,82,28,.4) transparent; }
+  .snh-sbb__row::-webkit-scrollbar { height: 5px; }
+  .snh-sbb__row::-webkit-scrollbar-thumb { background: rgba(224,82,28,.38); border-radius: 3px; }
+  .snh-sbb-brand.is-focused .snh-sbb__row { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-columns: auto; gap: 18px; overflow: visible; }
+  .snh-sbb__empty { margin: 6px 0 0; font-size: 13.5px; color: var(--sbb-muted); }
+  .sbb-more { scroll-snap-align: end; align-self: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-width: 108px; padding: 22px 14px; border-radius: 10px; background: transparent; color: var(--sbb-ink); text-decoration: none; transition: background .28s var(--sbb-ease); }
+  .sbb-more[hidden] { display: none; }
+  .sbb-more:hover { background: rgba(23,19,15,.04); color: var(--sbb-ink); }
+  .sbb-more__arrow { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ded6ca; border-radius: 50%; transition: border-color .28s var(--sbb-ease), transform .32s var(--sbb-ease); }
+  .sbb-more:hover .sbb-more__arrow { border-color: var(--sbb-ink); transform: translateX(3px); }
+  .sbb-more__label { font-family: var(--sbb-card); font-size: 12.5px; font-weight: 600; line-height: 1.35; text-align: center; color: var(--sbb-muted); }
+  .sbb-more__label b { font-weight: 900; color: var(--sbb-ink); }
+
+  /* ── product card ── */
+  .sbb-card { container-type: inline-size; position: relative; display: flex; flex-direction: column; scroll-snap-align: start; border: 1px solid #ece6dd; border-radius: 10px; background: #fff; overflow: hidden; transition: border-color .34s var(--sbb-ease), box-shadow .44s var(--sbb-ease), transform .44s var(--sbb-ease); }
+  .sbb-card[hidden] { display: none; }
+  .sbb-card:hover { border-color: rgba(23,19,15,.16); transform: translateY(-3px); box-shadow: 0 16px 38px rgba(23,19,15,.08); }
+  .sbb-card__shot { position: relative; display: block; padding: 8px 8px 0; text-decoration: none; }
+  .sbb-card__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden; background: #f2eee7; }
+  .sbb-card__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .55s var(--sbb-ease); }
+  .sbb-card:hover .sbb-card__media img { transform: scale(1.04); }
+  .sbb-card__badge { position: absolute; bottom: 18px; left: 18px; z-index: 2; max-width: calc(100% - 36px); display: inline-flex; align-items: center; padding: 7px 13px; border-radius: 99px; background: rgba(23,19,15,.82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff; font-family: var(--sbb-card); font-size: 12px; font-weight: 700; letter-spacing: -.01em; }
+  .sbb-card__body { display: flex; flex-direction: column; flex: 1; padding: 18px 18px 16px; }
+  .sbb-card__link { text-decoration: none; color: inherit; }
+  .sbb-card__title { margin: 0; font-family: var(--sbb-card); font-size: 19px; font-weight: 900; line-height: 1.22; letter-spacing: -.02em; color: var(--sbb-ink); text-wrap: pretty; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .sbb-card__sub { margin: 7px 0 0; font-family: var(--sbb-card); font-size: 14px; font-weight: 500; line-height: 1.35; color: #a09484; }
+  .sbb-card__foot { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: nowrap; }
+  .sbb-card__price { flex: 0 1 auto; min-width: 0; display: inline-flex; align-items: center; padding: 9px 14px; border-radius: 99px; background: #f2eee7; font-family: var(--sbb-card); font-size: 15px; font-weight: 900; letter-spacing: -.02em; color: var(--sbb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sbb-card__add { flex: 0 0 auto; appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 0 8px 0 18px; border: 0; border-radius: 99px; background: var(--sbb-ink); color: #fff; font-family: var(--sbb-card); font-size: 14px; font-weight: 700; letter-spacing: -.01em; cursor: pointer; white-space: nowrap; overflow: visible; transition: background .3s var(--sbb-ease); }
+  #snh-sbb-{{ section.id }} .sbb-card__add > span { display: inline-block; color: #fff; font-family: var(--sbb-card); font-size: 14px; font-weight: 700; line-height: 1; white-space: nowrap; text-indent: 0; visibility: visible; opacity: 1; }
+  #snh-sbb-{{ section.id }} .sbb-card__add > span.sbb-card__add-dot { color: var(--sbb-ink); }
+  @container (max-width: 236px) {
+    .sbb-card__foot { flex-direction: column; align-items: stretch; gap: 9px; }
+    .sbb-card__price { justify-content: center; }
+    .sbb-card__add { justify-content: center; padding: 0 12px; }
+  }
+  .sbb-card__add:hover { background: var(--sbb-orange); }
+  .sbb-card__add.is-added { background: var(--sbb-orange-dark); }
+  #snh-sbb-{{ section.id }} .sbb-card__add-dot {
+    flex: 0 0 auto; display: flex !important; align-items: center !important; justify-content: center !important;
+    width: 30px; height: 30px; min-width: 30px; min-height: 30px; padding: 0 !important; margin: 0 !important;
+    border: 0; border-radius: 50%; background: #fff; color: var(--sbb-ink);
+    font-size: 0; line-height: 0; text-indent: 0; overflow: visible;
+  }
+  #snh-sbb-{{ section.id }} .sbb-card__add-dot > svg {
+    display: block !important; width: 18px !important; height: 18px !important;
+    margin: 0 !important; padding: 0 !important; border: 0 !important;
+    position: static !important; inset: auto !important; transform: none !important;
+    vertical-align: middle !important; flex: 0 0 auto !important; align-self: center !important;
+    fill: none !important; stroke: currentColor !important; opacity: 1 !important;
+  }
+  .sbb-card__koko { margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; font-family: var(--sbb-card); font-size: 12px; font-weight: 500; color: #a09484; }
+  .sbb-card__koko-logo { display: block; height: 12px; width: auto; }
+
+  /* ── journal card ── */
+  .sbb-note { position: relative; display: flex; flex-direction: column; scroll-snap-align: start; border: 1px solid var(--sbb-line); border-radius: 20px; background: var(--sbb-ink); overflow: hidden; text-decoration: none; transition: box-shadow .44s var(--sbb-ease); }
+  .sbb-note:hover { box-shadow: 0 6px 22px rgba(23,19,15,.12); }
+  .sbb-note__media { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: #241a14; }
+  .sbb-note__media img { width: 100%; height: 100%; object-fit: cover; opacity: .82; transition: transform .6s var(--sbb-ease), opacity .4s ease; }
+  .sbb-note:hover .sbb-note__media img { transform: scale(1.05); opacity: 1; }
+  .sbb-note__body { display: flex; flex-direction: column; gap: 8px; padding: 18px 20px 20px; }
+  .sbb-note__label { font-family: var(--sbb-display); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #ff9a63; }
+  .sbb-note__title { font-family: var(--sbb-display); font-size: 16px; font-weight: 800; line-height: 1.28; color: #fff2e6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .sbb-note__read { margin-top: auto; font-size: 11.5px; font-weight: 600; color: rgba(255,242,230,.62); }
+
+  @media (max-width: 749px) {
+    /* phones: a two-up grid per brand instead of a sideways scroll row */
+    .snh-sbb__body { padding-inline: 8px; }
+    .snh-sbb__row,
+    .snh-sbb-brand.is-focused .snh-sbb__row { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: auto; gap: 8px; overflow: visible; padding: 0 0 6px; scroll-snap-type: none; }
+    .snh-sbb-brand__logo { height: 34px; max-width: 170px; }
+    .snh-sbb__fcount { display: none; }
+
+    /* same compact card as the collection grid; no hover motion or blur on touch */
+    .sbb-card, .sbb-card:hover { transform: none; box-shadow: none; transition: none; min-width: 0; }
+    .sbb-card:hover .sbb-card__media img { transform: none; }
+    .sbb-card__shot { padding: 6px 6px 0; }
+    .sbb-card__media { border-radius: 10px; }
+    .sbb-card__badge { bottom: 10px; left: 10px; max-width: calc(100% - 20px); padding: 4px 8px; font-size: 10px; -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .sbb-card__body { padding: 11px 10px 12px; }
+    .sbb-card__title { font-size: 14px; line-height: 1.22; min-height: 2.44em; }
+    .sbb-card__sub { margin-top: 4px; font-size: 11.5px; }
+
+    /* price → KOKO → button, each full width */
+    .sbb-card__foot { display: contents; }
+    .sbb-card__price { order: 1; margin-top: 11px; align-self: stretch; justify-content: flex-start; min-height: 38px; padding: 7px 14px; font-size: 16px; }
+    .sbb-card__koko { order: 2; margin: 6px 0 7px; padding-inline-start: 14px; flex-wrap: wrap; gap: 4px; font-size: 10.5px; }
+    .sbb-card__koko-logo { height: 10px; }
+    .sbb-card__add { order: 3; align-self: stretch; justify-content: space-between; min-height: 38px; padding: 0 5px 0 14px; }
+    #snh-sbb-{{ section.id }} .sbb-card__add > span { font-size: 12.5px; }
+    #snh-sbb-{{ section.id }} .sbb-card__add-dot { width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
+    #snh-sbb-{{ section.id }} .sbb-card__add-dot > svg { width: 14px !important; height: 14px !important; }
+
+    /* a journal card spans the full row */
+    .sbb-note { grid-column: 1 / -1; border-radius: 12px; }
+    .sbb-note__media { aspect-ratio: 16 / 9; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .snh-sbb *, .snh-sbb *::before { transition: none !important; }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('snh-sbb-{{ section.id }}');
+    if (!root || root.dataset.init) return;
+    root.dataset.init = '1';
+    const cartAddUrl = {{ routes.cart_add_url | append: '.js' | json }};
+    const articles = [...root.querySelectorAll('.snh-sbb-brand')];
+
+    /* brand focus */
+    root.addEventListener('click', e => {
+      const chip = e.target.closest('[data-sbb-chip]');
+      if (!chip) return;
+      const handle = chip.dataset.sbbChip;
+      root.querySelectorAll('[data-sbb-chip]').forEach(c => c.classList.toggle('is-active', c === chip));
+      articles.forEach(a => {
+        const match = handle === 'all' || a.dataset.sbbBrand === handle;
+        a.hidden = !match;
+        a.classList.toggle('is-focused', match && handle !== 'all');
+        const f = a.querySelector('[data-sbb-filters]');
+        if (f) f.hidden = !(match && handle !== 'all');
+      });
+      if (handle !== 'all') {
+        const target = articles.find(a => a.dataset.sbbBrand === handle);
+        if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+      }
+    });
+
+    /* filter + sort, on already-rendered cards */
+    function apply(article) {
+      const row = article.querySelector('[data-sbb-row]');
+      const price = article.querySelector('.snh-sbb__fchip.is-on')?.dataset.sbbVal || 'all';
+      const sort = article.querySelector('[data-sbb-sort]')?.value || 'featured';
+      const cards = [...row.querySelectorAll('[data-sbb-item]')];
+      let shown = 0;
+      cards.forEach(c => {
+        const p = Number(c.dataset.price) / 100;
+        const ok = price === 'all'
+          || (price === 'under5' && p < 5000)
+          || (price === '5to15' && p >= 5000 && p <= 15000)
+          || (price === 'over15' && p > 15000);
+        c.hidden = !ok;
+        if (ok) shown++;
+      });
+      const vis = cards.filter(c => !c.hidden);
+      if (sort !== 'featured') {
+        vis.sort((a, b) => sort === 'price-asc' ? a.dataset.price - b.dataset.price
+          : sort === 'price-desc' ? b.dataset.price - a.dataset.price
+          : String(a.dataset.title).localeCompare(String(b.dataset.title)));
+      } else {
+        vis.sort((a, b) => a.dataset.order - b.dataset.order);
+      }
+      vis.sort((a, b) => (a.hasAttribute('data-sbb-out') ? 1 : 0) - (b.hasAttribute('data-sbb-out') ? 1 : 0));
+      vis.forEach(c => row.appendChild(c));
+      const note = row.querySelector('[data-sbb-note]');
+      if (note) row.appendChild(note);
+      const cnt = article.querySelector('[data-sbb-fcount]');
+      if (cnt) cnt.textContent = `${shown} of ${cards.length}`;
+      const empty = article.querySelector('[data-sbb-empty]');
+      if (empty) empty.hidden = shown > 0;
+    }
+
+    root.addEventListener('click', e => {
+      const chip = e.target.closest('.snh-sbb__fchip');
+      if (!chip) return;
+      const bar = chip.closest('.snh-sbb__fscroll');
+      bar.querySelectorAll(`[data-sbb-f="${chip.dataset.sbbF}"]`).forEach(c => c.classList.toggle('is-on', c === chip));
+      apply(chip.closest('.snh-sbb-brand'));
+    });
+    root.addEventListener('change', e => {
+      const s = e.target.closest('[data-sbb-sort]');
+      if (s) apply(s.closest('.snh-sbb-brand'));
+    });
+
+    /* load every product beyond Shopify's 50-per-collection section limit */
+    const MONEY = {{ shop.money_format | json }};
+    function money(cents) {
+      const n = Number(cents) / 100;
+      const two = n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const none = Math.round(n).toLocaleString('en-US');
+      return MONEY.replace(/\{\{\s*amount_no_decimals\s*\}\}/, none)
+                  .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/, two.replace(/,/g, '#').replace('.', ',').replace(/#/g, '.'))
+                  .replace(/\{\{\s*amount\s*\}\}/, two)
+                  .replace(/<[^>]*>/g, '');
+    }
+    const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const KOKO = 'https://paykoko.com/img/logo1.7ff549c0.png';
+    const ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M6 12h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    function cardHtml(p, order, brand) {
+      const avail = p.variants.filter(v => v.available);
+      const v = avail[0] || p.variants[0];
+      const price = Math.round(parseFloat(v.price) * 100);
+      const compare = v.compare_at_price ? Math.round(parseFloat(v.compare_at_price) * 100) : 0;
+      const multi = p.variants.length > 1;
+      const tags = (p.tags || []).map(t => String(t).toLowerCase());
+      let badge = '';
+      if (tags.includes('best seller') || tags.includes('best-seller')) badge = 'Best seller';
+      else if (tags.includes('new')) badge = 'New in';
+      else if (compare > price) badge = 'On offer';
+      let img = p.images && p.images[0] ? p.images[0].src : '';
+      if (img) img += (img.indexOf('?') > -1 ? '&' : '?') + 'width=620';
+      const url = '/products/' + p.handle;
+      const out = !avail.length;
+      if (out) badge = 'Sold out';
+      return '<div class="sbb-card' + (out ? ' sbb-card--out" data-sbb-out' : '"') + ' data-sbb-item data-handle="' + esc(p.handle) + '" data-price="' + price + '" data-title="' + esc(p.title) + '" data-order="' + (out ? 9999 : order) + '">' +
+        '<a class="sbb-card__shot" href="' + url + '" aria-label="' + esc(p.title) + '"><span class="sbb-card__media">' +
+        (img ? '<img src="' + esc(img) + '" alt="' + esc(p.title) + '" loading="lazy" decoding="async" width="310" height="310">' : '') +
+        '</span>' + (badge ? '<span class="sbb-card__badge">' + badge + '</span>' : '') + '</a>' +
+        '<div class="sbb-card__body"><a class="sbb-card__link" href="' + url + '"><h3 class="sbb-card__title">' + esc(p.title) + '</h3></a>' +
+        '<p class="sbb-card__sub">' + (multi ? p.variants.length + ' options' : esc(p.product_type || brand)) + '</p>' +
+        '<div class="sbb-card__foot"><span class="sbb-card__price">' + money(price) + '</span>' +
+        (out ? '<span class="sbb-card__add is-out"><span>Sold out</span></span>' :
+        '<button type="button" class="sbb-card__add" data-sbb-add="' + v.id + '" data-sbb-multi="' + (multi ? url : '') + '">' +
+        '<span>' + (multi ? 'Choose' : 'Add') + '</span><span class="sbb-card__add-dot" aria-hidden="true">' + ARROW + '</span></button>') + '</div>' +
+        '<span class="sbb-card__koko">OR 3 &times; ' + money(Math.floor(price / 3)) + ' <img class="sbb-card__koko-logo" src="' + KOKO + '" alt="KOKO" loading="lazy" width="46" height="13"></span>' +
+        '</div></div>';
+    }
+
+    async function pages(base) {
+      const out = [];
+      for (let page = 1; page <= 10; page++) {
+        let list = [];
+        try {
+          const r = await fetch(base + '/products.json?limit=250&page=' + page, { headers: { 'Accept': 'application/json' } });
+          list = (await r.json()).products || [];
+        } catch (e) { break; }
+        out.push(...list);
+        if (list.length < 250) break;
+      }
+      return out;
+    }
+    let catalogue = null;
+    const getCatalogue = () => catalogue || (catalogue = pages('/collections/all'));
+    const key = t => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    async function loadRest(row) {
+      const total = Number(row.dataset.sbbTotal || 0);
+      const col = row.dataset.sbbCol;
+      const have = new Set([...row.querySelectorAll('[data-sbb-item]')].map(c => c.dataset.handle));
+      let order = have.size;
+      let html = '';
+      let outHtml = '';
+      const add = p => {
+        if (have.has(p.handle) || !p.variants) return;
+        have.add(p.handle);
+        if (p.variants.some(v => v.available)) { order++; html += cardHtml(p, order, row.dataset.sbbName || ''); }
+        else outHtml += cardHtml(p, 9999, row.dataset.sbbName || '');
+      };
+      /* 1. the rest of the brand collection past Shopify's 50 */
+      if (col && total > 50) (await pages('/collections/' + col)).forEach(add);
+      /* 2. anything in the store made by this brand that the collection missed */
+      const vk = key(row.dataset.sbbVendor);
+      if (vk) {
+        (await getCatalogue()).forEach(p => {
+          if (key(p.vendor) === vk || key(p.title).indexOf(vk) === 0) add(p);
+        });
+      }
+      if (!html && !outHtml) return;
+      const note = row.querySelector('[data-sbb-note]');
+      const firstOut = row.querySelector('[data-sbb-out]');
+      if (html) { if (firstOut) firstOut.insertAdjacentHTML('beforebegin', html); else row.insertAdjacentHTML('beforeend', html); }
+      if (outHtml) row.insertAdjacentHTML('beforeend', outHtml);
+      /* a journal card placed at the end of the first 50 stays in its slot */
+      if (note && note.nextElementSibling) {
+        const cards = row.querySelectorAll('[data-sbb-item]');
+        const slot = Math.min({{ section.settings.journal_after | default: 4 }}, cards.length);
+        if (cards[slot - 1]) cards[slot - 1].after(note);
+      }
+      const art = row.closest('.snh-sbb-brand');
+      if (art && art.classList.contains('is-focused')) apply(art);
+    }
+    const rows = [...root.querySelectorAll('[data-sbb-row]')];
+    const idle = window.requestIdleCallback || (fn => setTimeout(fn, 200));
+    idle(() => rows.forEach(loadRest));
+
+    /* quick add → Elite cart drawer */
+    root.addEventListener('click', async e => {
+      const btn = e.target.closest('[data-sbb-add]');
+      if (!btn) return;
+      e.preventDefault();
+      if (btn.dataset.sbbMulti) { window.location.href = btn.dataset.sbbMulti; return; }
+      const label = btn.querySelector('span');
+      const original = label.textContent;
+      btn.classList.add('is-added');
+      label.textContent = 'Adding…';
+      try {
+        const r = await fetch(cartAddUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(btn.dataset.sbbAdd), quantity: 1 }] })
+        });
+        if (!r.ok) throw new Error();
+        label.textContent = 'Added';
+        document.documentElement.dispatchEvent(new CustomEvent('variant:add', { bubbles: true }));
+      } catch (err) {
+        label.textContent = 'Try again';
+      }
+      setTimeout(() => { btn.classList.remove('is-added'); label.textContent = original; }, 1800);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SNH Shop by Brand",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Page title", "default": "Shop by brand" },
+    { "type": "text", "id": "hidden_brands", "label": "Brands to hide", "default": "Seven Seas, Centrum, Vitabiotics, Surge, Trace", "info": "Comma separated. Hidden everywhere on this page without deleting the block — clear a name to bring that brand back." },
+    { "type": "blog", "id": "blog", "label": "Journal blog", "info": "Articles tagged with a brand name appear inside that brand's row." },
+    { "type": "range", "id": "journal_after", "label": "Journal card position", "min": 2, "max": 8, "step": 1, "default": 4, "info": "Show the article after this many products." }
+  ],
+  "blocks": [
+    { "type": "brand", "name": "Brand", "settings": [
+      { "type": "collection", "id": "collection", "label": "Brand collection" },
+      { "type": "text", "id": "name", "label": "Brand name (optional)" },
+      { "type": "image_picker", "id": "image", "label": "Brand logo" }
+    ]}
+  ],
+  "max_blocks": 30,
+  "presets": [{ "name": "SNH Shop by Brand" }]
+}
+{% endschema %}

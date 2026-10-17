@@ -1,0 +1,406 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "slideshow_Qa4rBr": {
+      "type": "slideshow",
+      "blocks": {
+        "image_npmmHN": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/3020822f-af0f-469f-928b-eb220c28cda5.jpg",
+            "mobile_image": "shopify://shop_images/Social_-_BF_Month_-_The_Benefits___2.jpg",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "background": "",
+            "background_gradient": ""
+          }
+        },
+        "image_txAazh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/May_-_SiS_Banner.webp",
+            "mobile_image": "shopify://shop_images/Social_-_Caffeine_-_Instagram_-_Grid.jpg",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "background": "",
+            "background_gradient": ""
+          }
+        },
+        "image_gBPHLh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ce1e57ec-0a81-4190-9f98-3e0756910eec.jpg",
+            "mobile_image": "shopify://shop_images/Social_-_BF_Month_-_The_Benefits___3.jpg",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "background": "",
+            "background_gradient": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_npmmHN",
+        "image_txAazh",
+        "image_gBPHLh"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "show_initial_transition": false,
+        "image_size": "auto",
+        "controls_type": "dots",
+        "transition_type": "fade_with_text",
+        "autoplay": false,
+        "cycle_speed": 6,
+        "background": "#f2f2f2",
+        "background_gradient": ""
+      }
+    },
+    "scrolling_text_TD8zFt": {
+      "type": "scrolling-text",
+      "settings": {
+        "full_width": true,
+        "text": "FUELING YOUR PEAK PERFORMANCE",
+        "text_size": "small",
+        "text_style": "fill",
+        "scrolling_mode": "auto",
+        "scrolling_speed": 16,
+        "background": "",
+        "background_gradient": "linear-gradient(225deg, rgba(57, 255, 20, 1) 15%, rgba(15, 114, 201, 1) 85%)",
+        "text_color": "#ffffff",
+        "text_gradient": ""
+      }
+    },
+    "collection_list_mdrh9z": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_ghGhQx": {
+          "type": "collection",
+          "settings": {
+            "collection": "casein",
+            "image": "shopify://shop_images/7_0541c7ed-04a0-4b49-aa3c-30ed15045c47.png",
+            "subheading": "",
+            "title": "RUNNING",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_zDncTr": {
+          "type": "collection",
+          "settings": {
+            "collection": "bundle-offers",
+            "image": "shopify://shop_images/5.png",
+            "subheading": "",
+            "title": "CYCLING",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_3JhFJ9": {
+          "type": "collection",
+          "settings": {
+            "collection": "bundle-offers",
+            "image": "shopify://shop_images/15.png",
+            "subheading": "",
+            "title": "TRIATHLON",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_UGJeJ8": {
+          "type": "collection",
+          "settings": {
+            "collection": "bundle-offers",
+            "image": "shopify://shop_images/11_b3c5a12c-009a-456b-8f62-d1a9d982f704.png",
+            "subheading": "",
+            "title": "CRICKET",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_F7Wykw": {
+          "type": "collection",
+          "settings": {
+            "collection": "supplements",
+            "image": "shopify://shop_images/2_a1530dd8-e82d-4a54-b906-d26afdabb6e5.png",
+            "subheading": "",
+            "title": "ROWING",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_DGcHiL": {
+          "type": "collection",
+          "settings": {
+            "collection": "supplements",
+            "image": "shopify://shop_images/1_23d15751-c7d9-4538-9794-c9c1c0c927dd.png",
+            "subheading": "",
+            "title": "FOOTBALL",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_Mkc8Cb": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "image": "shopify://shop_images/9_d1f7d38d-8571-490e-b783-6f68d2e9a615.png",
+            "subheading": "",
+            "title": "RUGBY",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_JUXfjt": {
+          "type": "collection",
+          "settings": {
+            "collection": "collagen",
+            "image": "shopify://shop_images/16.png",
+            "subheading": "",
+            "title": "GYM",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_aU6Pji": {
+          "type": "collection",
+          "settings": {
+            "collection": "bundle-offers",
+            "subheading": "",
+            "title": "ALL SPORTS",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_ghGhQx",
+        "collection_zDncTr",
+        "collection_3JhFJ9",
+        "collection_UGJeJ8",
+        "collection_F7Wykw",
+        "collection_DGcHiL",
+        "collection_Mkc8Cb",
+        "collection_JUXfjt",
+        "collection_aU6Pji"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_collections": false,
+        "collections_per_row_mobile": "1",
+        "collections_per_row": 3,
+        "show_progress_bar": false,
+        "subheading": "",
+        "title": "SHOP BY SPORT",
+        "content": "",
+        "link_url": "",
+        "link_text": "View all",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    },
+    "media_with_text_8Mjbji": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_zjDAmE": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_240_x_240_px_1.png",
+            "media_width": 50,
+            "media_position": "start",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/Untitled_240_x_240_px_2.png",
+            "icon_width": 88,
+            "subheading": "SCIENCE IN SPORTS",
+            "title": "LEADERS IN ENDURANCE SPORTS NUTRITION",
+            "content": "<p>AT SNH WE BRING YOU THE BEST</p>",
+            "link_text": "SHOP NOW",
+            "link_url": "",
+            "background": "#000000",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "#fc6200",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_zjDAmE"
+      ],
+      "settings": {
+        "full_width": false,
+        "alternate_media_position": false,
+        "spacing": "small"
+      }
+    },
+    "collection_list_VLmTUR": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_MaRcFY": {
+          "type": "collection",
+          "settings": {
+            "collection": "sis",
+            "image": "shopify://shop_images/Social_-_Which_Gel_-_Instagram_-_Grid.jpg",
+            "subheading": "",
+            "title": "ENERGY GELS",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_Mexmhc": {
+          "type": "collection",
+          "settings": {
+            "collection": "bundle-offers",
+            "image": "shopify://shop_images/Social_-_FUELLING_GUIDE_-_Running_-_2hr_Session___2.jpg",
+            "subheading": "",
+            "title": "RECOVERY POWDERS",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_AhHJqQ": {
+          "type": "collection",
+          "settings": {
+            "collection": "sis",
+            "image": "shopify://shop_images/Social_-_HYDRO_-_Instagram_-_Grid.jpg",
+            "subheading": "",
+            "title": "ELECTROLYTES",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_MaRcFY",
+        "collection_Mexmhc",
+        "collection_AhHJqQ"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_collections": false,
+        "collections_per_row_mobile": "1",
+        "collections_per_row": 3,
+        "show_progress_bar": false,
+        "subheading": "",
+        "title": "INFORMED SPORTS COLLECTION",
+        "content": "",
+        "link_url": "",
+        "link_text": "View all",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "slideshow_Qa4rBr",
+    "scrolling_text_TD8zFt",
+    "collection_list_mdrh9z",
+    "media_with_text_8Mjbji",
+    "collection_list_VLmTUR"
+  ]
+}

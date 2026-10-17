@@ -1,0 +1,328 @@
+{% comment %}
+  SNH FAQ Support Section
+  Standalone replacement for the old FAQ section.
+  Add this as a NEW section file: sections/snh-faq-support.liquid
+{% endcomment %}
+
+<section class="snh-faq snh-faq--{{ section.id }}">
+  <div class="snh-faq__wrap">
+    <div class="snh-faq__panel">
+      <div class="snh-faq__side">
+        {% if section.settings.eyebrow != blank %}
+          <p class="snh-faq__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="snh-faq__heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <div class="snh-faq__subheading">{{ section.settings.subheading }}</div>
+        {% endif %}
+
+        {% if section.settings.cta_label != blank %}
+          <a class="snh-faq__cta" href="{{ section.settings.cta_link }}">
+            <span>{{ section.settings.cta_label }}</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="snh-faq__list">
+        {% for block in section.blocks %}
+          <details class="snh-faq-item" {% if section.settings.open_first and forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+            <summary class="snh-faq-item__summary">
+              <span class="snh-faq-item__question">{{ block.settings.question }}</span>
+              <span class="snh-faq-item__icon" aria-hidden="true"></span>
+            </summary>
+
+            <div class="snh-faq-item__answer">
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --faq-bg: {{ section.settings.background }};
+    --faq-panel: {{ section.settings.panel_background }};
+    --faq-text: {{ section.settings.text_color }};
+    --faq-muted: rgba(23, 23, 23, 0.62);
+    --faq-orange: {{ section.settings.accent_color }};
+    --faq-line: rgba(23, 23, 23, 0.09);
+    --faq-radius: {{ section.settings.radius }}px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq {
+    background: var(--faq-bg);
+    color: var(--faq-text);
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__wrap {
+    width: min(100% - 40px, 1440px);
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__panel {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(28px, 4vw, 70px);
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__side {
+    position: sticky;
+    top: calc(var(--sticky-area-height, 0px) + 28px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__eyebrow {
+    margin: 0 0 12px;
+    color: var(--faq-orange);
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__heading {
+    margin: 0;
+    color: var(--faq-text);
+    font-size: clamp(58px, 7vw, 116px);
+    line-height: 0.82;
+    font-weight: 950;
+    letter-spacing: -0.085em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__subheading {
+    margin-block-start: 20px;
+    max-width: 410px;
+    color: var(--faq-muted);
+    font-size: clamp(15px, 1.05vw, 19px);
+    line-height: 1.45;
+    font-weight: 780;
+    letter-spacing: -0.025em;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__subheading p {
+    margin: 0 0 8px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 52px;
+    margin-block-start: 28px;
+    padding: 0 24px;
+    border-radius: 12px;
+    background: var(--faq-orange);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    box-shadow: 0 16px 34px rgba(255, 90, 0, 0.18);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 44px rgba(255, 90, 0, 0.24);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__cta svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq__list {
+    overflow: hidden;
+    border: 1px solid var(--faq-line);
+    border-radius: var(--faq-radius);
+    background: var(--faq-panel);
+    box-shadow: 0 22px 58px rgba(17, 17, 17, 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item {
+    border-bottom: 1px solid var(--faq-line);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item:last-child {
+    border-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    gap: 18px;
+    align-items: center;
+    min-height: 82px;
+    padding: 24px clamp(22px, 3vw, 40px);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__question {
+    color: var(--faq-text);
+    font-size: clamp(17px, 1.1vw, 21px);
+    line-height: 1.22;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__icon {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    justify-self: end;
+    border-radius: 10px;
+    background: #f1f1f0;
+    color: var(--faq-orange);
+    transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__icon::before,
+  #shopify-section-{{ section.id }} .snh-faq-item__icon::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 2px;
+    border-radius: 99px;
+    background: currentColor;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__icon::after {
+    transform: rotate(90deg);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item[open] .snh-faq-item__icon {
+    background: #171717;
+    color: #fff;
+    transform: rotate(180deg);
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item[open] .snh-faq-item__icon::after {
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__answer {
+    max-width: 760px;
+    padding: 0 clamp(22px, 3vw, 40px) 28px;
+    color: rgba(23, 23, 23, 0.68);
+    font-size: clamp(15px, 1vw, 18px);
+    line-height: 1.58;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__answer p {
+    margin: 0 0 12px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-faq-item__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 900px) {
+    #shopify-section-{{ section.id }} .snh-faq__panel {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq__side {
+      position: static;
+    }
+  }
+
+  @media screen and (max-width: 760px) {
+    #shopify-section-{{ section.id }} .snh-faq {
+      padding-block: {{ section.settings.mobile_padding_top }}px {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq__wrap {
+      width: min(100% - 28px, 1440px);
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq__heading {
+      font-size: clamp(56px, 18vw, 86px);
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq__list {
+      border-radius: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq-item__summary {
+      min-height: 72px;
+      padding: 20px 18px;
+      grid-template-columns: minmax(0, 1fr) 36px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq-item__answer {
+      padding: 0 18px 22px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-faq__cta {
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SNH FAQ Support",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Support desk" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "FAQ’s" },
+    { "type": "richtext", "id": "subheading", "label": "Support text", "default": "<p>Our customer support is available everyday: 10am–7pm.</p>" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Contact for more" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "checkbox", "id": "open_first", "label": "Open first FAQ by default", "default": true },
+    { "type": "range", "id": "radius", "label": "Panel radius", "min": 8, "max": 28, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "padding_top", "label": "Desktop top spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Desktop bottom spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "mobile_padding_top", "label": "Mobile top spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "Mobile bottom spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f3f3f2" },
+    { "type": "color", "id": "panel_background", "label": "Panel background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#171717" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#ff5a00" }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How long will it take to get my order?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Delivery timelines depend on your location and selected shipping method. Contact our team if you need help with a specific order.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SNH FAQ Support",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "How long will it take to get my order?", "answer": "<p>Delivery timelines depend on your location and selected shipping method. Contact our team if you need help with a specific order.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Where can I come visit physically?", "answer": "<p>You can visit our store during opening hours. Check our contact details or message us before visiting for product availability.</p>" } },
+        { "type": "faq_item", "settings": { "question": "I want to know more", "answer": "<p>Contact our team for product recommendations, availability, payment options and delivery support.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

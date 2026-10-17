@@ -1,0 +1,543 @@
+{%- render 'section-spacing-collapsing' -%}
+
+{%- comment -%}
+------------------------------------------------------------------------------------------------------------------------
+SNH "Shop by Goal" — two-banner accordion
+- Heading in the SNH Elite display voice (Archivo 900, tight, uppercase)
+- Frame consistent with Why Choose Us / brand rail (1500px, clamp padding, tight top)
+- Two 16:9 banners (Train & Perform = orange, Health & Wellness = purple);
+  clicking one slides its 3:4 sub-goal cards open below (one open at a time)
+- Mobile: banners stack, each panel opens directly under its own banner,
+  cards become a swipeable snap row
+------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign train_count = 0
+  assign well_count = 0
+  for block in section.blocks
+    if block.settings.group == 'wellness'
+      assign well_count = well_count | plus: 1
+    else
+      assign train_count = train_count | plus: 1
+    endif
+  endfor
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} .section-spacing,
+  #shopify-section-{{ section.id }} .section {
+    padding-block-start: clamp(20px, 2.5vw, 36px) !important;
+  }
+  #shopify-section-{{ section.id }} .container {
+    max-width: 1500px;
+    padding-inline: clamp(18px, 4vw, 64px);
+  }
+  #shopify-section-{{ section.id }} .section-stack { gap: clamp(18px, 2vw, 28px); }
+
+  /* ---------- header ---------- */
+  #shopify-section-{{ section.id }} .snh-goal__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__heading {
+    margin: 0;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 3.4vw, 46px);
+    letter-spacing: -.03em;
+    line-height: .98;
+    text-transform: uppercase;
+    color: {{ section.settings.heading_color | default: '#141414' }};
+  }
+  #shopify-section-{{ section.id }} .snh-goal__viewall {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: {{ section.settings.heading_color | default: '#141414' }};
+    text-decoration: none;
+    border-bottom: 2px solid rgba(224, 82, 28, .9);
+    padding-bottom: 3px;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__viewall:hover { color: #e0521c; }
+
+  /* ---------- layout: banners + panels ---------- */
+  #shopify-section-{{ section.id }} .snh-goal__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(12px, 1.4vw, 18px);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner--train { order: 1; }
+  #shopify-section-{{ section.id }} .snh-goal__banner--wellness { order: 2; }
+  #shopify-section-{{ section.id }} .snh-goal__panel--train { order: 3; grid-column: 1 / -1; }
+  #shopify-section-{{ section.id }} .snh-goal__panel--wellness { order: 4; grid-column: 1 / -1; }
+
+  /* ---------- banner ---------- */
+  #shopify-section-{{ section.id }} .snh-goal__banner {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid rgba(20, 20, 20, .08);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #141414;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner:hover { transform: translateY(-2px); }
+  #shopify-section-{{ section.id }} .snh-goal__banner:focus-visible {
+    outline: 2px solid var(--goal-accent);
+    outline-offset: 3px;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner.is-open {
+    border-color: var(--goal-accent);
+    box-shadow: 0 18px 44px rgba(20, 20, 20, .16);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .7s cubic-bezier(.22, .61, .21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner:hover .snh-goal__banner-media img { transform: scale(1.045); }
+  #shopify-section-{{ section.id }} .snh-goal__scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(200deg, rgba(10, 8, 6, 0) 38%, rgba(10, 8, 6, .74) 88%);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner-line {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--goal-accent), transparent 78%);
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner:hover .snh-goal__banner-line,
+  #shopify-section-{{ section.id }} .snh-goal__banner.is-open .snh-goal__banner-line { opacity: 1; }
+
+  #shopify-section-{{ section.id }} .snh-goal__banner-content {
+    position: absolute;
+    inset-inline: clamp(18px, 2.4vw, 34px);
+    bottom: clamp(16px, 2.2vw, 30px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--goal-accent-soft);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__title {
+    margin: 0;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-weight: 900;
+    font-size: clamp(22px, 2.6vw, 38px);
+    letter-spacing: -.02em;
+    line-height: .98;
+    text-transform: uppercase;
+    color: #fdf6ef;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__cue {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(253, 246, 239, .32);
+    background: rgba(10, 8, 6, .38);
+    backdrop-filter: blur(6px);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #fdf6ef;
+    transition: background .25s ease, border-color .25s ease;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__banner:hover .snh-goal__cue { border-color: var(--goal-accent); }
+  #shopify-section-{{ section.id }} .snh-goal__banner.is-open .snh-goal__cue {
+    background: var(--goal-accent);
+    border-color: var(--goal-accent);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__cue-icon {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    transition: transform .35s cubic-bezier(.22, .61, .21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__cue-icon::before,
+  #shopify-section-{{ section.id }} .snh-goal__cue-icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    background: currentColor;
+  }
+  #shopify-section-{{ section.id }} .snh-goal__cue-icon::before { width: 10px; height: 2px; }
+  #shopify-section-{{ section.id }} .snh-goal__cue-icon::after { width: 2px; height: 10px; }
+  #shopify-section-{{ section.id }} .snh-goal__banner.is-open .snh-goal__cue-icon { transform: rotate(45deg); }
+  #shopify-section-{{ section.id }} .snh-goal__cue-label--close { display: none; }
+  #shopify-section-{{ section.id }} .snh-goal__banner.is-open .snh-goal__cue-label--open { display: none; }
+  #shopify-section-{{ section.id }} .snh-goal__banner.is-open .snh-goal__cue-label--close { display: inline; }
+
+  /* ---------- sliding panel ---------- */
+  #shopify-section-{{ section.id }} .snh-goal__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .55s cubic-bezier(.22, .61, .21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__panel.is-open { grid-template-rows: 1fr; }
+  #shopify-section-{{ section.id }} .snh-goal__panel-clip { overflow: hidden; min-height: 0; }
+  #shopify-section-{{ section.id }} .snh-goal__cards {
+    display: grid;
+    gap: clamp(10px, 1.2vw, 16px);
+    padding-block: clamp(6px, .8vw, 12px) clamp(4px, .6vw, 10px);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__panel--train .snh-goal__cards { grid-template-columns: repeat({{ train_count | at_least: 1 | at_most: 4 }}, 1fr); }
+  #shopify-section-{{ section.id }} .snh-goal__panel--wellness .snh-goal__cards { grid-template-columns: repeat({{ well_count | at_least: 1 | at_most: 6 }}, 1fr); }
+
+  /* ---------- sub-goal card ---------- */
+  #shopify-section-{{ section.id }} .snh-goal-card {
+    display: block;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .45s ease, transform .45s cubic-bezier(.22, .61, .21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-goal__panel.is-open .snh-goal-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  {%- for i in (1..10) -%}
+  #shopify-section-{{ section.id }} .snh-goal__panel.is-open .snh-goal-card:nth-child({{ i }}) { transition-delay: {{ i | times: 55 | plus: 90 }}ms; }
+  {%- endfor -%}
+  #shopify-section-{{ section.id }} .snh-goal-card__media {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #efe9e1;
+    border: 1px solid rgba(20, 20, 20, .07);
+    transition: border-color .25s ease, box-shadow .25s ease;
+  }
+  #shopify-section-{{ section.id }} .snh-goal-card:hover .snh-goal-card__media {
+    border-color: var(--goal-accent);
+    box-shadow: 0 12px 28px rgba(20, 20, 20, .14);
+  }
+  #shopify-section-{{ section.id }} .snh-goal-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s cubic-bezier(.22, .61, .21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-goal-card:hover .snh-goal-card__media img { transform: scale(1.05); }
+  #shopify-section-{{ section.id }} .snh-goal-card__label {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  #shopify-section-{{ section.id }} .snh-goal-card__index {
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--goal-accent);
+  }
+  #shopify-section-{{ section.id }} .snh-goal-card__title {
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(12px, 1vw, 14.5px);
+    font-weight: 800;
+    letter-spacing: -.01em;
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: {{ section.settings.heading_color | default: '#141414' }};
+    transition: color .2s ease;
+  }
+  #shopify-section-{{ section.id }} .snh-goal-card:hover .snh-goal-card__title { color: var(--goal-accent); }
+
+  /* ---------- mobile ---------- */
+  @media screen and (max-width: 899px) {
+    #shopify-section-{{ section.id }} .snh-goal__grid { grid-template-columns: 1fr; }
+    #shopify-section-{{ section.id }} .snh-goal__banner--train { order: 1; }
+    #shopify-section-{{ section.id }} .snh-goal__panel--train { order: 2; }
+    #shopify-section-{{ section.id }} .snh-goal__banner--wellness { order: 3; }
+    #shopify-section-{{ section.id }} .snh-goal__panel--wellness { order: 4; }
+
+    #shopify-section-{{ section.id }} .snh-goal__cards,
+    #shopify-section-{{ section.id }} .snh-goal__panel--train .snh-goal__cards,
+    #shopify-section-{{ section.id }} .snh-goal__panel--wellness .snh-goal__cards {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 44vw;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(clamp(18px, 4vw, 64px) * -1);
+      padding-inline: clamp(18px, 4vw, 64px);
+    }
+    #shopify-section-{{ section.id }} .snh-goal__cards::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .snh-goal-card { scroll-snap-align: start; }
+    #shopify-section-{{ section.id }} .snh-goal__cue { padding: 8px 11px; }
+    #shopify-section-{{ section.id }} .snh-goal__cue-label { display: none; }
+    #shopify-section-{{ section.id }} .snh-goal__title { font-size: clamp(20px, 6vw, 26px); }
+    #shopify-section-{{ section.id }} .snh-goal__viewall { font-size: 11px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .snh-goal__panel,
+    #shopify-section-{{ section.id }} .snh-goal-card,
+    #shopify-section-{{ section.id }} .snh-goal__banner-media img,
+    #shopify-section-{{ section.id }} .snh-goal-card__media img { transition: none !important; }
+  }
+</style>
+
+<div {% render 'section-properties' %}>
+  <div class="section-stack">
+
+    <div id="snh-goal-{{ section.id }}" data-snh-goal>
+      <div class="snh-goal__header" style="margin-bottom: clamp(16px, 1.8vw, 26px);">
+        <h2 class="snh-goal__heading">{{ section.settings.title | default: 'Shop by Goal' | escape }}</h2>
+        {%- if section.settings.viewall_url != blank -%}
+          <a class="snh-goal__viewall" href="{{ section.settings.viewall_url }}">{{ section.settings.viewall_text | default: 'View all' | escape }}<span aria-hidden="true">&rarr;</span></a>
+        {%- endif -%}
+      </div>
+
+      <div class="snh-goal__grid">
+        {%- comment -%} ---- Banner: Train & Perform ---- {%- endcomment -%}
+        <button type="button" class="snh-goal__banner snh-goal__banner--train" style="--goal-accent: {{ section.settings.train_accent | default: '#e0521c' }}; --goal-accent-soft: {{ section.settings.train_accent | default: '#e0521c' | color_lighten: 18 }};" data-goal-toggle="train" aria-expanded="false" aria-controls="snh-goal-panel-train-{{ section.id }}">
+          <span class="snh-goal__banner-media">
+            {%- if section.settings.train_image != blank -%}
+              {{- section.settings.train_image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,900,1200,1600', sizes: '(max-width: 899px) 100vw, 740px' -}}
+            {%- else -%}
+              <img src="{{ section.settings.train_image_url }}" alt="{{ section.settings.train_title | escape }}" loading="lazy">
+            {%- endif -%}
+            <span class="snh-goal__scrim" aria-hidden="true"></span>
+            <span class="snh-goal__banner-line" aria-hidden="true"></span>
+          </span>
+          <span class="snh-goal__banner-content">
+            <span>
+              <span class="snh-goal__eyebrow">{{ section.settings.train_eyebrow | escape }}</span>
+              <span class="snh-goal__title">{{ section.settings.train_title | escape }}</span>
+            </span>
+            <span class="snh-goal__cue">
+              <span class="snh-goal__cue-label snh-goal__cue-label--open">Explore</span>
+              <span class="snh-goal__cue-label snh-goal__cue-label--close">Close</span>
+              <span class="snh-goal__cue-icon" aria-hidden="true"></span>
+            </span>
+          </span>
+        </button>
+
+        {%- comment -%} ---- Banner: Health & Wellness ---- {%- endcomment -%}
+        <button type="button" class="snh-goal__banner snh-goal__banner--wellness" style="--goal-accent: {{ section.settings.well_accent | default: '#7c3aed' }}; --goal-accent-soft: {{ section.settings.well_accent | default: '#7c3aed' | color_lighten: 22 }};" data-goal-toggle="wellness" aria-expanded="false" aria-controls="snh-goal-panel-wellness-{{ section.id }}">
+          <span class="snh-goal__banner-media">
+            {%- if section.settings.well_image != blank -%}
+              {{- section.settings.well_image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,900,1200,1600', sizes: '(max-width: 899px) 100vw, 740px' -}}
+            {%- else -%}
+              <img src="{{ section.settings.well_image_url }}" alt="{{ section.settings.well_title | escape }}" loading="lazy">
+            {%- endif -%}
+            <span class="snh-goal__scrim" aria-hidden="true"></span>
+            <span class="snh-goal__banner-line" aria-hidden="true"></span>
+          </span>
+          <span class="snh-goal__banner-content">
+            <span>
+              <span class="snh-goal__eyebrow">{{ section.settings.well_eyebrow | escape }}</span>
+              <span class="snh-goal__title">{{ section.settings.well_title | escape }}</span>
+            </span>
+            <span class="snh-goal__cue">
+              <span class="snh-goal__cue-label snh-goal__cue-label--open">Explore</span>
+              <span class="snh-goal__cue-label snh-goal__cue-label--close">Close</span>
+              <span class="snh-goal__cue-icon" aria-hidden="true"></span>
+            </span>
+          </span>
+        </button>
+
+        {%- comment -%} ---- Panels ---- {%- endcomment -%}
+        {%- assign groups = 'train,wellness' | split: ',' -%}
+        {%- for group in groups -%}
+          {%- if group == 'train' -%}
+            {%- assign accent = section.settings.train_accent | default: '#e0521c' -%}
+          {%- else -%}
+            {%- assign accent = section.settings.well_accent | default: '#7c3aed' -%}
+          {%- endif -%}
+          <div class="snh-goal__panel snh-goal__panel--{{ group }}" id="snh-goal-panel-{{ group }}-{{ section.id }}" data-goal-panel="{{ group }}" style="--goal-accent: {{ accent }};">
+            <div class="snh-goal__panel-clip">
+              <div class="snh-goal__cards">
+                {%- liquid
+                  assign idx = 0
+                -%}
+                {%- for block in section.blocks -%}
+                  {%- assign block_group = block.settings.group | default: 'train' -%}
+                  {%- if block_group == group -%}
+                    {%- assign idx = idx | plus: 1 -%}
+                    {%- assign card_url = block.settings.link | default: block.settings.collection.url | default: '#' -%}
+                    <a class="snh-goal-card" href="{{ card_url }}" {{ block.shopify_attributes }}>
+                      <span class="snh-goal-card__media">
+                        {%- if block.settings.image != blank -%}
+                          {{- block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300,500,800', sizes: '(max-width: 899px) 44vw, 360px' -}}
+                        {%- elsif block.settings.image_url != blank -%}
+                          <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+                        {%- endif -%}
+                      </span>
+                      <span class="snh-goal-card__label">
+                        <span class="snh-goal-card__index">{{ idx | prepend: '0' | slice: -2, 2 }}</span>
+                        <span class="snh-goal-card__title">{{ block.settings.title | escape }}</span>
+                      </span>
+                    </a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const init = (root) => {
+      if (!root || root.dataset.goalInit) return;
+      root.dataset.goalInit = '1';
+      const toggles = Array.from(root.querySelectorAll('[data-goal-toggle]'));
+      const setState = (btn, open) => {
+        const panel = root.querySelector('[data-goal-panel="' + btn.dataset.goalToggle + '"]');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.classList.toggle('is-open', open);
+        if (panel) panel.classList.toggle('is-open', open);
+      };
+      toggles.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const willOpen = btn.getAttribute('aria-expanded') !== 'true';
+          toggles.forEach((b) => setState(b, false));
+          if (!willOpen) return;
+          setState(btn, true);
+          const panel = root.querySelector('[data-goal-panel="' + btn.dataset.goalToggle + '"]');
+          window.setTimeout(() => {
+            if (!panel) return;
+            const r = panel.getBoundingClientRect();
+            if (r.bottom > window.innerHeight - 40) {
+              window.scrollTo({ top: window.scrollY + r.top - window.innerHeight * 0.32, behavior: 'smooth' });
+            }
+          }, 260);
+        });
+      });
+    };
+    init(document.getElementById('snh-goal-{{ section.id }}'));
+    document.addEventListener('shopify:section:load', (e) => {
+      const el = e.target && e.target.querySelector && e.target.querySelector('[data-snh-goal]');
+      if (el) init(el);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Shop by Goal (SNH)",
+  "class": "shopify-section--snh-shop-by-goal",
+  "tag": "section",
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Shop by Goal" },
+    { "type": "url", "id": "viewall_url", "label": "View all link" },
+    { "type": "text", "id": "viewall_text", "label": "View all text", "default": "View all" },
+    { "type": "header", "content": "Banner 1 — Train & Perform" },
+    { "type": "text", "id": "train_eyebrow", "label": "Eyebrow", "default": "Performance" },
+    { "type": "text", "id": "train_title", "label": "Title", "default": "Train & Perform" },
+    { "type": "image_picker", "id": "train_image", "label": "Banner image (overrides URL)" },
+    { "type": "text", "id": "train_image_url", "label": "Banner image URL", "default": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bane1.png?v=1784056180" },
+    { "type": "color", "id": "train_accent", "label": "Accent", "default": "#E0521C" },
+    { "type": "header", "content": "Banner 2 — Health & Wellness" },
+    { "type": "text", "id": "well_eyebrow", "label": "Eyebrow", "default": "Wellness" },
+    { "type": "text", "id": "well_title", "label": "Title", "default": "Health & Wellness" },
+    { "type": "image_picker", "id": "well_image", "label": "Banner image (overrides URL)" },
+    { "type": "text", "id": "well_image_url", "label": "Banner image URL", "default": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bane2.png?v=1784056180" },
+    { "type": "color", "id": "well_accent", "label": "Accent", "default": "#7C3AED" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FAF7F2" },
+    { "type": "color", "id": "heading_color", "label": "Heading / card text", "default": "#141414" }
+  ],
+  "blocks": [
+    {
+      "type": "goal",
+      "name": "Sub-goal card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "group",
+          "label": "Belongs to",
+          "options": [
+            { "value": "train", "label": "Train & Perform" },
+            { "value": "wellness", "label": "Health & Wellness" }
+          ],
+          "default": "train"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Goal" },
+        { "type": "image_picker", "id": "image", "label": "Image (overrides URL)" },
+        { "type": "text", "id": "image_url", "label": "Image URL" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "link", "label": "Link (overrides collection)" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Shop by Goal (SNH)",
+      "blocks": [
+        { "type": "goal", "settings": { "group": "train", "title": "Muscle & Strength", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_17_PM_1.png?v=1784056180" } },
+        { "type": "goal", "settings": { "group": "train", "title": "Fat Loss", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_18_PM_2.png?v=1784056179" } },
+        { "type": "goal", "settings": { "group": "train", "title": "Energy & Endurance", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_3.png?v=1784056179" } },
+        { "type": "goal", "settings": { "group": "train", "title": "Recovery", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_4.png?v=1784056179" } },
+        { "type": "goal", "settings": { "group": "wellness", "title": "Daily Wellness", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_5.png?v=1784056179" } },
+        { "type": "goal", "settings": { "group": "wellness", "title": "Gut Health", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_20_PM_6.png?v=1784056180" } },
+        { "type": "goal", "settings": { "group": "wellness", "title": "Women's Health", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_20_PM_7.png?v=1784056180" } },
+        { "type": "goal", "settings": { "group": "wellness", "title": "Beauty, Hair & Skin", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_21_PM_8.png?v=1784056180" } },
+        { "type": "goal", "settings": { "group": "wellness", "title": "Joint & Mobility", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_21_PM_9.png?v=1784056180" } },
+        { "type": "goal", "settings": { "group": "wellness", "title": "Sleep", "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_22_PM_10.png?v=1784056180" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

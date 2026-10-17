@@ -1,0 +1,527 @@
+{%- comment -%}
+  ══════════════════════════════════════════════════════════════════
+  SNH — Envelope voucher popup
+
+  A glass envelope holds your uploaded creative. The customer enters an
+  email, Shopify registers them as a subscriber, and the letter slides
+  up out of the envelope to reveal the discount code.
+
+  Everything is editable in the theme editor: creative, headline,
+  discount code, colours, timing.
+
+  INSTALL
+  1. Online Store → Themes → Edit code → Sections → Add a new section
+     named  snh-envelope-popup
+  2. Paste this whole file, save.
+  3. Customize → Home page → Add section → "SNH envelope voucher"
+  4. Remove the old newsletter popup section.
+  5. Upload your creative (the 4:5 promo artwork) in the section settings.
+  ══════════════════════════════════════════════════════════════════
+{%- endcomment -%}
+
+{%- liquid
+  assign nid = 'snh-env-' | append: section.id
+  assign accent = section.settings.accent | default: '#e0521c'
+  assign ink = section.settings.ink | default: '#17130f'
+  assign code = section.settings.code | default: 'SNH15'
+  assign creative = section.settings.creative
+  assign creative_url = section.settings.creative_url
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<div id="{{ nid }}" class="snh-ev" hidden
+     data-delay="{{ section.settings.delay_seconds | default: 2 }}"
+     data-max-shows="{{ section.settings.max_shows | default: 3 }}"
+     data-revisit-mins="{{ section.settings.revisit_mins | default: 30 }}"
+     data-index-only="{{ section.settings.show_only_on_index | default: false }}"
+     data-is-index="{% if template.name == 'index' %}1{% else %}0{% endif %}"
+     role="dialog" aria-modal="true" aria-label="{{ section.settings.headline | default: 'Subscriber offer' | escape }}">
+
+  <div class="snh-ev__veil" data-ev-close></div>
+
+  <div class="snh-ev__card" role="document">
+    <button type="button" class="snh-ev__x" data-ev-close aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+
+    {%- form 'customer', class: 'snh-ev__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter, popup">
+      <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+      {%- assign won = false -%}
+      {%- if form.posted_successfully? -%}{%- assign won = true -%}{%- endif -%}
+
+      <div class="snh-ev__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="snh-ev__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="snh-ev__headline">{{ section.settings.headline | default: 'Sale 15%' }}</h2>
+      </div>
+
+      {%- comment -%} ── the envelope ── {%- endcomment -%}
+      <div class="snh-ev__stage{% if won %} is-open{% endif %}" data-ev-stage>
+        <span class="snh-ev__flap" aria-hidden="true"></span>
+
+        <div class="snh-ev__letter">
+          {%- if creative != blank -%}
+            <img src="{{ creative | image_url: width: 900 }}" alt="" loading="eager" decoding="async">
+          {%- elsif creative_url != blank -%}
+            <img src="{{ creative_url }}" alt="" loading="eager" decoding="async">
+          {%- else -%}
+            <span class="snh-ev__placeholder">Upload your creative in the section settings</span>
+          {%- endif -%}
+        </div>
+
+        <span class="snh-ev__pocket" aria-hidden="true"></span>
+
+        {%- if section.settings.badge != blank -%}
+          <span class="snh-ev__badge">{{ section.settings.badge }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ── capture / reveal ── {%- endcomment -%}
+      {%- if won -%}
+        <div class="snh-ev__won">
+          <p class="snh-ev__won-line">{{ section.settings.success_text | default: "You're in. Here's your code:" }}</p>
+          <button type="button" class="snh-ev__code" data-ev-code="{{ code | escape }}">
+            <span>{{ code }}</span>
+            <em data-ev-copy>Copy</em>
+          </button>
+          {%- if section.settings.terms != blank -%}
+            <p class="snh-ev__terms">{{ section.settings.terms }}</p>
+          {%- endif -%}
+        </div>
+        <script>try { localStorage.setItem('theme:popup-filled', 'true'); } catch (e) {}</script>
+      {%- else -%}
+        <div class="snh-ev__capture">
+          {%- if section.settings.blurb != blank -%}
+            <p class="snh-ev__blurb">{{ section.settings.blurb }}</p>
+          {%- endif -%}
+          <div class="snh-ev__row">
+            <input type="email" name="contact[email]" required
+                   placeholder="{{ section.settings.placeholder | default: 'your@email.com' | escape }}"
+                   aria-label="Email address" autocomplete="email">
+            <button type="submit">{{ section.settings.button | default: 'Reveal my code' }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="snh-ev__err">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+          {%- if section.settings.terms != blank -%}
+            <p class="snh-ev__terms">{{ section.settings.terms }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+<style>
+  #{{ nid }} {
+    --ev-accent: {{ accent }};
+    --ev-ink: {{ ink }};
+    --ev-cream: #fff2e6;
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms cubic-bezier(.22, 1, .36, 1);
+  }
+  #{{ nid }}[hidden] { display: none; }
+  #{{ nid }}.is-live { opacity: 1; pointer-events: auto; }
+
+  #{{ nid }} .snh-ev__veil {
+    position: absolute;
+    inset: 0;
+    background: rgba(9, 6, 4, .62);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  #{{ nid }} .snh-ev__card {
+    position: relative;
+    inline-size: min(430px, 100%);
+    max-block-size: calc(100dvh - 40px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 16px;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(255, 154, 99, .3), transparent 62%),
+      linear-gradient(168deg, #22120a 0%, var(--ev-ink) 58%);
+    box-shadow: 0 30px 80px rgba(9, 6, 4, .5);
+    transform: translateY(16px) scale(.97);
+    transition: transform 420ms cubic-bezier(.22, 1, .36, 1);
+    scrollbar-width: none;
+  }
+  #{{ nid }} .snh-ev__card::-webkit-scrollbar { display: none; }
+  #{{ nid }}.is-live .snh-ev__card { transform: none; }
+
+  #{{ nid }} .snh-ev__x {
+    position: absolute;
+    inset-block-start: 12px;
+    inset-inline-end: 12px;
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    inline-size: 32px;
+    block-size: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 242, 230, .12);
+    color: var(--ev-cream);
+    cursor: pointer;
+    transition: background 200ms ease;
+  }
+  #{{ nid }} .snh-ev__x svg { inline-size: 15px; block-size: 15px; }
+  #{{ nid }} .snh-ev__x:hover { background: rgba(255, 242, 230, .24); }
+
+  #{{ nid }} .snh-ev__form { margin: 0; padding: 30px 26px 26px; }
+
+  #{{ nid }} .snh-ev__head { text-align: center; }
+  #{{ nid }} .snh-ev__eyebrow {
+    margin: 0 0 8px;
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: rgba(255, 242, 230, .58);
+  }
+  #{{ nid }} .snh-ev__headline {
+    margin: 0;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(2.1rem, 9vw, 2.9rem);
+    font-weight: 900;
+    line-height: .92;
+    letter-spacing: -.035em;
+    text-transform: uppercase;
+    color: var(--ev-cream);
+    text-wrap: balance;
+  }
+
+  /* ── envelope ────────────────────────────────────────────────── */
+  #{{ nid }} .snh-ev__stage {
+    position: relative;
+    margin: 20px 0 0;
+    aspect-ratio: 4 / 5;
+    isolation: isolate;
+  }
+
+  /* back flap, visible above the letter */
+  #{{ nid }} .snh-ev__flap {
+    position: absolute;
+    inset: 0 0 14% 0;
+    z-index: 0;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(180deg, rgba(255, 242, 230, .16), rgba(255, 242, 230, .05));
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+  }
+
+  #{{ nid }} .snh-ev__letter {
+    position: absolute;
+    inset: 3% 5% 11% 5%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #2a1a10;
+    box-shadow: 0 14px 34px rgba(9, 6, 4, .46);
+    transform: translateY(0);
+    transition: transform 900ms cubic-bezier(.2, .9, .22, 1);
+  }
+  #{{ nid }} .snh-ev__stage.is-open .snh-ev__letter { transform: translateY(-9%); }
+  #{{ nid }} .snh-ev__letter img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  #{{ nid }} .snh-ev__placeholder {
+    padding: 16px;
+    font-family: 'Satoshi', 'Inter', sans-serif;
+    font-size: .78rem;
+    line-height: 1.4;
+    text-align: center;
+    color: rgba(255, 242, 230, .5);
+  }
+
+  /* front pocket: the V that makes it read as an envelope */
+  #{{ nid }} .snh-ev__pocket {
+    position: absolute;
+    inset: 62% 0 0 0;
+    z-index: 3;
+    clip-path: polygon(0 0, 50% 46%, 100% 0, 100% 100%, 0 100%);
+    background: linear-gradient(168deg, rgba(255, 242, 230, .2), rgba(255, 242, 230, .08));
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+    border-radius: 0 0 12px 12px;
+  }
+  /* hairline along the two diagonals */
+  #{{ nid }} .snh-ev__pocket::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 50% 46%, 100% 0, 100% 1.6%, 50% 47.6%, 0 1.6%);
+    background: rgba(255, 255, 255, .42);
+  }
+
+  #{{ nid }} .snh-ev__badge {
+    position: absolute;
+    z-index: 4;
+    inset-block-end: 2%;
+    inset-inline-end: 3%;
+    display: grid;
+    place-items: center;
+    inline-size: 74px;
+    block-size: 74px;
+    padding: 8px;
+    border-radius: 50%;
+    background: var(--ev-accent);
+    color: #fff;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: .64rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: .01em;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 10px 24px rgba(224, 82, 28, .4);
+    rotate: -7deg;
+  }
+
+  /* ── capture ─────────────────────────────────────────────────── */
+  #{{ nid }} .snh-ev__capture, #{{ nid }} .snh-ev__won { margin-block-start: 20px; }
+
+  #{{ nid }} .snh-ev__blurb {
+    margin: 0 0 12px;
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    font-size: .86rem;
+    font-weight: 500;
+    line-height: 1.45;
+    text-align: center;
+    color: rgba(255, 242, 230, .68);
+    text-wrap: pretty;
+  }
+
+  #{{ nid }} .snh-ev__row { display: grid; gap: 10px; }
+  #{{ nid }} .snh-ev__row input {
+    inline-size: 100%;
+    min-block-size: 50px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 242, 230, .2);
+    border-radius: 10px;
+    background: rgba(255, 242, 230, .07);
+    color: var(--ev-cream);
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    font-size: .95rem;
+    font-weight: 500;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  #{{ nid }} .snh-ev__row input::placeholder { color: rgba(255, 242, 230, .42); }
+  #{{ nid }} .snh-ev__row input:focus {
+    outline: none;
+    border-color: var(--ev-accent);
+    background: rgba(255, 242, 230, .11);
+  }
+  #{{ nid }} .snh-ev__row button {
+    inline-size: 100%;
+    min-block-size: 52px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--ev-accent);
+    color: #fff;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: .84rem;
+    font-weight: 900;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    transition: background 220ms ease;
+  }
+  #{{ nid }} .snh-ev__row button:hover { background: #b23c11; }
+
+  #{{ nid }} .snh-ev__err {
+    margin: 10px 0 0;
+    font-family: 'Satoshi', 'Inter', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    text-align: center;
+    color: #ff9a63;
+  }
+  #{{ nid }} .snh-ev__terms {
+    margin: 12px 0 0;
+    font-family: 'Satoshi', 'Inter', sans-serif;
+    font-size: .68rem;
+    line-height: 1.45;
+    text-align: center;
+    color: rgba(255, 242, 230, .4);
+  }
+
+  /* ── revealed code ───────────────────────────────────────────── */
+  #{{ nid }} .snh-ev__won-line {
+    margin: 0 0 10px;
+    font-family: 'Satoshi', 'Inter', sans-serif;
+    font-size: .88rem;
+    font-weight: 600;
+    text-align: center;
+    color: rgba(255, 242, 230, .72);
+  }
+  #{{ nid }} .snh-ev__code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    inline-size: 100%;
+    min-block-size: 56px;
+    padding: 0 18px;
+    border: 1.5px dashed rgba(255, 154, 99, .6);
+    border-radius: 10px;
+    background: rgba(224, 82, 28, .14);
+    cursor: pointer;
+    transition: background 200ms ease, border-color 200ms ease;
+  }
+  #{{ nid }} .snh-ev__code:hover { background: rgba(224, 82, 28, .22); border-color: var(--ev-accent); }
+  #{{ nid }} .snh-ev__code span {
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ev-cream);
+  }
+  #{{ nid }} .snh-ev__code em {
+    font-family: 'Satoshi', 'Inter', sans-serif;
+    font-size: .7rem;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #ff9a63;
+  }
+
+
+  @media screen and (max-width: 480px) {
+    #{{ nid }} { padding: 12px; }
+    #{{ nid }} .snh-ev__form { padding: 26px 18px 22px; }
+    #{{ nid }} .snh-ev__badge { inline-size: 62px; block-size: 62px; font-size: .56rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #{{ nid }}, #{{ nid }} .snh-ev__card, #{{ nid }} .snh-ev__letter { transition: none; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var el = document.getElementById('{{ nid }}');
+  if (!el || el.dataset.on) return;
+  el.dataset.on = '1';
+
+  var KEY = 'snh:envelope:{{ section.id }}';
+  var stage = el.querySelector('[data-ev-stage]');
+  var posted = {{ form.posted_successfully? | default: false | json }};
+
+  function open() {
+    el.hidden = false;
+    requestAnimationFrame(function () {
+      el.classList.add('is-live');
+      /* the letter lifts a beat after the card lands, so the reveal reads
+         as a sequence rather than everything arriving at once */
+      if (stage && posted) setTimeout(function () { stage.classList.add('is-open'); }, 420);
+    });
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function close() {
+    el.classList.remove('is-live');
+    document.documentElement.style.overflow = '';
+    setTimeout(function () { el.hidden = true; }, 340);
+  }
+
+  el.addEventListener('click', function (e) {
+    if (e.target.closest('[data-ev-close]')) { close(); return; }
+    var c = e.target.closest('[data-ev-code]');
+    if (c) {
+      if (navigator.clipboard) navigator.clipboard.writeText(c.dataset.evCode);
+      var lab = c.querySelector('[data-ev-copy]');
+      if (lab) { lab.textContent = 'Copied'; setTimeout(function () { lab.textContent = 'Copy'; }, 1600); }
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && el.classList.contains('is-live')) close();
+  });
+
+  /* a successful signup always shows, whatever the visit rules say */
+  if (posted) { open(); return; }
+
+  if (el.dataset.indexOnly === 'true' && el.dataset.isIndex !== '1') return;
+
+  var MAX = Number(el.dataset.maxShows) || 3;
+  var GAP = (Number(el.dataset.revisitMins) || 30) * 60000;
+  try {
+    if (localStorage.getItem('theme:popup-filled') === 'true') return;
+
+    var last = Number(localStorage.getItem(KEY + ':last') || 0);
+    var fresh = !sessionStorage.getItem(KEY + ':session');
+    var lapsed = last > 0 && (Date.now() - last) > GAP;
+
+    /* a visit is a new tab session, or a return after the gap — scrolling
+       and moving between pages are neither */
+    if (!fresh && !lapsed) return;
+
+    var seen = Number(localStorage.getItem(KEY + ':count') || 0);
+    if (seen >= MAX) return;
+
+    sessionStorage.setItem(KEY + ':session', '1');
+    localStorage.setItem(KEY + ':count', String(seen + 1));
+    localStorage.setItem(KEY + ':last', String(Date.now()));
+  } catch (e) {}
+
+  var wait = Number(el.dataset.delay);
+  setTimeout(open, (isNaN(wait) ? 2 : wait) * 1000);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SNH envelope voucher",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Creative" },
+    { "type": "image_picker", "id": "creative", "label": "Artwork inside the envelope", "info": "Your promo creative. Portrait 4:5 or square works best." },
+    { "type": "text", "id": "creative_url", "label": "…or paste an image URL", "info": "Used only when no image is picked above. An animated .webp or .gif plays on its own." },
+    { "type": "header", "content": "Copy" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Subscriber voucher" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Flat 15% off" },
+    { "type": "text", "id": "badge", "label": "Corner badge", "default": "Ends 12 Sep", "info": "Leave blank to hide." },
+    { "type": "textarea", "id": "blurb", "label": "Supporting line", "default": "Drop your email and the code is yours — first order, in-store and online." },
+    { "type": "text", "id": "placeholder", "label": "Email placeholder", "default": "your@email.com" },
+    { "type": "text", "id": "button", "label": "Button", "default": "Reveal my code" },
+    { "type": "header", "content": "Reward" },
+    { "type": "text", "id": "code", "label": "Discount code", "default": "SNH15", "info": "Create this code in Discounts first — this only displays it." },
+    { "type": "text", "id": "success_text", "label": "Success line", "default": "You're in. Here's your code:" },
+    { "type": "textarea", "id": "terms", "label": "Small print", "default": "One use per customer. Cannot be combined with other offers." },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#e0521c" },
+    { "type": "color", "id": "ink", "label": "Background ink", "default": "#17130f" },
+    { "type": "header", "content": "Behaviour" },
+    { "type": "range", "id": "delay_seconds", "min": 0, "max": 20, "step": 1, "unit": "sec", "label": "Delay until it appears", "default": 2 },
+    { "type": "range", "id": "max_shows", "min": 1, "max": 5, "step": 1, "label": "Show on at most this many visits", "default": 3 },
+    { "type": "range", "id": "revisit_mins", "min": 5, "max": 240, "step": 5, "unit": "min", "label": "Counts as a new visit after", "default": 30, "info": "Returning after this long shows it again, up to the visit limit. Scrolling or moving between pages never re-triggers it." },
+    { "type": "checkbox", "id": "show_only_on_index", "label": "Home page only", "default": false }
+  ],
+  "presets": [{ "name": "SNH envelope voucher" }]
+}
+{% endschema %}

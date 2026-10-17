@@ -1,0 +1,339 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "product_variations_7a9dTH": {
+          "type": "product_variations",
+          "settings": {
+            "option_name": "",
+            "option_value_metafield": "",
+            "products": [],
+            "selector_style": "swatch"
+          }
+        },
+        "associated_products_NcWi8G": {
+          "type": "associated_products",
+          "settings": {
+            "title": "Buy it with",
+            "stack_products": true,
+            "products_count": 5,
+            "background": "",
+            "text_color": ""
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_tag": "h2"
+          }
+        },
+        "text_ULjtB6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>By<strong> </strong><a href=\"/collections/centrum\" title=\"CENTRUM\"><strong>CENTRUM</strong></a></p>"
+          }
+        },
+        "vendor": {
+          "type": "vendor",
+          "disabled": true,
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_yDA9FT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "inventory_gLCU4H": {
+          "type": "inventory",
+          "settings": {
+            "low_inventory_threshold": 10
+          }
+        },
+        "text_ctgfxY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ product.metafields.custom.summery_brief.value }}.</p>"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "stack_blocks": true,
+            "selector_style": "block",
+            "swatch_selector_style": "swatch",
+            "variant_image_options": "RingPop Cherry, Grape",
+            "size_chart_page": ""
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_taxes_notice": false
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "payment_terms": {
+          "type": "payment_terms",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": true,
+            "show_gift_card_recipient": true,
+            "atc_button_background": "#1a1a1a",
+            "atc_button_text_color": "#ffffff",
+            "payment_button_background": "#fc6200",
+            "payment_button_text_color": "#ffffff"
+          }
+        },
+        "liquid_9F9mRr": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{%- if product -%}\n{%- assign wa_message = 'Hello, I want to buy: ' | append: product.title | append: ' ' | append: shop.url | append: product.url | url_encode -%}\n\n<div id=\"wa-order-{{ section.id }}\" class=\"wa-wrap\">\n  <a\n    class=\"wa-btn\"\n    href=\"https://wa.me/+94779773359?text={{ wa_message }}\"\n    target=\"_blank\" rel=\"noopener\"\n    aria-label=\"Order on WhatsApp\"\n  >\n    <svg viewBox=\"0 0 32 32\" aria-hidden=\"true\" class=\"wa-icon\">\n      <path d=\"M19.11 17.27c-.23-.12-1.36-.67-1.57-.74-.21-.08-.36-.12-.52.12-.15.23-.6.74-.73.9-.13.15-.27.17-.5.06-.23-.12-.98-.36-1.86-1.14-.69-.61-1.15-1.37-1.29-1.6-.13-.23-.01-.35.1-.46.1-.1.23-.27.35-.4.12-.13.15-.23.23-.38.08-.15.04-.29-.02-.41-.06-.12-.52-1.25-.72-1.72-.19-.46-.39-.4-.52-.4-.13 0-.29-.02-.44-.02s-.41.06-.62.29c-.21.23-.82.8-.82 1.96 0 1.16.84 2.29.96 2.45.12.15 1.64 2.5 3.98 3.5.56.24 1 .38 1.34.49.56.18 1.07.15 1.47.09.45-.07 1.36-.55 1.55-1.08.19-.52.19-.98.13-1.08-.06-.1-.21-.15-.44-.27zM16 3C9.37 3 4 8.37 4 15c0 2.13.57 4.12 1.57 5.83L4 29l8.35-1.53C14.02 28.43 15 28.5 16 28.5 22.63 28.5 28 23.13 28 16.5S22.63 3 16 3zm0 23.5c-.86 0-1.7-.13-2.48-.38l-.49-.16-4.96.91.94-4.83-.17-.5A9.33 9.33 0 0 1 6.5 15C6.5 9.76 10.76 5.5 16 5.5S25.5 9.76 25.5 15 21.24 26.5 16 26.5z\" fill=\"currentColor\"/>\n    </svg>\n    <span>Order on WhatsApp</span>\n  </a>\n</div>\n\n<style>\n  /* Base look (fallbacks); JS below will sync to your ATC button */\n  #wa-order-{{ section.id }} .wa-btn{\n    --wa-green:#25d366;\n    display:inline-flex; align-items:center; justify-content:center; gap:.625rem;\n    width:100%; box-sizing:border-box;\n    min-height:56px; padding:.875rem 1.125rem;   /* safe defaults */\n    background:var(--wa-green); color:#fff; text-decoration:none;\n    border:0; border-radius:9999px; font-weight:700; font-size:16px; line-height:1;\n    transition:background .2s ease, transform .04s ease, box-shadow .2s ease;\n    margin-top:.75rem;\n  }\n  #wa-order-{{ section.id }} .wa-btn:hover{ background:#1ebc57; }\n  #wa-order-{{ section.id }} .wa-btn:active{ transform:translateY(1px); }\n  #wa-order-{{ section.id }} .wa-icon{ width:20px; height:20px; flex:0 0 20px; }\n\n  /* Ensure container stacks like native product buttons */\n  #wa-order-{{ section.id }}{ width:100%; }\n</style>\n\n<script>\n(function(){\n  try{\n    // Scope to this block only\n    const wrap = document.getElementById('wa-order-{{ section.id }}');\n    const waBtn = wrap && wrap.querySelector('.wa-btn');\n    if(!wrap || !waBtn) return;\n\n    // Find the main product action button this should visually match\n    const candidates = [\n      '.product-form__submit',\n      'button[name=\"add\"]',\n      '.product-form [type=\"submit\"]',\n      '.product-form .btn--add-to-cart',\n      '.product-form .button--add-to-cart',\n      '.product__submit__buttons button',\n    ];\n    let atc = null;\n    for (const sel of candidates){\n      const el = wrap.closest('section, form, body').querySelector(sel);\n      if(el){ atc = el; break; }\n    }\n\n    // Sync styles from ATC if found\n    if(atc){\n      const cs = window.getComputedStyle(atc);\n      // Width is inherited by container; sync key visuals:\n      const minH = cs.minHeight !== '0px' ? cs.minHeight : cs.height;\n      waBtn.style.minHeight   = minH;\n      waBtn.style.borderRadius= cs.borderRadius || '9999px';\n      waBtn.style.fontSize    = cs.fontSize || '16px';\n      waBtn.style.fontWeight  = cs.fontWeight || '700';\n      // Compute horizontal padding from ATC to keep label alignment\n      const padX = (parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)) / 2;\n      if(padX){ waBtn.style.paddingLeft = waBtn.style.paddingRight = padX + 'px'; }\n      // If ATC uses full width, keep it too\n      if(cs.width && cs.width.endsWith('px')) waBtn.style.width = '100%';\n    }\n\n    // Make sure we sit just under the ATC area if this block was moved\n    // (No-op if already placed below)\n    const buttonsArea =\n      wrap.closest('section, form, body').querySelector('.product-form__buttons') ||\n      wrap.closest('section, form, body').querySelector('.product-form') ||\n      null;\n    if(buttonsArea && !buttonsArea.contains(wrap)){\n      buttonsArea.appendChild(wrap);\n    }\n  }catch(e){ /* fail silently; CSS fallbacks keep it looking good */ }\n})();\n</script>\n{%- endif -%}"
+          }
+        },
+        "hoppy_trust_badges_trust_badges_block_WepCi4": {
+          "type": "shopify://apps/hoppy-trust-badges/blocks/trust_badges_block/6e9703d9-56af-47d9-80bb-0abc8eb8c38b",
+          "settings": {
+            "badge-id": "51ba9c38-b2f7-4520-9ca0-4bf219d095cf"
+          }
+        },
+        "image_jtyGAw": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_66.webp",
+            "alignment": "center",
+            "max_width": 500
+          }
+        },
+        "description_qd4kAK": {
+          "type": "description",
+          "settings": {
+            "icon": "picto-file",
+            "icon_width": 20,
+            "collapse_content": true
+          }
+        },
+        "collapsible_text_qdgD3X": {
+          "type": "collapsible_text",
+          "settings": {
+            "icon": "picto-question",
+            "icon_width": 20,
+            "title": "How to use",
+            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_text_PWcrNi": {
+          "type": "collapsible_text",
+          "settings": {
+            "icon": "picto-award-gift",
+            "icon_width": 20,
+            "title": "Key Benefits",
+            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_text_zEQder": {
+          "type": "collapsible_text",
+          "settings": {
+            "icon": "picto-pin",
+            "icon_width": 20,
+            "title": "About the brand",
+            "content": "<h2><strong>Buy Centrum Multivitamins in Sri Lanka – Official Distributor under SNH Health for Wellbeing Brands</strong></h2><p><strong>Centrum</strong> is a globally recognized and trusted brand, offering a range of <strong>multivitamins</strong> and <strong>dietary supplements</strong>designed to support overall health, wellness, and vitality. With a legacy of delivering premium, <strong>science-backed products</strong>, Centrum is known for providing comprehensive <strong>nutritional support</strong> for individuals at all stages of life.</p><p>From <strong>immune health</strong> to <strong>heart health</strong> and <strong>bone strength</strong>, Centrum provides carefully crafted multivitamin formulas to meet the specific needs of <strong>active individuals</strong>, <strong>seniors</strong>, and those looking to fill dietary gaps. Whether you’re an athlete, professional, or someone striving for better health, Centrum offers the essential nutrients your body needs.</p><h3><strong>About SNH Health (PVT) Ltd</strong></h3><p>Centrum is proudly distributed in Sri Lanka through <strong>SNH Health</strong>, a specialized division of <strong>Sports Nutrition Hub (PVT) Ltd</strong> focusing on premium wellness and wellbeing brands. <strong>SNH Health</strong> is dedicated to bringing the best <strong>multivitamin solutions</strong> and <strong>health supplements</strong> to Sri Lanka, ensuring that you have access to trusted products for <strong>overall vitality</strong> and <strong>optimal health</strong>.</p><h3><strong>Popular Centrum Products Available in Sri Lanka ,</strong></h3><ul><li><strong>Centrum Adult Multivitamin</strong> – A comprehensive multivitamin supplement designed to support overall health and wellness, including heart, eye, and immune health.</li><li><strong>Centrum Silver</strong> – Specifically formulated for adults over 50, providing essential nutrients to support heart health, brain function, and energy levels.</li><li><strong>Centrum Women</strong> – A multivitamin tailored to meet the unique health needs of women, including bone health, energy, and immune system support.</li><li><strong>Centrum Men</strong> – A multivitamin formulated to support men’s health, focusing on energy, muscle function, and overall vitality.</li><li><strong>Centrum Immune Support</strong> – A specialized formula with key nutrients like vitamin C, vitamin D, and zinc to support a healthy immune system.</li><li><strong>Centrum Kids</strong> – A delicious chewable multivitamin designed for children to support their growing bodies and ensure they receive essential vitamins and minerals.</li><li><strong>Centrum ProNutrients Omega-3</strong> – A supplement formulated with high-quality omega-3 fatty acids to support heart, brain, and eye health.</li></ul><h3><strong>Exclusive Centrum Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p><strong>Sports Nutrition Hub (PVT) Ltd</strong> is the <strong>official distributor</strong> of <strong>Centrum</strong> in Sri Lanka, under the <strong>SNH Health arm</strong>, ensuring <strong>100% authenticity</strong> and <strong>premium quality</strong>. We provide a wide range of Centrum products to support your <strong>daily nutritional needs</strong>, from <strong>multivitamins</strong> to <strong>omega-3 supplements</strong>, delivering them directly to your door with fast and reliable shipping.</p><p><br/></p><p></p><h4><strong>Why Buy Centrum from Sports Nutrition Hub?</strong></h4><ul><li><strong>Exclusive distributor</strong> of Centrum in Sri Lanka</li><li>100% authentic products, imported directly from the USA</li><li>Verified batch tracking for all products</li><li>Trusted brand with a reputation for <strong>scientifically-backed formulations</strong></li><li>Nationwide delivery and excellent customer support</li></ul><h3><strong>Shop Centrum Products Online in Sri Lanka</strong></h3><p>If you’re searching for </p><ul><li><em>“Buy Centrum Adult Multivitamin in Sri Lanka”</em></li><li><em>“Centrum Silver 50+ price Sri Lanka”</em></li><li><em>“Original Centrum Women multivitamins”</em></li><li><em>“Centrum Immune Support supplement Sri Lanka”</em></li></ul><p>Look no further! </p><p>At <strong>Sports Nutrition Hub</strong>, we bring you the full range of <strong>Centrum</strong> products through our <strong>SNH Health arm</strong>, ensuring fresh stock, guaranteed authenticity, and fast delivery.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_variations_7a9dTH",
+        "associated_products_NcWi8G",
+        "title",
+        "text_ULjtB6",
+        "vendor",
+        "judge_me_reviews_preview_badge_yDA9FT",
+        "inventory_gLCU4H",
+        "text_ctgfxY",
+        "variant_picker",
+        "price",
+        "quantity_selector",
+        "payment_terms",
+        "buy_buttons",
+        "liquid_9F9mRr",
+        "hoppy_trust_badges_trust_badges_block_WepCi4",
+        "image_jtyGAw",
+        "description_qd4kAK",
+        "collapsible_text_qdgD3X",
+        "collapsible_text_PWcrNi",
+        "collapsible_text_zEQder"
+      ],
+      "settings": {
+        "full_width": true,
+        "show_fixed_add_to_cart": true,
+        "desktop_media_width": 50,
+        "desktop_media_layout": "carousel_thumbnails_left",
+        "mobile_media_size": "contained",
+        "mobile_carousel_control": "free_scroll",
+        "enable_video_autoplay": false,
+        "enable_video_looping": true,
+        "enable_image_zoom": true,
+        "max_image_zoom_level": 3,
+        "background": "rgba(0,0,0,0)",
+        "background_gradient": "",
+        "text_color": "#1a1a1a",
+        "input_background": "#f28c28",
+        "input_text_color": "#000000"
+      }
+    },
+    "175377752863af6b32": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_qYFmbi": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_qYFmbi"
+      ],
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "recommendations_count": 10,
+        "products": [],
+        "full_width": false,
+        "stack_products": false,
+        "show_progress_bar": true,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 3,
+        "subheading": "",
+        "title": "MORE FOR YOU",
+        "content": "",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "product_card_background": "",
+        "product_card_text_color": ""
+      }
+    },
+    "text_with_icons_VVapP6": {
+      "type": "text-with-icons",
+      "settings": {
+        "heading": "WHY CHOOSE US?",
+        "heading_color": "#17130f",
+        "subheading": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
+        "bg": "#faf7f2",
+        "card_bg": "#0e0e0f",
+        "accent": "#e0521c"
+      }
+    },
+    "tiktok_profile_C8xEi3": {
+      "type": "tiktok-profile",
+      "name": "TikTok Profile",
+      "settings": {
+        "eyebrow": "SNH on TikTok",
+        "heading": "FOLLOW US ON TIKTOK",
+        "subtext": "Watch new drops, product picks and store updates straight from Sports Nutrition Hub.",
+        "handle": "sportsnutritionhub.lk",
+        "height": 560
+      }
+    },
+    "faq_qiFxHE": {
+      "type": "faq",
+      "blocks": {
+        "item_RaUN8t": {
+          "type": "item",
+          "settings": {
+            "title": "How long will it take to get my orders?",
+            "content": "<p>It depends on your delivery address.</p><p>Colombo Orders: Same Day<br/>Out of Colombo Orders: 2-3 Working Days</p>"
+          }
+        },
+        "item_dhCwB6": {
+          "type": "item",
+          "settings": {
+            "title": "Where can I come visit physically?",
+            "content": "<p>We have two stores:</p><p>DEHIWALA & WATTALA</p><p>Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear. </p>"
+          }
+        },
+        "item_BCYFpP": {
+          "type": "item",
+          "settings": {
+            "title": "I want to know more",
+            "content": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 77 977 3359</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_RaUN8t",
+        "item_dhCwB6",
+        "item_BCYFpP"
+      ],
+      "settings": {
+        "title": "FAQ’S",
+        "content": "<p>Our customer support is available </p><p>Everyday: 10am-7pm.</p>",
+        "support_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/3rdcrd.png?v=1784028499",
+        "support_hours": "",
+        "button_text": "CONTACT FOR MORE",
+        "button_url": "shopify://pages/delivery-and-shipping",
+        "accent_color": "#e0521c"
+      }
+    },
+    "scrolling_text_yeJznJ": {
+      "type": "scrolling-text",
+      "settings": {
+        "full_width": true,
+        "label": "Sports Nutrition Hub",
+        "text": "LEADING HEALTH & FITNESS STORE",
+        "text_size": "small",
+        "text_style": "fill",
+        "scrolling_mode": "auto",
+        "scrolling_speed": 10,
+        "background_gradient": "linear-gradient(133deg, rgba(250, 220, 54, 1) 11%, rgba(252, 146, 13, 1) 32.374%, rgba(252, 98, 0, 1) 49%, rgba(252, 98, 0, 1) 67.986%, rgba(250, 220, 54, 1) 87%)",
+        "dark_color": "#130b08",
+        "accent_color": "#ff5a00",
+        "text_color": "#ffffff",
+        "text_gradient": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "175377752863af6b32",
+    "related-products",
+    "text_with_icons_VVapP6",
+    "tiktok_profile_C8xEi3",
+    "faq_qiFxHE",
+    "scrolling_text_yeJznJ"
+  ]
+}

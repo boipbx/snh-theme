@@ -1,0 +1,498 @@
+{% doc %}
+  @prompt
+    to showcase all the brands that we works with a logo slider with 5-6 logos already added , i would like to have colored logos and dont just limit it to just 6.. we have around 10-12 brands we works with so make sure we can add more logos when we need
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-logo-slider-{{ ai_gen_id }} {
+    padding: 40px 20px;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-logo-slider__content-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-logo-slider__header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-logo-slider__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+
+  .ai-logo-slider__subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  .ai-logo-slider__track-container-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    mask: linear-gradient(
+      90deg,
+      transparent,
+      white 20px,
+      white calc(100% - 20px),
+      transparent
+    );
+    -webkit-mask: linear-gradient(
+      90deg,
+      transparent,
+      white 20px,
+      white calc(100% - 20px),
+      transparent
+    );
+  }
+
+  .ai-logo-slider__track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.logo_spacing }}px;
+    animation: ai-logo-slide-{{ ai_gen_id }} {{ block.settings.animation_speed }}s linear infinite;
+    width: fit-content;
+  }
+
+  .ai-logo-slider__track-{{ ai_gen_id }}:hover {
+    animation-play-state: paused;
+  }
+
+  .ai-logo-slider__logo-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.logo_width }}px;
+    height: {{ block.settings.logo_height }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ block.settings.logo_background }};
+    border-radius: {{ block.settings.logo_border_radius }}px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid {{ block.settings.logo_border_color }};
+  }
+
+  .ai-logo-slider__logo-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-logo-slider__logo-{{ ai_gen_id }} img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: {{ block.settings.logo_filter }};
+    transition: filter 0.3s ease;
+  }
+
+  .ai-logo-slider__logo-{{ ai_gen_id }}:hover img {
+    {% if block.settings.logo_filter != 'none' %}
+      filter: none;
+    {% endif %}
+  }
+
+  .ai-logo-slider__logo-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .ai-logo-slider__logo-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  @keyframes ai-logo-slide-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-{{ block.settings.logo_width }}px - {{ block.settings.logo_spacing }}px));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-logo-slider-{{ ai_gen_id }} {
+      padding: 30px 15px;
+    }
+
+    .ai-logo-slider__logo-{{ ai_gen_id }} {
+      width: {{ block.settings.logo_width | times: 0.8 }}px;
+      height: {{ block.settings.logo_height | times: 0.8 }}px;
+      padding: 10px;
+    }
+
+    .ai-logo-slider__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-logo-slider__subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<logo-slider-{{ ai_gen_id }}
+  class="ai-logo-slider-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-logo-slider__content-{{ ai_gen_id }}">
+    {% if block.settings.title != blank or block.settings.subtitle != blank %}
+      <div class="ai-logo-slider__header-{{ ai_gen_id }}">
+        {% if block.settings.title != blank %}
+          <h2 class="ai-logo-slider__title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+        {% endif %}
+        {% if block.settings.subtitle != blank %}
+          <p class="ai-logo-slider__subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-logo-slider__track-container-{{ ai_gen_id }}">
+      <div class="ai-logo-slider__track-{{ ai_gen_id }}">
+        {% assign logo_count = 0 %}
+        {% for i in (1..12) %}
+          {% liquid
+            assign logo_key = 'logo_' | append: i
+            assign logo = block.settings[logo_key]
+          %}
+          
+          {% if logo != blank %}
+            {% assign logo_count = logo_count | plus: 1 %}
+            <div class="ai-logo-slider__logo-{{ ai_gen_id }}">
+              <img
+                src="{{ logo | image_url: width: 300 }}"
+                alt="{{ logo.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.logo_width }}"
+                height="{{ block.settings.logo_height }}"
+              >
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% comment %}Show placeholders if no logos are added{% endcomment %}
+        {% if logo_count == 0 %}
+          {% for i in (1..6) %}
+            <div class="ai-logo-slider__logo-{{ ai_gen_id }}">
+              <div class="ai-logo-slider__logo-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% comment %}Duplicate logos for seamless loop{% endcomment %}
+        {% for i in (1..12) %}
+          {% liquid
+            assign logo_key = 'logo_' | append: i
+            assign logo = block.settings[logo_key]
+          %}
+          
+          {% if logo != blank %}
+            <div class="ai-logo-slider__logo-{{ ai_gen_id }}">
+              <img
+                src="{{ logo | image_url: width: 300 }}"
+                alt="{{ logo.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.logo_width }}"
+                height="{{ block.settings.logo_height }}"
+              >
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% comment %}Duplicate placeholders if no logos are added{% endcomment %}
+        {% if logo_count == 0 %}
+          {% for i in (1..6) %}
+            <div class="ai-logo-slider__logo-{{ ai_gen_id }}">
+              <div class="ai-logo-slider__logo-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</logo-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LogoSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-logo-slider__track-{{ ai_gen_id }}');
+        this.setupInfiniteLoop();
+      }
+
+      setupInfiniteLoop() {
+        if (!this.track) return;
+
+        const logos = this.track.querySelectorAll('.ai-logo-slider__logo-{{ ai_gen_id }}');
+        const logoCount = logos.length / 2;
+        
+        if (logoCount === 0) return;
+
+        const logoWidth = {{ block.settings.logo_width }};
+        const logoSpacing = {{ block.settings.logo_spacing }};
+        const totalWidth = (logoWidth + logoSpacing) * logoCount;
+
+        this.track.style.setProperty('--total-width', `${totalWidth}px`);
+      }
+    }
+
+    customElements.define('logo-slider-{{ ai_gen_id }}', LogoSlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Brand logo slider",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Trusted by Leading Brands"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "We're proud to partner with these amazing companies"
+    },
+    {
+      "type": "header",
+      "content": "Brand logos"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_1",
+      "label": "Logo 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_2",
+      "label": "Logo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_3",
+      "label": "Logo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_4",
+      "label": "Logo 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_5",
+      "label": "Logo 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_6",
+      "label": "Logo 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_7",
+      "label": "Logo 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_8",
+      "label": "Logo 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_9",
+      "label": "Logo 9"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_10",
+      "label": "Logo 10"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_11",
+      "label": "Logo 11"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_12",
+      "label": "Logo 12"
+    },
+    {
+      "type": "header",
+      "content": "Logo style"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 60,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "logo_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "unit": "px",
+      "label": "Space between logos",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "logo_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo border radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "logo_background",
+      "label": "Logo background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "logo_border_color",
+      "label": "Logo border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "select",
+      "id": "logo_filter",
+      "label": "Logo filter",
+      "options": [
+        {
+          "value": "none",
+          "label": "None (full color)"
+        },
+        {
+          "value": "grayscale(100%)",
+          "label": "Grayscale"
+        },
+        {
+          "value": "opacity(0.7)",
+          "label": "Faded"
+        },
+        {
+          "value": "grayscale(100%) opacity(0.7)",
+          "label": "Grayscale + Faded"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "s",
+      "label": "Animation speed",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Section border radius",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand logo slider"
+    }
+  ]
+}
+{% endschema %}

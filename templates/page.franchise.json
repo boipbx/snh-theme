@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "contact_K6hwLe": {
+      "type": "contact",
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "FILL THE FORM!",
+        "content": "<p>Please share your interest and a little bit about you as well and we will get back to you ASAP.</p>",
+        "text_position": "start",
+        "contact_form_size": "small",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "contact_background": "",
+        "contact_text_color": "",
+        "button_background": "",
+        "button_text_color": ""
+      }
+    },
+    "franchisesection_FxfaYc": {
+      "type": "franchisesection",
+      "name": "SNH Franchise Partner",
+      "settings": {
+        "kicker": "",
+        "heading": "Own the next hub.",
+        "subheading": "Sports Nutrition Hub is Sri Lanka's #1 sports nutrition and wellness retailer — three thriving outlets, a nationwide online store and exclusive rights to 12+ global brands. Now we're expanding, and we're looking for partners to build the next one.",
+        "accent": "#E0521C",
+        "whatsapp": "94764863359"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "contact_K6hwLe",
+    "franchisesection_FxfaYc"
+  ]
+}

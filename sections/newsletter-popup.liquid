@@ -1,0 +1,408 @@
+{%- comment -%}
+  ══════════════════════════════════════════════════════════════════
+  SNH — Newsletter popup  (replaces sections/newsletter-popup.liquid)
+
+  Select all in that file, delete, paste this, Save. The section is
+  already placed in the theme's overlay group, so nothing to add in
+  Customize — your existing settings carry over.
+
+  Emails go straight into Shopify's "accepts marketing" customer list
+  (Customers → filter Email subscribed), tagged newsletter + welcome-offer.
+
+  For the 10% code: Discounts → Amount off order → 10% → set a code →
+  limit one use per customer → paste the code in this section's settings.
+  ══════════════════════════════════════════════════════════════════
+{%- endcomment -%}
+
+{%- unless request.page_type == 'captcha' -%}
+{%- unless section.settings.show_only_for_visitors and customer -%}
+
+{%- liquid
+  assign nid = 'snh-np-' | append: section.id
+  assign fid = 'snh-npf-' | append: section.id
+  assign code = section.settings.code
+  assign img = section.settings.image
+-%}
+
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<div id="{{ nid }}" class="snh-np" hidden
+     data-delay="{{ section.settings.delay_seconds | default: 2 }}"
+     data-max-shows="{{ section.settings.max_shows | default: 3 }}"
+     data-revisit-mins="{{ section.settings.revisit_mins | default: 30 }}"
+     data-index-only="{{ section.settings.show_only_on_index | default: false }}"
+     data-is-index="{% if request.page_type == 'index' %}1{% else %}0{% endif %}">
+  <div class="snh-np__veil" data-np-close></div>
+
+  <div class="snh-np__card" role="dialog" aria-modal="true" aria-label="{{ section.settings.title | escape }}">
+    <button type="button" class="snh-np__x" data-np-close aria-label="{{ 'general.accessibility.close' | t | escape }}">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="snh-np__panel">
+      {%- if section.settings.kicker != blank -%}
+        <span class="snh-np__kicker">{{ section.settings.kicker }}</span>
+      {%- endif -%}
+      <h2 class="snh-np__title">{{ section.settings.title | default: 'Join SNH Elite' }}</h2>
+      {%- if section.settings.subtext != blank -%}
+        <p class="snh-np__sub">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+
+      {%- form 'customer', id: fid, class: 'snh-np__form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="snh-np__ok">You&rsquo;re subscribed.{% if code != blank %} Use this at checkout:{% endif %}</p>
+          {%- if code != blank -%}
+            <button type="button" class="snh-np__code" data-np-code data-code="{{ code | escape }}">
+              <span>{{ code }}</span><em data-np-copy>Copy</em>
+            </button>
+          {%- endif -%}
+          <script>try { localStorage.setItem('theme:popup-filled', 'true'); } catch (e) {}</script>
+        {%- else -%}
+          {%- if form.errors -%}
+            <p class="snh-np__err">{{ form.errors.translated_fields['email'] }} {{ form.errors.messages['email'] }}</p>
+          {%- endif -%}
+          <input type="hidden" name="contact[tags]" value="newsletter,welcome-offer">
+          {%- if section.settings.ask_name -%}
+            <input type="text" name="contact[first_name]" placeholder="First name" autocomplete="given-name">
+          {%- endif -%}
+          <input type="email" name="contact[email]" placeholder="Email address" autocomplete="email" enterkeyhint="send" required>
+          <button type="submit" class="snh-np__go">{{ section.settings.button_text | default: 'Subscribe' }}</button>
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- if section.settings.fine != blank -%}
+        <p class="snh-np__fine">{{ section.settings.fine }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="snh-np__art">
+      {%- assign clip = section.settings.media_url | default: 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/0907-ezgif.com-optiwebp.webp?v=1788855600' -%}
+      {%- if clip != blank -%}
+        <img src="{{ clip }}" alt="" loading="eager" fetchpriority="high" decoding="async">
+      {%- elsif img != blank -%}
+        <img src="{{ img | image_url: width: 1000 }}" alt="" loading="eager" fetchpriority="low">
+      {%- endif -%}
+      {%- if section.settings.caption != blank -%}
+        <span class="snh-np__caption">{{ section.settings.caption }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  #{{ nid }}, #{{ nid }} * { box-sizing: border-box; }
+  #{{ nid }} {
+    position: fixed;
+    inset: 0;
+    z-index: 999998;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s cubic-bezier(.22,1,.36,1);
+  }
+  #{{ nid }}[hidden] { display: none; }
+  #{{ nid }}.is-open { opacity: 1; pointer-events: auto; }
+
+  #{{ nid }} .snh-np__veil {
+    position: absolute;
+    inset: 0;
+    background: rgba(12, 8, 6, .55);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+
+  #{{ nid }} .snh-np__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    inline-size: min(920px, 100%);
+    min-block-size: 0;
+    max-block-size: calc(100dvh - 32px);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, .35);
+    transform: translateY(12px) scale(.99);
+    transition: transform .36s cubic-bezier(.22,1,.36,1);
+  }
+  #{{ nid }}.is-open .snh-np__card { transform: none; }
+
+  #{{ nid }} .snh-np__panel {
+    display: grid;
+    align-content: center;
+    gap: 12px;
+    padding: clamp(30px, 3.8vw, 52px);
+    overflow-y: auto;
+    color: #17130f;
+  }
+  #{{ nid }} .snh-np__form { display: grid; gap: 11px; margin: 0; }
+  #{{ nid }} .snh-np__ok { margin: 0; color: #1a8f47; font-size: .95rem; font-weight: 800; }
+
+  #{{ nid }} .snh-np__kicker {
+    color: #e0521c;
+    font-size: .74rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  #{{ nid }} .snh-np__title {
+    margin: 0;
+    color: #17130f;
+    font-size: clamp(1.7rem, 2.8vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -.022em;
+    text-wrap: balance;
+  }
+  #{{ nid }} .snh-np__sub {
+    margin: 0 0 6px;
+    color: rgba(23, 19, 15, .62);
+    font-size: .95rem;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  #{{ nid }} .snh-np__sub strong,
+  #{{ nid }} .snh-np__sub b { color: #17130f; font-weight: 800; }
+
+  #{{ nid }} .snh-np__form input[type="text"],
+  #{{ nid }} .snh-np__form input[type="email"] {
+    inline-size: 100%;
+    min-block-size: 52px;
+    padding: 0 16px;
+    border: 1px solid rgba(23, 19, 15, .2);
+    border-radius: 10px;
+    background: #fff;
+    color: #17130f;
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 500;
+    transition: border-color .2s ease;
+  }
+  #{{ nid }} .snh-np__form input:focus { outline: 0; border-color: #17130f; }
+  #{{ nid }} .snh-np__form input::placeholder { color: rgba(23, 19, 15, .42); }
+
+  #{{ nid }} .snh-np__go {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-block-size: 54px;
+    border: 0;
+    border-radius: 10px;
+    background: #17130f;
+    color: #fff;
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    cursor: pointer;
+    transition: background .2s ease;
+  }
+  #{{ nid }} .snh-np__go:hover { background: #e0521c; }
+
+  #{{ nid }} .snh-np__err { margin: 0; color: #c02a1b; font-size: .82rem; font-weight: 600; }
+  #{{ nid }} .snh-np__fine {
+    margin: 4px 0 0;
+    color: rgba(23, 19, 15, .45);
+    font-size: .74rem;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  #{{ nid }} .snh-np__fine a { color: rgba(23, 19, 15, .62); text-underline-offset: 2px; }
+
+  #{{ nid }} .snh-np__tick {
+    display: grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: 50%;
+    background: rgba(26, 143, 71, .1);
+    color: #1a8f47;
+  }
+  #{{ nid }} .snh-np__code {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-block-size: 56px;
+    padding: 0 18px;
+    border: 1.5px dashed rgba(224, 82, 28, .5);
+    border-radius: 10px;
+    background: rgba(224, 82, 28, .06);
+    cursor: pointer;
+  }
+  #{{ nid }} .snh-np__code span { color: #17130f; font-size: 1.15rem; font-weight: 900; letter-spacing: .08em; }
+  #{{ nid }} .snh-np__code em { color: #e0521c; font-size: .78rem; font-style: normal; font-weight: 800; }
+
+  #{{ nid }} .snh-np__art {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: #17130f;
+    overflow: hidden;
+  }
+  #{{ nid }} .snh-np__art img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
+  #{{ nid }} .snh-np__caption {
+    position: absolute;
+    inset-inline-start: 22px;
+    inset-block-end: 22px;
+    max-inline-size: 82%;
+    color: #fff;
+    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -.015em;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, .45);
+  }
+
+  #{{ nid }} .snh-np__x {
+    position: absolute;
+    inset-block-start: 14px;
+    inset-inline-end: 14px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    inline-size: 34px;
+    block-size: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .92);
+    color: #17130f;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+    transition: background .2s ease, transform .2s ease;
+  }
+  #{{ nid }} .snh-np__x:hover { background: #fff; transform: scale(1.06); }
+
+  @media screen and (max-width: 749px) {
+    #{{ nid }} .snh-np__card { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; }
+    #{{ nid }} .snh-np__art {
+      grid-row: 1;
+      aspect-ratio: auto;
+      inline-size: 100%;
+      block-size: min(46dvh, 78vw);
+    }
+    #{{ nid }} .snh-np__art img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    #{{ nid }} .snh-np__panel { grid-row: 2; padding: 24px 20px 26px; }
+    #{{ nid }} .snh-np__caption { font-size: 1.1rem; inset-block-end: 16px; inset-inline-start: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #{{ nid }}, #{{ nid }} .snh-np__card { transition: none; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var el = document.getElementById('{{ nid }}');
+  if (!el || el.dataset.on) return;
+  el.dataset.on = '1';
+
+  var KEY = 'snh-np-{{ section.id }}';
+  var editor = {{ request.design_mode | json }};
+  var posted = {{ form.posted_successfully? | default: false | json }};
+
+  function open() {
+    el.hidden = false;
+    requestAnimationFrame(function () { el.classList.add('is-open'); });
+  }
+  function close() {
+    el.classList.remove('is-open');
+    setTimeout(function () { el.hidden = true; }, 320);
+  }
+
+  el.addEventListener('click', function (e) {
+    if (e.target.closest('[data-np-close]')) { close(); return; }
+    var c = e.target.closest('[data-np-code]');
+    if (c) {
+      if (navigator.clipboard) navigator.clipboard.writeText(c.dataset.code);
+      var lab = c.querySelector('[data-np-copy]');
+      if (lab) { lab.textContent = 'Copied'; setTimeout(function () { lab.textContent = 'Copy'; }, 1600); }
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && el.classList.contains('is-open')) close();
+  });
+
+  /* the page reloads after a successful post — show the code, not the form */
+  if (el.querySelector('[data-np-code]') || posted) { open(); return; }
+  if (editor) { open(); return; }
+
+  if (el.dataset.indexOnly === 'true' && el.dataset.isIndex !== '1') return;
+  var MAX = Number(el.dataset.maxShows) || 3;
+  var GAP = (Number(el.dataset.revisitMins) || 30) * 60000;
+  var V = KEY + ':v2';
+  try {
+    /* signed up — never again */
+    if (localStorage.getItem('theme:popup-filled') === 'true') return;
+
+    var last = Number(localStorage.getItem(V + ':last') || 0);
+    var fresh = !sessionStorage.getItem(V + ':session');
+    var lapsed = last > 0 && (Date.now() - last) > GAP;
+
+    /* a visit is a new tab session, or a return after the revisit gap.
+       Scrolling and moving between pages are neither, so it never
+       re-triggers mid-browse. */
+    if (!fresh && !lapsed) return;
+
+    var seen = Number(localStorage.getItem(V + ':count') || 0);
+    if (seen >= MAX) return;
+
+    sessionStorage.setItem(V + ':session', '1');
+    localStorage.setItem(V + ':count', String(seen + 1));
+    localStorage.setItem(V + ':last', String(Date.now()));
+  } catch (e) {}
+
+  var wait = Number(el.dataset.delay);
+  setTimeout(open, (isNaN(wait) ? 2 : wait) * 1000);
+})();
+</script>
+
+{%- endunless -%}
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Newsletter popup",
+  "class": "shopify-section--popup",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Subscribers land in your [accepts marketing customer list](/admin/customers?query=&accepts_marketing=1), tagged newsletter + welcome-offer."
+    },
+    {
+      "type": "text",
+      "id": "code",
+      "label": "Discount code to reveal",
+      "default": "SNH10",
+      "info": "Create it first: Discounts → Amount off order → 10% → set this code → limit one use per customer. Leave blank for a plain thank-you."
+    },
+    { "type": "text", "id": "media_url", "label": "Animated clip URL", "info": "An animated .webp or .gif plays on its own, no sound. Clear this to use the image below instead." },
+    { "type": "image_picker", "id": "image", "label": "Image (used only if no clip URL)", "info": "Portrait 4:5 works best." },
+    { "type": "text", "id": "caption", "label": "Caption over the image", "default": "Fuelling Athletes." },
+    { "type": "header", "content": "Copy" },
+    { "type": "text", "id": "kicker", "label": "Eyebrow", "default": "Welcome to SNH" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Join SNH Elite" },
+    { "type": "inline_richtext", "id": "subtext", "label": "Subheading", "default": "Subscribe and get an extra <strong>10% off</strong> your first order." },
+    { "type": "text", "id": "button_text", "label": "Button", "default": "Subscribe" },
+    { "type": "inline_richtext", "id": "fine", "label": "Small print", "default": "One use per customer. Unsubscribe any time." },
+    { "type": "checkbox", "id": "ask_name", "label": "Also ask for a first name", "default": false },
+    { "type": "header", "content": "Behaviour" },
+    { "type": "range", "id": "delay_seconds", "min": 0, "max": 20, "step": 1, "unit": "sec", "label": "Delay until it appears", "default": 2 },
+    { "type": "range", "id": "max_shows", "min": 1, "max": 5, "step": 1, "label": "Show on at most this many visits", "default": 3 },
+    { "type": "range", "id": "revisit_mins", "min": 5, "max": 240, "step": 5, "unit": "min", "label": "Counts as a new visit after", "default": 30, "info": "Returning after this long shows it again, up to the visit limit. Scrolling or moving between pages never re-triggers it." },
+    { "type": "checkbox", "id": "show_only_on_index", "label": "Show only on home page", "default": false },
+    { "type": "checkbox", "id": "show_only_for_visitors", "label": "Hide from logged-in customers", "default": true },
+    { "type": "checkbox", "id": "show_only_once", "label": "Show once per visitor", "default": true }
+  ]
+}
+{% endschema %}

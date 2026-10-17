@@ -1,0 +1,330 @@
+{% comment %}
+  SNH Promise Proof Section
+  Standalone replacement for the old Why Choose Us / Text with Icons section.
+  Add this as a NEW section file: sections/snh-promise-proof.liquid
+{% endcomment %}
+
+<section class="snh-proof snh-proof--{{ section.id }}">
+  <div class="snh-proof__wrap">
+    <div class="snh-proof__head">
+      <div class="snh-proof__title-wrap">
+        {% if section.settings.eyebrow != blank %}
+          <p class="snh-proof__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="snh-proof__heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+      </div>
+
+      {% if section.settings.intro != blank %}
+        <div class="snh-proof__intro">
+          {{ section.settings.intro }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="snh-proof__grid" role="list">
+      {% for block in section.blocks %}
+        <article class="snh-proof-card" role="listitem" {{ block.shopify_attributes }}>
+          <div class="snh-proof-card__top">
+            <span class="snh-proof-card__icon" aria-hidden="true">
+              {% case block.settings.icon %}
+                {% when 'star' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5l2.65 5.37 5.93.86-4.29 4.18 1.01 5.9L12 17.02l-5.3 2.79 1.01-5.9-4.29-4.18 5.93-.86L12 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                {% when 'price' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 7.5h15v9h-15v-9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 12h.01M16 12h.01M12 14.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                {% when 'support' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M5 13.2h3.2v5H6a1 1 0 01-1-1v-4zM15.8 13.2H19v4a1 1 0 01-1 1h-2.2v-5z" stroke="currentColor" stroke-width="1.8"/><path d="M5 13.2a7 7 0 0114 0M9 19.3h3.2c2 0 3.6-1 4.2-2.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                {% when 'secure' %}
+                  <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10.2" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8.2 10.2V7.8a3.8 3.8 0 017.6 0v2.4M12 14v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                {% when 'delivery' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M3.5 7.2h10.7v8.1H3.5V7.2zM14.2 10.2h3.5l2.8 3v2.1h-6.3v-5.1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 18.1a1.6 1.6 0 100-3.2 1.6 1.6 0 000 3.2zM17.2 18.1a1.6 1.6 0 100-3.2 1.6 1.6 0 000 3.2z" stroke="currentColor" stroke-width="1.8"/></svg>
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {% endcase %}
+            </span>
+
+            <span class="snh-proof-card__number">{{ forloop.index | prepend: '0' }}</span>
+          </div>
+
+          <div class="snh-proof-card__body">
+            {% if block.settings.title != blank %}
+              <h3 class="snh-proof-card__title">{{ block.settings.title }}</h3>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <div class="snh-proof-card__text">{{ block.settings.text }}</div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --snh-bg: {{ section.settings.background }};
+    --snh-card: {{ section.settings.card_background }};
+    --snh-text: {{ section.settings.text_color }};
+    --snh-muted: rgba(23, 23, 23, 0.62);
+    --snh-orange: {{ section.settings.accent_color }};
+    --snh-line: rgba(23, 23, 23, 0.08);
+    --snh-radius: {{ section.settings.card_radius }}px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof {
+    background: var(--snh-bg);
+    color: var(--snh-text);
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__wrap {
+    width: min(100% - 40px, 1480px);
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: clamp(28px, 5vw, 96px);
+    align-items: end;
+    margin-block-end: clamp(34px, 4.5vw, 72px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__eyebrow {
+    margin: 0 0 12px;
+    color: var(--snh-orange);
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__heading {
+    margin: 0;
+    max-width: 900px;
+    color: var(--snh-text);
+    font-size: clamp(46px, 7.2vw, 118px);
+    line-height: 0.86;
+    letter-spacing: -0.075em;
+    text-transform: uppercase;
+    font-weight: 950;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__intro {
+    max-width: 520px;
+    justify-self: end;
+    color: var(--snh-muted);
+    font-size: clamp(16px, 1.2vw, 21px);
+    line-height: 1.45;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__intro p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.desktop_columns }}, minmax(0, 1fr));
+    gap: clamp(16px, 1.6vw, 28px);
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: clamp(260px, 22vw, 360px);
+    padding: clamp(22px, 2vw, 34px);
+    border: 1px solid var(--snh-line);
+    border-radius: var(--snh-radius);
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), var(--snh-card));
+    box-shadow: 0 18px 46px rgba(17, 17, 17, 0.055);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--snh-orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    border: 1px solid var(--snh-line);
+    background: #f2f2f1;
+    color: var(--snh-text);
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__number {
+    color: rgba(23, 23, 23, 0.045);
+    font-size: clamp(44px, 4.5vw, 76px);
+    line-height: 0.72;
+    font-weight: 950;
+    letter-spacing: -0.08em;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__body {
+    align-self: end;
+    max-width: 330px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__title {
+    margin: 0 0 10px;
+    color: var(--snh-text);
+    font-size: clamp(15px, 1vw, 18px);
+    line-height: 1.05;
+    font-weight: 950;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__text {
+    color: rgba(23, 23, 23, 0.68);
+    font-size: clamp(14px, 0.95vw, 17px);
+    line-height: 1.45;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+  }
+
+  #shopify-section-{{ section.id }} .snh-proof-card__text p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 1180px) {
+    #shopify-section-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 760px) {
+    #shopify-section-{{ section.id }} .snh-proof {
+      padding-block: {{ section.settings.mobile_padding_top }}px {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-proof__wrap {
+      width: min(100% - 28px, 1480px);
+    }
+
+    #shopify-section-{{ section.id }} .snh-proof__head {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 18px;
+      margin-block-end: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .snh-proof__intro {
+      justify-self: start;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .snh-proof__grid {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(270px, 84vw);
+      grid-template-columns: none;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 2px 14px 22px 0;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .snh-proof__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .snh-proof-card {
+      min-height: 290px;
+      scroll-snap-align: start;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SNH Promise Proof",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SNH Promise" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Why choose us?" },
+    { "type": "richtext", "id": "intro", "label": "Intro text", "default": "<p>Genuine products, practical support, secure checkout and fast store updates — built for customers who want to buy with confidence.</p>" },
+    { "type": "range", "id": "desktop_columns", "label": "Desktop columns", "min": 2, "max": 4, "step": 1, "default": 4 },
+    { "type": "range", "id": "card_radius", "label": "Card radius", "min": 8, "max": 28, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "padding_top", "label": "Desktop top spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Desktop bottom spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "mobile_padding_top", "label": "Mobile top spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "Mobile bottom spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f3f3f2" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#171717" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#ff5a00" }
+  ],
+  "blocks": [
+    {
+      "type": "proof_card",
+      "name": "Proof card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "star", "label": "Star" },
+            { "value": "price", "label": "Price" },
+            { "value": "support", "label": "Support" },
+            { "value": "secure", "label": "Secure" },
+            { "value": "delivery", "label": "Delivery" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "star"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "100% Authentic" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>We provide high-quality products directly imported from top brands, designed to support your performance and health.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SNH Promise Proof",
+      "blocks": [
+        { "type": "proof_card", "settings": { "icon": "star", "title": "100% Authentic", "text": "<p>High-quality products directly imported from top brands, selected for performance and everyday wellness.</p>" } },
+        { "type": "proof_card", "settings": { "icon": "price", "title": "Fair pricing", "text": "<p>We focus on genuine, high-quality brands with clear pricing, so you know exactly what you are buying.</p>" } },
+        { "type": "proof_card", "settings": { "icon": "support", "title": "Customer service", "text": "<p>Need help choosing? Our team can guide you with practical product advice and support.</p>" } },
+        { "type": "proof_card", "settings": { "icon": "secure", "title": "Secure payment", "text": "<p>Checkout safely with card payments, cash, bank transfer and KOKO support.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

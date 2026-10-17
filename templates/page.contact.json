@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "custom_html_GWYpk9": {
+      "type": "custom-html",
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "html": "<div class=\"snh-careers-wrap\">\n\n  <div class=\"snh-careers-head\">\n    <span>JOIN THE TEAM</span>\n\n    <h1>Build your career with SNH.</h1>\n\n    <p>\n      Explore current opportunities at Sports Nutrition Hub and find a role\n      where you can grow, contribute and make an impact.\n    </p>\n  </div>\n\n  <div id=\"rooster\"></div>\n\n</div>\n\n<script src=\"https://roostercdn.s3-ap-southeast-1.amazonaws.com/rooster.min.js\"></script>\n\n<script>\n  const rooster = new Rooster('#rooster', 152788);\n  rooster.setup();\n</script>\n\n<style>\n\n.snh-careers-wrap {\n  max-width: 1100px;\n  margin: 0 auto;\n  padding: 70px 24px 90px;\n}\n\n.snh-careers-head {\n  margin-bottom: 45px;\n}\n\n.snh-careers-head span {\n  display: block;\n  margin-bottom: 16px;\n  color: #ef5b24;\n  font-size: 12px;\n  font-weight: 700;\n  letter-spacing: 1.5px;\n}\n\n.snh-careers-head h1 {\n  margin: 0 0 15px;\n  font-size: 52px;\n  line-height: 1.08;\n  letter-spacing: -2px;\n  color: #171717;\n}\n\n.snh-careers-head p {\n  max-width: 680px;\n  margin: 0;\n  font-size: 16px;\n  line-height: 1.7;\n  color: #666;\n}\n\n\n/* ROOSTER */\n\n#rooster {\n  width: 100%;\n}\n\n.rooster-search {\n  width: 100%;\n  box-sizing: border-box;\n  padding: 15px 18px;\n  margin-bottom: 25px;\n  border: 1px solid #dedede;\n  border-radius: 8px;\n  background: #fff;\n  font-size: 15px;\n}\n\n.rooster-job {\n  padding: 25px 0;\n}\n\n.rooster-job:not(:last-child) {\n  border-bottom: 1px solid #eeeeee;\n}\n\n.rooster-job a {\n  color: #171717;\n  text-decoration: none;\n}\n\n.rooster-job h3 {\n  margin: 0 0 8px;\n  padding: 0;\n  font-size: 20px;\n  font-weight: 700;\n}\n\n.rooster-job h3:hover {\n  color: #ef5b24;\n}\n\n.rooster-job h4 {\n  margin: 0;\n  padding: 0;\n  font-size: 14px;\n  font-weight: 600;\n}\n\n.rooster-department-header {\n  margin: 0;\n  padding: 35px 0 5px;\n  color: #ef5b24;\n  font-size: 21px;\n}\n\n.rooster-department-header h3 {\n  margin: 0;\n  font-weight: 700;\n}\n\n.rooster-job .data-row {\n  padding: 0 0 6px;\n  font-size: 14px;\n  color: #666;\n}\n\n.rooster-job .inline-value {\n  margin-right: 10px;\n  padding-right: 10px;\n}\n\n.rooster-job .inline-value:not(:last-child) {\n  border-right: 1px solid #dddddd;\n}\n\n\n@media (max-width: 749px) {\n\n  .snh-careers-wrap {\n    padding: 45px 18px 65px;\n  }\n\n  .snh-careers-head h1 {\n    font-size: 38px;\n    letter-spacing: -1.3px;\n  }\n\n  .snh-careers-head p {\n    font-size: 15px;\n  }\n\n}\n\n</style>",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "contact": {
+      "type": "contact",
+      "settings": {
+        "full_width": true,
+        "subheading": "Contact Us",
+        "title": "Do you have any question?",
+        "content": "",
+        "text_position": "start",
+        "contact_form_size": "large",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "contact_background": "",
+        "contact_text_color": "",
+        "button_background": "",
+        "button_text_color": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_html_GWYpk9",
+    "contact"
+  ]
+}

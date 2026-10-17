@@ -1,0 +1,468 @@
+{%- comment -%}
+  SNH Bundle & Save — dark ember edition
+  - Same dark black→brown→orange gradient background as the brand rail / Shop by Goal
+  - SNH Elite display voice (Archivo 900, tight, uppercase, cream)
+  - Card cover images via hosted URL defaults (bundle_off / protines / wellness),
+    overridable with image picker or collection image
+  - Titles sit on the image over a scrim; 8px corners; mobile snap row
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --snh-bundle-ink: {{ section.settings.text_color | default: '#fdf6ef' }};
+    --snh-bundle-muted: rgba(253, 246, 239, 0.62);
+    --snh-bundle-line: rgba(255, 122, 50, 0.22);
+    --snh-bundle-orange: {{ section.settings.accent_color | default: '#e0521c' }};
+    --snh-bundle-radius: 8px;
+    --snh-bundle-max: 1500px;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2,
+  #shopify-section-{{ section.id }} .snh-bundle-v2 * { box-sizing: border-box; }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2 {
+    width: 100%;
+    overflow: clip;
+    background: linear-gradient(112deg, #0f0a07 0%, #1b0e08 46%, #33150a 78%, #4a1c0a 100%);
+    color: var(--snh-bundle-ink);
+    padding-block: clamp(40px, 4.5vw, 76px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__inner {
+    max-width: var(--snh-bundle-max);
+    margin-inline: auto;
+    padding-inline: clamp(18px, 4vw, 64px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.52fr);
+    align-items: end;
+    gap: clamp(24px, 4vw, 72px);
+    margin-block-end: clamp(22px, 2.6vw, 40px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__eyebrow {
+    margin: 0 0 10px;
+    color: var(--snh-bundle-orange);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__title {
+    margin: 0;
+    color: var(--snh-bundle-ink);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(28px, 3.4vw, 46px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__summary {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__content {
+    max-width: 520px;
+    margin: 0;
+    color: var(--snh-bundle-muted);
+    font-size: clamp(13px, 1vw, 15px);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2__content p { margin: 0; }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__link,
+  #shopify-section-{{ section.id }} .snh-bundle-v2__loyalty {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 6px;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__link {
+    border: 1px solid rgba(253, 246, 239, 0.28);
+    background: transparent;
+    color: var(--snh-bundle-ink);
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2__loyalty {
+    border: 1px solid var(--snh-bundle-line);
+    background: rgba(224, 82, 28, 0.12);
+    color: #ff8a3d;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2__link svg,
+  #shopify-section-{{ section.id }} .snh-bundle-v2__loyalty svg { width: 15px; height: 15px; flex: 0 0 auto; }
+  #shopify-section-{{ section.id }} .snh-bundle-v2__link:hover,
+  #shopify-section-{{ section.id }} .snh-bundle-v2__loyalty:hover { transform: translateY(-2px); }
+  #shopify-section-{{ section.id }} .snh-bundle-v2__link:hover { border-color: var(--snh-bundle-orange); color: #ff8a3d; }
+  #shopify-section-{{ section.id }} .snh-bundle-v2__loyalty:hover { background: var(--snh-bundle-orange); color: #ffffff; }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.92fr) minmax(0, 0.92fr);
+    gap: clamp(12px, 1.4vw, 18px);
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: clamp(320px, 25vw, 440px);
+    overflow: hidden;
+    border: 1px solid var(--snh-bundle-line);
+    border-radius: var(--snh-bundle-radius);
+    background: #1b120c;
+    color: #ffffff;
+    text-decoration: none;
+    isolation: isolate;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card:first-child {
+    min-height: clamp(380px, 30vw, 520px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(196deg, rgba(10, 8, 6, 0) 40%, rgba(10, 8, 6, 0.85) 96%);
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 3px;
+    z-index: 4;
+    background: linear-gradient(90deg, var(--snh-bundle-orange), transparent 78%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card:hover::after { opacity: 1; }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--snh-bundle-orange);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.image_position | default: 'center' }};
+    transform: scale(1.01);
+    transition: transform 520ms cubic-bezier(0.22, 0.61, 0.21, 1);
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card:hover .snh-bundle-v2-card__media img { transform: scale(1.05); }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__arrow {
+    position: absolute;
+    z-index: 5;
+    top: 18px;
+    right: 18px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 6px;
+    background: rgba(10, 8, 6, 0.38);
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__arrow svg { width: 17px; height: 17px; }
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card:hover .snh-bundle-v2-card__arrow {
+    transform: translate(2px, -2px);
+    background: var(--snh-bundle-orange);
+    border-color: var(--snh-bundle-orange);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__body {
+    position: relative;
+    z-index: 3;
+    align-self: end;
+    display: grid;
+    gap: 10px;
+    padding: clamp(18px, 2vw, 30px);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__badge {
+    width: fit-content;
+    padding: 7px 10px;
+    border-radius: 4px;
+    background: var(--snh-bundle-orange);
+    color: #ffffff;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__title {
+    margin: 0;
+    max-width: 14ch;
+    color: #fdf6ef;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(22px, 2.2vw, 34px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  }
+
+  #shopify-section-{{ section.id }} .snh-bundle-v2-card__desc {
+    max-width: 36ch;
+    margin: 0;
+    color: rgba(253, 246, 239, 0.72);
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+
+  @media screen and (max-width: 1199px) {
+    #shopify-section-{{ section.id }} .snh-bundle-v2__header { grid-template-columns: 1fr; gap: 16px; }
+    #shopify-section-{{ section.id }} .snh-bundle-v2__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #shopify-section-{{ section.id }} .snh-bundle-v2-card:first-child { grid-column: 1 / -1; min-height: 400px; }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .snh-bundle-v2 { padding-block: 36px 44px; }
+    #shopify-section-{{ section.id }} .snh-bundle-v2__actions { width: 100%; }
+    #shopify-section-{{ section.id }} .snh-bundle-v2__link,
+    #shopify-section-{{ section.id }} .snh-bundle-v2__loyalty { flex: 1 1 100%; }
+
+    #shopify-section-{{ section.id }} .snh-bundle-v2__grid {
+      display: flex;
+      gap: 12px;
+      margin-inline: calc(clamp(18px, 4vw, 64px) * -1);
+      padding-inline: clamp(18px, 4vw, 64px);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    #shopify-section-{{ section.id }} .snh-bundle-v2__grid::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .snh-bundle-v2-card,
+    #shopify-section-{{ section.id }} .snh-bundle-v2-card:first-child {
+      flex: 0 0 min(84vw, 360px);
+      min-height: 420px;
+      scroll-snap-align: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .snh-bundle-v2-card,
+    #shopify-section-{{ section.id }} .snh-bundle-v2-card__media img,
+    #shopify-section-{{ section.id }} .snh-bundle-v2-card__arrow { transition: none !important; }
+  }
+</style>
+
+<section class="snh-bundle-v2" aria-labelledby="snh-bundle-v2-title-{{ section.id }}">
+  <div class="snh-bundle-v2__inner">
+    <div class="snh-bundle-v2__header">
+      <div class="snh-bundle-v2__heading-wrap">
+        {%- if section.settings.subheading != blank -%}
+          <p class="snh-bundle-v2__eyebrow">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="snh-bundle-v2__title" id="snh-bundle-v2-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="snh-bundle-v2__summary">
+        {%- if section.settings.content != blank -%}
+          <div class="snh-bundle-v2__content rte">{{ section.settings.content }}</div>
+        {%- endif -%}
+
+        <div class="snh-bundle-v2__actions">
+          {%- if section.settings.button_label != blank and section.settings.button_url != blank -%}
+            <a class="snh-bundle-v2__link" href="{{ section.settings.button_url }}">
+              <span>{{ section.settings.button_label | escape }}</span>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M4 10h11M11 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.loyalty_label != blank and section.settings.loyalty_url != blank -%}
+            <a class="snh-bundle-v2__loyalty" href="{{ section.settings.loyalty_url }}">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M10 2.5l2.2 4.4 4.8.7-3.5 3.4.8 4.8L10 13.5l-4.3 2.3.8-4.8L3 7.6l4.8-.7L10 2.5z" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ section.settings.loyalty_label | escape }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="snh-bundle-v2__grid">
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+        {%- assign card_url = block.settings.url | default: collection.url | default: routes.collections_url -%}
+        {%- assign card_image = block.settings.image | default: collection.featured_image -%}
+        {%- assign card_title = block.settings.title | default: collection.title | default: 'Bundle Offer' -%}
+
+        <a class="snh-bundle-v2-card" href="{{ card_url }}" {{ block.shopify_attributes }}>
+          <div class="snh-bundle-v2-card__media">
+            {%- if card_image != blank -%}
+              {{- card_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 699px) 84vw, (max-width: 1199px) 92vw, 34vw', widths: '500,700,900,1100,1300,1600', alt: card_title -}}
+            {%- elsif block.settings.image_url != blank -%}
+              <img src="{{ block.settings.image_url }}" alt="{{ card_title | escape }}" loading="lazy">
+            {%- endif -%}
+          </div>
+
+          <span class="snh-bundle-v2-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 10h11M11 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+
+          <div class="snh-bundle-v2-card__body">
+            {%- if block.settings.badge != blank -%}
+              <span class="snh-bundle-v2-card__badge">{{ block.settings.badge | escape }}</span>
+            {%- endif -%}
+            <h3 class="snh-bundle-v2-card__title">{{ card_title | escape }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="snh-bundle-v2-card__desc">{{ block.settings.description | escape }}</p>
+            {%- endif -%}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH Bundle & Save (Dark)",
+  "class": "shopify-section--snh-bundle-save-dark",
+  "tag": "section",
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Bundle offers" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Bundle & Save" },
+    { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Curated stacks built for better value, faster shopping and stronger daily routines.</p>" },
+    { "type": "url", "id": "button_url", "label": "Button link" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View bundles" },
+    { "type": "url", "id": "loyalty_url", "label": "Loyalty CTA link" },
+    { "type": "text", "id": "loyalty_label", "label": "Loyalty CTA text", "default": "Earn loyalty points" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FDF6EF" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#E0521C" }
+  ],
+  "blocks": [
+    {
+      "type": "bundle_card",
+      "name": "Bundle card",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Custom image (overrides URL)" },
+        { "type": "text", "id": "image_url", "label": "Image URL" },
+        { "type": "text", "id": "badge", "label": "Badge", "default": "Save more" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "description", "label": "Description" },
+        { "type": "url", "id": "url", "label": "Custom link" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "SNH Bundle & Save (Dark)",
+      "blocks": [
+        {
+          "type": "bundle_card",
+          "settings": {
+            "badge": "Save more",
+            "title": "Bundle Offers",
+            "description": "Best-value product stacks for everyday performance.",
+            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bundle_off.png?v=1784090969"
+          }
+        },
+        {
+          "type": "bundle_card",
+          "settings": {
+            "badge": "Curated",
+            "title": "Protein Picks",
+            "description": "High-demand combinations selected for quick shopping.",
+            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/protines.png?v=1784090969"
+          }
+        },
+        {
+          "type": "bundle_card",
+          "settings": {
+            "badge": "Store choice",
+            "title": "Wellness Sets",
+            "description": "Simple sets built around everyday supplement goals.",
+            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/wellness.png?v=1784090969"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

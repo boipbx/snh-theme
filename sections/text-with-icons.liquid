@@ -1,0 +1,583 @@
+{% comment %}
+  SNH Why Choose Us — Proof Grid V4 (type + edge refinement)
+  - Heading set in the SNH Elite "BRONZE MEMBER" display voice (Archivo 900, tight, uppercase)
+  - Card titles match the same voice at a smaller scale
+  - Squared-off edges (4px radius) — cards, layout and scroll animation preserved
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section
+  data-snh-proof
+  id="snh-proof-{{ section.id }}"
+  style="
+    --snh-proof-bg: {{ section.settings.bg }};
+    --snh-proof-accent: {{ section.settings.accent }};
+    --snh-proof-heading: {{ section.settings.heading_color }};
+    --snh-proof-card: {{ section.settings.card_bg }};
+  "
+  aria-labelledby="snh-proof-title-{{ section.id }}"
+>
+  <div class="snh-proof__shell">
+    <header class="snh-proof__header">
+      {% if section.settings.heading != blank %}
+        <h2 id="snh-proof-title-{{ section.id }}" class="snh-proof__title">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="snh-proof__subheading">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </header>
+
+    {% assign proof_images = 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1stcard.png?v=1784028499|https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2nd_crd.png?v=1784028499|https://cdn.shopify.com/s/files/1/0258/9625/5550/files/3rdcrd.png?v=1784028499|https://cdn.shopify.com/s/files/1/0258/9625/5550/files/4th_card.png?v=1784028499' | split: '|' %}
+    {% assign proof_widths = '356|472|564|321' | split: '|' %}
+    {% assign proof_heights = '720|745|724|736' | split: '|' %}
+
+    <div class="snh-proof__grid" role="list">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks limit: 4 %}
+          <article
+            class="snh-proof__card snh-proof__card--{{ forloop.index }}"
+            role="listitem"
+            style="--snh-proof-order: {{ forloop.index0 }};"
+            {{ block.shopify_attributes }}
+          >
+            <div class="snh-proof__visual" aria-hidden="true">
+              <img
+                class="snh-proof__image"
+                src="{{ proof_images[forloop.index0] }}"
+                width="{{ proof_widths[forloop.index0] }}"
+                height="{{ proof_heights[forloop.index0] }}"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+
+            <div class="snh-proof__copy">
+              {% if block.settings.title != blank %}
+                <h3 class="snh-proof__card-title">{{ block.settings.title }}</h3>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <p class="snh-proof__desc">{{ block.settings.text }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {% assign fallback_titles = '100% Authentic|Fair Pricing|Expert Support|Secure Payments' | split: '|' %}
+        {% assign fallback_texts = 'Genuine products from trusted, authorized sources.|Clear prices with strong everyday value.|Practical help from people who know the products.|Protected checkout across every supported payment method.' | split: '|' %}
+
+        {% for title in fallback_titles %}
+          <article
+            class="snh-proof__card snh-proof__card--{{ forloop.index }}"
+            role="listitem"
+            style="--snh-proof-order: {{ forloop.index0 }};"
+          >
+            <div class="snh-proof__visual" aria-hidden="true">
+              <img
+                class="snh-proof__image"
+                src="{{ proof_images[forloop.index0] }}"
+                width="{{ proof_widths[forloop.index0] }}"
+                height="{{ proof_heights[forloop.index0] }}"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+
+            <div class="snh-proof__copy">
+              <h3 class="snh-proof__card-title">{{ title }}</h3>
+              <p class="snh-proof__desc">{{ fallback_texts[forloop.index0] }}</p>
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #snh-proof-{{ section.id }},
+  #snh-proof-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #snh-proof-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(44px, 4.5vw, 70px) clamp(18px, 4vw, 64px);
+    background:
+      radial-gradient(circle at 10% 8%, rgba(255, 106, 0, 0.065), transparent 30rem),
+      linear-gradient(180deg, rgba(255,255,255,.68), rgba(255,255,255,0)),
+      var(--snh-proof-bg);
+    color: var(--snh-proof-heading);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+
+  #snh-proof-{{ section.id }}::before {
+    content: "";
+    position: absolute;
+    inset-inline: clamp(18px, 4vw, 64px);
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(18,18,18,.14), transparent);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__shell {
+    width: min(100%, 1500px);
+    margin-inline: auto;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__header {
+    display: grid;
+    grid-template-columns: minmax(0, .82fr) minmax(380px, 1.18fr);
+    gap: clamp(28px, 5vw, 80px);
+    align-items: end;
+    margin-bottom: clamp(26px, 3vw, 40px);
+  }
+
+  /* "BRONZE MEMBER" display voice — Archivo 900, tight, uppercase */
+  #snh-proof-{{ section.id }} .snh-proof__title {
+    margin: 0;
+    color: var(--snh-proof-heading);
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(36px, 3.8vw, 58px);
+    font-weight: 900;
+    line-height: .98;
+    letter-spacing: -.03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__subheading {
+    max-width: 720px;
+    margin: 0;
+    color: rgba(69, 59, 50, .78);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: clamp(14px, 1.02vw, 16px);
+    font-weight: 500;
+    line-height: 1.55;
+    letter-spacing: -.01em;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(12px, 1.3vw, 20px);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: clamp(218px, 16vw, 252px);
+    border: 1px solid rgba(255,255,255,.10);
+    border-top: 2px solid var(--snh-proof-accent);
+    border-radius: 4px;
+    background:
+      radial-gradient(circle at 87% 34%, rgba(235,87,20,.23), transparent 44%),
+      linear-gradient(145deg, #171210, var(--snh-proof-card));
+    box-shadow: 0 16px 42px rgba(18,18,18,.12);
+    transition:
+      transform 360ms cubic-bezier(.22,1,.36,1),
+      border-color 260ms ease,
+      box-shadow 360ms ease;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(10,9,8,.98) 0%, rgba(10,9,8,.91) 42%, rgba(10,9,8,.40) 67%, rgba(10,9,8,.04) 100%);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card::after {
+    content: "";
+    position: absolute;
+    z-index: 4;
+    left: clamp(18px, 1.55vw, 24px);
+    bottom: clamp(18px, 1.55vw, 24px);
+    width: 28px;
+    height: 2px;
+    background: var(--snh-proof-accent);
+    transform-origin: left center;
+    transition: width 320ms cubic-bezier(.22,1,.36,1);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__visual {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__image {
+    position: absolute;
+    display: block;
+    width: auto;
+    max-width: none;
+    height: 116%;
+    right: -3%;
+    bottom: -14%;
+    opacity: .84;
+    filter: saturate(.82) brightness(.86) contrast(1.02);
+    transform: translate3d(0, 7px, 0) scale(.97);
+    transform-origin: center bottom;
+    transition:
+      transform 620ms cubic-bezier(.22,1,.36,1),
+      opacity 320ms ease,
+      filter 320ms ease;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--1 .snh-proof__image {
+    height: 121%;
+    right: 0;
+    bottom: -18%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--2 .snh-proof__image {
+    height: 116%;
+    right: -10%;
+    bottom: -16%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--3 .snh-proof__image {
+    height: 114%;
+    right: -15%;
+    bottom: -15%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card--4 .snh-proof__image {
+    height: 121%;
+    right: 2%;
+    bottom: -18%;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__copy {
+    position: absolute;
+    z-index: 3;
+    left: clamp(18px, 1.55vw, 24px);
+    right: 38%;
+    top: clamp(20px, 1.75vw, 28px);
+  }
+
+  /* Card titles in the same display voice, smaller */
+  #snh-proof-{{ section.id }} .snh-proof__card-title {
+    margin: 0 0 8px;
+    color: #fff2e6;
+    font-family: 'Archivo', Arial, sans-serif;
+    font-size: clamp(16px, 1.08vw, 21px);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    text-transform: uppercase;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__desc {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: rgba(255,255,255,.68);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: clamp(12px, .83vw, 14px);
+    font-weight: 500;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,106,0,.62);
+    box-shadow: 0 24px 58px rgba(18,18,18,.19);
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card:hover::after {
+    width: 54px;
+  }
+
+  #snh-proof-{{ section.id }} .snh-proof__card:hover .snh-proof__image {
+    opacity: .95;
+    filter: saturate(.92) brightness(.92) contrast(1.02);
+    transform: translate3d(0, 0, 0) scale(1.01);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__header,
+  #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__card {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__header {
+    opacity: 1;
+    transform: none;
+    transition: opacity 620ms ease, transform 620ms cubic-bezier(.22,1,.36,1);
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__card {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 560ms ease calc(100ms + var(--snh-proof-order) * 85ms),
+      transform 620ms cubic-bezier(.22,1,.36,1) calc(100ms + var(--snh-proof-order) * 85ms),
+      border-color 260ms ease,
+      box-shadow 360ms ease;
+  }
+
+  #snh-proof-{{ section.id }}.snh-motion-ready.is-visible .snh-proof__card:hover {
+    transform: translateY(-4px);
+  }
+
+  @media screen and (max-width: 1080px) {
+    #snh-proof-{{ section.id }} .snh-proof__header {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__subheading {
+      max-width: 780px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card {
+      min-height: 220px;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #snh-proof-{{ section.id }} {
+      padding: 36px 14px 40px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__header {
+      margin-bottom: 20px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__title {
+      font-size: clamp(30px, 9vw, 40px);
+      letter-spacing: -.025em;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__subheading {
+      max-width: 42ch;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card {
+      min-height: 188px;
+      border-radius: 3px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card::before {
+      background: linear-gradient(0deg, rgba(8,8,8,.98) 0%, rgba(8,8,8,.88) 43%, rgba(8,8,8,.24) 72%, rgba(8,8,8,.02) 100%);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card::after {
+      left: 13px;
+      bottom: 12px;
+      width: 22px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__copy {
+      left: 13px;
+      right: 11px;
+      top: auto;
+      bottom: 25px;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card-title {
+      margin-bottom: 5px;
+      font-size: clamp(12px, 3.65vw, 15px);
+      line-height: 1.04;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__desc {
+      font-size: 10.5px;
+      line-height: 1.35;
+      -webkit-line-clamp: 2;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--1 .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--2 .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--3 .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__card--4 .snh-proof__image {
+      height: 103%;
+      right: 50%;
+      bottom: -8%;
+      opacity: .80;
+      transform: translate3d(50%, 5px, 0) scale(.96);
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card:hover .snh-proof__image {
+      transform: translate3d(50%, 0, 0) scale(1);
+    }
+  }
+
+  @media screen and (max-width: 370px) {
+    #snh-proof-{{ section.id }} .snh-proof__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card {
+      min-height: 175px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__header,
+    #snh-proof-{{ section.id }}.snh-motion-ready .snh-proof__card {
+      opacity: 1;
+      transform: none;
+    }
+
+    #snh-proof-{{ section.id }} .snh-proof__card,
+    #snh-proof-{{ section.id }} .snh-proof__image,
+    #snh-proof-{{ section.id }} .snh-proof__header {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('snh-proof-{{ section.id }}');
+    if (!root || root.dataset.motionBound === 'true') return;
+
+    root.dataset.motionBound = 'true';
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      root.classList.add('is-visible');
+      return;
+    }
+
+    root.classList.add('snh-motion-ready');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        root.classList.add('is-visible');
+        observer.disconnect();
+      });
+    }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+
+    observer.observe(root);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Why choose us refined",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "WHY CHOOSE US?"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#17130F"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka."
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Section background",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#0E0E0F"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent color",
+      "default": "#E0521C"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Proof point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "100% Authentic"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Genuine products from trusted, authorized sources."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why choose us refined",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "100% Authentic",
+            "text": "Genuine products from trusted, authorized sources."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Fair Pricing",
+            "text": "Clear prices with strong everyday value."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Expert Support",
+            "text": "Practical help from people who know the products."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Secure Payments",
+            "text": "Protected checkout across every supported payment method."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

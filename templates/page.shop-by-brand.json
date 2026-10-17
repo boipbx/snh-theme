@@ -1,0 +1,181 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "shobybrand_BVir7M": {
+      "type": "Shobybrand",
+      "blocks": {
+        "brand_rU8iUW": {
+          "type": "brand",
+          "settings": {
+            "collection": "raw",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_5.png"
+          }
+        },
+        "brand_MJrjMW": {
+          "type": "brand",
+          "settings": {
+            "collection": "seven-seas-1",
+            "name": "",
+            "image": "shopify://shop_images/sisis.png"
+          }
+        },
+        "brand_rq8Daj": {
+          "type": "brand",
+          "settings": {
+            "collection": "vitabiotics-1",
+            "name": "",
+            "image": "shopify://shop_images/brand_logoo_5.png"
+          }
+        },
+        "brand_Be4Bk8": {
+          "type": "brand",
+          "settings": {
+            "collection": "healthspan-elite",
+            "name": "",
+            "image": "shopify://shop_images/brand_logoo_1.png"
+          }
+        },
+        "brand_JbQJ64": {
+          "type": "brand",
+          "settings": {
+            "collection": "trace",
+            "name": "",
+            "image": "shopify://shop_images/brand_logoo_4.png"
+          }
+        },
+        "brand_zdCw9N": {
+          "type": "brand",
+          "settings": {
+            "collection": "sis",
+            "name": "",
+            "image": "shopify://shop_images/sis.png"
+          }
+        },
+        "brand_FD6DPd": {
+          "type": "brand",
+          "settings": {
+            "collection": "surge",
+            "name": "",
+            "image": "shopify://shop_images/brand_logoo_3.png"
+          }
+        },
+        "brand_9qqVcc": {
+          "type": "brand",
+          "settings": {
+            "collection": "ryse",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_8.png"
+          }
+        },
+        "brand_MtAeMX": {
+          "type": "brand",
+          "settings": {
+            "collection": "centrum-1",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_11.png"
+          }
+        },
+        "brand_3Kdhez": {
+          "type": "brand",
+          "settings": {
+            "collection": "muscletech",
+            "name": "",
+            "image": "shopify://shop_images/11_7b8bcabc-547d-4e55-a737-f92837be10bb.png"
+          }
+        },
+        "brand_nCBndC": {
+          "type": "brand",
+          "settings": {
+            "collection": "redcon1",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_6.png"
+          }
+        },
+        "brand_KjeDeM": {
+          "type": "brand",
+          "settings": {
+            "collection": "ehplabs",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_1.png"
+          }
+        },
+        "brand_MpbYHb": {
+          "type": "brand",
+          "settings": {
+            "collection": "applied-nutrition",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_10.png"
+          }
+        },
+        "brand_HNyEFE": {
+          "type": "brand",
+          "settings": {
+            "collection": "revive",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_7.png"
+          }
+        },
+        "brand_Y6bdrj": {
+          "type": "brand",
+          "settings": {
+            "collection": "myprotein",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_4.png"
+          }
+        },
+        "brand_dejwC3": {
+          "type": "brand",
+          "settings": {
+            "collection": "dymatize",
+            "name": "",
+            "image": "shopify://shop_images/brand_logos_12.png"
+          }
+        }
+      },
+      "block_order": [
+        "brand_rU8iUW",
+        "brand_MJrjMW",
+        "brand_rq8Daj",
+        "brand_Be4Bk8",
+        "brand_JbQJ64",
+        "brand_zdCw9N",
+        "brand_FD6DPd",
+        "brand_9qqVcc",
+        "brand_MtAeMX",
+        "brand_3Kdhez",
+        "brand_nCBndC",
+        "brand_KjeDeM",
+        "brand_MpbYHb",
+        "brand_HNyEFE",
+        "brand_Y6bdrj",
+        "brand_dejwC3"
+      ],
+      "name": "Shop by brand",
+      "settings": {
+        "title": "Shop by brand",
+        "blog": "news",
+        "journal_after": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "shobybrand_BVir7M"
+  ]
+}

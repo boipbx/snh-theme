@@ -1,0 +1,411 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "slideshow_LTcK48": {
+      "type": "slideshow",
+      "blocks": {
+        "video_qAQxVd": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/STAY TUNED LEGENDS.mp4",
+            "mobile_video": "shopify://files/videos/STAY TUNED LEGENDS (1).mp4",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "background": "",
+            "background_gradient": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_qAQxVd"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "show_initial_transition": false,
+        "image_size": "auto",
+        "controls_type": "dots",
+        "transition_type": "fade_with_text",
+        "autoplay": false,
+        "cycle_speed": 6,
+        "background": "#F2F2F2",
+        "background_gradient": ""
+      }
+    },
+    "slideshow_BUqMHG": {
+      "type": "slideshow",
+      "blocks": {
+        "image_7jn6ef": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/1_74813812-2efc-418b-bdf5-578627a55395.png",
+            "mobile_image": "shopify://shop_images/1_f7bf606b-b0c2-44ec-a07c-09a45c897efe.png",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10,
+            "background": "",
+            "background_gradient": ""
+          }
+        },
+        "image_EVqDxB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/3_188d2052-8bba-4f42-b660-7b638de92c0e.png",
+            "mobile_image": "shopify://shop_images/2_d378f2a1-a384-4ca0-a0a3-ace934d59616.png",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "background": "",
+            "background_gradient": ""
+          }
+        },
+        "image_XrTLeA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2_5369ccf0-2c9b-4fe3-9b61-20347b050081.png",
+            "mobile_image": "shopify://shop_images/3_a9efd648-a193-4b08-8002-a2215c9edb76.png",
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-end-start text-start",
+            "desktop_text_position": "sm:place-self-end-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "background": "",
+            "background_gradient": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_7jn6ef",
+        "image_EVqDxB",
+        "image_XrTLeA"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "show_initial_transition": false,
+        "image_size": "auto",
+        "controls_type": "dots",
+        "transition_type": "fade_with_text",
+        "autoplay": false,
+        "cycle_speed": 6,
+        "background": "#f2f2f2",
+        "background_gradient": ""
+      }
+    },
+    "scrolling_text_9R8hGB": {
+      "type": "scrolling-text",
+      "settings": {
+        "full_width": true,
+        "text": "BUILT FOR PERFORMANCE, DESIGNED FOR STYLE",
+        "text_size": "small",
+        "text_style": "fill",
+        "scrolling_mode": "auto",
+        "scrolling_speed": 10,
+        "background": "#803cee",
+        "background_gradient": "linear-gradient(240deg, rgba(190, 30, 45, 1) 14%, rgba(13, 16, 39, 1) 83%)",
+        "text_color": "#f2f2f2",
+        "text_gradient": ""
+      }
+    },
+    "collection_list_Tbj7Hf": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_Htiwjk": {
+          "type": "collection",
+          "settings": {
+            "collection": "applied-nutrition",
+            "subheading": "",
+            "title": "LIFTING STRAPS",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_KLeBAq": {
+          "type": "collection",
+          "settings": {
+            "collection": "applied-nutrition",
+            "subheading": "",
+            "title": "WRIST WRAPS",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_qzE8kz": {
+          "type": "collection",
+          "settings": {
+            "collection": "supplements",
+            "subheading": "",
+            "title": "LIFTING BELT",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_ErhKMN": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "subheading": "",
+            "title": "BOTTLES",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_Htiwjk",
+        "collection_KLeBAq",
+        "collection_qzE8kz",
+        "collection_ErhKMN"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_collections": false,
+        "collections_per_row_mobile": "2",
+        "collections_per_row": 3,
+        "show_progress_bar": false,
+        "subheading": "",
+        "title": "Collection list",
+        "content": "",
+        "link_url": "",
+        "link_text": "View all",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    },
+    "media_with_text_4NxQ9g": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_Vz6EtY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_1301d7dd-ebf4-4e83-9aaf-badf2a25dc9b.png",
+            "media_width": 50,
+            "media_position": "start",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/Untitled_240_x_240_px.png",
+            "icon_width": 100,
+            "subheading": "",
+            "title": "SURGE",
+            "content": "<p>SPEAK ABOUT SURGE</p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "#0d1027",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_Vz6EtY"
+      ],
+      "settings": {
+        "full_width": true,
+        "spacing": "small"
+      }
+    },
+    "hot_spots_9EfbXq": {
+      "type": "hot-spots",
+      "blocks": {
+        "item_UqYbFj": {
+          "type": "item",
+          "settings": {
+            "horizontal_position": 24,
+            "vertical_position": 70,
+            "horizontal_position_mobile": 24,
+            "vertical_position_mobile": 70,
+            "icon_width": 32,
+            "title": "Feature name",
+            "content": "<p>Share useful information about your product features.</p>"
+          }
+        },
+        "item_Jbdedz": {
+          "type": "item",
+          "settings": {
+            "horizontal_position": 62,
+            "vertical_position": 14,
+            "horizontal_position_mobile": 62,
+            "vertical_position_mobile": 14,
+            "icon_width": 32,
+            "title": "Feature name",
+            "content": "<p>Share useful information about your product features.</p>"
+          }
+        },
+        "item_c7Hqb4": {
+          "type": "item",
+          "settings": {
+            "horizontal_position": 83,
+            "vertical_position": 75,
+            "horizontal_position_mobile": 83,
+            "vertical_position_mobile": 75,
+            "icon_width": 32,
+            "title": "Feature name",
+            "content": "<p>Share useful information about your product features.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_UqYbFj",
+        "item_Jbdedz",
+        "item_c7Hqb4"
+      ],
+      "settings": {
+        "full_width": true,
+        "title": "",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "desktop_text_position": "place-self-start text-start",
+        "image_background": "",
+        "image_background_gradient": "",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "overlay_text_color": "#ffffff",
+        "overlay_button_background": "",
+        "overlay_button_text_color": "",
+        "hot_spot_dot_background": "#ffffff",
+        "hot_spot_dot_text_color": "#000000",
+        "hot_spot_content_background": "#ffffff",
+        "hot_spot_content_text_color": "#000000",
+        "hot_spot_content_opacity": 90,
+        "hot_spot_content_blur_radius": 3
+      }
+    },
+    "shop_the_look_VitN8k": {
+      "type": "shop-the-look",
+      "blocks": {
+        "product_XkwBJx": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "horizontal_position": 52,
+            "vertical_position": 25
+          }
+        },
+        "product_XpUjKX": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "horizontal_position": 75,
+            "vertical_position": 53
+          }
+        },
+        "product_3qgBw3": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "horizontal_position": 33,
+            "vertical_position": 73
+          }
+        }
+      },
+      "block_order": [
+        "product_XkwBJx",
+        "product_XpUjKX",
+        "product_3qgBw3"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_mobile": true,
+        "title": "Shop the look",
+        "content": "",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "product_card_background": "",
+        "product_card_text_color": "",
+        "product_card_mobile_background": "",
+        "product_card_mobile_text_color": "",
+        "background_dots": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "slideshow_LTcK48",
+    "slideshow_BUqMHG",
+    "scrolling_text_9R8hGB",
+    "collection_list_Tbj7Hf",
+    "media_with_text_4NxQ9g",
+    "hot_spots_9EfbXq",
+    "shop_the_look_VitN8k"
+  ]
+}

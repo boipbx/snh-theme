@@ -1,0 +1,347 @@
+{%- render 'section-spacing-collapsing' -%}
+
+{% comment %}
+  SNH FRANCHISE PARTNER, clean ember edition
+  Real store photography, no eyebrow kickers, flat cards, softer radii.
+  Save as sections/snh-franchise-partner.liquid → add to the franchise page template.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="snh-fr-{{ section.id }}" style="--fr-accent: {{ section.settings.accent | default: '#E0521C' }};">
+
+  <!-- HERO -->
+  <div class="fr-hero">
+    <div class="fr-hero__inner">
+      <div class="fr-hero__copy" data-rv="0">
+        <h1 class="fr-hero__title">{{ section.settings.heading | default: 'Own the next <span>hub.</span>' }}</h1>
+        <p class="fr-hero__sub">{{ section.settings.subheading | default: "Sri Lanka's #1 sports nutrition retailer is expanding. Three thriving stores, exclusive rights to 12+ global brands, and a proven model, now open to partners who want to build the next one." }}</p>
+        <div class="fr-btn-row">
+          <a class="fr-btn" href="#snh-fr-form-{{ section.id }}">Apply to partner
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="fr-btn fr-btn--ghost" href="https://wa.me/{{ section.settings.whatsapp | default: '94764863359' }}" target="_blank" rel="noopener">WhatsApp the team</a>
+        </div>
+      </div>
+
+      <div class="fr-hero__visual" data-rv="120" aria-hidden="true">
+        <figure class="fr-photo fr-photo--main">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/snhnuge.webp?v=1784544306" alt="" loading="eager" fetchpriority="high">
+        </figure>
+        <figure class="fr-photo fr-photo--small">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/snh_dehiwala.webp?v=1784544578" alt="" loading="lazy">
+        </figure>
+        <span class="fr-hero__tag">Your city next</span>
+      </div>
+    </div>
+
+    <div class="fr-hero__stats" data-rv="220">
+      <div class="fr-stat"><span class="fr-stat__num">03</span><span class="fr-stat__label">Outlets &amp; growing</span></div>
+      <div class="fr-stat"><span class="fr-stat__num">12+</span><span class="fr-stat__label">Exclusive global brands</span></div>
+      <div class="fr-stat"><span class="fr-stat__num">#1</span><span class="fr-stat__label">Sports nutrition retailer</span></div>
+      <div class="fr-stat"><span class="fr-stat__num">100%</span><span class="fr-stat__label">Genuine stock, always</span></div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="fr-ticker" aria-hidden="true">
+    <div class="fr-ticker__track">
+      <span>Now franchising</span><i>&#10022;</i><span>Dehiwala</span><i>&#10022;</i><span>Wattala</span><i>&#10022;</i><span>Nugegoda</span><i>&#10022;</i><span>Your city next</span><i>&#10022;</i>
+      <span>Now franchising</span><i>&#10022;</i><span>Dehiwala</span><i>&#10022;</i><span>Wattala</span><i>&#10022;</i><span>Nugegoda</span><i>&#10022;</i><span>Your city next</span><i>&#10022;</i>
+      <span>Now franchising</span><i>&#10022;</i><span>Dehiwala</span><i>&#10022;</i><span>Wattala</span><i>&#10022;</i><span>Nugegoda</span><i>&#10022;</i><span>Your city next</span><i>&#10022;</i>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <div class="fr-why">
+    <div class="fr-why__head" data-rv="0">
+      <h2 class="fr-h2 fr-h2--ink">Why partner with SNH</h2>
+      <p class="fr-lead">A retail model that already works, market leadership, exclusive supply and a store people come back to. You bring the ambition; we bring everything else.</p>
+    </div>
+    <div class="fr-why__grid">
+      <article class="fr-card" data-rv="0"><h3>Market leader</h3><p>The go-to name in supplements, vitamins and performance nutrition.</p></article>
+      <article class="fr-card" data-rv="70"><h3>12+ exclusive brands</h3><p>Applied Nutrition, RYSE, SIS, MuscleTech, Healthspan Elite, distributed by us.</p></article>
+      <article class="fr-card" data-rv="140"><h3>Training &amp; ops support</h3><p>Store setup, staff training, inventory, POS and marketing, covered.</p></article>
+      <article class="fr-card" data-rv="210"><h3>High ROI</h3><p>A proven store model built for footfall, margin and repeat purchase.</p></article>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="fr-gallery">
+    <div class="fr-gallery__head" data-rv="0">
+      <h2 class="fr-h2">Step inside the hub</h2>
+      <p class="fr-lead fr-lead--light">The store you open on day one, designed, branded and stocked to the same standard as Dehiwala, Wattala and Nugegoda.</p>
+    </div>
+    <div class="fr-marquee">
+      <div class="fr-marquee__row">
+        <div class="fr-marquee__track">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_20_2026_04_15_47_PM_8.webp?v=1784544578" alt="SNH store" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_20_2026_04_15_46_PM_6_insid.webp?v=1784544578" alt="SNH store interior" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/snhwttla.webp?v=1784544578" alt="SNH Wattala" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_20_2026_04_15_46_PM_5.webp?v=1784544578" alt="SNH store" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_20_2026_04_15_47_PM_8.webp?v=1784544578" alt="" aria-hidden="true" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_20_2026_04_15_46_PM_6_insid.webp?v=1784544578" alt="" aria-hidden="true" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/snhwttla.webp?v=1784544578" alt="" aria-hidden="true" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_20_2026_04_15_46_PM_5.webp?v=1784544578" alt="" aria-hidden="true" loading="lazy">
+        </div>
+      </div>
+      <div class="fr-marquee__row">
+        <div class="fr-marquee__track fr-marquee__track--reverse">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/instore.webp?v=1784544577" alt="SNH store interior" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/khizerinsid.webp?v=1784544577" alt="SNH store interior" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/glfg.webp?v=1784544577" alt="SNH store" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/instore.webp?v=1784544577" alt="" aria-hidden="true" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/khizerinsid.webp?v=1784544577" alt="" aria-hidden="true" loading="lazy">
+          <img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/glfg.webp?v=1784544577" alt="" aria-hidden="true" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OWNER PACKAGE -->
+  <div class="fr-package">
+    <div class="fr-package__layout">
+      <div class="fr-package__intro" data-rv="0">
+        <h2 class="fr-h2 fr-h2--ink">What you get as an owner</h2>
+        <p class="fr-lead">Everything is systemised, from territory to launch day. You receive the full playbook, and you're never running it alone.</p>
+        <div class="fr-lookfor">
+          <p class="fr-lookfor__title">Who we're looking for</p>
+          <ul class="fr-ticklist">
+            <li>Passionate about health, fitness and wellness</li>
+            <li>Ready to invest in a premium retail store</li>
+            <li>Obsessed with customer service</li>
+            <li>Hungry to grow with Sri Lanka's strongest brand</li>
+          </ul>
+        </div>
+        <a class="fr-btn" href="#snh-fr-form-{{ section.id }}">Start your application
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <ul class="fr-checklist">
+        <li data-rv="0"><span class="fr-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3L13 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Exclusive territory rights</strong><p>Your area is yours, protected and defined in the agreement.</p></div></li>
+        <li data-rv="60"><span class="fr-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3L13 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Full franchise playbook</strong><p>Operations and training manuals covering every process.</p></div></li>
+        <li data-rv="120"><span class="fr-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3L13 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Centralised marketing</strong><p>Campaigns and creatives produced for you, on schedule.</p></div></li>
+        <li data-rv="180"><span class="fr-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3L13 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Athlete &amp; influencer collabs</strong><p>National partnerships that drive footfall to your door.</p></div></li>
+        <li data-rv="240"><span class="fr-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3L13 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Premium launch package</strong><p>Store design, fit-out guidance and opening-day stock.</p></div></li>
+        <li data-rv="300"><span class="fr-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3L13 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Discounted reorder rates</strong><p>Franchise-only bulk pricing on every restock.</p></div></li>
+      </ul>
+    </div>
+
+    <div class="fr-journey">
+      <h2 class="fr-h2 fr-h2--ink fr-h2--sm" data-rv="0">From application to opening day</h2>
+      <ol class="fr-journey__steps">
+        <li data-rv="0"><span class="fr-journey__num">01</span><h3>Apply</h3><p>Tell us about you, your background and your city.</p></li>
+        <li data-rv="90"><span class="fr-journey__num">02</span><h3>Meet &amp; review</h3><p>We walk you through the model, the numbers and the territory.</p></li>
+        <li data-rv="180"><span class="fr-journey__num">03</span><h3>Build-out</h3><p>Store design, fit-out, opening stock and staff training.</p></li>
+        <li data-rv="270"><span class="fr-journey__num">04</span><h3>Launch</h3><p>Open with full marketing and operational support behind you.</p></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- APPLY -->
+  <div class="fr-apply" id="snh-fr-form-{{ section.id }}">
+    <div class="fr-apply__layout">
+      <div class="fr-apply__copy" data-rv="0">
+        <h2 class="fr-h2">Ready to build yours?</h2>
+        <p class="fr-lead fr-lead--light">Share a little about yourself and where you'd open. Our franchise team reviews every application personally and gets back to you fast.</p>
+        <div class="fr-apply__chips">
+          <a class="fr-chip" href="https://wa.me/{{ section.settings.whatsapp | default: '94764863359' }}" target="_blank" rel="noopener">WhatsApp +94 76 486 3359</a>
+          <span class="fr-chip">Everyday 10am to 7pm</span>
+          <span class="fr-chip">Dehiwala &middot; Wattala &middot; Nugegoda</span>
+        </div>
+        <img class="fr-apply__lady" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1stcard.png?v=1784028499" alt="" loading="lazy" aria-hidden="true">
+      </div>
+
+      <div class="fr-form-card" data-rv="120">
+        <h3 class="fr-form-card__title">Fill the form</h3>
+        <p class="fr-form-card__intro">Share your interest and a little about you, we'll get back to you ASAP.</p>
+        {% form 'contact', class: 'fr-form' %}
+          {% if form.posted_successfully? %}<p class="fr-form-ok">Application received, our franchise team will contact you within 48 hours.</p>{% endif %}
+          {% if form.errors %}<p class="fr-form-err">Please check the highlighted fields and try again.</p>{% endif %}
+          <div class="fr-field-row">
+            <div class="fr-field"><label class="fr-label" for="fr-name-{{ section.id }}">Name</label><input class="fr-input" id="fr-name-{{ section.id }}" type="text" name="contact[name]" placeholder="Your full name" autocomplete="name" required></div>
+            <div class="fr-field"><label class="fr-label" for="fr-phone-{{ section.id }}">Phone</label><input class="fr-input" id="fr-phone-{{ section.id }}" type="tel" name="contact[phone]" placeholder="+94" autocomplete="tel"></div>
+          </div>
+          <div class="fr-field-row">
+            <div class="fr-field"><label class="fr-label" for="fr-email-{{ section.id }}">E-mail</label><input class="fr-input" id="fr-email-{{ section.id }}" type="email" name="contact[email]" placeholder="you@email.com" autocomplete="email" required></div>
+            <div class="fr-field"><label class="fr-label" for="fr-city-{{ section.id }}">Preferred city</label><input class="fr-input" id="fr-city-{{ section.id }}" type="text" name="contact[Preferred city]" placeholder="Where would you open?"></div>
+          </div>
+          <div class="fr-field"><label class="fr-label" for="fr-msg-{{ section.id }}">Message</label><textarea class="fr-input fr-input--area" id="fr-msg-{{ section.id }}" name="contact[body]" rows="4" placeholder="Tell us about you, background, investment readiness, timeline…" required></textarea></div>
+          <button type="submit" class="fr-btn fr-btn--full">Send application</button>
+          <p class="fr-form-card__note">We reply within 48 hours.</p>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #snh-fr-{{ section.id }}, #snh-fr-{{ section.id }} * { box-sizing: border-box; }
+  #snh-fr-{{ section.id }} {
+    --fr-ink: #17130F; --fr-cream: #FAF7F2; --fr-paper-muted: rgba(69,59,50,.78);
+    --fr-light: #fdf6ef; --fr-light-muted: rgba(253,246,239,.66);
+    display: block; background: var(--fr-cream);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; overflow-x: clip;
+  }
+  #snh-fr-{{ section.id }} .fr-h2 { margin: 0; color: var(--fr-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(34px, 3.6vw, 54px); font-weight: 900; line-height: .98; letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance; }
+  #snh-fr-{{ section.id }} .fr-h2--ink { color: var(--fr-ink); }
+  #snh-fr-{{ section.id }} .fr-h2--sm { font-size: clamp(26px, 2.6vw, 38px); }
+  #snh-fr-{{ section.id }} .fr-lead { max-width: 640px; margin: 18px 0 0; color: var(--fr-paper-muted); font-size: clamp(14px, 1.02vw, 16px); font-weight: 500; line-height: 1.62; }
+  #snh-fr-{{ section.id }} .fr-lead--light { color: var(--fr-light-muted); }
+  #snh-fr-{{ section.id }} .fr-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px; border: 1px solid var(--fr-accent); border-radius: 9px; background: var(--fr-accent); color: #fff; font-family: 'Archivo', Arial, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease; }
+  #snh-fr-{{ section.id }} .fr-btn svg { width: 15px; height: 15px; }
+  #snh-fr-{{ section.id }} .fr-btn:hover { background: #b23c11; border-color: #b23c11; transform: translateY(-2px); color: #fff; }
+  #snh-fr-{{ section.id }} .fr-btn--ghost { background: transparent; border-color: rgba(253,246,239,.3); color: var(--fr-light); }
+  #snh-fr-{{ section.id }} .fr-btn--ghost:hover { background: rgba(253,246,239,.07); border-color: var(--fr-accent); }
+  #snh-fr-{{ section.id }} .fr-btn--full { width: 100%; margin-top: 6px; min-height: 56px; }
+  #snh-fr-{{ section.id }} .fr-btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+  #snh-fr-{{ section.id }} .fr-hero { position: relative; padding: clamp(52px,6vw,96px) clamp(18px,4vw,64px) clamp(36px,4vw,56px); background: linear-gradient(115deg, #100b07 0%, #1c0f08 48%, #341509 82%, #46190a 100%); }
+  #snh-fr-{{ section.id }} .fr-hero__inner { display: grid; grid-template-columns: minmax(0,1.02fr) minmax(340px,.98fr); gap: clamp(30px,4vw,70px); align-items: center; width: min(100%,1500px); margin-inline: auto; }
+  #snh-fr-{{ section.id }} .fr-hero__title { margin: 0; color: var(--fr-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(46px,6vw,92px); font-weight: 900; line-height: .93; letter-spacing: -.035em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-hero__title span { color: var(--fr-accent); }
+  #snh-fr-{{ section.id }} .fr-hero__sub { max-width: 540px; margin: 24px 0 0; color: var(--fr-light-muted); font-size: clamp(14px,1.05vw,16px); font-weight: 500; line-height: 1.65; }
+  #snh-fr-{{ section.id }} .fr-hero__visual { position: relative; min-height: clamp(360px,34vw,520px); }
+  #snh-fr-{{ section.id }} .fr-hero__visual::before { content: ""; position: absolute; inset: 6% 2%; background: radial-gradient(circle at 58% 42%, rgba(224,82,28,.22), transparent 62%); filter: blur(44px); z-index: 0; }
+  #snh-fr-{{ section.id }} .fr-photo { z-index: 1; }
+  #snh-fr-{{ section.id }} .fr-photo { position: absolute; margin: 0; overflow: hidden; border: 1px solid rgba(253,246,239,.16); border-radius: 12px; box-shadow: 0 30px 70px rgba(0,0,0,.5); background: #17110c; }
+  #snh-fr-{{ section.id }} .fr-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #snh-fr-{{ section.id }} .fr-photo--main { top: 0; right: 0; width: 84%; aspect-ratio: 4/3; }
+  #snh-fr-{{ section.id }} .fr-photo--small { left: 0; bottom: 2%; width: 50%; aspect-ratio: 5/4; border-bottom: 3px solid var(--fr-accent); }
+  #snh-fr-{{ section.id }} .fr-hero__tag { position: absolute; right: 4%; bottom: -6px; padding: 10px 16px; border-radius: 8px; background: var(--fr-accent); color: #fff; font-family: 'Archivo', Arial, sans-serif; font-size: 11px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-hero__stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; width: min(100%,1500px); margin: clamp(36px,4vw,60px) auto 0; padding-top: clamp(22px,2.4vw,32px); border-top: 1px solid rgba(253,246,239,.14); }
+  #snh-fr-{{ section.id }} .fr-stat { display: grid; gap: 6px; }
+  #snh-fr-{{ section.id }} .fr-stat__num { color: var(--fr-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(32px,3vw,50px); font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  #snh-fr-{{ section.id }} .fr-stat__label { color: var(--fr-light-muted); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+  #snh-fr-{{ section.id }} .fr-ticker { overflow: hidden; background: var(--fr-accent); padding: 13px 0; }
+  #snh-fr-{{ section.id }} .fr-ticker__track { display: flex; align-items: center; gap: 26px; width: max-content; animation: frTicker 26s linear infinite; }
+  #snh-fr-{{ section.id }} .fr-ticker__track span { color: #140b06; font-family: 'Archivo', Arial, sans-serif; font-size: 14px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+  #snh-fr-{{ section.id }} .fr-ticker__track i { color: rgba(20,11,6,.5); font-style: normal; font-size: 12px; }
+  @keyframes frTicker { to { transform: translateX(calc(-100% / 3)); } }
+
+  #snh-fr-{{ section.id }} .fr-why { width: min(100%,1500px); margin-inline: auto; padding: clamp(48px,5vw,84px) clamp(18px,4vw,64px); }
+  #snh-fr-{{ section.id }} .fr-why__head { margin-bottom: clamp(28px,3.2vw,44px); }
+  #snh-fr-{{ section.id }} .fr-why__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: clamp(12px,1.3vw,18px); }
+  #snh-fr-{{ section.id }} .fr-card { padding: clamp(22px,2vw,30px); border: 1px solid rgba(23,19,15,.12); border-radius: 12px; background: #fff; transition: border-color 220ms ease, transform 320ms cubic-bezier(.22,1,.36,1); }
+  #snh-fr-{{ section.id }} .fr-card:hover { border-color: rgba(224,82,28,.55); transform: translateY(-3px); }
+  #snh-fr-{{ section.id }} .fr-card h3 { margin: 0 0 9px; color: var(--fr-ink); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(16px,1.15vw,20px); font-weight: 900; line-height: 1.05; letter-spacing: -.01em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-card p { margin: 0; color: var(--fr-paper-muted); font-size: 13.5px; font-weight: 500; line-height: 1.5; }
+
+  #snh-fr-{{ section.id }} .fr-gallery { padding: clamp(48px,5vw,84px) 0; background: linear-gradient(115deg, #100b07 0%, #1c0f08 48%, #341509 82%, #401809 100%); }
+  #snh-fr-{{ section.id }} .fr-gallery__head { width: min(100%,1500px); margin: 0 auto clamp(26px,3vw,40px); padding-inline: clamp(18px,4vw,64px); }
+  #snh-fr-{{ section.id }} .fr-marquee { display: grid; gap: 14px; }
+  #snh-fr-{{ section.id }} .fr-marquee__row { overflow: hidden; }
+  #snh-fr-{{ section.id }} .fr-marquee__track { display: flex; gap: 14px; width: max-content; animation: frMarquee 46s linear infinite; }
+  #snh-fr-{{ section.id }} .fr-marquee__track--reverse { animation: frMarqueeRev 52s linear infinite; }
+  #snh-fr-{{ section.id }} .fr-marquee__row:hover .fr-marquee__track { animation-play-state: paused; }
+  #snh-fr-{{ section.id }} .fr-marquee__track img { display: block; height: clamp(180px,20vw,280px); width: auto; border-radius: 12px; }
+  @keyframes frMarquee { to { transform: translateX(-50%); } }
+  @keyframes frMarqueeRev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+  #snh-fr-{{ section.id }} .fr-package { width: min(100%,1500px); margin-inline: auto; padding: clamp(48px,5vw,84px) clamp(18px,4vw,64px) clamp(40px,4vw,64px); }
+  #snh-fr-{{ section.id }} .fr-package__layout { display: grid; grid-template-columns: minmax(300px,430px) minmax(0,1fr); gap: clamp(28px,4vw,72px); align-items: start; }
+  #snh-fr-{{ section.id }} .fr-package__intro { position: sticky; top: 24px; }
+  #snh-fr-{{ section.id }} .fr-package__intro .fr-btn { margin-top: 26px; }
+  #snh-fr-{{ section.id }} .fr-lookfor { margin-top: 26px; }
+  #snh-fr-{{ section.id }} .fr-lookfor__title { margin: 0 0 12px; color: var(--fr-ink); font-family: 'Archivo', Arial, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-ticklist { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  #snh-fr-{{ section.id }} .fr-ticklist li { position: relative; padding-left: 26px; color: var(--fr-paper-muted); font-size: 14px; font-weight: 600; line-height: 1.45; }
+  #snh-fr-{{ section.id }} .fr-ticklist li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--fr-accent); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3L13 4.5'/%3E%3C/svg%3E") center/12px no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3L13 4.5'/%3E%3C/svg%3E") center/12px no-repeat; background: var(--fr-accent); }
+  #snh-fr-{{ section.id }} .fr-checklist { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(12px,1.3vw,16px); margin: 0; padding: 0; list-style: none; }
+  #snh-fr-{{ section.id }} .fr-checklist li { display: flex; gap: 14px; align-items: flex-start; padding: clamp(18px,1.6vw,24px); border: 1px solid rgba(23,19,15,.1); border-radius: 12px; background: #fff; transition: border-color 220ms ease, transform 300ms cubic-bezier(.22,1,.36,1); }
+  #snh-fr-{{ section.id }} .fr-checklist li:hover { border-color: rgba(224,82,28,.5); transform: translateY(-2px); }
+  #snh-fr-{{ section.id }} .fr-check { display: grid; place-items: center; flex: 0 0 auto; width: 28px; height: 28px; margin-top: 1px; border-radius: 8px; background: rgba(224,82,28,.1); color: var(--fr-accent); }
+  #snh-fr-{{ section.id }} .fr-check svg { width: 14px; height: 14px; }
+  #snh-fr-{{ section.id }} .fr-checklist strong { display: block; margin-bottom: 4px; color: var(--fr-ink); font-family: 'Archivo', Arial, sans-serif; font-size: 14.5px; font-weight: 800; letter-spacing: -.01em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-checklist p { margin: 0; color: var(--fr-paper-muted); font-size: 13px; font-weight: 500; line-height: 1.5; }
+
+  #snh-fr-{{ section.id }} .fr-journey { margin-top: clamp(44px,5vw,76px); padding-top: clamp(36px,4vw,56px); border-top: 1px solid rgba(23,19,15,.12); }
+  #snh-fr-{{ section.id }} .fr-journey .fr-h2 { margin-bottom: clamp(24px,2.6vw,38px); }
+  #snh-fr-{{ section.id }} .fr-journey__steps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: clamp(16px,2vw,28px); margin: 0; padding: 0; list-style: none; }
+  #snh-fr-{{ section.id }} .fr-journey__steps li { position: relative; padding-top: 18px; border-top: 2px solid rgba(23,19,15,.14); }
+  #snh-fr-{{ section.id }} .fr-journey__steps li::before { content: ""; position: absolute; top: -2px; left: 0; width: 44px; height: 2px; background: var(--fr-accent); }
+  #snh-fr-{{ section.id }} .fr-journey__num { display: block; margin-bottom: 10px; color: var(--fr-accent); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(30px,2.6vw,42px); font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  #snh-fr-{{ section.id }} .fr-journey__steps h3 { margin: 0 0 8px; color: var(--fr-ink); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(16px,1.2vw,20px); font-weight: 900; letter-spacing: -.01em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-journey__steps p { margin: 0; color: var(--fr-paper-muted); font-size: 13.5px; font-weight: 500; line-height: 1.55; }
+
+  #snh-fr-{{ section.id }} .fr-apply { padding: clamp(52px,6vw,92px) clamp(18px,4vw,64px); background: linear-gradient(115deg, #100b07 0%, #1c0f08 48%, #351609 82%, #46190a 100%); }
+  #snh-fr-{{ section.id }} .fr-apply__layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(340px,560px); gap: clamp(30px,4.5vw,84px); align-items: center; width: min(100%,1500px); margin-inline: auto; }
+  #snh-fr-{{ section.id }} .fr-apply__chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  #snh-fr-{{ section.id }} .fr-chip { display: inline-flex; align-items: center; padding: 10px 16px; border: 1px solid rgba(253,246,239,.2); border-radius: 8px; background: rgba(253,246,239,.05); color: var(--fr-light); font-size: 12.5px; font-weight: 600; text-decoration: none; transition: border-color 200ms ease, background-color 200ms ease; }
+  #snh-fr-{{ section.id }} a.fr-chip:hover { border-color: var(--fr-accent); background: rgba(224,82,28,.12); }
+  #snh-fr-{{ section.id }} .fr-apply__copy { position: relative; }
+  #snh-fr-{{ section.id }} .fr-apply__lady { position: relative; z-index: 1; display: block; height: clamp(230px,22vw,330px); width: auto; margin-top: 30px; padding: 0 24px; filter: drop-shadow(0 26px 46px rgba(0,0,0,.5)); background: radial-gradient(ellipse 68% 58% at 50% 44%, rgba(224,82,28,.3), transparent 68%); }
+  #snh-fr-{{ section.id }} .fr-form-card { padding: clamp(26px,2.4vw,38px); border: 1px solid rgba(253,246,239,.14); border-radius: 14px; background: linear-gradient(160deg, rgba(31,22,16,.94), rgba(18,13,10,.97)); box-shadow: 0 34px 80px rgba(0,0,0,.45); }
+  #snh-fr-{{ section.id }} .fr-form-card__title { margin: 0 0 6px; color: var(--fr-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(24px,2vw,32px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-form-card__intro { margin: 0 0 22px; color: var(--fr-light-muted); font-size: 13.5px; font-weight: 500; line-height: 1.55; }
+  #snh-fr-{{ section.id }} .fr-form-card__note { margin: 12px 0 0; color: rgba(253,246,239,.45); font-size: 12px; font-weight: 500; text-align: center; }
+  #snh-fr-{{ section.id }} .fr-form-ok, #snh-fr-{{ section.id }} .fr-form-err { margin: 0 0 16px; padding: 12px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+  #snh-fr-{{ section.id }} .fr-form-ok { border: 1px solid rgba(96,200,120,.45); background: rgba(96,200,120,.1); color: #9fe0b2; }
+  #snh-fr-{{ section.id }} .fr-form-err { border: 1px solid rgba(224,82,28,.5); background: rgba(224,82,28,.12); color: #ffb391; }
+  #snh-fr-{{ section.id }} .fr-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  #snh-fr-{{ section.id }} .fr-field { display: grid; gap: 7px; margin-bottom: 14px; }
+  #snh-fr-{{ section.id }} .fr-label { color: rgba(253,246,239,.72); font-family: 'Archivo', Arial, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  #snh-fr-{{ section.id }} .fr-input { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid rgba(253,246,239,.16); border-radius: 8px; background: rgba(253,246,239,.05); color: var(--fr-light); font-family: 'Inter', Arial, sans-serif; font-size: 14px; font-weight: 500; transition: border-color 200ms ease, background-color 200ms ease; }
+  #snh-fr-{{ section.id }} .fr-input::placeholder { color: rgba(253,246,239,.35); }
+  #snh-fr-{{ section.id }} .fr-input:focus { outline: none; border-color: var(--fr-accent); background: rgba(253,246,239,.08); }
+  #snh-fr-{{ section.id }} .fr-input--area { resize: vertical; min-height: 110px; }
+
+  #snh-fr-{{ section.id }}.fr-motion-ready [data-rv] { opacity: 0; transform: translateY(20px); transition: opacity 720ms cubic-bezier(.22,1,.36,1), transform 720ms cubic-bezier(.22,1,.36,1); }
+  #snh-fr-{{ section.id }}.fr-motion-ready [data-rv].is-in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 1024px) {
+    #snh-fr-{{ section.id }} .fr-hero__inner { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-hero__visual { min-height: 400px; }
+    #snh-fr-{{ section.id }} .fr-why__grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #snh-fr-{{ section.id }} .fr-package__layout { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-package__intro { position: static; }
+    #snh-fr-{{ section.id }} .fr-journey__steps { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #snh-fr-{{ section.id }} .fr-apply__layout { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-hero__stats { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: 24px; }
+  }
+  @media (max-width: 640px) {
+    #snh-fr-{{ section.id }} .fr-why__grid { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-checklist { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-journey__steps { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-field-row { grid-template-columns: 1fr; }
+    #snh-fr-{{ section.id }} .fr-hero__visual { min-height: 330px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #snh-fr-{{ section.id }} .fr-ticker__track, #snh-fr-{{ section.id }} .fr-marquee__track { animation: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('snh-fr-{{ section.id }}');
+    if (!root || root.dataset.motionBound) return;
+    root.dataset.motionBound = 'true';
+    const els = root.querySelectorAll('[data-rv]');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    root.classList.add('fr-motion-ready');
+    els.forEach((el) => { el.style.transitionDelay = (parseInt(el.getAttribute('data-rv'), 10) || 0) + 'ms'; });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (!entry.isIntersecting) return; entry.target.classList.add('is-in'); io.unobserve(entry.target); });
+    }, { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+    els.forEach((el) => io.observe(el));
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SNH Franchise Partner",
+  "tag": "section",
+  "class": "shopify-section--snh-franchise",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading (HTML allowed)", "default": "Own the next <span>hub.</span>" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Sri Lanka's #1 sports nutrition retailer is expanding. Three thriving stores, exclusive rights to 12+ global brands, and a proven model, now open to partners who want to build the next one." },
+    { "type": "color", "id": "accent", "label": "Accent color", "default": "#E0521C" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (digits only)", "default": "94764863359" }
+  ],
+  "presets": [{ "name": "SNH Franchise Partner" }]
+}
+{% endschema %}

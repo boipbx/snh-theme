@@ -1,0 +1,250 @@
+{% doc %}
+  @prompt
+    Create a collapsible accordion FAQ section for the REVIVE Magnesium Glycinate product page. The FAQ should include the following questions and answers, styled to match a premium sports nutrition brand (clean, modern, athletic aesthetic). Include a disclaimer at the bottom. Make it mobile-friendly with smooth accordion open/close animation.**Questions 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-mag-faq-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin-inline: auto;
+    color: #1a1a1a;
+    font-family: inherit;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__inner {
+    padding: 24px;
+    border: 1px solid rgba(26, 26, 26, 0.16);
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__eyebrow {
+    margin: 0 0 8px;
+    color: #5c6266;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__heading {
+    margin: 0 0 20px;
+    color: #1a1a1a;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__item {
+    border-top: 1px solid rgba(26, 26, 26, 0.16);
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__question {
+    display: flex;
+    width: 100%;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 2px;
+    border: 0;
+    background: transparent;
+    color: #1a1a1a;
+    text-align: left;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__question:focus-visible {
+    outline: 2px solid #1a1a1a;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__icon {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__icon::before,
+  .ai-mag-faq-{{ ai_gen_id }}__icon::after {
+    position: absolute;
+    top: 8px;
+    left: 3px;
+    width: 12px;
+    height: 2px;
+    background: #1a1a1a;
+    content: '';
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__icon::after {
+    transform: rotate(90deg);
+    transition: transform 220ms ease;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__question[aria-expanded="true"] .ai-mag-faq-{{ ai_gen_id }}__icon::after {
+    transform: rotate(0);
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__panel {
+    height: 0;
+    overflow: hidden;
+    transition: height 240ms ease;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__answer {
+    padding: 0 28px 18px 2px;
+    color: #454b4f;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__answer p {
+    margin: 0 0 8px;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-mag-faq-{{ ai_gen_id }}__disclaimer {
+    margin: 18px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(26, 26, 26, 0.16);
+    color: #454b4f;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-mag-faq-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-mag-faq-{{ ai_gen_id }}__inner {
+      padding: 20px 16px;
+    }
+
+    .ai-mag-faq-{{ ai_gen_id }}__question {
+      min-height: 54px;
+      font-size: 15px;
+    }
+
+    .ai-mag-faq-{{ ai_gen_id }}__answer {
+      font-size: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-mag-faq-{{ ai_gen_id }}__panel,
+    .ai-mag-faq-{{ ai_gen_id }}__icon::after {
+      transition-duration: 0.01ms;
+    }
+  }
+{% endstyle %}
+
+<magnesium-faq-{{ ai_gen_id }} class="ai-mag-faq-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-mag-faq-{{ ai_gen_id }}__inner">
+    <p class="ai-mag-faq-{{ ai_gen_id }}__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+    <h2 class="ai-mag-faq-{{ ai_gen_id }}__heading">{{ block.settings.heading | escape }}</h2>
+    {% for i in (1..5) %}
+      {% liquid
+        assign question_key = 'question_' | append: i
+        assign answer_key = 'answer_' | append: i
+        assign question = block.settings[question_key]
+        assign answer = block.settings[answer_key]
+      %}
+      {% if question != blank and answer != blank %}
+        {% assign panel_id = 'ai-mag-faq-panel-' | append: ai_gen_id | append: '-' | append: i %}
+        <div class="ai-mag-faq-{{ ai_gen_id }}__item">
+          <button class="ai-mag-faq-{{ ai_gen_id }}__question" type="button" aria-expanded="false" aria-controls="{{ panel_id }}">
+            <span>{{ question | escape }}</span>
+            <span class="ai-mag-faq-{{ ai_gen_id }}__icon" aria-hidden="true"></span>
+          </button>
+          <div class="ai-mag-faq-{{ ai_gen_id }}__panel" id="{{ panel_id }}" aria-hidden="true" inert>
+            <div class="ai-mag-faq-{{ ai_gen_id }}__answer">{{ answer }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% if block.settings.disclaimer != blank %}
+      <p class="ai-mag-faq-{{ ai_gen_id }}__disclaimer">{{ block.settings.disclaimer | escape }}</p>
+    {% endif %}
+  </div>
+</magnesium-faq-{{ ai_gen_id }}>
+
+<script>
+  (() => {
+    const tagName = 'magnesium-faq-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+    class MagnesiumFaq{{ ai_gen_id }} extends HTMLElement {
+      connectedCallback() {
+        this.buttons = this.querySelectorAll('.ai-mag-faq-{{ ai_gen_id }}__question');
+        this.buttons.forEach((button) => {
+          button.addEventListener('click', () => this.togglePanel(button));
+        });
+      }
+
+      togglePanel(button) {
+        const panel = this.querySelector('#' + CSS.escape(button.getAttribute('aria-controls')));
+        const isOpen = button.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+          button.setAttribute('aria-expanded', 'false');
+          panel.setAttribute('aria-hidden', 'true');
+          panel.inert = true;
+          panel.style.height = panel.scrollHeight + 'px';
+          requestAnimationFrame(() => { panel.style.height = '0px'; });
+        } else {
+          button.setAttribute('aria-expanded', 'true');
+          panel.setAttribute('aria-hidden', 'false');
+          panel.inert = false;
+          panel.style.height = panel.scrollHeight + 'px';
+          const onEnd = (event) => {
+            if (event.propertyName === 'height' && button.getAttribute('aria-expanded') === 'true') {
+              panel.style.height = 'auto';
+              panel.removeEventListener('transitionend', onEnd);
+            }
+          };
+          panel.addEventListener('transitionend', onEnd);
+        }
+      }
+    }
+    customElements.define(tagName, MagnesiumFaq{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Magnesium FAQ",
+  "settings": [
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "REVIVE · PRODUCT FAQ" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Magnesium glycinate, explained" },
+    { "type": "text", "id": "question_1", "label": "Question 1", "default": "What is magnesium glycinate?" },
+    { "type": "richtext", "id": "answer_1", "label": "Answer 1", "default": "<p>Magnesium glycinate is a form of magnesium combined with the amino acid glycine. Check the product label for the amount of elemental magnesium per serving.</p>" },
+    { "type": "text", "id": "question_2", "label": "Question 2", "default": "How should I take it?" },
+    { "type": "richtext", "id": "answer_2", "label": "Answer 2", "default": "<p>Follow the serving directions on the product label. Do not exceed the stated daily serving unless a qualified healthcare professional advises you otherwise.</p>" },
+    { "type": "text", "id": "question_3", "label": "Question 3", "default": "When is the best time to take it?" },
+    { "type": "richtext", "id": "answer_3", "label": "Answer 3", "default": "<p>Use it at a time that fits your routine and the product directions. If you take medicines or other supplements, ask a healthcare professional about suitable timing.</p>" },
+    { "type": "text", "id": "question_4", "label": "Question 4", "default": "Can I take it with other supplements?" },
+    { "type": "richtext", "id": "answer_4", "label": "Answer 4", "default": "<p>It may be used as part of a broader supplement routine, but consider your total magnesium intake from all sources. Consult a healthcare professional if you take medication or have a medical condition.</p>" },
+    { "type": "text", "id": "question_5", "label": "Question 5", "default": "Who should seek medical advice before use?" },
+    { "type": "richtext", "id": "answer_5", "label": "Answer 5", "default": "<p>Ask a qualified healthcare professional before use if you are pregnant or breastfeeding, have a health condition, take medication, or are unsure whether this product is suitable for you.</p>" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer", "default": "Food supplements are not a substitute for a varied, balanced diet and healthy lifestyle. Always read the label and follow its directions. Individual needs vary; consult a qualified healthcare professional for personal advice." }
+  ],
+  "presets": [
+    { "name": "Magnesium FAQ" }
+  ],
+  "tag": null,
+  "class": "magnesium-faq-block"
+}
+{% endschema %}

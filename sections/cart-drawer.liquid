@@ -1,0 +1,1198 @@
+{% comment %}
+  SNH Elite Cart Drawer V2 — full replacement for sections/cart-drawer.liquid (Impact).
+  Ports the finalized header mini-basket: free-delivery progress, qty steppers,
+  smart picks, frequently bought together, loyalty points, blurred backdrop.
+  Keeps the <cart-drawer id="cart-drawer"> element so all theme open/close logic still works.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign snh_tier = customer.metafields.custom.loyalty_tier.value | default: 'Bronze'
+  assign snh_rate = 3
+  if snh_tier == 'Silver'
+    assign snh_rate = 7
+  elsif snh_tier == 'Gold' or snh_tier == 'MAXED OUT'
+    assign snh_rate = 10
+  endif
+
+  assign snh_threshold = section.settings.free_shipping_threshold | default: 17000
+  assign snh_threshold_cents = snh_threshold | times: 100
+  assign snh_remaining = snh_threshold_cents | minus: cart.total_price
+  assign snh_tolerance_cents = section.settings.free_delivery_tolerance | default: 100 | times: 100
+  assign snh_gap_is_waived = false
+  if snh_remaining > 0 and snh_remaining <= snh_tolerance_cents
+    assign snh_gap_is_waived = true
+  endif
+  assign snh_progress = cart.total_price | times: 100 | divided_by: snh_threshold_cents
+  if snh_progress > 100
+    assign snh_progress = 100
+  endif
+  if cart.item_count == 0
+    assign snh_ship_message = 'Free delivery over Rs. ' | append: snh_threshold
+  elsif snh_gap_is_waived
+    assign snh_ship_message = blank
+  elsif snh_remaining > 0
+    assign snh_remaining_display = snh_remaining | money_without_currency | replace: '.00', ''
+    assign snh_ship_message = 'Add Rs. ' | append: snh_remaining_display | append: ' more for free delivery'
+  else
+    assign snh_ship_message = 'Free delivery unlocked on this order'
+  endif
+-%}
+
+<style>
+  /* ══ SNH Elite cart drawer V2 — scoped ══ */
+  #cart-drawer {
+    --snh-orange: #e0521c;
+    --snh-orange-dark: #b23c11;
+    --snh-orange-soft: #fbeee7;
+    --snh-black: #17130f;
+    --snh-muted: #736657;
+    --snh-border: #e7e0d6;
+    --snh-display: 'Archivo', system-ui, sans-serif;
+    --snh-font: 'Inter', system-ui, sans-serif;
+    --snh-ease: cubic-bezier(.22, .61, .36, 1);
+    font-family: var(--snh-font);
+    color: var(--snh-black);
+    /* panel geometry — bottom sheet on every screen, page peeks above (H&B style) */
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    inset: auto 0 0 0 !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    height: min(82dvh, 860px) !important;
+    max-height: 82dvh !important;
+    background: #fff !important;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: 0 -18px 50px rgba(0, 0, 0, .22) !important;
+    z-index: 1001 !important;
+    overflow: hidden !important;
+  }
+  /* desktop: keep the sheet from spanning ultra-wide — anchor right like a wide card */
+  @media (min-width: 1000px) {
+    #cart-drawer {
+      left: auto !important;
+      right: 24px !important;
+      inset: auto 24px 0 auto !important;
+      width: min(94vw, 480px) !important;
+      min-width: 0 !important;
+      height: min(82dvh, 860px) !important;
+      max-height: 82dvh !important;
+    }
+  }
+  /* own the motion — kill the theme's left/right slide entirely, sheet only moves vertically */
+  #cart-drawer { transition: none !important; }
+  #cart-drawer:not([open]):not(.is-open):not([aria-hidden="false"]) {
+    transform: translateY(110%) !important;
+    translate: none !important;
+  }
+  #cart-drawer[open],
+  #cart-drawer.is-open,
+  #cart-drawer[aria-hidden="false"] {
+    transform: none !important;
+    translate: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    animation: snh-cdx-slide-up .38s var(--snh-ease) both;
+  }
+  @keyframes snh-cdx-slide-up {
+    from { transform: translateY(60px); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  /* any legacy / duplicate cart drawer left in the theme renders as a blank white frame — kill it */
+  cart-drawer:not([data-snh-elite]) { display: none !important; }
+  /* grab handle */
+  #cart-drawer .snh-cdx-head { position: relative; }
+  #cart-drawer .snh-cdx-head::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--snh-border);
+  }
+  #cart-drawer * { box-sizing: border-box; }
+  #cart-drawer a, #cart-drawer button { font-family: var(--snh-font); -webkit-tap-highlight-color: transparent; }
+  #cart-drawer :focus-visible { outline: 2px solid rgba(224, 82, 28, .55); outline-offset: 2px; }
+  /* native dialog backdrop, if the theme uses one — blur the page instead of white/flat fill */
+  /* neutralise any theme overlay — only ONE dim layer (ours) ever shows */
+  #cart-drawer::backdrop {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  #cart-drawer::part(overlay),
+  cart-drawer::part(overlay),
+  #cart-drawer + .drawer__overlay,
+  .cart-drawer ~ [class*="overlay"]:not(.snh-cdx-overlay) {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* our own overlay (covers themes without ::backdrop) */
+  .snh-cdx-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(23, 19, 15, .16);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .24s cubic-bezier(.22, .61, .36, 1);
+  }
+  .snh-cdx-overlay.is-active { opacity: 1; pointer-events: auto; }
+
+  #cart-drawer .snh-cdx-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+  }
+  #cart-drawer .snh-cdx-head {
+    flex: 0 0 auto;
+    min-height: 62px;
+    padding: 8px 22px 0;
+    border-bottom: 1px solid var(--snh-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fff;
+  }
+  #cart-drawer .snh-cdx-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--snh-display);
+    font-size: 19px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    color: var(--snh-black);
+  }
+  #cart-drawer .snh-cdx-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 21px;
+    height: 21px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--snh-orange);
+    color: #fff;
+    font-family: var(--snh-font);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+  #cart-drawer .snh-cdx-close {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--snh-black);
+    cursor: pointer;
+  }
+  #cart-drawer .snh-cdx-close:hover { background: var(--snh-orange-soft); color: var(--snh-orange-dark); }
+
+  /* ── free delivery progress ── */
+  /* ── free delivery — quiet single line + thin bar, no card ── */
+  #cart-drawer .snh-free-ship-card {
+    flex: 0 0 auto;
+    margin: 16px 22px 0;
+    padding: 0;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+  }
+  #cart-drawer .snh-free-ship-card__top strong { display: none; }
+  #cart-drawer .snh-free-ship-card[hidden] { display: none !important; }
+  #cart-drawer .snh-free-ship-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12.5px;
+    line-height: 1.3;
+    font-weight: 550;
+    color: var(--snh-muted);
+  }
+  #cart-drawer .snh-free-ship-card__top strong { white-space: nowrap; color: var(--snh-orange-dark); font-weight: 700; }
+  #cart-drawer .snh-free-ship-card__bar {
+    margin-top: 8px;
+    height: 4px;
+    border-radius: 6px;
+    background: rgba(224, 82, 28, .14);
+    overflow: hidden;
+  }
+  #cart-drawer .snh-free-ship-card__bar span {
+    display: block;
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--snh-orange), #ffb15d);
+    transition: width .34s var(--snh-ease);
+  }
+
+  /* ── scrollable body ── */
+  #cart-drawer .snh-cdx-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 4px 22px 20px;
+    overscroll-behavior: contain;
+  }
+  #cart-drawer .snh-cdx-empty {
+    display: grid;
+    gap: 14px;
+    place-items: center;
+    text-align: center;
+    padding: 54px 20px;
+  }
+  #cart-drawer .snh-cdx-empty strong {
+    font-family: var(--snh-display);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+  #cart-drawer .snh-cdx-empty span { color: var(--snh-muted); line-height: 1.45; font-size: 14px; }
+
+  #cart-drawer .snh-cdx-item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--snh-border);
+  }
+  #cart-drawer .snh-cdx-item img,
+  #cart-drawer .snh-cdx-item .snh-cdx-item__placeholder {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f6f3ef;
+    display: block;
+  }
+  #cart-drawer .snh-cdx-item__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--snh-black);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 650;
+  }
+  #cart-drawer .snh-cdx-item__title:hover { color: var(--snh-orange-dark); }
+  #cart-drawer .snh-cdx-item__meta {
+    margin-top: 2px;
+    color: var(--snh-muted);
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #cart-drawer .snh-cdx-item__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 9px;
+  }
+  #cart-drawer .snh-qty {
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    border: 1px solid var(--snh-border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+  }
+  #cart-drawer .snh-qty button {
+    appearance: none;
+    display: grid;
+    place-items: center;
+    width: 29px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    color: var(--snh-black);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  #cart-drawer .snh-qty button:hover { background: var(--snh-orange-soft); color: var(--snh-orange-dark); }
+  #cart-drawer .snh-qty span { min-width: 26px; text-align: center; font-weight: 700; font-size: 12px; }
+  #cart-drawer .snh-cdx-item__price { font-weight: 700; font-size: 14px; letter-spacing: -.01em; }
+
+  /* ── recommendations — plain rows, no boxes ── */
+  #cart-drawer .snh-mini-recs { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--snh-border); }
+  #cart-drawer .snh-mini-recs__head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  #cart-drawer .snh-mini-recs__head span { min-width: 0; }
+  #cart-drawer .snh-mini-recs__head small { display: none; }
+  #cart-drawer .snh-mini-recs__head strong {
+    display: block;
+    color: var(--snh-black);
+    font-size: 14.5px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  #cart-drawer .snh-mini-recs__head em { display: none; }
+  #cart-drawer .snh-mini-recs__grid { display: grid; gap: 0; }
+  #cart-drawer .snh-mini-rec {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 32px;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    min-height: 0;
+    padding: 10px 0;
+    border: 0;
+    border-bottom: 1px solid var(--snh-border);
+    border-radius: 0;
+    background: transparent;
+  }
+  #cart-drawer .snh-mini-rec:last-child { border-bottom: 0; }
+  #cart-drawer .snh-mini-rec img,
+  #cart-drawer .snh-mini-rec__placeholder {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: contain;
+    background: #f6f3ef;
+  }
+  #cart-drawer .snh-mini-rec__meta { min-width: 0; }
+  #cart-drawer .snh-mini-rec__name {
+    display: block;
+    overflow: hidden;
+    color: var(--snh-black);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 1.25;
+    font-weight: 650;
+  }
+  #cart-drawer .snh-mini-rec__name:hover { color: var(--snh-orange-dark); }
+  #cart-drawer .snh-mini-rec__price { display: block; margin-top: 3px; color: var(--snh-black); font-size: 12.5px; line-height: 1.15; font-weight: 700; }
+  #cart-drawer .snh-mini-rec__helper { display: none; }
+  #cart-drawer .snh-mini-rec__add {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--snh-border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--snh-black);
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 1;
+  }
+  #cart-drawer .snh-mini-rec__add:hover { border-color: var(--snh-orange); color: var(--snh-orange-dark); background: #fff; }
+  #cart-drawer .snh-mini-rec__add:disabled { opacity: .55; cursor: default; }
+
+  /* ── footer ── */
+  #cart-drawer .snh-cdx-foot {
+    flex: 0 0 auto;
+    border-top: 1px solid var(--snh-border);
+    padding: 12px 22px calc(14px + env(safe-area-inset-bottom));
+    background: #fff;
+    box-shadow: none;
+  }
+  /* points — quiet single text line, no box */
+  #cart-drawer .snh-mini-points {
+    display: none;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--snh-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  #cart-drawer .snh-mini-points.is-visible { display: block; }
+  #cart-drawer .snh-mini-points svg { display: none; }
+  #cart-drawer .snh-mini-points b { color: var(--snh-orange-dark); }
+  #cart-drawer .snh-mini-points a { color: var(--snh-orange-dark); font-weight: 700; }
+  #cart-drawer .snh-cdx-subtotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  #cart-drawer .snh-cdx-subtotal span:first-child {
+    font-family: var(--snh-display);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+    text-transform: uppercase;
+  }
+  #cart-drawer .snh-cdx-subtotal span:last-child { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  #cart-drawer .snh-cdx-taxnote { margin: 0 0 9px; color: var(--snh-muted); font-size: 11px; line-height: 1.35; }
+  #cart-drawer .snh-cdx-taxnote a { color: var(--snh-muted); }
+  #cart-drawer .snh-cdx-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  #cart-drawer .snh-btn {
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--snh-black);
+    background: var(--snh-black);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: -.008em;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: background .18s var(--snh-ease), color .18s var(--snh-ease), border-color .18s var(--snh-ease);
+  }
+  #cart-drawer .snh-btn--orange { background: var(--snh-orange); border-color: var(--snh-orange); color: #fff; }
+  #cart-drawer .snh-btn--orange:hover { background: var(--snh-orange-dark); border-color: var(--snh-orange-dark); }
+  #cart-drawer .snh-btn--outline { background: #fff; color: var(--snh-black); border-color: var(--snh-border); }
+  #cart-drawer .snh-btn--outline:hover { border-color: var(--snh-orange); color: var(--snh-orange-dark); }
+  #cart-drawer .snh-btn svg { width: 15px; height: 15px; }
+
+  /* ── recent-item bar — docked flush to the bottom edge, full width, no close mark ── */
+  .snh-add-toast {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateY(100%);
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 18px calc(10px + env(safe-area-inset-bottom));
+    border: 0;
+    border-top: 1px solid #e7e0d6;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: 0 -8px 30px rgba(23, 19, 15, .10);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #17130f;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .28s cubic-bezier(.22,.61,.36,1), transform .28s cubic-bezier(.22,.61,.36,1);
+  }
+  .snh-add-toast.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+  .snh-add-toast img {
+    flex: 0 0 40px; width: 40px; height: 40px;
+    border-radius: 8px; object-fit: contain; background: #f6f3ef;
+  }
+  .snh-add-toast__check {
+    flex: 0 0 18px; width: 18px; height: 18px; color: #e0521c;
+  }
+  .snh-add-toast__meta { flex: 1 1 auto; min-width: 0; }
+  .snh-add-toast__meta strong {
+    display: block; font-size: 12px; font-weight: 700; line-height: 1.2;
+  }
+  .snh-add-toast__meta span {
+    display: block; margin-top: 1px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    color: #736657; font-size: 11px; line-height: 1.25;
+  }
+  .snh-add-toast button {
+    flex: 0 0 auto;
+    appearance: none; border: 0; cursor: pointer;
+    min-height: 34px; padding: 0 13px;
+    border-radius: 8px;
+    background: #e0521c; color: #fff;
+    font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1;
+  }
+  .snh-add-toast button:hover { background: #b23c11; }
+</style>
+
+<cart-drawer {% if request.design_mode %}handle-section-events{% endif %}
+  class="cart-drawer drawer drawer--lg"
+  id="cart-drawer"
+  data-snh-elite
+  data-free-shipping-threshold="{{ snh_threshold_cents }}"
+  data-free-shipping-tolerance="{{ snh_tolerance_cents }}"
+  data-loyalty-rate="{{ snh_rate }}"
+  data-loyalty-tier="{{ snh_tier | escape }}"
+  data-authenticated="{% if customer %}true{% else %}false{% endif %}"
+  data-show-gap-picks="{{ section.settings.show_gap_picks }}"
+  data-show-fbt="{{ section.settings.show_fbt }}">
+  <div class="snh-cdx-main">
+    <div class="snh-cdx-head">
+      <h2 class="snh-cdx-title">
+        Your basket
+        <cart-count class="snh-cdx-count" data-snh-count>{{ cart.item_count }}</cart-count>
+      </h2>
+      <button type="button" is="close-button" class="snh-cdx-close" aria-label="{{ 'general.accessibility.close' | t | escape }}" data-snh-cart-close>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="snh-free-ship-card" data-free-shipping-card{% if snh_gap_is_waived %} hidden{% endif %}>
+      <div class="snh-free-ship-card__top">
+        <span data-free-shipping-message>{{ snh_ship_message }}</span>
+        <strong>Rs. {{ snh_threshold_cents | money_without_currency | replace: '.00', '' }}</strong>
+      </div>
+      <div class="snh-free-ship-card__bar" aria-hidden="true">
+        <span data-free-shipping-progress style="width: {{ snh_progress }}%"></span>
+      </div>
+    </div>
+
+    <div class="snh-cdx-body" data-snh-cart-items>
+      {%- if cart.item_count == 0 -%}
+        <div class="snh-cdx-empty">
+          <strong>Your basket is empty</strong>
+          <span>Add your favourites and they&rsquo;ll appear here instantly.</span>
+          <a class="snh-btn snh-btn--orange" href="{{ section.settings.empty_cart_link | default: routes.all_products_collection_url }}">Start shopping</a>
+        </div>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          <article class="snh-cdx-item">
+            {%- if item.image -%}
+              <a href="{{ item.url }}"><img src="{{ item.image | image_url: width: 164 }}" alt="{{ item.product_title | escape }}" loading="lazy"></a>
+            {%- else -%}
+              <span class="snh-cdx-item__placeholder"></span>
+            {%- endif -%}
+            <div>
+              <a class="snh-cdx-item__title" href="{{ item.url }}">{{ item.product_title }}</a>
+              {%- if item.variant_title != blank and item.variant_title != 'Default Title' -%}
+                <div class="snh-cdx-item__meta">{{ item.variant_title }}</div>
+              {%- endif -%}
+              <div class="snh-cdx-item__bottom">
+                <div class="snh-qty" aria-label="Quantity controls">
+                  <button type="button" data-snh-line="{{ forloop.index }}" data-snh-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity">&minus;</button>
+                  <span>{{ item.quantity }}</span>
+                  <button type="button" data-snh-line="{{ forloop.index }}" data-snh-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity">+</button>
+                </div>
+                <strong class="snh-cdx-item__price">{{ item.final_line_price | money }}</strong>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+        <div data-snh-recommendations></div>
+      {%- endif -%}
+    </div>
+
+    <div class="snh-cdx-foot">
+      <div class="snh-mini-points" data-snh-points></div>
+      <div class="snh-cdx-subtotal">
+        <span>Subtotal</span>
+        <span data-snh-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      <p class="snh-cdx-taxnote">
+        {%- if cart.taxes_included -%}
+          {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+        {%- else -%}
+          {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+        {%- endif -%}
+      </p>
+      <div class="snh-cdx-actions">
+        <a class="snh-btn snh-btn--outline" href="{{ routes.cart_url }}" data-no-instant>View basket</a>
+        <form action="{{ routes.cart_url }}" method="POST" style="display:contents;">
+          <button type="submit" name="checkout" class="snh-btn snh-btn--orange">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>
+            Checkout
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</cart-drawer>
+
+<script>
+  (() => {
+    if (window.__snhCartDrawerElite) return;
+    window.__snhCartDrawerElite = true;
+
+    const cartJsonUrl = {{ routes.cart_url | append: '.js' | json }};
+    const cartChangeUrl = {{ routes.cart_change_url | append: '.js' | json }};
+    const cartAddUrl = {{ routes.cart_add_url | append: '.js' | json }};
+    const accountLoginUrl = {{ routes.account_login_url | json }};
+    const accountRegisterUrl = {{ routes.account_register_url | json }};
+    const moneyFormat = {{ shop.money_format | json }};
+    const rootUrl = {{ routes.root_url | default: '/' | json }};
+
+    let catalogue = null;
+    let catalogueRequest = null;
+    let recommendationRun = 0;
+    let overlay = null;
+
+    const drawer = () => document.getElementById('cart-drawer');
+    const q = (sel) => { const d = drawer(); return d ? d.querySelector(sel) : null; };
+
+    function escapeHtml(value = '') {
+      return String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
+    }
+    function formatMoney(cents) {
+      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+        return window.Shopify.formatMoney(cents, moneyFormat);
+      }
+      try {
+        return (Number(cents) / 100).toLocaleString(undefined, { style: 'currency', currency: {{ cart.currency.iso_code | default: shop.currency | json }} });
+      } catch (e) { return `${(Number(cents) / 100).toFixed(2)}`; }
+    }
+    function formatRupees(cents) {
+      const amount = Math.max(0, Math.ceil(Number(cents || 0) / 100));
+      return `Rs. ${amount.toLocaleString('en-LK')}`;
+    }
+    function normalizeImage(image) {
+      if (!image) return '';
+      if (typeof image === 'string') return image;
+      if (image.url) return image.url;
+      if (image.src) return image.src;
+      return '';
+    }
+    function cfg(name, fallback) {
+      const d = drawer();
+      if (!d) return fallback;
+      const v = d.dataset[name];
+      return v === undefined ? fallback : v;
+    }
+    const threshold = () => Number(cfg('freeShippingThreshold', 1700000));
+    const tolerance = () => Number(cfg('freeShippingTolerance', 10000));
+
+    /* ── overlay: blurred page behind the panel, no white flash ── */
+    function ensureOverlay() {
+      if (overlay && overlay.isConnected) return overlay;
+      overlay = document.createElement('div');
+      overlay.className = 'snh-cdx-overlay';
+      overlay.addEventListener('click', closeDrawer);
+      document.body.appendChild(overlay);
+      return overlay;
+    }
+    function isDrawerOpen() {
+      const d = drawer();
+      if (!d) return false;
+      return d.hasAttribute('open') || d.getAttribute('aria-hidden') === 'false' || d.classList.contains('is-open');
+    }
+    let wasOpen = false;
+    function syncOverlay() {
+      const open = isDrawerOpen();
+      if (open === wasOpen) {
+        ensureOverlay().classList.toggle('is-active', open);
+        return;
+      }
+      ensureOverlay().classList.toggle('is-active', open);
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open) { hideToast(); loadCart(); }
+      else { showRecentTab(); }
+      wasOpen = open;
+    }
+    /* strict guard: OUR drawer is the only one allowed to exist.
+       If the theme re-renders the section with old markup, restore ours. */
+    let savedDrawerHTML = null;
+    function dedupeDrawers() {
+      const elite = document.querySelector('cart-drawer[data-snh-elite]');
+      if (elite && !savedDrawerHTML) savedDrawerHTML = elite.outerHTML;
+      document.querySelectorAll('cart-drawer').forEach(el => {
+        if (el.hasAttribute('data-snh-elite')) return;
+        if (elite) { el.remove(); return; }
+        if (savedDrawerHTML) {
+          const openNow = el.hasAttribute('open') || el.getAttribute('aria-hidden') === 'false' || el.classList.contains('is-open');
+          const tpl = document.createElement('template');
+          tpl.innerHTML = savedDrawerHTML;
+          const fresh = tpl.content.firstElementChild;
+          if (openNow) fresh.setAttribute('open', '');
+          el.replaceWith(fresh);
+          attachObservers();
+          loadCart();
+          syncOverlay();
+        }
+      });
+    }
+    function closeDrawer() {
+      const d = drawer();
+      if (!d) return;
+      if (typeof d.hide === 'function') { d.hide(); }
+      else { d.removeAttribute('open'); d.setAttribute('aria-hidden', 'true'); }
+      ensureOverlay().classList.remove('is-active');
+    }
+
+    /* watch open/close + section re-renders — scoped tight, not the whole document */
+    const attrObserver = new MutationObserver(() => syncOverlay());
+    const sectionObserver = new MutationObserver((mutations) => {
+      /* only react when a cart-drawer NODE is swapped in by the theme —
+         mutations from our own innerHTML renders are ignored (no loops) */
+      let drawerReplaced = false;
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType === 1 && (node.tagName === 'CART-DRAWER' || (node.querySelector && node.querySelector('cart-drawer')))) { drawerReplaced = true; break; }
+        }
+        if (drawerReplaced) break;
+      }
+      if (!drawerReplaced) return;
+      dedupeDrawers();
+      attachObservers();
+      if (isDrawerOpen()) loadCart();
+    });
+    function attachObservers() {
+      const d = drawer();
+      if (!d) return;
+      attrObserver.disconnect();
+      attrObserver.observe(d, { attributes: true, attributeFilter: ['open', 'aria-hidden', 'class'] });
+      const section = d.closest('[id^="shopify-section"]') || d.parentElement;
+      if (section) {
+        sectionObserver.disconnect();
+        sectionObserver.observe(section, { childList: true, subtree: true });
+      }
+    }
+
+    /* ── free delivery progress ── */
+    function updateFreeShipping(cart) {
+      const d = drawer();
+      if (!d) return;
+      const total = Number(cart.total_price || 0);
+      const remaining = threshold() - total;
+      const progress = Math.max(0, Math.min(100, (total / threshold()) * 100));
+      const waive = Number(cart.item_count || 0) > 0 && remaining > 0 && remaining <= tolerance();
+      let message = `Free delivery over ${formatRupees(threshold())}`;
+      if (waive) message = '';
+      else if (Number(cart.item_count || 0) > 0 && remaining > 0) message = `Add ${formatRupees(remaining)} more for free delivery`;
+      else if (Number(cart.item_count || 0) > 0) message = 'Free delivery unlocked on this order';
+
+      const msgEl = q('[data-free-shipping-message]');
+      const barEl = q('[data-free-shipping-progress]');
+      const card = q('[data-free-shipping-card]');
+      if (msgEl) msgEl.textContent = message;
+      if (barEl) barEl.style.width = `${progress}%`;
+      if (card) card.hidden = waive;
+    }
+
+    /* ── loyalty points line ── */
+    function renderPoints(cart) {
+      const el = q('[data-snh-points]');
+      if (!el) return;
+      if (!cart || !cart.item_count) { el.classList.remove('is-visible'); el.innerHTML = ''; return; }
+      const bolt = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m13 2-9 12h8l-1 8 9-12h-8l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+      if (cfg('authenticated', 'false') === 'true') {
+        const rate = Number(cfg('loyaltyRate', 3));
+        const tier = cfg('loyaltyTier', 'Bronze');
+        const points = Math.floor((Number(cart.total_price || 0) / 100) * rate / 100);
+        el.innerHTML = `${bolt}<span>You'll earn <b>${points} points</b> on this order as a ${escapeHtml(tier)} member (${rate}% back).</span>`;
+      } else {
+        el.innerHTML = `${bolt}<span><a href="${accountLoginUrl}">Log in</a> or <a href="${accountRegisterUrl}">join SNH Elite</a> to earn 3% back.</span>`;
+      }
+      el.classList.add('is-visible');
+    }
+
+    /* ── recommendations engine (same as header) ── */
+    function loadCatalogue() {
+      if (catalogue) return Promise.resolve(catalogue);
+      if (catalogueRequest) return catalogueRequest;
+      catalogueRequest = fetch('/collections/all/products.json?limit=250&sort_by=best-selling', { headers: { 'Accept': 'application/json' } })
+        .then(r => r.ok ? r.json() : { products: [] })
+        .then(data => { catalogue = data.products || []; return catalogue; })
+        .catch(() => [])
+        .finally(() => { catalogueRequest = null; });
+      return catalogueRequest;
+    }
+    function cheapestVariant(product) {
+      return (product.variants || []).filter(v => v.available && Number(v.price) > 0)
+        .sort((a, b) => Number(a.price) - Number(b.price))[0] || null;
+    }
+    function rotateItems(items, key, limit) {
+      if (!items.length) return [];
+      const count = Math.min(limit, items.length);
+      let offset = 0;
+      try {
+        offset = Number(sessionStorage.getItem(key) || 0) % items.length;
+        sessionStorage.setItem(key, String((offset + count) % items.length));
+      } catch (e) {}
+      return Array.from({ length: count }, (_, i) => items[(offset + i) % items.length]);
+    }
+    function recCard(item) {
+      const product = item.product;
+      const image = item.image || normalizeImage(product.featured_image) || normalizeImage(product.image) || (product.images && normalizeImage(product.images[0]));
+      const imageUrl = image ? `${image}${image.includes('?') ? '&' : '?'}width=160` : '';
+      const productUrl = product.url || `/products/${encodeURIComponent(product.handle || '')}`;
+      return `
+        <article class="snh-mini-rec">
+          <a href="${productUrl}">
+            ${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(product.title || '')}" loading="lazy" decoding="async">` : '<span class="snh-mini-rec__placeholder"></span>'}
+          </a>
+          <span class="snh-mini-rec__meta">
+            <a class="snh-mini-rec__name" href="${productUrl}">${escapeHtml(product.title || '')}</a>
+            <span class="snh-mini-rec__price">${formatMoney(item.priceCents)}</span>
+            <span class="snh-mini-rec__helper">${escapeHtml(item.helper || '')}</span>
+          </span>
+          <button type="button" class="snh-mini-rec__add" data-snh-rec-add="${item.variant.id}" aria-label="Add ${escapeHtml(product.title || '')} to basket">+</button>
+        </article>
+      `;
+    }
+    async function gapPicks(cart, remaining) {
+      if (cfg('showGapPicks', 'true') !== 'true') return [];
+      if (remaining <= tolerance()) return [];
+      const cat = await loadCatalogue();
+      const inCart = new Set((cart.items || []).map(i => String(i.product_id)));
+      const min = remaining;
+      const max = Math.max(remaining * 1.9, remaining + 600000);
+      const candidates = cat.map(product => {
+        if (inCart.has(String(product.id))) return null;
+        const variant = cheapestVariant(product);
+        if (!variant) return null;
+        return { product, variant, priceCents: Math.round(Number(variant.price) * 100) };
+      }).filter(Boolean).filter(i => i.priceCents >= min && i.priceCents <= max);
+      candidates.sort((a, b) => a.priceCents - b.priceCents);
+      return rotateItems(candidates.slice(0, 12), `snh-cdx-gap-${remaining}`, 2).map(i => ({
+        ...i,
+        image: i.variant.featured_image && i.variant.featured_image.src ? i.variant.featured_image.src : '',
+        helper: 'Unlocks free delivery'
+      }));
+    }
+    async function fbtPicks(cart) {
+      if (cfg('showFbt', 'true') !== 'true') return [];
+      const anchor = cart.items && cart.items.length ? cart.items[cart.items.length - 1] : null;
+      if (!anchor || !anchor.product_id) return [];
+      const shopRoot = window.Shopify && window.Shopify.routes && window.Shopify.routes.root ? window.Shopify.routes.root : rootUrl;
+
+      async function request(intent) {
+        try {
+          const r = await fetch(`${shopRoot}recommendations/products.json?product_id=${encodeURIComponent(anchor.product_id)}&limit=10&intent=${intent}`, { headers: { 'Accept': 'application/json' } });
+          if (!r.ok) return [];
+          const data = await r.json();
+          return data.products || [];
+        } catch (e) { return []; }
+      }
+
+      const anchorTitle = String(anchor.product_title || anchor.title || '').toLowerCase();
+      const inCart = new Set((cart.items || []).map(i => String(i.product_id)));
+
+      const SNH_PAIR_KEYS = ['creatine monohydrate 50', 'creatine monohydrate 100', 'shaker bottle', 'iso-xp', 'beef-xp', 'caffeine capsules', 'abe - all black everything', 'l-arginine', 'zinc', 'l-carnitine', 'bcaa amino hydrate', 'omega 3', 'vitamin d3', 'effervescent', 'collagen peptides', 'vitamin c 1000', 'protein chips', 'beauty collagen', 'vitamin-b complex', 'diet whey', 'protein wafers', 'abe shaker', 'creatine + hydration', 'diet protein bar'];
+      let insightMatches = [];
+      if (anchorTitle.indexOf('creatine') > -1) {
+        const cat = await loadCatalogue();
+        SNH_PAIR_KEYS.forEach(key => {
+          const hit = cat.find(p => String(p.title || '').toLowerCase().indexOf(key) > -1 && !inCart.has(String(p.id)));
+          if (hit && !insightMatches.some(m => m.id === hit.id)) insightMatches.push(hit);
+        });
+      }
+
+      let products = insightMatches;
+      if (!products.length) products = await request('complementary');
+      if (!products.length) products = await request('related');
+
+      const anchorTokens = anchorTitle.split(/[^a-z0-9-]+/).filter(w => w.length >= 7 && w !== 'nutrition' && w !== 'servings' && w !== 'capsules');
+      const isNearDuplicate = (title) => {
+        if (anchorTitle.indexOf('creatine') > -1) return false;
+        const lower = String(title || '').toLowerCase();
+        return anchorTokens.some(tok => lower.indexOf(tok) > -1);
+      };
+
+      const candidates = products.filter(p => !isNearDuplicate(p.title)).map(product => {
+        if (inCart.has(String(product.id))) return null;
+        let variant = cheapestVariant(product);
+        let priceCents = variant ? Number(variant.price) : 0;
+        if (variant && priceCents > 0 && priceCents < 10000) priceCents = Math.round(priceCents * 100); /* recommendations API returns dollars */
+        if (!variant || !isFinite(priceCents) || priceCents <= 0) return null;
+        return {
+          product,
+          variant,
+          priceCents,
+          image: variant.featured_image && variant.featured_image.src ? variant.featured_image.src : '',
+          helper: 'Pairs with your basket'
+        };
+      }).filter(Boolean);
+
+      return rotateItems(candidates, `snh-cdx-related-${anchor.product_id}`, 2);
+    }
+    async function renderRecommendations(cart) {
+      const container = q('[data-snh-recommendations]');
+      if (!container || !cart.item_count) return;
+      const run = ++recommendationRun;
+      const remaining = threshold() - Number(cart.total_price || 0);
+      const [gapMatches, relatedMatches] = await Promise.all([gapPicks(cart, remaining), fbtPicks(cart)]);
+      if (run !== recommendationRun || !container.isConnected) return;
+
+      const sections = [];
+      if (remaining > tolerance() && gapMatches.length) {
+        sections.push(`
+          <section class="snh-mini-recs">
+            <div class="snh-mini-recs__head"><span><small>Complete free delivery</small><strong>${formatRupees(remaining)} to go</strong></span><em>${gapMatches.length} smart ${gapMatches.length === 1 ? 'pick' : 'picks'}</em></div>
+            <div class="snh-mini-recs__grid">${gapMatches.map(recCard).join('')}</div>
+          </section>
+        `);
+      }
+      if (relatedMatches.length) {
+        sections.push(`
+          <section class="snh-mini-recs">
+            <div class="snh-mini-recs__head"><span><small>Selected for this basket</small><strong>Frequently bought together</strong></span><em>${relatedMatches.length} ${relatedMatches.length === 1 ? 'suggestion' : 'suggestions'}</em></div>
+            <div class="snh-mini-recs__grid">${relatedMatches.map(recCard).join('')}</div>
+          </section>
+        `);
+      }
+      container.innerHTML = sections.join('');
+    }
+
+    /* ── cart render ── */
+    function renderCart(cart) {
+      const d = drawer();
+      if (!d) return;
+      updateFreeShipping(cart);
+      renderPoints(cart);
+
+      const countEl = q('[data-snh-count]');
+      if (countEl) countEl.textContent = cart.item_count;
+      const subtotalEl = q('[data-snh-subtotal]');
+      if (subtotalEl) subtotalEl.textContent = formatMoney(cart.total_price);
+
+      const items = q('[data-snh-cart-items]');
+      if (!items) return;
+
+      if (!cart.items || cart.items.length === 0) {
+        items.innerHTML = `
+          <div class="snh-cdx-empty">
+            <strong>Your basket is empty</strong>
+            <span>Add your favourites and they&rsquo;ll appear here instantly.</span>
+            <a class="snh-btn snh-btn--orange" href="/collections/all">Start shopping</a>
+          </div>
+        `;
+        return;
+      }
+
+      items.innerHTML = cart.items.map((item, index) => {
+        const title = item.product_title || item.title || '';
+        const variant = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
+        return `
+        <article class="snh-cdx-item">
+          ${item.image ? `<a href="${item.url}"><img src="${item.image}" alt="${escapeHtml(title)}" loading="lazy"></a>` : '<span class="snh-cdx-item__placeholder"></span>'}
+          <div>
+            <a class="snh-cdx-item__title" href="${item.url}">${escapeHtml(title)}</a>
+            ${variant ? `<div class="snh-cdx-item__meta">${escapeHtml(variant)}</div>` : ''}
+            <div class="snh-cdx-item__bottom">
+              <div class="snh-qty" aria-label="Quantity controls">
+                <button type="button" data-snh-line="${index + 1}" data-snh-qty="${Math.max(0, item.quantity - 1)}" aria-label="Decrease quantity">&minus;</button>
+                <span>${item.quantity}</span>
+                <button type="button" data-snh-line="${index + 1}" data-snh-qty="${item.quantity + 1}" aria-label="Increase quantity">+</button>
+              </div>
+              <strong class="snh-cdx-item__price">${formatMoney(item.final_line_price)}</strong>
+            </div>
+          </div>
+        </article>
+      `;}).join('') + '<div data-snh-recommendations></div>';
+      renderRecommendations(cart);
+    }
+
+    let loading = null;
+    async function loadCart() {
+      if (loading) return loading;
+      loading = fetch(cartJsonUrl, { headers: { 'Accept': 'application/json' } })
+        .then(r => r.json())
+        .then(cart => { renderCart(cart); return cart; })
+        .catch(() => {})
+        .finally(() => { loading = null; });
+      return loading;
+    }
+    /* update the header cart count directly — no theme re-render events (they fight our markup) */
+    function updateHeaderCount(cart) {
+      document.querySelectorAll('cart-count, .count-bubble[data-cart-count], [data-cart-count]').forEach(el => {
+        if (!drawer() || !drawer().contains(el)) el.textContent = cart.item_count;
+      });
+    }
+    async function changeLine(line, quantity) {
+      const items = q('[data-snh-cart-items]');
+      try {
+        if (items) items.style.opacity = '.55';
+        const r = await fetch(cartChangeUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ line: Number(line), quantity: Number(quantity) })
+        });
+        const cart = await r.json();
+        renderCart(cart);
+        updateHeaderCount(cart);
+      } catch (e) {
+        loadCart();
+      } finally {
+        const fresh = q('[data-snh-cart-items]');
+        if (fresh) fresh.style.opacity = '';
+      }
+    }
+
+    /* delegated clicks survive section re-renders */
+    document.addEventListener('click', async (event) => {
+      const qty = event.target.closest('[data-snh-qty]');
+      if (qty && drawer() && drawer().contains(qty)) {
+        event.preventDefault();
+        changeLine(qty.dataset.snhLine, qty.dataset.snhQty);
+        return;
+      }
+      const add = event.target.closest('[data-snh-rec-add]');
+      if (add && drawer() && drawer().contains(add)) {
+        event.preventDefault();
+        add.textContent = '\u2026';
+        add.disabled = true;
+        try {
+          const r = await fetch(cartAddUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ id: Number(add.dataset.snhRecAdd), quantity: 1 })
+          });
+          if (!r.ok) throw new Error('Add failed');
+          const cart = await loadCart();
+          if (cart && cart.item_count !== undefined) updateHeaderCount(cart);
+        } catch (e) {
+          add.textContent = '+';
+          add.disabled = false;
+        }
+        return;
+      }
+      const close = event.target.closest('[data-snh-cart-close]');
+      if (close && drawer() && drawer().contains(close)) {
+        closeDrawer();
+      }
+    });
+
+    /* ── minimal recent-item tab — shows only AFTER the drawer is closed ── */
+    let toastEl = null, toastTimer = null;
+    function ensureToast() {
+      if (toastEl && toastEl.isConnected) return toastEl;
+      toastEl = document.createElement('div');
+      toastEl.className = 'snh-add-toast';
+      toastEl.setAttribute('role', 'status');
+      document.body.appendChild(toastEl);
+      return toastEl;
+    }
+    function hideToast() {
+      if (toastEl) toastEl.classList.remove('is-visible');
+      if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
+    }
+    async function showRecentTab() {
+      try {
+        const r = await fetch(cartJsonUrl, { headers: { 'Accept': 'application/json' } });
+        const cart = await r.json();
+        const item = cart.items && cart.items[0];
+        if (!item) return;
+        const el = ensureToast();
+        el.setAttribute('data-snh-toast-open', '');
+        el.innerHTML = `
+          ${item.image ? `<img src="${item.image}" alt="">` : ''}
+          <span class="snh-add-toast__meta">
+            <strong>In your basket · ${cart.item_count}</strong>
+            <span>${escapeHtml(item.product_title)} · ${formatMoney(cart.total_price)} total</span>
+          </span>
+          <button type="button" data-snh-toast-open>View basket</button>
+        `;
+        requestAnimationFrame(() => el.classList.add('is-visible'));
+        /* persistent — stays until the basket is opened; no auto-hide */
+        if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
+      } catch (e) {}
+    }
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('[data-snh-toast-open]')) {
+        hideToast();
+        openDrawer();
+      }
+    });
+    function openDrawer() {
+      const d = drawer();
+      if (!d) return;
+      if (!isDrawerOpen()) {
+        if (typeof d.show === 'function') d.show();
+        else { d.setAttribute('open', ''); d.setAttribute('aria-hidden', 'false'); }
+      }
+      syncOverlay();
+    }
+
+    /* theme events: add-to-cart opens the drawer (conversion first) */
+    document.addEventListener('cart:change', () => loadCart());
+    document.addEventListener('variant:add', () => {
+      window.setTimeout(() => {
+        if (isDrawerOpen()) { loadCart(); return; }
+        openDrawer();
+      }, 120);
+    });
+    document.documentElement.addEventListener('cart:refresh', () => loadCart());
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => { dedupeDrawers(); attachObservers(); ensureOverlay(); syncOverlay(); });
+    } else {
+      dedupeDrawers();
+      attachObservers();
+      ensureOverlay();
+      syncOverlay();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "SNH Elite cart drawer — free delivery progress, smart picks, frequently bought together, and loyalty points. Matches the SNH header mini basket."
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free delivery threshold (Rs.)",
+      "default": 17000
+    },
+    {
+      "type": "range",
+      "id": "free_delivery_tolerance",
+      "label": "Waive gap under (Rs.)",
+      "info": "If the remaining amount is smaller than this, the progress card hides instead of nagging.",
+      "min": 0,
+      "max": 2000,
+      "step": 50,
+      "default": 100
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gap_picks",
+      "label": "Show smart picks that unlock free delivery",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fbt",
+      "label": "Show frequently bought together",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "empty_cart_link",
+      "label": "Empty basket button link"
+    }
+  ]
+}
+{% endschema %}

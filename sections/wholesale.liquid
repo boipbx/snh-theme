@@ -1,0 +1,375 @@
+{%- render 'section-spacing-collapsing' -%}
+
+{% comment %}
+  SNH WHOLESALE HUB, clean B2B range showcase (concept: no inquiry form yet)
+  No eyebrow kickers, flat cards, real product cards from live collections.
+  Save as sections/snh-wholesale-hub.liquid → add to the wholesale page template.
+  Add "Category" blocks in the theme editor and pick collections to show the live range.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="snh-ws-{{ section.id }}" style="--ws-accent: {{ section.settings.accent | default: '#E0521C' }};">
+
+  <!-- HERO -->
+  <div class="ws-hero">
+    <div class="ws-hero__inner">
+      <div class="ws-hero__copy" data-rv="0">
+        <h1 class="ws-hero__title">{{ section.settings.heading | default: 'Stock the strongest <span>shelf.</span>' }}</h1>
+        <p class="ws-hero__sub">{{ section.settings.subheading | default: "Buy directly from the official distributor of 12+ global sports nutrition brands. Genuine, batch-coded stock at real trade margins, supplied island-wide to gyms, pharmacies, retailers and online sellers." }}</p>
+        <div class="ws-btn-row">
+          <a class="ws-btn" href="#snh-ws-range-{{ section.id }}">Browse the range
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 4v11M5 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="ws-btn ws-btn--ghost" href="https://wa.me/{{ section.settings.whatsapp | default: '94764863359' }}" target="_blank" rel="noopener">Talk to our B2B team</a>
+        </div>
+        <div class="ws-hero__badges">
+          <span class="ws-badge">Gyms &amp; studios</span>
+          <span class="ws-badge">Pharmacies</span>
+          <span class="ws-badge">Retail stores</span>
+          <span class="ws-badge">Online sellers</span>
+        </div>
+      </div>
+
+      <div class="ws-hero__visual" data-rv="140" aria-hidden="true">
+        <img class="ws-solo" src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2nd_crd.png?v=1784028499" alt="" loading="eager" fetchpriority="high">
+      </div>
+    </div>
+
+    <div class="ws-hero__stats" data-rv="240">
+      <div class="ws-stat"><span class="ws-stat__num">12+</span><span class="ws-stat__label">Brands distributed</span></div>
+      <div class="ws-stat"><span class="ws-stat__num">300+</span><span class="ws-stat__label">SKUs ready to ship</span></div>
+      <div class="ws-stat"><span class="ws-stat__num">48h</span><span class="ws-stat__label">Island-wide dispatch</span></div>
+      <div class="ws-stat"><span class="ws-stat__num">03</span><span class="ws-stat__label">Flagship stores</span></div>
+    </div>
+  </div>
+
+  <!-- BRAND STRIP -->
+  {% assign ws_logos = section.blocks | where: 'type', 'logo' %}
+  {% assign ws_default = 'brand_logos_1.png?v=1763121073,brand_logos_2.png?v=1763121073,brand_logos_3.png?v=1763121073,brand_logos_4.png?v=1763121073,brand_logos_5.png?v=1763121073,brand_logos_6.png?v=1763121073,brand_logos_7.png?v=1763121073,brand_logos_8.png?v=1763121073,brand_logos_9.png?v=1763121073,brand_logos_12.png?v=1763121072' | split: ',' %}
+  <div class="ws-brands" aria-hidden="true">
+    <div class="ws-brands__track">
+      {% for repeat in (1..2) %}
+        {% if ws_logos.size > 0 %}
+          {% for block in ws_logos %}{% if block.settings.image != blank %}<img src="{{ block.settings.image | image_url: width: 320 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">{% endif %}{% endfor %}
+        {% else %}
+          {% for f in ws_default %}<img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/{{ f }}" alt="" loading="lazy">{% endfor %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- WHY DIRECT -->
+  <div class="ws-why">
+    <div class="ws-why__head" data-rv="0">
+      <h2 class="ws-h2 ws-h2--ink">Why buy direct</h2>
+      <p class="ws-lead">No middlemen, no grey imports, no guesswork. You buy from the same warehouse that supplies our own three stores, and you keep the margin the importers used to take.</p>
+    </div>
+    <div class="ws-why__grid">
+      <article class="ws-card" data-rv="0"><h3>Real trade margins</h3><p>Tiered wholesale pricing with honest room for your retail markup.</p></article>
+      <article class="ws-card" data-rv="70"><h3>100% genuine stock</h3><p>Batch-coded, date-checked and sourced only from authorised channels.</p></article>
+      <article class="ws-card" data-rv="140"><h3>48h dispatch</h3><p>Island-wide delivery from Colombo, restocks land before you run dry.</p></article>
+      <article class="ws-card" data-rv="210"><h3>A real human</h3><p>One dedicated account manager for orders, advice and launches.</p></article>
+    </div>
+  </div>
+
+  <!-- THE RANGE -->
+  <div class="ws-range" id="snh-ws-range-{{ section.id }}">
+    <div class="ws-range__head" data-rv="0">
+      <h2 class="ws-h2 ws-h2--ink">Available for wholesale now</h2>
+      <p class="ws-lead">Every SKU ships from our own warehouse. Retail prices shown for reference, wholesale tiers are shared when your account is approved.</p>
+    </div>
+
+    {% assign ws_rowcount = 0 %}
+    {% for b in section.blocks %}{% unless b.type == 'logo' %}{% assign ws_rowcount = ws_rowcount | plus: 1 %}{% endunless %}{% endfor %}
+    {% if ws_rowcount > 0 %}
+      <nav class="ws-chipnav" data-rv="60" aria-label="Categories">
+        {% for block in section.blocks %}{% unless block.type == 'logo' %}{% assign ctitle = block.settings.title | default: block.settings.collection.title | default: 'Products' %}<a class="ws-chipnav__chip" href="#ws-cat-{{ section.id }}-{{ forloop.index }}">{{ ctitle }}</a>{% endunless %}{% endfor %}
+      </nav>
+      {% for block in section.blocks %}
+        {% if block.type == 'category' %}
+          {% assign col = block.settings.collection %}
+          <div class="ws-cat" id="ws-cat-{{ section.id }}-{{ forloop.index }}" data-rv="0" {{ block.shopify_attributes }}>
+            <header class="ws-cat__head">
+              <h3 class="ws-cat__title">{{ block.settings.title | default: col.title }}</h3>
+              {% if col %}<span class="ws-cat__count">{{ col.products_count }} products</span>{% endif %}
+              {% if block.settings.note != blank %}<span class="ws-cat__note">{{ block.settings.note }}</span>{% endif %}
+            </header>
+            <div class="ws-rail">
+              {% for product in col.products limit: 12 %}
+                <a class="ws-item" href="{{ product.url }}">
+                  <div class="ws-item__media">{% if product.featured_image %}{{ product.featured_image | image_url: width: 520 | image_tag: loading: 'lazy', class: 'ws-item__img', alt: product.title }}{% endif %}</div>
+                  <div class="ws-item__body"><span class="ws-item__vendor">{{ product.vendor }}</span><h4 class="ws-item__name">{{ product.title }}</h4><div class="ws-item__foot"><s class="ws-item__retail">{{ product.price | money }}</s><span class="ws-item__chip">Trade price on request</span></div></div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% elsif block.type == 'manual' %}
+          <div class="ws-cat" id="ws-cat-{{ section.id }}-{{ forloop.index }}" data-rv="0" {{ block.shopify_attributes }}>
+            <header class="ws-cat__head">
+              <h3 class="ws-cat__title">{{ block.settings.title | default: 'Featured range' }}</h3>
+              {% if block.settings.note != blank %}<span class="ws-cat__note">{{ block.settings.note }}</span>{% endif %}
+            </header>
+            <div class="ws-rail">
+              {% for i in (1..8) %}
+                {% assign pk = 'product_' | append: i %}
+                {% assign product = block.settings[pk] %}
+                {% if product != blank %}
+                  <a class="ws-item" href="{{ product.url }}">
+                    <div class="ws-item__media">{% if product.featured_image %}{{ product.featured_image | image_url: width: 520 | image_tag: loading: 'lazy', class: 'ws-item__img', alt: product.title }}{% endif %}</div>
+                    <div class="ws-item__body"><span class="ws-item__vendor">{{ product.vendor }}</span><h4 class="ws-item__name">{{ product.title }}</h4><div class="ws-item__foot"><s class="ws-item__retail">{{ product.price | money }}</s><span class="ws-item__chip">Trade price on request</span></div></div>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <nav class="ws-chipnav" data-rv="60" aria-label="Categories">
+        <a class="ws-chipnav__chip" href="#ws-demo-1-{{ section.id }}">Proteins &amp; gainers</a>
+        <a class="ws-chipnav__chip" href="#ws-demo-2-{{ section.id }}">Performance &amp; pre-workout</a>
+        <a class="ws-chipnav__chip" href="#ws-demo-3-{{ section.id }}">Endurance &amp; wellness</a>
+      </nav>
+
+      <div class="ws-cat" id="ws-demo-1-{{ section.id }}" data-rv="0">
+        <header class="ws-cat__head"><h3 class="ws-cat__title">Proteins &amp; gainers</h3><span class="ws-cat__count">Best sellers</span><span class="ws-cat__note">MOQ 6 units</span></header>
+        <div class="ws-rail">
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">ISO-XP</span></div><div class="ws-item__body"><span class="ws-item__vendor">Applied Nutrition</span><h4 class="ws-item__name">ISO-XP Whey Isolate &middot; 1.8kg</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 38,500</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">NITRO</span></div><div class="ws-item__body"><span class="ws-item__vendor">MuscleTech</span><h4 class="ws-item__name">NitroTech Whey &middot; 4lb</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 32,000</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">MASS</span></div><div class="ws-item__body"><span class="ws-item__vendor">Applied Nutrition</span><h4 class="ws-item__name">Critical Mass Gainer &middot; 6kg</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 29,500</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">LOADED</span></div><div class="ws-item__body"><span class="ws-item__vendor">RYSE</span><h4 class="ws-item__name">Loaded Protein &middot; 2lb</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 21,500</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+        </div>
+      </div>
+
+      <div class="ws-cat" id="ws-demo-2-{{ section.id }}" data-rv="0">
+        <header class="ws-cat__head"><h3 class="ws-cat__title">Performance &amp; pre-workout</h3><span class="ws-cat__count">High velocity</span><span class="ws-cat__note">MOQ 6 units</span></header>
+        <div class="ws-rail">
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">PRE</span></div><div class="ws-item__body"><span class="ws-item__vendor">RYSE</span><h4 class="ws-item__name">Loaded Pre-Workout &middot; 30 srv</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 15,500</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">ABE</span></div><div class="ws-item__body"><span class="ws-item__vendor">Applied Nutrition</span><h4 class="ws-item__name">ABE Ultimate Pre &middot; 30 srv</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 13,900</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">CR-250</span></div><div class="ws-item__body"><span class="ws-item__vendor">Applied Nutrition</span><h4 class="ws-item__name">Creatine Monohydrate &middot; 250g</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 8,900</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">CARN</span></div><div class="ws-item__body"><span class="ws-item__vendor">Applied Nutrition</span><h4 class="ws-item__name">L-Carnitine 3000 &middot; 480ml</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 9,800</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+        </div>
+      </div>
+
+      <div class="ws-cat" id="ws-demo-3-{{ section.id }}" data-rv="0">
+        <header class="ws-cat__head"><h3 class="ws-cat__title">Endurance &amp; wellness</h3><span class="ws-cat__count">Clinic &amp; club favourites</span><span class="ws-cat__note">MOQ 12 units</span></header>
+        <div class="ws-rail">
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">GO-GEL</span></div><div class="ws-item__body"><span class="ws-item__vendor">Science in Sport</span><h4 class="ws-item__name">GO Isotonic Gels &middot; box of 30</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 18,000</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">REGO</span></div><div class="ws-item__body"><span class="ws-item__vendor">Science in Sport</span><h4 class="ws-item__name">REGO Rapid Recovery &middot; 1.6kg</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 22,500</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">D3</span></div><div class="ws-item__body"><span class="ws-item__vendor">Healthspan Elite</span><h4 class="ws-item__name">Vitamin D3 4000iu &middot; 120 tabs</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 6,500</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+          <div class="ws-item"><div class="ws-item__media ws-item__media--demo"><span class="ws-mono">OMEGA</span></div><div class="ws-item__body"><span class="ws-item__vendor">Healthspan Elite</span><h4 class="ws-item__name">Elite Omega-3 &middot; 90 caps</h4><div class="ws-item__foot"><s class="ws-item__retail">Rs 7,900</s><span class="ws-item__chip">Trade price on request</span></div></div></div>
+        </div>
+      </div>
+      <p class="ws-range__demo-note" data-rv="0">Demo range shown, link your live collections to this section in the theme editor.</p>
+    {% endif %}
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="ws-flow">
+    <h2 class="ws-h2 ws-h2--ink ws-h2--sm" data-rv="0">How ordering works</h2>
+    <ol class="ws-flow__steps">
+      <li data-rv="0"><span class="ws-flow__num">01</span><h3>Browse &amp; shortlist</h3><p>Pick the brands and SKUs that fit your customers.</p></li>
+      <li data-rv="90"><span class="ws-flow__num">02</span><h3>Request access</h3><p>Tell us about your business, gym, pharmacy, store or online.</p></li>
+      <li data-rv="180"><span class="ws-flow__num">03</span><h3>Get tier pricing</h3><p>Approved accounts receive the full wholesale price sheet.</p></li>
+      <li data-rv="270"><span class="ws-flow__num">04</span><h3>Restock in 48h</h3><p>Order by WhatsApp or phone, dispatch island-wide within 48 hours.</p></li>
+    </ol>
+  </div>
+
+  <!-- ACCESS CTA -->
+  <div class="ws-cta">
+    <div class="ws-cta__panel" data-rv="0">
+      <div class="ws-cta__copy">
+        <h2 class="ws-h2">Ready to stock SNH brands?</h2>
+        <p class="ws-lead ws-lead--light">Talk to our B2B team today, the online inquiry portal is on its way, and orders are currently handled directly, person to person.</p>
+        <div class="ws-cta__chips">
+          <a class="ws-chip" href="https://wa.me/{{ section.settings.whatsapp | default: '94764863359' }}" target="_blank" rel="noopener">WhatsApp +94 76 486 3359</a>
+          <a class="ws-chip" href="mailto:{{ section.settings.email | default: 'info@sportsnutritionhub.lk' }}">{{ section.settings.email | default: 'info@sportsnutritionhub.lk' }}</a>
+        </div>
+      </div>
+      <div class="ws-cta__action">
+        <a class="ws-btn ws-btn--big" href="https://wa.me/{{ section.settings.whatsapp | default: '94764863359' }}" target="_blank" rel="noopener">Request wholesale access
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <p class="ws-cta__note">Replies within one business day &middot; Everyday 10am to 7pm</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #snh-ws-{{ section.id }}, #snh-ws-{{ section.id }} * { box-sizing: border-box; }
+  #snh-ws-{{ section.id }} {
+    --ws-ink: #17130F; --ws-cream: #FAF7F2; --ws-paper-muted: rgba(69,59,50,.78);
+    --ws-light: #fdf6ef; --ws-light-muted: rgba(253,246,239,.66);
+    display: block; background: var(--ws-cream);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; overflow-x: clip;
+  }
+  #snh-ws-{{ section.id }} .ws-h2 { margin: 0; color: var(--ws-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(34px,3.6vw,54px); font-weight: 900; line-height: .98; letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance; }
+  #snh-ws-{{ section.id }} .ws-h2--ink { color: var(--ws-ink); }
+  #snh-ws-{{ section.id }} .ws-h2--sm { font-size: clamp(26px,2.6vw,38px); }
+  #snh-ws-{{ section.id }} .ws-lead { max-width: 640px; margin: 18px 0 0; color: var(--ws-paper-muted); font-size: clamp(14px,1.02vw,16px); font-weight: 500; line-height: 1.62; }
+  #snh-ws-{{ section.id }} .ws-lead--light { color: var(--ws-light-muted); }
+  #snh-ws-{{ section.id }} .ws-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px; border: 1px solid var(--ws-accent); border-radius: 9px; background: var(--ws-accent); color: #fff; font-family: 'Archivo', Arial, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease; }
+  #snh-ws-{{ section.id }} .ws-btn svg { width: 15px; height: 15px; }
+  #snh-ws-{{ section.id }} .ws-btn:hover { background: #b23c11; border-color: #b23c11; transform: translateY(-2px); color: #fff; }
+  #snh-ws-{{ section.id }} .ws-btn--ghost { background: transparent; border-color: rgba(253,246,239,.3); color: var(--ws-light); }
+  #snh-ws-{{ section.id }} .ws-btn--ghost:hover { background: rgba(253,246,239,.07); border-color: var(--ws-accent); }
+  #snh-ws-{{ section.id }} .ws-btn--big { min-height: 60px; padding: 0 34px; font-size: 13px; }
+  #snh-ws-{{ section.id }} .ws-btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+  #snh-ws-{{ section.id }} .ws-hero { position: relative; padding: clamp(52px,6vw,96px) clamp(18px,4vw,64px) clamp(36px,4vw,56px); background: linear-gradient(115deg, #100b07 0%, #1c0f08 48%, #341509 82%, #46190a 100%); }
+  #snh-ws-{{ section.id }} .ws-hero__inner { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(320px,.95fr); gap: clamp(30px,4vw,70px); align-items: center; width: min(100%,1500px); margin-inline: auto; }
+  #snh-ws-{{ section.id }} .ws-hero__title { margin: 0; color: var(--ws-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(44px,5.6vw,88px); font-weight: 900; line-height: .93; letter-spacing: -.035em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-hero__title span { color: var(--ws-accent); }
+  #snh-ws-{{ section.id }} .ws-hero__sub { max-width: 560px; margin: 24px 0 0; color: var(--ws-light-muted); font-size: clamp(14px,1.05vw,16px); font-weight: 500; line-height: 1.65; }
+  #snh-ws-{{ section.id }} .ws-hero__badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  #snh-ws-{{ section.id }} .ws-badge { padding: 8px 14px; border: 1px solid rgba(253,246,239,.2); border-radius: 8px; background: rgba(253,246,239,.05); color: rgba(253,246,239,.82); font-family: 'Archivo', Arial, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-hero__visual { position: relative; display: flex; justify-content: center; align-items: flex-end; min-height: clamp(360px,34vw,520px); }
+  #snh-ws-{{ section.id }} .ws-hero__visual::before { content: ""; position: absolute; left: 50%; top: 45%; width: min(94%, 480px); aspect-ratio: 1; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(224,82,28,.4), rgba(224,82,28,.12) 45%, transparent 70%); filter: blur(52px); z-index: 0; }
+  #snh-ws-{{ section.id }} .ws-hero__visual::after { content: ""; position: absolute; left: 50%; bottom: 5%; width: 56%; height: 26px; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(0,0,0,.5), transparent 72%); filter: blur(12px); z-index: 0; }
+  #snh-ws-{{ section.id }} .ws-solo { position: relative; z-index: 1; display: block; height: 100%; max-height: clamp(360px,34vw,520px); width: auto; filter: drop-shadow(0 26px 48px rgba(0,0,0,.5)); }
+  #snh-ws-{{ section.id }} .ws-hero__stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; width: min(100%,1500px); margin: clamp(36px,4vw,60px) auto 0; padding-top: clamp(22px,2.4vw,32px); border-top: 1px solid rgba(253,246,239,.14); }
+  #snh-ws-{{ section.id }} .ws-stat { display: grid; gap: 6px; }
+  #snh-ws-{{ section.id }} .ws-stat__num { color: var(--ws-light); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(32px,3vw,50px); font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  #snh-ws-{{ section.id }} .ws-stat__label { color: var(--ws-light-muted); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+  #snh-ws-{{ section.id }} .ws-brands { overflow: hidden; background: #fff; border-block: 1px solid rgba(23,19,15,.1); padding: clamp(18px,2vw,26px) 0; }
+  #snh-ws-{{ section.id }} .ws-brands__track { display: flex; align-items: center; gap: clamp(38px,5vw,76px); width: max-content; padding-inline: clamp(38px,5vw,76px); animation: wsBrands 40s linear infinite; }
+  #snh-ws-{{ section.id }} .ws-brands__track img { display: block; height: clamp(26px,3vw,42px); width: auto; object-fit: contain; }
+  #snh-ws-{{ section.id }} .ws-brands:hover .ws-brands__track { animation-play-state: paused; }
+  @keyframes wsBrands { to { transform: translateX(-50%); } }
+
+  #snh-ws-{{ section.id }} .ws-why { width: min(100%,1500px); margin-inline: auto; padding: clamp(48px,5vw,84px) clamp(18px,4vw,64px) clamp(24px,2.5vw,40px); }
+  #snh-ws-{{ section.id }} .ws-why__head { margin-bottom: clamp(28px,3.2vw,44px); }
+  #snh-ws-{{ section.id }} .ws-why__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: clamp(12px,1.3vw,18px); }
+  #snh-ws-{{ section.id }} .ws-card { padding: clamp(22px,2vw,30px); border: 1px solid rgba(23,19,15,.12); border-radius: 12px; background: #fff; transition: border-color 220ms ease, transform 320ms cubic-bezier(.22,1,.36,1); }
+  #snh-ws-{{ section.id }} .ws-card:hover { border-color: rgba(224,82,28,.55); transform: translateY(-3px); }
+  #snh-ws-{{ section.id }} .ws-card h3 { margin: 0 0 9px; color: var(--ws-ink); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(16px,1.15vw,20px); font-weight: 900; line-height: 1.05; letter-spacing: -.01em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-card p { margin: 0; color: var(--ws-paper-muted); font-size: 13.5px; font-weight: 500; line-height: 1.5; }
+
+  #snh-ws-{{ section.id }} .ws-range { width: min(100%,1500px); margin-inline: auto; padding: clamp(40px,4.5vw,72px) clamp(18px,4vw,64px); scroll-margin-top: 90px; }
+  #snh-ws-{{ section.id }} .ws-range__head { margin-bottom: clamp(26px,3vw,42px); }
+  #snh-ws-{{ section.id }} .ws-chipnav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: clamp(24px,3vw,40px); }
+  #snh-ws-{{ section.id }} .ws-chipnav__chip { padding: 11px 18px; border: 1px solid rgba(23,19,15,.16); border-radius: 8px; background: #fff; color: var(--ws-ink); font-family: 'Archivo', Arial, sans-serif; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease; }
+  #snh-ws-{{ section.id }} .ws-chipnav__chip:hover { border-color: var(--ws-accent); background: var(--ws-accent); color: #fff; }
+  #snh-ws-{{ section.id }} .ws-cat { margin-bottom: clamp(30px,3.4vw,52px); scroll-margin-top: 90px; }
+  #snh-ws-{{ section.id }} .ws-cat:last-of-type { margin-bottom: 0; }
+  #snh-ws-{{ section.id }} .ws-cat__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 18px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(23,19,15,.14); }
+  #snh-ws-{{ section.id }} .ws-cat__title { margin: 0; color: var(--ws-ink); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(20px,1.8vw,28px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-cat__count { color: var(--ws-paper-muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-cat__note { margin-left: auto; padding: 6px 12px; border-radius: 8px; background: rgba(224,82,28,.1); color: #b23c11; font-family: 'Archivo', Arial, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-rail { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(230px,21vw,300px); gap: clamp(12px,1.2vw,18px); overflow-x: auto; overscroll-behavior-x: contain; padding: 4px 4px 16px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(224,82,28,.5) transparent; }
+  #snh-ws-{{ section.id }} .ws-rail::-webkit-scrollbar { height: 6px; }
+  #snh-ws-{{ section.id }} .ws-rail::-webkit-scrollbar-thumb { background: rgba(224,82,28,.45); border-radius: 3px; }
+  #snh-ws-{{ section.id }} .ws-item { display: flex; flex-direction: column; scroll-snap-align: start; border: 1px solid rgba(23,19,15,.1); border-radius: 12px; background: #fff; overflow: hidden; text-decoration: none; transition: transform 300ms cubic-bezier(.22,1,.36,1), border-color 240ms ease; }
+  #snh-ws-{{ section.id }} .ws-item:hover { transform: translateY(-4px); border-color: rgba(224,82,28,.5); }
+  #snh-ws-{{ section.id }} .ws-item__media { position: relative; display: grid; place-items: center; aspect-ratio: 1/1; background: #f3efe8; }
+  #snh-ws-{{ section.id }} .ws-item__media--demo { background: linear-gradient(150deg, #1c1512, #0e0e0f); }
+  #snh-ws-{{ section.id }} .ws-item__img { width: 100%; height: 100%; object-fit: cover; }
+  #snh-ws-{{ section.id }} .ws-mono { color: #fff2e6; font-family: 'Archivo', Arial, sans-serif; font-size: clamp(26px,2.4vw,38px); font-weight: 900; letter-spacing: .02em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-item__body { display: flex; flex-direction: column; gap: 6px; padding: 16px; }
+  #snh-ws-{{ section.id }} .ws-item__vendor { color: #b23c11; font-family: 'Archivo', Arial, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-item__name { margin: 0; color: var(--ws-ink); font-family: 'Archivo', Arial, sans-serif; font-size: 15px; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; }
+  #snh-ws-{{ section.id }} .ws-item__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
+  #snh-ws-{{ section.id }} .ws-item__retail { color: rgba(69,59,50,.55); font-size: 12.5px; font-weight: 600; }
+  #snh-ws-{{ section.id }} .ws-item__chip { padding: 5px 9px; border-radius: 6px; background: rgba(224,82,28,.1); color: #b23c11; font-family: 'Archivo', Arial, sans-serif; font-size: 9.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-range__demo-note { margin: 18px 0 0; color: rgba(69,59,50,.5); font-size: 12px; font-weight: 500; font-style: italic; }
+
+  #snh-ws-{{ section.id }} .ws-flow { width: min(100%,1500px); margin-inline: auto; padding: clamp(36px,4vw,60px) clamp(18px,4vw,64px) clamp(48px,5vw,80px); border-top: 1px solid rgba(23,19,15,.1); }
+  #snh-ws-{{ section.id }} .ws-flow .ws-h2 { margin-bottom: clamp(24px,2.6vw,38px); }
+  #snh-ws-{{ section.id }} .ws-flow__steps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: clamp(16px,2vw,28px); margin: 0; padding: 0; list-style: none; }
+  #snh-ws-{{ section.id }} .ws-flow__steps li { position: relative; padding-top: 18px; border-top: 2px solid rgba(23,19,15,.14); }
+  #snh-ws-{{ section.id }} .ws-flow__steps li::before { content: ""; position: absolute; top: -2px; left: 0; width: 44px; height: 2px; background: var(--ws-accent); }
+  #snh-ws-{{ section.id }} .ws-flow__num { display: block; margin-bottom: 10px; color: var(--ws-accent); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(30px,2.6vw,42px); font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  #snh-ws-{{ section.id }} .ws-flow__steps h3 { margin: 0 0 8px; color: var(--ws-ink); font-family: 'Archivo', Arial, sans-serif; font-size: clamp(16px,1.2vw,20px); font-weight: 900; letter-spacing: -.01em; text-transform: uppercase; }
+  #snh-ws-{{ section.id }} .ws-flow__steps p { margin: 0; color: var(--ws-paper-muted); font-size: 13.5px; font-weight: 500; line-height: 1.55; }
+
+  #snh-ws-{{ section.id }} .ws-cta { padding: 0 clamp(18px,4vw,64px) clamp(52px,6vw,92px); }
+  #snh-ws-{{ section.id }} .ws-cta__panel { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(280px,.8fr); gap: clamp(26px,4vw,70px); align-items: center; width: min(100%,1500px); margin-inline: auto; padding: clamp(34px,4vw,64px); border-radius: 16px; border: 1px solid rgba(253,246,239,.1); background: linear-gradient(115deg, #100b07 0%, #1c0f08 48%, #351609 82%, #46190a 100%); }
+  #snh-ws-{{ section.id }} .ws-cta__chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  #snh-ws-{{ section.id }} .ws-chip { display: inline-flex; align-items: center; padding: 10px 16px; border: 1px solid rgba(253,246,239,.2); border-radius: 8px; background: rgba(253,246,239,.05); color: var(--ws-light); font-size: 12.5px; font-weight: 600; text-decoration: none; transition: border-color 200ms ease, background-color 200ms ease; }
+  #snh-ws-{{ section.id }} a.ws-chip:hover { border-color: var(--ws-accent); background: rgba(224,82,28,.12); }
+  #snh-ws-{{ section.id }} .ws-cta__action { display: grid; gap: 14px; justify-items: center; text-align: center; }
+  #snh-ws-{{ section.id }} .ws-cta__action .ws-btn--big { width: 100%; }
+  #snh-ws-{{ section.id }} .ws-cta__note { margin: 0; color: rgba(253,246,239,.5); font-size: 12px; font-weight: 500; }
+
+  #snh-ws-{{ section.id }}.ws-motion-ready [data-rv] { opacity: 0; transform: translateY(20px); transition: opacity 720ms cubic-bezier(.22,1,.36,1), transform 720ms cubic-bezier(.22,1,.36,1); }
+  #snh-ws-{{ section.id }}.ws-motion-ready [data-rv].is-in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 1024px) {
+    #snh-ws-{{ section.id }} .ws-hero__inner { grid-template-columns: 1fr; }
+    #snh-ws-{{ section.id }} .ws-hero__visual { min-height: 340px; }
+    #snh-ws-{{ section.id }} .ws-why__grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #snh-ws-{{ section.id }} .ws-flow__steps { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #snh-ws-{{ section.id }} .ws-cta__panel { grid-template-columns: 1fr; }
+    #snh-ws-{{ section.id }} .ws-hero__stats { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: 24px; }
+  }
+  @media (max-width: 640px) {
+    #snh-ws-{{ section.id }} .ws-why__grid { grid-template-columns: 1fr; }
+    #snh-ws-{{ section.id }} .ws-flow__steps { grid-template-columns: 1fr; }
+    #snh-ws-{{ section.id }} .ws-hero__visual { min-height: 300px; }
+    #snh-ws-{{ section.id }} .ws-cat__note { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #snh-ws-{{ section.id }} .ws-brands__track { animation: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('snh-ws-{{ section.id }}');
+    if (!root || root.dataset.motionBound) return;
+    root.dataset.motionBound = 'true';
+    const els = root.querySelectorAll('[data-rv]');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    root.classList.add('ws-motion-ready');
+    els.forEach((el) => { el.style.transitionDelay = (parseInt(el.getAttribute('data-rv'), 10) || 0) + 'ms'; });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (!entry.isIntersecting) return; entry.target.classList.add('is-in'); io.unobserve(entry.target); });
+    }, { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+    els.forEach((el) => io.observe(el));
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SNH Wholesale Hub",
+  "tag": "section",
+  "class": "shopify-section--snh-wholesale",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading (HTML allowed)", "default": "Stock the strongest <span>shelf.</span>" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Buy directly from the official distributor of 12+ global sports nutrition brands. Genuine, batch-coded stock at real trade margins, supplied island-wide to gyms, pharmacies, retailers and online sellers." },
+    { "type": "color", "id": "accent", "label": "Accent color", "default": "#E0521C" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (digits only)", "default": "94764863359" },
+    { "type": "text", "id": "email", "label": "B2B email", "default": "info@sportsnutritionhub.lk" }
+  ],
+  "blocks": [
+    { "type": "manual", "name": "Row (pick products)", "settings": [
+      { "type": "text", "id": "title", "label": "Row title", "default": "Featured range" },
+      { "type": "text", "id": "note", "label": "Note chip (optional)" },
+      { "type": "product", "id": "product_1", "label": "Product 1" },
+      { "type": "product", "id": "product_2", "label": "Product 2" },
+      { "type": "product", "id": "product_3", "label": "Product 3" },
+      { "type": "product", "id": "product_4", "label": "Product 4" },
+      { "type": "product", "id": "product_5", "label": "Product 5" },
+      { "type": "product", "id": "product_6", "label": "Product 6" },
+      { "type": "product", "id": "product_7", "label": "Product 7" },
+      { "type": "product", "id": "product_8", "label": "Product 8" }
+    ]},
+    { "type": "category", "name": "Row (whole collection)", "settings": [
+      { "type": "collection", "id": "collection", "label": "Collection" },
+      { "type": "text", "id": "title", "label": "Custom title (optional)" },
+      { "type": "text", "id": "note", "label": "Note chip (optional)", "default": "MOQ 6 units" }
+    ]},
+    { "type": "logo", "name": "Brand logo (strip)", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Logo image" },
+      { "type": "text", "id": "alt", "label": "Brand name / alt" }
+    ]}
+  ],
+  "max_blocks": 24,
+  "presets": [{ "name": "SNH Wholesale Hub" }]
+}
+{% endschema %}

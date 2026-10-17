@@ -1,0 +1,386 @@
+{%- comment -%}
+  SNH product card — drop-in replacement for the theme's product-card snippet.
+  Accepts (and safely ignores) the theme's params: product, stacked, position,
+  show_badges, class, sizes, etc. Used by the collection grid, search results,
+  related products and every featured-collection block.
+{%- endcomment -%}
+
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign third = product.price | divided_by: 3
+  assign points_rate = 3
+  if customer
+    assign spent_rs = customer.total_spent | divided_by: 100
+    if spent_rs >= 150000
+      assign points_rate = 10
+    elsif spent_rs >= 50000
+      assign points_rate = 7
+    endif
+  endif
+  assign points_value = product.price | times: points_rate | divided_by: 100
+
+  assign multi = false
+  if product.variants.size > 1
+    assign multi = true
+  endif
+
+  assign now_s = 'now' | date: '%s' | times: 1
+  assign made_s = product.created_at | date: '%s' | times: 1
+  assign age = now_s | minus: made_s
+
+  assign retail = 0
+  assign retail_from_meta = false
+  if v.compare_at_price > v.price
+    assign retail = v.compare_at_price
+  elsif product.compare_at_price > product.price
+    assign retail = product.compare_at_price
+  elsif product.compare_at_price_max > product.price
+    # multi-variant bundles: the shown variant may carry no compare-at while others do
+    assign retail = product.compare_at_price_max
+  endif
+
+  # No compare-at set on the bundle. Retail totals below are the sum of each
+  # bundle's contents at their own shelf prices, taken from the SNH bundle
+  # sheet. Keys are the handleized product title; edit a value here if a
+  # component's retail price changes. A bundle absent from this list simply
+  # shows no saving rather than an invented one.
+  if retail == 0
+    assign bundle_retail = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+    assign title_key = product.title | handleize
+    for pair in bundle_retail
+      assign kv = pair | split: '='
+      if kv[0] == title_key
+        assign candidate = kv[1] | times: 1
+        if candidate > product.price
+          assign retail = candidate
+          assign retail_from_meta = true
+        endif
+      endif
+    endfor
+  endif
+
+  # manual per-product override, in rupees, for anything not in the list
+  if retail == 0
+    assign meta_retail = product.metafields.custom.retail_price.value | default: product.metafields.custom.retail_price
+    if meta_retail != blank
+      assign meta_cents = meta_retail | times: 100 | round
+      if meta_cents > product.price
+        assign retail = meta_cents
+        assign retail_from_meta = true
+      endif
+    endif
+  endif
+
+  assign on_sale = false
+  if retail > product.price
+    assign on_sale = true
+    assign saved = retail | minus: product.price
+  endif
+
+  assign extra = ''
+  if on_sale and product.available
+    assign saved_label = saved | money_without_trailing_zeros
+    assign extra = 'SAVE ' | append: saved_label
+  endif
+  if extra == blank and on_sale == false and product.available
+    if age < 3888000
+      assign extra = 'New in'
+    elsif product.tags contains 'Best Seller'
+      assign extra = 'Best seller'
+    elsif product.tags contains 'best-seller'
+      assign extra = 'Best seller'
+    endif
+  endif
+-%}
+
+{%- comment -%}
+  {% render %} is scope-isolated, so an assign inside this snippet is invisible to
+  the next render — the old guard was dead and this CSS shipped once per card.
+  Callers may pass with_css: forloop.first to emit it a single time; callers that
+  pass nothing behave exactly as before.
+{%- endcomment -%}
+{%- assign snh_emit_css = true -%}
+{%- if with_css == false -%}{%- assign snh_emit_css = false -%}{%- endif -%}
+{%- if snh_emit_css -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+  <style data-snh-card-css>
+    .snh-pc, .snh-pc * { box-sizing: border-box; }
+    .snh-pc {
+      --snh-orange: #e0521c;
+      --snh-orange-dark: #b23c11;
+      --snh-red: #c02a1b;
+      --snh-ink: #17130f;
+      --snh-line: #e7e0d6;
+      --snh-font: 'Satoshi', 'Inter', system-ui, sans-serif;
+      --snh-ease: cubic-bezier(.22, 1, .36, 1);
+      container-type: inline-size;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #ece6dd;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      font-family: var(--snh-font);
+      color: var(--snh-ink);
+      transition: border-color .6s var(--snh-ease), box-shadow .7s var(--snh-ease), transform .7s var(--snh-ease);
+    }
+    .snh-pc:hover { border-color: rgba(23,19,15,.16); transform: translateY(-3px); box-shadow: 0 16px 38px rgba(23,19,15,.08); }
+    .snh-pc__frame {
+      position: relative;
+      padding: 8px 8px 0 !important;
+      /* its own paint layer, so the card's hover lift cannot repaint the inset away */
+      isolation: isolate;
+      transform: translateZ(0);
+    }
+    .snh-pc:hover .snh-pc__frame,
+    .snh-pc:focus-within .snh-pc__frame { padding: 8px 8px 0 !important; }
+    .snh-pc__shot { position: relative; display: block; padding: 0 !important; margin: 0 !important; text-decoration: none; }
+    .snh-pc__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden; background: #f2eee7; }
+    .snh-pc__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s cubic-bezier(.16, .84, .28, 1); }
+    .snh-pc:hover .snh-pc__media img { transform: scale(1.055); }
+    .snh-pc__peek { position: absolute; bottom: 12px; right: 16px; z-index: 6; appearance: none; display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 1px solid rgba(23,19,15,.1); border-radius: 50%; background: rgba(255,255,255,.94); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: var(--snh-ink); cursor: pointer; box-shadow: 0 3px 12px rgba(23,19,15,.08); transition: background .3s var(--snh-ease), border-color .3s var(--snh-ease), transform .3s var(--snh-ease); }
+    .snh-pc__peek:hover { background: #fff; border-color: rgba(23,19,15,.25); transform: scale(1.06); }
+    .snh-pc__badge { position: absolute; top: 18px; left: 18px; z-index: 4; max-width: calc(100% - 36px); display: inline-flex; align-items: center; padding: 7px 13px; border-radius: 99px; background: rgba(192,42,27,.92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: -.01em; }
+    /* "New in" and "Best seller" are not savings, so they keep the ink pill */
+    .snh-pc__badge--note { background: rgba(23,19,15,.82); }
+    .snh-pc__body { display: flex; flex-direction: column; flex: 1; padding: 18px 18px 16px; }
+    .snh-pc__link { text-decoration: none; color: inherit; }
+    .snh-pc__title { margin: 0; font-size: 19px; font-weight: 900; line-height: 1.22; letter-spacing: -.02em; text-wrap: pretty; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .snh-pc__sub { margin: 7px 0 0; font-size: 14px; font-weight: 500; line-height: 1.35; color: #a09484; }
+    .snh-pc__foot { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .snh-pc__foot .snh-pc__koko { order: 3; flex: 1 0 100%; margin-top: 4px; }
+    .snh-pc__price { flex: 0 1 auto; min-width: 0; display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 8px 16px; border-radius: 18px; background: #f2eee7; letter-spacing: -.02em; }
+    .snh-pc__now { display: block; font-size: 16px; font-weight: 900; line-height: 1.15; white-space: nowrap; }
+    .snh-pc__was { display: block; font-size: 11px; font-weight: 500; line-height: 1.2; color: #a09484; text-decoration: line-through; white-space: nowrap; }
+    .snh-pc__price--sale { background: rgba(192,42,27,.045); }
+    .snh-pc__price--sale .snh-pc__now { color: var(--snh-red); }
+    .snh-pc__price--sale .snh-pc__was { color: rgba(192,42,27,.55); }
+    /* theme badge stack, restyled to match the SNH card */
+    .snh-pc__badges { position: absolute; top: 18px; right: 18px; z-index: 3; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; max-width: calc(100% - 32px); pointer-events: none; }
+    .snh-pc__badges > * { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 99px; background: rgba(23,19,15,.86); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff; font-family: var(--snh-font); font-size: 11.5px; font-weight: 800; letter-spacing: .01em; line-height: 1; text-transform: none; }
+    /* one saving badge per card: the black one below. The theme's red sale
+       badge is suppressed, its BUNDLE and Sold out badges are kept. */
+    .snh-pc__badges .badge--sale,
+    .snh-pc__badges [class*="sale" i],
+    .snh-pc__badges [class*="discount" i],
+    .snh-pc__badges [data-snh-dupe] { display: none !important; }
+    .snh-pc__badges .badge--sold-out, .snh-pc__badges [class*="sold" i] { background: rgba(23,19,15,.86); }
+    .snh-pc__add { flex: 0 0 auto; appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 0 8px 0 18px; border: 0; border-radius: 99px; background: var(--snh-ink); color: #fff; font-family: var(--snh-font); font-size: 14px; font-weight: 700; letter-spacing: -.01em; cursor: pointer; white-space: nowrap; transition: background .3s var(--snh-ease); }
+    .snh-pc__add > span:first-child { display: inline-block; color: #fff; font-size: 14px; font-weight: 700; line-height: 1; }
+    .snh-pc__add:hover { background: var(--snh-orange); }
+    .snh-pc__add.is-done { background: var(--snh-orange-dark); }
+    .snh-pc__add.is-busy { background: #2a231c; }
+    .snh-pc__add > span:first-child { transition: opacity .22s var(--snh-ease); }
+    .snh-pc__add.is-busy > span:first-child { opacity: .7; }
+    .snh-pc__dot {
+      flex: 0 0 auto; display: block; width: 30px; height: 30px; min-width: 30px;
+      padding: 0; margin: 0; border: 0; border-radius: 50%; font-size: 0;
+      background-color: #fff;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317130f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12m-5-5 5 5-5 5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: center; background-size: 17px 17px;
+      transition: transform .3s var(--snh-ease);
+    }
+    .snh-pc__add:hover .snh-pc__dot { transform: translateX(2px); }
+    .snh-pc__koko { margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: #a09484; }
+    .snh-pc__koko img { display: block; height: 12px; width: auto; }
+    .snh-pc__earn { display: block; margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--snh-line); font-size: 12px; font-weight: 500; color: #a09484; text-decoration: none; }
+    .snh-pc__earn strong { color: var(--snh-orange); font-weight: 800; }
+    a.snh-pc__earn:hover strong { text-decoration: underline; }
+    .snh-pc--out { opacity: .68; }
+    /* sold-out products sort last. Done with CSS order rather than moving nodes:
+       DOM moves inside a MutationObserver re-trigger it, which caused the grid
+       to reshuffle on every scroll (the flashing and the trapped mobile scroll). */
+    .product-list > *:has(.snh-pc--out) { order: 90; }
+    .product-list > *:has(.snh-pc__soldout) { order: 90; }
+    .snh-pc__soldout { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 18px; border-radius: 99px; background: #f2eee7; color: #736657; font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+
+    @container (max-width: 236px) {
+      .snh-pc__foot { flex-direction: column; align-items: stretch; gap: 9px; }
+      .snh-pc__price { align-items: flex-start; }
+      .snh-pc__add { justify-content: center; padding: 0 12px; }
+    }
+    @media screen and (max-width: 699px) {
+      /* nothing may push the page wider than the phone — that sideways drift is
+         what cut the left card off. clip (not hidden) keeps sticky working. */
+      html, body { overflow-x: clip; }
+      .product-list { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; inline-size: 100% !important; max-inline-size: 100% !important; margin-inline: 0 !important; }
+      .shopify-section--main-collection .container,
+      .shopify-section--main-collection .collection__results { padding-inline: 0 !important; margin-inline: 0 !important; max-inline-size: none !important; }
+      .shopify-section--main-collection .container { padding-inline: 8px !important; }
+      .product-list > * { min-width: 0; max-width: 100%; }
+      .snh-pc { min-width: 0; }
+      /* no hover motion or blur layers on touch: 30+ backdrop-filters and
+         transforms repainting at once is the flicker on iPhone */
+      .snh-pc, .snh-pc:hover { transform: none; box-shadow: none; transition: none; }
+      .snh-pc:hover .snh-pc__media img { transform: none; }
+      .snh-pc__peek, .snh-pc__badge, .snh-pc__badges > * { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+      .snh-pc__peek { background: #fff; box-shadow: 0 2px 8px rgba(23,19,15,.1); }
+      .snh-pc__shot { padding: 6px 6px 0; }
+      .snh-pc__media { border-radius: 10px; }
+      .snh-pc__body { padding: 11px 10px 12px; }
+      .snh-pc__title { font-size: 14px; line-height: 1.22; min-height: 2.44em; }
+      .snh-pc__sub { margin-top: 4px; font-size: 11.5px; }
+      .snh-pc__foot { margin-top: 11px; flex-direction: column; align-items: flex-start; gap: 7px; }
+      .snh-pc__price { align-self: stretch; align-items: flex-start; justify-content: center; min-height: 38px; padding: 7px 14px; border-radius: 99px; }
+      .snh-pc__now { font-size: 16px; }
+      .snh-pc__was { font-size: 10.5px; }
+      .snh-pc__add { align-self: stretch; justify-content: space-between; min-height: 38px; padding: 0 5px 0 14px; font-size: 12.5px; }
+      .snh-pc__add > span:first-child { font-size: 12.5px; }
+      .snh-pc__dot { width: 28px; height: 28px; min-width: 28px; background-size: 14px 14px; }
+      .snh-pc__soldout { align-self: stretch; min-height: 38px; font-size: 12.5px; }
+      .snh-pc__peek { bottom: 9px; right: 9px; width: 30px; height: 30px; }
+      .snh-pc__peek svg { width: 15px; height: 15px; }
+      .snh-pc__badge { top: 10px; left: 10px; max-width: calc(100% - 20px); padding: 4px 8px; font-size: 10px; }
+      .snh-pc__badges { top: 10px; right: 10px; gap: 4px; }
+      .snh-pc__badges > * { padding: 4px 8px; font-size: 9.5px; }
+      .snh-pc__foot .snh-pc__koko { order: 0; flex: 0 0 auto; margin: -1px 0 2px; padding-inline-start: 14px; flex-wrap: wrap; gap: 4px; font-size: 10.5px; }
+      .snh-pc__koko img { height: 10px; }
+      .snh-pc__earn { margin-top: 9px; padding-top: 8px; font-size: 10.5px; line-height: 1.35; }
+    }
+    /* quick-view backdrop: keep the blur while the panel is open */
+    body:has(quick-buy-drawer[open])::before,
+    body.overlay-visible::before { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+    quick-buy-drawer[open] ~ .overlay,
+    .overlay { -webkit-backdrop-filter: blur(10px) !important; backdrop-filter: blur(10px) !important; background: rgba(15,10,7,.5) !important; }
+
+    /* the theme staggers a reveal animation per card, so a full collection page
+       spends seconds fading in. Cards paint immediately instead. */
+    .product-list > *,
+    .product-list > * > [class*="reveal" i],
+    .product-list > * > [data-animate] {
+      animation: none !important;
+      animation-delay: 0s !important;
+      transition-delay: 0s !important;
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+    reveal-items { display: contents; }
+    /* the card keeps its own hover motion */
+    .product-list > * .snh-pc { transition: border-color .6s var(--snh-ease), box-shadow .7s var(--snh-ease), transform .7s var(--snh-ease) !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .snh-pc, .snh-pc * { transition: none !important; }
+    }
+  </style>
+{%- endif -%}
+
+<div class="snh-pc{% unless product.available %} snh-pc--out{% endunless %}">
+  <div class="snh-pc__frame">
+  <a class="snh-pc__shot" href="{{ product.url }}" aria-label="{{ product.title | escape }}" tabindex="-1">
+    <span class="snh-pc__media">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 620 }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async" width="310" height="310">
+      {%- endif -%}
+    </span>
+    {%- comment -%} theme badge stack: Sold out, custom tag badges (BUNDLE…), Save Rs X {%- endcomment -%}
+    {%- render 'product-badges', product: product, context: 'card', class: 'snh-pc__badges' -%}
+    {%- if extra != blank -%}
+      <span class="snh-pc__badge{% unless on_sale %} snh-pc__badge--note{% endunless %}">{{ extra }}</span>
+    {%- endif -%}
+  </a>
+
+  {%- if product.available -%}
+    {%- capture snh_qb_id -%}snh-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+    <button type="button" class="snh-pc__peek" aria-controls="{{ snh_qb_id }}" aria-expanded="false" aria-label="Quick view {{ product.title | escape }}">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
+        <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+    </button>
+    <quick-buy-drawer id="{{ snh_qb_id }}" header-bordered open-from="bottom" handle="{{ product.handle }}?variant={{ v.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
+  {%- endif -%}
+  </div>
+
+  <div class="snh-pc__body">
+    <a class="snh-pc__link" href="{{ product.url }}"><h3 class="snh-pc__title">{{ product.title }}</h3></a>
+    <p class="snh-pc__sub">{% if multi %}{{ product.variants.size }} options{% else %}{{ product.type | default: product.vendor }}{% endif %}</p>
+
+    <div class="snh-pc__foot">
+      <span class="snh-pc__price{% if on_sale %} snh-pc__price--sale{% endif %}">
+        <span class="snh-pc__now">{{ product.price | money }}</span>
+        {%- if on_sale -%}<s class="snh-pc__was">{{ retail | money }}</s>{%- endif -%}
+      </span>
+      <span class="snh-pc__koko">OR 3 &times; {{ third | money }} <img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="KOKO" loading="lazy" width="46" height="13"></span>
+      {%- if product.available -%}
+        <button type="button" class="snh-pc__add" data-snh-add="{{ v.id }}" data-snh-multi="{% if multi %}{{ product.url }}{% endif %}">
+          <span>{% if multi %}Choose{% else %}Add{% endif %}</span>
+          <span class="snh-pc__dot" aria-hidden="true"></span>
+        </button>
+      {%- else -%}
+        <span class="snh-pc__soldout">Sold out</span>
+      {%- endif -%}
+    </div>
+
+
+    {%- if customer -%}
+      <span class="snh-pc__earn">Earn <strong>{{ points_value | money }}</strong> back</span>
+    {%- else -%}
+      <a class="snh-pc__earn" href="{{ routes.account_login_url }}">Sign in &mdash; earn <strong>{{ points_value | money }}</strong> back</a>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    if (window.__snhPcInit) return;
+    window.__snhPcInit = true;
+    var addUrl = {{ routes.cart_add_url | append: '.js' | json }};
+
+    /* the theme's sale badge class name varies by theme version, so match on
+       its text as well — anything reading "Save …" duplicates our own badge */
+    function dropDuplicateSaveBadges() {
+      document.querySelectorAll('.snh-pc__badges').forEach(function (stack) {
+        Array.prototype.forEach.call(stack.children, function (el) {
+          if (el.hasAttribute('data-snh-dupe')) return;
+          if (/^\s*save\b/i.test(el.textContent || '')) el.setAttribute('data-snh-dupe', '');
+        });
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', dropDuplicateSaveBadges);
+    } else {
+      dropDuplicateSaveBadges();
+    }
+    document.addEventListener('shopify:section:load', dropDuplicateSaveBadges);
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-snh-add]');
+      if (!btn) return;
+      e.preventDefault();
+      if (btn.dataset.snhMulti) { window.location.href = btn.dataset.snhMulti; return; }
+      if (btn.dataset.snhBusy) return;
+      btn.dataset.snhBusy = '1';
+      var label = btn.querySelector('span');
+      var original = label.textContent;
+      btn.classList.add('is-busy');
+      label.textContent = 'Adding';
+      fetch(addUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ items: [{ id: Number(btn.dataset.snhAdd), quantity: 1 }] })
+      }).then(function (r) {
+        if (!r.ok) throw new Error();
+        btn.classList.remove('is-busy');
+        btn.classList.add('is-done');
+        label.textContent = 'Added';
+        /* let the button settle for one frame, then hand off so the basket animates in cleanly */
+        requestAnimationFrame(function () {
+          setTimeout(function () {
+            document.documentElement.dispatchEvent(new CustomEvent('variant:add', { bubbles: true }));
+          }, 180);
+        });
+      }).catch(function () {
+        label.textContent = 'Try again';
+      }).then(function () {
+        setTimeout(function () {
+          btn.classList.remove('is-done', 'is-busy');
+          delete btn.dataset.snhBusy;
+          label.textContent = original;
+        }, 1800);
+      });
+    });
+  })();
+</script>

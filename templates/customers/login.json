@@ -1,0 +1,90 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-customers-login",
+      "blocks": {
+        "fields": {
+          "type": "fields",
+          "settings": {
+            "return_to": ""
+          }
+        }
+      },
+      "block_order": [
+        "fields"
+      ],
+      "settings": {
+        "background": "",
+        "text_color": "",
+        "button_background": "#fc6200",
+        "button_text_color": "#ffffff"
+      }
+    },
+    "faq_rgYHYt": {
+      "type": "faq",
+      "blocks": {
+        "item_UJVk8Y": {
+          "type": "item",
+          "settings": {
+            "title": "How long will it take to get my order?",
+            "content": "<p>It depends on your delivery address. </p><p>Colombo Orders: Same Day <br/>Out of Colombo Orders: 2-3 Working Days</p>"
+          }
+        },
+        "item_nqYfmx": {
+          "type": "item",
+          "settings": {
+            "title": "Where can I come visit physically?",
+            "content": "<p>We have two stores:</p><p>DEHIWALA & WATTALA </p><p>Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
+          }
+        },
+        "item_yfQpVF": {
+          "type": "item",
+          "settings": {
+            "title": "I want to know more",
+            "content": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 77 977 3359</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_UJVk8Y",
+        "item_nqYfmx",
+        "item_yfQpVF"
+      ],
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "FAQ",
+        "content": "<p>Our customer support is available</p><p>Everyday: 10am-7.00pm.</p>",
+        "team_avatar_width": 160,
+        "support_hours": "",
+        "answer_time": "",
+        "button_text": "CONTACT FOR MORE",
+        "button_url": "shopify://pages/delivery-and-shipping",
+        "text_position": "center",
+        "background": "#f0f0f0",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "button_background": "#fc6200",
+        "button_text_color": "",
+        "accordion_background": "",
+        "accordion_text_color": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq_rgYHYt"
+  ]
+}

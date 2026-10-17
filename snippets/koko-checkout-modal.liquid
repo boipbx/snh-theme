@@ -1,0 +1,989 @@
+{% comment %}
+  SNH checkout router v2 — Koko branded UI
+  Render this snippet once, immediately before </body> in layout/theme.liquid:
+  {% render 'koko-checkout-modal' %}
+
+  It catches:
+  - cart page Checkout buttons
+  - dynamically rendered cart-drawer / mini-cart Checkout buttons
+  - Shopify's unbranded product-page "Buy it now" button
+
+  Add to Cart is intentionally left untouched.
+
+  v2.1 — UI refresh only. The <script> block below is byte-identical to v2:
+  no worker URL, payload, interception, focus-trap or redirect logic was touched.
+{% endcomment %}
+
+<style>
+  #snh-pay-router {
+    --snh-pay-ink: #1a1512;
+    --snh-pay-ink-soft: #5c5350;
+    --snh-pay-warm: #fffaf7;
+    --snh-pay-surface: #ffffff;
+    --snh-pay-line: #e7ded7;
+    --snh-pay-line-strong: #d8cdc6;
+    --snh-pay-orange: #e0521c;
+    --snh-pay-orange-deep: #b23c11;
+    --snh-pay-orange-tint: #fdf2ec;
+    --koko-rose: #ffbcd9;
+    --koko-rose-soft: #fff4f9;
+    --koko-cyan: #00dad6;
+    --koko-blue: #021fa3;
+    --koko-blue-soft: #26317a;
+    --snh-pay-display: Archivo, var(--heading-font-family, var(--font-heading-family, sans-serif));
+    --snh-pay-sans: Inter, var(--text-font-family, var(--font-body-family, sans-serif));
+  }
+
+  html.snh-pay-lock,
+  html.snh-pay-lock body {
+    overflow: hidden !important;
+  }
+
+  #snh-pay-router[hidden] {
+    display: none !important;
+  }
+
+  #snh-pay-router {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483646;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(26, 19, 15, 0.58);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .snh-pay-dialog {
+    position: relative;
+    width: min(740px, 100%);
+    max-height: calc(100dvh - 48px);
+    overflow: auto;
+    background: var(--snh-pay-warm);
+    color: var(--snh-pay-ink);
+    border: 1px solid rgba(26, 21, 18, 0.14);
+    border-radius: 10px;
+    box-shadow: 0 18px 44px rgba(28, 18, 12, 0.20);
+    font-family: var(--snh-pay-sans);
+  }
+
+  .snh-pay-dialog *,
+  .snh-pay-dialog *::before,
+  .snh-pay-dialog *::after {
+    box-sizing: border-box;
+  }
+
+  /* Thin SNH rail — the modal reads as SNH, Koko lives inside its own card */
+  .snh-pay-brand-rail {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 4px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    overflow: hidden;
+    border-radius: 9px 9px 0 0;
+  }
+
+  .snh-pay-brand-rail span:nth-child(1) { background: var(--snh-pay-orange); }
+  .snh-pay-brand-rail span:nth-child(2) { background: var(--snh-pay-orange-deep); }
+
+  .snh-pay-dialog button,
+  .snh-pay-dialog h2 {
+    font-family: inherit;
+  }
+
+  .snh-pay-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 26px 28px 20px;
+    border-bottom: 1px solid var(--snh-pay-line);
+  }
+
+  .snh-pay-title {
+    margin: 0;
+    max-width: 15ch;
+    color: var(--snh-pay-ink);
+    font-family: var(--snh-pay-display);
+    font-size: clamp(24px, 3vw, 31px);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .snh-pay-close {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--snh-pay-line-strong);
+    border-radius: 8px;
+    background: var(--snh-pay-surface);
+    color: var(--snh-pay-ink-soft);
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+
+  .snh-pay-close:hover {
+    border-color: var(--snh-pay-orange);
+    background: var(--snh-pay-orange-tint);
+    color: var(--snh-pay-orange-deep);
+  }
+
+  .snh-pay-close:focus-visible {
+    outline: 2px solid var(--snh-pay-orange);
+    outline-offset: 2px;
+  }
+
+  .snh-pay-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .snh-pay-content {
+    padding: 22px 28px 12px;
+  }
+
+  .snh-pay-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  /* Rows are shared so both cards align line-for-line */
+  .snh-pay-option {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    row-gap: 10px;
+    min-height: 244px;
+    width: 100%;
+    overflow: hidden;
+    padding: 19px 19px 17px;
+    border: 1px solid var(--snh-pay-line-strong);
+    border-radius: 9px;
+    background: var(--snh-pay-surface);
+    color: var(--snh-pay-ink);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .snh-pay-option::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--snh-pay-orange);
+  }
+
+  .snh-pay-option:hover {
+    border-color: var(--snh-pay-orange);
+    box-shadow: 0 8px 20px rgba(35, 22, 16, 0.10);
+    transform: translateY(-2px);
+  }
+
+  .snh-pay-option:focus-visible {
+    outline: 2px solid var(--snh-pay-orange);
+    outline-offset: 2px;
+  }
+
+  .snh-pay-option--koko {
+    border-color: rgba(2, 31, 163, 0.28);
+    background: var(--koko-rose-soft);
+    color: var(--koko-blue);
+  }
+
+  .snh-pay-option--koko::before {
+    background: var(--koko-blue);
+  }
+
+  .snh-pay-option--koko:hover {
+    border-color: var(--koko-blue);
+    box-shadow: 0 8px 20px rgba(2, 31, 163, 0.12);
+  }
+
+  .snh-pay-option--koko:focus-visible {
+    outline-color: var(--koko-blue);
+  }
+
+  .snh-pay-option:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .snh-pay-mark {
+    min-height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .snh-pay-card-icon {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #e6d9d2;
+    border-radius: 7px;
+    background: #fff8f4;
+    color: var(--snh-pay-orange-deep);
+  }
+
+  .snh-pay-card-icon svg {
+    width: 29px;
+    height: 22px;
+  }
+
+  .snh-koko-logo {
+    display: block;
+    width: 100px;
+    height: auto;
+    max-height: 44px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .snh-pay-koko-pill {
+    flex: 0 0 auto;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--snh-pay-display);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .snh-pay-koko-pill {
+    border: 1px solid var(--koko-blue);
+    background: var(--koko-cyan);
+    color: var(--koko-blue);
+  }
+
+  .snh-pay-option-title {
+    display: block;
+    margin: 0;
+    font-family: var(--snh-pay-display);
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    text-wrap: pretty;
+  }
+
+  .snh-pay-option-copy {
+    display: block;
+    margin: 0;
+    align-self: start;
+    color: var(--snh-pay-ink-soft);
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .snh-pay-option--koko .snh-pay-option-copy {
+    color: var(--koko-blue-soft);
+  }
+
+  .snh-pay-option-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    padding-top: 13px;
+    border-top: 1px solid #ece2dc;
+    color: var(--snh-pay-orange-deep);
+    font-family: var(--snh-pay-display);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .snh-pay-option--koko .snh-pay-option-action {
+    border-top-color: rgba(2, 31, 163, 0.16);
+    color: var(--koko-blue);
+  }
+
+  .snh-pay-option-action svg {
+    flex: 0 0 auto;
+    width: 15px;
+    height: 15px;
+    transition: transform 160ms ease;
+  }
+
+  .snh-pay-option:hover .snh-pay-option-action svg {
+    transform: translateX(3px);
+  }
+
+  /* Space is reserved up front so status/error never resize the dialog */
+  .snh-pay-feedback {
+    display: grid;
+    align-content: start;
+    min-height: 56px;
+    padding-top: 14px;
+  }
+
+  .snh-pay-status,
+  .snh-pay-error {
+    margin: 0;
+    padding: 11px 13px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .snh-pay-status {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(2, 31, 163, 0.16);
+    background: var(--koko-rose-soft);
+    color: var(--koko-blue);
+  }
+
+  .snh-pay-status[data-active="true"] {
+    display: flex;
+  }
+
+  .snh-pay-spinner {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 15px;
+    border: 2px solid var(--koko-rose);
+    border-top-color: var(--koko-blue);
+    border-radius: 50%;
+    animation: snh-pay-spin 700ms linear infinite;
+  }
+
+  .snh-pay-error {
+    display: none;
+    border: 1px solid #e0aabc;
+    background: #fff2f6;
+    color: #8a1f45;
+  }
+
+  .snh-pay-error:not(:empty) {
+    display: block;
+  }
+
+  @keyframes snh-pay-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 640px) {
+    #snh-pay-router {
+      place-items: end center;
+      padding: 0;
+    }
+
+    .snh-pay-dialog {
+      width: 100%;
+      max-height: 92dvh;
+      border-right: 0;
+      border-bottom: 0;
+      border-left: 0;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .snh-pay-brand-rail {
+      border-radius: 9px 9px 0 0;
+    }
+
+    .snh-pay-header {
+      padding: 21px 18px 16px;
+      align-items: center;
+    }
+
+    .snh-pay-title {
+      max-width: 18ch;
+      font-size: 23px;
+    }
+
+    .snh-pay-content {
+      padding: 16px 18px 4px;
+    }
+
+    .snh-pay-options {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .snh-pay-option {
+      min-height: 0;
+      grid-template-columns: 106px minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        "mark title"
+        "mark copy"
+        "mark action";
+      column-gap: 14px;
+      row-gap: 6px;
+      padding: 16px;
+    }
+
+    .snh-pay-mark {
+      grid-area: mark;
+      align-self: start;
+      width: 100%;
+      min-height: 42px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .snh-pay-card-icon {
+      width: 50px;
+    }
+
+    .snh-koko-logo {
+      width: 94px;
+    }
+
+    .snh-pay-koko-pill {
+      display: none;
+    }
+
+    .snh-pay-option-title {
+      grid-area: title;
+      font-size: 17.5px;
+    }
+
+    .snh-pay-option-copy {
+      grid-area: copy;
+      font-size: 13px;
+    }
+
+    .snh-pay-option-action {
+      grid-area: action;
+      margin-top: 4px;
+      padding-top: 10px;
+    }
+
+    .snh-pay-feedback {
+      min-height: 52px;
+      padding-top: 12px;
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .snh-pay-option,
+    .snh-pay-close,
+    .snh-pay-option-action svg { transition: none; }
+    .snh-pay-option:hover { transform: none; }
+    .snh-pay-option:hover .snh-pay-option-action svg { transform: none; }
+    .snh-pay-spinner { animation-duration: 1400ms; }
+  }
+</style>
+
+<div id="snh-pay-router" hidden aria-hidden="true">
+  <section
+    class="snh-pay-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="snh-pay-title"
+  >
+    <div class="snh-pay-brand-rail" aria-hidden="true">
+      <span></span><span></span>
+    </div>
+
+    <header class="snh-pay-header">
+      <h2 id="snh-pay-title" class="snh-pay-title">How would you like to pay?</h2>
+
+      <button type="button" class="snh-pay-close" data-snh-pay-close aria-label="Close payment options">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="snh-pay-content">
+      <div class="snh-pay-options">
+        <button type="button" class="snh-pay-option snh-pay-option--regular" data-snh-pay-regular>
+          <span class="snh-pay-mark" aria-hidden="true">
+            <span class="snh-pay-card-icon">
+              <svg viewBox="0 0 32 24" fill="none">
+                <rect x="1" y="2" width="30" height="20" rx="2.5" fill="currentColor"/>
+                <path d="M1 7.5h30v4.5H1z" fill="#fff8f4"/>
+                <rect x="5" y="15.5" width="9" height="2.6" rx="1.3" fill="#fff8f4"/>
+              </svg>
+            </span>
+          </span>
+          <span class="snh-pay-option-title">Card, COD &amp; other methods</span>
+          <span class="snh-pay-option-copy">Credit/debit card, Cash on Delivery, bank deposit and gift voucher.</span>
+          <span class="snh-pay-option-action">
+            Continue
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h11M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+
+        <button type="button" class="snh-pay-option snh-pay-option--koko" data-snh-pay-koko>
+          <span class="snh-pay-mark" aria-hidden="true">
+            <img
+              class="snh-koko-logo"
+              src="https://paykoko.com/img/logo1.7ff549c0.png"
+              width="215"
+              height="98"
+              alt=""
+              decoding="async"
+            >
+          </span>
+          <span class="snh-pay-option-title">Koko - Pay in 3</span>
+          <span class="snh-pay-option-copy">Koko lets you split it. Final fee shown at checkout.</span>
+          <span class="snh-pay-koko-pill">Pay in 3</span>
+          <span class="snh-pay-option-action">
+            Continue with Koko
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h11M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="snh-pay-feedback">
+        <div class="snh-pay-status" data-snh-pay-status role="status" aria-live="polite">
+          <span class="snh-pay-spinner" aria-hidden="true"></span>
+          <span data-snh-pay-status-text>Preparing your Koko checkout…</span>
+        </div>
+
+        <div class="snh-pay-error" data-snh-pay-error role="alert"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function () {
+    'use strict';
+
+    if (window.__snhPayRouterV2Installed) return;
+    window.__snhPayRouterV2Installed = true;
+
+    var WORKER_URL = 'https://koko-fee-snh.raspy-wind-fe2d.workers.dev/';
+    var root = document.getElementById('snh-pay-router');
+    if (!root) return;
+
+    var dialog = root.querySelector('.snh-pay-dialog');
+    var closeButton = root.querySelector('[data-snh-pay-close]');
+    var regularButton = root.querySelector('[data-snh-pay-regular]');
+    var kokoButton = root.querySelector('[data-snh-pay-koko]');
+    var statusBox = root.querySelector('[data-snh-pay-status]');
+    var statusText = root.querySelector('[data-snh-pay-status-text]');
+    var errorBox = root.querySelector('[data-snh-pay-error]');
+
+    var pending = null;
+    var previousFocus = null;
+    var requestController = null;
+    var requestNumber = 0;
+    var bypassInterception = false;
+
+    function routeRoot() {
+      return window.Shopify && window.Shopify.routes && window.Shopify.routes.root
+        ? window.Shopify.routes.root
+        : '/';
+    }
+
+    function cartJsonUrl() {
+      return routeRoot().replace(/\/?$/, '/') + 'cart.js';
+    }
+
+    function elementLabel(element) {
+      var value = element && element.value ? element.value : '';
+      var text = element && element.textContent ? element.textContent : '';
+      return String(value || text).replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+
+    function checkoutHref(element) {
+      if (!element || element.tagName !== 'A') return false;
+      var href = element.getAttribute('href');
+      if (!href) return false;
+
+      try {
+        var url = new URL(href, window.location.origin);
+        return url.origin === window.location.origin && /\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?checkout\/?$/i.test(url.pathname);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function classifyControl(element) {
+      if (!element || !(element instanceof Element)) return null;
+      if (root.contains(element)) return null;
+
+      var isClickable = element.matches('button, input[type="submit"], input[type="button"], a, [role="button"]');
+      if (!isClickable) return null;
+
+      if (element.matches('[data-snh-checkout-trigger]')) {
+        return element.matches('[data-snh-product-buy-now]') ? 'product' : 'cart';
+      }
+
+      if (element.matches('.shopify-payment-button__button--unbranded')) return 'product';
+
+      var label = elementLabel(element);
+      if (label === 'buy it now' || label === 'buy now') return 'product';
+
+      if (
+        element.matches('button[name="checkout"], input[name="checkout"]') ||
+        checkoutHref(element) ||
+        label === 'checkout' ||
+        label === 'secure checkout'
+      ) {
+        return 'cart';
+      }
+
+      return null;
+    }
+
+    function controlFromEvent(event) {
+      var path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+      for (var index = 0; index < path.length; index += 1) {
+        var kind = classifyControl(path[index]);
+        if (kind) return { control: path[index], kind: kind, path: path };
+      }
+
+      var node = event.target;
+      while (node && node !== document) {
+        var fallbackKind = classifyControl(node);
+        if (fallbackKind) return { control: node, kind: fallbackKind, path: [] };
+        node = node.parentElement;
+      }
+      return null;
+    }
+
+    function setBusy(value, message) {
+      regularButton.disabled = Boolean(value);
+      kokoButton.disabled = Boolean(value);
+      statusBox.dataset.active = value ? 'true' : 'false';
+      if (message) statusText.textContent = message;
+    }
+
+    function showError(message) {
+      errorBox.textContent = message || '';
+    }
+
+    function cancelRequest() {
+      requestNumber += 1;
+      if (requestController) requestController.abort();
+      requestController = null;
+      setBusy(false);
+    }
+
+    function openRouter(action) {
+      cancelRequest();
+      pending = action;
+      previousFocus = document.activeElement;
+      showError('');
+      root.hidden = false;
+      root.setAttribute('aria-hidden', 'false');
+      document.documentElement.classList.add('snh-pay-lock');
+      window.requestAnimationFrame(function () {
+        regularButton.focus();
+      });
+    }
+
+    function closeRouter(options) {
+      var settings = options || {};
+      if (settings.abort !== false) cancelRequest();
+      root.hidden = true;
+      root.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('snh-pay-lock');
+      showError('');
+
+      if (settings.restoreFocus !== false && previousFocus && previousFocus.isConnected) {
+        previousFocus.focus();
+      }
+
+      if (settings.clearPending !== false) pending = null;
+    }
+
+    function hardReset() {
+      cancelRequest();
+      root.hidden = true;
+      root.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('snh-pay-lock');
+      showError('');
+      pending = null;
+      previousFocus = null;
+    }
+
+    function interceptClick(event) {
+      if (bypassInterception || root.contains(event.target)) return;
+
+      var action = controlFromEvent(event);
+      if (!action) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openRouter(action);
+    }
+
+    function interceptSubmit(event) {
+      if (bypassInterception || root.contains(event.target)) return;
+
+      var submitter = event.submitter;
+      var kind = submitter ? classifyControl(submitter) : null;
+      if (!kind && event.target && /\/cart\/?$/i.test(event.target.action || '')) kind = 'cart';
+      if (!kind) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openRouter({ control: submitter || null, form: event.target, kind: kind, path: [] });
+    }
+
+    document.addEventListener('click', interceptClick, true);
+    document.addEventListener('submit', interceptSubmit, true);
+
+    function resumeNativeCheckout() {
+      if (!pending) {
+        window.location.assign(routeRoot() + 'checkout');
+        return;
+      }
+
+      var action = pending;
+      closeRouter({ abort: true, restoreFocus: false, clearPending: false });
+      bypassInterception = true;
+
+      try {
+        if (action.control && action.control.isConnected && typeof action.control.click === 'function') {
+          action.control.click();
+        } else if (action.form && action.form.isConnected) {
+          if (typeof action.form.requestSubmit === 'function') action.form.requestSubmit();
+          else action.form.submit();
+        } else {
+          window.location.assign(routeRoot() + 'checkout');
+        }
+      } finally {
+        window.setTimeout(function () {
+          bypassInterception = false;
+          pending = null;
+        }, 0);
+      }
+    }
+
+    function productFormForAction(action) {
+      if (!action) return null;
+
+      if (action.form && /\/cart\/add/i.test(action.form.action || '')) return action.form;
+
+      if (Array.isArray(action.path)) {
+        for (var index = 0; index < action.path.length; index += 1) {
+          var item = action.path[index];
+          if (item instanceof HTMLFormElement && /\/cart\/add/i.test(item.action || '')) return item;
+        }
+      }
+
+      if (action.control) {
+        if (action.control.form && /\/cart\/add/i.test(action.control.form.action || '')) return action.control.form;
+        var closestForm = action.control.closest && action.control.closest('form[action*="/cart/add"]');
+        if (closestForm) return closestForm;
+      }
+
+      return null;
+    }
+
+    function productLine(action) {
+      var form = productFormForAction(action);
+      if (!form) throw new Error('The selected product could not be read. Please use Add to Cart, then checkout.');
+
+      var data = new FormData(form);
+      var variantId = String(data.get('id') || '').trim();
+      if (!/^\d+$/.test(variantId)) {
+        var idInput = form.querySelector('[name="id"]');
+        variantId = idInput ? String(idInput.value || '').trim() : '';
+      }
+      if (!/^\d+$/.test(variantId)) throw new Error('Please select a product option before checkout.');
+
+      var quantityValue = data.get('quantity');
+      if (!quantityValue) {
+        var productArea = form.closest('product-info, .shopify-section, [data-section-type*="product"], main');
+        var quantityInput = productArea && productArea.querySelector('[name="quantity"]');
+        quantityValue = quantityInput ? quantityInput.value : '1';
+      }
+
+      var quantity = Number.parseInt(String(quantityValue || '1'), 10);
+      if (!Number.isInteger(quantity) || quantity < 1) quantity = 1;
+
+      var properties = {};
+      data.forEach(function (value, key) {
+        var match = String(key).match(/^properties\[(.+)\]$/);
+        if (match && typeof value === 'string' && value !== '') properties[match[1]] = value;
+      });
+
+      var sellingPlan = data.get('selling_plan');
+      return {
+        id: variantId,
+        quantity: quantity,
+        properties: properties,
+        selling_plan: sellingPlan ? String(sellingPlan) : null
+      };
+    }
+
+    async function readCart() {
+      var response = await fetch(cartJsonUrl(), {
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) throw new Error('Your basket could not be read. Refresh the page and try again.');
+      return response.json();
+    }
+
+    async function payloadForAction(action) {
+      if (action && action.kind === 'product') {
+        var line = productLine(action);
+        var token = '';
+        try {
+          var currentCart = await readCart();
+          token = currentCart && currentCart.token ? String(currentCart.token) : '';
+        } catch (error) {
+          token = '';
+        }
+
+        return {
+          cartToken: 'buy-now:' + (token || window.location.pathname),
+          items: [line]
+        };
+      }
+
+      var cart = await readCart();
+      if (!Array.isArray(cart.items) || cart.items.length === 0) throw new Error('Your basket is empty.');
+
+      return {
+        cartToken: cart.token || '',
+        items: cart.items.map(function (item) {
+          return {
+            id: String(item.variant_id || item.id),
+            quantity: item.quantity,
+            properties: item.properties || {},
+            selling_plan_allocation: item.selling_plan_allocation || null
+          };
+        })
+      };
+    }
+
+    function friendlyWorkerError(code) {
+      var messages = {
+        origin_not_allowed: 'This storefront address is not yet allowed by the checkout service.',
+        variant_not_found: 'One product is no longer available. Refresh your basket and try again.',
+        fee_variant_not_found: 'The Koko fee product could not be found. Please contact us.',
+        duplicate_fee_variant: 'The Koko fee product needs an administrator check.',
+        subscriptions_not_supported: 'Koko checkout is not available for subscription products.',
+        bad_cart: 'Your basket could not be prepared for Koko checkout.',
+        draft_failed: 'Shopify could not prepare the Koko checkout. Please try again.'
+      };
+      return messages[code] || 'Koko checkout could not be prepared. Please try again.';
+    }
+
+    async function beginKokoCheckout() {
+      if (!pending) return;
+
+      var action = pending;
+      var currentRequest = requestNumber + 1;
+      requestNumber = currentRequest;
+      requestController = new AbortController();
+      setBusy(true, 'Preparing your Koko checkout…');
+      showError('');
+
+      try {
+        var payload = await payloadForAction(action);
+        if (currentRequest !== requestNumber) return;
+
+        var response = await fetch(WORKER_URL, {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'omit',
+          signal: requestController.signal,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        var result = await response.json().catch(function () { return {}; });
+        if (currentRequest !== requestNumber) return;
+        if (!response.ok || !result.url) throw new Error(friendlyWorkerError(result.error));
+
+        setBusy(true, 'Opening Shopify checkout…');
+        document.documentElement.classList.remove('snh-pay-lock');
+        window.location.assign(result.url);
+      } catch (error) {
+        if (error && error.name === 'AbortError') return;
+        if (currentRequest !== requestNumber) return;
+        console.error('SNH Koko checkout:', error);
+        showError(error && error.message ? error.message : friendlyWorkerError());
+        setBusy(false);
+        requestController = null;
+      }
+    }
+
+    regularButton.addEventListener('click', resumeNativeCheckout);
+    kokoButton.addEventListener('click', beginKokoCheckout);
+
+    closeButton.addEventListener('click', function () {
+      closeRouter({ abort: true });
+    });
+
+    root.addEventListener('click', function (event) {
+      if (event.target === root) closeRouter({ abort: true });
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (root.hidden) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeRouter({ abort: true });
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+      var focusable = Array.prototype.slice.call(
+        dialog.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled), [tabindex]:not([tabindex="-1"])')
+      );
+      if (!focusable.length) return;
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    window.addEventListener('pageshow', hardReset);
+    window.addEventListener('pagehide', function () {
+      document.documentElement.classList.remove('snh-pay-lock');
+    });
+  })();
+</script>
