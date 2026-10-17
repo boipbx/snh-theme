@@ -26,9 +26,6 @@
 
 
 <div id="{{ nid }}" class="snh-np" hidden
-     data-delay="{{ section.settings.delay_seconds | default: 2 }}"
-     data-max-shows="{{ section.settings.max_shows | default: 3 }}"
-     data-revisit-mins="{{ section.settings.revisit_mins | default: 30 }}"
      data-index-only="{{ section.settings.show_only_on_index | default: false }}"
      data-is-index="{% if request.page_type == 'index' %}1{% else %}0{% endif %}">
   <div class="snh-np__veil" data-np-close></div>
@@ -77,9 +74,10 @@
     <div class="snh-np__art">
       {%- assign clip = section.settings.media_url | default: 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/0907-ezgif.com-optiwebp.webp?v=1788855600' -%}
       {%- if clip != blank -%}
-        <img src="{{ clip }}" alt="" loading="eager" fetchpriority="high" decoding="async">
+        {%- comment -%}data-src: fetched only when the popup opens (DESIGN.md: never on first paint){%- endcomment -%}
+        <img data-np-src="{{ clip }}" alt="" decoding="async" width="500" height="625">
       {%- elsif img != blank -%}
-        <img src="{{ img | image_url: width: 1000 }}" alt="" loading="eager" fetchpriority="low">
+        <img data-np-src="{{ img | image_url: width: 1000 }}" alt="" decoding="async" width="500" height="625">
       {%- endif -%}
       {%- if section.settings.caption != blank -%}
         <span class="snh-np__caption">{{ section.settings.caption }}</span>
@@ -294,6 +292,10 @@
   var posted = {{ form.posted_successfully? | default: false | json }};
 
   function open() {
+    el.querySelectorAll('img[data-np-src]').forEach(function (img) {
+      img.src = img.getAttribute('data-np-src');
+      img.removeAttribute('data-np-src');
+    });
     el.hidden = false;
     requestAnimationFrame(function () { el.classList.add('is-open'); });
   }
@@ -320,32 +322,30 @@
   if (editor) { open(); return; }
 
   if (el.dataset.indexOnly === 'true' && el.dataset.isIndex !== '1') return;
-  var MAX = Number(el.dataset.maxShows) || 3;
-  var GAP = (Number(el.dataset.revisitMins) || 30) * 60000;
-  var V = KEY + ':v2';
+
+  /* DESIGN.md popup rule: once per visitor, after 12s or 50% scroll, never on first paint */
+  var SHOWN = 'snh-np:shown';
   try {
-    /* signed up — never again */
-    if (localStorage.getItem('theme:popup-filled') === 'true') return;
+    if (localStorage.getItem('theme:popup-filled') === 'true') return; /* signed up — never again */
+    if (localStorage.getItem(SHOWN)) return;                         /* already seen once */
+  } catch (e) { return; }
 
-    var last = Number(localStorage.getItem(V + ':last') || 0);
-    var fresh = !sessionStorage.getItem(V + ':session');
-    var lapsed = last > 0 && (Date.now() - last) > GAP;
-
-    /* a visit is a new tab session, or a return after the revisit gap.
-       Scrolling and moving between pages are neither, so it never
-       re-triggers mid-browse. */
-    if (!fresh && !lapsed) return;
-
-    var seen = Number(localStorage.getItem(V + ':count') || 0);
-    if (seen >= MAX) return;
-
-    sessionStorage.setItem(V + ':session', '1');
-    localStorage.setItem(V + ':count', String(seen + 1));
-    localStorage.setItem(V + ':last', String(Date.now()));
-  } catch (e) {}
-
-  var wait = Number(el.dataset.delay);
-  setTimeout(open, (isNaN(wait) ? 2 : wait) * 1000);
+  var fired = false;
+  function trigger() {
+    if (fired) return;
+    fired = true;
+    clearTimeout(timer);
+    window.removeEventListener('scroll', onScroll);
+    try { localStorage.setItem(SHOWN, String(Date.now())); } catch (e) {}
+    open();
+  }
+  function onScroll() {
+    var doc = document.documentElement;
+    var depth = (window.scrollY + window.innerHeight) / Math.max(doc.scrollHeight, 1);
+    if (depth >= 0.5) trigger();
+  }
+  var timer = setTimeout(trigger, 12000);
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();
 </script>
 
@@ -379,9 +379,6 @@
     { "type": "inline_richtext", "id": "fine", "label": "Small print", "default": "One use per customer. Unsubscribe any time." },
     { "type": "checkbox", "id": "ask_name", "label": "Also ask for a first name", "default": false },
     { "type": "header", "content": "Behaviour" },
-    { "type": "range", "id": "delay_seconds", "min": 0, "max": 20, "step": 1, "unit": "sec", "label": "Delay until it appears", "default": 2 },
-    { "type": "range", "id": "max_shows", "min": 1, "max": 5, "step": 1, "label": "Show on at most this many visits", "default": 3 },
-    { "type": "range", "id": "revisit_mins", "min": 5, "max": 240, "step": 5, "unit": "min", "label": "Counts as a new visit after", "default": 30, "info": "Returning after this long shows it again, up to the visit limit. Scrolling or moving between pages never re-triggers it." },
     { "type": "checkbox", "id": "show_only_on_index", "label": "Show only on home page", "default": false },
     { "type": "checkbox", "id": "show_only_for_visitors", "label": "Hide from logged-in customers", "default": true },
     { "type": "checkbox", "id": "show_only_once", "label": "Show once per visitor", "default": true }

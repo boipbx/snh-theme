@@ -347,12 +347,26 @@
     });
   }
 
-  fetchIG()
-    .then(render)
-    .catch(err => {
-      console.warn('IG feed error:', err);
-      root.querySelector('.ig-fallback').hidden = false;
-    });
+  function start(){
+    fetchIG()
+      .then(render)
+      .catch(err => {
+        console.warn('IG feed error:', err);
+        root.querySelector('.ig-fallback').hidden = false;
+      });
+  }
+
+  /* the feed sits low on the page: call the API only when it is about to scroll into view */
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      if (!entries.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      start();
+    }, { rootMargin: '600px 0px' });
+    io.observe(root);
+  } else {
+    start();
+  }
 })();
 </script>
 

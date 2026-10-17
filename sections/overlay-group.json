@@ -23,9 +23,6 @@
         "button_text": "Subscribe",
         "fine": "One use per customer. Unsubscribe any time.",
         "ask_name": false,
-        "delay_seconds": 1,
-        "max_shows": 3,
-        "revisit_mins": 30,
         "show_only_on_index": true,
         "show_only_for_visitors": true,
         "show_only_once": true
