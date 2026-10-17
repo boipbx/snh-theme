@@ -36,7 +36,7 @@
       background:
         radial-gradient(circle at 12% 22%, rgba(255, 137, 55, 0.32), transparent 22%),
         radial-gradient(circle at 86% 74%, rgba(255, 90, 0, 0.20), transparent 24%),
-        {{ section.settings.background_gradient | default: 'linear-gradient(108deg, #110a08 0%, #2b1008 38%, #cf3c08 76%, #ff6a00 100%)' }};
+        {{ section.settings.background_gradient | default: 'linear-gradient(108deg, #110a08 0%, #2b1008 38%, #cf3c08 76%, var(--snh-accent) 100%)' }};
       border-block: 1px solid rgba(255, 255, 255, 0.09);
     }
 
@@ -65,7 +65,7 @@
       margin: 0;
       color: rgba(255, 255, 255, 0.72);
       font-size: 10px;
-      font-weight: 900;
+      font-weight: 800;
       letter-spacing: 0.2em;
       line-height: 1;
       text-transform: uppercase;
@@ -105,7 +105,7 @@
       color: var(--snh-marquee-text);
       font-family: Arial Black, Arial, Helvetica, sans-serif;
       font-size: var(--snh-marquee-size);
-      font-weight: 900;
+      font-weight: 800;
       line-height: 0.95;
       letter-spacing: -0.052em;
       text-transform: uppercase;

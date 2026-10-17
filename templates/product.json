@@ -102,7 +102,7 @@
             "show_gift_card_recipient": true,
             "atc_button_background": "#1a1a1a",
             "atc_button_text_color": "#ffffff",
-            "payment_button_background": "#fc6200",
+            "payment_button_background": "#e0521c",
             "payment_button_text_color": "#ffffff"
           }
         },
@@ -223,7 +223,7 @@
         "background": "rgba(0,0,0,0)",
         "background_gradient": "",
         "text_color": "#1a1a1a",
-        "input_background": "#f28c28",
+        "input_background": "#ffffff",
         "input_text_color": "#000000"
       }
     },
@@ -374,7 +374,7 @@
         "background": "#f3f3f2",
         "panel_background": "#ffffff",
         "text_color": "#171717",
-        "accent_color": "#ff5a00"
+        "accent_color": "#e0521c"
       }
     }
   },

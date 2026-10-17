@@ -585,7 +585,7 @@
       "name": "Why choose us (SNH Modern)",
       "settings": {
         "heading": "WHY CHOOSE US?",
-        "heading_color": "#ff6a00",
+        "heading_color": "#e0521c",
         "subheading": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
         "stat_1_value": "50,000+",
         "stat_1_label": "Orders delivered",
@@ -595,7 +595,7 @@
         "stat_3_label": "",
         "bg": "#f0f0f0",
         "card_bg": "#0e0e0f",
-        "accent": "#ff6a00"
+        "accent": "#e0521c"
       }
     },
     "text_with_icons_x8kUc3": {
@@ -627,7 +627,7 @@
             "button": "View",
             "button_url": "shopify://collections/whey-protein",
             "content_bg_color": "#1a1a1a",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_xQBdPV": {
@@ -640,7 +640,7 @@
             "button": "View",
             "button_url": "shopify://collections/creatine",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_JNFk6Q": {
@@ -653,7 +653,7 @@
             "button": "View",
             "button_url": "shopify://collections/herbs-natural-solution",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_Ny83Tp": {
@@ -666,7 +666,7 @@
             "button": "View",
             "button_url": "shopify://collections/vitamins-minerals",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_HYxyJk": {
@@ -679,7 +679,7 @@
             "button": "View",
             "button_url": "shopify://collections/collagen",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_DUrJj4": {
@@ -692,7 +692,7 @@
             "button": "View",
             "button_url": "shopify://collections/protein-bars-snacks",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_iwQ6DD": {
@@ -705,7 +705,7 @@
             "button": "View",
             "button_url": "shopify://collections/pre-workout-1",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_TfwpTr": {
@@ -718,7 +718,7 @@
             "button": "View",
             "button_url": "shopify://collections/mass-gainers",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_NwEqrh": {
@@ -731,7 +731,7 @@
             "button": "View",
             "button_url": "shopify://collections/fat-burners-1",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         },
         "slide_VY9pba": {
@@ -744,7 +744,7 @@
             "button": "View",
             "button_url": "shopify://collections/shakers",
             "content_bg_color": "#121212",
-            "accent_color": "#ff6b00"
+            "accent_color": "#e0521c"
           }
         }
       },
@@ -775,8 +775,8 @@
         "default_button_label": "View",
         "background_color": "#14100e",
         "background_color_2": "#f47a21",
-        "accent_color": "#ff6b00",
-        "accent_dark_color": "#a43d00",
+        "accent_color": "#e0521c",
+        "accent_dark_color": "#ce4b1a",
         "lazy": true
       }
     },
@@ -1148,7 +1148,7 @@
         "loyalty_label": "Earn loyalty points",
         "image_position": "center",
         "text_color": "",
-        "accent_color": "#ff5a00"
+        "accent_color": "#e0521c"
       }
     },
     "17249238673e5621c3": {
@@ -1290,7 +1290,7 @@
         "show_date": true,
         "new_tab": true,
         "cache_mins": 60,
-        "accent": "#ff6a00",
+        "accent": "#e0521c",
         "bg": "#f0f0f0",
         "heading_color": "#141414",
         "card": "#151515",

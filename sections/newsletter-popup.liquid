@@ -24,8 +24,6 @@
   assign img = section.settings.image
 -%}
 
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 
 <div id="{{ nid }}" class="snh-np" hidden
      data-delay="{{ section.settings.delay_seconds | default: 2 }}"
@@ -99,7 +97,7 @@
     display: grid;
     place-items: center;
     padding: 16px;
-    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    font-family: var(--snh-font-body);
     opacity: 0;
     pointer-events: none;
     transition: opacity .3s cubic-bezier(.22,1,.36,1);
@@ -137,13 +135,13 @@
     gap: 12px;
     padding: clamp(30px, 3.8vw, 52px);
     overflow-y: auto;
-    color: #17130f;
+    color: var(--snh-ink);
   }
   #{{ nid }} .snh-np__form { display: grid; gap: 11px; margin: 0; }
   #{{ nid }} .snh-np__ok { margin: 0; color: #1a8f47; font-size: .95rem; font-weight: 800; }
 
   #{{ nid }} .snh-np__kicker {
-    color: #e0521c;
+    color: var(--snh-accent);
     font-size: .74rem;
     font-weight: 800;
     letter-spacing: .04em;
@@ -151,7 +149,7 @@
   }
   #{{ nid }} .snh-np__title {
     margin: 0;
-    color: #17130f;
+    color: var(--snh-ink);
     font-size: clamp(1.7rem, 2.8vw, 2.25rem);
     font-weight: 700;
     line-height: 1.12;
@@ -166,7 +164,7 @@
     font-weight: 500;
   }
   #{{ nid }} .snh-np__sub strong,
-  #{{ nid }} .snh-np__sub b { color: #17130f; font-weight: 800; }
+  #{{ nid }} .snh-np__sub b { color: var(--snh-ink); font-weight: 800; }
 
   #{{ nid }} .snh-np__form input[type="text"],
   #{{ nid }} .snh-np__form input[type="email"] {
@@ -176,33 +174,17 @@
     border: 1px solid rgba(23, 19, 15, .2);
     border-radius: 10px;
     background: #fff;
-    color: #17130f;
+    color: var(--snh-ink);
     font-family: inherit;
     font-size: .95rem;
     font-weight: 500;
     transition: border-color .2s ease;
   }
-  #{{ nid }} .snh-np__form input:focus { outline: 0; border-color: #17130f; }
+  #{{ nid }} .snh-np__form input:focus { outline: 0; border-color: var(--snh-ink); }
   #{{ nid }} .snh-np__form input::placeholder { color: rgba(23, 19, 15, .42); }
 
-  #{{ nid }} .snh-np__go {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-block-size: 54px;
-    border: 0;
-    border-radius: 10px;
-    background: #17130f;
-    color: #fff;
-    font-family: inherit;
-    font-size: .95rem;
-    font-weight: 800;
-    letter-spacing: -.01em;
-    cursor: pointer;
-    transition: background .2s ease;
-  }
-  #{{ nid }} .snh-np__go:hover { background: #e0521c; }
+  #{{ nid }} .snh-np__go { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.2; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); display: flex; width: 100%; }
+  #{{ nid }} .snh-np__go:hover { filter: brightness(.92); transform: translateY(-1px); box-shadow: none; }
 
   #{{ nid }} .snh-np__err { margin: 0; color: #c02a1b; font-size: .82rem; font-weight: 600; }
   #{{ nid }} .snh-np__fine {
@@ -235,13 +217,13 @@
     background: rgba(224, 82, 28, .06);
     cursor: pointer;
   }
-  #{{ nid }} .snh-np__code span { color: #17130f; font-size: 1.15rem; font-weight: 900; letter-spacing: .08em; }
-  #{{ nid }} .snh-np__code em { color: #e0521c; font-size: .78rem; font-style: normal; font-weight: 800; }
+  #{{ nid }} .snh-np__code span { color: var(--snh-ink); font-size: 1.15rem; font-weight: 800; letter-spacing: .08em; }
+  #{{ nid }} .snh-np__code em { color: var(--snh-accent); font-size: .78rem; font-style: normal; font-weight: 800; }
 
   #{{ nid }} .snh-np__art {
     position: relative;
     aspect-ratio: 4 / 5;
-    background: #17130f;
+    background: var(--snh-ink);
     overflow: hidden;
   }
   #{{ nid }} .snh-np__art img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
@@ -271,7 +253,7 @@
     border: 0;
     border-radius: 50%;
     background: rgba(255, 255, 255, .92);
-    color: #17130f;
+    color: var(--snh-ink);
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
     transition: background .2s ease, transform .2s ease;

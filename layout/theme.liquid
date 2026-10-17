@@ -73,6 +73,8 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {{ content_for_header }}
 
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
+    {{- 'snh-design-system.css' | asset_url | stylesheet_tag: preload: true -}}
+    <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
   </head>
 
   <body class="{% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">

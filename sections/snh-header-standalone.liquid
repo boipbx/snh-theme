@@ -168,7 +168,7 @@ SNH Header (standalone, self-contained)
     .snhx-utility__nav { display:flex; gap:16px; justify-content:flex-end; padding:6px 0; }
     .snhx-utility__link { color:#4b4b4b; text-decoration:none; }
     /* Row 1: logo bar */
-    .snhx-logo-bar { background:#fe6002; }
+    .snhx-logo-bar { background:var(--snh-accent); }
     .snhx-logo__wrap { min-height:60px; display:flex; align-items:center; }
     .snhx-logo { position:relative; display:inline-block; height:44px; }
     .snhx-logo__img { position:absolute; inset:0; display:flex; align-items:center; }
@@ -179,7 +179,7 @@ SNH Header (standalone, self-contained)
     /* Row 2: split band */
     .snhx-band { display:grid; grid-template-columns:1fr 1fr; }
     .snhx-band__half { min-height:56px; display:flex; align-items:center; justify-content:center; color:#fff; }
-    .snhx-band__half--supp { background:#fe6002; }
+    .snhx-band__half--supp { background:var(--snh-accent); }
     .snhx-band__half--health { background:#af77bf; }
     .snhx-band__inner { display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center; width:100%; max-width:1280px; padding:0 20px; }
     .snhx-primary__btn { background:none; border:0; color:#fff; font-weight:800; cursor:pointer; }
@@ -193,7 +193,7 @@ SNH Header (standalone, self-contained)
     .snhx-mega { position:absolute; left:0; right:0; top:100%; transform:translateY(10px); opacity:0; pointer-events:none; z-index:60; }
     .snhx-mega[aria-hidden="false"] { opacity:1; pointer-events:auto; transform:none; }
     .snhx-mega__inner { background:#fff; box-shadow:0 20px 40px rgba(0,0,0,.12); border-top:4px solid transparent; padding:24px 0; }
-    .snhx-mega__inner--supp { border-top-color:#fe6002; }
+    .snhx-mega__inner--supp { border-top-color:var(--snh-accent); }
     .snhx-mega__inner--health { border-top-color:#af77bf; }
     .snhx-mega__cols { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; max-width:1280px; margin:0 auto; padding:0 20px; }
     .snhx-mega__heading { margin:0 0 10px; font-weight:800; }

@@ -1,0 +1,338 @@
+/* ==========================================================================
+   SNH Design System — see DESIGN.md
+   Loaded once from layout/theme.liquid, after theme.css.
+   Tokens → base type → buttons → inputs → product card → motion.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --snh-ink: #0E0E0E;
+  --snh-canvas: #F6F4F1;
+  --snh-surface: #FFFFFF;
+  --snh-soft: #ECE8E2;
+  --snh-line: rgba(14, 14, 14, .10);
+  --snh-muted: #6B6660;
+  --snh-accent: #E0521C;
+  --snh-accent-hover: #CE4B1A; /* accent darkened 8% */
+  --snh-success: #2FA866;
+
+  --snh-font-display: var(--heading-font-family, Archivo, sans-serif);
+  --snh-font-body: var(--text-font-family, Inter, sans-serif);
+
+  --snh-ease: cubic-bezier(.22, 1, .36, 1);
+  --snh-dur: 200ms;
+  --snh-dur-reveal: 500ms;
+  --snh-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+
+  --snh-radius-button: 12px;
+  --snh-radius-input: 12px;
+  --snh-radius-card: 20px;
+  --snh-radius-tile: 16px;
+  --snh-radius-pill: 999px;
+
+  --snh-space-1: 4px;  --snh-space-2: 8px;  --snh-space-3: 12px; --snh-space-4: 16px;
+  --snh-space-5: 24px; --snh-space-6: 32px; --snh-space-7: 48px; --snh-space-8: 64px;
+  --snh-space-9: 96px; --snh-space-10: 128px;
+
+  --snh-section-pad: 56px;
+  --snh-gutter: 20px;
+  --snh-max: 1320px;
+  --snh-btn-h: 48px;
+
+  /* type scale (mobile first) */
+  --snh-fs-display: 48px;
+  --snh-fs-h1: 40px;
+  --snh-fs-h2: 30px;
+  --snh-fs-h3: 20px;
+  --snh-fs-body: 16px;
+  --snh-fs-small: 13px;
+  --snh-fs-eyebrow: 12px;
+
+  /* map onto Impact's own variables so every stock section follows the scale */
+  --text-h0: var(--snh-fs-display);
+  --text-h1: var(--snh-fs-h1);
+  --text-h2: var(--snh-fs-h2);
+  --text-h3: var(--snh-fs-h3);
+  --container-gutter: var(--snh-gutter);
+  --section-outer-spacing-block: var(--snh-section-pad);
+  --rounded-button: var(--snh-radius-button);
+  --rounded-input: var(--snh-radius-input);
+}
+
+@media screen and (min-width: 1000px) {
+  :root {
+    --snh-fs-display: 96px;
+    --snh-fs-h1: 64px;
+    --snh-fs-h2: 44px;
+    --snh-fs-h3: 24px;
+    --snh-section-pad: 96px;
+    --snh-gutter: 40px;
+    --text-h0: var(--snh-fs-display);
+    --text-h1: var(--snh-fs-h1);
+    --text-h2: var(--snh-fs-h2);
+    --text-h3: var(--snh-fs-h3);
+    --container-gutter: var(--snh-gutter);
+    --section-outer-spacing-block: var(--snh-section-pad);
+  }
+}
+
+/* ---------- 2. Base typography ---------- */
+body {
+  background: var(--snh-canvas);
+  color: var(--snh-ink);
+  font-family: var(--snh-font-body);
+  font-size: var(--snh-fs-body);
+  line-height: 1.55;
+}
+
+:is(h1, h2, h3, h4, h5, h6, .h0, .h1, .h2, .h3, .h4, .h5, .h6) {
+  font-family: var(--snh-font-display);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.snh-display { font: 800 var(--snh-fs-display)/0.95 var(--snh-font-display); letter-spacing: -0.03em; text-transform: uppercase; margin: 0; }
+.snh-h1 { font: 800 var(--snh-fs-h1)/0.98 var(--snh-font-display); letter-spacing: -0.03em; margin: 0; }
+.snh-h2 { font: 800 var(--snh-fs-h2)/1 var(--snh-font-display); letter-spacing: -0.03em; margin: 0; }
+.snh-h3 { font: 700 var(--snh-fs-h3)/1.05 var(--snh-font-display); letter-spacing: -0.03em; margin: 0; }
+.snh-body { font: 400 var(--snh-fs-body)/1.55 var(--snh-font-body); }
+.snh-small { font: 400 var(--snh-fs-small)/1.45 var(--snh-font-body); color: var(--snh-muted); }
+.snh-eyebrow {
+  display: inline-block;
+  font: 600 var(--snh-fs-eyebrow)/1.2 var(--snh-font-body);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--snh-muted);
+}
+.snh-eyebrow--accent { color: var(--snh-accent); }
+
+/* layout helpers */
+.snh-container { width: 100%; max-width: calc(var(--snh-max) + var(--snh-gutter) * 2); margin-inline: auto; padding-inline: var(--snh-gutter); }
+.snh-section { padding-block: var(--snh-section-pad); }
+
+/* ---------- 3. Buttons — one system ---------- */
+.button, .btn,
+.snh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: var(--snh-radius-button);
+  font-family: var(--snh-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--snh-dur) var(--snh-ease), color var(--snh-dur) var(--snh-ease),
+              filter var(--snh-dur) var(--snh-ease), transform var(--snh-dur) var(--snh-ease),
+              box-shadow var(--snh-dur) var(--snh-ease);
+}
+@media screen and (min-width: 700px) {
+  :root { --snh-btn-h: 52px; }
+}
+.button, .btn, .snh-btn { min-height: var(--snh-btn-h); }
+.button:not(.button--outline):not([disabled]):hover,
+.btn:not([disabled]):hover,
+.snh-btn:not(.snh-btn--outline):not(.snh-btn--link):not([disabled]):hover {
+  filter: brightness(.92);
+  transform: translateY(-1px);
+}
+.button--sm { min-height: 40px; padding: 0 20px; font-size: 14px; }
+
+.snh-btn { border: 0; }
+.snh-btn--primary { background: var(--snh-accent); color: #fff; }
+.snh-btn--secondary { background: var(--snh-ink); color: #fff; }
+.snh-btn--outline,
+.button--outline {
+  background: transparent;
+  color: var(--snh-ink);
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.snh-btn--outline:hover,
+.button--outline:hover { background: var(--snh-ink); color: #fff; transform: translateY(-1px); }
+.snh-btn--on-dark.snh-btn--outline { color: #fff; }
+.snh-btn--on-dark.snh-btn--outline:hover { background: #fff; color: var(--snh-ink); }
+.snh-btn--link {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  color: var(--snh-ink);
+  text-underline-offset: 4px;
+}
+.snh-btn--link:hover { text-decoration: underline; }
+.snh-btn:focus-visible, .button:focus-visible { outline: 2px solid var(--snh-accent); outline-offset: 3px; }
+
+/* ---------- 4. Inputs ---------- */
+.input, .textarea, .select,
+input[type="email"], input[type="text"], input[type="search"], input[type="tel"], input[type="password"], textarea, select {
+  border-radius: var(--snh-radius-input);
+}
+
+/* ---------- 5. Product card ---------- */
+.snh-pc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  padding: 8px 8px 16px;
+  border-radius: var(--snh-radius-card);
+  background: var(--snh-surface);
+  color: var(--snh-ink);
+  font-family: var(--snh-font-body);
+  transition: box-shadow 300ms var(--snh-ease);
+}
+.snh-pc:hover { box-shadow: var(--snh-shadow); }
+.snh-pc--out { opacity: .72; }
+
+.snh-pc__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--snh-radius-tile);
+  background: var(--snh-soft);
+}
+.snh-pc__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10%;
+  object-fit: contain;
+  mix-blend-mode: multiply; /* white product shots sit on the soft tile */
+  transition: transform 300ms var(--snh-ease);
+}
+.snh-pc:hover .snh-pc__media img { transform: scale(1.03); }
+
+.snh-pc__badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: calc(100% - 24px);
+  pointer-events: none;
+}
+.snh-pc__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: var(--snh-radius-pill);
+  background: var(--snh-ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+.snh-pc__badge--sale { background: var(--snh-accent); }
+.snh-pc__badge--soldout { background: var(--snh-muted); }
+
+.snh-pc__add {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--snh-radius-pill);
+  background: var(--snh-ink);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--snh-dur) var(--snh-ease), transform var(--snh-dur) var(--snh-ease), opacity var(--snh-dur) var(--snh-ease);
+}
+.snh-pc__add svg { width: 18px; height: 18px; }
+.snh-pc__add:hover { background: var(--snh-accent); transform: translateY(-1px); }
+.snh-pc__add.is-busy { opacity: .6; }
+.snh-pc__add.is-done { background: var(--snh-success); }
+@media (hover: hover) and (min-width: 1000px) {
+  .snh-pc__add { opacity: 0; transform: translateY(4px); }
+  .snh-pc:hover .snh-pc__add,
+  .snh-pc:focus-within .snh-pc__add { opacity: 1; transform: none; }
+}
+
+.snh-pc__body { display: flex; flex-direction: column; flex: 1; gap: 6px; padding: 14px 8px 0; }
+.snh-pc__brand { margin: 0; }
+.snh-pc__link { color: inherit; text-decoration: none; }
+.snh-pc__title {
+  margin: 0;
+  font-family: var(--snh-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.005em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.snh-pc__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: auto; padding-top: 6px; }
+.snh-pc__price { font-size: 15px; font-weight: 600; white-space: nowrap; }
+.snh-pc__price--sale { color: var(--snh-accent); }
+.snh-pc__was { font-size: 13px; font-weight: 400; color: var(--snh-muted); }
+.snh-pc__chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 9px;
+  border-radius: var(--snh-radius-pill);
+  background: var(--snh-soft);
+  color: var(--snh-ink);
+  font-size: 12px;
+  font-weight: 500;
+}
+.snh-pc__koko { margin: 0; font-size: 13px; color: var(--snh-muted); }
+
+/* collection grid: two columns on phones, cards fill their cell */
+.product-list > * { min-width: 0; }
+@media screen and (max-width: 699px) {
+  .shopify-section--main-collection .product-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .snh-pc { padding: 6px 6px 12px; border-radius: var(--snh-radius-tile); }
+  .snh-pc__media { border-radius: 12px; }
+  .snh-pc__body { padding: 10px 4px 0; }
+  .snh-pc__title { font-size: 14px; }
+  .snh-pc__add { width: 34px; height: 34px; right: 8px; bottom: 8px; }
+  .snh-pc__badges { top: 8px; left: 8px; }
+}
+
+/* sold-out products sort last (CSS order, no DOM moves) */
+.product-list > *:has(.snh-pc--out) { order: 90; }
+
+/* cards paint immediately instead of Impact's staggered reveal */
+.product-list > *,
+.product-list > * > [class*="reveal" i] {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+reveal-items { display: contents; }
+
+/* ---------- 6. Motion ---------- */
+.snh-js .snh-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--snh-dur-reveal) var(--snh-ease), transform var(--snh-dur-reveal) var(--snh-ease);
+}
+.snh-js .snh-reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .snh-js .snh-reveal { opacity: 1; transform: none; }
+}

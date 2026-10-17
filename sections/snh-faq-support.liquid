@@ -86,7 +86,7 @@
     color: var(--faq-orange);
     font-size: 12px;
     line-height: 1;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.34em;
     text-transform: uppercase;
   }
@@ -115,31 +115,9 @@
     margin: 0 0 8px;
   }
 
-  #shopify-section-{{ section.id }} .snh-faq__cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-height: 52px;
-    margin-block-start: 28px;
-    padding: 0 24px;
-    border-radius: 12px;
-    background: var(--faq-orange);
-    color: #fff;
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 1;
-    font-weight: 950;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    box-shadow: 0 16px 34px rgba(255, 90, 0, 0.18);
-    transition: transform 180ms ease, box-shadow 180ms ease;
-  }
+  #shopify-section-{{ section.id }} .snh-faq__cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.2; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); margin-block-start: 28px; }
 
-  #shopify-section-{{ section.id }} .snh-faq__cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 44px rgba(255, 90, 0, 0.24);
-  }
+  #shopify-section-{{ section.id }} .snh-faq__cta:hover { filter: brightness(.92); transform: translateY(-1px); box-shadow: none; }
 
   #shopify-section-{{ section.id }} .snh-faq__cta svg {
     width: 18px;
@@ -181,7 +159,7 @@
     color: var(--faq-text);
     font-size: clamp(17px, 1.1vw, 21px);
     line-height: 1.22;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -0.035em;
   }
 
@@ -213,7 +191,7 @@
   }
 
   #shopify-section-{{ section.id }} .snh-faq-item[open] .snh-faq-item__icon {
-    background: #171717;
+    background: var(--snh-ink);
     color: #fff;
     transform: rotate(180deg);
   }

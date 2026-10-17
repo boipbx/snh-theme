@@ -13,8 +13,6 @@
   of its own, so every card change lands here automatically.
 {%- endcomment -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">
 
 {%- liquid
   assign mode = section.settings.mode | default: 'new'
@@ -124,14 +122,14 @@
 <style>
   #snh-wn-{{ section.id }}, #snh-wn-{{ section.id }} * { box-sizing: border-box; }
   #snh-wn-{{ section.id }} {
-    --wn-orange: #e0521c;
-    --wn-ink: #17130f;
-    --wn-muted: #736657;
+    --wn-orange: var(--snh-accent);
+    --wn-ink: var(--snh-ink);
+    --wn-muted: var(--snh-muted);
     --wn-line: #e7e0d6;
     display: block;
     overflow-x: clip;
     background: {{ section.settings.background | default: '#ffffff' }};
-    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    font-family: var(--snh-font-body);
     color: var(--wn-ink);
   }
   #snh-wn-{{ section.id }} .snh-wn__inner {
@@ -157,9 +155,9 @@
   }
   #snh-wn-{{ section.id }} .snh-wn__title {
     margin: 0;
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: clamp(30px, 4.2vw, 58px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -.035em;
     line-height: .95;
     text-transform: uppercase;

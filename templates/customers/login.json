@@ -14,7 +14,7 @@
       "settings": {
         "background": "",
         "text_color": "",
-        "button_background": "#fc6200",
+        "button_background": "#e0521c",
         "button_text_color": "#ffffff"
       }
     },
@@ -65,7 +65,7 @@
         "text_color": "",
         "heading_color": "",
         "heading_gradient": "",
-        "button_background": "#fc6200",
+        "button_background": "#e0521c",
         "button_text_color": "",
         "accordion_background": "",
         "accordion_text_color": ""

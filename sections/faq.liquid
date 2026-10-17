@@ -9,9 +9,6 @@
   - Blocks-driven with SNH defaults preloaded; FAQPage JSON-LD kept for SEO
 {%- endcomment -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
 
 <style>
   #shopify-section-{{ section.id }} {
@@ -57,9 +54,9 @@
   #shopify-section-{{ section.id }} .snh-faq__title {
     margin: 0;
     color: var(--faq-ink);
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: clamp(28px, 3.4vw, 46px);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 0.98;
     letter-spacing: -0.03em;
     text-transform: uppercase;
@@ -115,28 +112,8 @@
     -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 99%);
     mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 99%);
   }
-  #shopify-section-{{ section.id }} .snh-faq__card-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    min-height: 44px;
-    padding: 0 16px;
-    border-radius: 6px;
-    background: var(--faq-orange);
-    color: #ffffff;
-    font-family: 'Archivo', Arial, sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background-color 180ms ease, transform 180ms ease;
-  }
-  #shopify-section-{{ section.id }} .snh-faq__card-btn:hover {
-    background: #b23c11;
-    transform: translateY(-2px);
-  }
+  #shopify-section-{{ section.id }} .snh-faq__card-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.2; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); }
+  #shopify-section-{{ section.id }} .snh-faq__card-btn:hover { filter: brightness(.92); transform: translateY(-1px); box-shadow: none; }
   #shopify-section-{{ section.id }} .snh-faq__card-btn svg { width: 15px; height: 15px; flex: 0 0 auto; }
 
   /* ---------- accordion ---------- */
@@ -172,7 +149,7 @@
     cursor: pointer;
     text-align: left;
     color: var(--faq-ink);
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: clamp(14px, 1.1vw, 17px);
     font-weight: 800;
     letter-spacing: -0.01em;

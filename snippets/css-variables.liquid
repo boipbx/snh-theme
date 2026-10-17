@@ -8,29 +8,40 @@ note that this may have impact on different places.
 <style>
   {%- assign heading_font_italic = settings.heading_font | font_modify: 'style', 'italic' -%}
   {%- assign text_font_italic = settings.text_font | font_modify: 'style', 'italic' -%}
-  {%- assign text_font_bold = settings.text_font | font_modify: 'weight', 'bolder' -%}
+  {%- comment -%}SNH design system (DESIGN.md): display 700/800, body 400/500/600, font-display swap{%- endcomment -%}
+  {%- assign text_font_bold = settings.text_font | font_modify: 'weight', '600' -%}
   {%- assign text_font_bold_italic = text_font_bold | font_modify: 'style', 'italic' -%}
+  {%- assign text_font_medium = settings.text_font | font_modify: 'weight', '500' -%}
+  {%- assign heading_font_bold = settings.heading_font | font_modify: 'weight', '700' -%}
 
   /* Typography (heading) */
-  {{ settings.heading_font | font_face: font_display: 'fallback' }}
+  {{ settings.heading_font | font_face: font_display: 'swap' }}
 
   {%- if heading_font_italic -%}
-    {{ heading_font_italic | font_face: font_display: 'fallback' }}
+    {{ heading_font_italic | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  {%- if heading_font_bold -%}
+    {{ heading_font_bold | font_face: font_display: 'swap' }}
   {%- endif -%}
 
   /* Typography (body) */
-  {{ settings.text_font | font_face: font_display: 'fallback' }}
+  {{ settings.text_font | font_face: font_display: 'swap' }}
 
   {%- if text_font_italic -%}
-    {{ text_font_italic | font_face: font_display: 'fallback' }}
+    {{ text_font_italic | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  {%- if text_font_medium -%}
+    {{ text_font_medium | font_face: font_display: 'swap' }}
   {%- endif -%}
 
   {%- if text_font_bold -%}
-    {{ text_font_bold | font_face: font_display: 'fallback' }}
+    {{ text_font_bold | font_face: font_display: 'swap' }}
   {%- endif -%}
 
   {%- if text_font_bold_italic -%}
-    {{ text_font_bold_italic | font_face: font_display: 'fallback' }}
+    {{ text_font_bold_italic | font_face: font_display: 'swap' }}
   {%- endif -%}
 
   :root {

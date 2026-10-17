@@ -5,9 +5,6 @@
    Dashboard-only deliverable for the SNH Elite customer account section.
    ============================================================ {% endcomment %}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <div class="container snh-account-container-override">
 <style>
@@ -21,7 +18,7 @@
      .snh-dashboard, so section-scoped vars were undefined there,
      which is what made the popup background transparent. */
   :root {
-    --snh-ink: #17130f;
+    --snh-ink: var(--snh-ink);
     --snh-ink-soft: #4a4038;
     --snh-muted: #7a6d60;
     --snh-line: #e7e0d6;
@@ -29,12 +26,12 @@
     --snh-paper: #faf7f2;
     --snh-paper-2: #f4efe7;
     --snh-white: #ffffff;
-    --snh-orange: #e0521c;
-    --snh-orange-deep: #b23c11;
+    --snh-orange: var(--snh-accent);
+    --snh-orange-deep: var(--snh-accent-hover);
     --snh-orange-tint: #fbeee7;
-    --snh-display: 'Archivo', system-ui, sans-serif;
-    --snh-serif: 'Archivo', system-ui, sans-serif;
-    --snh-sans: 'Inter', system-ui, sans-serif;
+    --snh-display: var(--snh-font-display);
+    --snh-serif: var(--snh-font-display);
+    --snh-sans: var(--snh-font-body);
   }
 
   .shopify-section-group-header-group,
@@ -54,9 +51,9 @@
 
   .snh-dashboard {
     /* Brand ink + warm neutrals */
-    --snh-ink: #17130f;
+    --snh-ink: var(--snh-ink);
     --snh-ink-soft: #453b32;
-    --snh-muted: #736657;
+    --snh-muted: var(--snh-muted);
     --snh-line: #e7e0d6;
     --snh-line-soft: #f0ebe3;
     --snh-paper: #faf7f2;
@@ -64,8 +61,8 @@
     --snh-white: #ffffff;
 
     /* Orange, as a considered family */
-    --snh-orange: #e0521c;
-    --snh-orange-deep: #b23c11;
+    --snh-orange: var(--snh-accent);
+    --snh-orange-deep: var(--snh-accent-hover);
     --snh-orange-tint: #fbeee7;
 
     /* Tier palettes — lit metals, the card IS the tier */
@@ -85,9 +82,9 @@
     --tier-gold-ink: #fff6df;
 
     /* Display face carries the athletic weight; sans for body/data */
-    --snh-display: 'Archivo', system-ui, sans-serif;
-    --snh-serif: 'Archivo', system-ui, sans-serif;
-    --snh-sans: 'Inter', system-ui, sans-serif;
+    --snh-display: var(--snh-font-display);
+    --snh-serif: var(--snh-font-display);
+    --snh-sans: var(--snh-font-body);
 
     font-family: var(--snh-sans);
     max-width: 1200px;
@@ -166,10 +163,10 @@
     font-size: clamp(30px, 4vw, 44px);
     line-height: 1.02;
     letter-spacing: -1.2px;
-    font-weight: 900;
+    font-weight: 800;
     text-transform: uppercase;
   }
-  .snh-section-title em { font-style: normal; font-weight: 900; color: var(--snh-orange); }
+  .snh-section-title em { font-style: normal; font-weight: 800; color: var(--snh-orange); }
 
   .snh-section-sub {
     margin: 12px 0 0;
@@ -180,40 +177,14 @@
     max-width: 660px;
   }
 
-  .snh-btn {
-    appearance: none;
-    border: 0;
-    background: var(--snh-orange);
-    color: #fff;
-    min-height: 52px;
-    padding: 15px 24px;
-    border-radius: 12px;
-    font-family: var(--snh-sans);
-    font-weight: 500;
-    font-size: 15px;
-    letter-spacing: .1px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    cursor: pointer;
-    transition: background .2s ease, transform .15s ease;
-  }
-  .snh-btn:hover { background: var(--snh-orange-deep); color: #fff; transform: translateY(-1px); }
+  .snh-btn { background: var(--snh-accent); color: #fff; }
+  .snh-btn:hover { color: #fff; }
 
-  .snh-btn-soft {
-    background: var(--snh-paper-2);
-    color: var(--snh-ink);
-  }
-  .snh-btn-soft:hover { background: var(--snh-line); color: var(--snh-ink); transform: translateY(-1px); }
+  .snh-btn-soft { background: transparent; color: var(--snh-ink); border: 0; box-shadow: inset 0 0 0 1.5px currentColor; }
+  .snh-btn-soft:hover { filter: none; background: var(--snh-ink); color: #fff; transform: translateY(-1px); }
 
-  .snh-btn-ghost {
-    background: transparent;
-    color: var(--snh-ink);
-    border: 1px solid var(--snh-line);
-  }
-  .snh-btn-ghost:hover { background: var(--snh-paper); border-color: var(--snh-muted); }
+  .snh-btn-ghost { background: transparent; color: var(--snh-ink); border: 0; box-shadow: inset 0 0 0 1.5px currentColor; }
+  .snh-btn-ghost:hover { filter: none; background: var(--snh-ink); color: #fff; transform: translateY(-1px); }
 
   .snh-card-surface {
     background: var(--snh-white);
@@ -348,7 +319,7 @@
     font-family: var(--snh-display);
     font-size: clamp(42px, 5.6vw, 60px);
     line-height: .86;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -1.8px;
     text-transform: uppercase;
   }
@@ -438,7 +409,7 @@
     border-radius: 22px;
     padding: clamp(30px, 3.4vw, 40px);
     color: #fff;
-    background: linear-gradient(160deg, #e0521c 0%, #c0410f 60%, #9a3109 100%);
+    background: linear-gradient(160deg, var(--snh-accent) 0%, #c0410f 60%, #9a3109 100%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -521,12 +492,8 @@
     font-weight: 400;
     opacity: .9;
   }
-  .snh-reward-card .snh-btn {
-    background: #fff;
-    color: var(--snh-orange-deep);
-    font-weight: 600;
-  }
-  .snh-reward-card .snh-btn:hover { background: #fff8f4; color: var(--snh-orange-deep); }
+  .snh-reward-card .snh-btn { background: #fff; color: var(--snh-ink); }
+  .snh-reward-card .snh-btn:hover { background: #fff; color: var(--snh-ink); }
 
   /* ---------- ACTION STRIP ---------- */
   .snh-action-strip {
@@ -615,7 +582,7 @@
     font-family: var(--snh-display);
     font-size: clamp(38px, 4.6vw, 50px);
     line-height: 1;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -1.4px;
     text-transform: uppercase;
   }
@@ -686,14 +653,7 @@
   .snh-tier-more li { margin: 8px 0; padding-left: 14px; position: relative; }
   .snh-tier-more li::before { content: '—'; position: absolute; left: 0; opacity: .5; }
 
-  .snh-tier-card .snh-btn {
-    width: 100%;
-    margin-top: auto;
-    min-height: 54px;
-    background: rgba(255,255,255,.94);
-    color: var(--snh-ink);
-    font-weight: 600;
-  }
+  .snh-tier-card .snh-btn { width: 100%; margin-top: auto; background: #fff; color: var(--snh-ink); }
   .snh-tier-card .snh-btn:hover { background: #fff; color: var(--snh-ink); }
 
   /* ---------- FAQ ---------- */
@@ -990,7 +950,7 @@
     text-align: left; position: relative; overflow: hidden;
     border-radius: 20px;
     padding: clamp(26px, 3.2vw, 36px);
-    background: linear-gradient(150deg, #211a15 0%, #17130f 100%);
+    background: linear-gradient(150deg, #211a15 0%, var(--snh-ink) 100%);
     margin: 0; color: #f5f0ea;
   }
   .snh-referral-card-dark::after {
@@ -1039,7 +999,7 @@
   .snh-edit-modal-overlay.open { opacity: 1; visibility: visible; }
   .snh-edit-modal-content {
     position: relative; width: min(680px, 100%); max-height: min(88vh, 800px); overflow-y: auto;
-    background: #ffffff; color: #17130f;
+    background: #ffffff; color: var(--snh-ink);
     border-radius: 22px; border: 1px solid var(--snh-line, #e7e0d6);
     padding: clamp(28px, 4vw, 40px);
     box-shadow: 0 32px 80px rgba(23,19,15,.4);

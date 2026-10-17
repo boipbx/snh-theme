@@ -17,9 +17,6 @@ Fixes in this version
 ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
 
 {%- liquid
   assign train_count = 0
@@ -57,8 +54,8 @@ Fixes in this version
   }
   #shopify-section-{{ section.id }} .snh-goal__heading {
     margin: 0;
-    font-family: 'Archivo', Arial, sans-serif;
-    font-weight: 900;
+    font-family: var(--snh-font-display);
+    font-weight: 800;
     font-size: clamp(28px, 3.4vw, 46px);
     letter-spacing: -.03em;
     line-height: .98;
@@ -70,7 +67,7 @@ Fixes in this version
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: 12px;
     font-weight: 800;
     letter-spacing: .18em;
@@ -104,7 +101,7 @@ Fixes in this version
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
-    background: #141414;
+    background: var(--snh-ink);
     text-align: left;
     -webkit-tap-highlight-color: transparent;
     transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
@@ -169,7 +166,7 @@ Fixes in this version
   #shopify-section-{{ section.id }} .snh-goal__eyebrow {
     display: block;
     margin-bottom: 8px;
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: 10px;
     font-weight: 800;
     letter-spacing: .26em;
@@ -179,8 +176,8 @@ Fixes in this version
   #shopify-section-{{ section.id }} .snh-goal__title {
     margin: 0;
     display: block;
-    font-family: 'Archivo', Arial, sans-serif;
-    font-weight: 900;
+    font-family: var(--snh-font-display);
+    font-weight: 800;
     font-size: clamp(22px, 2.6vw, 38px);
     letter-spacing: -.02em;
     line-height: .98;
@@ -199,7 +196,7 @@ Fixes in this version
     border: 1px solid rgba(253, 246, 239, .32);
     background: rgba(10, 8, 6, .38);
     backdrop-filter: blur(6px);
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: 10px;
     font-weight: 800;
     letter-spacing: .2em;
@@ -318,7 +315,7 @@ Fixes in this version
   #shopify-section-{{ section.id }} .snh-goal-card:hover .snh-goal-card__accentbar { opacity: 1; }
   #shopify-section-{{ section.id }} .snh-goal-card__index {
     flex: 0 0 auto;
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: 10px;
     font-weight: 800;
     letter-spacing: .08em;
@@ -326,9 +323,9 @@ Fixes in this version
   }
   #shopify-section-{{ section.id }} .snh-goal-card__title {
     min-width: 0;
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: clamp(13px, 1.05vw, 16px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -.01em;
     line-height: 1.1;
     text-transform: uppercase;

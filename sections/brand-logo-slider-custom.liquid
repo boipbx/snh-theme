@@ -12,9 +12,6 @@
   assign drift_speed = section.settings.animation_speed | default: 130 | times: 0.34
 -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
 
 <section
   id="{{ section.id }}"
@@ -146,9 +143,9 @@
     /* "BRONZE MEMBER" voice — Archivo 900, cream, tight and uppercase */
     #{{ section.id }} .snh-rail__label {
       display: block;
-      font-family: 'Archivo', Arial, sans-serif;
+      font-family: var(--snh-font-display);
       font-size: clamp(19px, 1.6vw, 24px);
-      font-weight: 900;
+      font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 0.98;
       text-transform: uppercase;
@@ -229,9 +226,9 @@
 
     #{{ section.id }} .snh-rail__placeholder {
       color: rgba(255, 242, 230, 0.4);
-      font-family: 'Archivo', Arial, sans-serif;
+      font-family: var(--snh-font-display);
       font-size: 11px;
-      font-weight: 900;
+      font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
@@ -244,15 +241,15 @@
     }
 
     #{{ section.id }} .snh-rail__count-num {
-      font-family: 'Archivo', Arial, sans-serif;
+      font-family: var(--snh-font-display);
       font-size: 22px;
-      font-weight: 900;
+      font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--rail-accent);
     }
 
     #{{ section.id }} .snh-rail__count-word {
-      font-family: 'Archivo', Arial, sans-serif;
+      font-family: var(--snh-font-display);
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.2em;

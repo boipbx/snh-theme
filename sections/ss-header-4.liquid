@@ -5,10 +5,6 @@
   compact predictive search, and restrained SNH Elite avatar treatment.
 {% endcomment %}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 
 {%- liquid
   assign menu_block_count = 0
@@ -47,8 +43,8 @@
     --snh-top-text: {{ section.settings.top_bar_text_color }};
     --snh-top-gradient: linear-gradient(112deg, #b83f00 0%, #e85a00 22%, var(--snh-orange) 46%, #ffb04d 68%, #d94d00 100%);
     --snh-top-glow: rgba(255, 216, 150, .38);
-    --snh-display: "Satoshi", "Archivo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --snh-font: "Satoshi", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --snh-display: var(--snh-font-body);
+    --snh-font: var(--snh-font-body);
     --snh-ease: cubic-bezier(.22, .61, .36, 1);
     --snh-page-width: {{ section.settings.content_width }}px;
     --snh-radius-sm: 6px;
@@ -901,7 +897,7 @@
     font-style: normal;
     font-weight: 700;
     letter-spacing: -.01em;
-    color: #b23c11;
+    color: var(--snh-accent-hover);
     white-space: nowrap;
   }
 
@@ -937,7 +933,7 @@
     color: #fff;
     font-size: 10.5px;
     font-style: normal;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: .04em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -961,7 +957,7 @@
     color: var(--snh-orange-dark);
     font-size: 9.5px;
     font-style: normal;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: .07em;
     text-transform: uppercase;
     vertical-align: middle;
@@ -2312,7 +2308,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: radial-gradient(circle at 12% 10%, rgba(255,122,0,.42), transparent 30%), linear-gradient(135deg, #171717, #2a1609);
+    background: radial-gradient(circle at 12% 10%, rgba(255,122,0,.42), transparent 30%), linear-gradient(135deg, var(--snh-ink), #2a1609);
   }
 
   #snh-header-{{ section.id }} .snh-help-strip span,
@@ -3115,8 +3111,8 @@
   }
 
   #snh-header-{{ section.id }} .snh-btn--dark {
-    border: 1px solid #17130f;
-    background: #17130f;
+    border: 1px solid var(--snh-ink);
+    background: var(--snh-ink);
     color: #fff;
   }
   #snh-header-{{ section.id }} .snh-btn--dark:hover { background: #2a211b; color: #fff; }
@@ -3570,7 +3566,7 @@
       color: var(--snh-black);
       font-family: var(--snh-display);
       font-size: clamp(11.5px, 0.9vw, 14px);
-      font-weight: 900;
+      font-weight: 800;
       letter-spacing: -.005em;
       padding: 0 clamp(7px, 0.7vw, 14px);
     }
@@ -3582,7 +3578,7 @@
   #snh-header-{{ section.id }} .snh-mobile-row strong {
     color: var(--snh-black) !important;
     font-family: var(--snh-display) !important;
-    font-weight: 900 !important;
+    font-weight: 800 !important;
   }
 
   @keyframes snhBundleIn-{{ section.id }} {
@@ -3634,7 +3630,7 @@
     color: var(--snh-orange-dark);
     font-family: var(--snh-display);
     font-size: 10.5px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: .13em;
     text-transform: uppercase;
   }

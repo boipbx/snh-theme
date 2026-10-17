@@ -10,9 +10,6 @@ SNH "Shop the look" — Brand of the Month refinement
 ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
 
 <style>
   #shopify-section-{{ section.id }} {
@@ -29,8 +26,8 @@ SNH "Shop the look" — Brand of the Month refinement
   /* Heading in the SNH Elite display voice */
   #shopify-section-{{ section.id }} .section-header :is(h1, h2, h3),
   #shopify-section-{{ section.id }} .section-header .heading {
-    font-family: 'Archivo', Arial, sans-serif;
-    font-weight: 900;
+    font-family: var(--snh-font-display);
+    font-weight: 800;
     letter-spacing: -.03em;
     line-height: .98;
     text-transform: uppercase;
@@ -52,7 +49,7 @@ SNH "Shop the look" — Brand of the Month refinement
     padding: 11px 14px;
     border-radius: 6px;
     border: 1px solid rgba(255, 122, 50, 0.22);
-    background: linear-gradient(105deg, #17130f 0%, #241209 100%);
+    background: linear-gradient(105deg, var(--snh-ink) 0%, #241209 100%);
     color: #fff2e6;
     text-decoration: none;
   }
@@ -61,7 +58,7 @@ SNH "Shop the look" — Brand of the Month refinement
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    font-family: 'Archivo', Arial, sans-serif;
+    font-family: var(--snh-font-display);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: .22em;
@@ -73,7 +70,7 @@ SNH "Shop the look" — Brand of the Month refinement
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #e0521c;
+    background: var(--snh-accent);
   }
   #shopify-section-{{ section.id }} .snh-points__text {
     margin: 0;

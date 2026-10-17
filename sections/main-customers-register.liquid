@@ -8,33 +8,30 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
 ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   html, body { overflow-x: hidden; width: 100%; }
 
   .snh-page, .snh-page * { box-sizing: border-box; }
   .snh-page {
-    --snh-black: #17130f;
+    --snh-black: var(--snh-ink);
     --snh-panel: #211a15;
-    --snh-panel-2: #17130f;
-    --snh-ink: #17130f;
+    --snh-panel-2: var(--snh-ink);
+    --snh-ink: var(--snh-ink);
     --snh-ink-soft: #453b32;
-    --snh-muted: #736657;
+    --snh-muted: var(--snh-muted);
     --snh-line: #e7e0d6;
     --snh-paper: #faf7f2;
     --snh-white: #ffffff;
-    --snh-orange: #e0521c;
+    --snh-orange: var(--snh-accent);
     --snh-orange-soft: #f2723d;
-    --snh-orange-dark: #b23c11;
+    --snh-orange-dark: var(--snh-accent-hover);
     --snh-orange-tint: #fbeee7;
     --tier-bronze-1: #c47b45; --tier-bronze-2: #b06a34; --tier-bronze-3: #5e3417;
     --tier-silver-1: #aab6c4; --tier-silver-2: #8e9cad; --tier-silver-3: #3f4a58;
     --tier-gold-1: #e3ab3d;  --tier-gold-2: #c68e22;  --tier-gold-3: #5f3f0c;
-    --snh-display: 'Archivo', system-ui, sans-serif;
-    --snh-sans: 'Inter', system-ui, sans-serif;
+    --snh-display: var(--snh-font-display);
+    --snh-sans: var(--snh-font-body);
     background: var(--snh-paper);
     min-height: 100vh;
     width: 100%;
@@ -108,7 +105,7 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
   .snh-hero-copy h1 {
     color: #fff;
     font-size: clamp(38px, 5.2vw, 70px);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 0.94;
     margin: 0;
     letter-spacing: -2px;
@@ -260,7 +257,7 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
   .snh-tierchip-head h3 {
     margin: 0;
     font-size: 21px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -.5px;
     text-transform: uppercase;
     color: inherit;
@@ -311,7 +308,7 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
     line-height: 0.96;
     letter-spacing: -1px;
     color: var(--snh-ink);
-    font-weight: 900;
+    font-weight: 800;
     text-transform: uppercase;
   }
   .snh-h2-accent { color: var(--snh-orange); }
@@ -459,24 +456,11 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
   .snh-help { margin: 0 0 16px; color: #8a7c69; font-size: 12.5px; line-height: 1.45; font-weight: 500; }
   .snh-micro { text-align: center; color: var(--snh-muted); font-size: 12.5px; line-height: 1.45; font-weight: 600; margin: 0 0 14px; }
 
-  .snh-btn {
-    width: 100%;
-    border: 0;
-    border-radius: 14px;
-    min-height: 56px;
-    padding: 15px 20px;
-    font: inherit;
-    cursor: pointer;
-    font-size: 14.5px;
-    font-weight: 800;
-    letter-spacing: .8px;
-    text-transform: uppercase;
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .snh-btn:hover { transform: translateY(-2px); }
-  .snh-btn-primary { background: var(--snh-orange); color: #fff; box-shadow: 0 14px 28px rgba(224,82,28,.24); }
-  .snh-btn-primary:hover { box-shadow: 0 20px 38px rgba(224, 82, 28, 0.32); }
-  .snh-btn-light { margin-top: 11px; min-height: 52px; background: #fff1eb; color: var(--snh-orange-dark); border: 2px solid rgba(224, 82, 28, .22); box-shadow: none; }
+  .snh-btn { width: 100%; }
+  .snh-btn:hover {  }
+  .snh-btn-primary { background: var(--snh-accent); color: #fff; }
+  .snh-btn-primary:hover {  }
+  .snh-btn-light { margin-top: 11px; background: transparent; color: var(--snh-ink); border: 0; box-shadow: inset 0 0 0 1.5px currentColor; }
 
   .snh-link {
     color: var(--snh-orange);
@@ -579,7 +563,7 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
     text-transform: uppercase;
     font-size: clamp(24px, 3.4vw, 36px);
     margin: 0 0 26px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -0.5px;
   }
   .snh-faq-inner h2 span { color: var(--snh-orange); }
@@ -593,19 +577,19 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
 
   /* ── Tablet / mobile: hero -> form -> tiers ────────────────────── */
   @media (max-width: 920px) {
-    .snh-page { background: #17130f; }
+    .snh-page { background: var(--snh-ink); }
     .snh-shell { display: flex; flex-direction: column; min-height: auto; }
     .snh-left { display: contents; }
     .snh-hero-row { display: contents; }
     .snh-hero-copy { order: 1; padding: 40px 22px 12px; }
-    .snh-form-zone { order: 2; border-left: 0; padding: 16px 16px 30px; background: #17130f; scroll-margin-top: 170px; }
+    .snh-form-zone { order: 2; border-left: 0; padding: 16px 16px 30px; background: var(--snh-ink); scroll-margin-top: 170px; }
     .snh-hero-visual { order: 3; width: min(310px, 82vw); flex: none; min-width: 0; margin: 0 auto; padding-top: 24px; }
     .snh-tierband { order: 4; padding: 4px 22px 48px; background: transparent; }
-    .snh-shell { background: #17130f; }
-    .snh-tierband { background: #17130f; margin-top: -1px; padding-top: 26px; }
+    .snh-shell { background: var(--snh-ink); }
+    .snh-tierband { background: var(--snh-ink); margin-top: -1px; padding-top: 26px; }
     .snh-card { border-radius: 22px; box-shadow: 0 18px 50px rgba(23,19,15,.10); }
     .snh-faq-visual { display: none !important; }
-    .snh-faq-section { background: #17130f; }
+    .snh-faq-section { background: var(--snh-ink); }
   }
 
   @media (max-width: 600px) {
@@ -633,7 +617,7 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
     .snh-birthday-card { grid-template-columns: 44px minmax(0, 1fr); padding: 8px 11px; border-radius: 14px; }
     .snh-birthday-icon { width: 44px; height: 44px; border-radius: 12px; }
     .snh-date-input { font-size: 16px; }
-    .snh-btn { min-height: 54px; }
+    .snh-btn { width: 100%; }
     .snh-tierchips { gap: 8px; }
     .snh-tierchip { flex-basis: 100%; }
   }

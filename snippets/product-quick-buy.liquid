@@ -109,10 +109,10 @@ product section's blocks) with SNH styling: Satoshi type, hairline pills, ink Ad
 
   <style>
     quick-buy-drawer {
-      --snh-ink: #17130f;
-      --snh-orange: #e0521c;
+      --snh-ink: var(--snh-ink);
+      --snh-orange: var(--snh-accent);
       --snh-line: #e7e0d6;
-      --snh-font: 'Satoshi', 'Inter', system-ui, sans-serif;
+      --snh-font: var(--snh-font-body);
       --snh-ease: cubic-bezier(.22, 1, .36, 1);
     }
 
@@ -121,11 +121,11 @@ product section's blocks) with SNH styling: Satoshi type, hairline pills, ink Ad
     .snh-qb__media { flex: 0 0 120px; display: block; width: 120px; align-self: stretch; }
     .snh-qb__img { display: block; width: 120px; height: 120px; object-fit: cover; border-radius: 14px; background: #f2eee7; }
     .snh-qb__ident { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-    .snh-qb__title { font-family: var(--snh-font); font-size: 19px; font-weight: 900; line-height: 1.2; letter-spacing: -.02em; color: var(--snh-ink); text-decoration: none; text-wrap: pretty; }
+    .snh-qb__title { font-family: var(--snh-font); font-size: 19px; font-weight: 800; line-height: 1.2; letter-spacing: -.02em; color: var(--snh-ink); text-decoration: none; text-wrap: pretty; }
     .snh-qb__title:hover { color: var(--snh-orange); }
     .snh-qb__vendor { font-size: 13px; font-weight: 500; color: #a09484; }
     .snh-qb__price { margin-top: 4px; font-family: var(--snh-font); }
-    .snh-qb__price .price-list { font-family: var(--snh-font); font-weight: 900; letter-spacing: -.02em; }
+    .snh-qb__price .price-list { font-family: var(--snh-font); font-weight: 800; letter-spacing: -.02em; }
     .snh-qb__price sale-price, .snh-qb__price .price, .snh-qb__price .price-list > * { font-size: 24px; line-height: 1.15; }
     .snh-qb__price compare-at-price, .snh-qb__price s { font-size: 14px; font-weight: 500; color: #a09484; }
 
@@ -185,7 +185,7 @@ product section's blocks) with SNH styling: Satoshi type, hairline pills, ink Ad
       background: var(--snh-orange) !important; border: 1px solid var(--snh-orange) !important;
       color: #fff !important; font-family: var(--snh-font) !important; font-size: 15px !important; font-weight: 800 !important;
     }
-    .snh-qb__buy .shopify-payment-button__button:hover { background: #b23c11 !important; border-color: #b23c11 !important; color: #fff !important; }
+    .snh-qb__buy .shopify-payment-button__button:hover { background: var(--snh-accent-hover) !important; border-color: var(--snh-accent-hover) !important; color: #fff !important; }
     .snh-qb__buy button[type="submit"] { width: 100% !important; }
 
     /* bundle contents */

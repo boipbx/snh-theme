@@ -329,11 +329,11 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
 
 <style>
   .snh-bar-form {
-    --snh-o: #e0521c;
-    --snh-ink: #17130f;
+    --snh-o: var(--snh-accent);
+    --snh-ink: var(--snh-ink);
     --snh-line: rgba(23, 19, 15, .1);
     --snh-ease: cubic-bezier(.22, 1, .36, 1);
-    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+    font-family: var(--snh-font-body);
   }
   [is="facet-drawer-opener"],
   [class*="facets-drawer"],
@@ -373,7 +373,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
   .snh-find__clear svg { width: 12px; height: 12px; }
   .snh-find__count { font-size: 12px; font-weight: 700; color: rgba(23, 19, 15, .45); white-space: nowrap; }
   .snh-find__count[hidden] { display: none; }
-  .snh-find__all { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 800; color: #b23c11; text-decoration: none; white-space: nowrap; }
+  .snh-find__all { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 800; color: var(--snh-accent-hover); text-decoration: none; white-space: nowrap; }
   .snh-find__all svg { width: 13px; height: 13px; opacity: .8; }
   .snh-find__clear[hidden], .snh-find__all[hidden] { display: none; }
 
@@ -388,7 +388,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     font-size: 12.5px; font-weight: 700; letter-spacing: -.005em; color: var(--snh-ink); text-decoration: none;
     transition: border-color .22s var(--snh-ease), background .22s var(--snh-ease), color .22s var(--snh-ease);
   }
-  .snh-goal:hover { border-color: var(--snh-o); color: #b23c11; }
+  .snh-goal:hover { border-color: var(--snh-o); color: var(--snh-accent-hover); }
   .snh-goal.is-on { background: var(--snh-ink); border-color: var(--snh-ink); color: #fff; }
   .snh-goal[hidden] { display: none; }
 
@@ -406,7 +406,9 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
   }
   .snh-brands__rail::-webkit-scrollbar { display: none; }
-  .snh-brand { flex: 0 0 auto; cursor: pointer; }
+  /* position: relative contains the absolutely positioned checkbox; without it the
+     hidden inputs escaped the rail's overflow and widened the whole page (audit H-1) */
+  .snh-brand { position: relative; flex: 0 0 auto; cursor: pointer; }
   .snh-brand[hidden] { display: none; }
   .snh-brand__input { position: absolute; opacity: 0; pointer-events: none; }
   .snh-brand__face {
@@ -530,10 +532,10 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     font-size: 12.5px; font-weight: 700; color: var(--snh-ink); text-decoration: none;
     transition: background .2s var(--snh-ease), color .2s var(--snh-ease);
   }
-  .snh-chip:hover { background: rgba(224, 82, 28, .14); color: #b23c11; }
+  .snh-chip:hover { background: rgba(224, 82, 28, .14); color: var(--snh-accent-hover); }
   .snh-chip svg { width: 13px; height: 13px; opacity: .45; }
-  .snh-active__clear { margin-inline-start: auto; font-size: 12.5px; font-weight: 800; color: #b23c11; text-decoration: none; border-block-end: 1px solid rgba(178, 60, 17, .3); }
-  .snh-active__clear:hover { border-block-end-color: #b23c11; }
+  .snh-active__clear { margin-inline-start: auto; font-size: 12.5px; font-weight: 800; color: var(--snh-accent-hover); text-decoration: none; border-block-end: 1px solid rgba(178, 60, 17, .3); }
+  .snh-active__clear:hover { border-block-end-color: var(--snh-accent-hover); }
 
   /* ── condensed: once scrolled, only what you need to keep filtering ── */
   .snh-bar.is-busy { opacity: .55; pointer-events: none; }
