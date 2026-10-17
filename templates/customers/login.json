@@ -11,17 +11,6 @@
   "sections": {
     "main": {
       "type": "main-customers-login",
-      "blocks": {
-        "fields": {
-          "type": "fields",
-          "settings": {
-            "return_to": ""
-          }
-        }
-      },
-      "block_order": [
-        "fields"
-      ],
       "settings": {
         "background": "",
         "text_color": "",
