@@ -18,25 +18,27 @@
   endif
   assign img = section.settings.image
 -%}
-<section class="v2 v-section v-section--cream hs" aria-labelledby="{{ hid }}" data-v2="hotspots">
+<section class="v2 v-section v-section--cream hs" aria-labelledby="{{ hid }}" data-v2="hotspots" data-popover="{{ section.settings.popover }}" style="--hs-zoom: {{ section.settings.zoom | divided_by: 100.0 }}">
   <div class="v-wrap">
     {%- render 'snh-v2-head', s: section.settings, id: hid -%}
     <div class="hs__grid">
       <div class="hs__media">
-        {%- if img != blank -%}
-          {{ img | image_url: width: 1400 | image_tag: width: 2000, height: 2000, loading: 'lazy', alt: section.settings.image_alt, sizes: '(max-width: 1023px) 100vw, 58vw', widths: '600,900,1400,2000', class: 'hs__img-main' }}
-        {%- else -%}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'hs__img-main hs__ph' }}
-        {%- endif -%}
+        <div class="hs__frame">
+          {%- if img != blank -%}
+            {{ img | image_url: width: 1400 | image_tag: width: 2000, height: 2000, loading: 'lazy', alt: section.settings.image_alt, sizes: '(max-width: 1023px) 100vw, 58vw', widths: '600,900,1400,2000', class: 'hs__img-main' }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'hs__img-main hs__ph' }}
+          {%- endif -%}
+          {%- for b in section.blocks -%}
+            {%- assign p = b.settings.product -%}
+            {%- if p == blank -%}{%- continue -%}{%- endif -%}
+            <button class="hs__dot" type="button" style="left:{{ b.settings.horizontal_position }}%;top:{{ b.settings.vertical_position }}%;--x:{{ b.settings.horizontal_position }};--y:{{ b.settings.vertical_position }}" data-spot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}: {{ p.title | escape }}" aria-expanded="false" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" {{ b.shopify_attributes }}><span>{{ forloop.index }}</span></button>
+          {%- endfor -%}
+        </div>
         {%- for b in section.blocks -%}
           {%- assign p = b.settings.product -%}
           {%- if p == blank -%}{%- continue -%}{%- endif -%}
-          <button class="hs__dot" type="button" style="left:{{ b.settings.horizontal_position }}%;top:{{ b.settings.vertical_position }}%" data-spot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}: {{ p.title | escape }}" aria-expanded="false" {{ b.shopify_attributes }}><span>{{ forloop.index }}</span></button>
-        {%- endfor -%}
-        {%- for b in section.blocks -%}
-          {%- assign p = b.settings.product -%}
-          {%- if p == blank -%}{%- continue -%}{%- endif -%}
-          <div class="hs__pop" data-pop="{{ forloop.index0 }}" hidden role="dialog" aria-label="{{ p.title | escape }}">
+          <div class="hs__pop" data-pop="{{ forloop.index0 }}" hidden role="dialog" aria-modal="false" aria-label="{{ p.title | escape }}">
             <button class="hs__close" type="button" aria-label="Close">×</button>
             {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 320 | image_tag: width: 160, height: 160, loading: 'lazy', alt: '' }}{%- endif -%}
             <div class="hs__popbody"><span class="eyebrow">{{ p.vendor | escape }}</span><a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a><span class="hs__price">{{ p.price | money_without_trailing_zeros }}</span>
@@ -44,6 +46,7 @@
           </div>
         {%- endfor -%}
       </div>
+      <div class="hs__scrim" hidden></div>
       <div class="hs__side">
         <ol class="hs__list">
           {%- for b in section.blocks -%}
@@ -59,7 +62,7 @@
         {%- if section.settings.show_points -%}
           {%- assign first = section.blocks.first.settings.product -%}
           {%- if first != blank -%}
-            {%- assign pts = first.price | times: points_rate | divided_by: 100 -%}
+            {%- assign pts = first.price | times: points_rate | divided_by: 10000.0 | round | times: 100 -%}
             {%- if customer -%}
               <p class="hs__pts"><span class="hs__pts-tag">SNH Elite</span>You'll earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points on {% render 'snh-v2-title', product: first %} ({{ points_rate }}%)</p>
             {%- else -%}
@@ -90,6 +93,8 @@
     { "type": "url", "id": "link_url", "label": "Button link" },
     { "type": "select", "id": "link_style", "label": "Button style", "options": [{ "value": "button", "label": "Ink button" }, { "value": "link", "label": "Underlined link" }], "default": "button" },
     { "type": "image_picker", "id": "image", "label": "Campaign image", "info": "Square, 2000 × 2000px. Place each product's dot with its block's position sliders." },
+    { "type": "range", "id": "zoom", "label": "Zoom toward the active dot", "min": 100, "max": 130, "step": 2, "unit": "%", "default": 112, "info": "100% turns the zoom off." },
+    { "type": "checkbox", "id": "popover", "label": "Quick product card at the dot (desktop)", "default": true, "info": "Phones always open a bottom sheet." },
     { "type": "text", "id": "image_alt", "label": "Image description" },
     { "type": "header", "content": "SNH Elite points strip" },
     { "type": "checkbox", "id": "show_points", "label": "Show points strip", "default": true, "info": "Signed-in members see their tier's earn rate; guests are invited to sign in." },

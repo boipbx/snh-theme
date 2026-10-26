@@ -97,7 +97,7 @@ def look():
     bm = build.LIVE["botm"]
     return section("snh-shop-the-look", {
         "eyebrow": "Brand of the month", "heading": "Shop the *look*: RYSE", "link_label": "Shop all RYSE", "link_url": "/collections/ryse", "link_style": "button",
-        "image": img(bm["image"]), "image_alt": "RYSE brand of the month: Loaded Protein, Pump, Pre and Pre MAX", "show_points": False,
+        "image": img(bm["image"]), "image_alt": "RYSE brand of the month: Loaded Protein, Pump, Pre and Pre MAX", "show_points": True, "zoom": 112, "popover": True,
         "rate_bronze": 3, "rate_silver": 7, "rate_gold": 10, "silver_threshold": 200000, "gold_threshold": 500000},
         [("product", {"product": sp["handle"], "horizontal_position": sp["x"], "vertical_position": sp["y"]}) for sp in bm["spots"]])
 

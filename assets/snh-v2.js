@@ -461,46 +461,114 @@
   });
 
 
-  /* ================= shop the look: hotspots (prototype logic) ================= */
+  /* ================= shop the look: dots ⇄ cards, zoom toward the active dot, popover / bottom sheet ================= */
   on('hotspots', function (hs) {
-    var openDot = null;
+    var frame = hs.querySelector('.hs__frame');
+    var dots = $$('.hs__dot', hs), items = $$('.hs__item', hs);
+    var scrim = hs.querySelector('.hs__scrim');
+    var popOn = hs.getAttribute('data-popover') !== 'false';
+    var zoom = parseFloat(getComputedStyle(hs).getPropertyValue('--hs-zoom')) || 1.12;
+    var phone = window.matchMedia('(max-width: 767px)');
+    var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    var active = null, openDot = null;
+    function idx(el) { return el.getAttribute('data-spot'); }
+    function dotOf(i) { return hs.querySelector('.hs__dot[data-spot="' + i + '"]'); }
+    function itemOf(i) { return hs.querySelector('.hs__item[data-spot="' + i + '"]'); }
     function hot(i, isOn) { $$('[data-spot="' + i + '"]', hs).forEach(function (el) { el.classList.toggle('is-hot', isOn); }); }
-    function close() {
-      if (!openDot) return;
-      var i = openDot.getAttribute('data-spot');
-      hs.querySelector('[data-pop="' + i + '"]').hidden = true;
-      openDot.setAttribute('aria-expanded', 'false');
-      hot(i, false);
-      openDot = null;
+    function setZoom(i) {
+      var d = i == null ? null : dotOf(i);
+      if (!d || reduce || zoom <= 1) { frame.style.setProperty('--s', 1); return; }
+      frame.style.setProperty('--oxn', d.style.getPropertyValue('--x'));
+      frame.style.setProperty('--oyn', d.style.getPropertyValue('--y'));
+      frame.style.setProperty('--s', zoom);
     }
-    function open(dot) {
-      close();
-      var i = dot.getAttribute('data-spot');
+    function inView(el) { var r = el.getBoundingClientRect(); return r.top >= 0 && r.bottom <= window.innerHeight; }
+    function activate(i, scroll) {
+      if (active !== null && active !== i) hot(active, false);
+      active = i;
+      hot(i, true);
+      setZoom(i);
+      var it = itemOf(i);
+      if (scroll && it && !inView(it) && !phone.matches) it.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+    }
+    function release() {
+      if (openDot || active === null) return;
+      hot(active, false);
+      active = null;
+      setZoom(null);
+    }
+    function closePop(refocus) {
+      if (!openDot) return;
+      var d = openDot, i = idx(d);
+      hs.querySelector('[data-pop="' + i + '"]').hidden = true;
+      d.setAttribute('aria-expanded', 'false');
+      if (scrim) scrim.hidden = true;
+      openDot = null;
+      if (phone.matches) document.body.style.overflow = '';
+      release();
+      if (refocus) d.focus({ preventScroll: true });
+    }
+    function openPop(dot) {
+      closePop(false);
+      var i = idx(dot);
       var pop = hs.querySelector('[data-pop="' + i + '"]');
+      activate(i, false);
       pop.hidden = false;
-      if (window.matchMedia('(min-width: 768px)').matches) {
+      if (!phone.matches) {
         var x = parseFloat(dot.style.left), y = parseFloat(dot.style.top);
         pop.style.left = 'clamp(8px, calc(' + x + '% - 130px), calc(100% - 268px))';
         pop.style.right = 'auto';
         pop.style.top = y > 70 ? 'calc(' + y + '% - 150px)' : 'calc(' + y + '% + 30px)';
+      } else {
+        pop.style.left = pop.style.top = pop.style.right = '';
+        if (scrim) scrim.hidden = false;
+        document.body.style.overflow = 'hidden';
       }
       dot.setAttribute('aria-expanded', 'true');
-      hot(i, true);
       openDot = dot;
-      var btn = pop.querySelector('button.v-btn');
-      if (btn) btn.focus({ preventScroll: true });
+      var btn = pop.querySelector('.v-btn');
+      if (btn) setTimeout(function () { btn.focus({ preventScroll: true }); }, 30);
     }
-    $$('.hs__dot', hs).forEach(function (dot) {
-      dot.addEventListener('click', function (e) { e.stopPropagation(); if (openDot === dot) close(); else open(dot); });
+    dots.forEach(function (dot, k) {
+      var i = idx(dot);
+      dot.addEventListener('mouseenter', function () { if (canHover.matches && !openDot) activate(i, true); });
+      dot.addEventListener('mouseleave', function () { if (canHover.matches) release(); });
+      dot.addEventListener('focus', function () { if (!openDot) activate(i, true); });
+      dot.addEventListener('blur', function (e) { if (!openDot && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.hs__dot'))) release(); });
+      dot.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (openDot === dot) { closePop(true); return; }
+        if (phone.matches || popOn) { openPop(dot); return; }
+        activate(i, true);                                   /* desktop without popover: go to the card */
+        var add = itemOf(i) && itemOf(i).querySelector('.v-btn');
+        if (add) add.focus({ preventScroll: true });
+      });
+      dot.addEventListener('keydown', function (e) {        /* roving focus between dots */
+        var step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        var next = dots[(k + step + dots.length) % dots.length];
+        dots.forEach(function (d) { d.tabIndex = d === next ? 0 : -1; });
+        if (openDot) closePop(false);
+        next.focus();
+      });
     });
-    $$('.hs__close', hs).forEach(function (c) { c.addEventListener('click', function () { var d = openDot; close(); if (d) d.focus(); }); });
-    $$('.hs__item', hs).forEach(function (item) {
-      var i = item.getAttribute('data-spot');
-      item.addEventListener('mouseenter', function () { hot(i, true); });
-      item.addEventListener('mouseleave', function () { if (!openDot || openDot.getAttribute('data-spot') !== i) hot(i, false); });
+    items.forEach(function (item) {
+      var i = idx(item);
+      item.addEventListener('mouseenter', function () { if (canHover.matches && !openDot) activate(i, false); });
+      item.addEventListener('mouseleave', function () { if (canHover.matches) release(); });
+      item.addEventListener('focusin', function () { if (!openDot) activate(i, false); });
+      item.addEventListener('focusout', function (e) { if (!item.contains(e.relatedTarget)) release(); });
     });
-    document.addEventListener('click', function (e) { if (openDot && !e.target.closest('.hs__pop') && !e.target.closest('quick-buy-drawer')) close(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && openDot) { var d = openDot; close(); d.focus(); } });
+    $$('.hs__close', hs).forEach(function (c) { c.addEventListener('click', function () { closePop(true); }); });
+    if (scrim) scrim.addEventListener('click', function () { closePop(false); });
+    document.addEventListener('click', function (e) { if (openDot && !e.target.closest('.hs__pop') && !e.target.closest('quick-buy-drawer') && !e.target.closest('.hs__dot')) closePop(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && openDot) closePop(true); });
+    /* added from a popover/sheet: close it once the cart drawer takes over */
+    hs.addEventListener('variant:add', function () { if (openDot && phone.matches) setTimeout(function () { closePop(false); }, 900); });
+    /* theme editor: selecting a product block lights up its dot */
+    hs.addEventListener('shopify:block:select', function (e) { var d = hs.querySelector('.hs__dot[data-shopify-editor-block*="' + e.detail.blockId + '"]'); if (d) activate(idx(d), false); });
+    hs.addEventListener('shopify:block:deselect', function () { release(); });
   });
 
   /* ================= boot ================= */
