@@ -9,8 +9,6 @@
 {%- assign snh_gap = snh_threshold_cents | minus: cart.total_price | at_least: 0 -%}
 {%- assign snh_delivery_progress = cart.total_price | times: 100 | divided_by: snh_threshold_cents | at_most: 100 -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   /* ══ SNH Elite cart page — scoped, additive (no theme logic touched) ══ */
@@ -24,8 +22,8 @@
     --snh-line: #e7e0d6;
     --snh-paper: #faf7f2;
     --snh-white: #ffffff;
-    --snh-display: 'Archivo', system-ui, sans-serif;
-    --snh-sans: 'Inter', system-ui, sans-serif;
+    --snh-display: var(--heading-font-family), system-ui, sans-serif;
+    --snh-sans: var(--text-font-family), system-ui, sans-serif;
     font-family: var(--snh-sans);
     color: var(--snh-ink);
   }

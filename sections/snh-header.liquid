@@ -1,0 +1,478 @@
+{%- comment -%}
+  SNH header v2: ticker, orange announcement slot, header bar (transparent over the homepage hero, solid on scroll),
+  4-zone mega menu, brands A–Z, offers, predictive search overlay and the mobile drill-down.
+  Nav order = block order. Mega zones read a Shopify menu when one is picked, else the fallback "Label | /url" lines.
+  Styles: assets/snh-v2.css. Behaviour: assets/snh-v2.js (data-v2="header").
+{%- endcomment -%}
+{%- liquid
+  assign overlay = false
+  if section.settings.overlay_home and request.page_type == 'index'
+    assign overlay = true
+  endif
+  assign brand_blocks = section.blocks | where: 'type', 'brand'
+  assign logo = section.settings.logo
+  assign logo_h = 24
+  if logo != blank
+    assign logo_h = section.settings.logo_width | divided_by: logo.aspect_ratio | round
+  endif
+-%}
+
+{%- capture brand_keys -%}
+  {%- for b in brand_blocks -%}{{ b.settings.name | downcase | strip }}::{{ forloop.index0 }}##{%- endfor -%}
+{%- endcapture -%}
+{%- assign brand_keys = brand_keys | split: '##' | sort_natural -%}
+{%- capture present_letters -%}{%- for k in brand_keys -%}{{ k | slice: 0 | upcase }}{%- endfor -%}{%- endcapture -%}
+
+{%- capture az -%}
+  <div class="az" data-az>
+    <div class="az__top">
+      <label class="az__search">{% render 'snh-v2-icon', name: 'search' %}<input type="search" placeholder="Find a brand" aria-label="Filter brands" data-az-filter></label>
+      <nav class="az__bar" aria-label="Brands A to Z">
+        {%- assign abc = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ',' -%}
+        {%- for letter in abc -%}
+          {%- if present_letters contains letter -%}<a href="#" data-to="{{ letter }}">{{ letter }}</a>{%- else -%}<span>{{ letter }}</span>{%- endif -%}
+        {%- endfor -%}
+      </nav>
+    </div>
+    <div class="az__groups">
+      {%- for letter in abc -%}
+        {%- unless present_letters contains letter -%}{%- continue -%}{%- endunless -%}
+        <div class="az__g" data-letter="{{ letter }}"><span class="az__L">{{ letter }}</span><ul class="az__tiles">
+          {%- for k in brand_keys -%}
+            {%- assign parts = k | split: '::' -%}
+            {%- assign first_letter = parts[0] | slice: 0 | upcase -%}
+            {%- if first_letter == letter -%}
+              {%- assign idx = parts[1] | plus: 0 -%}
+              {%- assign b = brand_blocks[idx] -%}
+              <li data-name="{{ b.settings.name | downcase | escape }}">{% render 'snh-v2-brand-tile', b: b, size: 240 %}<span>{{ b.settings.name | escape }}</span></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul></div>
+      {%- endfor -%}
+    </div>
+    <p class="az__none" hidden>No brand matches that name.</p>
+  </div>
+{%- endcapture -%}
+
+{%- capture perks -%}
+  {%- for b in section.blocks -%}
+    {%- if b.type == 'offers' -%}
+      {%- assign rows = b.settings.perks | newline_to_br | split: '<br />' -%}
+      <ul class="perks">
+        {%- for row in rows -%}
+          {%- assign parts = row | strip | split: '|' -%}
+          {%- assign icon = parts[0] | strip -%}
+          {%- if parts[1] != blank -%}<li>{% render 'snh-v2-icon', name: icon %}<span>{{ parts[1] | strip | escape }}</span></li>{%- endif -%}
+        {%- endfor -%}
+      </ul>
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="v2 hdr-wrap{% if overlay %} hdr-wrap--overlay{% endif %}" data-v2="header">
+  {%- assign ticker = section.settings.ticker | newline_to_br | split: '<br />' -%}
+  {%- if section.settings.ticker != blank -%}
+    <div class="ticker" data-chrome-bar role="region" aria-label="Store announcements" style="--ticker-speed: {{ section.settings.ticker_speed }}s">
+      <div class="ticker__track">
+        {%- for n in (1..2) -%}
+          <ul class="ticker__list"{% if n == 2 %} aria-hidden="true"{% endif %}>
+            {%- for r in (1..2) -%}{%- for tk in ticker -%}{%- assign t = tk | strip -%}{%- if t != blank -%}<li class="ticker__item">{{ t | escape }}</li>{%- endif -%}{%- endfor -%}{%- endfor -%}
+          </ul>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- assign announcements = section.blocks | where: 'type', 'announcement' -%}
+  {%- if announcements.size > 0 -%}
+    <div class="announce" data-chrome-bar data-interval="{{ section.settings.announce_interval }}" aria-live="polite">
+      <div class="v-wrap announce__in">
+        {%- for b in announcements -%}
+          <a class="announce__item{% if forloop.first %} is-on{% endif %}" href="{{ b.settings.link | default: '#' }}"{% unless forloop.first %} tabindex="-1"{% endunless %} {{ b.shopify_attributes }}>
+            {%- if b.settings.tag != blank -%}<b>{{ b.settings.tag | escape }}</b>{%- endif -%}{{ b.settings.text | escape }}<span aria-hidden="true">→</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <header class="hdr{% if overlay %} hdr--overlay is-overlay{% endif %}">
+    <div class="v-wrap hdr__in">
+      <button class="icon-btn hdr__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mmenu-{{ section.id }}">{% render 'snh-v2-icon', name: 'menu' %}</button>
+      <a class="hdr__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} home" style="--logo-w: {{ section.settings.logo_width }}px">
+        {%- if logo != blank -%}
+          {{- logo | image_url: width: 400 | image_tag: width: section.settings.logo_width, height: logo_h, alt: shop.name, class: 'hdr__logo-img', loading: 'eager' -}}
+          {%- if section.settings.logo_light != blank -%}
+            {{- section.settings.logo_light | image_url: width: 400 | image_tag: width: section.settings.logo_width, height: logo_h, alt: '', class: 'hdr__logo-img hdr__logo-img--light', loading: 'eager' -}}
+          {%- endif -%}
+        {%- else -%}<span class="hdr__logo-text">{{ shop.name }}</span>{%- endif -%}
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul class="nav__list">
+          {%- for b in section.blocks -%}
+            {%- case b.type -%}
+              {%- when 'mega', 'brands', 'offers' -%}
+                {%- assign lp = b.settings.label | split: ' & ' -%}
+                <li><button class="nav__btn" type="button" aria-expanded="false" aria-controls="mega-{{ b.id }}" data-mega aria-label="{{ b.settings.label | escape }}">
+                  {%- if lp.size > 1 -%}{{ lp[0] | escape }}<span class="nav__x"> &amp; {{ lp[1] | escape }}</span>{%- else -%}{{ b.settings.label | escape }}{%- endif -%}
+                  {%- render 'snh-v2-icon', name: 'chev' -%}</button></li>
+              {%- when 'link' -%}
+                <li><a class="nav__link" href="{{ b.settings.url | default: '#' }}" {{ b.shopify_attributes }}>{{ b.settings.label | escape }}</a></li>
+            {%- endcase -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+      <div class="hdr__icons">
+        <button class="icon-btn" type="button" aria-label="Search" aria-controls="srch-{{ section.id }}" data-open-search>{% render 'snh-v2-icon', name: 'search' %}</button>
+        {%- if shop.customer_accounts_enabled -%}
+          <div class="acct hide-s">
+            <a class="icon-btn" href="{{ routes.account_url }}" aria-label="{% if customer %}My account{% else %}Sign in{% endif %}">{% render 'snh-v2-icon', name: 'user' %}</a>
+            <div class="acct__pop">
+              {%- if customer -%}
+                {%- assign tier = customer.metafields.custom.loyalty_tier.value | default: customer.metafields.custom.loyalty_tier | default: 'Bronze' -%}
+                {%- assign pts = customer.metafields.custom.loyalty_points.value | default: customer.metafields.custom.loyalty_points | default: 0 -%}
+                <p class="acct__hi">Hi {{ customer.first_name | default: 'there' | escape }}</p>
+                <p class="acct__tier"><b>{{ tier | escape }}</b> member · {{ pts }} points</p>
+                <a class="v-btn v-btn--ink v-btn--sm" href="{{ routes.account_url }}"><span>My account</span></a>
+                <a class="v-link acct__out" href="{{ routes.account_logout_url }}">Sign out</a>
+              {%- else -%}
+                <p class="acct__hi">SNH Elite</p>
+                <p class="acct__tier">{{ section.settings.account_note | escape }}</p>
+                <a class="v-btn v-btn--ink v-btn--sm" href="{{ routes.account_login_url }}"><span>Sign in</span></a>
+                <a class="v-link" href="{{ routes.account_register_url }}">Join, it's free</a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <a class="icon-btn" href="{{ routes.cart_url }}" data-no-instant aria-label="Basket" {% if settings.cart_type != 'page' and request.page_type != 'cart' %}aria-controls="cart-drawer"{% endif %}>
+          {%- render 'snh-v2-icon', name: 'bag' -%}
+          <cart-count class="icon-btn__count{% if cart.item_count == 0 %} opacity-0{% endif %}">{{ cart.item_count }}</cart-count>
+        </a>
+      </div>
+    </div>
+
+    {%- for b in section.blocks -%}
+      {%- case b.type -%}
+        {%- when 'mega' -%}
+          <div class="mega" id="mega-{{ b.id }}" role="region" aria-label="{{ b.settings.label | escape }}" hidden {{ b.shopify_attributes }}>
+            <div class="v-wrap mega__in"><div class="mega__grid">
+              <div class="mz"><p class="mz__h">{{ b.settings.need_title | escape }}</p>
+                <ul class="mz__list">{% render 'snh-v2-links', menu: b.settings.need_menu, lines: b.settings.need_links %}</ul>
+                {%- if b.settings.need_all != blank -%}<a class="mz__all" href="{{ b.settings.need_all }}">View all</a>{%- endif -%}</div>
+              <div class="mz"><p class="mz__h">{{ b.settings.type_title | escape }}</p>
+                <ul class="mz__list">{% render 'snh-v2-links', menu: b.settings.type_menu, lines: b.settings.type_links %}</ul>
+                {%- if b.settings.type_all != blank -%}<a class="mz__all" href="{{ b.settings.type_all }}">View all</a>{%- endif -%}</div>
+              <div class="mz"><p class="mz__h">Top brands</p>
+                <div class="mz__logos">
+                  {%- assign names = b.settings.brands | split: ',' -%}
+                  {%- for raw_name in names -%}{%- assign n = raw_name | strip | downcase -%}
+                    {%- for bb in brand_blocks -%}{%- assign bn = bb.settings.name | downcase -%}{%- if bn == n -%}{% render 'snh-v2-brand-tile', b: bb, size: 240 %}{%- break -%}{%- endif -%}{%- endfor -%}
+                  {%- endfor -%}
+                </div>
+                <a class="mz__all" href="{{ section.settings.brands_url }}">All brands</a></div>
+              <div class="mz mz--promo">
+                <div class="mz__promos">
+                  {%- for i in (1..2) -%}
+                    {%- assign pi = 'promo_' | append: i | append: '_image' -%}{%- assign pe = 'promo_' | append: i | append: '_eyebrow' -%}
+                    {%- assign pl = 'promo_' | append: i | append: '_label' -%}{%- assign pu = 'promo_' | append: i | append: '_link' -%}
+                    {%- if b.settings[pi] != blank or b.settings[pl] != blank -%}
+                      <a class="mpromo" href="{{ b.settings[pu] | default: '#' }}">
+                        {%- if b.settings[pi] != blank -%}{{ b.settings[pi] | image_url: width: 700 | image_tag: width: 350, height: 438, loading: 'lazy', alt: '', sizes: '260px', widths: '350,520,700' }}{%- endif -%}
+                        <span class="mpromo__body"><span class="eyebrow">{{ b.settings[pe] | escape }}</span><span class="mpromo__label">{{ b.settings[pl] | escape }}</span></span></a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                {%- if b.settings.best_collection != blank -%}
+                  <p class="mz__h">Bestsellers</p>
+                  {%- render 'snh-v2-minis', collection: b.settings.best_collection, limit: 3 -%}
+                {%- endif -%}
+              </div>
+            </div></div>
+          </div>
+        {%- when 'brands' -%}
+          <div class="mega" id="mega-{{ b.id }}" role="region" aria-label="{{ b.settings.label | escape }}" hidden {{ b.shopify_attributes }}>
+            <div class="v-wrap mega__in"><div class="mega__brands">
+              <div class="mega__head"><p class="mz__h">{{ brand_blocks.size }} brands, all authentic</p><a class="mz__all" href="{{ section.settings.brands_url }}">{{ b.settings.all_label | escape }}</a></div>
+              {{ az }}
+            </div></div>
+          </div>
+        {%- when 'offers' -%}
+          <div class="mega" id="mega-{{ b.id }}" role="region" aria-label="{{ b.settings.label | escape }}" hidden {{ b.shopify_attributes }}>
+            <div class="v-wrap mega__in"><div class="mega__grid mega__grid--offers">
+              <div class="mz mz--wide"><p class="mz__h">{{ b.settings.title | escape }}</p>
+                <div class="offers">
+                  {%- for i in (1..4) -%}
+                    {%- assign ck = 'collection_' | append: i -%}{%- assign ik = 'image_' | append: i -%}
+                    {%- assign c = b.settings[ck] -%}
+                    {%- if c != blank -%}
+                      {%- assign cimg = b.settings[ik] | default: c.image | default: c.products.first.featured_image -%}
+                      <a class="v-offer" href="{{ c.url }}">
+                        {%- if cimg != blank -%}{{ cimg | image_url: width: 600 | image_tag: width: 300, height: 300, loading: 'lazy', alt: '' }}{%- else -%}<span class="v-offer__ph">Bundle</span>{%- endif -%}
+                        <span class="v-offer__b"><span class="v-offer__t">{{ c.title | escape }}</span><span class="v-offer__n">{{ c.products_count }} bundles</span></span></a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                {{ perks }}
+              </div>
+              <div class="mz"><p class="mz__h">{{ b.settings.deals_title | escape }}</p>
+                {%- render 'snh-v2-minis', collection: b.settings.deals_collection, limit: 4, class: 'minis--list' -%}
+                {%- if b.settings.deals_collection != blank -%}<a class="mz__all" href="{{ b.settings.deals_collection.url }}">View all offers</a>{%- endif -%}</div>
+            </div></div>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </header>
+  <div class="mega-scrim" hidden></div>
+
+  {%- comment -%} predictive search overlay {%- endcomment -%}
+  <div class="srch" id="srch-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Search" hidden>
+    <div class="srch__bar"><form class="v-wrap srch__barin" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="srch__field">{% render 'snh-v2-icon', name: 'search' %}<input type="search" name="q" placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" aria-label="Search" aria-controls="srch-results-{{ section.id }}"></label>
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="icon-btn srch__close" type="button" aria-label="Close search">{% render 'snh-v2-icon', name: 'close' %}</button>
+    </form></div>
+    <div class="srch__body"><div class="v-wrap" id="srch-results-{{ section.id }}" aria-live="polite">
+      <div class="srch__empty">
+        {%- assign chips = section.settings.popular | split: ',' -%}
+        {%- if chips.size > 0 -%}
+          <p class="mz__h">Popular searches</p>
+          <ul class="chips">{%- for qq in chips -%}{%- assign q = qq | strip -%}<li><button type="button" class="chip" data-q="{{ q | escape }}">{{ q | escape }}</button></li>{%- endfor -%}</ul>
+        {%- endif -%}
+        {%- if section.settings.trending != blank -%}
+          <p class="mz__h">Trending now</p>
+          {%- render 'snh-v2-minis', collection: section.settings.trending, limit: 4, class: 'minis--row' -%}
+        {%- endif -%}
+      </div>
+      <div class="srch__res" hidden>
+        <div class="srch__col"><p class="mz__h">Products</p><ul class="minis srch__list" data-r="p"></ul></div>
+        <div class="srch__col"><p class="mz__h">Collections</p><ul class="srch__list srch__list--plain" data-r="c"></ul><p class="mz__h">Articles</p><ul class="minis srch__list" data-r="a"></ul></div>
+        <a class="v-btn v-btn--ink srch__all" href="{{ routes.search_url }}"><span>View all results</span></a>
+      </div>
+    </div></div>
+  </div>
+  <div class="srch-scrim" hidden></div>
+
+  {%- comment -%} mobile drill-down {%- endcomment -%}
+  <div class="mmenu" id="mmenu-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="mmenu__top">
+      {%- if logo != blank -%}{{ logo | image_url: width: 300 | image_tag: width: 82, height: 24, alt: shop.name, loading: 'lazy' }}{%- else -%}<span>{{ shop.name }}</span>{%- endif -%}
+      <button class="icon-btn mmenu__close" type="button" aria-label="Close menu">{% render 'snh-v2-icon', name: 'close' %}</button>
+    </div>
+    <button class="mmenu__search" type="button" data-open-search>{% render 'snh-v2-icon', name: 'search' %}<span>{{ section.settings.search_placeholder | escape }}</span></button>
+    <div class="mmenu__levels">
+      <div class="mm__level is-on" data-root id="mm-root-{{ section.id }}" aria-label="Menu"><div class="mm__scroll">
+        <ul class="mm__root">
+          {%- for b in section.blocks -%}
+            {%- case b.type -%}
+              {%- when 'mega', 'brands', 'offers' -%}
+                <li><button class="mm__go" type="button" data-level="mm-{{ b.id }}">{{ b.settings.label | escape }}{% render 'snh-v2-icon', name: 'next' %}</button></li>
+              {%- when 'link' -%}
+                <li><a class="mm__go" href="{{ b.settings.url | default: '#' }}">{{ b.settings.label | escape }}</a></li>
+            {%- endcase -%}
+          {%- endfor -%}
+          <li><a class="mm__go" href="{{ routes.account_url }}">{% if customer %}My account{% else %}Sign in{% endif %}</a></li>
+        </ul>
+        {%- assign mpromos = section.blocks | where: 'type', 'mobile_promo' -%}
+        {%- if mpromos.size > 0 -%}
+          <div class="mmenu__promos">
+            {%- for p in mpromos -%}
+              <a class="mpromo" href="{{ p.settings.link | default: '#' }}" {{ p.shopify_attributes }}>
+                {%- if p.settings.image != blank -%}{{ p.settings.image | image_url: width: 500 | image_tag: width: 250, height: 312, loading: 'lazy', alt: '' }}{%- endif -%}
+                <span class="mpromo__body"><span class="eyebrow">{{ p.settings.eyebrow | escape }}</span><span class="mpromo__label">{{ p.settings.label | escape }}</span></span></a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div></div>
+
+      {%- for b in section.blocks -%}
+        {%- case b.type -%}
+          {%- when 'mega' -%}
+            <div class="mm__level" id="mm-{{ b.id }}" aria-label="{{ b.settings.label | escape }}" inert>
+              <div class="mm__head"><button class="mm__back" type="button">{% render 'snh-v2-icon', name: 'back' %}<span>Back</span></button><p>{{ b.settings.label | escape }}</p></div>
+              <div class="mm__scroll">
+                <div class="mm__tabs" role="tablist"><button role="tab" type="button" aria-selected="true" data-tab="0">{{ b.settings.need_title | escape }}</button><button role="tab" type="button" aria-selected="false" data-tab="1">{{ b.settings.type_title | escape }}</button></div>
+                <ul class="mm__list" data-pane="0">{% render 'snh-v2-links', menu: b.settings.need_menu, lines: b.settings.need_links %}{% if b.settings.need_all != blank %}<li><a class="mm__all" href="{{ b.settings.need_all }}">View all</a></li>{% endif %}</ul>
+                <ul class="mm__list" data-pane="1" hidden>{% render 'snh-v2-links', menu: b.settings.type_menu, lines: b.settings.type_links %}{% if b.settings.type_all != blank %}<li><a class="mm__all" href="{{ b.settings.type_all }}">View all</a></li>{% endif %}</ul>
+                <p class="mz__h">Top brands</p>
+                <div class="mz__logos mz__logos--m">
+                  {%- assign names = b.settings.brands | split: ',' -%}
+                  {%- for raw_name in names -%}{%- assign n = raw_name | strip | downcase -%}
+                    {%- for bb in brand_blocks -%}{%- assign bn = bb.settings.name | downcase -%}{%- if bn == n -%}{% render 'snh-v2-brand-tile', b: bb, size: 200 %}{%- break -%}{%- endif -%}{%- endfor -%}
+                  {%- endfor -%}
+                </div>
+                {%- if b.settings.best_collection != blank -%}
+                  <p class="mz__h">Bestsellers</p>
+                  {%- render 'snh-v2-minis', collection: b.settings.best_collection, limit: 3, class: 'minis--list' -%}
+                {%- endif -%}
+                <div class="mmenu__promos">
+                  {%- for i in (1..2) -%}
+                    {%- assign pi = 'promo_' | append: i | append: '_image' -%}{%- assign pe = 'promo_' | append: i | append: '_eyebrow' -%}
+                    {%- assign pl = 'promo_' | append: i | append: '_label' -%}{%- assign pu = 'promo_' | append: i | append: '_link' -%}
+                    {%- if b.settings[pi] != blank or b.settings[pl] != blank -%}
+                      <a class="mpromo" href="{{ b.settings[pu] | default: '#' }}">
+                        {%- if b.settings[pi] != blank -%}{{ b.settings[pi] | image_url: width: 500 | image_tag: width: 250, height: 312, loading: 'lazy', alt: '' }}{%- endif -%}
+                        <span class="mpromo__body"><span class="eyebrow">{{ b.settings[pe] | escape }}</span><span class="mpromo__label">{{ b.settings[pl] | escape }}</span></span></a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- when 'brands' -%}
+            <div class="mm__level" id="mm-{{ b.id }}" aria-label="{{ b.settings.label | escape }}" inert>
+              <div class="mm__head"><button class="mm__back" type="button">{% render 'snh-v2-icon', name: 'back' %}<span>Back</span></button><p>{{ b.settings.label | escape }} A–Z</p></div>
+              <div class="mm__scroll">{{ az }}</div>
+            </div>
+          {%- when 'offers' -%}
+            <div class="mm__level" id="mm-{{ b.id }}" aria-label="{{ b.settings.label | escape }}" inert>
+              <div class="mm__head"><button class="mm__back" type="button">{% render 'snh-v2-icon', name: 'back' %}<span>Back</span></button><p>{{ b.settings.label | escape }}</p></div>
+              <div class="mm__scroll">
+                <div class="offers offers--m">
+                  {%- for i in (1..4) -%}
+                    {%- assign ck = 'collection_' | append: i -%}{%- assign ik = 'image_' | append: i -%}
+                    {%- assign c = b.settings[ck] -%}
+                    {%- if c != blank -%}
+                      {%- assign cimg = b.settings[ik] | default: c.image | default: c.products.first.featured_image -%}
+                      <a class="v-offer" href="{{ c.url }}">
+                        {%- if cimg != blank -%}{{ cimg | image_url: width: 400 | image_tag: width: 200, height: 200, loading: 'lazy', alt: '' }}{%- else -%}<span class="v-offer__ph">Bundle</span>{%- endif -%}
+                        <span class="v-offer__b"><span class="v-offer__t">{{ c.title | escape }}</span><span class="v-offer__n">{{ c.products_count }} bundles</span></span></a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                {{ perks }}
+                <p class="mz__h">{{ b.settings.deals_title | escape }}</p>
+                {%- render 'snh-v2-minis', collection: b.settings.deals_collection, limit: 4, class: 'minis--list' -%}
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SNH header",
+  "class": "snh-hdr-sec",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "header", "content": "Logo" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "image_picker", "id": "logo_light", "label": "Logo over the hero (light version)", "info": "Optional. Shown while the header is transparent on the homepage." },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 180, "step": 2, "unit": "px", "default": 82 },
+    { "type": "checkbox", "id": "overlay_home", "label": "Transparent over the homepage hero", "default": true, "info": "Turns solid once the page scrolls or a menu opens." },
+    { "type": "header", "content": "Ticker" },
+    { "type": "textarea", "id": "ticker", "label": "Ticker messages", "info": "One message per line. Leave empty to hide the ticker.", "default": "Free delivery over Rs 17,000\nSame-day Colombo delivery\nSNH Elite: earn 3–10% back\nPay in 3 with Koko" },
+    { "type": "range", "id": "ticker_speed", "label": "Ticker loop time", "min": 10, "max": 80, "step": 2, "unit": "s", "default": 32 },
+    { "type": "range", "id": "announce_interval", "label": "Announcement rotation", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 4, "info": "The orange bar shows the Announcement blocks one at a time." },
+    { "type": "header", "content": "Brands" },
+    { "type": "url", "id": "brands_url", "label": "All brands page", "default": "/collections/all" },
+    { "type": "header", "content": "Search" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search products, brands and guides" },
+    { "type": "text", "id": "popular", "label": "Popular searches", "info": "Comma separated.", "default": "Whey protein, Creatine, Pre-workout, Magnesium glycinate, Electrolytes, SiS gels, Multivitamin, Ashwagandha" },
+    { "type": "collection", "id": "trending", "label": "Trending now (first 4 products)" },
+    { "type": "header", "content": "Account" },
+    { "type": "text", "id": "account_note", "label": "Signed-out note", "default": "Earn 3–10% back in points on every order." }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        { "type": "text", "id": "tag", "label": "Tag", "default": "New" },
+        { "type": "text", "id": "text", "label": "Text", "default": "The all-new RYSE range has landed" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "mega",
+      "name": "Mega menu",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Menu label", "default": "Supplements", "info": "Text after \" & \" is hidden between 1024 and 1199px wide." },
+        { "type": "header", "content": "Zone 1 · shop by need" },
+        { "type": "text", "id": "need_title", "label": "Heading", "default": "Shop by goal" },
+        { "type": "link_list", "id": "need_menu", "label": "Menu", "info": "Pick a Navigation menu. When none is picked the lines below are used." },
+        { "type": "textarea", "id": "need_links", "label": "Fallback links", "info": "One per line: Label | /collections/handle" },
+        { "type": "url", "id": "need_all", "label": "View all link" },
+        { "type": "header", "content": "Zone 2 · shop by type" },
+        { "type": "text", "id": "type_title", "label": "Heading", "default": "Shop by type" },
+        { "type": "link_list", "id": "type_menu", "label": "Menu" },
+        { "type": "textarea", "id": "type_links", "label": "Fallback links", "info": "One per line: Label | /collections/handle" },
+        { "type": "url", "id": "type_all", "label": "View all link" },
+        { "type": "header", "content": "Zone 3 · top brands" },
+        { "type": "text", "id": "brands", "label": "Brand names", "info": "Comma separated, matching the names of the Brand blocks." },
+        { "type": "header", "content": "Zone 4 · promo cards" },
+        { "type": "image_picker", "id": "promo_1_image", "label": "Card 1 image" },
+        { "type": "text", "id": "promo_1_eyebrow", "label": "Card 1 eyebrow" },
+        { "type": "text", "id": "promo_1_label", "label": "Card 1 label" },
+        { "type": "url", "id": "promo_1_link", "label": "Card 1 link" },
+        { "type": "image_picker", "id": "promo_2_image", "label": "Card 2 image" },
+        { "type": "text", "id": "promo_2_eyebrow", "label": "Card 2 eyebrow" },
+        { "type": "text", "id": "promo_2_label", "label": "Card 2 label" },
+        { "type": "url", "id": "promo_2_link", "label": "Card 2 link" },
+        { "type": "collection", "id": "best_collection", "label": "Bestsellers collection", "info": "Shows its first 3 products, in the collection's sort order." }
+      ]
+    },
+    {
+      "type": "brands",
+      "name": "Brands A–Z panel",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Menu label", "default": "Brands" },
+        { "type": "text", "id": "all_label", "label": "Link label", "default": "Shop by brand page" }
+      ]
+    },
+    {
+      "type": "offers",
+      "name": "Offers panel",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Menu label", "default": "Offers" },
+        { "type": "text", "id": "title", "label": "Heading", "default": "Bundles & deals" },
+        { "type": "collection", "id": "collection_1", "label": "Offer 1" },
+        { "type": "image_picker", "id": "image_1", "label": "Offer 1 image", "info": "Defaults to the collection image." },
+        { "type": "collection", "id": "collection_2", "label": "Offer 2" },
+        { "type": "image_picker", "id": "image_2", "label": "Offer 2 image" },
+        { "type": "collection", "id": "collection_3", "label": "Offer 3" },
+        { "type": "image_picker", "id": "image_3", "label": "Offer 3 image" },
+        { "type": "collection", "id": "collection_4", "label": "Offer 4" },
+        { "type": "image_picker", "id": "image_4", "label": "Offer 4 image" },
+        { "type": "textarea", "id": "perks", "label": "Perks", "info": "One per line: icon | text. Icons: truck, card, badge, shield, chat, bolt.", "default": "truck | Free delivery over Rs 17,000\ncard | Pay in 3 with Koko\nbadge | 3–10% back with SNH Elite" },
+        { "type": "text", "id": "deals_title", "label": "Deals heading", "default": "Top bundle deals" },
+        { "type": "collection", "id": "deals_collection", "label": "Deals collection" }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Menu link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "SNH Elite" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    },
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "Brand" },
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Square tile. Without a logo the name is shown." },
+        { "type": "select", "id": "fit", "label": "Logo fit", "options": [{ "value": "cover", "label": "Fill the tile" }, { "value": "contain", "label": "Padded" }], "default": "cover" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    },
+    {
+      "type": "mobile_promo",
+      "name": "Mobile menu promo",
+      "limit": 2,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["header"] },
+  "presets": [{ "name": "SNH header", "blocks": [{ "type": "announcement" }, { "type": "mega" }, { "type": "link" }] }]
+}
+{% endschema %}

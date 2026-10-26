@@ -1,0 +1,21 @@
+{%- comment -%}
+  Renders <li><a> rows for a mega-menu zone.
+  menu: a link_list setting (Shopify navigation). Used when it has links.
+  lines: textarea fallback, one "Label | /url" per line, used only when no menu is picked.
+  class: optional class for each <a>.
+{%- endcomment -%}
+{%- if menu != blank and menu.links.size > 0 -%}
+  {%- for link in menu.links -%}
+    <li><a{% if class %} class="{{ class }}"{% endif %} href="{{ link.url }}">{{ link.title | escape }}</a></li>
+  {%- endfor -%}
+{%- elsif lines != blank -%}
+  {%- assign rows = lines | newline_to_br | split: '<br />' -%}
+  {%- for row in rows -%}
+    {%- assign parts = row | strip | split: '|' -%}
+    {%- assign label = parts[0] | strip -%}
+    {%- assign href = parts[1] | strip | default: '#' -%}
+    {%- if label != blank -%}
+      <li><a{% if class %} class="{{ class }}"{% endif %} href="{{ href }}">{{ label | escape }}</a></li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

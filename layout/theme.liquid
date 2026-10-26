@@ -74,7 +74,10 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
 
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
     {{- 'snh-design-system.css' | asset_url | stylesheet_tag: preload: true -}}
+    {{- 'snh-v2.css' | asset_url | stylesheet_tag: preload: true -}}
+    {{- 'instrument-serif-italic-latin.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' -}}
     <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
+    <script src="{{ 'snh-v2.js' | asset_url }}" defer></script>
   </head>
 
   <body class="{% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">

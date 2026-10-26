@@ -1,0 +1,8 @@
+{%- comment -%}One brand logo tile from a header "brand" block. b: the block, size: rendered width.{%- endcomment -%}
+<a class="brand{% if b.settings.fit == 'contain' %} brand--contain{% endif %}" href="{{ b.settings.url | default: '#' }}" title="{{ b.settings.name | escape }}">
+  {%- if b.settings.logo != blank -%}
+    {{- b.settings.logo | image_url: width: size | image_tag: width: size, height: size, loading: 'lazy', alt: b.settings.name -}}
+  {%- else -%}
+    <span class="brand__word">{{ b.settings.name | escape }}</span>
+  {%- endif -%}
+</a>

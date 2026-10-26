@@ -1,0 +1,17 @@
+{%- comment -%}
+  Bestseller mini list: the first products of a collection, in the collection's own sort order.
+  collection, limit (default 3), class (extra list class)
+{%- endcomment -%}
+{%- if collection != blank -%}
+  <ul class="minis{% if class %} {{ class }}{% endif %}">
+    {%- for p in collection.products limit: limit -%}
+      <li><a class="mini" href="{{ p.url }}">
+        {%- if p.featured_image -%}
+          {{- p.featured_image | image_url: width: 160 | image_tag: width: 64, height: 64, loading: 'lazy', alt: '' -}}
+        {%- else -%}<span class="mini__ph"></span>{%- endif -%}
+        <span class="mini__t">{% render 'snh-v2-title', product: p %}</span>
+        <span class="mini__p">{{ p.price | money_without_trailing_zeros }}{% if p.compare_at_price > p.price %} <s>{{ p.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}</span>
+      </a></li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

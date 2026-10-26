@@ -26,156 +26,6 @@
         "text_color": "#1a1a1a"
       }
     },
-    "ss_header_4_dGmwyC": {
-      "type": "ss-header-4",
-      "blocks": {
-        "menu_item_8rNR8r": {
-          "type": "menu_item",
-          "settings": {
-            "text": "ACCESSORIES",
-            "subtitle": "Explore our full range",
-            "badge": "Popular",
-            "url": "",
-            "cta_label": "Shop all",
-            "submenu": "shop-accessories",
-            "collections": [],
-            "collection_cta_label": "Shop now",
-            "title": "",
-            "button_text": "",
-            "button_url": "",
-            "second_title": "",
-            "second_button_text": "",
-            "second_button_url": ""
-          }
-        },
-        "menu_item_PcXxfW": {
-          "type": "menu_item",
-          "settings": {
-            "text": "SUPPLEMENTS",
-            "subtitle": "Explore our full range",
-            "badge": "Popular",
-            "url": "",
-            "cta_label": "Shop all",
-            "submenu": "supplements-1",
-            "collections": [],
-            "collection_cta_label": "Shop now",
-            "title": "",
-            "button_text": "",
-            "button_url": "",
-            "second_title": "",
-            "second_button_text": "",
-            "second_button_url": ""
-          }
-        },
-        "menu_item_6kqyCR": {
-          "type": "menu_item",
-          "settings": {
-            "text": "VITAMINS",
-            "subtitle": "Explore our full range",
-            "badge": "Popular",
-            "url": "",
-            "cta_label": "Shop all",
-            "submenu": "vitamins",
-            "collections": [],
-            "collection_cta_label": "Shop now",
-            "title": "",
-            "button_text": "",
-            "button_url": "",
-            "second_title": "",
-            "second_button_text": "",
-            "second_button_url": ""
-          }
-        },
-        "menu_item_h6QVXP": {
-          "type": "menu_item",
-          "settings": {
-            "text": "ABOUT",
-            "subtitle": "Explore our full range",
-            "badge": "Popular",
-            "url": "",
-            "cta_label": "Shop all",
-            "submenu": "footer",
-            "collections": [],
-            "collection_cta_label": "Shop now",
-            "title": "",
-            "button_text": "",
-            "button_url": "",
-            "second_title": "",
-            "second_button_text": "",
-            "second_button_url": ""
-          }
-        },
-        "menu_item_a8Y9Kk": {
-          "type": "menu_item",
-          "settings": {
-            "text": "Shop by brand",
-            "subtitle": "Explore our full range",
-            "badge": "Popular",
-            "url": "shopify://pages/shop-by-brand",
-            "cta_label": "Shop all",
-            "submenu": "",
-            "collections": [],
-            "collection_cta_label": "Shop now",
-            "title": "",
-            "button_text": "Shop now",
-            "button_url": "",
-            "second_title": "",
-            "second_button_text": "Explore",
-            "second_button_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "menu_item_8rNR8r",
-        "menu_item_PcXxfW",
-        "menu_item_6kqyCR",
-        "menu_item_h6QVXP",
-        "menu_item_a8Y9Kk"
-      ],
-      "name": "SS - Header #4",
-      "settings": {
-        "sticky_behavior": "scroll_up",
-        "full_width": true,
-        "content_width": 1400,
-        "padding_horizontal": 16,
-        "padding_horizontal_mobile": 10,
-        "logo": "shopify://shop_images/ffd.png",
-        "logo_mobile": "shopify://shop_images/sn_o.png",
-        "logo_width": 90,
-        "logo_width_mobile": 70,
-        "mobile_menu": "main-menu",
-        "secondary_menu": "",
-        "goal_menu": "",
-        "free_shipping_threshold": "17000",
-        "free_delivery_tolerance": 100,
-        "loyalty_cta_label": "Join SNH Rewards",
-        "loyalty_cta_url": "",
-        "loyalty_mobile_title": "Earn rewards every time you shop",
-        "loyalty_mobile_text": "Sign up to collect SNH points, unlock perks, and make every supplement run count.",
-        "enable_search": true,
-        "search_placeholder": "Search products, brands, goals...",
-        "popular_searches": "whey protein, creatine, mass gainer, pre workout, fat burner, vitamins",
-        "popular_products_collection": "",
-        "help_cta_label": "Get supplement guidance",
-        "help_cta_url": "",
-        "enable_account": true,
-        "account_label": "My SNH",
-        "account_popover_title": "Sign in or create an account",
-        "account_popover_text": "Track orders, save favourites, and manage your SNH loyalty benefits.",
-        "cart_label": "Basket",
-        "enable_cart_drawer": true,
-        "accent_color": "#e0521c",
-        "accent_dark_color": "#ce4b1a",
-        "accent_soft_color": "#fff0df",
-        "text_color": "#161616",
-        "muted_text_color": "#666666",
-        "background_color": "",
-        "panel_background_color": "#ffffff",
-        "border_color": "#000000",
-        "top_bar_background_color": "#e0521c",
-        "top_bar_text_color": "#ffffff"
-      }
-    },
     "header": {
       "type": "header",
       "disabled": true,
@@ -362,11 +212,381 @@
         "border_bottom": true,
         "lazy": false
       }
+    },
+    "snh_header": {
+      "type": "snh-header",
+      "blocks": {
+        "announce_1": {
+          "type": "announcement",
+          "settings": {
+            "tag": "New",
+            "text": "The all-new RYSE range has landed",
+            "link": "/collections/ryse"
+          }
+        },
+        "announce_2": {
+          "type": "announcement",
+          "settings": {
+            "tag": "Just in",
+            "text": "The Sulek Stack from RAW Nutrition",
+            "link": "/collections/the-sulek-stack"
+          }
+        },
+        "announce_3": {
+          "type": "announcement",
+          "settings": {
+            "tag": "New",
+            "text": "SiS Beta Fuel + Nootropics gel",
+            "link": "/products/sis-beta-fuel-energy-nootropics-gel"
+          }
+        },
+        "mega_supplements": {
+          "type": "mega",
+          "settings": {
+            "label": "Supplements",
+            "need_title": "Shop by goal",
+            "need_links": "Build muscle & strength | /collections/muscle-and-strength\nLose fat | /collections/fat-loss\nEnergy & endurance | /collections/energy-and-endurance\nGain weight | /collections/mass-gainer\nWeight management | /collections/weight-management\nTestosterone support | /collections/testosterone-supplements\nInformed Sport tested | /collections/informed-sports",
+            "need_all": "/collections/train-perform",
+            "type_title": "Shop by type",
+            "type_links": "Whey protein | /collections/whey-protein\nIsolate protein | /collections/isolate-protein\nClear protein | /collections/clear-protein\nVegan protein | /collections/vegan-protein\nPre-workout | /collections/pre-workout-1\nCreatine | /collections/creatine-1\nAminos & BCAA | /collections/amino-bcaa\nFat burners | /collections/fat-burners-1\nProtein bars & snacks | /collections/protein-bars-snacks",
+            "type_all": "/collections/supplements",
+            "brands": "Applied Nutrition, RAW Nutrition, Myprotein, Dymatize, MuscleTech, RYSE",
+            "best_collection": "whey-protein",
+            "promo_1_image": "shopify://shop_images/ryse_mobile_banner.jpg",
+            "promo_1_eyebrow": "New launch",
+            "promo_1_label": "The all-new RYSE range",
+            "promo_1_link": "/collections/ryse",
+            "promo_2_image": "shopify://shop_images/the-sulek-stack_mobike.jpg",
+            "promo_2_eyebrow": "Just landed",
+            "promo_2_label": "The Sulek Stack by RAW",
+            "promo_2_link": "/collections/the-sulek-stack"
+          }
+        },
+        "mega_vitamins": {
+          "type": "mega",
+          "settings": {
+            "label": "Vitamins & Wellness",
+            "need_title": "Shop by need",
+            "need_links": "Daily wellness | /collections/daily-wellness\nGut health | /collections/gut-health\nWomen's health | /collections/womens-health\nBeauty, hair & skin | /collections/beauty-hair-and-skin\nJoint & mobility | /collections/joint-and-mobility\nSleep | /collections/sleep\nSexual health | /collections/sexual-health\nGreens | /collections/greens-1",
+            "need_all": "/collections/health-wellness",
+            "type_title": "Shop by type",
+            "type_links": "Multivitamins | /collections/multivitamins\nFish oil & omega | /collections/fish-oil-omega\nMinerals | /collections/minerals\nMagnesium | /collections/magnesium\nLetter vitamins | /collections/letter-vitamins\nCollagen | /collections/collagen\nProbiotics | /collections/probiotics\nAshwagandha | /collections/ashwagandha\nHerbs & natural | /collections/herbs-natural-solution",
+            "type_all": "/collections/vitamins-minerals",
+            "brands": "Revive, Vitabiotics, Healthspan Elite, Applied Nutrition, Trace Minerals, Centrum",
+            "best_collection": "vitamins-minerals",
+            "promo_1_image": "shopify://shop_images/revive_mobile.jpg",
+            "promo_1_eyebrow": "Brand in focus",
+            "promo_1_label": "Revive daily wellness",
+            "promo_1_link": "/collections/revive",
+            "promo_2_image": "shopify://shop_images/IMG_4447.jpg",
+            "promo_2_eyebrow": "Daily essentials",
+            "promo_2_label": "Vitamins & well-being",
+            "promo_2_link": "/collections/vitamins-minerals"
+          }
+        },
+        "mega_sports": {
+          "type": "mega",
+          "settings": {
+            "label": "Sports & Performance",
+            "need_title": "Shop by need",
+            "need_links": "Energy | /collections/energy-and-endurance\nHydration | /collections/hydration-recovery\nRecovery | /search?q=recovery\nBETA Fuel | /search?q=beta+fuel\nSupplements | /collections/informed-sports\nPacks & bundles | /collections/endurance-bundles",
+            "need_all": "/collections/train-perform",
+            "type_title": "Shop by type",
+            "type_links": "Energy gels | /collections/energy-gels\nElectrolytes | /collections/hydration-recovery\nCarb powders & snacks | /collections/carb-powders-snacks\nProtein bars | /collections/protein-snacks-bars\nBCAA & EAA | /collections/bcaa-eaa\nGlutamine | /collections/glutamine",
+            "type_all": "/collections/sis",
+            "brands": "Science in Sport, Applied Nutrition, Surge, EHP Labs, Revive, Myprotein",
+            "best_collection": "energy-and-endurance",
+            "promo_1_image": "shopify://shop_images/the-sulek-stack_mobike.jpg",
+            "promo_1_eyebrow": "Just landed",
+            "promo_1_label": "The Sulek Stack by RAW",
+            "promo_1_link": "/collections/the-sulek-stack",
+            "promo_2_image": "shopify://shop_images/ryse_mobile_banner.jpg",
+            "promo_2_eyebrow": "New launch",
+            "promo_2_label": "The all-new RYSE range",
+            "promo_2_link": "/collections/ryse"
+          }
+        },
+        "mega_accessories": {
+          "type": "mega",
+          "settings": {
+            "label": "Accessories",
+            "need_title": "Shop by use",
+            "need_links": "Lifting straps | /collections/lifting-straps\nWrist wraps | /collections/wrist-wraps\nShakers | /collections/accessories",
+            "need_all": "/collections/accessories-1",
+            "type_title": "Shop by type",
+            "type_links": "Shaker bottles | /collections/accessories\nGym accessories | /collections/accessories-1\nNew arrivals | /collections/new-arrivals",
+            "type_all": "/collections/accessories-1",
+            "brands": "SNH, Applied Nutrition, RAW Nutrition",
+            "best_collection": "accessories-1",
+            "promo_1_image": "shopify://shop_images/imgi_29_1f9f6567-6e04-4fd9-8b8d-2cf6428d6199.jpg",
+            "promo_1_eyebrow": "Accessories",
+            "promo_1_label": "SNH shakers",
+            "promo_1_link": "/collections/accessories",
+            "promo_2_image": "shopify://shop_images/revive_mobile.jpg",
+            "promo_2_eyebrow": "Brand in focus",
+            "promo_2_label": "Revive daily wellness",
+            "promo_2_link": "/collections/revive"
+          }
+        },
+        "brands_az": {
+          "type": "brands",
+          "settings": {
+            "label": "Brands",
+            "all_label": "Shop by brand page"
+          }
+        },
+        "offers": {
+          "type": "offers",
+          "settings": {
+            "label": "Offers",
+            "title": "Bundles & deals",
+            "deals_title": "Top bundle deals",
+            "deals_collection": "bundle-offers",
+            "perks": "truck | Free delivery over Rs 17,000\ncard | Pay in 3 with Koko\nbadge | 3–10% back with SNH Elite",
+            "collection_1": "bundle-offers",
+            "image_1": "shopify://shop_images/impact_builder.jpg",
+            "collection_2": "daily-health-wellness-bundles",
+            "image_2": "shopify://shop_images/wellness.png",
+            "collection_3": "training-strength-bundles",
+            "image_3": "shopify://shop_images/rawtrainingstack.jpg",
+            "collection_4": "endurance-bundles",
+            "image_4": "shopify://shop_images/racedaypack1.0.jpg"
+          }
+        },
+        "link_elite": {
+          "type": "link",
+          "settings": {
+            "label": "SNH Elite",
+            "url": "/#elite"
+          }
+        },
+        "brand_applied_nutrition": {
+          "type": "brand",
+          "settings": {
+            "name": "Applied Nutrition",
+            "url": "/collections/applied-nutrition",
+            "fit": "cover",
+            "logo": "shopify://shop_images/Untitled_design.zip_-_1.png"
+          }
+        },
+        "brand_snh": {
+          "type": "brand",
+          "settings": {
+            "name": "SNH",
+            "url": "/collections/everything?filter.p.vendor=Sports+Nutrition+Hub+%28SNH%29",
+            "fit": "contain",
+            "logo": "shopify://shop_images/sn_o.png"
+          }
+        },
+        "brand_science_in_sport": {
+          "type": "brand",
+          "settings": {
+            "name": "Science in Sport",
+            "url": "/collections/sis",
+            "fit": "cover",
+            "logo": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png"
+          }
+        },
+        "brand_raw_nutrition": {
+          "type": "brand",
+          "settings": {
+            "name": "RAW Nutrition",
+            "url": "/collections/raw",
+            "fit": "cover",
+            "logo": "shopify://shop_images/IMG_0045.jpg"
+          }
+        },
+        "brand_myprotein": {
+          "type": "brand",
+          "settings": {
+            "name": "Myprotein",
+            "url": "/collections/myprotein",
+            "fit": "cover",
+            "logo": "shopify://shop_images/IMG_0049.png"
+          }
+        },
+        "brand_revive": {
+          "type": "brand",
+          "settings": {
+            "name": "Revive",
+            "url": "/collections/revive",
+            "fit": "cover",
+            "logo": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png"
+          }
+        },
+        "brand_trace_minerals": {
+          "type": "brand",
+          "settings": {
+            "name": "Trace Minerals",
+            "url": "/collections/everything?filter.p.vendor=Trace+Minerals",
+            "fit": "cover"
+          }
+        },
+        "brand_muscletech": {
+          "type": "brand",
+          "settings": {
+            "name": "MuscleTech",
+            "url": "/collections/muscletech",
+            "fit": "cover",
+            "logo": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png"
+          }
+        },
+        "brand_ryse": {
+          "type": "brand",
+          "settings": {
+            "name": "RYSE",
+            "url": "/collections/ryse",
+            "fit": "cover",
+            "logo": "shopify://shop_images/IMG_0046.jpg"
+          }
+        },
+        "brand_ehp_labs": {
+          "type": "brand",
+          "settings": {
+            "name": "EHP Labs",
+            "url": "/collections/ehplabs",
+            "fit": "cover",
+            "logo": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png"
+          }
+        },
+        "brand_surge": {
+          "type": "brand",
+          "settings": {
+            "name": "Surge",
+            "url": "/collections/surge",
+            "fit": "cover",
+            "logo": "shopify://shop_images/final_surge_logo-01.jpg"
+          }
+        },
+        "brand_healthspan_elite": {
+          "type": "brand",
+          "settings": {
+            "name": "Healthspan Elite",
+            "url": "/collections/healthspan-elite",
+            "fit": "cover",
+            "logo": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png"
+          }
+        },
+        "brand_vitabiotics": {
+          "type": "brand",
+          "settings": {
+            "name": "Vitabiotics",
+            "url": "/collections/everything?filter.p.vendor=VITABIOTICS",
+            "fit": "cover",
+            "logo": "shopify://shop_images/3_e9de3e34-4221-415b-b928-c97558667165.png"
+          }
+        },
+        "brand_ronnie_coleman": {
+          "type": "brand",
+          "settings": {
+            "name": "Ronnie Coleman",
+            "url": "/collections/everything?filter.p.vendor=Ronnie+Coleman",
+            "fit": "cover"
+          }
+        },
+        "brand_dymatize": {
+          "type": "brand",
+          "settings": {
+            "name": "Dymatize",
+            "url": "/collections/dymatize",
+            "fit": "cover",
+            "logo": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png"
+          }
+        },
+        "brand_bsn": {
+          "type": "brand",
+          "settings": {
+            "name": "BSN",
+            "url": "/collections/everything?filter.p.vendor=BSN",
+            "fit": "cover"
+          }
+        },
+        "brand_centrum": {
+          "type": "brand",
+          "settings": {
+            "name": "Centrum",
+            "url": "/collections/everything?filter.p.vendor=CENTRUM",
+            "fit": "cover"
+          }
+        },
+        "brand_redcon1": {
+          "type": "brand",
+          "settings": {
+            "name": "Redcon1",
+            "url": "/collections/redcon1",
+            "fit": "cover",
+            "logo": "shopify://shop_images/Untitled_design.zip_-_4.png"
+          }
+        },
+        "mpromo_1": {
+          "type": "mobile_promo",
+          "settings": {
+            "image": "shopify://shop_images/ryse_mobile_banner.jpg",
+            "eyebrow": "New launch",
+            "label": "The all-new RYSE range",
+            "link": "/collections/ryse"
+          }
+        },
+        "mpromo_2": {
+          "type": "mobile_promo",
+          "settings": {
+            "image": "shopify://shop_images/cricket.jpg",
+            "eyebrow": "SNH Elite",
+            "label": "Earn 3–10% back",
+            "link": "/account/register"
+          }
+        }
+      },
+      "block_order": [
+        "announce_1",
+        "announce_2",
+        "announce_3",
+        "mega_supplements",
+        "mega_vitamins",
+        "mega_sports",
+        "mega_accessories",
+        "brands_az",
+        "offers",
+        "link_elite",
+        "brand_applied_nutrition",
+        "brand_snh",
+        "brand_science_in_sport",
+        "brand_raw_nutrition",
+        "brand_myprotein",
+        "brand_revive",
+        "brand_trace_minerals",
+        "brand_muscletech",
+        "brand_ryse",
+        "brand_ehp_labs",
+        "brand_surge",
+        "brand_healthspan_elite",
+        "brand_vitabiotics",
+        "brand_ronnie_coleman",
+        "brand_dymatize",
+        "brand_bsn",
+        "brand_centrum",
+        "brand_redcon1",
+        "mpromo_1",
+        "mpromo_2"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/sn_o.png",
+        "logo_width": 82,
+        "overlay_home": true,
+        "ticker": "Free delivery over Rs 17,000\nSame-day Colombo delivery\nSNH Elite: earn 3–10% back\nPay in 3 with Koko",
+        "ticker_speed": 32,
+        "announce_interval": 4,
+        "brands_url": "/pages/shop-by-brand",
+        "search_placeholder": "Search products, brands and guides",
+        "popular": "Whey protein, Creatine, Pre-workout, Magnesium glycinate, Electrolytes, SiS gels, Multivitamin, Ashwagandha",
+        "trending": "whey-protein",
+        "account_note": "Earn 3–10% back in points on every order."
+      }
     }
   },
   "order": [
     "announcement-bar",
-    "ss_header_4_dGmwyC",
+    "snh_header",
     "header",
     "ss_header_13_tJN7zP"
   ]

@@ -11,282 +11,6 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
-    "ss_footer_16_AYbb9H": {
-      "type": "ss-footer-16",
-      "blocks": {
-        "heading_M9pyCQ": {
-          "type": "heading",
-          "disabled": true,
-          "settings": {
-            "heading": "<h2>Heading</h2>",
-            "heading_custom": false,
-            "heading_font": "josefin_sans_n4",
-            "heading_size": 26,
-            "heading_size_mobile": 20,
-            "heading_height": 130,
-            "heading_mt": 0,
-            "heading_mt_mobile": 0,
-            "heading_width": 70,
-            "heading_content_align": "center",
-            "heading_content_align_mobile": "center",
-            "heading_color": "#ffffff"
-          }
-        },
-        "scrolling_eVVTN7": {
-          "type": "scrolling",
-          "settings": {
-            "enable_first": true,
-            "first_image": "shopify://shop_images/10.webp",
-            "enable_second": true,
-            "second_image": "shopify://shop_images/13-ezgif.com-png-to-webp-converter.webp",
-            "enable_third": true,
-            "third_image": "shopify://shop_images/2_1.webp",
-            "enable_fourth": true,
-            "fourth_image": "shopify://shop_images/11-ezgif.com-png-to-webp-converter.webp",
-            "enable_fifth": true,
-            "fifth_image": "shopify://shop_images/14-ezgif.com-png-to-webp-converter.webp",
-            "enable_sixth": true,
-            "sixth_image": "shopify://shop_images/4.webp",
-            "enable_seventh": true,
-            "seventh_image": "shopify://shop_images/15-ezgif.com-png-to-webp-converter.webp",
-            "enable_eighth": true,
-            "eighth_image": "shopify://shop_images/12-ezgif.com-png-to-webp-converter.webp",
-            "scrolling_velocity": 40,
-            "scrolling_velocity_mobile": 40,
-            "scrolling_gap": 100,
-            "scrolling_gap_mobile": 70,
-            "scrolling_mt": 36,
-            "scrolling_mt_mobile": 24,
-            "reverse_direction": false,
-            "pause_hover": true,
-            "image_width": 200,
-            "image_width_mobile": 140,
-            "image_radius": 0,
-            "image_border": "none",
-            "image_border_thickness": 1,
-            "image_border_color": "#121212",
-            "image_ratio": "original",
-            "image_ratio_mobile": "original"
-          }
-        },
-        "newsletter_nE9HXE": {
-          "type": "newsletter",
-          "settings": {
-            "heading": "<p>SUBSCRIBE! NO SPAM. ONLY DISCOUNT CODES & PRODUCT INFO!</p>",
-            "heading_custom": false,
-            "heading_font": "josefin_sans_n4",
-            "heading_size": 40,
-            "heading_size_mobile": 28,
-            "heading_height": 130,
-            "heading_align": "left",
-            "heading_align_mobile": "center",
-            "input_width": 420,
-            "input_radius": 100,
-            "input_border_thickness": 0,
-            "use_shadow": true,
-            "placeholder_mail": "Email address",
-            "input_custom": false,
-            "input_font": "josefin_sans_n4",
-            "input_size": 16,
-            "input_size_mobile": 16,
-            "input_height": 100,
-            "use_redirect": false,
-            "redirect_url": "",
-            "submit_advanced": false,
-            "submit_size": 20,
-            "submit_size_mobile": 20,
-            "submit_padding_vertical": 10,
-            "submit_padding_vertical_mobile": 10,
-            "submit_padding_horizontal": 10,
-            "submit_padding_horizontal_mobile": 10,
-            "submit_radius": 100,
-            "submit_border_thickness": 0,
-            "thanks_text": "Thanks for subscribing!",
-            "thanks_text_custom": false,
-            "thanks_text_font": "josefin_sans_n4",
-            "thanks_text_size": 14,
-            "thanks_text_size_mobile": 14,
-            "thanks_text_height": 150,
-            "thanks_text_mt": 16,
-            "thanks_text_mt_mobile": 16,
-            "thanks_text_align": "center",
-            "thanks_text_align_mobile": "center",
-            "heading_color": "#ffffff",
-            "thanks_text_color": "#ffffff",
-            "input_color": "#121212",
-            "input_placeholder_color": "#707070",
-            "input_bg_color": "#ffffff",
-            "input_shadow_color": "#eaeaea",
-            "input_border_color": "#707070",
-            "submit_color": "#ffffff",
-            "submit_hover_color": "#ffffff",
-            "submit_bg_color": "#121212",
-            "submit_bg_hover_color": "#121212",
-            "submit_border_color": "#afafaf",
-            "submit_border_hover_color": "#afafaf"
-          }
-        },
-        "info_text_rzKhzN": {
-          "type": "info_text",
-          "settings": {
-            "text": "<p>DEHIWALA | WATTALA | NUGEGODA</p>",
-            "text_custom": false,
-            "text_font": "josefin_sans_n4",
-            "text_size": 13,
-            "text_size_mobile": 13,
-            "text_height": 150,
-            "text_mt": 24,
-            "text_mt_mobile": 24,
-            "text_width": 80,
-            "text_align": "left",
-            "text_align_mobile": "center",
-            "text_color": "#ffffff"
-          }
-        },
-        "socials_686Uhj": {
-          "type": "socials",
-          "settings": {
-            "social_list_gap": 28,
-            "social_list_gap_mobile": 28,
-            "socials_mt": 30,
-            "socials_mt_mobile": 24,
-            "socials_align": "left",
-            "socials_align_mobile": "center",
-            "social_icon_size": 24,
-            "social_icon_size_mobile": 20,
-            "instagram": "https://www.instagram.com/sportsnutritionhub.lk/?hl=en",
-            "facebook": "https://web.facebook.com/sportsnutritionhub.lk/?_rdc=1&_rdr",
-            "twitter": "",
-            "linkedin": "https://www.linkedin.com/company/sports-nutrition-hub",
-            "youtube": "",
-            "pinterest": "",
-            "whatsapp": "https://api.whatsapp.com/send/?phone=94764863359&text&type=phone_number&app_absent=0",
-            "tiktok": "https://www.tiktok.com/@sportsnutritionhub.lk",
-            "social_icon_color": "#ffffff",
-            "social_icon_hover_color": "#ffffff"
-          }
-        },
-        "menu_b7gALT": {
-          "type": "menu",
-          "settings": {
-            "heading": "SUPPLEMENTS",
-            "menu": "supplements-1"
-          }
-        },
-        "menu_NdjcPT": {
-          "type": "menu",
-          "settings": {
-            "heading": "VITAMINS & WELLNESS",
-            "menu": "vitamins"
-          }
-        },
-        "menu_tByeYQ": {
-          "type": "menu",
-          "settings": {
-            "heading": "INFO MENU",
-            "menu": "footer"
-          }
-        },
-        "menu_EBg3B6": {
-          "type": "menu",
-          "settings": {
-            "heading": "SUPPORT & POLICIES",
-            "menu": "main-menu"
-          }
-        },
-        "copyright_Uj3qqg": {
-          "type": "copyright",
-          "settings": {
-            "copyright": "<p>© 2026, Sports Nutrition Hub (PVT) Ltd. All Rights Reserved.<br/><br/></p>",
-            "copyright_custom": false,
-            "copyright_font": "josefin_sans_n4",
-            "copyright_size": 11,
-            "copyright_size_mobile": 11,
-            "copyright_height": 130,
-            "copyright_color": "#121212"
-          }
-        },
-        "payment_Mg98bK": {
-          "type": "payment",
-          "settings": {
-            "payment_icon_size": 36,
-            "payment_icon_size_mobile": 32
-          }
-        },
-        "bottom_menu_tqCMe4": {
-          "type": "bottom_menu",
-          "settings": {
-            "menu": "footer",
-            "link_custom": false,
-            "link_font": "josefin_sans_n4",
-            "link_size": 11,
-            "link_size_mobile": 11,
-            "link_height": 130,
-            "link_color": "#1a1a1a"
-          }
-        }
-      },
-      "block_order": [
-        "heading_M9pyCQ",
-        "scrolling_eVVTN7",
-        "newsletter_nE9HXE",
-        "info_text_rzKhzN",
-        "socials_686Uhj",
-        "menu_b7gALT",
-        "menu_NdjcPT",
-        "menu_tByeYQ",
-        "menu_EBg3B6",
-        "copyright_Uj3qqg",
-        "payment_Mg98bK",
-        "bottom_menu_tqCMe4"
-      ],
-      "name": "SS - Footer #16",
-      "settings": {
-        "menus_gap": 28,
-        "menus_gap_mobile": 16,
-        "menus_mt": 80,
-        "menus_mt_mobile": 60,
-        "menu_align": "left",
-        "menu_align_mobile": "left",
-        "menu_gap": 16,
-        "menu_gap_mobile": 16,
-        "menu_mt": 28,
-        "menu_mt_mobile": 28,
-        "menu_heading_custom": false,
-        "menu_heading_font": "josefin_sans_n4",
-        "menu_heading_size": 14,
-        "menu_heading_size_mobile": 14,
-        "menu_heading_height": 130,
-        "arrow_size": 14,
-        "link_custom": false,
-        "link_font": "josefin_sans_n4",
-        "link_size": 14,
-        "link_size_mobile": 14,
-        "link_height": 130,
-        "menu_heading_color": "#ffffff",
-        "link_color": "#ffffff",
-        "link_hover_color": "#ffffff",
-        "arrow_color": "#ffffff",
-        "menu_heading_border_color": "#ffffff",
-        "background_style": "solid",
-        "background_color": "#1a1a1a",
-        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
-        "border_color": "#121212",
-        "margin_top": 0,
-        "margin_bottom": 0,
-        "margin_horizontal": 0,
-        "margin_horizontal_mobile": 0,
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "padding_horizontal": 5,
-        "padding_horizontal_mobile": 3.5,
-        "full_width": false,
-        "content_width": 1600,
-        "border_thickness": 0,
-        "section_radius": 24,
-        "lazy": true
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -340,10 +64,86 @@
         "show_country_name": true,
         "show_locale_selector": true
       }
+    },
+    "snh_footer": {
+      "type": "snh-footer",
+      "blocks": {
+        "store_dehiwala": {
+          "type": "store",
+          "settings": {
+            "name": "Dehiwala",
+            "address": "133A Kawdana Road",
+            "phone": "+94 77 977 3359"
+          }
+        },
+        "store_wattala": {
+          "type": "store",
+          "settings": {
+            "name": "Wattala",
+            "address": "880 Negombo Road",
+            "phone": "+94 76 846 3359"
+          }
+        },
+        "store_nugegoda": {
+          "type": "store",
+          "settings": {
+            "name": "Nugegoda",
+            "address": "555 High Level Road",
+            "phone": "+94 76 486 3359"
+          }
+        },
+        "menu_1": {
+          "type": "menu",
+          "settings": {
+            "heading": "Supplements",
+            "links": "Shop all supplements | /collections/everything\nTrain & perform | /collections/train-perform\nWhey proteins | /collections/whey-protein\nPre-workout | /collections/pre-workout-1\nCreatine | /collections/creatine-1\nWeight management | /collections/weight-management"
+          }
+        },
+        "menu_2": {
+          "type": "menu",
+          "settings": {
+            "heading": "Vitamins & wellness",
+            "links": "Health & wellness | /collections/health-wellness\nFish oil & omega | /collections/fish-oil-omega\nMultivitamins | /collections/multivitamins\nMinerals | /collections/minerals\nLetter vitamins | /collections/letter-vitamins\nHerbs & natural | /collections/herbs-natural-solution"
+          }
+        },
+        "menu_3": {
+          "type": "menu",
+          "settings": {
+            "heading": "Info",
+            "links": "About us | /pages/about-us\nRead our blog | /blogs/news\nWork with us | /pages/careers\nLocations | /pages/location\nFranchise partner | /pages/franchise-partner\nWholesale | /pages/wholesale-1"
+          }
+        },
+        "menu_4": {
+          "type": "menu",
+          "settings": {
+            "heading": "Support & policies",
+            "links": "Contact us | /pages/delivery-and-shipping\nShipping policy | /pages/shipping-policy\nReturn policy | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms of service | /pages/terms-of-service"
+          }
+        }
+      },
+      "block_order": [
+        "store_dehiwala",
+        "store_wattala",
+        "store_nugegoda",
+        "menu_1",
+        "menu_2",
+        "menu_3",
+        "menu_4"
+      ],
+      "settings": {
+        "stores_heading": "Visit or call",
+        "hours": "Open every day · Support 10am–7pm",
+        "payments": "Pay by card, bank transfer, cash on delivery or Koko · pay in 3",
+        "whatsapp": "94764863359",
+        "legal": "Sports Nutrition Hub (Pvt) Ltd.",
+        "policy_links": false,
+        "mark": "shopify://shop_images/sn_o.png",
+        "dot": true
+      }
     }
   },
   "order": [
-    "ss_footer_16_AYbb9H",
+    "snh_footer",
     "footer"
   ]
 }

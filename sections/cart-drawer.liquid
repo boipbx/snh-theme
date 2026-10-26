@@ -5,8 +5,6 @@
   Keeps the <cart-drawer id="cart-drawer"> element so all theme open/close logic still works.
 {% endcomment %}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 {%- liquid
   assign snh_tier = customer.metafields.custom.loyalty_tier.value | default: 'Bronze'
@@ -50,8 +48,8 @@
     --snh-black: #17130f;
     --snh-muted: #736657;
     --snh-border: #e7e0d6;
-    --snh-display: 'Archivo', system-ui, sans-serif;
-    --snh-font: 'Inter', system-ui, sans-serif;
+    --snh-display: var(--heading-font-family), system-ui, sans-serif;
+    --snh-font: var(--text-font-family), system-ui, sans-serif;
     --snh-ease: cubic-bezier(.22, .61, .36, 1);
     font-family: var(--snh-font);
     color: var(--snh-black);

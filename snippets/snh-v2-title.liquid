@@ -1,0 +1,10 @@
+{%- comment -%}Live titles start with the vendor in capitals ("APPLIED NUTRITION Critical Whey"); show the vendor in its own casing.{%- endcomment -%}
+{%- liquid
+  assign t = product.title
+  assign vu = product.vendor | upcase
+  assign head = t | slice: 0, vu.size
+  if product.vendor != vu and head == vu
+    assign t = t | remove_first: vu | prepend: product.vendor
+  endif
+  echo t | escape
+-%}
