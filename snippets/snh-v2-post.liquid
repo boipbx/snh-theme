@@ -1,0 +1,10 @@
+{%- comment -%}Article card (prototype product-page .post): image, first tag, title, reading time. a: the article.{%- endcomment -%}
+{%- liquid
+  assign words = a.content | strip_html | split: ' ' | size
+  assign mins = words | divided_by: 220 | at_least: 1
+  assign cat = a.tags.first | default: 'Guide' | replace: '-', ' ' | capitalize
+-%}
+<a class="post" href="{{ a.url }}">
+  <span class="post__img">{%- if a.image -%}{{ a.image | image_url: width: 700 | image_tag: width: 700, height: 438, loading: 'lazy', alt: '', sizes: '(max-width: 767px) 100vw, 33vw', widths: '350,500,700' }}{%- endif -%}</span>
+  <span class="post__cat">{{ cat | escape }}</span><span class="post__t">{{ a.title | escape }}</span><span class="post__m">{{ mins }} min read</span>
+</a>

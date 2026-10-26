@@ -23,13 +23,13 @@ async function shoot(b, url, w, full, tag) {
   const errs = [];
   p.on('pageerror', e => errs.push(e.message.slice(0, 200)));
   p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
-  await p.goto(url, { waitUntil: 'networkidle', timeout: 120000 }).catch(e => errs.push('goto: ' + e.message.slice(0, 120)));
+  await p.goto(url, { waitUntil: 'load', timeout: 120000 }).catch(e => errs.push('goto: ' + e.message.slice(0, 120)));
   await p.addStyleTag({ content: '.shopify-section--popup,#shopify-pc__banner,#preview-bar-iframe,#PBarNextFrameWrapper,.shopify-preview-bar{display:none!important}' }).catch(() => {});
   await p.evaluate(() => {
     document.querySelectorAll('[data-carousel],[data-v2="carousel"]').forEach(x => x.classList.add('is-paused'));
     document.querySelectorAll('newsletter-popup, .newsletter-popup, privacy-bar').forEach(x => x.remove());
   });
-  await p.waitForTimeout(1500);
+  await p.waitForTimeout(3500);
   const fold = await p.screenshot({ type: 'jpeg', quality: 70 });
   let whole = null;
   if (full) {

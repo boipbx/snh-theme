@@ -2579,6 +2579,183 @@
     #shopify-section-{{ section.id }} .snh-gal__thumb { inline-size: 50px !important; border-radius: 8px !important; box-shadow: 0 2px 8px rgba(23,19,15,.08); }
     #shopify-section-{{ section.id }} .snh-gal--single .snh-gal__thumbs { display: none !important; }
   }
+
+/* ══════════════════════════════════════════════════════════════════
+   v2 LAYER (theme v2, phase 5): the prototype product page on the same markup and logic.
+   12-column grid (gallery 7 / buy box 5, both sticky), Inter type, white canvas, prototype buy box.
+   Everything above stays as the fallback; these rules come last and win.
+   ══════════════════════════════════════════════════════════════════ */
+#shopify-section-{{ section.id }} { background: #fff !important; --v2-gutter: 24px; }
+#shopify-section-{{ section.id }} .section { padding-top: 0 !important; background: #fff !important; }
+#shopify-section-{{ section.id }} .snh-crumbs { display: flex !important; flex-wrap: wrap; gap: 8px; max-width: calc(1152px + 48px); margin: 0 auto !important; padding: 16px 24px !important; font: 400 13px/1.4 var(--sans) !important; color: #6E6E6E !important; text-transform: none !important; letter-spacing: 0 !important; background: none !important; }
+#shopify-section-{{ section.id }} .snh-crumbs a { color: #6E6E6E !important; font-weight: 400 !important; text-transform: none !important; }
+#shopify-section-{{ section.id }} .snh-crumbs a:hover { color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} .snh-crumbs [aria-current] { color: #0C0C0D !important; font-weight: 400 !important; text-transform: none !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60vw; }
+#shopify-section-{{ section.id }} .product { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 24px !important; max-width: calc(1152px + 48px) !important; margin: 0 auto !important; padding: 0 24px 56px !important; background: #fff !important; }
+@media (min-width: 1024px) {
+  #shopify-section-{{ section.id }} .product { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; column-gap: 24px !important; align-items: start !important; padding-bottom: 80px !important; }
+  #shopify-section-{{ section.id }} .snh-gal { grid-column: 1 / span 7 !important; position: sticky !important; top: calc(var(--hdr-h, 72px) + 16px) !important; }
+  #shopify-section-{{ section.id }} .product-info { grid-column: 8 / span 5 !important; position: sticky !important; top: calc(var(--hdr-h, 72px) + 16px) !important; max-width: none !important; }
+}
+@media (min-width: 1280px) { #shopify-section-{{ section.id }} .product { column-gap: 32px !important; } #shopify-section-{{ section.id }} .product-info { padding-left: 16px !important; } }
+
+/* gallery: 88px thumb column as tall as the square main image (desktop); full-bleed swipe + thumb strip (mobile) */
+#shopify-section-{{ section.id }} .snh-gal { display: grid !important; gap: 12px !important; margin: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; }
+#shopify-section-{{ section.id }} .snh-gal__stage { position: relative; overflow: hidden !important; border-radius: 8px !important; background: #CDCDCD !important; aspect-ratio: 1 / 1 !important; box-shadow: none !important; border: 0 !important; }
+#shopify-section-{{ section.id }} .snh-gal__list { height: 100% !important; }
+#shopify-section-{{ section.id }} .snh-gal__slide, #shopify-section-{{ section.id }} .snh-gal__box { height: 100% !important; aspect-ratio: auto !important; background: transparent !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; }
+#shopify-section-{{ section.id }} .snh-gal__box img { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 0 !important; }
+#shopify-section-{{ section.id }} .snh-gal__nav, #shopify-section-{{ section.id }} .snh-gal__counter { display: none !important; }
+#shopify-section-{{ section.id }} .snh-gal__thumb { padding: 0 !important; border: 1.5px solid transparent !important; border-radius: 8px !important; background: #CDCDCD !important; overflow: hidden !important; box-shadow: none !important; opacity: 1 !important; }
+#shopify-section-{{ section.id }} .snh-gal__thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+#shopify-section-{{ section.id }} .snh-gal__thumb.is-active { border-color: #0C0C0D !important; }
+@media (min-width: 1024px) {
+  #shopify-section-{{ section.id }} .snh-gal { grid-template-columns: 88px minmax(0, 1fr) !important; gap: 16px !important; }
+  #shopify-section-{{ section.id }} .snh-gal__stage { grid-column: 2 !important; grid-row: 1 !important; }
+  #shopify-section-{{ section.id }} .snh-gal__thumbs { grid-column: 1 !important; grid-row: 1 !important; display: grid !important; grid-auto-rows: 88px !important; grid-template-columns: 88px !important; gap: 12px !important; height: 0 !important; min-height: 100% !important; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: thin; padding: 0 2px 0 0 !important; margin: 0 !important; flex-direction: initial !important; }
+  #shopify-section-{{ section.id }} .snh-gal__thumb { width: 88px !important; height: 88px !important; }
+  #shopify-section-{{ section.id }} .snh-gal__bar { display: none !important; }
+}
+@media (max-width: 1023px) {
+  #shopify-section-{{ section.id }} .snh-gal { margin-inline: -24px !important; }
+  #shopify-section-{{ section.id }} .snh-gal__stage { border-radius: 0 !important; order: 2; }
+  #shopify-section-{{ section.id }} .snh-gal__thumbs { order: 1; display: flex !important; gap: 8px !important; padding: 10px 24px 0 !important; overflow-x: auto !important; scrollbar-width: none; margin: 0 !important; }
+  #shopify-section-{{ section.id }} .snh-gal__thumbs::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .snh-gal__thumb { flex: 0 0 56px !important; width: 56px !important; height: 56px !important; border-color: rgba(12, 12, 13, .1) !important; }
+  #shopify-section-{{ section.id }} .snh-gal__thumb.is-active { border-color: #E0521C !important; }
+  #shopify-section-{{ section.id }} .snh-gal__bar { order: 3; position: relative; margin: -17px 16px 14px !important; height: 3px !important; z-index: 2; }
+  #shopify-section-{{ section.id }} .snh-gal__bar-track { background: rgba(10, 10, 10, .15) !important; height: 3px !important; border-radius: 2px !important; }
+  #shopify-section-{{ section.id }} .snh-gal__bar-thumb { background: #E0521C !important; height: 3px !important; border-radius: 2px !important; }
+}
+
+/* buy box: one left edge, 8px rhythm, prototype order (v2Layout sets `order`) */
+#shopify-section-{{ section.id }} .product-info.v2-info { display: flex !important; flex-direction: column !important; gap: 16px !important; min-width: 0; font-family: var(--sans) !important; color: #0C0C0D; }
+#shopify-section-{{ section.id }} .product-info.v2-info > * { margin: 0 !important; order: 20; }
+#shopify-section-{{ section.id }} .product-info__title, #shopify-section-{{ section.id }} .product-info__title.h1, #shopify-section-{{ section.id }} .product-info h1 { margin: 0 !important; font: 600 clamp(28px, 2.5vw, 38px)/1.08 var(--sans) !important; letter-spacing: -.025em !important; text-transform: none !important; text-wrap: balance; color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} .snh-topline { display: flex !important; flex-wrap: wrap; align-items: center !important; gap: 8px 16px !important; padding: 0 !important; border: 0 !important; }
+#shopify-section-{{ section.id }} .snh-brand-logo { width: 84px !important; height: 36px !important; object-fit: cover !important; border-radius: 4px !important; }
+#shopify-section-{{ section.id }} .snh-rating { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #6E6E6E; }
+#shopify-section-{{ section.id }} .snh-stock-pill { margin-left: auto !important; display: inline-flex !important; align-items: center; gap: 6px; padding: 4px 10px !important; border-radius: 999px !important; background: #E7F6EC !important; color: #157A3A !important; font: 600 12px/1.4 var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; border: 0 !important; }
+#shopify-section-{{ section.id }} .snh-subtitle { display: block !important; color: #6E6E6E !important; font: 400 14px/1.5 var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; }
+#shopify-section-{{ section.id }} .snh-subtitle::first-letter { text-transform: uppercase; }
+#shopify-section-{{ section.id }} .snh-payrow { display: grid !important; gap: 16px !important; padding: 0 !important; border: 0 !important; background: none !important; }
+#shopify-section-{{ section.id }} .snh-payrow .product-info__price, #shopify-section-{{ section.id }} .snh-payrow .rating-with-text { display: block !important; margin: 0 !important; }
+#shopify-section-{{ section.id }} .snh-payrow price-list { display: flex !important; flex-wrap: wrap; align-items: baseline !important; gap: 4px 12px !important; }
+#shopify-section-{{ section.id }} .snh-payrow sale-price, #shopify-section-{{ section.id }} .snh-payrow sale-price * { font: 600 32px/1 var(--sans) !important; letter-spacing: -.02em !important; color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} .snh-payrow compare-at-price { font: 400 16px var(--sans) !important; color: #6E6E6E !important; }
+#shopify-section-{{ section.id }} .v2-per { font: 400 14px/1.4 var(--sans); color: #6E6E6E; }
+#shopify-section-{{ section.id }} .snh-save-chip { padding: 4px 10px; border-radius: 999px; background: #E0521C; color: #fff; font: 600 12px var(--sans); }
+#shopify-section-{{ section.id }} .v2-perks { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+#shopify-section-{{ section.id }} .v2-perks .koko-pdp-message { flex: 0 1 auto !important; width: auto !important; margin: 0 !important; display: inline-flex !important; align-items: center; gap: 6px !important; min-height: 36px; padding: 0 12px; border-radius: 999px; background: #F5F2EC; font: 400 13px var(--sans) !important; color: #4B4B4B !important; }
+#shopify-section-{{ section.id }} .v2-perks .koko-pdp-message strong { font-weight: 600 !important; color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} .v2-perks .koko-pdp-message img { height: 16px !important; }
+#shopify-section-{{ section.id }} .v2-perks .snh-points-banner { display: inline-flex !important; align-items: center; gap: 8px !important; min-height: 36px !important; width: auto !important; margin: 0 !important; padding: 0 12px !important; border: 0 !important; border-radius: 999px !important; background: #F5F2EC !important; color: #4B4B4B !important; font: 400 13px var(--sans) !important; box-shadow: none !important; cursor: pointer; }
+#shopify-section-{{ section.id }} .v2-perks .snh-points-banner:hover { background: #ECE6DC !important; }
+#shopify-section-{{ section.id }} .v2-perks .snh-points-banner .snh-tile { width: auto !important; height: auto !important; background: none !important; box-shadow: none !important; padding: 0 !important; color: #E0521C !important; }
+#shopify-section-{{ section.id }} .v2-perks .snh-points-banner .snh-tile svg { width: 16px; height: 16px; fill: #E0521C; stroke: none; }
+#shopify-section-{{ section.id }} .v2-perks .snh-points-banner b { color: #0C0C0D !important; font-weight: 600 !important; }
+#shopify-section-{{ section.id }} .v2-perks .snh-points-arrow { display: none !important; }
+
+/* variant pills */
+#shopify-section-{{ section.id }} variant-picker { display: flex !important; flex-direction: column !important; gap: 16px !important; }
+#shopify-section-{{ section.id }} .variant-picker__option { display: grid !important; gap: 8px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+#shopify-section-{{ section.id }} .variant-picker__option-info { margin: 0 0 8px !important; padding: 0 !important; font: 600 14px/1.4 var(--sans) !important; color: #0C0C0D !important; text-transform: none !important; letter-spacing: 0 !important; }
+#shopify-section-{{ section.id }} .variant-picker__option-info[data-v2-count]::after { content: attr(data-v2-count); font-weight: 400; color: #6E6E6E; }
+#shopify-section-{{ section.id }} .variant-picker__option-values { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
+#shopify-section-{{ section.id }} label.block-swatch { position: relative; display: inline-flex !important; align-items: center !important; gap: 6px !important; min-height: 40px !important; height: auto !important; padding: 0 14px !important; border: 1.5px solid rgba(12, 12, 13, .1) !important; border-radius: 999px !important; background: #fff !important; color: #0C0C0D !important; font: 500 13px var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; box-shadow: none !important; transition: border-color 200ms, box-shadow 200ms; }
+#shopify-section-{{ section.id }} label.block-swatch:hover { border-color: #A5A5A6 !important; }
+#shopify-section-{{ section.id }} input:checked + label.block-swatch { border-color: #0C0C0D !important; box-shadow: 0 0 0 1.5px #0C0C0D !important; background: #fff !important; color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} label.block-swatch.is-disabled { color: #A5A5A6 !important; text-decoration: line-through !important; text-decoration-thickness: 1px !important; background: #FAFAF8 !important; opacity: 1 !important; }
+#shopify-section-{{ section.id }} label.block-swatch.is-disabled::after, #shopify-section-{{ section.id }} label.block-swatch.is-disabled::before { display: none !important; }
+#shopify-section-{{ section.id }} input:checked + label.block-swatch.is-disabled { box-shadow: 0 0 0 1.5px #A5A5A6 !important; border-color: #A5A5A6 !important; }
+#shopify-section-{{ section.id }} .vpill__out { position: absolute; top: -8px; right: -4px; padding: 1px 6px; border-radius: 999px; background: #4B4B4B; color: #fff; font: 600 9px/1.5 var(--sans); letter-spacing: .04em; text-transform: uppercase; text-decoration: none !important; display: inline-block; }
+#shopify-section-{{ section.id }} .vpill__is { padding: 1px 5px; border-radius: 4px; background: #0C0C0D; color: #fff; font: 600 9px/1.5 var(--sans); letter-spacing: .04em; text-decoration: none; }
+
+/* quantity row: label left, stepper right */
+#shopify-section-{{ section.id }} .product-info__quantity-selector .form-control { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 16px !important; }
+#shopify-section-{{ section.id }} .product-info__quantity-selector label { margin: 0 !important; font: 600 14px var(--sans) !important; color: #0C0C0D !important; text-transform: none !important; letter-spacing: 0 !important; }
+#shopify-section-{{ section.id }} .product-info__quantity-selector label::after { content: none; }
+#shopify-section-{{ section.id }} quantity-selector.quantity-selector { display: inline-flex !important; align-items: center !important; height: 44px !important; width: auto !important; border: 1.5px solid rgba(12, 12, 13, .1) !important; border-radius: 999px !important; background: #fff !important; box-shadow: none !important; }
+#shopify-section-{{ section.id }} .quantity-selector__button { width: 44px !important; height: 100% !important; border: 0 !important; background: none !important; }
+#shopify-section-{{ section.id }} .quantity-selector__input { width: 32px !important; text-align: center; font: 600 15px var(--sans) !important; border: 0 !important; background: none !important; }
+
+/* buttons: Add to cart (ink) + Buy now (accent) side by side */
+#shopify-section-{{ section.id }} buy-buttons.buy-buttons { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+#shopify-section-{{ section.id }} buy-buttons.buy-buttons:not(.buy-buttons--multiple) { grid-template-columns: 1fr !important; }
+#shopify-section-{{ section.id }} buy-buttons .button, #shopify-section-{{ section.id }} buy-buttons .shopify-payment-button__button { min-height: 48px !important; height: 48px !important; padding: 0 24px !important; border-radius: 999px !important; font: 600 15px/1 var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; box-shadow: none !important; }
+#shopify-section-{{ section.id }} buy-buttons .button { --button-background: 12 12 13 !important; background: #0C0C0D !important; color: #fff !important; }
+#shopify-section-{{ section.id }} buy-buttons .button:hover { background: #2A2A2C !important; }
+#shopify-section-{{ section.id }} buy-buttons .shopify-payment-button__button--unbranded { background: #E0521C !important; color: #fff !important; }
+#shopify-section-{{ section.id }} buy-buttons .shopify-payment-button__button--unbranded:hover { background: #C94816 !important; }
+#shopify-section-{{ section.id }} .shopify-payment-button__more-options { display: none !important; }
+
+/* WhatsApp */
+#shopify-section-{{ section.id }} .wa-btn { display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; min-height: 48px !important; padding: 0 24px !important; border-radius: 999px !important; background: #fff !important; color: #128C4B !important; box-shadow: inset 0 0 0 1.5px #BFE3CC !important; border: 0 !important; font: 600 15px var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; }
+#shopify-section-{{ section.id }} .wa-btn:hover { background: #F1FAF4 !important; }
+#shopify-section-{{ section.id }} .wa-btn svg { width: 20px !important; height: 20px !important; }
+#shopify-section-{{ section.id }} .wa-wrap { margin: 0 !important; }
+
+/* why athletes pick this → bordered tick box */
+#shopify-section-{{ section.id }} .snh-benefits { display: grid !important; gap: 12px !important; padding: 16px !important; border: 1px solid rgba(12, 12, 13, .1) !important; border-radius: 8px !important; background: #fff !important; box-shadow: none !important; }
+#shopify-section-{{ section.id }} .snh-benefits-label { font: 600 12px var(--sans) !important; letter-spacing: .08em !important; text-transform: uppercase !important; color: #E0521C !important; }
+#shopify-section-{{ section.id }} .snh-benefit { display: flex !important; gap: 10px !important; align-items: flex-start !important; padding: 0 !important; border: 0 !important; background: none !important; }
+#shopify-section-{{ section.id }} .snh-benefit-dot { flex: 0 0 20px !important; width: 20px !important; height: 20px !important; margin-top: 1px; border-radius: 50% !important; background: #E0521C url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E") center/12px no-repeat !important; box-shadow: none !important; }
+#shopify-section-{{ section.id }} .snh-benefit-dot * { display: none !important; }
+#shopify-section-{{ section.id }} .snh-benefit-text, #shopify-section-{{ section.id }} .snh-benefit-text b { font: 500 14px/1.45 var(--sans) !important; color: #0C0C0D !important; }
+
+/* SNH Elite strip (ink) + 3 info links */
+#shopify-section-{{ section.id }} .snh-adv { border-radius: 8px !important; background: #0C0C0D !important; color: #fff !important; overflow: hidden !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+#shopify-section-{{ section.id }} .snh-adv-main { display: flex !important; align-items: center !important; gap: 12px !important; padding: 14px 16px !important; color: #fff !important; background: none !important; border: 0 !important; }
+#shopify-section-{{ section.id }} .snh-adv-zap { display: grid !important; place-items: center; width: 32px !important; height: 32px !important; border-radius: 8px !important; background: #E0521C !important; }
+#shopify-section-{{ section.id }} .snh-adv-zap svg { width: 18px; height: 18px; fill: #fff; stroke: none; }
+#shopify-section-{{ section.id }} .snh-adv-copy { display: grid !important; flex: 1; }
+#shopify-section-{{ section.id }} .snh-adv-copy b { font: 600 14px var(--sans) !important; color: #fff !important; text-transform: none !important; letter-spacing: 0 !important; }
+#shopify-section-{{ section.id }} .snh-adv-copy em { font: 400 12px var(--sans) !important; font-style: normal !important; color: rgba(255, 255, 255, .6) !important; }
+#shopify-section-{{ section.id }} .snh-adv-links { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; border-top: 1px solid rgba(255, 255, 255, .14) !important; background: none !important; }
+#shopify-section-{{ section.id }} .snh-adv-links a { display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; min-height: 44px !important; color: rgba(255, 255, 255, .82) !important; font: 500 13px var(--sans) !important; background: none !important; border: 0 !important; text-transform: none !important; letter-spacing: 0 !important; }
+#shopify-section-{{ section.id }} .snh-adv-links a + a { border-left: 1px solid rgba(255, 255, 255, .14) !important; }
+#shopify-section-{{ section.id }} .snh-adv-links a:hover { color: #fff !important; background: rgba(255, 255, 255, .06) !important; }
+#shopify-section-{{ section.id }} .snh-adv-links svg { width: 16px; height: 16px; color: #E0521C; stroke: #E0521C; }
+
+/* description: 4-line clamp on phones */
+#shopify-section-{{ section.id }} .snh-desc, #shopify-section-{{ section.id }} .snh-desc .prose, #shopify-section-{{ section.id }} .snh-desc p { font: 400 15px/1.6 var(--sans) !important; color: #4B4B4B !important; }
+#shopify-section-{{ section.id }} .snh-desc h2, #shopify-section-{{ section.id }} .snh-desc h3 { display: none !important; }
+#shopify-section-{{ section.id }} .snh-desc-more { justify-self: start; align-self: flex-start; padding: 0 !important; border: 0 !important; background: none !important; font: 600 14px var(--sans) !important; color: #0C0C0D !important; text-decoration: underline; text-underline-offset: 5px; }
+
+/* matched bundle box (assets/snh-v2.css .bx styles it); keep it on the buy-box edge */
+#shopify-section-{{ section.id }} .bx { margin: 0 !important; }
+#shopify-section-{{ section.id }} .bx__view { justify-self: start; font-size: 13px; }
+
+/* "The details" band: the accordions, prototype .acc */
+#shopify-section-{{ section.id }} .v2pdp-details { border-top: 1px solid rgba(12, 12, 13, .08); }
+#shopify-section-{{ section.id }} .v2pdp-details .acc .product-info__block-group, #shopify-section-{{ section.id }} .v2pdp-details .acc .accordion-group { display: block !important; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+#shopify-section-{{ section.id }} .v2pdp-details .product-info__block-item { margin: 0 !important; }
+#shopify-section-{{ section.id }} .v2pdp-details details.accordion { border: 0 !important; border-bottom: 1px solid rgba(12, 12, 13, .1) !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
+#shopify-section-{{ section.id }} .v2pdp-details details.accordion summary { padding: 20px 0 !important; }
+#shopify-section-{{ section.id }} .v2pdp-details .accordion__toggle, #shopify-section-{{ section.id }} .v2pdp-details .accordion__toggle span { font: 600 18px/1.2 var(--sans) !important; letter-spacing: -.01em !important; text-transform: none !important; color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} .v2pdp-details .accordion__content { padding: 0 0 24px !important; }
+#shopify-section-{{ section.id }} .v2pdp-details .accordion__content .prose, #shopify-section-{{ section.id }} .v2pdp-details .accordion__content p { font: 400 16px/1.6 var(--sans) !important; color: #4B4B4B !important; max-width: 62ch; }
+#shopify-section-{{ section.id }} .v2pdp-details .circle-chevron { background: none !important; border: 0 !important; }
+
+#shopify-section-{{ section.id }} .snh-payrow .v2-perks, #shopify-section-{{ section.id }} .v2-perks.snh-payrow { display: flex !important; flex-wrap: wrap !important; align-items: center !important; gap: 8px !important; grid-template-columns: none !important; padding: 0 !important; border: 0 !important; background: none !important; }
+#shopify-section-{{ section.id }} .v2-perks .koko-pdp-message, #shopify-section-{{ section.id }} .v2-perks .snh-points-banner { flex: 0 1 auto !important; width: auto !important; max-width: 100% !important; }
+#shopify-section-{{ section.id }} .variant-picker__option-info { display: block !important; }
+#shopify-section-{{ section.id }} .variant-picker__option-values input:checked + label.block-swatch, #shopify-section-{{ section.id }} .variant-picker__option-values input:checked + label.block-swatch:hover { background: #fff !important; color: #0C0C0D !important; border-color: #0C0C0D !important; box-shadow: 0 0 0 1.5px #0C0C0D !important; }
+#shopify-section-{{ section.id }} .variant-picker__option-values input:checked + label.block-swatch.is-disabled { color: #A5A5A6 !important; border-color: #A5A5A6 !important; box-shadow: 0 0 0 1.5px #A5A5A6 !important; }
+#shopify-section-{{ section.id }} .variant-picker__option-values label.block-swatch span:not(.vpill__is):not(.vpill__out) { color: inherit !important; }
+#shopify-section-{{ section.id }} label.block-swatch .vpill__is { color: #fff !important; background: #0C0C0D !important; display: inline-block !important; }
+#shopify-section-{{ section.id }} label.block-swatch .vpill__out { color: #fff !important; }
+@media (max-width: 1023px) {
+  #shopify-section-{{ section.id }} .snh-gal__thumbs { position: static !important; transform: none !important; inset: auto !important; flex-direction: row !important; width: auto !important; height: auto !important; max-height: none !important; }
+}
+
+#shopify-section-{{ section.id }} [data-v2-details] > .v-wrap { max-inline-size: calc(1152px + 48px) !important; margin-inline: auto !important; }
+#shopify-section-{{ section.id }} .product { position: static !important; left: auto !important; transform: none !important; inline-size: 100% !important; max-inline-size: calc(1152px + 48px) !important; margin-inline: auto !important; }
+#shopify-section-{{ section.id }} .snh-crumbs { max-inline-size: calc(1152px + 48px) !important; }
+
+@media (max-width: 1023px) { #shopify-section-{{ section.id }} .product-info { margin-inline: 0 !important; padding-inline: 0 !important; inline-size: auto !important; max-inline-size: none !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; } }
+
+#shopify-section-{{ section.id }} .snh-adv-links a { padding: 8px 6px !important; font-size: 12.5px !important; line-height: 1.25 !important; text-align: center !important; white-space: normal !important; }
 </style>
 
 {%- capture product_form_id -%}product-form-{{ product.id }}-{{ section.id }}{%- endcapture -%}
@@ -2645,17 +2822,17 @@
 {%- assign snh_bc_url = '' -%}{%- assign snh_bc_title = '' -%}
 {%- for c in product.collections -%}
   {%- assign ct = c.title | downcase -%}
-  {%- if snh_bc_url == '' and ct != 'all' and ct != 'home page' and ct != 'frontpage' -%}
+  {%- if snh_bc_url == '' and ct != 'all' and ct != 'all products' and ct != 'everything' and ct != 'home page' and ct != 'frontpage' and ct != 'bestsellers' -%}
     {%- assign snh_bc_url = c.url -%}{%- assign snh_bc_title = c.title -%}
   {%- endif -%}
 {%- endfor -%}
 <nav hidden data-snh-crumbs class="snh-crumbs" aria-label="Breadcrumb">
   <a href="{{ routes.root_url }}">Home</a>
-  {%- if snh_bc_url != '' -%}<span class="snh-crumbs-sep">/</span><a href="{{ snh_bc_url }}">{{ snh_bc_title | escape }}</a>{%- endif -%}
-  <span class="snh-crumbs-sep">/</span><span aria-current="page">{{ product.title | escape }}</span>
+  {%- if snh_bc_url != '' -%}<span class="snh-crumbs-sep">/</span><a href="{{ snh_bc_url }}">{{ snh_bc_title | downcase | capitalize | escape }}</a>{%- endif -%}
+  <span class="snh-crumbs-sep">/</span><span aria-current="page">{% render 'snh-v2-title', product: product, short: true %}</span>
 </nav>
 {%- capture snh_sub -%}{{ product.metafields.custom.subtitle }}{%- endcapture -%}
-{%- if snh_sub == blank -%}{%- capture snh_sub -%}{{ product.type }}{%- unless product.has_only_default_variant %} · {{ product.selected_or_first_available_variant.title | replace: ' / ', ' · ' }}{%- endunless -%}{%- endcapture -%}{%- endif -%}
+{%- if snh_sub == blank -%}{%- capture snh_sub -%}{{ product.type | downcase | capitalize }}{%- unless product.has_only_default_variant %} · {{ product.selected_or_first_available_variant.title | replace: ' / ', ' · ' | replace: ' - Informed-Sport Tested', '' | replace: 'Servings', 'servings' }}{%- endunless -%}{%- endcapture -%}{%- endif -%}
 <span hidden data-snh-subtitle>{{ snh_sub | strip }}</span>
 
 {%- comment -%} ── SNH Bundle & Save: offers read from Theme settings (global, every template) with per-section fallback ── {%- endcomment -%}
@@ -2739,6 +2916,18 @@
     </div>
   </div>
 {%- endif -%}
+
+{%- comment -%} ── v2 (prototype layout): matched bundle box + full-width "The details" band; both are moved into place by v2Layout() ── {%- endcomment -%}
+{%- if section.settings.v2_bundles -%}
+  <div hidden data-v2-bundle-src>{%- render 'snh-v2-bundles', product: product, handles: section.settings.v2_bundle_handles, limit: 3 -%}</div>
+{%- endif -%}
+<section class="v2 v-section v2pdp-details" data-v2-details hidden aria-labelledby="det-{{ section.id }}">
+  <div class="v-wrap split">
+    <div class="head__text"><p class="eyebrow">{{ section.settings.v2_details_eyebrow | escape }}</p><h2 class="v-h1" id="det-{{ section.id }}">{% render 'snh-v2-heading', text: section.settings.v2_details_heading %}</h2>
+      {%- if section.settings.v2_details_lead != blank -%}<p class="lead">{{ section.settings.v2_details_lead | escape }}</p>{%- endif -%}</div>
+    <div class="acc" data-v2-details-slot></div>
+  </div>
+</section>
 
 {%- assign buy_buttons_block = section.blocks | where: 'type', 'buy_buttons' | first -%}
 
@@ -2922,9 +3111,13 @@
     //   custom.key_benefits  (type: list.single_line_text_field)
     // and each value becomes a pointer. Empty → smart fallback below.
     highlights: [
-      {%- if product.metafields.custom.key_benefits.value != blank -%}
-        {%- for point in product.metafields.custom.key_benefits.value -%}
-          {{ point | json }}{%- unless forloop.last -%},{%- endunless -%}
+      {%- assign snh_kb = product.metafields.custom.key_benefits.value -%}
+      {%- if snh_kb != blank -%}
+        {%- comment -%}list.single_line_text_field gives a list; a multi-line text metafield gives one string: one point per line{%- endcomment -%}
+        {%- unless product.metafields.custom.key_benefits.type contains 'list' -%}{%- assign snh_kb = snh_kb | newline_to_br | split: '<br />' -%}{%- endunless -%}
+        {%- for point in snh_kb -%}
+          {%- assign snh_pt = point | strip -%}
+          {%- if snh_pt != blank -%}{{ snh_pt | json }},{%- endif -%}
         {%- endfor -%}
       {%- endif -%}
     ],
@@ -3590,6 +3783,113 @@
     pill.classList.toggle('is-low', !st.out && st.low);
   }
 
+
+  /* ── v2 layout (prototype buy box): runs after restructureInfo() on every pass. It only moves/labels existing
+     pieces; the order itself is CSS `order`, so it never fights restructureInfo's own order assertions. ── */
+  function v2Layout(info) {
+    if (!info) return;
+    var sec = document.getElementById('shopify-section-{{ section.id }}');
+    if (!info.classList.contains('v2-info')) info.classList.add('v2-info');
+    function top(el) { while (el && el.parentElement && el.parentElement !== info) el = el.parentElement; return el && el.parentElement === info ? el : null; }
+    function ord(sel, o) { var el = info.querySelector(sel); var t = el && (el.parentElement === info ? el : top(el)); if (t && t.style.order !== String(o)) t.style.order = o; return t; }
+    /* pieces restructureInfo nested inside other blocks come up to the buy-box level */
+    ['.snh-benefits', '.snh-adv', '.snh-desc', '.snh-desc-more'].forEach(function (s) { var el = info.querySelector(s); if (el && el.parentElement !== info) info.appendChild(el); });
+    /* key benefits stored as one multi-line value → one tick per line, like the prototype (once per render) */
+    var bl = info.querySelector('.snh-benefits');
+    if (bl && !bl.dataset.v2Split) {
+      bl.dataset.v2Split = '1';
+      bl.querySelectorAll('.snh-benefit').forEach(function (it) {
+        var txt = it.querySelector('.snh-benefit-text');
+        if (!txt) return;
+        var lines = txt.innerText.split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
+        if (lines.length < 2) return;
+        lines.forEach(function (line) {
+          var c = it.cloneNode(true);
+          var t = c.querySelector('.snh-benefit-text');
+          t.innerHTML = '';
+          var b = document.createElement('b'); b.textContent = line; t.appendChild(b);
+          it.parentElement.insertBefore(c, it);
+        });
+        it.remove();
+      });
+    }
+    /* matched bundle box */
+    var src = sec && sec.querySelector('[data-v2-bundle-src] .bx');
+    if (src) info.appendChild(src);
+    /* perks row: Koko pill + points pill, under the price (re-done after each variant re-render) */
+    var pay = info.querySelector('.snh-payrow');
+    if (pay) {
+      var perks = pay.querySelector('.v2-perks');
+      if (!perks) { perks = document.createElement('div'); perks.className = 'v2-perks'; pay.appendChild(perks); }
+      var fresh = pay.querySelector('.price-list .koko-pdp-message');
+      if (fresh) { var old = perks.querySelector('.koko-pdp-message'); if (old) old.remove(); perks.insertBefore(fresh, perks.firstChild); }
+      var pts = pay.querySelector('.snh-points-banner');
+      if (pts && pts.parentElement !== perks) perks.appendChild(pts);
+      /* per serving, from the selected size ("61 Servings") */
+      var sale = pay.querySelector('sale-price');
+      var sizeLab = info.querySelector('variant-picker input:checked + label.block-swatch');
+      var sv = 0;
+      info.querySelectorAll('variant-picker input:checked + label').forEach(function (l) { var m = l.textContent.match(/(\d+)\s*serv/i); if (m) sv = Number(m[1]); });
+      var per = pay.querySelector('.v2-per');
+      if (sale && sv > 1) {
+        var amt = Number((sale.textContent.match(/[\d,]+(\.\d+)?/g) || ['0']).pop().replace(/,/g, ''));
+        if (!per) { per = document.createElement('span'); per.className = 'v2-per'; sale.insertAdjacentElement('afterend', per); }
+        var perTxt = 'Rs ' + Math.round(amt / sv).toLocaleString('en-US') + ' per serving';
+        if (per.textContent !== perTxt) per.textContent = perTxt;
+      } else if (per) per.remove();
+    }
+    /* variants: flavour first, "IS" tag for Informed-Sport tested values, in-stock count in the caption */
+    var vp = info.querySelector('variant-picker');
+    if (vp) {
+      vp.querySelectorAll('fieldset').forEach(function (fs) {
+        var cap = fs.querySelector('.variant-picker__option-info');
+        var name = cap ? cap.textContent : '';
+        var isFlav = /flavo/i.test(name);
+        var fo = isFlav ? '-1' : '0';
+        if (fs.style.order !== fo) fs.style.order = fo;
+        fs.querySelectorAll('label.block-swatch').forEach(function (l) {
+          if (l.dataset.v2) return;
+          l.dataset.v2 = '1';
+          var t = l.firstChild && l.firstChild.nodeType === 3 ? l.firstChild : null;
+          var txt = l.textContent;
+          if (/ - Informed-Sport Tested/i.test(txt)) {
+            var tw = document.createTreeWalker(l, NodeFilter.SHOW_TEXT), tn;
+            while ((tn = tw.nextNode())) { if (/ - Informed-Sport Tested/i.test(tn.nodeValue)) tn.nodeValue = tn.nodeValue.replace(/ - Informed-Sport Tested/i, ''); }
+            var is = document.createElement('span'); is.className = 'vpill__is'; is.title = 'Informed Sport tested'; is.textContent = 'IS'; l.appendChild(is);
+          }
+          if (l.classList.contains('is-disabled')) { var o = document.createElement('span'); o.className = 'vpill__out'; o.textContent = 'Sold out'; l.appendChild(o); }
+        });
+        /* in-stock count as a data attribute drawn by CSS: snhTrimCaptions() owns the caption text (its observer
+           resets it), so writing a node into the caption would ping-pong with it forever */
+        if (cap && isFlav) {
+          var all = fs.querySelectorAll('label.block-swatch').length, out = fs.querySelectorAll('label.block-swatch.is-disabled').length;
+          var cnt = ' · ' + (all - out) + ' of ' + all + ' in stock';
+          if (cap.getAttribute('data-v2-count') !== cnt) cap.setAttribute('data-v2-count', cnt);
+        }
+      });
+    }
+    /* order = the prototype buy box */
+    ord('.product-info__title', 1); ord('.snh-topline', 2); ord('.snh-subtitle', 3); ord('.snh-payrow', 4);
+    ord('variant-picker', 5); ord('.popt', 6); ord('quantity-selector', 7); ord('buy-buttons', 8); ord('[data-snh-wa-block]', 9);
+    ord('.bx', 10); ord('.snh-benefits', 11); ord('.snh-adv', 12); ord('.snh-desc', 13); ord('.snh-desc-more', 14);
+    /* accordions → the full-width "The details" band under the grid */
+    var acc = info.querySelector('.accordion-group, .product-info__block-group');
+    var band = sec && sec.querySelector('[data-v2-details]');
+    var slot = band && band.querySelector('[data-v2-details-slot]');
+    if (acc && slot && !slot.contains(acc)) {
+      slot.appendChild(acc);
+      band.hidden = false;
+      var grid = sec.querySelector('.product');
+      var host = grid && grid.parentElement;
+      if (host && band.previousElementSibling !== host) host.insertAdjacentElement('afterend', band);
+      var firstAcc = acc.querySelector('details'); if (firstAcc && !acc.dataset.v2Opened) { acc.dataset.v2Opened = '1'; firstAcc.open = true; }
+    }
+    /* Appstle's own widget wins: hide the theme purchase options if it is on the page */
+    var appstle = sec && sec.querySelector('[class*="appstle" i]:not(.popt)');
+    var popt = info.querySelector('.popt');
+    if (appstle && popt) popt.hidden = true;
+  }
+
   function restructureInfo() {
     var info = document.querySelector('#shopify-section-{{ section.id }} .product-info');
     if (!info) return;
@@ -3721,7 +4021,10 @@
         }
       }
     }
+    v2Layout(info);
   }
+
+  if (typeof fixGallery !== 'function') { var fixGallery = function () {}; }   /* was called but never defined: the throw skipped the rest of init() */
 
   function init() {
     enhanceJudgeMe();
@@ -4578,6 +4881,12 @@
     }
   ],
   "settings": [
+    { "type": "header", "content": "SNH v2 layout" },
+    { "type": "checkbox", "id": "v2_bundles", "label": "Bundle & save box", "default": true, "info": "Shows the store's bundle products whose description names this product (up to 3)." },
+    { "type": "text", "id": "v2_bundle_handles", "label": "Bundle collections", "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers", "info": "Collection handles searched for matching bundles, comma separated." },
+    { "type": "text", "id": "v2_details_eyebrow", "label": "Details band eyebrow", "default": "The details" },
+    { "type": "text", "id": "v2_details_heading", "label": "Details band heading", "default": "Everything *inside*" },
+    { "type": "text", "id": "v2_details_lead", "label": "Details band lead", "default": "What it does, how to use it and exactly what goes in." },
     {
       "type": "checkbox",
       "id": "full_width",

@@ -6,7 +6,7 @@
 
 {%- liquid
   assign v = product.selected_or_first_available_variant
-  assign third = product.price | divided_by: 3
+  assign third = product.price | divided_by: 300.0 | round | times: 100
   assign multi = false
   if product.variants.size > 1
     assign multi = true
@@ -93,7 +93,7 @@
   endif
 -%}
 
-<div class="snh-pc{% unless product.available %} snh-pc--out{% endunless %}">
+<product-card class="snh-pc{% unless product.available %} snh-pc--out{% endunless %}" handle="{{ product.handle }}">
   <a class="snh-pc__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}" tabindex="-1">
     {%- if product.featured_image -%}
       {{- product.featured_image | image_url: width: 640 | image_tag: loading: 'lazy', decoding: 'async', width: 320, height: 320, sizes: '(max-width: 699px) 50vw, 320px', widths: '320,480,640', alt: product.featured_image.alt | default: product.title -}}
@@ -125,10 +125,10 @@
     {%- if product.vendor != blank -%}<p class="snh-pc__brand snh-eyebrow">{{ product.vendor }}</p>{%- endif -%}
     <a class="snh-pc__link" href="{{ product.url }}"><h3 class="snh-pc__title">{{ product.title }}</h3></a>
     <div class="snh-pc__meta">
-      <span class="snh-pc__price{% if on_sale %} snh-pc__price--sale{% endif %}">{% if multi and product.price_varies %}From {% endif %}{{ product.price | money }}</span>
-      {%- if on_sale -%}<s class="snh-pc__was">{{ retail | money }}</s>{%- endif -%}
+      <span class="snh-pc__price{% if on_sale %} snh-pc__price--sale{% endif %}">{% if multi and product.price_varies %}From {% endif %}{{ product.price | money_without_trailing_zeros }}</span>
+      {%- if on_sale -%}<s class="snh-pc__was">{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}
       {%- if chip != blank -%}<span class="snh-pc__chip">{{ chip }}</span>{%- endif -%}
     </div>
-    <p class="snh-pc__koko">or 3 &times; {{ third | money }} with Koko</p>
+    <p class="snh-pc__koko">or 3 &times; {{ third | money_without_trailing_zeros }} with Koko</p>
   </div>
-</div>
+</product-card>

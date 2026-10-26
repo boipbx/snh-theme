@@ -53,7 +53,7 @@ Supported variables
       {%- if settings.currency_code_enabled -%}
         {{- variant.price | money_with_currency -}}
       {%- else -%}
-        {{- variant.price | money -}}
+        {{- variant.price | money_without_trailing_zeros -}}
       {%- endif -%}
     </sale-price>
 
@@ -64,7 +64,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- variant.compare_at_price | money_with_currency -}}
         {%- else -%}
-          {{- variant.compare_at_price | money -}}
+          {{- variant.compare_at_price | money_without_trailing_zeros -}}
         {%- endif -%}
       </compare-at-price>
     {%- endif -%}
@@ -80,7 +80,7 @@ Supported variables
         style="flex-basis: 100%; width: 100%; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-top: 8px; font-size: 13px; line-height: 1.4; color: #6f6f6f;"
       >
         <span>or pay in 3 x</span>
-        <strong style="color: #171717; font-weight: 800;">{{ variant.price | plus: 0 | divided_by: 3 | money }}</strong>
+        <strong style="color: #171717; font-weight: 800;">{{ variant.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</strong>
         <span>with</span>
 
         <a
@@ -92,6 +92,7 @@ Supported variables
         >
           <img
             src="https://paykoko.com/img/logo1.7ff549c0.png"
+            width="56" height="20"
             alt="Koko"
             loading="lazy"
             style="display: block; height: 20px !important; width: auto !important; margin-left: 2px;"
@@ -107,6 +108,7 @@ Supported variables
         >
           <img
             src="https://koko-merchant.oss-ap-southeast-1.aliyuncs.com/bnpl-site-cms-dev/koko-images/info.png"
+            width="12" height="12"
             alt="Info"
             loading="lazy"
             style="display: block; height: 12px !important; width: auto !important; margin-left: 1px;"
@@ -132,7 +134,7 @@ Supported variables
       {%- if settings.currency_code_enabled -%}
         {{- line_item.final_line_price | money_with_currency -}}
       {%- else -%}
-        {{- line_item.final_line_price | money -}}
+        {{- line_item.final_line_price | money_without_trailing_zeros -}}
       {%- endif -%}
     </sale-price>
 
@@ -143,7 +145,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- line_item.original_line_price | money_with_currency -}}
         {%- else -%}
-          {{- line_item.original_line_price | money -}}
+          {{- line_item.original_line_price | money_without_trailing_zeros -}}
         {%- endif -%}
       </compare-at-price>
     {%- endif -%}
@@ -160,7 +162,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- cheapest_variant.price | money_with_currency -}}
         {%- else -%}
-          {{- cheapest_variant.price | money -}}
+          {{- cheapest_variant.price | money_without_trailing_zeros -}}
         {%- endif -%}
       {%- endcapture -%}
 
@@ -176,7 +178,7 @@ Supported variables
           {%- if settings.currency_code_enabled -%}
             {{- cheapest_variant.compare_at_price | money_with_currency -}}
           {%- else -%}
-            {{- cheapest_variant.compare_at_price | money -}}
+            {{- cheapest_variant.compare_at_price | money_without_trailing_zeros -}}
           {%- endif -%}
         </compare-at-price>
       {%- else -%}
@@ -192,7 +194,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- product.price | money_with_currency -}}
         {%- else -%}
-          {{- product.price | money -}}
+          {{- product.price | money_without_trailing_zeros -}}
         {%- endif -%}
       </sale-price>
 
@@ -202,7 +204,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- product.compare_at_price | money_with_currency -}}
         {%- else -%}
-          {{- product.compare_at_price | money -}}
+          {{- product.compare_at_price | money_without_trailing_zeros -}}
         {%- endif -%}
       </compare-at-price>
     {%- elsif product.price_varies -%}
@@ -210,7 +212,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{ product.price_min | money_with_currency }}
         {%- else -%}
-          {{ product.price_min | money }}
+          {{ product.price_min | money_without_trailing_zeros }}
         {%- endif -%}
       {%- endcapture -%}
 
@@ -218,7 +220,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- product.price_max | money_with_currency -}}
         {%- else -%}
-          {{- product.price_max | money -}}
+          {{- product.price_max | money_without_trailing_zeros -}}
         {%- endif -%}
       {%- endcapture -%}
 
@@ -233,7 +235,7 @@ Supported variables
         {%- if settings.currency_code_enabled -%}
           {{- product.price | money_with_currency -}}
         {%- else -%}
-          {{- product.price | money -}}
+          {{- product.price | money_without_trailing_zeros -}}
         {%- endif -%}
       </sale-price>
     {%- endif -%}
@@ -251,7 +253,7 @@ Supported variables
         style="flex-basis: 100%; width: 100%; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-top: 5px; font-size: 11px; line-height: 1.35; color: #747474;"
       >
         <span>or 3 x</span>
-        <strong style="color: #171717; font-weight: 800;">{{ koko_card_price | plus: 0 | divided_by: 3 | money }}</strong>
+        <strong style="color: #171717; font-weight: 800;">{{ koko_card_price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</strong>
         <span>with</span>
 
         <a
@@ -263,6 +265,7 @@ Supported variables
         >
           <img
             src="https://paykoko.com/img/logo1.7ff549c0.png"
+            width="56" height="20"
             alt="Koko"
             loading="lazy"
             style="display: block; height: 14px !important; width: auto !important; margin-left: 1px;"
@@ -278,6 +281,7 @@ Supported variables
         >
           <img
             src="https://koko-merchant.oss-ap-southeast-1.aliyuncs.com/bnpl-site-cms-dev/koko-images/info.png"
+            width="12" height="12"
             alt="Info"
             loading="lazy"
             style="display: block; height: 10px !important; width: auto !important; margin-left: 1px;"
@@ -298,7 +302,7 @@ Supported variables
           {%- assign reference_value = unit_price_measurement.reference_value -%}
         {%- endif -%}
 
-        ({{ unit_price_item.unit_price | money }}/{{ reference_value }}{{ unit_price_measurement.reference_unit }})
+        ({{ unit_price_item.unit_price | money_without_trailing_zeros }}/{{ reference_value }}{{ unit_price_measurement.reference_unit }})
       </unit-price>
     {%- endif -%}
   {%- endunless -%}

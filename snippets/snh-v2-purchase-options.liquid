@@ -1,0 +1,32 @@
+{%- comment -%}
+  Purchase options (prototype .popt): one-time vs subscribe & save, from the product's selling plans (Appstle
+  Subscriptions creates them). Renders nothing for products without plans. The radios post `selling_plan` with the
+  product form. If Appstle's own widget is on the page, assets/snh-v2.js hides this one so there is only one.
+  product, form_id
+{%- endcomment -%}
+{%- if product.selling_plan_groups.size > 0 -%}
+  {%- assign v = product.selected_or_first_available_variant -%}
+  {%- assign selected_plan = product.selected_selling_plan -%}
+  <fieldset class="opt popt" data-v2="popt">
+    <legend>Purchase option</legend>
+    {%- unless product.requires_selling_plan -%}
+      <label class="popt__card{% if selected_plan == blank %} is-on{% endif %}"><input type="radio" name="v2-popt-{{ form_id }}" value="" data-popt-once{% if selected_plan == blank %} checked{% endif %}>
+        <span class="popt__dot"></span><span class="popt__t">One-time purchase</span><span class="popt__p">{{ v.price | money_without_trailing_zeros }}</span></label>
+    {%- endunless -%}
+    {%- for group in product.selling_plan_groups -%}
+      {%- assign first_plan = group.selling_plans.first -%}
+      {%- assign alloc = v.selling_plan_allocations | where: 'selling_plan_group_id', group.id | first -%}
+      {%- assign save = '' -%}
+      {%- assign adj = first_plan.price_adjustments.first -%}
+      {%- if adj.value_type == 'percentage' and adj.value > 0 -%}{%- capture save -%}Save {{ adj.value }}%{%- endcapture -%}{%- endif -%}
+      <label class="popt__card{% if selected_plan.group_id == group.id %} is-on{% endif %}"><input type="radio" name="v2-popt-{{ form_id }}" value="{{ group.id }}" data-popt-group{% if selected_plan.group_id == group.id or product.requires_selling_plan and forloop.first %} checked{% endif %}>
+        <span class="popt__dot"></span><span class="popt__t">{{ group.name | escape }}{% if save != blank %} <em class="popt__save">{{ save }}</em>{% endif %}</span>
+        <span class="popt__p">{%- if alloc -%}{{ alloc.price | money_without_trailing_zeros }}{%- endif -%}</span>
+        <span class="popt__more"><span>Deliver every</span>
+          <select data-popt-plan aria-label="{{ group.name | escape }}: delivery frequency">
+            {%- for plan in group.selling_plans -%}<option value="{{ plan.id }}"{% if selected_plan.id == plan.id %} selected{% endif %}>{{ plan.name | escape }}</option>{%- endfor -%}
+          </select></span></label>
+    {%- endfor -%}
+    <input type="hidden" name="selling_plan" value="{% if selected_plan %}{{ selected_plan.id }}{% elsif product.requires_selling_plan %}{{ product.selling_plan_groups.first.selling_plans.first.id }}{% endif %}" form="{{ form_id }}" data-popt-value>
+  </fieldset>
+{%- endif -%}

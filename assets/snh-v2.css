@@ -1316,3 +1316,5 @@ a.hs__pts:hover { color: var(--white); }
   .mq .logos__run[aria-hidden] { display: none; }
   .mq .logo { scroll-snap-align: start; }
 }
+/* the footer also carries Impact's .footer class: the theme's sticky add-to-cart bar uses it as its end marker */
+.ftr.footer { background: var(--ink); color: var(--white); padding-block: 64px 0; }

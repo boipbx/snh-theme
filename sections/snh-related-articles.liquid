@@ -1,0 +1,115 @@
+{%- comment -%}
+  SNH related articles ("Learn more" on the product page, prototype .posts): scores the blog's latest 50 articles
+  against the product and shows the best matches. Keywords = product type + tags + title words (without vendor,
+  sizes and filler). +3 per keyword in the article title, +2 per article tag that shares a keyword, +1 when the
+  vendor is named; ties go to the newest. Fewer matches than wanted are topped up with the fallback blog's latest.
+{%- endcomment -%}
+{%- if product -%}
+{%- liquid
+  assign hid = 'learn-' | append: section.id
+  assign b = section.settings.blog | default: blogs.news
+  assign fb = section.settings.fallback_blog | default: b
+  assign limit = section.settings.limit
+  assign stop = ' the and with for from per your you this that are not all new pack servings serving powder capsules tablets tabs caps flavour flavours '
+  capture short
+    render 'snh-v2-title', product: product, short: true
+  endcapture
+  assign vendor = product.vendor | downcase
+  assign tags_s = product.tags | join: ' '
+  assign raw = product.type | append: ' ' | append: short | append: ' ' | append: tags_s
+  assign raw = raw | downcase | replace: '&amp;', ' ' | replace: '-', ' ' | replace: '(', ' ' | replace: ')', ' ' | replace: ',', ' ' | replace: '/', ' ' | replace: '+', ' '
+  assign parts = raw | split: ' '
+  assign kws = ' '
+  for part in parts
+    assign w = part | strip
+    if w.size < 3
+      continue
+    endif
+    assign digits = w | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+    if digits != w
+      continue
+    endif
+    assign padded = ' ' | append: w | append: ' '
+    if stop contains padded or kws contains padded or vendor contains w
+      continue
+    endif
+    assign kws = kws | append: w | append: ' '
+  endfor
+  assign kw_list = kws | strip | split: ' '
+  assign ranked = ''
+  for a in b.articles limit: 50
+    assign t = a.title | downcase | replace: '-', ' ' | replace: ':', ' ' | replace: '?', ' ' | replace: ',', ' ' | prepend: ' ' | append: ' '
+    assign score = 0
+    for k in kw_list
+      assign pk = ' ' | append: k | append: ' '
+      if t contains pk
+        assign score = score | plus: 3
+      endif
+      for tag in a.tags
+        assign tg = tag | downcase | replace: '-', ' ' | prepend: ' ' | append: ' '
+        if tg contains pk
+          assign score = score | plus: 2
+          break
+        endif
+      endfor
+    endfor
+    if score > 0
+      assign ex = a.excerpt_or_content | strip_html | downcase | truncate: 400
+      if t contains vendor or ex contains vendor
+        assign score = score | plus: 1
+      endif
+      assign s3 = score | plus: 1000 | append: ''
+      assign d8 = a.published_at | date: '%Y%m%d'
+      assign ranked = ranked | append: s3 | append: '-' | append: d8 | append: '-' | append: forloop.index0 | append: ','
+    endif
+  endfor
+  assign ranked = ranked | split: ',' | sort | reverse
+  assign picked = ','
+  assign shown = 0
+-%}
+<section class="v2 v-section v-section--cream" aria-labelledby="{{ hid }}">
+  <div class="v-wrap">
+    {%- render 'snh-v2-head', s: section.settings, id: hid -%}
+    <div class="posts">
+      {%- for r in ranked -%}
+        {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+        {%- assign idx = r | split: '-' | last | plus: 0 -%}
+        {%- for a in b.articles limit: 50 -%}
+          {%- if forloop.index0 == idx -%}
+            {%- render 'snh-v2-post', a: a -%}
+            {%- assign picked = picked | append: a.id | append: ',' -%}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {%- for a in fb.articles limit: 12 -%}
+        {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+        {%- assign key = ',' | append: a.id | append: ',' -%}
+        {%- if picked contains key or a.image == blank -%}{%- continue -%}{%- endif -%}
+        {%- render 'snh-v2-post', a: a -%}
+        {%- assign picked = picked | append: a.id | append: ',' -%}
+        {%- assign shown = shown | plus: 1 -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SNH related articles",
+  "class": "snh-sec",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog to match from", "info": "Defaults to the News blog." },
+    { "type": "blog", "id": "fallback_blog", "label": "Fallback blog", "info": "Its latest articles fill the row when fewer match." },
+    { "type": "range", "id": "limit", "label": "Articles", "min": 2, "max": 6, "step": 1, "default": 3 },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Learn more" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Know what you're *taking*" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All guides" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "select", "id": "link_style", "label": "Link style", "options": [{ "value": "link", "label": "Underlined link" }, { "value": "button", "label": "Ink button" }], "default": "link" }
+  ],
+  "presets": [{ "name": "SNH related articles" }]
+}
+{% endschema %}

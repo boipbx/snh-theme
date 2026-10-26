@@ -14,7 +14,7 @@ async function grab(b, url, sel, w) {
   const p = await ctx.newPage();
   const errs = [];
   p.on('pageerror', e => errs.push(e.message.slice(0, 160)));
-  await p.goto(url, { waitUntil: 'networkidle', timeout: 120000 }).catch(() => {});
+  await p.goto(url, { waitUntil: 'load', timeout: 120000 }).catch(() => {});
   await p.addStyleTag({ content: HIDE });
   await p.evaluate(async () => {
     document.querySelectorAll('[data-carousel],[data-v2="carousel"]').forEach(x => x.classList.add('is-paused'));

@@ -24,10 +24,10 @@
   if badge == blank and custom_badges != blank
     assign badge = custom_badges | first
   endif
-  assign facts = product.metafields.custom.key_benefits.value | default: product.metafields.custom.key_benefits
-  if facts != blank and facts.first == nil
+  assign facts = product.metafields.custom.key_benefits.value
+  unless product.metafields.custom.key_benefits.type contains 'list'
     assign facts = facts | newline_to_br | split: '<br />'
-  endif
+  endunless
 -%}
 <article class="card{% unless product.available %} card--out{% endunless %}">
   <div class="card__media">

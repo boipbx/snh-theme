@@ -82,7 +82,8 @@ Supported variables
         {%- when 'title' -%}
           {%- if request.page_type == 'product' -%}
             <h1 class="product-info__title {{ block.settings.heading_tag }}">
-              {{- product.title -}}
+              {%- comment -%}v2: the vendor shows as the logo beside it, so the visible title drops the capitalised vendor prefix{%- endcomment -%}
+              <span class="sr-only">{{ product.vendor | escape }} </span>{%- render 'snh-v2-title', product: product, short: true -%}
             </h1>
           {%- else -%}
             <h2 class="product-info__title {{ block.settings.heading_tag }}">
@@ -180,6 +181,7 @@ Supported variables
               block: block 
             -%}
           </div>
+          {%- if context == 'main_product' -%}{%- render 'snh-v2-purchase-options', product: product, form_id: product_form_id -%}{%- endif -%}
 
         {%- when 'product_variations' -%}
           {%- assign contains_product = false -%}
