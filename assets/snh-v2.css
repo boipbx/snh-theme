@@ -1285,3 +1285,34 @@ a.hs__pts:hover { color: var(--white); }
   .hs__frame > .hs__img-main, .hs .hs__dot { transition: none; }
   .hs .hs__dot { --s: 1; }
 }
+
+/* ================= phase 4 · brand marquee: seamless, uniform tiles, scrubbable ================= */
+.mq .mq__track { position: relative; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.mq .mq__track.is-dragging { cursor: grabbing; }
+.mq__rail { display: flex; width: max-content; will-change: transform; transform: translate3d(0, 0, 0);
+  animation: mq var(--mq-dur, 48s) linear infinite; }
+.mq--right .mq__rail { animation-direction: reverse; }
+@keyframes mq { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(var(--mq-shift, -50%), 0, 0); } }
+.mq .logos__run { animation: none; gap: 12px; padding-right: 12px; }
+@media (hover: hover) { .mq .mq__track:hover .mq__rail { animation-play-state: paused; } }
+.mq .mq__track.is-dragging .mq__rail { animation-play-state: paused; }
+/* uniform tiles: one size, one radius, white with a hairline; logos read evenly by max-height */
+.mq { --mq-tile-h: calc(var(--mq-logo-h) + 24px); }
+.mq .logo { position: relative; display: grid; place-items: center; flex: 0 0 auto; width: calc(var(--mq-logo-h) * 1.75); height: var(--mq-tile-h);
+  border: 1px solid var(--line); border-radius: 12px; background: var(--white); overflow: hidden; transition: transform 220ms var(--ease), border-color 220ms var(--ease), box-shadow 220ms var(--ease); }
+.mq .logo img { position: absolute; left: 50%; top: 50%; width: calc(100% * var(--ls, 1)); height: calc(100% * var(--ls, 1)); max-width: none; translate: -50% -50%; object-fit: contain; mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.2) brightness(1.06); opacity: .7; transition: filter 260ms var(--ease), opacity 260ms var(--ease); -webkit-user-drag: none; pointer-events: none; }
+.mq .logo--dark img { filter: grayscale(1) invert(1) contrast(1.5) brightness(1.06); }
+.mq .logo:hover, .mq .logo:focus-visible { transform: translateY(-2px); border-color: rgba(12, 12, 13, .22); box-shadow: 0 8px 22px rgba(10, 10, 10, .08); }
+.mq .logo:hover img, .mq .logo:focus-visible img { filter: contrast(1.05) brightness(1.03); opacity: 1; }
+.mq .logo--dark:hover img, .mq .logo--dark:focus-visible img { filter: invert(1) contrast(1.5); }
+.mq .brand__word { font-size: 13px; color: var(--grey-1); }
+@media (max-width: 767px) { .mq { --mq-logo-h: 52px !important; --mq-tile-h: calc(var(--mq-logo-h) + 16px); } .mq .logo { width: calc(var(--mq-logo-h) * 1.5); } }
+/* reduced motion: a static row you scroll sideways */
+@media (prefers-reduced-motion: reduce) {
+  .mq .mq__track { overflow-x: auto; cursor: auto; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+  .mq .mq__track::-webkit-scrollbar { display: none; }
+  .mq__rail { animation: none; transform: none; }
+  .mq .logos__run[aria-hidden] { display: none; }
+  .mq .logo { scroll-snap-align: start; }
+}

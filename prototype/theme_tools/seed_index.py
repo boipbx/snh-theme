@@ -73,9 +73,14 @@ def goalbar():
     return section("snh-goal-strip", {"label": "Shop by goal"}, [("goal", {"title": t, "link": h}) for h, t in goals])
 
 
+DARK_LOGOS = {"Science in Sport", "Myprotein", "RYSE"}   # live logo files drawn on a black/teal square
+# the live logo files carry very different amounts of empty space; these even them out in the marquee
+LOGO_SCALE = {"MuscleTech": 85, "RYSE": 80, "EHP Labs": 140, "Surge": 115, "Healthspan Elite": 105, "Vitabiotics": 145, "Dymatize": 125, "Applied Nutrition": 120, "Revive": 140}
+
+
 def logos():
-    return section("snh-brand-marquee", {"label": "Authorised distributors of leading brands", "speed": 48},
-                   [("logo", {"name": n, "image": img(l), "link": h}) for n, l, h in build.BRANDS if l])
+    return section("snh-brand-marquee", {"label": "Authorised distributors of leading brands", "speed": 40, "direction": "left", "logo_height": 64},
+                   [("logo", {"name": n, "image": img(l), "dark": n in DARK_LOGOS, "scale": LOGO_SCALE.get(n, 100), "link": h}) for n, l, h in build.BRANDS if l])
 
 
 def ways():

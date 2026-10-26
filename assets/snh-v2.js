@@ -571,6 +571,63 @@
     hs.addEventListener('shopify:block:deselect', function () { release(); });
   });
 
+  /* ================= brand marquee: constant px/s, seamless, hover pause, drag to scrub ================= */
+  on('marquee', function (mq) {
+    var track = mq.querySelector('.mq__track'), rail = mq.querySelector('.mq__rail');
+    var runs = $$('.logos__run', rail);
+    if (!runs.length || reduce) return;
+    var speed = Number(mq.getAttribute('data-speed')) || 40;
+    var reverse = mq.classList.contains('mq--right');
+    var runW = 0, dur = 48;
+    function size() {
+      runW = runs[0].getBoundingClientRect().width;
+      if (!runW) return;
+      /* a short run must still cover the track twice, or the loop shows a gap */
+      while (runs.length * runW < track.clientWidth * 2 && runs.length < 8) {
+        var c = runs[0].cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.inert = true; rail.appendChild(c); runs.push(c);
+      }
+      dur = runW / speed;
+      rail.style.setProperty('--mq-shift', (-runW) + 'px');
+      rail.style.setProperty('--mq-dur', dur + 's');
+    }
+    size();
+    window.addEventListener('resize', size);
+    $$('img', rail).forEach(function (im) { if (!im.complete) im.addEventListener('load', size, { once: true }); });
+    function offset() { var t = getComputedStyle(rail).transform; if (!t || t === 'none') return 0; return new DOMMatrixReadOnly(t).m41; }
+    function wrap(x) { x = x % runW; return x > 0 ? x - runW : x; }
+    var down = false, moved = false, x0 = 0, off0 = 0;
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      down = true; moved = false; x0 = e.clientX; off0 = offset();
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - x0;
+      if (!moved && Math.abs(dx) < 6) return;
+      if (!moved) {
+        moved = true;
+        track.classList.add('is-dragging');
+        try { track.setPointerCapture(e.pointerId); } catch (err) {}
+        rail.style.animation = 'none';
+      }
+      rail.style.transform = 'translate3d(' + wrap(off0 + dx) + 'px, 0, 0)';
+    });
+    function end() {
+      if (!down) return;
+      down = false;
+      track.classList.remove('is-dragging');
+      if (!moved) return;
+      var phase = -wrap(offset()) / runW;                  /* 0..1 of one run */
+      var t = (reverse ? 1 - phase : phase) * dur;
+      rail.style.transform = '';
+      rail.style.animation = '';
+      rail.style.animationDelay = (-t) + 's';              /* resume from where the finger left it */
+    }
+    track.addEventListener('pointerup', end);
+    track.addEventListener('pointercancel', end);
+    track.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  });
+
   /* ================= boot ================= */
   V2.on = on;
   V2.run = run;

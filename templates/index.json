@@ -183,7 +183,9 @@
       "type": "snh-brand-marquee",
       "settings": {
         "label": "Authorised distributors of leading brands",
-        "speed": 48
+        "speed": 40,
+        "direction": "left",
+        "logo_height": 64
       },
       "blocks": {
         "logo_1": {
@@ -191,6 +193,8 @@
           "settings": {
             "name": "Applied Nutrition",
             "image": "shopify://shop_images/Untitled_design.zip_-_1.png",
+            "dark": false,
+            "scale": 120,
             "link": "/collections/applied-nutrition"
           }
         },
@@ -199,6 +203,8 @@
           "settings": {
             "name": "Science in Sport",
             "image": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png",
+            "dark": true,
+            "scale": 100,
             "link": "/collections/sis"
           }
         },
@@ -207,6 +213,8 @@
           "settings": {
             "name": "RAW Nutrition",
             "image": "shopify://shop_images/IMG_0045.jpg",
+            "dark": false,
+            "scale": 100,
             "link": "/collections/raw"
           }
         },
@@ -215,6 +223,8 @@
           "settings": {
             "name": "Myprotein",
             "image": "shopify://shop_images/IMG_0049.png",
+            "dark": true,
+            "scale": 100,
             "link": "/collections/myprotein"
           }
         },
@@ -223,6 +233,8 @@
           "settings": {
             "name": "Revive",
             "image": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png",
+            "dark": false,
+            "scale": 140,
             "link": "/collections/revive"
           }
         },
@@ -231,6 +243,8 @@
           "settings": {
             "name": "MuscleTech",
             "image": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png",
+            "dark": false,
+            "scale": 85,
             "link": "/collections/muscletech"
           }
         },
@@ -239,6 +253,8 @@
           "settings": {
             "name": "RYSE",
             "image": "shopify://shop_images/IMG_0046.jpg",
+            "dark": true,
+            "scale": 80,
             "link": "/collections/ryse"
           }
         },
@@ -247,6 +263,8 @@
           "settings": {
             "name": "EHP Labs",
             "image": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png",
+            "dark": false,
+            "scale": 140,
             "link": "/collections/ehplabs"
           }
         },
@@ -255,6 +273,8 @@
           "settings": {
             "name": "Surge",
             "image": "shopify://shop_images/final_surge_logo-01.jpg",
+            "dark": false,
+            "scale": 115,
             "link": "/collections/surge"
           }
         },
@@ -263,6 +283,8 @@
           "settings": {
             "name": "Healthspan Elite",
             "image": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png",
+            "dark": false,
+            "scale": 105,
             "link": "/collections/healthspan-elite"
           }
         },
@@ -271,6 +293,8 @@
           "settings": {
             "name": "Vitabiotics",
             "image": "shopify://shop_images/3_e9de3e34-4221-415b-b928-c97558667165.png",
+            "dark": false,
+            "scale": 145,
             "link": "/collections/everything?filter.p.vendor=VITABIOTICS"
           }
         },
@@ -279,6 +303,8 @@
           "settings": {
             "name": "Dymatize",
             "image": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png",
+            "dark": false,
+            "scale": 125,
             "link": "/collections/dymatize"
           }
         },
@@ -287,6 +313,8 @@
           "settings": {
             "name": "Redcon1",
             "image": "shopify://shop_images/Untitled_design.zip_-_4.png",
+            "dark": false,
+            "scale": 100,
             "link": "/collections/redcon1"
           }
         }

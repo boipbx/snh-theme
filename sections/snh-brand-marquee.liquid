@@ -1,18 +1,28 @@
 {%- comment -%}
-  SNH brand marquee: "Authorised distributors of leading brands" (prototype section.logos).
-  One block per logo (image + link to the brand collection). The run is printed twice so the loop is seamless.
+  SNH brand marquee: "Authorised distributors of leading brands".
+  One block per logo (image + link to the brand collection). Seamless loop: the run is printed twice inside one rail
+  that moves by exactly one run width (translate3d keyframes, constant px/s speed, direction setting).
+  Hover pauses, drag/swipe scrubs, edges fade. Reduced motion: a static horizontal scroller.
+  Tiles are uniform (white, hairline, same size); logos are greyscale at 70% and turn full colour on hover.
+  Logos drawn on a dark square can be inverted onto the white tile ("Logo on a dark background").
+  Behaviour: assets/snh-v2.js data-v2="marquee".
 {%- endcomment -%}
 {%- capture run -%}
   {%- for b in section.blocks -%}
-    <a class="logo" href="{{ b.settings.link | default: '#' }}" title="{{ b.settings.name | escape }}" {{ b.shopify_attributes }}>
-      {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 320 | image_tag: width: 160, height: 160, loading: 'lazy', alt: b.settings.name }}{%- else -%}<span class="brand__word">{{ b.settings.name | escape }}</span>{%- endif -%}
+    <a class="logo{% if b.settings.dark %} logo--dark{% endif %}" href="{{ b.settings.link | default: '#' }}" title="{{ b.settings.name | escape }}" draggable="false" style="--ls: {{ b.settings.scale | divided_by: 100.0 }}" {{ b.shopify_attributes }}>
+      {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 320 | image_tag: width: 160, height: 160, loading: 'lazy', alt: b.settings.name, draggable: 'false' }}{%- else -%}<span class="brand__word">{{ b.settings.name | escape }}</span>{%- endif -%}
     </a>
   {%- endfor -%}
 {%- endcapture -%}
-<section class="v2 logos" aria-label="{{ section.settings.label | escape }}" style="--logos-speed: {{ section.settings.speed }}s">
+<section class="v2 logos mq{% if section.settings.direction == 'right' %} mq--right{% endif %}" aria-label="{{ section.settings.label | escape }}" data-v2="marquee" data-speed="{{ section.settings.speed }}" style="--mq-logo-h: {{ section.settings.logo_height }}px">
   <div class="v-wrap logos__in">
     {%- if section.settings.label != blank -%}<p class="eyebrow">{{ section.settings.label | escape }}</p>{%- endif -%}
-    <div class="logos__track"><div class="logos__run">{{ run }}</div><div class="logos__run" aria-hidden="true">{{ run }}</div></div>
+    <div class="logos__track mq__track">
+      <div class="mq__rail">
+        <div class="logos__run">{{ run }}</div>
+        <div class="logos__run" aria-hidden="true" inert>{{ run }}</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -23,7 +33,9 @@
   "max_blocks": 40,
   "settings": [
     { "type": "text", "id": "label", "label": "Label", "default": "Authorised distributors of leading brands" },
-    { "type": "range", "id": "speed", "label": "Loop time", "min": 16, "max": 120, "step": 4, "unit": "s", "default": 48 }
+    { "type": "range", "id": "speed", "label": "Speed", "min": 10, "max": 120, "step": 5, "unit": "px", "default": 40, "info": "Pixels per second, the same whatever the number of logos." },
+    { "type": "select", "id": "direction", "label": "Direction", "options": [{ "value": "left", "label": "Right to left" }, { "value": "right", "label": "Left to right" }], "default": "left" },
+    { "type": "range", "id": "logo_height", "label": "Logo size", "min": 40, "max": 88, "step": 4, "unit": "px", "default": 64, "info": "Max height of each logo inside its tile." }
   ],
   "blocks": [
     {
@@ -31,7 +43,9 @@
       "name": "Logo",
       "settings": [
         { "type": "text", "id": "name", "label": "Brand name", "default": "Brand" },
-        { "type": "image_picker", "id": "image", "label": "Logo" },
+        { "type": "image_picker", "id": "image", "label": "Logo", "info": "Best: a transparent PNG or SVG." },
+        { "type": "range", "id": "scale", "label": "Logo scale", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 100, "info": "Evens out logo files with more or less empty space around the mark." },
+        { "type": "checkbox", "id": "dark", "label": "Logo on a dark background", "default": false, "info": "Inverts a logo drawn on a black/coloured square so it sits on the white tile like the others." },
         { "type": "url", "id": "link", "label": "Link", "info": "The brand collection." }
       ]
     }
