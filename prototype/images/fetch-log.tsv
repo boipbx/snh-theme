@@ -1,0 +1,25 @@
+time	key	attempt	url	user_agent	result
+2026-10-20T13:17:09	sis-video	1	https://www.scienceinsport.com/media/wysiwyg/Q2_Running_Homepage_Video.mp4	Mozilla/5.0	200 video/mp4 16092700B OK
+2026-10-20T13:17:10	sis-ENERGY	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_ENERGY.jpg	Mozilla/5.0	200 image/jpeg 73117B OK
+2026-10-20T13:17:10	sis-ENERGY-508	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_508_x_794_-_ENERGY.jpg	Mozilla/5.0	200 image/jpeg 54975B OK
+2026-10-20T13:17:11	sis-HYDRATION	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_HYDRATION.jpg	Mozilla/5.0	200 image/jpeg 71285B OK
+2026-10-20T13:17:11	sis-HYDRATION-508	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_508_x_794_-_HYDRATION.jpg	Mozilla/5.0	200 image/jpeg 72082B OK
+2026-10-20T13:17:12	sis-RECOVERY	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_RECOVERY.jpg	Mozilla/5.0	200 image/jpeg 60622B OK
+2026-10-20T13:17:13	sis-RECOVERY-508	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_508_x_794_-_RECOVERY.jpg	Mozilla/5.0	200 image/jpeg 55679B OK
+2026-10-20T13:17:13	sis-BETA	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_BETA.jpg	Mozilla/5.0	200 image/jpeg 73357B OK
+2026-10-20T13:17:14	sis-BETA-508	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_508_x_794_-_BETA.jpg	Mozilla/5.0	200 image/jpeg 59343B OK
+2026-10-20T13:17:14	sis-VMS	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_VMS.jpg	Mozilla/5.0	200 image/jpeg 54718B OK
+2026-10-20T13:17:15	sis-VMS-508	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_508_x_794_-_VMS.jpg	Mozilla/5.0	200 image/jpeg 49785B OK
+2026-10-20T13:17:18	sis-mccolgan-d	1	https://www.scienceinsport.com/media/.renditions/wysiwyg/Phoenix_-_Homepage_-_Trusted_by_Athletes_-_Desktop_-_McCOLGAN.jpg	Mozilla/5.0	200 image/jpeg 36166B OK
+2026-10-20T13:17:19	sis-mccolgan-m	1	https://www.scienceinsport.com/media/.renditions/wysiwyg/Phoenix_-_Homepage_-_Trusted_by_Athletes_-_Mobile_-_McCOLGAN.jpg	Mozilla/5.0	200 image/jpeg 21545B OK
+2026-10-20T13:17:19	sis-logo	1	https://www.scienceinsport.com/static/version1792401833/frontend/SIS/theme-frontend-sis-pnx/en_GB/images/logo.svg	Mozilla/5.0	200 image/svg+xml 102038B OK
+2026-10-20T13:17:20	sis-poster	1	https://www.scienceinsport.com/media/wysiwyg/BF-Electrolyte-VideoFrame1.jpg	Mozilla/5.0	200 image/jpeg 253831B OK
+2026-10-20T13:17:49	sis-mccolgan-Desktop-orig	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_-_Trusted_by_Athletes_-_Desktop_-_McCOLGAN.jpg	Mozilla/5.0	200 image/jpeg 36166B OK
+2026-10-20T13:17:50	sis-mccolgan-Mobile-orig	1	https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_-_Trusted_by_Athletes_-_Mobile_-_McCOLGAN.jpg	Mozilla/5.0	200 image/jpeg 21545B OK
+2026-10-20T13:37:00	blog-atom	1	https://sportsnutritionhub.lk/blogs/news.atom?page=1	Mozilla/5.0	empty body (0B) FAIL
+2026-10-20T13:37:30	blog-atom	2	https://www.sportsnutritionhub.lk/blogs/news.atom	Mozilla/5.0	200 application/atom+xml 508072B OK (30 posts)
+2026-10-20T13:40:00	blog-tags	1	https://www.sportsnutritionhub.lk/blogs/news/tagged/<66 tags>	Mozilla/5.0	200 HTML OK (tags mapped to 23 of 30 posts)
+2026-10-20T13:41:00	blog-images	1	https://www.sportsnutritionhub.lk/blogs/news/<article> og:image	Mozilla/5.0	200 OK (3 posts without an inline image filled from og:image)
+2026-10-20T13:52:00	pdp-pages	1	https://www.sportsnutritionhub.lk/products/{applied-nutrition-critical-whey-2kg,sis-go-isotonic-energy-gel,raw-cbum-itholate-protein}(.js)	Mozilla/5.0	200 OK (read-only, no cart actions)
+2026-10-20T14:05:00	bundle-products	1	https://www.sportsnutritionhub.lk/products/{whey-pre-stack,whey-training-stack}.json	Mozilla/5.0	200 OK
+2026-10-20T14:06:00	bundle-covers	1	https://www.sportsnutritionhub.lk/collections/{training-strength-bundles,endurance-bundles}/products.json	Mozilla/5.0	200 OK (first product image used as cover)

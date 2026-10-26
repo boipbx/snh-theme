@@ -1,0 +1,271 @@
+{
+ "slides": [
+  {
+   "desktop": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2fd50e25-5d19-4f08-9e36-f8992b6e917c.jpg",
+   "mobile": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/d15b04ae-74cb-46b8-ab36-d6e467b4ddce.jpg",
+   "title": "",
+   "button": "",
+   "link": ""
+  },
+  {
+   "desktop": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ryse-desk-banner.jpg",
+   "mobile": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ryse_mobile_banner.jpg",
+   "title": "DISCOVER OUR ALL NEW ARRIVALS FROM RYSE",
+   "button": "SHOP RYZE",
+   "link": "/collections/ryse"
+  },
+  {
+   "desktop": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/revive.jpg",
+   "mobile": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/revive_mobile.jpg",
+   "title": "THE GOLD STANDARD FOR WELLNESS",
+   "button": "SHOP REVIVE",
+   "link": "/collections/revive"
+  },
+  {
+   "desktop": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/the-sulek-stack.jpg",
+   "mobile": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/the-sulek-stack_mobike.jpg",
+   "title": "THE SULEK STACK HAS LANDED",
+   "button": "SHOP SULEK STACK",
+   "link": "/collections/the-sulek-stack"
+  },
+  {
+   "desktop": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/nootropics-web-cover.jpg",
+   "mobile": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/nootropics-web-cover_mobile.jpg",
+   "title": "THE NEXT LEVEL OF ATHLETE NUTRITION",
+   "button": "SHOP NOOTROPICS",
+   "link": "/products/sis-beta-fuel-energy-nootropics-gel"
+  }
+ ],
+ "botm": {
+  "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/brand_of_the_month_-_ryse.jpg",
+  "title": "BRAND OF THE MONTH",
+  "spots": [
+   {
+    "handle": "ryse-loaded-protein-2lb",
+    "x": 48,
+    "y": 67
+   },
+   {
+    "handle": "ryse-loaded-pump-25-servings",
+    "x": 28,
+    "y": 62
+   },
+   {
+    "handle": "ryse-loaded-pre-workout",
+    "x": 83,
+    "y": 66
+   },
+   {
+    "handle": "ryse-loaded-pre-max",
+    "x": 15,
+    "y": 57
+   }
+  ]
+ },
+ "deck": [
+  {
+   "title": "WHEY PROTEIN",
+   "badge": "💪Premium Muscle Fuel",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/website_cover_-_whey.jpg",
+   "link": "/collections/whey-protein"
+  },
+  {
+   "title": "CREATINE",
+   "badge": "⚡Pure Strength",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4441.jpg",
+   "link": "/collections/creatine"
+  },
+  {
+   "title": "HERBS & NATURAL SOLUTION",
+   "badge": "Live better",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4440.jpg",
+   "link": "/collections/herbs-natural-solution"
+  },
+  {
+   "title": "VITAMINS & WELL-BEING",
+   "badge": "🛡️Daily Wellness Essentials",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4447.jpg",
+   "link": "/collections/vitamins-minerals"
+  },
+  {
+   "title": "COLLAGEN",
+   "badge": "🌸Glow from Within",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/website_covers_-_collagen.jpg",
+   "link": "/collections/collagen"
+  },
+  {
+   "title": "PROTEIN SNACKS",
+   "badge": "🍫Healthy On-the-Go Bites",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4446.jpg",
+   "link": "/collections/protein-bars-snacks"
+  },
+  {
+   "title": "PRE WORKOUT",
+   "badge": "🔥Level up every session.",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4445.jpg",
+   "link": "/collections/pre-workout-1"
+  },
+  {
+   "title": "MASS GAINERS",
+   "badge": "🏋️Big Gains, Bigger Nutrition",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4444.jpg",
+   "link": "/collections/mass-gainers"
+  },
+  {
+   "title": "FAT BURNERS",
+   "badge": "🎯Burn Smart, Burn Fast",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/IMG_4442.jpg",
+   "link": "/collections/fat-burners-1"
+  },
+  {
+   "title": "SHAKERS",
+   "badge": "🥤Perfect Mix Every Time",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/imgi_29_1f9f6567-6e04-4fd9-8b8d-2cf6428d6199.jpg",
+   "link": "/collections/shakers"
+  }
+ ],
+ "goals": [
+  {
+   "group": "train",
+   "title": "Muscle & Strength",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_17_PM_1.png?v=1784056180",
+   "link": "/collections/muscle-and-strength"
+  },
+  {
+   "group": "train",
+   "title": "Fat Loss",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_18_PM_2.png?v=1784056179",
+   "link": "/collections/fat-loss"
+  },
+  {
+   "group": "train",
+   "title": "Energy & Endurance",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_3.png?v=1784056179",
+   "link": "/collections/energy-and-endurance"
+  },
+  {
+   "group": "train",
+   "title": "Recovery",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_4.png?v=1784056179",
+   "link": "/collections/recovery"
+  },
+  {
+   "group": "wellness",
+   "title": "Daily Wellness",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_5.png?v=1784056179",
+   "link": "/collections/daily-wellness"
+  },
+  {
+   "group": "wellness",
+   "title": "Gut Health",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_20_PM_6.png?v=1784056180",
+   "link": "/collections/gut-health"
+  },
+  {
+   "group": "wellness",
+   "title": "Women's Health",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_20_PM_7.png?v=1784056180",
+   "link": "/collections/womens-health"
+  },
+  {
+   "group": "wellness",
+   "title": "Beauty, Hair & Skin",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_21_PM_8.png?v=1784056180",
+   "link": "/collections/beauty-hair-and-skin"
+  },
+  {
+   "group": "wellness",
+   "title": "Joint & Mobility",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_21_PM_9.png?v=1784056180",
+   "link": "/collections/joint-and-mobility"
+  },
+  {
+   "group": "wellness",
+   "title": "Sleep",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_22_PM_10.png?v=1784056180",
+   "link": "/collections/sleep"
+  }
+ ],
+ "bundles": [
+  {
+   "title": "Endurance Bundles",
+   "badge": "Save more",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bundle_off.png",
+   "link": "/collections/endurance-bundles"
+  },
+  {
+   "title": "Daily Health & Wellness Bundles",
+   "badge": "Save more",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/wellness.png",
+   "link": "/collections/daily-health-wellness-bundles"
+  },
+  {
+   "title": "Training & Strength Bundles",
+   "badge": "Save more",
+   "image": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/protines.png",
+   "link": "/collections/training-strength-bundles"
+  }
+ ],
+ "faq": [
+  [
+   "How long will it take to get my orders?",
+   "It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days"
+  ],
+  [
+   "Where can I come visit physically?",
+   "We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear."
+  ],
+  [
+   "I want to know more",
+   "The fastest way to get an answer would be to call us or WhatsApp us on +94 76 486 3359"
+  ],
+  [
+   "Are your supplements genuine?",
+   "Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority."
+  ],
+  [
+   "How do I know which supplement is right for me?",
+   "Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements."
+  ],
+  [
+   "What payment methods do you accept?",
+   "We accept card payments, bank transfers, cash on delivery, & Koko."
+  ],
+  [
+   "Can I return or exchange a product?",
+   "Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly."
+  ]
+ ],
+ "whyus": {
+  "heading": "WHY CHOOSE US?",
+  "sub": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
+  "stats": [
+   [
+    "50,000+",
+    "Orders delivered"
+   ],
+   [
+    "4.9★",
+    "From 2,000+ reviews"
+   ]
+  ],
+  "features": [
+   [
+    "100% AUTHENTIC",
+    "Direct from brand and authorized distributors."
+   ],
+   [
+    "FAIR PRICING",
+    "Transparent prices with frequent bundles and member only deals."
+   ],
+   [
+    "EXPERT SUPPORT",
+    "Fast guidance from our team via chat, phone, or WhatsApp."
+   ],
+   [
+    "SECURE PAYMENTS",
+    "SSL checkout with cards, bank transfer & KOKO"
+   ]
+  ]
+ }
+}

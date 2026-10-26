@@ -1,0 +1,1590 @@
+{
+ "huel-390": {
+  "url": "https://huel.com/",
+  "title": "Huel",
+  "vw": 390,
+  "pageHeight": 9416,
+  "tags": {
+   "h1": null,
+   "h2": {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 17,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Your Cart"
+   },
+   "h3": {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 18,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Black Edition Ready-to-drink, now at Walmart"
+   }
+  },
+  "body": {
+   "family": "suisseIntlMono",
+   "weight": "400",
+   "size": 13,
+   "lh": 1.4,
+   "ls": 0,
+   "transform": "uppercase",
+   "color": "rgb(255, 255, 255)",
+   "text": "FREE SHIPPING $65+",
+   "count": 48,
+   "chars": 1020
+  },
+  "scale": [
+   {
+    "family": "suisseWorks",
+    "weight": "400",
+    "size": 34,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "fuel",
+    "count": 7,
+    "chars": 65
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 30,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "100% Complete",
+    "count": 8,
+    "chars": 153
+   },
+   {
+    "family": "suisseWorks",
+    "weight": "400",
+    "size": 22,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Complete",
+    "count": 5,
+    "chars": 41
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 21,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Oops! Your cart is empty",
+    "count": 7,
+    "chars": 112
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 18,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Black Edition Ready-to-drink, now at Walmart",
+    "count": 5,
+    "chars": 165
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 17,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Your Cart",
+    "count": 1,
+    "chars": 9
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 16,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Complete nutrition that supports your body, your goals, and ",
+    "count": 18,
+    "chars": 800
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 16,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "From $45",
+    "count": 4,
+    "chars": 35
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 15,
+    "lh": 1.33,
+    "ls": 0.032,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Shop outlet & save",
+    "count": 14,
+    "chars": 170
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 14,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Refer a Friend",
+    "count": 10,
+    "chars": 169
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 14,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Available nationwide",
+    "count": 8,
+    "chars": 214
+   },
+   {
+    "family": "suisseIntlMono",
+    "weight": "400",
+    "size": 13,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(255, 255, 255)",
+    "text": "FREE SHIPPING $65+",
+    "count": 48,
+    "chars": 1020
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 13,
+    "lh": 1.08,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(57, 51, 40)",
+    "text": "Which Huel is right for you?",
+    "count": 8,
+    "chars": 109
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 12,
+    "lh": 1.3,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Bestsellers",
+    "count": 18,
+    "chars": 253
+   }
+  ],
+  "families": {
+   "suisseIntlMono": {
+    "chars": 1020,
+    "weights": {
+     "400": 1020
+    }
+   },
+   "suisseIntl": {
+    "chars": 2690,
+    "weights": {
+     "400": 1524,
+     "500": 1166
+    }
+   },
+   "suisseWorks": {
+    "chars": 106,
+    "weights": {
+     "400": 106
+    }
+   }
+  },
+  "sections": [
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 635
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 570
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 699
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 647
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 985
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 364
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 1286
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 818
+   },
+   {
+    "pt": 32,
+    "pb": 32,
+    "h": 873
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 641
+   },
+   {
+    "pt": 56,
+    "pb": 56,
+    "h": 452
+   }
+  ],
+  "containers": [
+   [
+    "342",
+    89
+   ],
+   [
+    "310",
+    15
+   ],
+   [
+    "284",
+    2
+   ],
+   [
+    "302",
+    2
+   ],
+   [
+    "326",
+    1
+   ]
+  ],
+  "gutter": [
+   [
+    "24",
+    25
+   ],
+   [
+    "93",
+    6
+   ],
+   [
+    "40",
+    5
+   ],
+   [
+    "37",
+    4
+   ]
+  ],
+  "radii": [
+   [
+    "8",
+    39
+   ],
+   [
+    "12",
+    5
+   ]
+  ],
+  "aspects": [
+   [
+    "1:1",
+    28
+   ],
+   [
+    "9:16",
+    8
+   ],
+   [
+    "0.86",
+    5
+   ],
+   [
+    "0.88",
+    2
+   ],
+   [
+    "1.15",
+    1
+   ],
+   [
+    "5:4",
+    1
+   ],
+   [
+    "1.88",
+    1
+   ]
+  ],
+  "buttons": [
+   [
+    "32px h · radius 9999px · bg rgb(12, 12, 13) · 500 13.008px ",
+    5
+   ],
+   [
+    "40px h · radius 9999px · bg rgb(12, 12, 13) · 500 15.008px ",
+    5
+   ],
+   [
+    "56px h · radius 9999px · bg rgb(255, 255, 255) · 500 15.008px ",
+    5
+   ],
+   [
+    "60px h · radius 12px · bg rgb(255, 255, 255) · 400 16px ",
+    3
+   ],
+   [
+    "38px h · radius 9999px · bg rgb(225, 248, 224) · 500 13.008px ",
+    1
+   ],
+   [
+    "32px h · radius 9999px · bg rgb(236, 236, 237) · 500 13.008px ",
+    1
+   ],
+   [
+    "40px h · radius 9999px · bg rgb(199, 241, 197) · 500 15.008px ",
+    1
+   ],
+   [
+    "56px h · radius 9999px · bg rgb(236, 236, 237) · 500 15.008px ",
+    1
+   ]
+  ],
+  "palette": [
+   [
+    "text:rgb(255, 255, 255)",
+    12760
+   ],
+   [
+    "text:rgb(12, 12, 13)",
+    4576
+   ],
+   [
+    "rgb(245, 242, 236)",
+    1934
+   ],
+   [
+    "rgb(255, 255, 255)",
+    1562
+   ],
+   [
+    "text:rgb(165, 165, 166)",
+    1560
+   ],
+   [
+    "rgb(12, 12, 13)",
+    1162
+   ],
+   [
+    "text:rgb(75, 75, 75)",
+    692
+   ],
+   [
+    "text:rgb(110, 110, 110)",
+    656
+   ],
+   [
+    "text:rgb(57, 51, 40)",
+    112
+   ],
+   [
+    "text:rgb(55, 192, 251)",
+    76
+   ],
+   [
+    "rgb(225, 248, 224)",
+    37
+   ],
+   [
+    "text:rgb(236, 236, 237)",
+    28
+   ],
+   [
+    "rgb(236, 236, 237)",
+    25
+   ],
+   [
+    "text:rgb(45, 45, 46)",
+    24
+   ],
+   [
+    "rgb(199, 241, 197)",
+    18
+   ],
+   [
+    "oklab(0.961729 0.000859559 0.00858581 / 0.9)",
+    10
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+    2
+   ],
+   [
+    "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px -4px 14px 0px",
+    1
+   ]
+  ],
+  "transitions": [
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.3s",
+    163
+   ],
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.15s",
+    53
+   ],
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.2s",
+    44
+   ],
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.32s",
+    30
+   ],
+   [
+    "cubic-bezier(0, 0, 0.2, 1) 0.3s",
+    6
+   ]
+  ]
+ },
+ "huel-1440": {
+  "url": "https://huel.com/",
+  "title": "Huel",
+  "vw": 1440,
+  "pageHeight": 7702,
+  "tags": {
+   "h1": null,
+   "h2": {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 17,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Your Cart"
+   },
+   "h3": {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 18,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Black Edition Ready-to-drink, now at Walmart"
+   }
+  },
+  "body": {
+   "family": "suisseIntlMono",
+   "weight": "400",
+   "size": 13,
+   "lh": 1.4,
+   "ls": 0,
+   "transform": "uppercase",
+   "color": "rgb(255, 255, 255)",
+   "text": "FREE SHIPPING $65+",
+   "count": 48,
+   "chars": 1020
+  },
+  "scale": [
+   {
+    "family": "suisseWorks",
+    "weight": "400",
+    "size": 54,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "fuel",
+    "count": 7,
+    "chars": 65
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 42,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "100% Complete",
+    "count": 8,
+    "chars": 153
+   },
+   {
+    "family": "suisseWorks",
+    "weight": "400",
+    "size": 42,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Complete",
+    "count": 1,
+    "chars": 8
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 24,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Bestsellers",
+    "count": 6,
+    "chars": 88
+   },
+   {
+    "family": "suisseWorks",
+    "weight": "400",
+    "size": 24,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Balanced",
+    "count": 4,
+    "chars": 33
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 21,
+    "lh": 1.12,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Oops! Your cart is empty",
+    "count": 1,
+    "chars": 24
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 18,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Lose weight",
+    "count": 9,
+    "chars": 208
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 17,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Your Cart",
+    "count": 1,
+    "chars": 9
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 16,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Complete nutrition that supports your body, your goals, and ",
+    "count": 22,
+    "chars": 900
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 16,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "From $45",
+    "count": 4,
+    "chars": 35
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 15,
+    "lh": 1.33,
+    "ls": 0.032,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Shop outlet & save",
+    "count": 14,
+    "chars": 170
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "500",
+    "size": 14,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(12, 12, 13)",
+    "text": "Refer a Friend",
+    "count": 9,
+    "chars": 108
+   },
+   {
+    "family": "suisseIntl",
+    "weight": "400",
+    "size": 14,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Available nationwide",
+    "count": 35,
+    "chars": 554
+   },
+   {
+    "family": "suisseIntlMono",
+    "weight": "400",
+    "size": 13,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(255, 255, 255)",
+    "text": "FREE SHIPPING $65+",
+    "count": 48,
+    "chars": 1020
+   }
+  ],
+  "families": {
+   "suisseIntlMono": {
+    "chars": 1020,
+    "weights": {
+     "400": 1020
+    }
+   },
+   "suisseIntl": {
+    "chars": 3059,
+    "weights": {
+     "400": 1891,
+     "500": 1168
+    }
+   },
+   "suisseWorks": {
+    "chars": 106,
+    "weights": {
+     "400": 106
+    }
+   }
+  },
+  "sections": [
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 558
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 449
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 544
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 856
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 911
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 468
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 588
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 795
+   },
+   {
+    "pt": 64,
+    "pb": 64,
+    "h": 598
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 527
+   },
+   {
+    "pt": 80,
+    "pb": 80,
+    "h": 315
+   }
+  ],
+  "containers": [
+   [
+    "1152",
+    16
+   ],
+   [
+    "760",
+    2
+   ]
+  ],
+  "gutter": [
+   [
+    "144",
+    25
+   ],
+   [
+    "164",
+    3
+   ],
+   [
+    "169",
+    2
+   ],
+   [
+    "176",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "8",
+    39
+   ],
+   [
+    "12",
+    5
+   ]
+  ],
+  "aspects": [
+   [
+    "1:1",
+    26
+   ],
+   [
+    "9:16",
+    6
+   ],
+   [
+    "4:5",
+    4
+   ],
+   [
+    "1.58",
+    4
+   ],
+   [
+    "2.00",
+    3
+   ],
+   [
+    "5:4",
+    2
+   ],
+   [
+    "2.73",
+    2
+   ],
+   [
+    "1.88",
+    1
+   ]
+  ],
+  "buttons": [
+   [
+    "32px h · radius 9999px · bg rgb(12, 12, 13) · 500 13.008px ",
+    5
+   ],
+   [
+    "40px h · radius 9999px · bg rgb(12, 12, 13) · 500 15.008px ",
+    5
+   ],
+   [
+    "56px h · radius 9999px · bg rgb(255, 255, 255) · 500 15.008px ",
+    5
+   ],
+   [
+    "60px h · radius 12px · bg rgb(255, 255, 255) · 400 16px ",
+    3
+   ],
+   [
+    "38px h · radius 9999px · bg rgb(225, 248, 224) · 500 13.008px ",
+    1
+   ],
+   [
+    "32px h · radius 9999px · bg rgb(236, 236, 237) · 500 13.008px ",
+    1
+   ],
+   [
+    "40px h · radius 9999px · bg rgb(199, 241, 197) · 500 15.008px ",
+    1
+   ],
+   [
+    "56px h · radius 9999px · bg rgb(236, 236, 237) · 500 15.008px ",
+    1
+   ]
+  ],
+  "palette": [
+   [
+    "text:rgb(255, 255, 255)",
+    13992
+   ],
+   [
+    "text:rgb(12, 12, 13)",
+    4644
+   ],
+   [
+    "rgb(12, 12, 13)",
+    3487
+   ],
+   [
+    "rgb(245, 242, 236)",
+    3425
+   ],
+   [
+    "rgb(255, 255, 255)",
+    2728
+   ],
+   [
+    "text:rgb(165, 165, 166)",
+    1560
+   ],
+   [
+    "text:rgb(110, 110, 110)",
+    840
+   ],
+   [
+    "text:rgb(75, 75, 75)",
+    692
+   ],
+   [
+    "text:rgb(57, 51, 40)",
+    112
+   ],
+   [
+    "text:rgb(55, 192, 251)",
+    76
+   ],
+   [
+    "rgb(225, 248, 224)",
+    42
+   ],
+   [
+    "text:rgb(236, 236, 237)",
+    28
+   ],
+   [
+    "rgb(236, 236, 237)",
+    27
+   ],
+   [
+    "text:rgb(45, 45, 46)",
+    24
+   ],
+   [
+    "rgb(199, 241, 197)",
+    22
+   ],
+   [
+    "oklab(0.961729 0.000859559 0.00858581 / 0.9)",
+    11
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+    2
+   ],
+   [
+    "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px -4px 14px 0px",
+    1
+   ]
+  ],
+  "transitions": [
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.3s",
+    135
+   ],
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.15s",
+    53
+   ],
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.2s",
+    44
+   ],
+   [
+    "cubic-bezier(0.4, 0, 0.2, 1) 0.32s",
+    30
+   ],
+   [
+    "cubic-bezier(0, 0, 0.2, 1) 0.3s",
+    6
+   ]
+  ]
+ },
+ "elianvalen-390": {
+  "url": "https://elianvalen.framer.website/",
+  "title": "ELIAN VALEN — Contemporary Fashion",
+  "vw": 390,
+  "pageHeight": 13141,
+  "tags": {
+   "h1": {
+    "family": "Inter",
+    "weight": "600",
+    "size": 257.8,
+    "lh": 0.8,
+    "ls": -0.08,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "ELIAN VALEN"
+   },
+   "h2": {
+    "family": "Inter",
+    "weight": "400",
+    "size": 32,
+    "lh": 1.1,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "Elian Valen New Collections 2026©"
+   },
+   "h3": null
+  },
+  "body": {
+   "family": "Inter",
+   "weight": "400",
+   "size": 16,
+   "lh": 1.4,
+   "ls": 0,
+   "transform": "none",
+   "color": "rgb(14, 14, 14)",
+   "text": "Explore Collections",
+   "count": 34,
+   "chars": 468
+  },
+  "scale": [
+   {
+    "family": "Inter",
+    "weight": "600",
+    "size": 223,
+    "lh": 1,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "ELIAN VALEN",
+    "count": 1,
+    "chars": 11
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 32,
+    "lh": 1.1,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Curated fasion products",
+    "count": 2,
+    "chars": 34
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 26,
+    "lh": 1.2,
+    "ls": -0.04,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Men’s 2026 Collection",
+    "count": 2,
+    "chars": 44
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 24,
+    "lh": 1.1,
+    "ls": -0.04,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "ELI 2026",
+    "count": 3,
+    "chars": 27
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 16,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "Explore Collections",
+    "count": 34,
+    "chars": 468
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 14,
+    "lh": 1.2,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "Shop",
+    "count": 14,
+    "chars": 190
+   },
+   {
+    "family": "Inter",
+    "weight": "600",
+    "size": 14,
+    "lh": "normal",
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "$246.00",
+    "count": 18,
+    "chars": 126
+   },
+   {
+    "family": "sans-serif",
+    "weight": "400",
+    "size": 12,
+    "lh": "normal",
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(0, 0, 238)",
+    "text": "Create a free website with Framer, the website builder loved",
+    "count": 1,
+    "chars": 97
+   }
+  ],
+  "families": {
+   "Inter": {
+    "chars": 900,
+    "weights": {
+     "400": 763,
+     "600": 137
+    }
+   },
+   "sans-serif": {
+    "chars": 97,
+    "weights": {
+     "400": 97
+    }
+   }
+  },
+  "sections": [],
+  "containers": [
+   [
+    "350",
+    90
+   ],
+   [
+    "342",
+    19
+   ],
+   [
+    "350 (max-width 1440px)",
+    1
+   ]
+  ],
+  "gutter": [
+   [
+    "20",
+    35
+   ],
+   [
+    "24",
+    16
+   ],
+   [
+    "140",
+    2
+   ],
+   [
+    "76",
+    1
+   ]
+  ],
+  "radii": [],
+  "aspects": [
+   [
+    "9:16",
+    12
+   ],
+   [
+    "1.17",
+    6
+   ],
+   [
+    "2:3",
+    4
+   ],
+   [
+    "1.63",
+    3
+   ],
+   [
+    "0.30",
+    2
+   ],
+   [
+    "0.93",
+    2
+   ],
+   [
+    "1:1",
+    1
+   ]
+  ],
+  "buttons": [
+   [
+    "39px h · radius 4px · bg rgb(255, 255, 255) · 400 14px ",
+    1
+   ]
+  ],
+  "palette": [
+   [
+    "text:rgb(14, 14, 14)",
+    2780
+   ],
+   [
+    "text:rgb(102, 102, 102)",
+    2192
+   ],
+   [
+    "rgb(242, 242, 242)",
+    1221
+   ],
+   [
+    "rgb(255, 255, 255)",
+    1071
+   ],
+   [
+    "text:rgb(255, 255, 255)",
+    840
+   ],
+   [
+    "rgb(244, 244, 242)",
+    614
+   ],
+   [
+    "text:rgb(240, 240, 240)",
+    596
+   ],
+   [
+    "text:rgb(0, 0, 238)",
+    388
+   ],
+   [
+    "rgba(0, 0, 0, 0.24)",
+    328
+   ],
+   [
+    "rgb(14, 14, 14)",
+    319
+   ],
+   [
+    "rgba(0, 0, 0, 0.27)",
+    144
+   ],
+   [
+    "text:rgb(18, 18, 18)",
+    48
+   ],
+   [
+    "rgba(255, 255, 255, 0.3)",
+    5
+   ],
+   [
+    "rgba(255, 255, 255, 0.06)",
+    2
+   ],
+   [
+    "rgb(0, 0, 0)",
+    1
+   ],
+   [
+    "rgba(255, 255, 255, 0.8)",
+    1
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0.17) 0px 0.602187px 1.56569px -1.5px, rgba(0, 0, 0, 0.14) 0px 2.28853px 5.95019px -3px, rgba(0, 0, 0, 0.02) 0px 10px 26px -4.5px",
+    1
+   ],
+   [
+    "rgb(0, 0, 0) 0px 0px 0px 1px inset",
+    1
+   ]
+  ],
+  "transitions": []
+ },
+ "elianvalen-1440": {
+  "url": "https://elianvalen.framer.website/",
+  "title": "ELIAN VALEN — Contemporary Fashion",
+  "vw": 1440,
+  "pageHeight": 10541,
+  "tags": {
+   "h1": {
+    "family": "Inter",
+    "weight": "600",
+    "size": 257.8,
+    "lh": 0.8,
+    "ls": -0.08,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "ELIAN VALEN"
+   },
+   "h2": {
+    "family": "Inter",
+    "weight": "400",
+    "size": 40,
+    "lh": 1.1,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "Elian Valen New Collections 2026©"
+   },
+   "h3": null
+  },
+  "body": {
+   "family": "Inter",
+   "weight": "400",
+   "size": 16,
+   "lh": 1.4,
+   "ls": 0,
+   "transform": "none",
+   "color": "rgb(14, 14, 14)",
+   "text": "Explore Collections",
+   "count": 37,
+   "chars": 548
+  },
+  "scale": [
+   {
+    "family": "Inter",
+    "weight": "600",
+    "size": 223,
+    "lh": 1,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "ELIAN VALEN",
+    "count": 1,
+    "chars": 11
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 40,
+    "lh": 1.1,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Curated fasion products",
+    "count": 2,
+    "chars": 34
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 26,
+    "lh": 1.2,
+    "ls": -0.04,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Men’s 2026 Collection",
+    "count": 5,
+    "chars": 71
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 16,
+    "lh": 1.4,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "Explore Collections",
+    "count": 37,
+    "chars": 548
+   },
+   {
+    "family": "Inter",
+    "weight": "400",
+    "size": 14,
+    "lh": 1.2,
+    "ls": -0.02,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "Shop",
+    "count": 11,
+    "chars": 110
+   },
+   {
+    "family": "Inter",
+    "weight": "600",
+    "size": 14,
+    "lh": "normal",
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(14, 14, 14)",
+    "text": "$246.00",
+    "count": 18,
+    "chars": 126
+   },
+   {
+    "family": "sans-serif",
+    "weight": "400",
+    "size": 12,
+    "lh": "normal",
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(0, 0, 238)",
+    "text": "Create a free website with Framer, the website builder loved",
+    "count": 1,
+    "chars": 97
+   }
+  ],
+  "families": {
+   "Inter": {
+    "chars": 900,
+    "weights": {
+     "400": 763,
+     "600": 137
+    }
+   },
+   "sans-serif": {
+    "chars": 97,
+    "weights": {
+     "400": 97
+    }
+   }
+  },
+  "sections": [],
+  "containers": [
+   [
+    "1280",
+    8
+   ],
+   [
+    "1392",
+    3
+   ],
+   [
+    "867",
+    2
+   ],
+   [
+    "1280 (max-width 1440px)",
+    1
+   ]
+  ],
+  "gutter": [
+   [
+    "80",
+    16
+   ],
+   [
+    "24",
+    4
+   ],
+   [
+    "198",
+    3
+   ],
+   [
+    "83",
+    1
+   ]
+  ],
+  "radii": [],
+  "aspects": [
+   [
+    "2:3",
+    13
+   ],
+   [
+    "0.87",
+    6
+   ],
+   [
+    "9:16",
+    5
+   ],
+   [
+    "3:4",
+    2
+   ],
+   [
+    "2.21",
+    2
+   ],
+   [
+    "1:1",
+    1
+   ],
+   [
+    "1.60",
+    1
+   ]
+  ],
+  "buttons": [
+   [
+    "39px h · radius 4px · bg rgb(255, 255, 255) · 400 14px ",
+    1
+   ]
+  ],
+  "palette": [
+   [
+    "rgb(255, 255, 255)",
+    3640
+   ],
+   [
+    "text:rgb(14, 14, 14)",
+    2780
+   ],
+   [
+    "rgb(242, 242, 242)",
+    2698
+   ],
+   [
+    "text:rgb(102, 102, 102)",
+    2192
+   ],
+   [
+    "rgb(244, 244, 242)",
+    1962
+   ],
+   [
+    "rgba(0, 0, 0, 0.27)",
+    1296
+   ],
+   [
+    "text:rgb(255, 255, 255)",
+    840
+   ],
+   [
+    "rgb(14, 14, 14)",
+    692
+   ],
+   [
+    "text:rgb(240, 240, 240)",
+    596
+   ],
+   [
+    "rgba(0, 0, 0, 0.24)",
+    469
+   ],
+   [
+    "text:rgb(0, 0, 238)",
+    388
+   ],
+   [
+    "text:rgb(18, 18, 18)",
+    48
+   ],
+   [
+    "rgba(255, 255, 255, 0.3)",
+    5
+   ],
+   [
+    "rgba(255, 255, 255, 0.06)",
+    2
+   ],
+   [
+    "rgb(0, 0, 0)",
+    1
+   ],
+   [
+    "rgba(255, 255, 255, 0.8)",
+    1
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0.17) 0px 0.602187px 1.56569px -1.5px, rgba(0, 0, 0, 0.14) 0px 2.28853px 5.95019px -3px, rgba(0, 0, 0, 0.02) 0px 10px 26px -4.5px",
+    1
+   ],
+   [
+    "rgb(0, 0, 0) 0px 0px 0px 1px inset",
+    1
+   ]
+  ],
+  "transitions": []
+ }
+}

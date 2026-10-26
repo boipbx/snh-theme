@@ -1,0 +1,1043 @@
+{
+ "beast-390": {
+  "punch": {
+   "animations": [
+    [
+     "textclip 1s",
+     20
+    ]
+   ],
+   "videos": [
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    }
+   ],
+   "marquees": 0,
+   "ctasAboveFold": [],
+   "density": {
+    "screens": 7.7,
+    "imgsPerScreen": 12.7,
+    "wordsPerScreen": 81,
+    "productCards": 347
+   },
+   "saturatedBgShare": "0%",
+   "darkBgShare": "25%"
+  },
+  "url": "https://beastnutrition.lk/",
+  "title": "Beast Nutrition",
+  "vw": 390,
+  "pageHeight": 6488,
+  "tags": {
+   "h1": null,
+   "h2": null,
+   "h3": {
+    "family": "Heading Pro Trial ExtraBold",
+    "weight": "800",
+    "size": 25,
+    "lh": 1.2,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(255, 255, 255)",
+    "text": "SLUSH PUPPIE"
+   }
+  },
+  "body": {
+   "family": "Plus Jakarta Sans",
+   "weight": "500",
+   "size": 16,
+   "lh": 1.38,
+   "ls": 0,
+   "transform": "capitalize",
+   "color": "rgb(0, 0, 0)",
+   "text": "“Great Place For All Fitness Supplements. Proteins, Mass Gai",
+   "count": 11,
+   "chars": 1722
+  },
+  "scale": [
+   {
+    "family": "Heading Pro Trial ExtraBold",
+    "weight": "800",
+    "size": 25,
+    "lh": 1.2,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "SHOP BY CATEGORIES",
+    "count": 8,
+    "chars": 103
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 20,
+    "lh": 1.25,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(27, 94, 32)",
+    "text": "+94 77 5443296",
+    "count": 1,
+    "chars": 14
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 18,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Beast Nutrition",
+    "count": 20,
+    "chars": 300
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "700",
+    "size": 16,
+    "lh": 1.25,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(0, 0, 0)",
+    "text": "Clothing & Accessories",
+    "count": 22,
+    "chars": 275
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "500",
+    "size": 16,
+    "lh": 1.38,
+    "ls": 0,
+    "transform": "capitalize",
+    "color": "rgb(0, 0, 0)",
+    "text": "“Great Place For All Fitness Supplements. Proteins, Mass Gai",
+    "count": 11,
+    "chars": 1722
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "600",
+    "size": 14,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "capitalize",
+    "color": "rgb(0, 0, 0)",
+    "text": "APPLIED NUTRITION ABE - All Black Everything (Clumped)",
+    "count": 4,
+    "chars": 159
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 14,
+    "lh": 1,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(136, 136, 136)",
+    "text": "Rs 11,000.00",
+    "count": 13,
+    "chars": 144
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "700",
+    "size": 14,
+    "lh": 1.57,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "DHANUJA H",
+    "count": 11,
+    "chars": 153
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "400",
+    "size": 14,
+    "lh": 1.71,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "SUBSCRIBE! NO SPAM. ONLY DISCOUNT CODES & PRODUCT INFO!",
+    "count": 1,
+    "chars": 55
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "500",
+    "size": 14,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Shop All",
+    "count": 30,
+    "chars": 343
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "700",
+    "size": 12,
+    "lh": 1.67,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(204, 255, 0)",
+    "text": "APPLIED NUTRITION",
+    "count": 1,
+    "chars": 17
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 12,
+    "lh": 1.33,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "VIEW ALL",
+    "count": 2,
+    "chars": 17
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 11,
+    "lh": 3.64,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "SHOP NOW",
+    "count": 2,
+    "chars": 16
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "500",
+    "size": 10,
+    "lh": 1,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "HOME",
+    "count": 4,
+    "chars": 23
+   }
+  ],
+  "families": {
+   "Plus Jakarta Sans": {
+    "chars": 3251,
+    "weights": {
+     "400": 55,
+     "500": 2088,
+     "600": 159,
+     "700": 445,
+     "800": 504
+    }
+   },
+   "Heading Pro Trial ExtraBold": {
+    "chars": 103,
+    "weights": {
+     "800": 103
+    }
+   },
+   "icomoon": {
+    "chars": 48,
+    "weights": {
+     "400": 48
+    }
+   }
+  },
+  "sections": [
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 511
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 511
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 1454
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 1454
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 320
+   },
+   {
+    "pt": 50,
+    "pb": 50,
+    "h": 320
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 693
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 693
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 427
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 427
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 240
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 240
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 179
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 356
+   },
+   {
+    "pt": 75,
+    "pb": 80,
+    "h": 356
+   },
+   {
+    "pt": 50,
+    "pb": 0,
+    "h": 1481
+   }
+  ],
+  "containers": [
+   [
+    "360",
+    151
+   ],
+   [
+    "330",
+    10
+   ],
+   [
+    "375",
+    5
+   ],
+   [
+    "375 (max-width 100%)",
+    3
+   ],
+   [
+    "360 (max-width 100%)",
+    2
+   ],
+   [
+    "360 (max-width 1470px)",
+    1
+   ]
+  ],
+  "gutter": [],
+  "radii": [
+   [
+    "50",
+    8
+   ]
+  ],
+  "aspects": [
+   [
+    "1:1",
+    41
+   ],
+   [
+    "4:5",
+    5
+   ],
+   [
+    "4:3",
+    4
+   ],
+   [
+    "3.33",
+    4
+   ],
+   [
+    "3:2",
+    4
+   ],
+   [
+    "1.06",
+    3
+   ],
+   [
+    "2.80",
+    2
+   ],
+   [
+    "5:4",
+    2
+   ]
+  ],
+  "buttons": [
+   [
+    "35px h · radius 0px · outline · 400 13.3333px ",
+    4
+   ],
+   [
+    "40px h · radius 0px · bg rgb(255, 255, 255) · 800 11px uppercase",
+    2
+   ],
+   [
+    "58px h · radius 0px · bg rgb(255, 255, 255) · 800 12px uppercase",
+    1
+   ]
+  ],
+  "palette": [
+   [
+    "text:rgb(0, 0, 0)",
+    9972
+   ],
+   [
+    "text:rgb(255, 255, 255)",
+    3056
+   ],
+   [
+    "rgb(245, 245, 245)",
+    2067
+   ],
+   [
+    "rgb(0, 0, 0)",
+    656
+   ],
+   [
+    "rgb(255, 255, 255)",
+    547
+   ],
+   [
+    "rgb(242, 242, 242)",
+    212
+   ],
+   [
+    "text:rgba(0, 0, 0, 0.498)",
+    192
+   ],
+   [
+    "text:rgb(136, 136, 136)",
+    188
+   ],
+   [
+    "text:rgb(204, 204, 204)",
+    96
+   ],
+   [
+    "text:rgb(204, 255, 0)",
+    68
+   ],
+   [
+    "text:rgb(27, 94, 32)",
+    56
+   ],
+   [
+    "text:rgb(46, 125, 50)",
+    40
+   ],
+   [
+    "rgba(255, 255, 255, 0.1)",
+    11
+   ],
+   [
+    "rgb(46, 125, 50)",
+    5
+   ],
+   [
+    "rgba(0, 0, 0, 0.1)",
+    0
+   ],
+   [
+    "rgb(26, 26, 26)",
+    0
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0.04) 0px 0px 10px 5px",
+    8
+   ],
+   [
+    "rgba(0, 0, 0, 0.05) 0px 1px 10px 5px",
+    1
+   ]
+  ],
+  "transitions": [
+   [
+    "ease 0.3s",
+    340
+   ],
+   [
+    "cubic-bezier(0.215, 0.61, 0.355, 1), cubic-bezier(0.215, 0.61, 0.355, 1) 0.8s, 0.8s",
+    107
+   ],
+   [
+    "ease 0.5s",
+    48
+   ],
+   [
+    "ease 0.35s",
+    45
+   ],
+   [
+    "ease-in-out 0.3s",
+    19
+   ]
+  ]
+ },
+ "beast-1440": {
+  "punch": {
+   "animations": [
+    [
+     "textclip 1s",
+     12
+    ]
+   ],
+   "videos": [
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    },
+    {
+     "autoplay": false,
+     "muted": true,
+     "loop": true,
+     "w": 0
+    }
+   ],
+   "marquees": 0,
+   "ctasAboveFold": [],
+   "density": {
+    "screens": 6,
+    "imgsPerScreen": 24,
+    "wordsPerScreen": 110,
+    "productCards": 347
+   },
+   "saturatedBgShare": "0%",
+   "darkBgShare": "24%"
+  },
+  "url": "https://beastnutrition.lk/",
+  "title": "Beast Nutrition",
+  "vw": 1440,
+  "pageHeight": 5393,
+  "tags": {
+   "h1": null,
+   "h2": null,
+   "h3": {
+    "family": "Heading Pro Trial ExtraBold",
+    "weight": "800",
+    "size": 30,
+    "lh": 1.33,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(255, 255, 255)",
+    "text": "SLUSH PUPPIE"
+   }
+  },
+  "body": {
+   "family": "Plus Jakarta Sans",
+   "weight": "500",
+   "size": 16,
+   "lh": 1.63,
+   "ls": 0,
+   "transform": "capitalize",
+   "color": "rgb(0, 0, 0)",
+   "text": "“They Have A Good Range Of Well-Known Brands. Everything Was",
+   "count": 13,
+   "chars": 2045
+  },
+  "scale": [
+   {
+    "family": "Heading Pro Trial ExtraBold",
+    "weight": "800",
+    "size": 40,
+    "lh": 1.13,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(46, 125, 50)",
+    "text": "NEWSLETTER",
+    "count": 1,
+    "chars": 10
+   },
+   {
+    "family": "Heading Pro Trial ExtraBold",
+    "weight": "800",
+    "size": 35,
+    "lh": 1.14,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "SHOP BY CATEGORIES",
+    "count": 7,
+    "chars": 93
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 20,
+    "lh": 1.25,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(27, 94, 32)",
+    "text": "+94 77 5443296",
+    "count": 1,
+    "chars": 14
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 18,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Beast Nutrition",
+    "count": 12,
+    "chars": 180
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "700",
+    "size": 16,
+    "lh": 1.25,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(0, 0, 0)",
+    "text": "Fat Burners",
+    "count": 38,
+    "chars": 484
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "500",
+    "size": 16,
+    "lh": 1.63,
+    "ls": 0,
+    "transform": "capitalize",
+    "color": "rgb(0, 0, 0)",
+    "text": "“They Have A Good Range Of Well-Known Brands. Everything Was",
+    "count": 13,
+    "chars": 2045
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 14,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "ABOUT US",
+    "count": 18,
+    "chars": 182
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "700",
+    "size": 14,
+    "lh": 1.71,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(204, 255, 0)",
+    "text": "APPLIED NUTRITION",
+    "count": 1,
+    "chars": 17
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "600",
+    "size": 14,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "capitalize",
+    "color": "rgb(0, 0, 0)",
+    "text": "APPLIED NUTRITION ABE - All Black Everything (Clumped)",
+    "count": 4,
+    "chars": 159
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "400",
+    "size": 14,
+    "lh": 1.71,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "SUBSCRIBE! NO SPAM. ONLY DISCOUNT CODES & PRODUCT INFO!",
+    "count": 1,
+    "chars": 55
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "500",
+    "size": 14,
+    "lh": 1.5,
+    "ls": 0,
+    "transform": "none",
+    "color": "rgb(255, 255, 255)",
+    "text": "Shop All",
+    "count": 30,
+    "chars": 343
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 12,
+    "lh": 1.33,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(0, 0, 0)",
+    "text": "VIEW ALL",
+    "count": 2,
+    "chars": 17
+   },
+   {
+    "family": "Plus Jakarta Sans",
+    "weight": "800",
+    "size": 11,
+    "lh": 3.64,
+    "ls": 0,
+    "transform": "uppercase",
+    "color": "rgb(255, 255, 255)",
+    "text": "SHOP NOW",
+    "count": 6,
+    "chars": 29
+   }
+  ],
+  "families": {
+   "Plus Jakarta Sans": {
+    "chars": 3525,
+    "weights": {
+     "400": 55,
+     "500": 2388,
+     "600": 159,
+     "700": 501,
+     "800": 422
+    }
+   },
+   "Heading Pro Trial ExtraBold": {
+    "chars": 103,
+    "weights": {
+     "800": 103
+    }
+   }
+  },
+  "sections": [
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 600
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 600
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 567
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 567
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 543
+   },
+   {
+    "pt": 85,
+    "pb": 87,
+    "h": 543
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 651
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 651
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 456
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 456
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 307
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 307
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 243
+   },
+   {
+    "pt": 0,
+    "pb": 0,
+    "h": 347
+   },
+   {
+    "pt": 75,
+    "pb": 80,
+    "h": 347
+   },
+   {
+    "pt": 77,
+    "pb": 54,
+    "h": 550
+   }
+  ],
+  "containers": [
+   [
+    "1380",
+    44
+   ],
+   [
+    "1350",
+    10
+   ],
+   [
+    "1410",
+    10
+   ],
+   [
+    "1410 (max-width 100%)",
+    6
+   ],
+   [
+    "1400",
+    3
+   ],
+   [
+    "1380 (max-width 100%)",
+    2
+   ]
+  ],
+  "gutter": [],
+  "radii": [
+   [
+    "50",
+    9
+   ]
+  ],
+  "aspects": [
+   [
+    "1:1",
+    75
+   ],
+   [
+    "3:2",
+    5
+   ],
+   [
+    "4:3",
+    4
+   ],
+   [
+    "3.33",
+    4
+   ],
+   [
+    "2.40",
+    3
+   ],
+   [
+    "4:5",
+    3
+   ],
+   [
+    "1.06",
+    3
+   ],
+   [
+    "2.80",
+    2
+   ]
+  ],
+  "buttons": [
+   [
+    "40px h · radius 0px · bg rgb(220, 86, 99) · 800 11px uppercase",
+    1
+   ],
+   [
+    "40px h · radius 0px · bg rgb(0, 0, 0) · 800 11px uppercase",
+    1
+   ],
+   [
+    "58px h · radius 0px · bg rgb(255, 255, 255) · 800 12px uppercase",
+    1
+   ]
+  ],
+  "palette": [
+   [
+    "text:rgb(0, 0, 0)",
+    11472
+   ],
+   [
+    "rgb(245, 245, 245)",
+    3026
+   ],
+   [
+    "text:rgb(255, 255, 255)",
+    2604
+   ],
+   [
+    "rgb(255, 255, 255)",
+    1933
+   ],
+   [
+    "rgb(0, 0, 0)",
+    1397
+   ],
+   [
+    "rgb(242, 242, 242)",
+    1206
+   ],
+   [
+    "text:rgb(136, 136, 136)",
+    188
+   ],
+   [
+    "text:rgb(204, 204, 204)",
+    96
+   ],
+   [
+    "text:rgb(204, 255, 0)",
+    68
+   ],
+   [
+    "text:rgb(27, 94, 32)",
+    56
+   ],
+   [
+    "text:rgb(138, 138, 138)",
+    48
+   ],
+   [
+    "text:rgb(46, 125, 50)",
+    40
+   ],
+   [
+    "text:rgb(217, 46, 48)",
+    32
+   ],
+   [
+    "rgba(255, 255, 255, 0.1)",
+    29
+   ],
+   [
+    "rgb(46, 125, 50)",
+    5
+   ],
+   [
+    "rgb(220, 86, 99)",
+    5
+   ]
+  ],
+  "shadows": [],
+  "transitions": [
+   [
+    "ease 0.3s",
+    354
+   ],
+   [
+    "cubic-bezier(0.215, 0.61, 0.355, 1), cubic-bezier(0.215, 0.61, 0.355, 1) 0.8s, 0.8s",
+    112
+   ],
+   [
+    "ease 0.5s",
+    51
+   ],
+   [
+    "ease 0.35s",
+    45
+   ],
+   [
+    "ease-in-out 0.2s",
+    39
+   ]
+  ]
+ }
+}
