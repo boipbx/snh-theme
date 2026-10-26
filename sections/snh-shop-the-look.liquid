@@ -1,0 +1,115 @@
+{%- comment -%}
+  SNH Shop the Look / Brand of the month (prototype section.hs): campaign image with numbered hotspot dots on the
+  left, numbered product list on the right. Product blocks keep the old section's schema (product, horizontal and
+  vertical position). Dots and list items are linked both ways; desktop opens a popover card at the dot, mobile a
+  bottom sheet (assets/snh-v2.js data-v2="hotspots").
+  SNH Elite points strip: tier-aware earn rate from the customer's total spend vs the thresholds below.
+{%- endcomment -%}
+{%- liquid
+  assign hid = 'stl-' | append: section.id
+  assign points_rate = section.settings.rate_bronze
+  if customer
+    assign spent_rs = customer.total_spent | divided_by: 100
+    if spent_rs >= section.settings.gold_threshold
+      assign points_rate = section.settings.rate_gold
+    elsif spent_rs >= section.settings.silver_threshold
+      assign points_rate = section.settings.rate_silver
+    endif
+  endif
+  assign img = section.settings.image
+-%}
+<section class="v2 v-section v-section--cream hs" aria-labelledby="{{ hid }}" data-v2="hotspots">
+  <div class="v-wrap">
+    {%- render 'snh-v2-head', s: section.settings, id: hid -%}
+    <div class="hs__grid">
+      <div class="hs__media">
+        {%- if img != blank -%}
+          {{ img | image_url: width: 1400 | image_tag: width: 2000, height: 2000, loading: 'lazy', alt: section.settings.image_alt, sizes: '(max-width: 1023px) 100vw, 58vw', widths: '600,900,1400,2000', class: 'hs__img-main' }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'hs__img-main hs__ph' }}
+        {%- endif -%}
+        {%- for b in section.blocks -%}
+          {%- assign p = b.settings.product -%}
+          {%- if p == blank -%}{%- continue -%}{%- endif -%}
+          <button class="hs__dot" type="button" style="left:{{ b.settings.horizontal_position }}%;top:{{ b.settings.vertical_position }}%" data-spot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}: {{ p.title | escape }}" aria-expanded="false" {{ b.shopify_attributes }}><span>{{ forloop.index }}</span></button>
+        {%- endfor -%}
+        {%- for b in section.blocks -%}
+          {%- assign p = b.settings.product -%}
+          {%- if p == blank -%}{%- continue -%}{%- endif -%}
+          <div class="hs__pop" data-pop="{{ forloop.index0 }}" hidden role="dialog" aria-label="{{ p.title | escape }}">
+            <button class="hs__close" type="button" aria-label="Close">×</button>
+            {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 320 | image_tag: width: 160, height: 160, loading: 'lazy', alt: '' }}{%- endif -%}
+            <div class="hs__popbody"><span class="eyebrow">{{ p.vendor | escape }}</span><a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a><span class="hs__price">{{ p.price | money_without_trailing_zeros }}</span>
+              <div class="hs__popcta">{% render 'snh-v2-stl-add', product: p, cls: 'v-btn v-btn--accent v-btn--sm', label: 'Add to basket' %}<a class="v-link" href="{{ p.url }}">View</a></div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="hs__side">
+        <ol class="hs__list">
+          {%- for b in section.blocks -%}
+            {%- assign p = b.settings.product -%}
+            {%- if p == blank -%}{%- continue -%}{%- endif -%}
+            <li class="hs__item" data-spot="{{ forloop.index0 }}"><span class="hs__n">{{ forloop.index }}</span>
+              <a class="hs__img" href="{{ p.url }}" tabindex="-1">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 240 | image_tag: width: 120, height: 120, loading: 'lazy', alt: '' }}{%- endif -%}</a>
+              <span class="hs__info"><span class="eyebrow">{{ p.vendor | escape }}</span><a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a><span class="hs__price">{{ p.price | money_without_trailing_zeros }}</span></span>
+              {%- render 'snh-v2-stl-add', product: p, cls: 'v-btn v-btn--ink v-btn--sm hs__add', label: 'Add' -%}
+            </li>
+          {%- endfor -%}
+        </ol>
+        {%- if section.settings.show_points -%}
+          {%- assign first = section.blocks.first.settings.product -%}
+          {%- if first != blank -%}
+            {%- assign pts = first.price | times: points_rate | divided_by: 100 -%}
+            {%- if customer -%}
+              <p class="hs__pts"><span class="hs__pts-tag">SNH Elite</span>You'll earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points on {% render 'snh-v2-title', product: first %} ({{ points_rate }}%)</p>
+            {%- else -%}
+              <a class="hs__pts" href="{{ routes.account_login_url }}"><span class="hs__pts-tag">SNH Elite</span>Sign in to earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points</a>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- for b in section.blocks -%}
+    {%- assign p = b.settings.product -%}
+    {%- if p != blank and p.available and p.has_only_default_variant == false -%}
+      <quick-buy-drawer id="v2-qb-{{ section.id }}-{{ p.id }}" header-bordered open-from="bottom" handle="{{ p.handle }}?variant={{ p.selected_or_first_available_variant.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
+    {%- endif -%}
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "SNH shop the look",
+  "class": "snh-sec",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Brand of the month" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop the *look*", "info": "Wrap a word in *asterisks* for the serif italic." },
+    { "type": "text", "id": "link_label", "label": "Button label", "default": "Shop all" },
+    { "type": "url", "id": "link_url", "label": "Button link" },
+    { "type": "select", "id": "link_style", "label": "Button style", "options": [{ "value": "button", "label": "Ink button" }, { "value": "link", "label": "Underlined link" }], "default": "button" },
+    { "type": "image_picker", "id": "image", "label": "Campaign image", "info": "Square, 2000 × 2000px. Place each product's dot with its block's position sliders." },
+    { "type": "text", "id": "image_alt", "label": "Image description" },
+    { "type": "header", "content": "SNH Elite points strip" },
+    { "type": "checkbox", "id": "show_points", "label": "Show points strip", "default": true, "info": "Signed-in members see their tier's earn rate; guests are invited to sign in." },
+    { "type": "range", "id": "rate_bronze", "min": 1, "max": 15, "step": 1, "unit": "%", "label": "Bronze earn rate", "default": 3 },
+    { "type": "range", "id": "rate_silver", "min": 1, "max": 15, "step": 1, "unit": "%", "label": "Silver earn rate", "default": 7 },
+    { "type": "range", "id": "rate_gold", "min": 1, "max": 15, "step": 1, "unit": "%", "label": "Gold earn rate", "default": 10 },
+    { "type": "number", "id": "silver_threshold", "label": "Silver spend threshold (Rs)", "default": 200000, "info": "The register page says Silver from Rs 198,000 a year; this default is the old section's 200,000." },
+    { "type": "number", "id": "gold_threshold", "label": "Gold spend threshold (Rs)", "default": 500000, "info": "The register page says Gold from Rs 300,000 a year; this default is the old section's 500,000." }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "range", "id": "horizontal_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 30 },
+        { "type": "range", "id": "vertical_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position", "default": 30 }
+      ]
+    }
+  ],
+  "presets": [{ "name": "SNH shop the look", "blocks": [{ "type": "product" }, { "type": "product" }, { "type": "product" }] }]
+}
+{% endschema %}

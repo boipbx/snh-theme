@@ -1,0 +1,9 @@
+{%- comment -%}
+  Heading text where *a word* is set in the serif italic (the prototype's <span class="serif">).
+  text: the setting value. Everything is escaped; only the asterisk pairs become spans.
+{%- endcomment -%}
+{%- assign parts = text | escape | split: '*' -%}
+{%- for part in parts -%}
+  {%- assign odd = forloop.index0 | modulo: 2 -%}
+  {%- if odd == 1 -%}<span class="serif">{{ part }}</span>{%- else -%}{{ part }}{%- endif -%}
+{%- endfor -%}

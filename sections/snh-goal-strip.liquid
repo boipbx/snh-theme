@@ -1,0 +1,20 @@
+{%- comment -%}SNH goal strip: the pill row directly under the hero (prototype nav.goalbar). One block per goal link.{%- endcomment -%}
+<nav class="v2 goalbar" aria-label="{{ section.settings.label | escape }}">
+  <div class="v-wrap goalbar__in">
+    {%- if section.settings.label != blank -%}<span class="eyebrow">{{ section.settings.label | escape }}</span>{%- endif -%}
+    <div class="goals">
+      {%- for b in section.blocks -%}<a class="goal" href="{{ b.settings.link | default: '#' }}" {{ b.shopify_attributes }}>{{ b.settings.title | escape }}</a>{%- endfor -%}
+    </div>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "SNH goal strip",
+  "class": "snh-sec",
+  "max_blocks": 12,
+  "settings": [{ "type": "text", "id": "label", "label": "Label", "default": "Shop by goal" }],
+  "blocks": [{ "type": "goal", "name": "Goal", "settings": [{ "type": "text", "id": "title", "label": "Label", "default": "Build muscle" }, { "type": "url", "id": "link", "label": "Link" }] }],
+  "presets": [{ "name": "SNH goal strip", "blocks": [{ "type": "goal" }] }]
+}
+{% endschema %}

@@ -44,7 +44,7 @@
 }
 
 /* ---------- base (scoped: only inside v2 sections, zero specificity) ---------- */
-:where(.v2) { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+:where(.v2) { font: 400 var(--fs-body)/1.5 var(--sans); color: var(--ink); letter-spacing: normal; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 :where(.v2) img { display: block; max-width: 100%; height: auto; }
 :where(.v2) a { color: inherit; text-decoration: none; }
 :where(.v2) button { font: inherit; color: inherit; }
@@ -804,7 +804,7 @@
 .logos__in { display: flex; align-items: center; gap: 32px; padding-block: 20px; }
 .logos__in > .eyebrow { flex: 0 0 auto; max-width: 160px; line-height: 1.5; }
 .logos__track { display: flex; flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-.logos__run { display: flex; flex: 0 0 auto; gap: 12px; padding-right: 12px; animation: logos 48s linear infinite; }
+.logos__run { display: flex; flex: 0 0 auto; gap: 12px; padding-right: 12px; animation: logos var(--logos-speed, 48s) linear infinite; }
 .logos__track:hover .logos__run { animation-play-state: paused; }
 .logo { flex: 0 0 auto; width: 88px; height: 88px; border-radius: var(--v-radius); overflow: hidden; border: 1px solid var(--line); background: #fff; transition: transform var(--t) var(--ease), border-color var(--t) var(--ease); }
 .logo img { width: 100%; height: 100%; object-fit: contain; }
@@ -1208,3 +1208,12 @@
 .ftr__policies { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .ftr__policies a:hover { color: var(--white); }
 .ftr__mark img { max-width: none; }
+/* sections sit on white like the prototype page (Impact's canvas colour is cream) */
+.v-section:not(.v-section--cream):not(.v-section--dark):not(.elite) { background: var(--white); }
+@media (max-width: 767px) { .hs__side:not(:has(.hs__pts)) { display: none; } }
+.card__stats li { min-width: 0; }
+.card__stats li span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.news__form { flex-wrap: wrap; }
+.news__msg { flex-basis: 100%; font-size: 14px; color: var(--grey-1); }
+.news__msg--err { color: #A3361A; }
+.v2 ::placeholder { color: #757575; opacity: 1; }

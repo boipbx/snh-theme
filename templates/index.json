@@ -9,837 +9,509 @@
  */
 {
   "sections": {
-    "slideshow": {
-      "type": "slideshow",
+    "snh_hero": {
+      "type": "snh-hero-slider",
+      "settings": {
+        "label": "Featured",
+        "interval": 6
+      },
       "blocks": {
-        "image_U8m8jE": {
-          "type": "image",
+        "slide_1": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/2fd50e25-5d19-4f08-9e36-f8992b6e917c.jpg",
-            "mobile_image": "shopify://shop_images/d15b04ae-74cb-46b8-ab36-d6e467b4ddce.jpg",
-            "content_max_width": 860,
-            "mobile_text_position": "place-self-center text-center",
-            "desktop_text_position": "sm:place-self-center sm:text-center",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "",
-            "button_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0,
-            "background": "",
-            "background_gradient": ""
+            "kind": "overlay",
+            "label": "SNH",
+            "image_desktop": "shopify://shop_images/running.jpg",
+            "image_mobile": "shopify://shop_images/running.jpg",
+            "pos": "62% 30%",
+            "mpos": "50% 20%",
+            "eyebrow": "Sports Nutrition Hub · Sri Lanka",
+            "heading": "Serious fuel for *serious* training.",
+            "sub": "Authentic supplements from the brands athletes trust, delivered same-day across Colombo.",
+            "cta": "Shop bestsellers",
+            "link": "#shop",
+            "cta2": "Find your goal",
+            "link2": "#goals"
           }
         },
-        "image_L7b6Kk": {
-          "type": "image",
+        "slide_2": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ryse-desk-banner.jpg",
-            "mobile_image": "shopify://shop_images/ryse_mobile_banner.jpg",
-            "content_max_width": 480,
-            "mobile_text_position": "place-self-end-center text-center",
-            "desktop_text_position": "sm:place-self-end-start sm:text-start",
-            "subheading": "",
-            "title": "DISCOVER OUR ALL NEW ARRIVALS FROM RYSE",
-            "heading_tag": "h2",
-            "button_text": "SHOP RYZE",
-            "button_link": "shopify://collections/ryse",
-            "text_color": "#ffffff",
-            "button_background": "#0f3ec6",
-            "button_text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "banner",
+            "label": "Fueling athletes",
+            "image_desktop": "shopify://shop_images/2fd50e25-5d19-4f08-9e36-f8992b6e917c.jpg",
+            "image_mobile": "shopify://shop_images/d15b04ae-74cb-46b8-ab36-d6e467b4ddce.jpg",
+            "pos": "50% 50%",
+            "mpos": "50% 50%",
+            "alt": "SNH: Fueling athletes, elevating wellness",
+            "link": "/collections/everything"
           }
         },
-        "image_ckEpmN": {
-          "type": "image",
+        "slide_3": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/revive.jpg",
-            "mobile_image": "shopify://shop_images/revive_mobile.jpg",
-            "content_max_width": 480,
-            "mobile_text_position": "place-self-end-center text-center",
-            "desktop_text_position": "sm:place-self-end-start sm:text-start",
-            "subheading": "",
-            "title": "THE GOLD STANDARD FOR WELLNESS",
-            "heading_tag": "h2",
-            "button_text": "SHOP REVIVE",
-            "button_link": "shopify://collections/revive",
-            "text_color": "#ffffff",
-            "button_background": "#0f3ec6",
-            "button_text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "overlay",
+            "label": "RYSE",
+            "image_desktop": "shopify://shop_images/ryse-desk-banner.jpg",
+            "image_mobile": "shopify://shop_images/ryse_mobile_banner.jpg",
+            "pos": "30% 50%",
+            "mpos": "50% 0%",
+            "eyebrow": "New arrivals · RYSE",
+            "heading": "Discover the all-new *RYSE* range.",
+            "sub": "Loaded Protein, Pump and Pre: just landed at SNH.",
+            "cta": "Shop RYSE",
+            "link": "/collections/ryse"
           }
         },
-        "image_eenjUx": {
-          "type": "image",
+        "slide_4": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/the-sulek-stack.jpg",
-            "mobile_image": "shopify://shop_images/the-sulek-stack_mobike.jpg",
-            "content_max_width": 400,
-            "mobile_text_position": "place-self-end-center text-center",
-            "desktop_text_position": "sm:place-self-end-start sm:text-start",
-            "subheading": "",
-            "title": "THE SULEK STACK HAS LANDED",
-            "heading_tag": "h2",
-            "button_text": "SHOP SULEK STACK",
-            "button_link": "shopify://collections/the-sulek-stack",
-            "text_color": "#ffffff",
-            "button_background": "#0f3ec6",
-            "button_text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "overlay",
+            "label": "Revive",
+            "image_desktop": "shopify://shop_images/revive.jpg",
+            "image_mobile": "shopify://shop_images/revive_mobile.jpg",
+            "pos": "25% 50%",
+            "mpos": "50% 0%",
+            "eyebrow": "Revive MD",
+            "heading": "The gold standard for *wellness*.",
+            "sub": "Daily wellness essentials from Revive, now at SNH.",
+            "cta": "Shop Revive",
+            "link": "/collections/revive"
           }
         },
-        "image_E7rXeb": {
-          "type": "image",
+        "slide_5": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/nootropics-web-cover.jpg",
-            "mobile_image": "shopify://shop_images/nootropics-web-cover_mobile.jpg",
-            "content_max_width": 480,
-            "mobile_text_position": "place-self-end-center text-center",
-            "desktop_text_position": "sm:place-self-end-start sm:text-start",
-            "subheading": "",
-            "title": "THE NEXT LEVEL OF ATHLETE NUTRITION",
-            "heading_tag": "h2",
-            "button_text": "SHOP NOOTROPICS",
-            "button_link": "shopify://products/sis-beta-fuel-energy-nootropics-gel",
-            "text_color": "#ffffff",
-            "button_background": "#0f3ec6",
-            "button_text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "overlay",
+            "label": "RAW × Sam Sulek",
+            "image_desktop": "shopify://shop_images/the-sulek-stack.jpg",
+            "image_mobile": "shopify://shop_images/the-sulek-stack_mobike.jpg",
+            "pos": "45% 40%",
+            "mpos": "50% 0%",
+            "eyebrow": "New drop · RAW × Sam Sulek",
+            "heading": "The Sulek Stack has *landed*.",
+            "sub": "Sam Sulek's own stack from RAW Nutrition, now in Sri Lanka.",
+            "cta": "Shop the Sulek Stack",
+            "link": "/collections/the-sulek-stack"
+          }
+        },
+        "slide_6": {
+          "type": "slide",
+          "settings": {
+            "kind": "overlay",
+            "label": "Nootropics",
+            "image_desktop": "shopify://shop_images/nootropics-web-cover.jpg",
+            "image_mobile": "shopify://shop_images/nootropics-web-cover_mobile.jpg",
+            "pos": "70% 40%",
+            "mpos": "50% 30%",
+            "eyebrow": "Science in Sport · Beta Fuel + Nootropics",
+            "heading": "The next level of athlete *nutrition*.",
+            "sub": "Science in Sport Beta Fuel energy gel with added nootropics.",
+            "cta": "Shop nootropics",
+            "link": "/products/sis-beta-fuel-energy-nootropics-gel"
           }
         }
       },
       "block_order": [
-        "image_U8m8jE",
-        "image_L7b6Kk",
-        "image_ckEpmN",
-        "image_eenjUx",
-        "image_E7rXeb"
-      ],
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": true,
-        "show_initial_transition": false,
-        "image_size": "lg",
-        "controls_type": "numbers",
-        "transition_type": "fade_with_text",
-        "autoplay": true,
-        "cycle_speed": 4,
-        "background": "#f2f2f2",
-        "background_gradient": "linear-gradient(60deg, rgba(60, 65, 68, 1), rgba(23, 29, 33, 1) 98%)"
-      }
+        "slide_1",
+        "slide_2",
+        "slide_3",
+        "slide_4",
+        "slide_5",
+        "slide_6"
+      ]
     },
-    "image-link-blocks": {
-      "type": "image-link-blocks",
+    "snh_goalbar": {
+      "type": "snh-goal-strip",
+      "settings": {
+        "label": "Shop by goal"
+      },
       "blocks": {
-        "1664424046b00c932c-2": {
-          "type": "item",
+        "goal_1": {
+          "type": "goal",
           "settings": {
-            "image": "shopify://shop_images/IMG_0045.jpg",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/raw",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "title": "Build muscle",
+            "link": "/collections/muscle-and-strength"
           }
         },
-        "1664424046b00c932c-1": {
-          "type": "item",
+        "goal_2": {
+          "type": "goal",
           "settings": {
-            "image": "shopify://shop_images/IMG_0046.jpg",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/ryse",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "title": "Lose fat",
+            "link": "/collections/fat-loss"
           }
         },
-        "item_Mjy93T": {
-          "type": "item",
+        "goal_3": {
+          "type": "goal",
           "settings": {
-            "image": "shopify://shop_images/2_3e223fbd-3b60-47f7-8597-d33ae26a5b7b.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/wellwoman",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "title": "Endurance",
+            "link": "/collections/energy-and-endurance"
           }
         },
-        "item_gjeBUy": {
-          "type": "item",
+        "goal_4": {
+          "type": "goal",
           "settings": {
-            "image": "shopify://shop_images/4_0edcadba-7d2f-4591-9a4f-29ccf1efe39a.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/perfectil",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "title": "Hydration",
+            "link": "/collections/hydration-recovery"
           }
         },
-        "item_YjdCCf": {
-          "type": "item",
+        "goal_5": {
+          "type": "goal",
           "settings": {
-            "image": "shopify://shop_images/seven-seas-logo.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/seven-seas-1",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "title": "Daily health",
+            "link": "/collections/health-wellness"
           }
         },
-        "item_VRMmNy": {
-          "type": "item",
+        "goal_6": {
+          "type": "goal",
           "settings": {
-            "image": "shopify://shop_images/1_6fa21efc-b8ba-4d43-accb-fd6ce2c12b05.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/ehplabs",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "title": "Recovery",
+            "link": "/collections/recovery"
           }
-        },
-        "item_HD3g9t": {
-          "type": "item",
+        }
+      },
+      "block_order": [
+        "goal_1",
+        "goal_2",
+        "goal_3",
+        "goal_4",
+        "goal_5",
+        "goal_6"
+      ]
+    },
+    "snh_logos": {
+      "type": "snh-brand-marquee",
+      "settings": {
+        "label": "Authorised distributors of leading brands",
+        "speed": 48
+      },
+      "blocks": {
+        "logo_1": {
+          "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/healthspan-elite",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "item_fAMNPQ": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Untitled_design.zip_-_2.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "1664424046b00c932c-3": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/IMG_0049.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/myprotein",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "item_BFcDY3": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/muscletech",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "item_h8UnWN": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/sis",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "item_FRiQ9y": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://products/dymatize-iso100-hydrolyzed-whey",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "item_AB7dgU": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/2_56f740f1-2670-43d5-83ec-dd117b2853c7.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/revive",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "1664424046b00c932c-0": {
-          "type": "item",
-          "settings": {
+            "name": "Applied Nutrition",
             "image": "shopify://shop_images/Untitled_design.zip_-_1.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/applied-nutrition",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": "/collections/applied-nutrition"
           }
         },
-        "item_xyCTQb": {
-          "type": "item",
+        "logo_2": {
+          "type": "logo",
           "settings": {
+            "name": "Science in Sport",
+            "image": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png",
+            "link": "/collections/sis"
+          }
+        },
+        "logo_3": {
+          "type": "logo",
+          "settings": {
+            "name": "RAW Nutrition",
+            "image": "shopify://shop_images/IMG_0045.jpg",
+            "link": "/collections/raw"
+          }
+        },
+        "logo_4": {
+          "type": "logo",
+          "settings": {
+            "name": "Myprotein",
+            "image": "shopify://shop_images/IMG_0049.png",
+            "link": "/collections/myprotein"
+          }
+        },
+        "logo_5": {
+          "type": "logo",
+          "settings": {
+            "name": "Revive",
+            "image": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png",
+            "link": "/collections/revive"
+          }
+        },
+        "logo_6": {
+          "type": "logo",
+          "settings": {
+            "name": "MuscleTech",
+            "image": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png",
+            "link": "/collections/muscletech"
+          }
+        },
+        "logo_7": {
+          "type": "logo",
+          "settings": {
+            "name": "RYSE",
+            "image": "shopify://shop_images/IMG_0046.jpg",
+            "link": "/collections/ryse"
+          }
+        },
+        "logo_8": {
+          "type": "logo",
+          "settings": {
+            "name": "EHP Labs",
+            "image": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png",
+            "link": "/collections/ehplabs"
+          }
+        },
+        "logo_9": {
+          "type": "logo",
+          "settings": {
+            "name": "Surge",
             "image": "shopify://shop_images/final_surge_logo-01.jpg",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/surge",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": "/collections/surge"
           }
         },
-        "item_EFXiGn": {
-          "type": "item",
+        "logo_10": {
+          "type": "logo",
           "settings": {
+            "name": "Healthspan Elite",
+            "image": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png",
+            "link": "/collections/healthspan-elite"
+          }
+        },
+        "logo_11": {
+          "type": "logo",
+          "settings": {
+            "name": "Vitabiotics",
+            "image": "shopify://shop_images/3_e9de3e34-4221-415b-b928-c97558667165.png",
+            "link": "/collections/everything?filter.p.vendor=VITABIOTICS"
+          }
+        },
+        "logo_12": {
+          "type": "logo",
+          "settings": {
+            "name": "Dymatize",
+            "image": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png",
+            "link": "/collections/dymatize"
+          }
+        },
+        "logo_13": {
+          "type": "logo",
+          "settings": {
+            "name": "Redcon1",
             "image": "shopify://shop_images/Untitled_design.zip_-_4.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/redcon1",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": "/collections/redcon1"
           }
         }
       },
       "block_order": [
-        "1664424046b00c932c-2",
-        "1664424046b00c932c-1",
-        "item_Mjy93T",
-        "item_gjeBUy",
-        "item_YjdCCf",
-        "item_VRMmNy",
-        "item_HD3g9t",
-        "item_fAMNPQ",
-        "1664424046b00c932c-3",
-        "item_BFcDY3",
-        "item_h8UnWN",
-        "item_FRiQ9y",
-        "item_AB7dgU",
-        "1664424046b00c932c-0",
-        "item_xyCTQb",
-        "item_EFXiGn"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "block_size": "small",
-        "subheading": "",
-        "title": "",
-        "content": "",
-        "link_url": "",
-        "link_text": "",
-        "background": "#f0f0f0",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
+        "logo_1",
+        "logo_2",
+        "logo_3",
+        "logo_4",
+        "logo_5",
+        "logo_6",
+        "logo_7",
+        "logo_8",
+        "logo_9",
+        "logo_10",
+        "logo_11",
+        "logo_12",
+        "logo_13"
+      ]
     },
-    "brand_logo_slider_custom_PqgAUt": {
-      "type": "brand-logo-slider-custom",
+    "snh_ways": {
+      "type": "snh-shop-your-way",
+      "settings": {
+        "eyebrow": "Our collection",
+        "heading": "Shop *your* way",
+        "link_label": "Shop everything",
+        "link_url": "/collections/everything",
+        "link_style": "link"
+      },
       "blocks": {
-        "logo_phhVVQ": {
-          "type": "logo",
+        "tile_1": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_1.png",
-            "alt": "",
-            "link": "",
-            "collection": "ehplabs",
-            "new_tab": false
+            "image": "shopify://shop_images/website_cover_-_whey.jpg",
+            "title": "Whey protein",
+            "link": "/collections/whey-protein"
           }
         },
-        "logo_LwtVtB": {
-          "type": "logo",
+        "tile_2": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/Untitled_design_16.png",
-            "alt": "",
-            "link": "",
-            "collection": "seven-seas-1",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4441.jpg",
+            "title": "Creatine",
+            "link": "/collections/creatine"
           }
         },
-        "logo_6G3Tnh": {
-          "type": "logo",
+        "tile_3": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_3.png",
-            "alt": "",
-            "link": "",
-            "collection": "muscletech",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4440.jpg",
+            "title": "Herbs & natural solution",
+            "link": "/collections/herbs-natural-solution"
           }
         },
-        "logo_LWFYaQ": {
-          "type": "logo",
+        "tile_4": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_4.png",
-            "alt": "",
-            "link": "",
-            "collection": "myprotein",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4447.jpg",
+            "title": "Vitamins & well-being",
+            "link": "/collections/vitamins-minerals"
           }
         },
-        "logo_ynbnxC": {
-          "type": "logo",
+        "tile_5": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_5.png",
-            "alt": "",
-            "link": "",
-            "collection": "raw",
-            "new_tab": false
+            "image": "shopify://shop_images/website_covers_-_collagen.jpg",
+            "title": "Collagen",
+            "link": "/collections/collagen"
           }
         },
-        "logo_cDEnR7": {
-          "type": "logo",
+        "tile_6": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_6.png",
-            "alt": "",
-            "link": "",
-            "collection": "redcon1",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4446.jpg",
+            "title": "Protein snacks",
+            "link": "/collections/protein-bars-snacks"
           }
         },
-        "logo_wThcRm": {
-          "type": "logo",
+        "tile_7": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_7.png",
-            "alt": "",
-            "link": "",
-            "collection": "revive",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4445.jpg",
+            "title": "Pre workout",
+            "link": "/collections/pre-workout-1"
           }
         },
-        "logo_qrkrxF": {
-          "type": "logo",
+        "tile_8": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_8.png",
-            "alt": "",
-            "link": "",
-            "collection": "ryse",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4444.jpg",
+            "title": "Mass gainers",
+            "link": "/collections/mass-gainers"
           }
         },
-        "logo_rUbYLG": {
-          "type": "logo",
+        "tile_9": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_9.png",
-            "alt": "",
-            "link": "",
-            "collection": "sis",
-            "new_tab": false
+            "image": "shopify://shop_images/IMG_4442.jpg",
+            "title": "Fat burners",
+            "link": "/collections/fat-burners-1"
           }
         },
-        "logo_6mxa7p": {
-          "type": "logo",
+        "tile_10": {
+          "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/brand_logos_10.png",
-            "alt": "",
-            "link": "",
-            "collection": "applied-nutrition",
-            "new_tab": false
-          }
-        },
-        "logo_xHjV6D": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/brand_logos_12.png",
-            "alt": "DYMATIZE ISO100",
-            "link": "https://www.sportsnutritionhub.lk/products/dymatize-iso-100",
-            "collection": "",
-            "new_tab": false
-          }
-        },
-        "logo_6imPLf": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/brand_logoo_1.png",
-            "alt": "",
-            "link": "",
-            "collection": "healthspan-elite",
-            "new_tab": false
+            "image": "shopify://shop_images/imgi_29_1f9f6567-6e04-4fd9-8b8d-2cf6428d6199.jpg",
+            "title": "Shakers",
+            "link": "/collections/shakers"
           }
         }
       },
       "block_order": [
-        "logo_phhVVQ",
-        "logo_LwtVtB",
-        "logo_6G3Tnh",
-        "logo_LWFYaQ",
-        "logo_ynbnxC",
-        "logo_cDEnR7",
-        "logo_wThcRm",
-        "logo_qrkrxF",
-        "logo_rUbYLG",
-        "logo_6mxa7p",
-        "logo_xHjV6D",
-        "logo_6imPLf"
-      ],
-      "name": "Logo slider (Custom)",
-      "settings": {
-        "label": "Authorized Distributors Of Leading Brands",
-        "show_count": true,
-        "hover_treatment": "color",
-        "max_width": 1200,
-        "accent_color": "#e0521c",
-        "rail_text_color": "#fff2e6",
-        "logo_max_height": 44,
-        "logo_max_width": 150,
-        "logo_gap": 64,
-        "animation_speed": 130
-      }
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4",
+        "tile_5",
+        "tile_6",
+        "tile_7",
+        "tile_8",
+        "tile_9",
+        "tile_10"
+      ]
     },
-    "whyus_R6HG6b": {
-      "type": "whyus",
+    "snh_why": {
+      "type": "snh-why-us",
+      "settings": {
+        "eyebrow": "Why choose us",
+        "heading": "The SNH *standard*",
+        "lead": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka."
+      },
       "blocks": {
-        "feature_YTbXLg": {
-          "type": "feature",
+        "stat_1": {
+          "type": "stat",
           "settings": {
-            "title": "100% AUTHENTIC ",
+            "value": "50,000+",
+            "label": "orders delivered"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "4.9★",
+            "label": "from 2,000+ reviews"
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "100% authentic",
             "text": "Direct from brand and authorized distributors."
           }
         },
-        "feature_Nb7NxQ": {
-          "type": "feature",
+        "benefit_4": {
+          "type": "benefit",
           "settings": {
-            "title": "FAIR PRICING ",
+            "icon": "card",
+            "title": "Fair pricing",
             "text": "Transparent prices with frequent bundles and member only deals."
           }
         },
-        "feature_m8c3Eg": {
-          "type": "feature",
+        "benefit_5": {
+          "type": "benefit",
           "settings": {
-            "title": "EXPERT SUPPORT",
+            "icon": "chat",
+            "title": "Expert support",
             "text": "Fast guidance from our team via chat, phone, or WhatsApp."
           }
         },
-        "feature_8LP4XW": {
-          "type": "feature",
+        "benefit_6": {
+          "type": "benefit",
           "settings": {
-            "title": "SECURE PAYMENTS",
+            "icon": "badge",
+            "title": "Secure payments",
             "text": "SSL checkout with cards, bank transfer & KOKO"
           }
-        }
-      },
-      "block_order": [
-        "feature_YTbXLg",
-        "feature_Nb7NxQ",
-        "feature_m8c3Eg",
-        "feature_8LP4XW"
-      ],
-      "custom_css": [
-        "html,body {overflow-x: clip;}"
-      ],
-      "name": "Why choose us (SNH Modern)",
-      "settings": {
-        "heading": "WHY CHOOSE US?",
-        "heading_color": "#e0521c",
-        "subheading": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
-        "stat_1_value": "50,000+",
-        "stat_1_label": "Orders delivered",
-        "stat_2_value": "4.9★",
-        "stat_2_label": "From 2,000+ reviews",
-        "stat_3_value": "",
-        "stat_3_label": "",
-        "bg": "#f0f0f0",
-        "card_bg": "#0e0e0f",
-        "accent": "#e0521c"
-      }
-    },
-    "text_with_icons_x8kUc3": {
-      "type": "text-with-icons",
-      "disabled": true,
-      "settings": {
-        "heading": "WHY CHOOSE US?",
-        "heading_color": "#17130f",
-        "subheading": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
-        "bg": "#faf7f2",
-        "card_bg": "#0e0e0f",
-        "accent": "#e0521c"
-      }
-    },
-    "17580258643e53a213": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "ss_slider_2_pro_MXbNFa": {
-      "type": "ss-slider-2-pro",
-      "blocks": {
-        "slide_RAWgef": {
-          "type": "slide",
+        },
+        "benefit_7": {
+          "type": "benefit",
           "settings": {
-            "image": "shopify://shop_images/website_cover_-_whey.jpg",
-            "badge": "💪Premium Muscle Fuel",
-            "title": "WHEY PROTEIN",
-            "text": "<p>Fuel your muscles with pure whey goodness.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/whey-protein",
-            "content_bg_color": "#1a1a1a",
-            "accent_color": "#e0521c"
+            "icon": "truck",
+            "title": "Same-day Colombo",
+            "text": "Colombo orders same day, island-wide in 2–3 working days."
           }
         },
-        "slide_xQBdPV": {
-          "type": "slide",
+        "benefit_8": {
+          "type": "benefit",
           "settings": {
-            "image": "shopify://shop_images/IMG_4441.jpg",
-            "badge": "⚡Pure Strength",
-            "title": "CREATINE",
-            "text": "<p>Boost performance, rep after rep.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/creatine",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_JNFk6Q": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/IMG_4440.jpg",
-            "badge": "Live better",
-            "title": "HERBS & NATURAL SOLUTION",
-            "text": "",
-            "button": "View",
-            "button_url": "shopify://collections/herbs-natural-solution",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_Ny83Tp": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/IMG_4447.jpg",
-            "badge": "🛡️Daily Wellness Essentials",
-            "title": "VITAMINS & WELL-BEING",
-            "text": "<p>Your wellness essentials in one place.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/vitamins-minerals",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_HYxyJk": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/website_covers_-_collagen.jpg",
-            "badge": "🌸Glow from Within",
-            "title": "COLLAGEN",
-            "text": "<p>Beauty and strength from within.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/collagen",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_DUrJj4": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/IMG_4446.jpg",
-            "badge": "🍫Healthy On-the-Go Bites",
-            "title": "PROTEIN SNACKS",
-            "text": "<p>Healthy bites without the guilt.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/protein-bars-snacks",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_iwQ6DD": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/IMG_4445.jpg",
-            "badge": "🔥Level up every session.",
-            "title": "PRE WORKOUT",
-            "text": "<p>Energy & Focus Boosters</p>",
-            "button": "View",
-            "button_url": "shopify://collections/pre-workout-1",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_TfwpTr": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/IMG_4444.jpg",
-            "badge": "🏋️Big Gains, Bigger Nutrition",
-            "title": "MASS GAINERS",
-            "text": "<p>Big nutrition for big gains.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/mass-gainers",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_NwEqrh": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/IMG_4442.jpg",
-            "badge": "🎯Burn Smart, Burn Fast",
-            "title": "FAT BURNERS",
-            "text": "<p>Support your fitness journey.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/fat-burners-1",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
-          }
-        },
-        "slide_VY9pba": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/imgi_29_1f9f6567-6e04-4fd9-8b8d-2cf6428d6199.jpg",
-            "badge": "🥤Perfect Mix Every Time",
-            "title": "SHAKERS",
-            "text": "<p>Perfect blends anytime, anywhere.</p>",
-            "button": "View",
-            "button_url": "shopify://collections/shakers",
-            "content_bg_color": "#121212",
-            "accent_color": "#e0521c"
+            "icon": "bolt",
+            "title": "Earn points",
+            "text": "3–10% back on every order as an SNH Elite member."
           }
         }
       },
       "block_order": [
-        "slide_RAWgef",
-        "slide_xQBdPV",
-        "slide_JNFk6Q",
-        "slide_Ny83Tp",
-        "slide_HYxyJk",
-        "slide_DUrJj4",
-        "slide_iwQ6DD",
-        "slide_TfwpTr",
-        "slide_NwEqrh",
-        "slide_VY9pba"
-      ],
-      "custom_css": [],
-      "name": "SS - Slider #2 pro",
-      "settings": {
-        "heading": "Our Collection",
-        "heading_tag": "h2",
-        "subheading": "Navigate SNH essentials by category, goal, and daily routine.",
-        "loop": true,
-        "autoplay": false,
-        "pause_on_hover": true,
-        "autoplay_speed": 4500,
-        "motion_speed": 500,
-        "start_index": 0,
-        "default_button_label": "View",
-        "background_color": "#14100e",
-        "background_color_2": "#f47a21",
-        "accent_color": "#e0521c",
-        "accent_dark_color": "#ce4b1a",
-        "lazy": true
-      }
+        "stat_1",
+        "stat_2",
+        "benefit_3",
+        "benefit_4",
+        "benefit_5",
+        "benefit_6",
+        "benefit_7",
+        "benefit_8"
+      ]
     },
-    "collection-list": {
-      "type": "collection-list",
-      "disabled": true,
+    "snh_look": {
+      "type": "snh-shop-the-look",
       "settings": {
-        "full_width": true,
-        "title": "TOP COLLECTION",
-        "viewall_url": "",
-        "viewall_text": "View all",
-        "train_eyebrow": "Performance",
-        "train_title": "Train & Perform",
-        "train_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bane1.png?v=1784056180",
-        "train_accent": "#e0521c",
-        "well_eyebrow": "Wellness",
-        "well_title": "Health & Wellness",
-        "well_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bane2.png?v=1784056180",
-        "well_accent": "#7c3aed",
-        "background": "",
-        "heading_color": ""
-      }
-    },
-    "impact-text": {
-      "type": "impact-text",
-      "blocks": {
-        "item_ARcTTc": {
-          "type": "item",
-          "settings": {
-            "title": "100%",
-            "subheading": "Showcase a benefit of your product",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        }
+        "eyebrow": "Brand of the month",
+        "heading": "Shop the *look*: RYSE",
+        "link_label": "Shop all RYSE",
+        "link_url": "/collections/ryse",
+        "link_style": "button",
+        "image": "shopify://shop_images/brand_of_the_month_-_ryse.jpg",
+        "image_alt": "RYSE brand of the month: Loaded Protein, Pump, Pre and Pre MAX",
+        "show_points": false,
+        "rate_bronze": 3,
+        "rate_silver": 7,
+        "rate_gold": 10,
+        "silver_threshold": 200000,
+        "gold_threshold": 500000
       },
-      "block_order": [
-        "item_ARcTTc"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "stack_mobile": true,
-        "text_alignment": "center",
-        "impact_text_style": "fill",
-        "text_divider": "none",
-        "impact_text_size_ratio": 1,
-        "background": "",
-        "background_gradient": "",
-        "heading_text_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(26, 26, 26, 0.2), rgba(26, 26, 26, 0) 100%)",
-        "text_color": "",
-        "button_background": "",
-        "button_text_color": ""
-      }
-    },
-    "shop_the_look_Cptwwq": {
-      "type": "shop-the-look",
       "blocks": {
-        "product_mPzpfR": {
+        "product_1": {
           "type": "product",
           "settings": {
             "product": "ryse-loaded-protein-2lb",
@@ -847,7 +519,7 @@
             "vertical_position": 67
           }
         },
-        "product_iK7U6W": {
+        "product_2": {
           "type": "product",
           "settings": {
             "product": "ryse-loaded-pump-25-servings",
@@ -855,7 +527,7 @@
             "vertical_position": 62
           }
         },
-        "product_KmBdAG": {
+        "product_3": {
           "type": "product",
           "settings": {
             "product": "ryse-loaded-pre-workout",
@@ -863,7 +535,7 @@
             "vertical_position": 66
           }
         },
-        "product_aBYRaD": {
+        "product_4": {
           "type": "product",
           "settings": {
             "product": "ryse-loaded-pre-max",
@@ -873,292 +545,402 @@
         }
       },
       "block_order": [
-        "product_mPzpfR",
-        "product_iK7U6W",
-        "product_KmBdAG",
-        "product_aBYRaD"
-      ],
-      "custom_css": [
-        "html,body {overflow-x: clip;}"
-      ],
-      "settings": {
-        "full_width": true,
-        "stack_mobile": false,
-        "image": "shopify://shop_images/brand_of_the_month_-_ryse.jpg",
-        "title": "BRAND OF THE MONTH",
-        "content": "",
-        "show_points": true,
-        "rate_bronze": 3,
-        "rate_silver": 7,
-        "rate_gold": 10,
-        "silver_threshold": 200000,
-        "gold_threshold": 500000,
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": "",
-        "product_card_background": "",
-        "product_card_text_color": "",
-        "product_card_mobile_background": "",
-        "product_card_mobile_text_color": "",
-        "background_dots": "#ffffff"
-      }
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ]
     },
-    "multi_column_xzrBTh": {
-      "type": "multi-column",
+    "snh_goals": {
+      "type": "snh-shop-by-goal",
+      "settings": {
+        "eyebrow": "Shop by goal",
+        "heading": "What are you *training* for?",
+        "tab_1": "Train & perform",
+        "tab_2": "Health & wellness",
+        "anchor": "goals"
+      },
       "blocks": {
-        "goal_H6iBAj": {
+        "goal_1": {
           "type": "goal",
           "settings": {
             "group": "train",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_17_PM_1.png",
             "title": "Muscle & Strength",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_17_PM_1.png?v=1784056180",
-            "collection": "muscle-and-strength",
-            "link": "https://www.sportsnutritionhub.lk/collections/muscle-and-strength"
+            "link": "/collections/muscle-and-strength"
           }
         },
-        "goal_z44yyk": {
+        "goal_2": {
           "type": "goal",
           "settings": {
             "group": "train",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_18_PM_2.png",
             "title": "Fat Loss",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_18_PM_2.png?v=1784056179",
-            "collection": "fat-loss",
-            "link": "https://www.sportsnutritionhub.lk/collections/fat-loss"
+            "link": "/collections/fat-loss"
           }
         },
-        "goal_7EMid9": {
+        "goal_3": {
           "type": "goal",
           "settings": {
             "group": "train",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_19_PM_3.png",
             "title": "Energy & Endurance",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_3.png?v=1784056179",
-            "collection": "energy-and-endurance",
-            "link": ""
+            "link": "/collections/energy-and-endurance"
           }
         },
-        "goal_Y4ttRM": {
+        "goal_4": {
           "type": "goal",
           "settings": {
             "group": "train",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_19_PM_4.png",
             "title": "Recovery",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_4.png?v=1784056179",
-            "collection": "recovery",
-            "link": ""
+            "link": "/collections/recovery"
           }
         },
-        "goal_EnqkX6": {
+        "goal_5": {
           "type": "goal",
           "settings": {
             "group": "wellness",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_19_PM_5.png",
             "title": "Daily Wellness",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_19_PM_5.png?v=1784056179",
-            "collection": "daily-wellness",
-            "link": "shopify://collections/daily-wellness"
+            "link": "/collections/daily-wellness"
           }
         },
-        "goal_4wLd9T": {
+        "goal_6": {
           "type": "goal",
           "settings": {
             "group": "wellness",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_20_PM_6.png",
             "title": "Gut Health",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_20_PM_6.png?v=1784056180",
-            "collection": "gut-health",
-            "link": ""
+            "link": "/collections/gut-health"
           }
         },
-        "goal_wXFLqT": {
+        "goal_7": {
           "type": "goal",
           "settings": {
             "group": "wellness",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_20_PM_7.png",
             "title": "Women's Health",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_20_PM_7.png?v=1784056180",
-            "collection": "womens-health",
-            "link": ""
+            "link": "/collections/womens-health"
           }
         },
-        "goal_HMHyhi": {
+        "goal_8": {
           "type": "goal",
           "settings": {
             "group": "wellness",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_21_PM_8.png",
             "title": "Beauty, Hair & Skin",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_21_PM_8.png?v=1784056180",
-            "collection": "beauty-hair-and-skin",
-            "link": ""
+            "link": "/collections/beauty-hair-and-skin"
           }
         },
-        "goal_FArdtD": {
+        "goal_9": {
           "type": "goal",
           "settings": {
             "group": "wellness",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_21_PM_9.png",
             "title": "Joint & Mobility",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_21_PM_9.png?v=1784056180",
-            "collection": "joint-and-mobility",
-            "link": ""
+            "link": "/collections/joint-and-mobility"
           }
         },
-        "goal_ipWr67": {
+        "goal_10": {
           "type": "goal",
           "settings": {
             "group": "wellness",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_22_PM_10.png",
             "title": "Sleep",
-            "image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ChatGPT_Image_Jul_14_2026_07_56_22_PM_10.png?v=1784056180",
-            "collection": "sleep",
-            "link": ""
+            "link": "/collections/sleep"
           }
         }
       },
       "block_order": [
-        "goal_H6iBAj",
-        "goal_z44yyk",
-        "goal_7EMid9",
-        "goal_Y4ttRM",
-        "goal_EnqkX6",
-        "goal_4wLd9T",
-        "goal_wXFLqT",
-        "goal_HMHyhi",
-        "goal_FArdtD",
-        "goal_ipWr67"
-      ],
-      "custom_css": [
-        "html,body {overflow-x: clip;}"
-      ],
-      "name": "Shop by Goal (SNH)",
-      "settings": {
-        "full_width": true,
-        "title": "Shop by Goal",
-        "viewall_url": "",
-        "viewall_text": "View all",
-        "train_eyebrow": "Performance",
-        "train_title": "Train & Perform",
-        "train_image": "shopify://shop_images/1.jpg",
-        "train_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bane1.png?v=1784056180",
-        "train_accent": "#e0521c",
-        "well_eyebrow": "Wellness",
-        "well_title": "Health & Wellness",
-        "well_image": "shopify://shop_images/2_80f8bbfd-3a76-4dce-86e1-43d638d5107c.jpg",
-        "well_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/bane2.png?v=1784056180",
-        "well_accent": "#7c3aed",
-        "background": "#faf7f2",
-        "heading_color": "#f6f6f5"
-      }
+        "goal_1",
+        "goal_2",
+        "goal_3",
+        "goal_4",
+        "goal_5",
+        "goal_6",
+        "goal_7",
+        "goal_8",
+        "goal_9",
+        "goal_10"
+      ]
     },
-    "featured-collection": {
-      "type": "featured-collection",
+    "snh_best": {
+      "type": "snh-bestsellers",
       "settings": {
-        "mode": "new_deals",
-        "new_days": 45,
-        "tag_filter": "",
-        "products_count": 26,
-        "subheading": "",
-        "title": "WHAT’S NEW AT SNH?",
-        "link_text": "VIEW ALL",
-        "link_url": "shopify://collections",
-        "background": ""
-      }
-    },
-    "images_with_text_scrolling_ypwaAR": {
-      "type": "images-with-text-scrolling",
+        "eyebrow": "What's new at SNH",
+        "heading": "Shop our *bestsellers*",
+        "link_label": "Shop all",
+        "link_url": "/collections/everything",
+        "link_style": "button",
+        "limit": 8,
+        "anchor": "shop"
+      },
       "blocks": {
-        "item_qNwQ8w": {
-          "type": "item",
+        "tab_1": {
+          "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/LOGO_SNH_HEALTh.jpg",
-            "icon": "none",
-            "icon_width": 48,
-            "title": "SNH HEALTH",
-            "content": "<p>SNH introduces a new arm: SNH HEALTH. </p><p>As the slogan says ‘ Well-being Starts Here’ <br/>This range will focus on well-being, vitamins, beauty products from kids to seniors. </p><p>We Care About You.</p>"
+            "label": "All",
+            "products": [
+              "applied-nutrition-creatine-monohydrate",
+              "sis-go-hydro-tablets",
+              "applied-nutrition-critical-whey-2kg",
+              "sis-go-isotonic-energy-gel",
+              "raw-cbum-itholate-protein",
+              "raw-thavage-pre-workout",
+              "ryse-loaded-protein-2lb",
+              "ryse-loaded-pre-workout"
+            ]
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Protein",
+            "products": [
+              "applied-nutrition-critical-whey-2kg",
+              "raw-cbum-itholate-protein",
+              "ryse-loaded-protein-2lb"
+            ]
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Endurance",
+            "products": [
+              "sis-go-hydro-tablets",
+              "sis-go-isotonic-energy-gel"
+            ]
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "label": "Strength",
+            "products": [
+              "applied-nutrition-creatine-monohydrate",
+              "raw-thavage-pre-workout",
+              "ryse-loaded-pre-workout"
+            ]
+          }
+        },
+        "tab_5": {
+          "type": "tab",
+          "settings": {
+            "label": "Health",
+            "products": [
+              "revive-magnesium-glycinate",
+              "applied-nutrition-multi-vitamin-complex"
+            ]
           }
         }
       },
       "block_order": [
-        "item_qNwQ8w"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "stack_on_mobile": true,
-        "show_counter": true,
-        "desktop_image_effect": "reveal",
-        "image_position": "end",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
+        "tab_1",
+        "tab_2",
+        "tab_3",
+        "tab_4",
+        "tab_5"
+      ]
     },
-    "custom_liquid_kcmbYY": {
-      "type": "custom-liquid",
+    "snh_sis": {
+      "type": "snh-sis-slider",
+      "settings": {
+        "label": "Science in Sport, official distributor",
+        "anchor": "sis",
+        "interval": 6,
+        "logo_url": "https://www.scienceinsport.com/static/version1792401833/frontend/SIS/theme-frontend-sis-pnx/en_GB/images/logo.svg",
+        "badge": "Official distributor[ in Sri Lanka] · 100% Informed Sport[ approved]",
+        "strip_title": "Bestselling SiS",
+        "strip_link_label": "Shop all Science in Sport",
+        "strip_link": "/collections/sis",
+        "products": [
+          "sis-go-hydro-tablets",
+          "sis-beta-fuel-gel",
+          "sis-go-isotonic-energy-gel",
+          "sis-beta-fuel-energy-nootropics-gel"
+        ]
+      },
       "blocks": {
-        "bundle_card_aDzRJn": {
-          "type": "bundle_card",
+        "video_1": {
+          "type": "video",
           "settings": {
-            "collection": "",
+            "label": "What fuels you?",
+            "video_url": "https://www.scienceinsport.com/media/wysiwyg/Q2_Running_Homepage_Video.mp4",
+            "poster_url": "https://www.scienceinsport.com/media/wysiwyg/BF-Electrolyte-VideoFrame1.jpg?width=1920",
+            "poster_mobile_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_ENERGY.jpg?width=1080",
+            "eyebrow": "Science in Sport · as seen on the start line",
+            "heading": "What *fuels* you?",
+            "sub": "Gels, hydration and recovery from the brand behind the world's best endurance athletes.",
+            "cta": "Shop Science in Sport",
+            "link": "/collections/sis"
+          }
+        },
+        "tiles_2": {
+          "type": "tiles",
+          "settings": {
+            "label": "Shop by need",
+            "eyebrow": "Shop SiS by need",
+            "heading": "Fuel every *session*.",
+            "tile_1_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_ENERGY.jpg",
+            "tile_1_label": "Energy",
+            "tile_1_link": "/collections/energy-gels?filter.p.vendor=SCIENCE+IN+SPORT",
+            "tile_2_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_HYDRATION.jpg",
+            "tile_2_label": "Hydration",
+            "tile_2_link": "/products/sis-go-hydro-tablets",
+            "tile_3_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_RECOVERY.jpg",
+            "tile_3_label": "Recovery",
+            "tile_3_link": "/products/sis-rego-rapid-recovery-powder-1-5kg",
+            "tile_4_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_BETA.jpg",
+            "tile_4_label": "BETA Fuel",
+            "tile_4_link": "/products/sis-beta-fuel-gel",
+            "tile_5_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_VMS.jpg",
+            "tile_5_label": "Vitamins",
+            "tile_5_link": "/collections/vitamins-minerals?filter.p.vendor=SCIENCE+IN+SPORT"
+          }
+        },
+        "trust_3": {
+          "type": "trust",
+          "settings": {
+            "label": "Trusted by athletes",
+            "bg_url": "https://www.scienceinsport.com/media/wysiwyg/BF-Electrolyte-VideoFrame1.jpg",
+            "image_url": "https://www.scienceinsport.com/media/.renditions/wysiwyg/Phoenix_-_Homepage_-_Trusted_by_Athletes_-_Desktop_-_McCOLGAN.jpg",
+            "image_alt": "Eilish McColgan, Science in Sport athlete",
+            "eyebrow": "Trusted by athletes",
+            "heading": "Tested. *Trusted*. Informed Sport.",
+            "sub": "Science in Sport fuel is batch-tested under Informed Sport, so tested athletes like Eilish McColgan can use it with confidence.",
+            "cta": "Shop Informed Sport",
+            "link": "/collections/informed-sports",
+            "proof": "Informed Sport | Batch-tested for banned substances\nOfficial distributor | Sourced direct by SNH in Sri Lanka\nStored right | Climate-controlled stock in our three stores"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "tiles_2",
+        "trust_3"
+      ]
+    },
+    "snh_bundles": {
+      "type": "snh-bundles",
+      "settings": {
+        "eyebrow": "Offers",
+        "heading": "Bundle & *save*",
+        "lead": "Curated stacks built for better value, faster shopping and stronger daily routines.",
+        "link_label": "All bundles",
+        "link_url": "/collections/bundle-offers",
+        "link_style": "link"
+      },
+      "blocks": {
+        "offer_1": {
+          "type": "offer",
+          "settings": {
             "image": "shopify://shop_images/bundle_off.png",
-            "image_url": "",
             "badge": "Save more",
             "title": "Endurance Bundles",
-            "description": "",
-            "url": "shopify://collections/endurance-bundles"
+            "link": "/collections/endurance-bundles"
           }
         },
-        "bundle_card_xjA7Hn": {
-          "type": "bundle_card",
+        "offer_2": {
+          "type": "offer",
           "settings": {
-            "collection": "",
             "image": "shopify://shop_images/wellness.png",
-            "image_url": "",
             "badge": "Save more",
             "title": "Daily Health & Wellness Bundles",
-            "description": "",
-            "url": "shopify://collections/daily-health-wellness-bundles"
+            "link": "/collections/daily-health-wellness-bundles"
           }
         },
-        "bundle_card_DdRXR4": {
-          "type": "bundle_card",
+        "offer_3": {
+          "type": "offer",
           "settings": {
-            "collection": "training-strength-bundles",
             "image": "shopify://shop_images/protines.png",
-            "image_url": "",
             "badge": "Save more",
             "title": "Training & Strength Bundles",
-            "description": "",
-            "url": ""
+            "link": "/collections/training-strength-bundles"
           }
         }
       },
       "block_order": [
-        "bundle_card_aDzRJn",
-        "bundle_card_xjA7Hn",
-        "bundle_card_DdRXR4"
-      ],
-      "custom_css": [
-        "html,body {overflow-x: clip;}"
-      ],
-      "name": "Custom Liquid",
-      "settings": {
-        "subheading": "",
-        "heading": "Bundle & Save",
-        "content": "<p>Curated stacks built for better value, faster shopping and stronger daily routines. </p>",
-        "button_url": "",
-        "button_label": "View bundles",
-        "loyalty_url": "",
-        "loyalty_label": "Earn loyalty points",
-        "image_position": "center",
-        "text_color": "",
-        "accent_color": "#e0521c"
-      }
+        "offer_1",
+        "offer_2",
+        "offer_3"
+      ]
     },
-    "17249238673e5621c3": {
-      "type": "apps",
+    "snh_elite": {
+      "type": "snh-elite",
+      "settings": {
+        "anchor": "elite",
+        "eyebrow": "SNH Elite · Sri Lanka's 1st premium VIP club",
+        "heading": "Fuel your goals. Earn your *rewards*.",
+        "lead": "Create your free account, claim 500 welcome points, and earn 3% to 10% back in points on every order.",
+        "chips": "500 welcome points\nUp to 10% back\nRedeem from 2,500 points",
+        "cta": "Join SNH Elite, it's free",
+        "cta_link": "/account/register",
+        "cta2": "Sign in",
+        "cta2_link": "/account/login",
+        "silver_threshold": 198000,
+        "gold_threshold": 300000,
+        "person": "shopify://shop_images/girl.png",
+        "gift": "shopify://shop_images/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png",
+        "coins": "shopify://shop_images/2_37969279-4a78-43c8-8fdf-5256e55c6030.png",
+        "card_logo": "shopify://shop_images/sn_o.png",
+        "card_points": "2,860",
+        "card_tier": "Gold member",
+        "card_rate": "10% back"
+      },
+      "blocks": {
+        "tier_1": {
+          "type": "tier",
+          "settings": {
+            "metal": "bronze",
+            "rate": "3%",
+            "name": "Bronze",
+            "threshold": "Free to join",
+            "perk": "500 welcome points"
+          }
+        },
+        "tier_2": {
+          "type": "tier",
+          "settings": {
+            "metal": "silver",
+            "rate": "7%",
+            "name": "Silver",
+            "threshold": "From Rs 198k a year",
+            "perk": "Birthday reward + vouchers"
+          }
+        },
+        "tier_3": {
+          "type": "tier",
+          "settings": {
+            "metal": "gold",
+            "rate": "10%",
+            "name": "Gold",
+            "threshold": "From Rs 300k a year",
+            "perk": "Free shipping + 15% birthday"
+          }
+        }
+      },
+      "block_order": [
+        "tier_1",
+        "tier_2",
+        "tier_3"
+      ]
+    },
+    "snh_reviews": {
+      "type": "snh-reviews",
+      "settings": {
+        "rating_text": "4.9 from 2,000+ Google reviews",
+        "heading": "Rated 4.9 by *real* customers",
+        "link_label": "",
+        "link_url": ""
+      },
       "blocks": {
         "google_reviews_carousel_widget_block_pMR7nx": {
           "type": "shopify://apps/google-reviews/blocks/carousel-widget-block/8b378e9e-c56d-47ce-a754-feca5e0caf59",
           "settings": {
             "contentIndex": "1",
-            "variant": "rotator",
+            "variant": "carousel",
             "headerType_rotator": "top",
             "headerType_carousel": "top",
             "navigationType": "dotted",
@@ -1167,7 +949,7 @@
             "themeId": "light",
             "ratingType": "stars",
             "emojiType": "0",
-            "cardColor": "#f3f6f9",
+            "cardColor": "#ffffff",
             "starsColor": "#fbb000",
             "textColor": "#404040",
             "transparent": 1,
@@ -1186,176 +968,171 @@
       },
       "block_order": [
         "google_reviews_carousel_widget_block_pMR7nx"
-      ],
+      ]
+    },
+    "snh_guides": {
+      "type": "snh-guides",
       "settings": {
-        "full_width": false,
-        "remove_vertical_spacing": true,
-        "remove_horizontal_spacing": true,
-        "background": "#ffffff",
-        "background_gradient": "",
-        "text_color": ""
+        "blog": "news",
+        "limit": 3,
+        "label": "Buying guide",
+        "eyebrow": "Read our blog",
+        "heading": "Buying *guides*",
+        "link_label": "All articles",
+        "link_url": "/blogs/news",
+        "link_style": "link"
       }
     },
-    "faq_pXHLeA": {
-      "type": "faq",
+    "snh_faq": {
+      "type": "snh-faq",
+      "settings": {
+        "eyebrow": "Support · every day, 10am–7pm",
+        "heading": "Questions, *answered*",
+        "lead": "Call or WhatsApp +94 76 486 3359 for anything not covered here."
+      },
       "blocks": {
-        "item_inQjLj": {
-          "type": "item",
+        "question_1": {
+          "type": "question",
           "settings": {
-            "title": "How long will it take to get my orders?",
-            "content": "<p>It depends on your delivery address. </p><p>Colombo Orders: Same Day <br/>Out of Colombo Orders: 2-3 Working Days </p>"
+            "question": "How long will it take to get my orders?",
+            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
           }
         },
-        "item_7pdVtF": {
-          "type": "item",
+        "question_2": {
+          "type": "question",
           "settings": {
-            "title": "Where can I come visit physically?",
-            "content": "<p>We have three stores:</p><p>DEHIWALA, WATTALA, NUGEGODA</p><p>Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
+            "question": "Where can I come visit physically?",
+            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
           }
         },
-        "item_fNj3BX": {
-          "type": "item",
+        "question_3": {
+          "type": "question",
           "settings": {
-            "title": "I want to know more",
-            "content": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 76 486 3359</p>"
+            "question": "I want to know more",
+            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 76 486 3359</p>"
           }
         },
-        "item_pPVapK": {
-          "type": "item",
+        "question_4": {
+          "type": "question",
           "settings": {
-            "title": "Are your supplements genuine?",
-            "content": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
+            "question": "Are your supplements genuine?",
+            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
           }
         },
-        "item_kQhBXD": {
-          "type": "item",
+        "question_5": {
+          "type": "question",
           "settings": {
-            "title": "How do I know which supplement is right for me?",
-            "content": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
+            "question": "How do I know which supplement is right for me?",
+            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
           }
         },
-        "item_8TTVmt": {
-          "type": "item",
+        "question_6": {
+          "type": "question",
           "settings": {
-            "title": "What payment methods do you accept?",
-            "content": "<p>We accept card payments, bank transfers, cash on delivery, & Koko.</p>"
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
           }
         },
-        "item_gPkEUa": {
-          "type": "item",
+        "question_7": {
+          "type": "question",
           "settings": {
-            "title": "Can I return or exchange a product?",
-            "content": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.<br/></p>"
+            "question": "Can I return or exchange a product?",
+            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
           }
         }
       },
       "block_order": [
-        "item_inQjLj",
-        "item_7pdVtF",
-        "item_fNj3BX",
-        "item_pPVapK",
-        "item_kQhBXD",
-        "item_8TTVmt",
-        "item_gPkEUa"
-      ],
-      "custom_css": [
-        "html,body {overflow-x: clip;}"
-      ],
-      "settings": {
-        "title": "FAQ’S",
-        "content": "<p>Our customer support is available</p><p> Everyday: 10am-7.00pm.</p>",
-        "support_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/3rdcrd.png?v=1784028499",
-        "support_hours": "",
-        "button_text": "CONTACT FOR MORE",
-        "button_url": "shopify://pages/delivery-and-shipping",
-        "accent_color": "#e0521c"
-      }
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7"
+      ]
     },
-    "instafeed_modern_GYXn3r": {
-      "type": "instafeed-modern",
-      "custom_css": [
-        "html,body {overflow-x: clip;}"
-      ],
-      "name": "SNH – Instagram Feed (Modern)",
+    "snh_stores": {
+      "type": "snh-stores",
       "settings": {
-        "eyebrow": "@sportsnutritionhub.lk",
-        "heading": "Follow us on Instagram",
-        "subheading": "@sportsnutritionhub.lk",
-        "profile_url": "",
-        "token": "IGAAQf4TCJub1BZAGJNN1piQmhpZADdfS2VYcEl3N3hSZADBMVnY5aEFsVlBwTnpObF9LbDF0ckJTVExGNWhuM3ZABWjBVZAThUN2wtM3U1WFI2SDYtN1VwTG5HMmJ3Y3ZA6R0JmdGlDcTJDMjFhLXNlYkZAwUk5JR0FwTDM4RlJqWG9vawZDZD",
-        "count": 6,
-        "cols_desktop": "3",
-        "cols_mobile": "1",
-        "show_captions": true,
-        "show_date": true,
-        "new_tab": true,
-        "cache_mins": 60,
-        "accent": "#e0521c",
-        "bg": "#f0f0f0",
-        "heading_color": "#141414",
-        "card": "#151515",
-        "text": "#ffffff",
-        "muted": "#b7bcc3",
-        "radius": 18,
-        "gap": 16,
-        "shadow": true
-      }
-    },
-    "17908414235dd8d175": {
-      "type": "_blocks",
+        "anchor": "stores",
+        "eyebrow": "Visit us",
+        "heading": "Three stores, open every *day*",
+        "link_label": "All locations",
+        "link_url": "/pages/location",
+        "link_style": "link"
+      },
       "blocks": {
-        "ai_gen_block_860b125_7PPBq3": {
-          "type": "ai_gen_block_860b125",
-          "name": "Magnesium FAQ",
+        "store_1": {
+          "type": "store",
           "settings": {
-            "target_product": "revive-magnesium-glycinate",
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
+            "image": "shopify://shop_images/IMG_2488.png",
+            "image_alt": "SNH Dehiwala store",
+            "name": "Dehiwala",
+            "address": "133A Kawdana Road, Dehiwala",
+            "phone": "+94 77 977 3359",
+            "hours": "Open every day",
+            "map": "https://maps.app.goo.gl/yv7NfU8qodJD58uV9"
+          }
+        },
+        "store_2": {
+          "type": "store",
+          "settings": {
+            "image": "shopify://shop_images/IMG_2487.png",
+            "image_alt": "SNH Wattala store",
+            "name": "Wattala",
+            "address": "880 Negombo Road, Wattala",
+            "phone": "+94 76 846 3359",
+            "hours": "Open every day",
+            "map": "https://maps.app.goo.gl/HE2zcgj85Dxr9cux7"
+          }
+        },
+        "store_3": {
+          "type": "store",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_8e096a2a-793c-4c65-aeb5-672d6da38e8e.png",
+            "image_alt": "SNH Nugegoda store",
+            "name": "Nugegoda",
+            "address": "555 High Level Road, Nugegoda",
+            "phone": "+94 76 486 3359",
+            "hours": "Open every day",
+            "map": "https://maps.app.goo.gl/EpBtzAunKUbUkb3q9?g_st=ic"
+          }
         }
       },
       "block_order": [
-        "ai_gen_block_860b125_7PPBq3"
-      ],
-      "settings": {}
+        "store_1",
+        "store_2",
+        "store_3"
+      ]
     },
-    "1790841648d613425f": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_860b125_p9cpjW": {
-          "type": "ai_gen_block_860b125",
-          "settings": {
-            "target_product": "revive-magnesium-glycinate",
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_860b125_p9cpjW"
-      ],
-      "settings": {}
+    "snh_news": {
+      "type": "snh-newsletter",
+      "settings": {
+        "heading": "First to *know*",
+        "lead": "New drops, restocks and member offers. No spam, only discount codes and product news.",
+        "placeholder": "Email address",
+        "button": "Subscribe",
+        "success": "Thanks, you're on the list.",
+        "tags": "newsletter,homepage"
+      }
     }
   },
   "order": [
-    "slideshow",
-    "image-link-blocks",
-    "brand_logo_slider_custom_PqgAUt",
-    "whyus_R6HG6b",
-    "text_with_icons_x8kUc3",
-    "17580258643e53a213",
-    "ss_slider_2_pro_MXbNFa",
-    "collection-list",
-    "impact-text",
-    "shop_the_look_Cptwwq",
-    "multi_column_xzrBTh",
-    "featured-collection",
-    "images_with_text_scrolling_ypwaAR",
-    "custom_liquid_kcmbYY",
-    "17249238673e5621c3",
-    "faq_pXHLeA",
-    "instafeed_modern_GYXn3r",
-    "17908414235dd8d175",
-    "1790841648d613425f"
+    "snh_hero",
+    "snh_goalbar",
+    "snh_logos",
+    "snh_ways",
+    "snh_why",
+    "snh_look",
+    "snh_goals",
+    "snh_best",
+    "snh_sis",
+    "snh_bundles",
+    "snh_elite",
+    "snh_reviews",
+    "snh_guides",
+    "snh_faq",
+    "snh_stores",
+    "snh_news"
   ]
 }

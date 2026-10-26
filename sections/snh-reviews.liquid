@@ -1,0 +1,51 @@
+{%- comment -%}
+  SNH reviews (prototype "Rated 4.9 by real customers"): rating line + heading, then either quote blocks (real
+  reviews pasted in) or any review app block (@app, e.g. Google Reviews), which render in the content area.
+{%- endcomment -%}
+{%- assign hid = 'rev-' | append: section.id -%}
+<section class="v2 v-section v-section--cream" aria-labelledby="{{ hid }}">
+  <div class="v-wrap">
+    <div class="head"><div class="head__text">
+        {%- if section.settings.rating_text != blank -%}<div class="v-rating"><span class="stars" aria-hidden="true">{%- for i in (1..5) -%}{% render 'snh-v2-icon', name: 'star' %}{%- endfor -%}</span><span class="meta">{{ section.settings.rating_text | escape }}</span></div>{%- endif -%}
+        <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2></div>
+      {%- if section.settings.link_label != blank -%}<a class="v-link" href="{{ section.settings.link_url | default: '#' }}"{% if section.settings.link_url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ section.settings.link_label | escape }}</a>{%- endif -%}
+    </div>
+    {%- assign quotes = section.blocks | where: 'type', 'quote' -%}
+    {%- if quotes.size > 0 -%}
+      <div class="quotes">
+        {%- for b in quotes -%}
+          <figure class="quote" {{ b.shopify_attributes }}><span class="stars" aria-label="{{ b.settings.stars }} out of 5">{%- for i in (1..b.settings.stars) -%}{% render 'snh-v2-icon', name: 'star' %}{%- endfor -%}</span>
+            <blockquote class="quote__text">“{{ b.settings.text | escape }}”</blockquote>
+            <figcaption class="quote__who">{{ b.settings.name | escape }}<span>{{ b.settings.source | escape }}</span></figcaption></figure>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- for b in section.blocks -%}
+      {%- if b.type == '@app' -%}<div class="rev__app">{% render b %}</div>{%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH reviews",
+  "class": "snh-sec",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "rating_text", "label": "Rating line", "default": "4.9 from 2,000+ Google reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Rated 4.9 by *real* customers" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Read all reviews" },
+    { "type": "url", "id": "link_url", "label": "Link", "info": "Your Google Business reviews page." }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "quote", "name": "Review quote", "settings": [
+      { "type": "range", "id": "stars", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+      { "type": "textarea", "id": "text", "label": "Review (copy it exactly from the source)" },
+      { "type": "text", "id": "name", "label": "Reviewer name" },
+      { "type": "text", "id": "source", "label": "Source", "default": "Google review" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH reviews" }]
+}
+{% endschema %}

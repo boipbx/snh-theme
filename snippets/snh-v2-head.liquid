@@ -1,0 +1,14 @@
+{%- comment -%}
+  Section head (prototype .head): eyebrow, heading (*serif word*), optional lead, optional link or ink button.
+  s: section.settings with eyebrow, heading, lead, link_label, link_url, link_style ('link' | 'button'); id: heading id.
+{%- endcomment -%}
+<div class="head"><div class="head__text">
+  {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+  <h2 class="v-h1" id="{{ id }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
+  {%- if s.lead != blank -%}<p class="lead">{{ s.lead | escape }}</p>{%- endif -%}
+</div>
+{%- if s.link_label != blank -%}
+  {%- if s.link_style == 'button' -%}<a class="v-btn v-btn--ink" href="{{ s.link_url | default: '#' }}"><span>{{ s.link_label | escape }}</span></a>
+  {%- else -%}<a class="v-link" href="{{ s.link_url | default: '#' }}">{{ s.link_label | escape }}</a>{%- endif -%}
+{%- endif -%}
+</div>

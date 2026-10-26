@@ -1,0 +1,38 @@
+{%- comment -%}SNH "Shop your way": collection tiles with the arrow chip (prototype .tiles / .tile). One block per tile.{%- endcomment -%}
+{%- assign hid = 'ways-' | append: section.id -%}
+<section class="v2 v-section" aria-labelledby="{{ hid }}">
+  <div class="v-wrap">
+    {%- render 'snh-v2-head', s: section.settings, id: hid -%}
+    <div class="tiles">
+      {%- for b in section.blocks -%}
+        <a class="tile" href="{{ b.settings.link | default: '#' }}" {{ b.shopify_attributes }}>
+          {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 1080 | image_tag: width: 1080, height: 1350, loading: 'lazy', alt: '', sizes: '(max-width: 767px) 62vw, (max-width: 1023px) 32vw, 20vw', widths: '360,540,700,1080' }}{%- endif -%}
+          <span class="tile__body"><span class="tile__title">{{ b.settings.title | escape }}</span><span class="arrow">{% render 'snh-v2-icon', name: 'arrow' %}</span></span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH shop your way",
+  "class": "snh-sec",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop *your* way", "info": "Wrap a word in *asterisks* for the serif italic." },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop everything" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "select", "id": "link_style", "label": "Link style", "options": [{ "value": "link", "label": "Underlined link" }, { "value": "button", "label": "Ink button" }], "default": "link" }
+  ],
+  "blocks": [
+    { "type": "tile", "name": "Tile", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait 4:5." },
+      { "type": "text", "id": "title", "label": "Title", "default": "Whey protein" },
+      { "type": "url", "id": "link", "label": "Link" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH shop your way", "blocks": [{ "type": "tile" }, { "type": "tile" }, { "type": "tile" }] }]
+}
+{% endschema %}

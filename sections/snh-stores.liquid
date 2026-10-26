@@ -1,0 +1,46 @@
+{%- comment -%}SNH stores (prototype #stores): photo, name, address, phone, directions link. One block per store.{%- endcomment -%}
+{%- assign hid = 'stores-' | append: section.id -%}
+<section class="v2 v-section" aria-labelledby="{{ hid }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="v-wrap">
+    {%- render 'snh-v2-head', s: section.settings, id: hid -%}
+    <div class="stores">
+      {%- for b in section.blocks -%}
+        {%- assign tel = b.settings.phone | remove: ' ' -%}
+        <article class="store" {{ b.shopify_attributes }}>
+          <div class="store__img">{%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: b.settings.image_alt, sizes: '(max-width: 899px) 100vw, 33vw', widths: '450,600,900,1200' }}{%- endif -%}</div>
+          <div class="store__body"><h3 class="v-h2">{{ b.settings.name | escape }}</h3>
+            <p class="meta">{{ b.settings.address | escape }}<br><a href="tel:{{ tel }}">{{ b.settings.phone | escape }}</a>{% if b.settings.hours != blank %} · {{ b.settings.hours | escape }}{% endif %}</p>
+            {%- if b.settings.map != blank -%}<a class="v-link" href="{{ b.settings.map }}" target="_blank" rel="noopener">Get directions</a>{%- endif -%}</div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH stores",
+  "class": "snh-sec",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor", "default": "stores" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Visit us" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Three stores, open every *day*" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All locations" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "select", "id": "link_style", "label": "Link style", "options": [{ "value": "link", "label": "Underlined link" }, { "value": "button", "label": "Ink button" }], "default": "link" }
+  ],
+  "blocks": [
+    { "type": "store", "name": "Store", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Photo", "info": "Landscape 4:3." },
+      { "type": "text", "id": "image_alt", "label": "Photo description" },
+      { "type": "text", "id": "name", "label": "Name", "default": "Dehiwala" },
+      { "type": "text", "id": "address", "label": "Address", "default": "133A Kawdana Road, Dehiwala" },
+      { "type": "text", "id": "phone", "label": "Phone", "default": "+94 77 977 3359" },
+      { "type": "text", "id": "hours", "label": "Hours", "default": "Open every day" },
+      { "type": "url", "id": "map", "label": "Google Maps link" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH stores", "blocks": [{ "type": "store" }, { "type": "store" }, { "type": "store" }] }]
+}
+{% endschema %}

@@ -1,10 +1,25 @@
-{%- comment -%}Live titles start with the vendor in capitals ("APPLIED NUTRITION Critical Whey"); show the vendor in its own casing.{%- endcomment -%}
+{%- comment -%}
+  Product name as the prototype shows it. Live titles start with the vendor in capitals ("APPLIED NUTRITION Critical Whey").
+  Default: the vendor in its own casing. short: true drops the vendor prefix (used where the vendor is the eyebrow above).
+{%- endcomment -%}
 {%- liquid
   assign t = product.title
   assign vu = product.vendor | upcase
-  assign head = t | slice: 0, vu.size
-  if product.vendor != vu and head == vu
-    assign t = t | remove_first: vu | prepend: product.vendor
+  assign prefixes = vu | append: ' NUTRITION|' | append: vu
+  assign prefixes = prefixes | split: '|'
+  assign matched = ''
+  for pre in prefixes
+    assign head = t | slice: 0, pre.size | upcase
+    if head == pre and matched == ''
+      assign matched = t | slice: 0, pre.size
+    endif
+  endfor
+  if matched != ''
+    if short
+      assign t = t | remove_first: matched | strip
+    elsif product.vendor != vu
+      assign t = t | remove_first: matched | prepend: product.vendor
+    endif
   endif
   echo t | escape
 -%}

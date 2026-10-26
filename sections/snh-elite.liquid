@@ -1,0 +1,90 @@
+{%- comment -%}
+  SNH Elite glass band (prototype #elite): animated mesh layer (#elite-bg), glass card with copy, chips, buttons,
+  tier ladder + tier cards, and the visual (cutout, CSS membership card, floating gift + coins).
+  Ladder marks are placed from the Silver/Gold thresholds below.
+{%- endcomment -%}
+{%- liquid
+  assign hid = 'elite-' | append: section.id
+  assign silver = section.settings.silver_threshold | at_least: 1
+  assign gold = section.settings.gold_threshold | at_least: silver
+  assign silver_pos = silver | times: 100 | divided_by: gold
+  assign silver_k = silver | divided_by: 1000
+  assign gold_k = gold | divided_by: 1000
+-%}
+<section class="v2 elite v-section" aria-labelledby="{{ hid }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div id="elite-bg" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="v-wrap elite__grid">
+    <div class="glass elite__card">
+      <div class="elite__copy">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="v-h2" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+        {%- assign chips = section.settings.chips | newline_to_br | split: '<br />' -%}
+        {%- if section.settings.chips != blank -%}<ul class="chips-row">{%- for c in chips -%}{%- assign t = c | strip -%}{%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}
+        <div class="band__cta">
+          {%- if section.settings.cta != blank -%}<a class="v-btn v-btn--ink" href="{{ section.settings.cta_link | default: routes.account_register_url }}"><span>{{ section.settings.cta | escape }}</span></a>{%- endif -%}
+          {%- if section.settings.cta2 != blank -%}<a class="v-btn v-btn--line v-btn--on-dark" href="{{ section.settings.cta2_link | default: routes.account_login_url }}"><span>{{ section.settings.cta2 | escape }}</span></a>{%- endif -%}
+        </div>
+      </div>
+      <div class="elite__tiers">
+        <div class="ladder" aria-label="Tier ladder by annual spend">
+          <div class="ladder__bar"><span class="ladder__fill"></span><i style="left:0%"></i><i style="left:{{ silver_pos }}%"></i><i style="left:100%"></i></div>
+          <div class="ladder__labels"><span>Rs 0</span><span style="left:{{ silver_pos }}%">Rs {{ silver_k }}k</span><span>Rs {{ gold_k }}k</span></div>
+        </div>
+        <ul class="tcards">
+          {%- for b in section.blocks -%}
+            <li class="tcard tcard--{{ b.settings.metal }}" {{ b.shopify_attributes }}><span class="tcard__name">{{ b.settings.name | escape }}</span><strong>{{ b.settings.rate | escape }}</strong><span class="tcard__th">{{ b.settings.threshold | escape }}</span><span class="tcard__perk">{{ b.settings.perk | escape }}</span></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+    <div class="elite__visual" aria-hidden="true">
+      {%- if section.settings.person != blank -%}{{ section.settings.person | image_url: width: 900 | image_tag: width: 1131, height: 1688, loading: 'lazy', alt: '', class: 'elite__girl' }}{%- endif -%}
+      <div class="mcard glass"><div class="mcard__top">{%- if section.settings.card_logo != blank -%}{{ section.settings.card_logo | image_url: width: 300 | image_tag: width: 80, height: 23, loading: 'lazy', alt: '' }}{%- endif -%}<span>ELITE</span></div>
+        <div class="mcard__mid"><span class="mcard__label">Points balance</span><strong>{{ section.settings.card_points | escape }}</strong></div>
+        <div class="mcard__bot"><span>{{ section.settings.card_tier | escape }}</span><span>{{ section.settings.card_rate | escape }}</span></div></div>
+      {%- if section.settings.gift != blank -%}{{ section.settings.gift | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: '', class: 'elite__gift' }}{%- endif -%}
+      {%- if section.settings.coins != blank -%}{{ section.settings.coins | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: '', class: 'elite__coins' }}{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH Elite band",
+  "class": "snh-sec",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor", "default": "elite" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SNH Elite · Sri Lanka's 1st premium VIP club" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Fuel your goals. Earn your *rewards*." },
+    { "type": "textarea", "id": "lead", "label": "Lead" },
+    { "type": "textarea", "id": "chips", "label": "Chips", "info": "One per line." },
+    { "type": "text", "id": "cta", "label": "Button label", "default": "Join SNH Elite, it's free" },
+    { "type": "url", "id": "cta_link", "label": "Button link", "info": "Defaults to the register page." },
+    { "type": "text", "id": "cta2", "label": "Second button label", "default": "Sign in" },
+    { "type": "url", "id": "cta2_link", "label": "Second button link", "info": "Defaults to the sign-in page." },
+    { "type": "header", "content": "Tier ladder" },
+    { "type": "number", "id": "silver_threshold", "label": "Silver from (Rs a year)", "default": 198000, "info": "Register page figure. The Shop the Look points strip still defaults to 200,000; keep them in step." },
+    { "type": "number", "id": "gold_threshold", "label": "Gold from (Rs a year)", "default": 300000, "info": "Register page figure. The Shop the Look points strip still defaults to 500,000." },
+    { "type": "header", "content": "Visual" },
+    { "type": "image_picker", "id": "person", "label": "Cutout image", "info": "Transparent PNG. The current one (register page) looks AI-generated." },
+    { "type": "image_picker", "id": "gift", "label": "Floating gift" },
+    { "type": "image_picker", "id": "coins", "label": "Floating coins" },
+    { "type": "image_picker", "id": "card_logo", "label": "Membership card logo" },
+    { "type": "text", "id": "card_points", "label": "Card points", "default": "2,860" },
+    { "type": "text", "id": "card_tier", "label": "Card tier", "default": "Gold member" },
+    { "type": "text", "id": "card_rate", "label": "Card rate", "default": "10% back" }
+  ],
+  "blocks": [
+    { "type": "tier", "name": "Tier", "settings": [
+      { "type": "select", "id": "metal", "label": "Colour", "options": [{ "value": "bronze", "label": "Bronze" }, { "value": "silver", "label": "Silver" }, { "value": "gold", "label": "Gold" }], "default": "bronze" },
+      { "type": "text", "id": "name", "label": "Name", "default": "Bronze" },
+      { "type": "text", "id": "rate", "label": "Earn rate", "default": "3%" },
+      { "type": "text", "id": "threshold", "label": "Threshold line", "default": "Free to join" },
+      { "type": "text", "id": "perk", "label": "Perk", "default": "500 welcome points" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH Elite band", "blocks": [{ "type": "tier" }] }]
+}
+{% endschema %}

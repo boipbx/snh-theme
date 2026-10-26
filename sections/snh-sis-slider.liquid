@@ -1,0 +1,191 @@
+{%- comment -%}
+  SNH Science in Sport full-screen slider (prototype section.sisx): distributor badge, slides as blocks (video,
+  tile row, trusted-by-athletes), story progress + arrows, then a strip of bestselling SiS cards.
+  Media: pick files in the editor; the *_url fields are fallbacks for media still hosted on scienceinsport.com.
+  Behaviour: assets/snh-v2.js data-v2="carousel" (the video plays only while its slide is on screen).
+{%- endcomment -%}
+{%- assign n = section.blocks.size -%}
+<section class="v2 sisx" aria-label="{{ section.settings.label | escape }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="hero hero--sis" data-v2="carousel" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}" style="--hero-interval: {{ section.settings.interval }}s">
+    <div class="sisx__badge v-wrap">
+      {%- render 'snh-v2-img', image: section.settings.logo, url: section.settings.logo_url, width: 300, w: 96, h: 60, alt: 'Science in Sport' -%}
+      <span>{{ section.settings.badge | escape | replace: '[', '<span class="hide-s">' | replace: ']', '</span>' | replace: ' · ', '<span class="sep">·</span>' }}</span>
+    </div>
+    <div class="hero__stage">
+      {%- for b in section.blocks -%}
+        {%- capture attrs -%}data-i="{{ forloop.index0 }}" data-block="{{ b.id }}" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ n }}: {{ b.settings.label | escape }}"{% unless forloop.first %} aria-hidden="true" inert{% endunless %} {{ b.shopify_attributes }}{%- endcapture -%}
+        {%- assign on = '' -%}{%- if forloop.first -%}{%- assign on = ' is-on' -%}{%- endif -%}
+        {%- case b.type -%}
+          {%- when 'video' -%}
+            {%- liquid
+              assign poster = b.settings.poster_url
+              if b.settings.poster != blank
+                assign poster = b.settings.poster | image_url: width: 1920
+              endif
+              assign poster_m = b.settings.poster_mobile_url
+              if b.settings.poster_mobile != blank
+                assign poster_m = b.settings.poster_mobile | image_url: width: 1080
+              endif
+              assign vsrc = b.settings.video_url
+              if b.settings.video != blank
+                assign vsrc = b.settings.video.sources | where: 'format', 'mp4' | first | map: 'url' | first
+              endif
+            -%}
+            <div class="hero__slide hero__slide--overlay hero__slide--video{{ on }}" {{ attrs }}>
+              <video class="sisv" muted loop playsinline preload="none"{% if poster != blank %} poster="{{ poster }}"{% endif %}{% if poster_m != blank %} data-poster-m="{{ poster_m }}"{% endif %} aria-hidden="true">{%- if vsrc != blank -%}<source src="{{ vsrc }}" type="video/mp4">{%- endif -%}</video>
+              <div class="hero__shade"></div>
+              <div class="hero__copy v-wrap">
+                {%- if b.settings.eyebrow != blank -%}<p class="eyebrow">{{ b.settings.eyebrow | escape }}</p>{%- endif -%}
+                <h2 class="display">{% render 'snh-v2-heading', text: b.settings.heading %}</h2>
+                {%- if b.settings.sub != blank -%}<p class="hero__sub">{{ b.settings.sub | escape }}</p>{%- endif -%}
+                {%- if b.settings.cta != blank -%}<div class="hero__cta"><a class="v-btn v-btn--accent" href="{{ b.settings.link | default: '#' }}"><span>{{ b.settings.cta | escape }}</span></a></div>{%- endif -%}
+              </div>
+            </div>
+          {%- when 'tiles' -%}
+            <div class="hero__slide hero__slide--tiles{{ on }}" {{ attrs }}>
+              <div class="stiles__wrap v-wrap">
+                <div class="stiles__head">{%- if b.settings.eyebrow != blank -%}<p class="eyebrow">{{ b.settings.eyebrow | escape }}</p>{%- endif -%}<h2 class="v-h1">{% render 'snh-v2-heading', text: b.settings.heading %}</h2></div>
+                <div class="stiles">
+                  {%- for i in (1..5) -%}
+                    {%- assign ki = 'tile_' | append: i | append: '_image' -%}{%- assign ku = 'tile_' | append: i | append: '_image_url' -%}
+                    {%- assign kl = 'tile_' | append: i | append: '_label' -%}{%- assign kk = 'tile_' | append: i | append: '_link' -%}
+                    {%- if b.settings[kl] != blank -%}
+                      <a class="stile{% if i == 5 %} stile--x{% endif %}" href="{{ b.settings[kk] | default: '#' }}">
+                        {%- render 'snh-v2-img', image: b.settings[ki], url: b.settings[ku], width: 540, w: 540, h: 880, alt: '' -%}
+                        <span class="stile__l">{{ b.settings[kl] | escape }}<span class="arrow">{% render 'snh-v2-icon', name: 'arrow' %}</span></span></a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- when 'trust' -%}
+            <div class="hero__slide hero__slide--trust{{ on }}" {{ attrs }}>
+              {%- render 'snh-v2-img', image: b.settings.bg, url: b.settings.bg_url, width: 1920, w: 1920, h: 1080, alt: '', class: 'trust__bg' -%}
+              <div class="trust__wrap v-wrap">
+                <figure class="trust__img">{%- render 'snh-v2-img', image: b.settings.image, url: b.settings.image_url, width: 706, w: 353, h: 460, alt: b.settings.image_alt -%}</figure>
+                <div class="trust__copy">
+                  {%- if b.settings.eyebrow != blank -%}<p class="eyebrow">{{ b.settings.eyebrow | escape }}</p>{%- endif -%}
+                  <h2 class="v-h1">{% render 'snh-v2-heading', text: b.settings.heading %}</h2>
+                  {%- if b.settings.sub != blank -%}<p class="hero__sub">{{ b.settings.sub | escape }}</p>{%- endif -%}
+                  {%- if b.settings.cta != blank -%}<div class="hero__cta"><a class="v-btn v-btn--accent" href="{{ b.settings.link | default: '#' }}"><span>{{ b.settings.cta | escape }}</span></a></div>{%- endif -%}
+                </div>
+                {%- assign proof = b.settings.proof | newline_to_br | split: '<br />' -%}
+                <ul class="trust__proof">
+                  {%- for row in proof -%}{%- assign parts = row | strip | split: '|' -%}{%- if parts[0] != blank -%}<li><strong>{{ parts[0] | strip | escape }}</strong><span>{{ parts[1] | strip | escape }}</span></li>{%- endif -%}{%- endfor -%}
+                </ul>
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+    {%- if n > 1 -%}
+      <div class="hero__controls v-wrap">
+        <div class="hero__progress" role="group" aria-label="Choose slide">
+          {%- for b in section.blocks -%}<button class="seg{% if forloop.first %} is-on{% endif %}" type="button" aria-label="Go to slide {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}><span></span></button>{%- endfor -%}
+        </div>
+        <div class="hero__arrows">
+          <button class="hero__arrow" type="button" data-dir="-1" aria-label="Previous slide">{% render 'snh-v2-icon', name: 'arrow' %}</button>
+          <button class="hero__arrow" type="button" data-dir="1" aria-label="Next slide">{% render 'snh-v2-icon', name: 'arrow' %}</button>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+  {%- if section.settings.products != blank or section.settings.collection != blank -%}
+    <div class="sisx__strip"><div class="v-wrap">
+      <div class="sisx__head"><p class="eyebrow">{{ section.settings.strip_title | escape }}</p>{%- if section.settings.strip_link_label != blank -%}<a class="v-link" href="{{ section.settings.strip_link | default: '#' }}">{{ section.settings.strip_link_label | escape }}</a>{%- endif -%}</div>
+      <div class="grid sis__cards">
+        {%- if section.settings.products != blank -%}
+          {%- for p in section.settings.products limit: 4 -%}{% render 'snh-v2-card', product: p %}{%- endfor -%}
+        {%- else -%}
+          {%- for p in section.settings.collection.products limit: 4 -%}{% render 'snh-v2-card', product: p %}{%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div></div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "SNH SiS slider",
+  "class": "snh-sec",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Accessible name", "default": "Science in Sport, official distributor" },
+    { "type": "text", "id": "anchor", "label": "Anchor", "default": "sis" },
+    { "type": "range", "id": "interval", "label": "Time per slide", "min": 3, "max": 15, "step": 1, "unit": "s", "default": 6 },
+    { "type": "header", "content": "Distributor badge" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "url", "id": "logo_url", "label": "Logo URL (fallback)" },
+    { "type": "text", "id": "badge", "label": "Badge text", "default": "Official distributor[ in Sri Lanka] · 100% Informed Sport[ approved]", "info": "Text in [brackets] is hidden on phones. \" · \" becomes a dot separator." },
+    { "type": "header", "content": "Product strip" },
+    { "type": "text", "id": "strip_title", "label": "Strip heading", "default": "Bestselling SiS" },
+    { "type": "text", "id": "strip_link_label", "label": "Link label", "default": "Shop all Science in Sport" },
+    { "type": "url", "id": "strip_link", "label": "Link" },
+    { "type": "product_list", "id": "products", "label": "Products", "limit": 4 },
+    { "type": "collection", "id": "collection", "label": "Or a collection" }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video slide",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Slide name", "default": "What fuels you?" },
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "url", "id": "video_url", "label": "Video URL (fallback, mp4)" },
+        { "type": "image_picker", "id": "poster", "label": "Poster (desktop)" },
+        { "type": "url", "id": "poster_url", "label": "Poster URL (fallback)" },
+        { "type": "image_picker", "id": "poster_mobile", "label": "Poster (mobile)" },
+        { "type": "url", "id": "poster_mobile_url", "label": "Mobile poster URL (fallback)" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "What *fuels* you?" },
+        { "type": "textarea", "id": "sub", "label": "Sub line" },
+        { "type": "text", "id": "cta", "label": "Button label" },
+        { "type": "url", "id": "link", "label": "Button link" }
+      ]
+    },
+    {
+      "type": "tiles",
+      "name": "Tile row slide",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Slide name", "default": "Shop by need" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Fuel every *session*." },
+        { "type": "header", "content": "Tile 1" },
+        { "type": "image_picker", "id": "tile_1_image", "label": "Image" }, { "type": "url", "id": "tile_1_image_url", "label": "Image URL (fallback)" },
+        { "type": "text", "id": "tile_1_label", "label": "Label" }, { "type": "url", "id": "tile_1_link", "label": "Link" },
+        { "type": "header", "content": "Tile 2" },
+        { "type": "image_picker", "id": "tile_2_image", "label": "Image" }, { "type": "url", "id": "tile_2_image_url", "label": "Image URL (fallback)" },
+        { "type": "text", "id": "tile_2_label", "label": "Label" }, { "type": "url", "id": "tile_2_link", "label": "Link" },
+        { "type": "header", "content": "Tile 3" },
+        { "type": "image_picker", "id": "tile_3_image", "label": "Image" }, { "type": "url", "id": "tile_3_image_url", "label": "Image URL (fallback)" },
+        { "type": "text", "id": "tile_3_label", "label": "Label" }, { "type": "url", "id": "tile_3_link", "label": "Link" },
+        { "type": "header", "content": "Tile 4" },
+        { "type": "image_picker", "id": "tile_4_image", "label": "Image" }, { "type": "url", "id": "tile_4_image_url", "label": "Image URL (fallback)" },
+        { "type": "text", "id": "tile_4_label", "label": "Label" }, { "type": "url", "id": "tile_4_link", "label": "Link" },
+        { "type": "header", "content": "Tile 5 (hidden below 1024px)" },
+        { "type": "image_picker", "id": "tile_5_image", "label": "Image" }, { "type": "url", "id": "tile_5_image_url", "label": "Image URL (fallback)" },
+        { "type": "text", "id": "tile_5_label", "label": "Label" }, { "type": "url", "id": "tile_5_link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trusted by athletes slide",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Slide name", "default": "Trusted by athletes" },
+        { "type": "image_picker", "id": "bg", "label": "Background (blurred)" },
+        { "type": "url", "id": "bg_url", "label": "Background URL (fallback)" },
+        { "type": "image_picker", "id": "image", "label": "Athlete image", "info": "Shown at its native size, never upscaled." },
+        { "type": "url", "id": "image_url", "label": "Athlete image URL (fallback)" },
+        { "type": "text", "id": "image_alt", "label": "Athlete image description" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Trusted by athletes" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Tested. *Trusted*. Informed Sport." },
+        { "type": "textarea", "id": "sub", "label": "Sub line" },
+        { "type": "text", "id": "cta", "label": "Button label" },
+        { "type": "url", "id": "link", "label": "Button link" },
+        { "type": "textarea", "id": "proof", "label": "Proof points", "info": "One per line: Title | text. Shown from 1024px." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "SNH SiS slider", "blocks": [{ "type": "video" }, { "type": "tiles" }, { "type": "trust" }] }]
+}
+{% endschema %}

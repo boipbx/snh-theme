@@ -460,6 +460,49 @@
     });
   });
 
+
+  /* ================= shop the look: hotspots (prototype logic) ================= */
+  on('hotspots', function (hs) {
+    var openDot = null;
+    function hot(i, isOn) { $$('[data-spot="' + i + '"]', hs).forEach(function (el) { el.classList.toggle('is-hot', isOn); }); }
+    function close() {
+      if (!openDot) return;
+      var i = openDot.getAttribute('data-spot');
+      hs.querySelector('[data-pop="' + i + '"]').hidden = true;
+      openDot.setAttribute('aria-expanded', 'false');
+      hot(i, false);
+      openDot = null;
+    }
+    function open(dot) {
+      close();
+      var i = dot.getAttribute('data-spot');
+      var pop = hs.querySelector('[data-pop="' + i + '"]');
+      pop.hidden = false;
+      if (window.matchMedia('(min-width: 768px)').matches) {
+        var x = parseFloat(dot.style.left), y = parseFloat(dot.style.top);
+        pop.style.left = 'clamp(8px, calc(' + x + '% - 130px), calc(100% - 268px))';
+        pop.style.right = 'auto';
+        pop.style.top = y > 70 ? 'calc(' + y + '% - 150px)' : 'calc(' + y + '% + 30px)';
+      }
+      dot.setAttribute('aria-expanded', 'true');
+      hot(i, true);
+      openDot = dot;
+      var btn = pop.querySelector('button.v-btn');
+      if (btn) btn.focus({ preventScroll: true });
+    }
+    $$('.hs__dot', hs).forEach(function (dot) {
+      dot.addEventListener('click', function (e) { e.stopPropagation(); if (openDot === dot) close(); else open(dot); });
+    });
+    $$('.hs__close', hs).forEach(function (c) { c.addEventListener('click', function () { var d = openDot; close(); if (d) d.focus(); }); });
+    $$('.hs__item', hs).forEach(function (item) {
+      var i = item.getAttribute('data-spot');
+      item.addEventListener('mouseenter', function () { hot(i, true); });
+      item.addEventListener('mouseleave', function () { if (!openDot || openDot.getAttribute('data-spot') !== i) hot(i, false); });
+    });
+    document.addEventListener('click', function (e) { if (openDot && !e.target.closest('.hs__pop') && !e.target.closest('quick-buy-drawer')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && openDot) { var d = openDot; close(); d.focus(); } });
+  });
+
   /* ================= boot ================= */
   V2.on = on;
   V2.run = run;

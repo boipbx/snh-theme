@@ -1,0 +1,54 @@
+{%- comment -%}SNH "Why choose us" ink band (prototype .why-head + .benefits): heading, inline stats, benefit grid.{%- endcomment -%}
+{%- assign hid = 'why-' | append: section.id -%}
+<section class="v2 v-section v-section--dark" aria-labelledby="{{ hid }}">
+  <div class="v-wrap">
+    <div class="why-head">
+      <div class="head__text">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+      </div>
+      {%- assign stats = section.blocks | where: 'type', 'stat' -%}
+      {%- if stats.size > 0 -%}
+        <div class="stats-inline">
+          {%- for b in stats -%}<div {{ b.shopify_attributes }}><strong>{{ b.settings.value | escape | replace: '★', '<span class="star">★</span>' }}</strong><span>{{ b.settings.label | escape }}</span></div>{%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <ul class="benefits">
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'benefit' -%}
+          <li class="benefit" {{ b.shopify_attributes }}>{% render 'snh-v2-icon', name: b.settings.icon %}<p class="benefit__title">{{ b.settings.title | escape }}</p><p class="benefit__text">{{ b.settings.text | escape }}</p></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH why choose us",
+  "class": "snh-sec",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why choose us" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The SNH *standard*" },
+    { "type": "textarea", "id": "lead", "label": "Lead" }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Stat", "limit": 3, "settings": [
+      { "type": "text", "id": "value", "label": "Value", "default": "50,000+", "info": "A ★ is shown in orange." },
+      { "type": "text", "id": "label", "label": "Label", "default": "orders delivered" }
+    ] },
+    { "type": "benefit", "name": "Benefit", "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "options": [
+        { "value": "shield", "label": "Shield" }, { "value": "card", "label": "Card" }, { "value": "chat", "label": "Chat" },
+        { "value": "badge", "label": "Badge" }, { "value": "truck", "label": "Truck" }, { "value": "bolt", "label": "Bolt" }, { "value": "star", "label": "Star" }
+      ], "default": "shield" },
+      { "type": "text", "id": "title", "label": "Title", "default": "100% authentic" },
+      { "type": "textarea", "id": "text", "label": "Text" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH why choose us", "blocks": [{ "type": "stat" }, { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }] }]
+}
+{% endschema %}

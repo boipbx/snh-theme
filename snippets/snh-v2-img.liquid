@@ -1,0 +1,13 @@
+{%- comment -%}
+  <img> from an image_picker value, or from an external URL fallback when no file is picked (media hosted elsewhere
+  until it is uploaded to Content → Files). image, url, width (requested), w, h (intrinsic), alt, class, eager
+{%- endcomment -%}
+{%- if image != blank -%}
+  {%- if eager -%}
+    {{ image | image_url: width: width | image_tag: width: w, height: h, alt: alt, class: class, loading: 'eager' }}
+  {%- else -%}
+    {{ image | image_url: width: width | image_tag: width: w, height: h, alt: alt, class: class, loading: 'lazy' }}
+  {%- endif -%}
+{%- elsif url != blank -%}
+  <img{% if class %} class="{{ class }}"{% endif %} src="{{ url | escape }}" alt="{{ alt | escape }}" width="{{ w }}" height="{{ h }}" loading="{% if eager %}eager{% else %}lazy{% endif %}">
+{%- endif -%}
