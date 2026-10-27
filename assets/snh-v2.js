@@ -702,7 +702,41 @@
   on('marquee', function (mq) {
     var track = mq.querySelector('.mq__track'), rail = mq.querySelector('.mq__rail');
     var runs = $$('.logos__run', rail);
+    // white-mark logos: trim each file to its mark (pixels that differ from the corner colour) and size it so every
+    // mark has the same height, wide marks capped at 3.4× that height. Clones made below copy the result.
+    var logoFit = function (a) {
+      var im = a.querySelector('img'); if (!im) { a.classList.add('is-fit'); return; }
+      var go = function () {
+        if (a.classList.contains('is-fit')) return;
+        var H = parseFloat(getComputedStyle(a).height) || 40, ls = parseFloat(getComputedStyle(a).getPropertyValue('--ls')) || 1;
+        var nw = im.naturalWidth, nh = im.naturalHeight, bx = [0, 0, 1, 1];
+        try {
+          var N = 120, c = document.createElement('canvas'); c.width = N; c.height = Math.max(1, Math.round(N * nh / nw));
+          var g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(im, 0, 0, c.width, c.height);
+          var d = g.getImageData(0, 0, c.width, c.height).data, W = c.width, Hh = c.height;
+          var r0 = d[0], g0 = d[1], b0 = d[2], x0 = W, y0 = Hh, x1 = -1, y1 = -1;
+          for (var y = 0; y < Hh; y++) for (var x = 0; x < W; x++) { var k = (y * W + x) * 4; if (Math.abs(d[k] - r0) + Math.abs(d[k + 1] - g0) + Math.abs(d[k + 2] - b0) > 70) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
+          if (x1 > x0 && y1 > y0) bx = [x0 / W, y0 / Hh, (x1 + 1) / W, (y1 + 1) / Hh];
+        } catch (e) {}
+        var mw = (bx[2] - bx[0]) * nw, mh = (bx[3] - bx[1]) * nh, asp = mw / mh;
+        var markH = H * ls, markW = markH * asp;
+        if (markW > H * 3.4) { markW = H * 3.4; markH = markW / asp; }
+        var iw = markW / (bx[2] - bx[0]), ih = markH / (bx[3] - bx[1]);
+        a.style.setProperty('--lw', markW.toFixed(1) + 'px');
+        a.style.setProperty('--liw', iw.toFixed(1) + 'px'); a.style.setProperty('--lih', ih.toFixed(1) + 'px');
+        a.style.setProperty('--ll', (-bx[0] * iw).toFixed(1) + 'px'); a.style.setProperty('--lt', ((H - markH) / 2 - bx[1] * ih).toFixed(1) + 'px');
+        a.classList.add('is-fit');
+      };
+      if (im.complete && im.naturalWidth) go(); else { im.loading = 'eager'; im.addEventListener('load', go, { once: true }); im.addEventListener('error', function () { a.classList.add('is-fit'); }, { once: true }); }
+    };
+    if (mq.closest('.mqd')) $$('.logos__run', rail).forEach(function (r) { $$('.logo', r).forEach(logoFit); });
     if (!runs.length || reduce) return;
+    if (mq.closest('.mqd')) {
+      // clones made by size() copy the first run's sizing once it is known
+      var sync = function () { var first = $$('.logo', runs[0]); runs.slice(1).forEach(function (r) { $$('.logo', r).forEach(function (l, i) { var f = first[i]; if (!f || !f.classList.contains('is-fit')) return; ['--lw', '--liw', '--lih', '--ll', '--lt'].forEach(function (v) { l.style.setProperty(v, f.style.getPropertyValue(v)); }); l.classList.add('is-fit'); }); }); };
+      $$('img', runs[0]).forEach(function (im) { im.addEventListener('load', function () { setTimeout(function () { sync(); size(); }, 0); }); });
+      setTimeout(function () { sync(); size(); }, 0);
+    }
     var speed = Number(mq.getAttribute('data-speed')) || 40;
     var reverse = mq.classList.contains('mq--right');
     var runW = 0, dur = 48;

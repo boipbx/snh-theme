@@ -182,10 +182,15 @@
     "snh_logos": {
       "type": "snh-brand-marquee",
       "settings": {
-        "label": "Authorised distributors of leading brands",
-        "speed": 40,
+        "heading": "Authorised distributors of *leading* brands",
+        "show_count": true,
+        "count": "",
+        "link_label": "All brands",
+        "link_url": "/pages/shop-by-brand",
+        "speed": 35,
         "direction": "left",
-        "logo_height": 64
+        "two_rows": true,
+        "logo_height": 40
       },
       "blocks": {
         "logo_1": {
@@ -194,7 +199,7 @@
             "name": "Applied Nutrition",
             "image": "shopify://shop_images/Untitled_design.zip_-_1.png",
             "dark": false,
-            "scale": 120,
+            "scale": 100,
             "link": "/collections/applied-nutrition"
           }
         },
@@ -204,7 +209,7 @@
             "name": "Science in Sport",
             "image": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png",
             "dark": true,
-            "scale": 100,
+            "scale": 125,
             "link": "/collections/sis"
           }
         },
@@ -224,7 +229,7 @@
             "name": "Myprotein",
             "image": "shopify://shop_images/IMG_0049.png",
             "dark": true,
-            "scale": 100,
+            "scale": 120,
             "link": "/collections/myprotein"
           }
         },
@@ -234,7 +239,7 @@
             "name": "Revive",
             "image": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png",
             "dark": false,
-            "scale": 140,
+            "scale": 100,
             "link": "/collections/revive"
           }
         },
@@ -244,7 +249,7 @@
             "name": "MuscleTech",
             "image": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png",
             "dark": false,
-            "scale": 85,
+            "scale": 100,
             "link": "/collections/muscletech"
           }
         },
@@ -254,7 +259,7 @@
             "name": "RYSE",
             "image": "shopify://shop_images/IMG_0046.jpg",
             "dark": true,
-            "scale": 80,
+            "scale": 120,
             "link": "/collections/ryse"
           }
         },
@@ -264,7 +269,7 @@
             "name": "EHP Labs",
             "image": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png",
             "dark": false,
-            "scale": 140,
+            "scale": 100,
             "link": "/collections/ehplabs"
           }
         },
@@ -274,7 +279,7 @@
             "name": "Surge",
             "image": "shopify://shop_images/final_surge_logo-01.jpg",
             "dark": false,
-            "scale": 115,
+            "scale": 100,
             "link": "/collections/surge"
           }
         },
@@ -284,7 +289,7 @@
             "name": "Healthspan Elite",
             "image": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png",
             "dark": false,
-            "scale": 105,
+            "scale": 110,
             "link": "/collections/healthspan-elite"
           }
         },
@@ -294,7 +299,7 @@
             "name": "Vitabiotics",
             "image": "shopify://shop_images/3_e9de3e34-4221-415b-b928-c97558667165.png",
             "dark": false,
-            "scale": 145,
+            "scale": 100,
             "link": "/collections/everything?filter.p.vendor=VITABIOTICS"
           }
         },
@@ -304,7 +309,7 @@
             "name": "Dymatize",
             "image": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png",
             "dark": false,
-            "scale": 125,
+            "scale": 100,
             "link": "/collections/dymatize"
           }
         },
@@ -952,7 +957,7 @@
         "rating_text": "",
         "heading": "Rated by *real* customers",
         "link_label": "",
-        "link_url": ""
+        "link_url": "/pages/shop-by-brand"
       },
       "blocks": {
         "google_reviews_carousel_widget_block_pMR7nx": {
