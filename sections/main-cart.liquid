@@ -1,8 +1,8 @@
 {%- comment -%} ── SNH Elite: loyalty rate from customer tier (Bronze 3 / Silver 7 / Gold 10) ── {%- endcomment -%}
 {%- assign snh_tier = customer.metafields.custom.loyalty_tier.value | default: 'Bronze' -%}
-{%- assign snh_rate = 3 -%}
-{%- if snh_tier == 'Silver' -%}{%- assign snh_rate = 7 -%}{%- endif -%}
-{%- if snh_tier == 'Gold' or snh_tier == 'MAXED OUT' -%}{%- assign snh_rate = 10 -%}{%- endif -%}
+{%- assign snh_rate = settings.snh_rate_bronze | default: 3 -%}
+{%- if snh_tier == 'Silver' -%}{%- assign snh_rate = settings.snh_rate_silver | default: 7 -%}{%- endif -%}
+{%- if snh_tier == 'Gold' or snh_tier == 'MAXED OUT' -%}{%- assign snh_rate = settings.snh_rate_gold | default: 10 -%}{%- endif -%}
 {%- assign snh_points = cart.total_price | divided_by: 100 | times: snh_rate | divided_by: 100 -%}
 {%- assign snh_threshold = settings.cart_free_shipping_threshold | default: 17000 -%}
 {%- assign snh_threshold_cents = snh_threshold | times: 100 -%}
@@ -911,7 +911,7 @@
                       {%- else -%}
                         <div class="snh-cart-points">
                           <span class="snh-cart-points__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-                          <span class="snh-cart-points__text"><a href="{{ routes.account_login_url }}">Log in</a> or <a href="{{ routes.account_register_url }}">join SNH Elite</a> to earn <b>3% back in points</b> on this order.</span>
+                          <span class="snh-cart-points__text"><a href="{{ routes.account_login_url }}">Log in</a> or <a href="{{ routes.account_register_url }}">join SNH Elite</a> to earn <b>{{ settings.snh_rate_bronze | default: 3 }}% back in points</b> on this order.</span>
                         </div>
                       {%- endif -%}
 

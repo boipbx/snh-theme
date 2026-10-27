@@ -29,7 +29,7 @@
         {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
         {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
         {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebook</a>{%- endif -%}
-        {%- if section.settings.whatsapp != blank -%}<a href="https://wa.me/{{ section.settings.whatsapp | remove: '+' | remove: ' ' }}" target="_blank" rel="noopener">WhatsApp</a>{%- endif -%}
+        {%- if settings.snh_whatsapp != blank -%}<a href="https://wa.me/{{ settings.snh_whatsapp | remove: '+' | remove: ' ' }}" target="_blank" rel="noopener">WhatsApp</a>{%- endif -%}
       </span>
     </div>
     <div class="ftr__legal"><span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.legal | escape }}</span>
@@ -54,7 +54,7 @@
     { "type": "text", "id": "stores_heading", "label": "Stores heading", "default": "Visit or call" },
     { "type": "text", "id": "hours", "label": "Hours line", "default": "Open every day · Support 10am–7pm" },
     { "type": "text", "id": "payments", "label": "Payments line", "default": "Pay by card, bank transfer, cash on delivery or Koko · pay in 3" },
-    { "type": "text", "id": "whatsapp", "label": "WhatsApp number", "default": "94764863359", "info": "Country code + number, no spaces. Instagram, TikTok and Facebook come from Theme settings → Social media." },
+    { "type": "paragraph", "content": "WhatsApp comes from Theme settings → SNH contact and reviews; Instagram, TikTok and Facebook from Theme settings → Social media." },
     { "type": "text", "id": "legal", "label": "Legal line", "default": "Sports Nutrition Hub (Pvt) Ltd." },
     { "type": "checkbox", "id": "policy_links", "label": "Show store policy links", "default": false },
     { "type": "header", "content": "Bleeding logo" },

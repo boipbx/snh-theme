@@ -1318,3 +1318,25 @@ a.hs__pts:hover { color: var(--white); }
 }
 /* the footer also carries Impact's .footer class: the theme's sticky add-to-cart bar uses it as its end marker */
 .ftr.footer { background: var(--ink); color: var(--white); padding-block: 64px 0; }
+
+/* =====================================================================================================================
+   Round 5 polish layer
+   ===================================================================================================================== */
+/* Elite band: real athlete photo in a frame (cutout still supported) */
+.elite__photo { position: absolute; top: 0; right: 0; bottom: 0; width: 64%; border-radius: 22px; overflow: hidden; background: #2a1206; border: 1px solid rgba(255, 255, 255, .22); box-shadow: 0 30px 60px -24px rgba(60, 15, 0, .6); }
+.elite__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.elite__photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(14, 14, 14, .35)); pointer-events: none; }
+.elite__photo ~ .mcard { z-index: 1; }
+@media (max-width: 767px) {
+  .elite__visual:has(.elite__photo) { min-height: 280px; }
+  .elite__photo ~ .mcard { top: auto; bottom: 14%; left: 0; width: 60%; }
+  .elite__photo ~ .elite__gift { left: 28%; top: -4px; }
+  .elite__photo ~ .elite__coins { left: 52%; }
+}
+@media (min-width: 1024px) {
+  .elite__grid:has(.elite__photo) { grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; }
+  .elite__photo { width: 84%; }
+  .elite__photo ~ .mcard { left: -8%; bottom: 10%; }
+  .elite__photo ~ .elite__gift { left: 0; top: 4%; }
+  .elite__photo ~ .elite__coins { left: 70%; bottom: -4%; }
+}

@@ -1,12 +1,25 @@
 {%- comment -%}
-  SNH reviews (prototype "Rated 4.9 by real customers"): rating line + heading, then either quote blocks (real
+  SNH reviews (prototype "Rated by real customers"): rating line + heading, then either quote blocks (real
   reviews pasted in) or any review app block (@app, e.g. Google Reviews), which render in the content area.
 {%- endcomment -%}
 {%- assign hid = 'rev-' | append: section.id -%}
 <section class="v2 v-section v-section--cream" aria-labelledby="{{ hid }}">
   <div class="v-wrap">
     <div class="head"><div class="head__text">
-        {%- if section.settings.rating_text != blank -%}<div class="v-rating"><span class="stars" aria-hidden="true">{%- for i in (1..5) -%}{% render 'snh-v2-icon', name: 'star' %}{%- endfor -%}</span><span class="meta">{{ section.settings.rating_text | escape }}</span></div>{%- endif -%}
+        {%- liquid
+          assign rating_line = section.settings.rating_text
+          if rating_line == blank and settings.snh_rating_value != blank
+            assign rating_line = settings.snh_rating_value | append: ' from '
+            if settings.snh_rating_count != blank
+              assign rating_line = rating_line | append: settings.snh_rating_count | append: ' '
+            else
+              assign rating_line = settings.snh_rating_value | append: ' on '
+            endif
+            assign rating_src = settings.snh_rating_source | default: 'Google reviews'
+            assign rating_line = rating_line | append: rating_src
+          endif
+        -%}
+        {%- if rating_line != blank -%}<div class="v-rating"><span class="stars" aria-hidden="true">{%- for i in (1..5) -%}{% render 'snh-v2-icon', name: 'star' %}{%- endfor -%}</span><span class="meta">{{ rating_line | escape }}</span></div>{%- endif -%}
         <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2></div>
       {%- if section.settings.link_label != blank -%}<a class="v-link" href="{{ section.settings.link_url | default: '#' }}"{% if section.settings.link_url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ section.settings.link_label | escape }}</a>{%- endif -%}
     </div>
@@ -32,8 +45,8 @@
   "class": "snh-sec",
   "max_blocks": 8,
   "settings": [
-    { "type": "text", "id": "rating_text", "label": "Rating line", "default": "4.9 from 2,000+ Google reviews" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Rated 4.9 by *real* customers" },
+    { "type": "text", "id": "rating_text", "label": "Rating line", "info": "Leave empty to use the Google rating in Theme settings → SNH contact and reviews (hidden when that is empty too)." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Rated by *real* customers" },
     { "type": "text", "id": "link_label", "label": "Link label", "default": "Read all reviews" },
     { "type": "url", "id": "link_url", "label": "Link", "info": "Your Google Business reviews page." }
   ],

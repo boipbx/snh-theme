@@ -166,7 +166,7 @@
           "type": "goal",
           "settings": {
             "title": "Recovery",
-            "link": "/collections/recovery"
+            "link": "/collections/amino-bcaa"
           }
         }
       },
@@ -390,7 +390,7 @@
           "settings": {
             "image": "shopify://shop_images/IMG_4446.jpg",
             "title": "Protein snacks",
-            "link": "/collections/protein-bars-snacks"
+            "link": "/collections/protein-snacks"
           }
         },
         "tile_7": {
@@ -406,7 +406,7 @@
           "settings": {
             "image": "shopify://shop_images/IMG_4444.jpg",
             "title": "Mass gainers",
-            "link": "/collections/mass-gainers"
+            "link": "/collections/mass-gainer"
           }
         },
         "tile_9": {
@@ -422,7 +422,7 @@
           "settings": {
             "image": "shopify://shop_images/imgi_29_1f9f6567-6e04-4fd9-8b8d-2cf6428d6199.jpg",
             "title": "Shakers",
-            "link": "/collections/shakers"
+            "link": "/collections/accessories-1"
           }
         }
       },
@@ -457,8 +457,9 @@
         "stat_2": {
           "type": "stat",
           "settings": {
-            "value": "4.9★",
-            "label": "from 2,000+ reviews"
+            "value": "",
+            "label": "",
+            "use_rating": true
           }
         },
         "benefit_3": {
@@ -506,7 +507,7 @@
           "settings": {
             "icon": "bolt",
             "title": "Earn points",
-            "text": "3–10% back on every order as an SNH Elite member."
+            "text": "[bronze]–[gold] back on every order as an SNH Elite member."
           }
         }
       },
@@ -533,12 +534,7 @@
         "image_alt": "RYSE brand of the month: Loaded Protein, Pump, Pre and Pre MAX",
         "show_points": true,
         "zoom": 112,
-        "popover": true,
-        "rate_bronze": 3,
-        "rate_silver": 7,
-        "rate_gold": 10,
-        "silver_threshold": 200000,
-        "gold_threshold": 500000
+        "popover": true
       },
       "blocks": {
         "product_1": {
@@ -624,7 +620,7 @@
             "group": "train",
             "image": "shopify://shop_images/ChatGPT_Image_Jul_14_2026_07_56_19_PM_4.png",
             "title": "Recovery",
-            "link": "/collections/recovery"
+            "link": "/collections/amino-bcaa"
           }
         },
         "goal_5": {
@@ -780,7 +776,7 @@
         "label": "Science in Sport, official distributor",
         "anchor": "sis",
         "interval": 6,
-        "logo_url": "https://www.scienceinsport.com/static/version1792401833/frontend/SIS/theme-frontend-sis-pnx/en_GB/images/logo.svg",
+        "logo_url": "snh-sis-logo.svg",
         "badge": "Official distributor[ in Sri Lanka] · 100% Informed Sport[ approved]",
         "strip_title": "Bestselling SiS",
         "strip_link_label": "Shop all Science in Sport",
@@ -797,9 +793,9 @@
           "type": "video",
           "settings": {
             "label": "What fuels you?",
-            "video_url": "https://www.scienceinsport.com/media/wysiwyg/Q2_Running_Homepage_Video.mp4",
-            "poster_url": "https://www.scienceinsport.com/media/wysiwyg/BF-Electrolyte-VideoFrame1.jpg?width=1920",
-            "poster_mobile_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_ENERGY.jpg?width=1080",
+            "video_url": "snh-sis-video.mp4",
+            "poster_url": "snh-sis-poster.jpg",
+            "poster_mobile_url": "snh-sis-energy.jpg",
             "eyebrow": "Science in Sport · as seen on the start line",
             "heading": "What *fuels* you?",
             "sub": "Gels, hydration and recovery from the brand behind the world's best endurance athletes.",
@@ -813,19 +809,19 @@
             "label": "Shop by need",
             "eyebrow": "Shop SiS by need",
             "heading": "Fuel every *session*.",
-            "tile_1_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_ENERGY.jpg",
+            "tile_1_image_url": "snh-sis-energy.jpg",
             "tile_1_label": "Energy",
             "tile_1_link": "/collections/energy-gels?filter.p.vendor=SCIENCE+IN+SPORT",
-            "tile_2_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_HYDRATION.jpg",
+            "tile_2_image_url": "snh-sis-hydration.jpg",
             "tile_2_label": "Hydration",
             "tile_2_link": "/products/sis-go-hydro-tablets",
-            "tile_3_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_RECOVERY.jpg",
+            "tile_3_image_url": "snh-sis-recovery.jpg",
             "tile_3_label": "Recovery",
             "tile_3_link": "/products/sis-rego-rapid-recovery-powder-1-5kg",
-            "tile_4_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_BETA.jpg",
+            "tile_4_image_url": "snh-sis-beta.jpg",
             "tile_4_label": "BETA Fuel",
             "tile_4_link": "/products/sis-beta-fuel-gel",
-            "tile_5_image_url": "https://www.scienceinsport.com/media/wysiwyg/Phoenix_-_Homepage_Product_Category_-_540_x_880_-_VMS.jpg",
+            "tile_5_image_url": "snh-sis-vms.jpg",
             "tile_5_label": "Vitamins",
             "tile_5_link": "/collections/vitamins-minerals?filter.p.vendor=SCIENCE+IN+SPORT"
           }
@@ -834,8 +830,8 @@
           "type": "trust",
           "settings": {
             "label": "Trusted by athletes",
-            "bg_url": "https://www.scienceinsport.com/media/wysiwyg/BF-Electrolyte-VideoFrame1.jpg",
-            "image_url": "https://www.scienceinsport.com/media/.renditions/wysiwyg/Phoenix_-_Homepage_-_Trusted_by_Athletes_-_Desktop_-_McCOLGAN.jpg",
+            "bg_url": "snh-sis-poster.jpg",
+            "image_url": "snh-sis-mccolgan.jpg",
             "image_alt": "Eilish McColgan, Science in Sport athlete",
             "eyebrow": "Trusted by athletes",
             "heading": "Tested. *Trusted*. Informed Sport.",
@@ -903,30 +899,27 @@
         "anchor": "elite",
         "eyebrow": "SNH Elite · Sri Lanka's 1st premium VIP club",
         "heading": "Fuel your goals. Earn your *rewards*.",
-        "lead": "Create your free account, claim 500 welcome points, and earn 3% to 10% back in points on every order.",
-        "chips": "500 welcome points\nUp to 10% back\nRedeem from 2,500 points",
+        "lead": "Create your free account, claim 500 welcome points, and earn [bronze] to [gold] back in points on every order.",
+        "chips": "500 welcome points\nUp to [gold] back\nRedeem from 2,500 points",
         "cta": "Join SNH Elite, it's free",
         "cta_link": "/account/register",
         "cta2": "Sign in",
         "cta2_link": "/account/login",
-        "silver_threshold": 198000,
-        "gold_threshold": 300000,
-        "person": "shopify://shop_images/girl.png",
+        "person": "shopify://shop_images/cricket.jpg",
         "gift": "shopify://shop_images/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png",
         "coins": "shopify://shop_images/2_37969279-4a78-43c8-8fdf-5256e55c6030.png",
         "card_logo": "shopify://shop_images/sn_o.png",
         "card_points": "2,860",
         "card_tier": "Gold member",
-        "card_rate": "10% back"
+        "person_style": "photo",
+        "person_focal": "50% 28%"
       },
       "blocks": {
         "tier_1": {
           "type": "tier",
           "settings": {
             "metal": "bronze",
-            "rate": "3%",
             "name": "Bronze",
-            "threshold": "Free to join",
             "perk": "500 welcome points"
           }
         },
@@ -934,9 +927,7 @@
           "type": "tier",
           "settings": {
             "metal": "silver",
-            "rate": "7%",
             "name": "Silver",
-            "threshold": "From Rs 198k a year",
             "perk": "Birthday reward + vouchers"
           }
         },
@@ -944,9 +935,7 @@
           "type": "tier",
           "settings": {
             "metal": "gold",
-            "rate": "10%",
             "name": "Gold",
-            "threshold": "From Rs 300k a year",
             "perk": "Free shipping + 15% birthday"
           }
         }
@@ -960,8 +949,8 @@
     "snh_reviews": {
       "type": "snh-reviews",
       "settings": {
-        "rating_text": "4.9 from 2,000+ Google reviews",
-        "heading": "Rated 4.9 by *real* customers",
+        "rating_text": "",
+        "heading": "Rated by *real* customers",
         "link_label": "",
         "link_url": ""
       },

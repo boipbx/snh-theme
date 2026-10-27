@@ -4,6 +4,7 @@
   Nav order = block order. Mega zones read a Shopify menu when one is picked, else the fallback "Label | /url" lines.
   Styles: assets/snh-v2.css. Behaviour: assets/snh-v2.js (data-v2="header").
 {%- endcomment -%}
+{%- capture snh_out -%}
 {%- liquid
   assign overlay = false
   if section.settings.overlay_home and request.page_type == 'index'
@@ -349,6 +350,13 @@
     </div>
   </div>
 </div>
+{%- endcapture -%}
+{%- liquid
+  assign r_b = settings.snh_rate_bronze | default: 3 | append: '%'
+  assign r_s = settings.snh_rate_silver | default: 7 | append: '%'
+  assign r_g = settings.snh_rate_gold | default: 10 | append: '%'
+  echo snh_out | replace: '[bronze]', r_b | replace: '[silver]', r_s | replace: '[gold]', r_g
+-%}
 
 {% schema %}
 {
@@ -362,7 +370,7 @@
     { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 180, "step": 2, "unit": "px", "default": 82 },
     { "type": "checkbox", "id": "overlay_home", "label": "Transparent over the homepage hero", "default": true, "info": "Turns solid once the page scrolls or a menu opens." },
     { "type": "header", "content": "Ticker" },
-    { "type": "textarea", "id": "ticker", "label": "Ticker messages", "info": "One message per line. Leave empty to hide the ticker.", "default": "Free delivery over Rs 17,000\nSame-day Colombo delivery\nSNH Elite: earn 3–10% back\nPay in 3 with Koko" },
+    { "type": "textarea", "id": "ticker", "label": "Ticker messages", "info": "One message per line. Leave empty to hide the ticker.", "default": "Free delivery over Rs 17,000\nSame-day Colombo delivery\nSNH Elite: earn [bronze]–[gold] back\nPay in 3 with Koko" },
     { "type": "range", "id": "ticker_speed", "label": "Ticker loop time", "min": 10, "max": 80, "step": 2, "unit": "s", "default": 32 },
     { "type": "range", "id": "announce_interval", "label": "Announcement rotation", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 4, "info": "The orange bar shows the Announcement blocks one at a time." },
     { "type": "header", "content": "Brands" },
@@ -372,7 +380,7 @@
     { "type": "text", "id": "popular", "label": "Popular searches", "info": "Comma separated.", "default": "Whey protein, Creatine, Pre-workout, Magnesium glycinate, Electrolytes, SiS gels, Multivitamin, Ashwagandha" },
     { "type": "collection", "id": "trending", "label": "Trending now (first 4 products)" },
     { "type": "header", "content": "Account" },
-    { "type": "text", "id": "account_note", "label": "Signed-out note", "default": "Earn 3–10% back in points on every order." }
+    { "type": "text", "id": "account_note", "label": "Signed-out note", "default": "Earn [bronze]–[gold] back in points on every order." }
   ],
   "blocks": [
     {
@@ -437,7 +445,7 @@
         { "type": "image_picker", "id": "image_3", "label": "Offer 3 image" },
         { "type": "collection", "id": "collection_4", "label": "Offer 4" },
         { "type": "image_picker", "id": "image_4", "label": "Offer 4 image" },
-        { "type": "textarea", "id": "perks", "label": "Perks", "info": "One per line: icon | text. Icons: truck, card, badge, shield, chat, bolt.", "default": "truck | Free delivery over Rs 17,000\ncard | Pay in 3 with Koko\nbadge | 3–10% back with SNH Elite" },
+        { "type": "textarea", "id": "perks", "label": "Perks", "info": "One per line: icon | text. Icons: truck, card, badge, shield, chat, bolt.", "default": "truck | Free delivery over Rs 17,000\ncard | Pay in 3 with Koko\nbadge | [bronze]–[gold] back with SNH Elite" },
         { "type": "text", "id": "deals_title", "label": "Deals heading", "default": "Top bundle deals" },
         { "type": "collection", "id": "deals_collection", "label": "Deals collection" }
       ]

@@ -248,7 +248,7 @@
             "need_links": "Build muscle & strength | /collections/muscle-and-strength\nLose fat | /collections/fat-loss\nEnergy & endurance | /collections/energy-and-endurance\nGain weight | /collections/mass-gainer\nWeight management | /collections/weight-management\nTestosterone support | /collections/testosterone-supplements\nInformed Sport tested | /collections/informed-sports",
             "need_all": "/collections/train-perform",
             "type_title": "Shop by type",
-            "type_links": "Whey protein | /collections/whey-protein\nIsolate protein | /collections/isolate-protein\nClear protein | /collections/clear-protein\nVegan protein | /collections/vegan-protein\nPre-workout | /collections/pre-workout-1\nCreatine | /collections/creatine-1\nAminos & BCAA | /collections/amino-bcaa\nFat burners | /collections/fat-burners-1\nProtein bars & snacks | /collections/protein-bars-snacks",
+            "type_links": "Whey protein | /collections/whey-protein\nIsolate protein | /collections/isolate-protein\nClear protein | /collections/clear-protein\nVegan protein | /collections/vegan-protein\nPre-workout | /collections/pre-workout-1\nCreatine | /collections/creatine\nAminos & BCAA | /collections/amino-bcaa\nFat burners | /collections/fat-burners-1\nProtein bars & snacks | /collections/protein-snacks",
             "type_all": "/collections/supplements",
             "brands": "Applied Nutrition, RAW Nutrition, Myprotein, Dymatize, MuscleTech, RYSE",
             "best_collection": "whey-protein",
@@ -292,7 +292,7 @@
             "need_links": "Energy | /collections/energy-and-endurance\nHydration | /collections/hydration-recovery\nRecovery | /search?q=recovery\nBETA Fuel | /search?q=beta+fuel\nSupplements | /collections/informed-sports\nPacks & bundles | /collections/endurance-bundles",
             "need_all": "/collections/train-perform",
             "type_title": "Shop by type",
-            "type_links": "Energy gels | /collections/energy-gels\nElectrolytes | /collections/hydration-recovery\nCarb powders & snacks | /collections/carb-powders-snacks\nProtein bars | /collections/protein-snacks-bars\nBCAA & EAA | /collections/bcaa-eaa\nGlutamine | /collections/glutamine",
+            "type_links": "Energy gels | /collections/energy-gels\nElectrolytes | /collections/hydration-recovery\nCarb bars | /collections/carb-bars\nProtein bars | /collections/protein-bars\nBCAA & EAA | /collections/bcaa-eaa\nGlutamine | /collections/glutamine",
             "type_all": "/collections/sis",
             "brands": "Science in Sport, Applied Nutrition, Surge, EHP Labs, Revive, Myprotein",
             "best_collection": "energy-and-endurance",
@@ -311,17 +311,17 @@
           "settings": {
             "label": "Accessories",
             "need_title": "Shop by use",
-            "need_links": "Lifting straps | /collections/lifting-straps\nWrist wraps | /collections/wrist-wraps\nShakers | /collections/accessories",
+            "need_links": "Lifting straps | /collections/lifting-straps\nWrist wraps | /collections/wrist-wraps\nShakers | /collections/accessories-1",
             "need_all": "/collections/accessories-1",
             "type_title": "Shop by type",
-            "type_links": "Shaker bottles | /collections/accessories\nGym accessories | /collections/accessories-1\nNew arrivals | /collections/new-arrivals",
+            "type_links": "Shaker bottles | /collections/accessories-1\nGym accessories | /collections/accessories-1\nNew arrivals | /collections/new-arrivals",
             "type_all": "/collections/accessories-1",
             "brands": "SNH, Applied Nutrition, RAW Nutrition",
             "best_collection": "accessories-1",
             "promo_1_image": "shopify://shop_images/imgi_29_1f9f6567-6e04-4fd9-8b8d-2cf6428d6199.jpg",
             "promo_1_eyebrow": "Accessories",
             "promo_1_label": "SNH shakers",
-            "promo_1_link": "/collections/accessories",
+            "promo_1_link": "/collections/accessories-1",
             "promo_2_image": "shopify://shop_images/revive_mobile.jpg",
             "promo_2_eyebrow": "Brand in focus",
             "promo_2_label": "Revive daily wellness",
@@ -342,7 +342,7 @@
             "title": "Bundles & deals",
             "deals_title": "Top bundle deals",
             "deals_collection": "bundle-offers",
-            "perks": "truck | Free delivery over Rs 17,000\ncard | Pay in 3 with Koko\nbadge | 3–10% back with SNH Elite",
+            "perks": "truck | Free delivery over Rs 17,000\ncard | Pay in 3 with Koko\nbadge | [bronze]–[gold] back with SNH Elite",
             "collection_1": "bundle-offers",
             "image_1": "shopify://shop_images/impact_builder.jpg",
             "collection_2": "daily-health-wellness-bundles",
@@ -532,7 +532,7 @@
           "settings": {
             "image": "shopify://shop_images/cricket.jpg",
             "eyebrow": "SNH Elite",
-            "label": "Earn 3–10% back",
+            "label": "Earn [bronze]–[gold] back",
             "link": "/account/register"
           }
         }
@@ -573,14 +573,14 @@
         "logo": "shopify://shop_images/sn_o.png",
         "logo_width": 82,
         "overlay_home": true,
-        "ticker": "Free delivery over Rs 17,000\nSame-day Colombo delivery\nSNH Elite: earn 3–10% back\nPay in 3 with Koko",
+        "ticker": "Free delivery over Rs 17,000\nSame-day Colombo delivery\nSNH Elite: earn [bronze]–[gold] back\nPay in 3 with Koko",
         "ticker_speed": 32,
         "announce_interval": 4,
         "brands_url": "/pages/shop-by-brand",
         "search_placeholder": "Search products, brands and guides",
         "popular": "Whey protein, Creatine, Pre-workout, Magnesium glycinate, Electrolytes, SiS gels, Multivitamin, Ashwagandha",
         "trending": "whey-protein",
-        "account_note": "Earn 3–10% back in points on every order."
+        "account_note": "Earn [bronze]–[gold] back in points on every order."
       }
     }
   },

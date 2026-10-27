@@ -2979,11 +2979,12 @@
   'use strict';
 
   var SNH_CONFIG = {
-    whatsappNumber: '94XXXXXXXXX',   // ← replace with your real number
+    whatsappNumber: '{{ settings.snh_whatsapp | remove: "+" | remove: " " }}',
     freeDeliveryThreshold: 'Rs. 17,000',
     deliveryUrl: '/pages/delivery',
     paymentUrl: '/pages/payment',
     authenticityUrl: '/pages/authenticity',
+    rates: [{{ settings.snh_rate_bronze | default: 3 }}, {{ settings.snh_rate_silver | default: 7 }}, {{ settings.snh_rate_gold | default: 10 }}],
   };
 
   var SNH_VARIANT_MEDIA = {
@@ -3350,7 +3351,7 @@
       rowsEl.innerHTML =
         '<a class="snh-adv-main" href="/account/register" data-snh-modal="elite">' +
         '<span class="snh-adv-zap" aria-hidden="true">' + snhIcon('zap') + '</span>' +
-        '<span class="snh-adv-copy"><b>Earn up to 10% back in points</b><em>SNH Elite \u00b7 free to join</em></span>' +
+        '<span class="snh-adv-copy"><b>Earn up to ' + SNH_CONFIG.rates[2] + '% back in points</b><em>SNH Elite \u00b7 free to join</em></span>' +
         '<span class="snh-adv-arrow" aria-hidden="true">\u203a</span></a>' +
         '<div class="snh-adv-links">' +
         '<a href="' + SNH_CONFIG.deliveryUrl + '" data-snh-modal="delivery">' + snhIcon('truck') + '<span>Free delivery ' + SNH_CONFIG.freeDeliveryThreshold + '+</span></a>' +
@@ -3434,7 +3435,7 @@
     elite: {
       kicker: 'SNH Elite', icon: 'zap', title: 'Earn on every single order',
       body: [
-        'Members earn points back on every eligible order. Bronze 3%, Silver 7%, Gold 10%.',
+        'Members earn points back on every eligible order. Bronze ' + SNH_CONFIG.rates[0] + '%, Silver ' + SNH_CONFIG.rates[1] + '%, Gold ' + SNH_CONFIG.rates[2] + '%.',
         'Points stack automatically and convert to cash-off rewards.',
       ],
       actions: [
@@ -3523,7 +3524,7 @@
     if (ph && ph !== info && !ph.classList.contains('snh-payrow') && ph.querySelector('[class*="koko" i], [class*="installment" i], shopify-payment-terms')) ph.classList.add('snh-payrow');
     var phtml =
       '<span class="snh-tile" aria-hidden="true">' + snhIcon('zap') + '</span>' +
-      '<span class="snh-points-text">Earn <b>' + fmt(price * 0.03) + ' to ' + fmt(price * 0.10) +
+      '<span class="snh-points-text">Earn <b>' + fmt(price * SNH_CONFIG.rates[0] / 100) + ' to ' + fmt(price * SNH_CONFIG.rates[2] / 100) +
       '</b> SNH points on this order</span>' +
       '<span class="snh-points-arrow" aria-hidden="true">\u203a</span>';
     if (el.__snhHtml !== phtml) { el.__snhHtml = phtml; el.innerHTML = phtml; }

@@ -278,7 +278,8 @@
             {%- endif -%}
           </span>
           {%- if section.settings.button_text != blank -%}
-            {%- assign wa_link = section.settings.button_url | default: 'https://wa.me/94764863359' -%}
+            {%- assign wa_default = settings.snh_whatsapp | remove: '+' | remove: ' ' | prepend: 'https://wa.me/' -%}
+            {%- assign wa_link = section.settings.button_url | default: wa_default -%}
             <a class="snh-faq__card-btn" href="{{ wa_link }}" target="_blank" rel="noopener">
               <span>{{ section.settings.button_text | escape }}</span>
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">

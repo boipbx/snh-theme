@@ -673,23 +673,23 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
           <article class="snh-tierchip bronze">
             <div class="snh-tierchip-head">
               <h3>Bronze</h3>
-              <span class="snh-tierchip-rate">3%</span>
+              <span class="snh-tierchip-rate">{{ settings.snh_rate_bronze | default: 3 }}%</span>
             </div>
             <p>Free to join, plus 500 welcome points.</p>
           </article>
           <article class="snh-tierchip silver">
             <div class="snh-tierchip-head">
               <h3>Silver</h3>
-              <span class="snh-tierchip-rate">7%</span>
+              <span class="snh-tierchip-rate">{{ settings.snh_rate_silver | default: 7 }}%</span>
             </div>
-            <p>At Rs. 198k spend. Birthday reward + vouchers.</p>
+            <p>At Rs. {{ settings.snh_silver_threshold | default: 198000 | divided_by: 1000 }}k spend. Birthday reward + vouchers.</p>
           </article>
           <article class="snh-tierchip gold">
             <div class="snh-tierchip-head">
               <h3>Gold</h3>
-              <span class="snh-tierchip-rate">10%</span>
+              <span class="snh-tierchip-rate">{{ settings.snh_rate_gold | default: 10 }}%</span>
             </div>
-            <p>At Rs. 300k spend. Free shipping + 15% birthday.</p>
+            <p>At Rs. {{ settings.snh_gold_threshold | default: 300000 | divided_by: 1000 }}k spend. Free shipping + 15% birthday.</p>
           </article>
         </div>
       </div>
@@ -701,10 +701,10 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
           <div class="snh-card customer-form__box">
             <div class="customer-form__box-inner text-center">
               <h2>Join SNH <span class="snh-h2-accent">Elite</span></h2>
-              <p class="snh-card-copy">Free account, <strong>500 welcome points</strong>, and 3–10% back on everything you buy.</p>
+              <p class="snh-card-copy">Free account, <strong>500 welcome points</strong>, and {{ settings.snh_rate_bronze | default: 3 }}–{{ settings.snh_rate_gold | default: 10 }}% back on everything you buy.</p>
               <div class="snh-reward-strip" aria-label="SNH Elite signup benefits">
                 <div class="snh-reward-chip"><strong>500</strong><span>Welcome points</span></div>
-                <div class="snh-reward-chip"><strong>3%</strong><span>Cash back day one</span></div>
+                <div class="snh-reward-chip"><strong>{{ settings.snh_rate_bronze | default: 3 }}%</strong><span>Cash back day one</span></div>
                 <div class="snh-reward-chip"><strong>Free</strong><span>No card needed</span></div>
               </div>
               <div class="snh-step-indicator">
@@ -813,11 +813,11 @@ SNH ELITE CUSTOM REGISTER / V4 — banner-aesthetic redesign
       </details>
       <details class="snh-faq-item">
         <summary class="snh-faq-summary">How do I earn SNH Elite points?</summary>
-        <div class="snh-faq-content">Make sure you are logged in before checkout. Bronze earns 3%, Silver earns 7%, and Gold earns 10% back in points based on your order subtotal.</div>
+        <div class="snh-faq-content">Make sure you are logged in before checkout. Bronze earns {{ settings.snh_rate_bronze | default: 3 }}%, Silver earns {{ settings.snh_rate_silver | default: 7 }}%, and Gold earns {{ settings.snh_rate_gold | default: 10 }}% back in points based on your order subtotal.</div>
       </details>
       <details class="snh-faq-item">
         <summary class="snh-faq-summary">How do I upgrade to Silver or Gold?</summary>
-        <div class="snh-faq-content">Your annual spend updates after paid orders. Silver unlocks at Rs. 198,000 annual spend and Gold unlocks at Rs. 300,000 annual spend.</div>
+        <div class="snh-faq-content">Your annual spend updates after paid orders. Silver unlocks at Rs. {{ settings.snh_silver_threshold | default: 198000 | times: 100 | money_without_currency | remove: '.00' }} annual spend and Gold unlocks at Rs. {{ settings.snh_gold_threshold | default: 300000 | times: 100 | money_without_currency | remove: '.00' }} annual spend.</div>
       </details>
       <details class="snh-faq-item">
         <summary class="snh-faq-summary">What happens when I refund an order?</summary>

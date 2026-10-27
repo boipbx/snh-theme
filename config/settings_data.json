@@ -111,7 +111,14 @@
         "settings": {}
       }
     },
-    "product_card_background": "#ffffff"
+    "product_card_background": "#ffffff",
+    "snh_rate_bronze": 3,
+    "snh_rate_silver": 7,
+    "snh_rate_gold": 10,
+    "snh_silver_threshold": 198000,
+    "snh_gold_threshold": 300000,
+    "snh_whatsapp": "94764863359",
+    "snh_rating_source": "Google reviews"
   },
   "presets": {
     "Sound": {

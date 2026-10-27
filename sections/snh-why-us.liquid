@@ -1,4 +1,5 @@
 {%- comment -%}SNH "Why choose us" ink band (prototype .why-head + .benefits): heading, inline stats, benefit grid.{%- endcomment -%}
+{%- capture snh_out -%}
 {%- assign hid = 'why-' | append: section.id -%}
 <section class="v2 v-section v-section--dark" aria-labelledby="{{ hid }}">
   <div class="v-wrap">
@@ -11,7 +12,14 @@
       {%- assign stats = section.blocks | where: 'type', 'stat' -%}
       {%- if stats.size > 0 -%}
         <div class="stats-inline">
-          {%- for b in stats -%}<div {{ b.shopify_attributes }}><strong>{{ b.settings.value | escape | replace: '★', '<span class="star">★</span>' }}</strong><span>{{ b.settings.label | escape }}</span></div>{%- endfor -%}
+          {%- for b in stats -%}
+            {%- if b.settings.use_rating -%}
+              {%- if settings.snh_rating_value == blank -%}{%- continue -%}{%- endif -%}
+              <div {{ b.shopify_attributes }}><strong>{{ settings.snh_rating_value | escape }}<span class="star">★</span></strong><span>{% if settings.snh_rating_count != blank %}from {{ settings.snh_rating_count | escape }} {% endif %}{{ settings.snh_rating_source | default: 'Google reviews' | escape }}</span></div>
+            {%- else -%}
+              <div {{ b.shopify_attributes }}><strong>{{ b.settings.value | escape | replace: '★', '<span class="star">★</span>' }}</strong><span>{{ b.settings.label | escape }}</span></div>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       {%- endif -%}
     </div>
@@ -24,6 +32,13 @@
     </ul>
   </div>
 </section>
+{%- endcapture -%}
+{%- liquid
+  assign r_b = settings.snh_rate_bronze | default: 3 | append: '%'
+  assign r_s = settings.snh_rate_silver | default: 7 | append: '%'
+  assign r_g = settings.snh_rate_gold | default: 10 | append: '%'
+  echo snh_out | replace: '[bronze]', r_b | replace: '[silver]', r_s | replace: '[gold]', r_g
+-%}
 
 {% schema %}
 {
@@ -38,7 +53,8 @@
   "blocks": [
     { "type": "stat", "name": "Stat", "limit": 3, "settings": [
       { "type": "text", "id": "value", "label": "Value", "default": "50,000+", "info": "A ★ is shown in orange." },
-      { "type": "text", "id": "label", "label": "Label", "default": "orders delivered" }
+      { "type": "text", "id": "label", "label": "Label", "default": "orders delivered" },
+      { "type": "checkbox", "id": "use_rating", "label": "Show the Google rating instead", "default": false, "info": "Uses Theme settings → SNH contact and reviews. Hidden while the rating there is empty." }
     ] },
     { "type": "benefit", "name": "Benefit", "settings": [
       { "type": "select", "id": "icon", "label": "Icon", "options": [

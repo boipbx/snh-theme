@@ -1,7 +1,16 @@
 {%- comment -%}
   <img> from an image_picker value, or from an external URL fallback when no file is picked (media hosted elsewhere
-  until it is uploaded to Content → Files). image, url, width (requested), w, h (intrinsic), alt, class, eager
+  until it is uploaded to Content → Files). A url without a slash is a theme asset file name (assets/).
+  image, url, width (requested), w, h (intrinsic), alt, class, eager
 {%- endcomment -%}
+{%- liquid
+  assign src = url
+  if url != blank
+    unless url contains '/'
+      assign src = url | asset_url
+    endunless
+  endif
+-%}
 {%- if image != blank -%}
   {%- if eager -%}
     {{ image | image_url: width: width | image_tag: width: w, height: h, alt: alt, class: class, loading: 'eager' }}
@@ -9,5 +18,5 @@
     {{ image | image_url: width: width | image_tag: width: w, height: h, alt: alt, class: class, loading: 'lazy' }}
   {%- endif -%}
 {%- elsif url != blank -%}
-  <img{% if class %} class="{{ class }}"{% endif %} src="{{ url | escape }}" alt="{{ alt | escape }}" width="{{ w }}" height="{{ h }}" loading="{% if eager %}eager{% else %}lazy{% endif %}">
+  <img{% if class %} class="{{ class }}"{% endif %} src="{{ src | escape }}" alt="{{ alt | escape }}" width="{{ w }}" height="{{ h }}" loading="{% if eager %}eager{% else %}lazy{% endif %}">
 {%- endif -%}

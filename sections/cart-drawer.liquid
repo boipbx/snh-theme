@@ -8,11 +8,11 @@
 
 {%- liquid
   assign snh_tier = customer.metafields.custom.loyalty_tier.value | default: 'Bronze'
-  assign snh_rate = 3
+  assign snh_rate = settings.snh_rate_bronze | default: 3
   if snh_tier == 'Silver'
-    assign snh_rate = 7
+    assign snh_rate = settings.snh_rate_silver | default: 7
   elsif snh_tier == 'Gold' or snh_tier == 'MAXED OUT'
-    assign snh_rate = 10
+    assign snh_rate = settings.snh_rate_gold | default: 10
   endif
 
   assign snh_threshold = section.settings.free_shipping_threshold | default: 17000
@@ -806,7 +806,7 @@
         const points = Math.floor((Number(cart.total_price || 0) / 100) * rate / 100);
         el.innerHTML = `${bolt}<span>You'll earn <b>${points} points</b> on this order as a ${escapeHtml(tier)} member (${rate}% back).</span>`;
       } else {
-        el.innerHTML = `${bolt}<span><a href="${accountLoginUrl}">Log in</a> or <a href="${accountRegisterUrl}">join SNH Elite</a> to earn 3% back.</span>`;
+        el.innerHTML = `${bolt}<span><a href="${accountLoginUrl}">Log in</a> or <a href="${accountRegisterUrl}">join SNH Elite</a> to earn {{ settings.snh_rate_bronze | default: 3 }}% back.</span>`;
       }
       el.classList.add('is-visible');
     }

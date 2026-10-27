@@ -96,7 +96,7 @@
           "type": "menu",
           "settings": {
             "heading": "Supplements",
-            "links": "Shop all supplements | /collections/everything\nTrain & perform | /collections/train-perform\nWhey proteins | /collections/whey-protein\nPre-workout | /collections/pre-workout-1\nCreatine | /collections/creatine-1\nWeight management | /collections/weight-management"
+            "links": "Shop all supplements | /collections/everything\nTrain & perform | /collections/train-perform\nWhey proteins | /collections/whey-protein\nPre-workout | /collections/pre-workout-1\nCreatine | /collections/creatine\nWeight management | /collections/weight-management"
           }
         },
         "menu_2": {
@@ -134,7 +134,6 @@
         "stores_heading": "Visit or call",
         "hours": "Open every day · Support 10am–7pm",
         "payments": "Pay by card, bank transfer, cash on delivery or Koko · pay in 3",
-        "whatsapp": "94764863359",
         "legal": "Sports Nutrition Hub (Pvt) Ltd.",
         "policy_links": false,
         "mark": "shopify://shop_images/sn_o.png",

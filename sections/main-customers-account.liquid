@@ -1124,32 +1124,34 @@
 {% assign points = customer.metafields.custom.loyalty_points.value | default: 0 | plus: 0 %}
 {% assign annual_spend = customer.metafields.custom.annual_spend.value | default: 0 | plus: 0 %}
 
-{% assign earn_rate = 3 %}
+{% assign earn_rate = settings.snh_rate_bronze | default: 3 %}
+{% assign silver_at = settings.snh_silver_threshold | default: 198000 %}
+{% assign gold_at = settings.snh_gold_threshold | default: 300000 %}
 {% assign birthday_reward = 'Birthday reward starts at Silver' %}
 {% assign voucher_reward = 'Gift voucher deals unlock at Silver' %}
 {% if current_tier == 'Silver' %}
-  {% assign earn_rate = 7 %}
+  {% assign earn_rate = settings.snh_rate_silver | default: 7 %}
   {% assign birthday_reward = '10% birthday reward' %}
   {% assign voucher_reward = '5% off gift vouchers' %}
 {% endif %}
 {% if current_tier == 'Gold' or current_tier == 'MAXED OUT' %}
-  {% assign earn_rate = 10 %}
+  {% assign earn_rate = settings.snh_rate_gold | default: 10 %}
   {% assign birthday_reward = '15% birthday reward' %}
   {% assign voucher_reward = '10% off gift vouchers' %}
 {% endif %}
 
-{% if annual_spend < 198000 %}
+{% if annual_spend < silver_at %}
   {% assign next_tier = 'Silver' %}
-  {% assign goal = 198000 %}
-{% elsif annual_spend < 300000 %}
+  {% assign goal = silver_at %}
+{% elsif annual_spend < gold_at %}
   {% assign next_tier = 'Gold' %}
-  {% assign goal = 300000 %}
+  {% assign goal = gold_at %}
 {% else %}
   {% assign next_tier = 'MAXED OUT' %}
-  {% assign goal = 300000 %}
+  {% assign goal = gold_at %}
 {% endif %}
 
-{% assign progress_percentage = annual_spend | times: 100.0 | divided_by: 300000.0 %}
+{% assign progress_percentage = annual_spend | times: 100.0 | divided_by: gold_at | times: 1.0 %}
 {% if progress_percentage > 100 %}{% assign progress_percentage = 100 %}{% endif %}
 {% assign segment_percentage = annual_spend | times: 100.0 | divided_by: goal %}
 {% if segment_percentage > 100 %}{% assign segment_percentage = 100 %}{% endif %}
@@ -1284,7 +1286,7 @@
         <div class="snh-credit-progress">
           <div class="snh-credit-progress-top">
             <span class="lbl">{% if next_tier == 'MAXED OUT' %}Gold status active{% else %}On the way to {{ next_tier }}{% endif %}</span>
-            <span class="val">{% if next_tier == 'MAXED OUT' %}Rs. 300,000 reached{% else %}Goal <span class="snh-money" data-snh-money="{{ goal | round }}">Rs. {{ goal | round }}</span>{% endif %}</span>
+            <span class="val">{% if next_tier == 'MAXED OUT' %}Rs. {{ gold_at | times: 100 | money_without_currency | remove: '.00' }} reached{% else %}Goal <span class="snh-money" data-snh-money="{{ goal | round }}">Rs. {{ goal | round }}</span>{% endif %}</span>
           </div>
           <div class="snh-progress-track">
             <div class="snh-progress-fill" style="--target-width: {{ progress_percentage }}%;"></div>
@@ -1340,7 +1342,7 @@
           <div class="snh-tier-card-body">
             <ul class="snh-benefit-list">
               <li>500 welcome points, the moment you sign up</li>
-              <li>3% back in points on every eligible order</li>
+              <li>{{ settings.snh_rate_bronze | default: 3 }}% back in points on every eligible order</li>
               <li>Redeem as soon as you hit 2,500 points</li>
             </ul>
             <details class="snh-tier-more">
@@ -1357,10 +1359,10 @@
 
         <article class="snh-tier-card silver">
           <div class="snh-tier-card-head"><h3>Silver</h3><p>For the regulars</p></div>
-          <div class="snh-tier-pill"><span class="snh-money" data-snh-money="198000">Rs. 198000</span>&nbsp;annual spend</div>
+          <div class="snh-tier-pill"><span class="snh-money" data-snh-money="{{ silver_at }}">Rs. {{ silver_at }}</span>&nbsp;annual spend</div>
           <div class="snh-tier-card-body">
             <ul class="snh-benefit-list">
-              <li>7% back in points, more than double Bronze</li>
+              <li>{{ settings.snh_rate_silver | default: 7 }}% back in points</li>
               <li>A 10% reward every birthday</li>
               <li>5% off every gift voucher</li>
             </ul>
@@ -1378,10 +1380,10 @@
 
         <article class="snh-tier-card gold">
           <div class="snh-tier-card-head"><h3>Gold</h3><p>The top of the house</p></div>
-          <div class="snh-tier-pill"><span class="snh-money" data-snh-money="300000">Rs. 300000</span>&nbsp;annual spend</div>
+          <div class="snh-tier-pill"><span class="snh-money" data-snh-money="{{ gold_at }}">Rs. {{ gold_at }}</span>&nbsp;annual spend</div>
           <div class="snh-tier-card-body">
             <ul class="snh-benefit-list">
-              <li>10% back in points, our highest rate</li>
+              <li>{{ settings.snh_rate_gold | default: 10 }}% back in points, our highest rate</li>
               <li>Free shipping on every single order</li>
               <li>A 15% reward every birthday</li>
             </ul>
@@ -1403,8 +1405,8 @@
       <span class="snh-kicker">Good to know</span>
       <h2 class="snh-section-title">Questions, answered</h2>
       <div class="snh-faq-grid">
-        <details class="snh-faq-item"><summary class="snh-faq-summary">How do I earn points?</summary><div class="snh-faq-content">Create an account and shop while logged in. Bronze earns 3%, Silver 7%, and Gold 10% back in points, based on your order subtotal.</div></details>
-        <details class="snh-faq-item"><summary class="snh-faq-summary">How do I move up a tier?</summary><div class="snh-faq-content">Your annual spend is tracked automatically. Reach Rs. 198,000 for Silver and Rs. 300,000 for Gold.</div></details>
+        <details class="snh-faq-item"><summary class="snh-faq-summary">How do I earn points?</summary><div class="snh-faq-content">Create an account and shop while logged in. Bronze earns {{ settings.snh_rate_bronze | default: 3 }}%, Silver {{ settings.snh_rate_silver | default: 7 }}%, and Gold {{ settings.snh_rate_gold | default: 10 }}% back in points, based on your order subtotal.</div></details>
+        <details class="snh-faq-item"><summary class="snh-faq-summary">How do I move up a tier?</summary><div class="snh-faq-content">Your annual spend is tracked automatically. Reach Rs. {{ silver_at | times: 100 | money_without_currency | remove: '.00' }} for Silver and Rs. {{ gold_at | times: 100 | money_without_currency | remove: '.00' }} for Gold.</div></details>
         <details class="snh-faq-item"><summary class="snh-faq-summary">What happens when I refund an order?</summary><div class="snh-faq-content">The points earned on the refunded amount are reversed, so your balance always stays accurate.</div></details>
         <details class="snh-faq-item"><summary class="snh-faq-summary">Why hasn't my tier updated yet?</summary><div class="snh-faq-content">Tiers update once paid orders and backend workflows complete. Use the same email at checkout so your orders connect to your account.</div></details>
       </div>
