@@ -782,7 +782,6 @@
         "anchor": "sis",
         "interval": 6,
         "logo_url": "snh-sis-logo.svg",
-        "badge": "Official distributor[ in Sri Lanka] · 100% Informed Sport[ approved]",
         "strip_title": "Bestselling SiS",
         "strip_link_label": "Shop all Science in Sport",
         "strip_link": "/collections/sis",
@@ -791,7 +790,11 @@
           "sis-beta-fuel-gel",
           "sis-go-isotonic-energy-gel",
           "sis-beta-fuel-energy-nootropics-gel"
-        ]
+        ],
+        "trust_1_title": "100% Informed Sport",
+        "trust_1_text": "Batch-tested for banned substances",
+        "trust_2_title": "Official distributor",
+        "trust_2_text": "Sourced direct by SNH in Sri Lanka"
       },
       "blocks": {
         "video_1": {

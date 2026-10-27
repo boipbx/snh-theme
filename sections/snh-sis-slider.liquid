@@ -9,7 +9,22 @@
   <div class="hero hero--sis" data-v2="carousel" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}" style="--hero-interval: {{ section.settings.interval }}s">
     <div class="sisx__badge v-wrap">
       {%- render 'snh-v2-img', image: section.settings.logo, url: section.settings.logo_url, width: 300, w: 96, h: 60, alt: 'Science in Sport' -%}
-      <span>{{ section.settings.badge | escape | replace: '[', '<span class="hide-s">' | replace: ']', '</span>' | replace: ' · ', '<span class="sep">·</span>' }}</span>
+      {%- if section.settings.trust_1_title != blank or section.settings.trust_2_title != blank -%}
+        <ul class="sisx__trust" aria-label="Why buy SiS from SNH">
+          {%- if section.settings.trust_1_title != blank -%}
+            <li class="tbadge">
+              <span class="tbadge__ic tbadge__ic--logo">{%- if section.settings.trust_1_logo != blank -%}{{ section.settings.trust_1_logo | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy' }}{%- else -%}<img src="{{ 'snh-informed-sport-white.png' | asset_url }}" width="40" height="40" alt="" loading="lazy">{%- endif -%}</span>
+              <span class="tbadge__t"><b>{{ section.settings.trust_1_title | escape }}</b>{%- if section.settings.trust_1_text != blank -%}<span>{{ section.settings.trust_1_text | escape }}</span>{%- endif -%}</span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.trust_2_title != blank -%}
+            <li class="tbadge">
+              <span class="tbadge__ic">{% render 'snh-v2-icon', name: 'shield' %}</span>
+              <span class="tbadge__t"><b>{{ section.settings.trust_2_title | escape }}</b>{%- if section.settings.trust_2_text != blank -%}<span>{{ section.settings.trust_2_text | escape }}</span>{%- endif -%}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
     </div>
     <div class="hero__stage">
       {%- for b in section.blocks -%}
@@ -131,7 +146,12 @@
     { "type": "header", "content": "Distributor badge" },
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "text", "id": "logo_url", "label": "Logo file (fallback)", "info": "A theme asset file name (assets/snh-sis-…) or a full URL." },
-    { "type": "text", "id": "badge", "label": "Badge text", "default": "Official distributor[ in Sri Lanka] · 100% Informed Sport[ approved]", "info": "Text in [brackets] is hidden on phones. \" · \" becomes a dot separator." },
+    { "type": "header", "content": "Trust badges (over the slider)" },
+    { "type": "text", "id": "trust_1_title", "label": "Badge 1 title", "default": "100% Informed Sport" },
+    { "type": "text", "id": "trust_1_text", "label": "Badge 1 line", "default": "Batch-tested for banned substances" },
+    { "type": "image_picker", "id": "trust_1_logo", "label": "Badge 1 logo", "info": "Defaults to the white Informed Sport mark shipped with the theme." },
+    { "type": "text", "id": "trust_2_title", "label": "Badge 2 title", "default": "Official distributor" },
+    { "type": "text", "id": "trust_2_text", "label": "Badge 2 line", "default": "Sourced direct by SNH in Sri Lanka" },
     { "type": "header", "content": "Product strip" },
     { "type": "text", "id": "strip_title", "label": "Strip heading", "default": "Bestselling SiS" },
     { "type": "text", "id": "strip_link_label", "label": "Link label", "default": "Shop all Science in Sport" },

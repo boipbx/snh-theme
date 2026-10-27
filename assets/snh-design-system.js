@@ -9,7 +9,12 @@
     if (reduceMotion || !('IntersectionObserver' in window)) return;
     var sections = Array.prototype.filter.call(
       document.querySelectorAll('#main > .shopify-section, #main > section.shopify-section'),
-      function (el) { return el.getBoundingClientRect().top > window.innerHeight; }
+      function (el) {
+        // no reveal on sections whose content arrives late (review widgets, app blocks, iframes): the fade fought
+        // their resize and the page jumped
+        if (/snh_reviews/.test(el.id) || el.querySelector('.shopify-app-block, iframe, .jdgm-widget, [class*="reviews-widget"]')) return false;
+        return el.getBoundingClientRect().top > window.innerHeight;
+      }
     );
     if (!sections.length) return;
     document.documentElement.classList.add('snh-js');

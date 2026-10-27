@@ -1003,7 +1003,7 @@
 }
 /* the sticky header (64/72px) sits over the top of the SiS screen once scrolled to: keep content below it */
 .sisx__badge { top: calc(var(--hdr-h) + 20px); }
-.stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 84px); }
+.stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 108px); }
 .trust__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(28px) brightness(.3) saturate(.8); transform: scale(1.1); }
 .trust__wrap { grid-template-columns: auto minmax(0, 1fr) minmax(220px, 300px); }
 .trust__proof { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line-dark); }
@@ -1012,7 +1012,7 @@
 .trust__proof span { font-size: 14px; color: rgba(255, 255, 255, .65); }
 @media (max-width: 1023px) { .trust__wrap { grid-template-columns: 1fr; } .trust__proof { display: none; } }
 @media (max-width: 767px) { .stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 64px); } .sisx__badge { top: calc(var(--hdr-h) + 14px); } }
-@media (max-width: 599px) { .sisx__badge { flex-wrap: nowrap; white-space: nowrap; } .sisx__badge .sep { margin: 0 5px; } .stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 72px); } }
+@media (max-width: 599px) { .sisx__badge { flex-wrap: wrap; white-space: normal; } .sisx__badge .sep { margin: 0 5px; } .stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 72px); } }
 @media (min-width: 600px) and (max-width: 1023px) { .stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 104px); } }
 
 /* ================= round 4 · SNH Elite glass ================= */
@@ -1168,7 +1168,7 @@
 /* =====================================================================================================
    THEME LAYER (round 5): what the Shopify build needs on top of the ported prototype styles
    ===================================================================================================== */
-@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("instrument-serif-italic-latin.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: optional; src: url("instrument-serif-italic-latin.woff2") format("woff2"); }
 :root { --sans: var(--text-font-family, "Inter"), system-ui, -apple-system, "Segoe UI", sans-serif; }
 
 /* header: the section wrapper is the sticky element; the ticker + announcement scroll away (negative top) */
@@ -1547,3 +1547,60 @@ html { scroll-padding-top: 0; }
   .hs__stack .hs__item { grid-template-columns: 26px 56px minmax(0, 1fr) auto; gap: 10px; padding: 12px 12px 12px 16px; }
   .hs__stack .hs__img { width: 56px; height: 56px; }
 }
+
+/* ---------- R5 · reviews: reserve the Google widget's final height so nothing jumps when it loads ---------- */
+.rev__app { min-height: 470px; }
+@media (min-width: 1024px) { .rev__app { min-height: 409px; } }
+.rev__app:not(:has(.reputon-google-reviews-widget > *)) { border-radius: var(--v-radius, 14px); background: linear-gradient(90deg, rgba(12, 12, 13, .03), rgba(12, 12, 13, .06), rgba(12, 12, 13, .03)); }
+
+/* ---------- R5 · SiS trust badges: white on dark, over the slider ---------- */
+.sisx__badge { flex-wrap: wrap; gap: 12px 20px; }
+.sisx__trust { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.tbadge { display: inline-flex; align-items: center; gap: 12px; padding: 7px 18px 7px 7px; border: 1px solid rgba(255, 255, 255, .28); border-radius: 999px; background: rgba(14, 14, 14, .55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #fff; }
+.tbadge__ic { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 50%; background: var(--v-accent); color: #fff; }
+.tbadge__ic svg { width: 22px; height: 22px; }
+.tbadge__ic--logo { background: none; }
+.tbadge__ic--logo img { width: 40px; height: 40px; }
+.tbadge__t { display: grid; gap: 1px; line-height: 1.2; }
+.tbadge__t b { font: 600 15px/1.2 var(--sans); letter-spacing: -.005em; }
+.tbadge__t span { font: 400 12.5px/1.3 var(--sans); color: rgba(255, 255, 255, .78); }
+@media (max-width: 767px) {
+  .sisx__badge { gap: 10px; }
+  .sisx__badge > img { width: 64px; }
+  .sisx__trust { gap: 8px; width: 100%; }
+  .tbadge { gap: 8px; padding: 5px 12px 5px 5px; }
+  .tbadge__ic, .tbadge__ic--logo img { flex-basis: 30px; width: 30px; height: 30px; }
+  .tbadge__ic svg { width: 17px; height: 17px; }
+  .tbadge__t b { font-size: 13px; }
+  .tbadge__t span { display: none; }
+}
+@media (max-width: 767px) {
+  .sisx__trust { display: grid; grid-template-columns: 1fr 1fr; }
+  .tbadge { min-width: 0; padding-right: 10px; border-radius: 16px; }
+  .tbadge__t b { font-size: 12.5px; line-height: 1.2; white-space: normal; }
+  .stiles__wrap, .trust__wrap { top: calc(var(--hdr-h) + 126px) !important; }
+}
+
+/* ---------- R5 · homepage audit: nothing under 12px, AA contrast on small orange labels, one padding rhythm ---------- */
+:root { --v-accent-ink: #C2410C; } /* white on this is 5.2:1; the brand orange stays for large type and fills */
+.card__brand, .hs__stack .hs__info .eyebrow, .tcard__name, .mqd__link { font-size: 12px; }
+.card__badge { font-size: 12px; height: 24px; }
+.card__badge--sale, .hs__pts-tag, .offer .v-badge, .v-badge--accent { background: var(--v-accent-ink); }
+.card__chip { font-size: 12px; }
+.tcard__perk { font-size: 12.5px; }
+.hs__pts-tag { font-size: 12px; }
+.offer .v-badge, .v-badge { font-size: 12px; }
+@media (max-width: 599px) {
+  .card__badge { font-size: 11px; height: 22px; }
+  .card__chip { font-size: 12px; }
+  .card__koko { font-size: 12px; }
+  .tcard__perk { font-size: 12px; }
+}
+.mqd { padding-block: 40px; }
+@media (min-width: 900px) { .mqd { padding-block: 64px; } }
+.elite.v-section { padding-block: 40px; }
+@media (min-width: 900px) { .elite.v-section { padding-block: 64px; } }
+
+/* ---------- R5 · font swap without a jump: a local fallback with Inter's metrics until Inter arrives ---------- */
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Helvetica"); ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; size-adjust: 107.4%; }
+:root { --sans: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif; }
