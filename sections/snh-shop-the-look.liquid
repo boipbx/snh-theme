@@ -49,12 +49,13 @@
       </div>
       <div class="hs__scrim" hidden></div>
       <div class="hs__side">
+       <div class="hs__stack">
         <ol class="hs__list">
           {%- for b in section.blocks -%}
             {%- assign p = b.settings.product -%}
             {%- if p == blank -%}{%- continue -%}{%- endif -%}
             <li class="hs__item" data-spot="{{ forloop.index0 }}"><span class="hs__n">{{ forloop.index }}</span>
-              <a class="hs__img" href="{{ p.url }}" tabindex="-1">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 240 | image_tag: width: 120, height: 120, loading: 'lazy', alt: '' }}{%- endif -%}</a>
+              <a class="hs__img" href="{{ p.url }}" tabindex="-1"><span class="card__img">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: width: 150, height: 150, loading: 'lazy', alt: '', data-v2-lift: '' }}{%- endif -%}</span></a>
               <span class="hs__info"><span class="eyebrow">{{ p.vendor | escape }}</span><a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a><span class="hs__price">{{ p.price | money_without_trailing_zeros }}</span></span>
               {%- render 'snh-v2-stl-add', product: p, cls: 'v-btn v-btn--ink v-btn--sm hs__add', label: 'Add' -%}
             </li>
@@ -71,6 +72,7 @@
             {%- endif -%}
           {%- endif -%}
         {%- endif -%}
+       </div>
       </div>
     </div>
   </div>
