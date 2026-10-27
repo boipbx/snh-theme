@@ -24,34 +24,93 @@
 {%- assign brand_keys = brand_keys | split: '##' | sort_natural -%}
 {%- capture present_letters -%}{%- for k in brand_keys -%}{{ k | slice: 0 | upcase }}{%- endfor -%}{%- endcapture -%}
 
+{%- comment -%} Brands panel: featured logo tiles, then an A–Z directory (search, letter bar, 4 columns) and a preview of the
+  hovered brand's top products (assets/snh-v2.js, data-az). Product counts come from the brand's collection. {%- endcomment -%}
+{%- liquid
+  assign az_block = section.blocks | where: 'type', 'brands' | first
+  assign featured = az_block.settings.featured | default: '' | split: ','
+-%}
 {%- capture az -%}
   <div class="az" data-az>
-    <div class="az__top">
-      <label class="az__search">{% render 'snh-v2-icon', name: 'search' %}<input type="search" placeholder="Find a brand" aria-label="Filter brands" data-az-filter></label>
-      <nav class="az__bar" aria-label="Brands A to Z">
-        {%- assign abc = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ',' -%}
-        {%- for letter in abc -%}
-          {%- if present_letters contains letter -%}<a href="#" data-to="{{ letter }}">{{ letter }}</a>{%- else -%}<span>{{ letter }}</span>{%- endif -%}
-        {%- endfor -%}
-      </nav>
-    </div>
-    <div class="az__groups">
-      {%- for letter in abc -%}
-        {%- unless present_letters contains letter -%}{%- continue -%}{%- endunless -%}
-        <div class="az__g" data-letter="{{ letter }}"><span class="az__L">{{ letter }}</span><ul class="az__tiles">
-          {%- for k in brand_keys -%}
-            {%- assign parts = k | split: '::' -%}
-            {%- assign first_letter = parts[0] | slice: 0 | upcase -%}
-            {%- if first_letter == letter -%}
-              {%- assign idx = parts[1] | plus: 0 -%}
-              {%- assign b = brand_blocks[idx] -%}
-              <li data-name="{{ b.settings.name | downcase | escape }}">{% render 'snh-v2-brand-tile', b: b, size: 240 %}<span>{{ b.settings.name | escape }}</span></li>
-            {%- endif -%}
+    {%- if featured.size > 0 -%}
+      <div class="az__feat"><p class="mz__h">Featured brands</p><ul class="az__ftiles">
+        {%- for fname in featured -%}
+          {%- assign fn = fname | strip | downcase -%}
+          {%- for b in brand_blocks -%}
+            {%- assign bn = b.settings.name | downcase | strip -%}
+            {%- if bn != fn -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              assign fcount = ''
+              assign after = b.settings.url | split: '/collections/' | last
+              if b.settings.url contains '/collections/'
+                unless after contains '?'
+                  assign fc = collections[after].products_count
+                  if fc > 0
+                    assign fcount = fc | append: ' products'
+                  endif
+                endunless
+              endif
+            -%}
+            <li>{% render 'snh-v2-brand-tile', b: b, size: 320, count: fcount, cls: 'brand--lg' %}</li>
           {%- endfor -%}
-        </ul></div>
-      {%- endfor -%}
+        {%- endfor -%}
+      </ul></div>
+    {%- endif -%}
+    <div class="az__main">
+      <div class="az__dir">
+        <div class="az__top">
+          <label class="az__search">{% render 'snh-v2-icon', name: 'search' %}<input type="search" placeholder="Find a brand" aria-label="Filter brands" data-az-filter></label>
+          <nav class="az__bar" aria-label="Brands A to Z">
+            {%- assign abc = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ',' -%}
+            {%- for letter in abc -%}
+              {%- if present_letters contains letter -%}<a href="#az-{{ letter }}" data-to="{{ letter }}">{{ letter }}</a>{%- else -%}<span aria-hidden="true">{{ letter }}</span>{%- endif -%}
+            {%- endfor -%}
+          </nav>
+        </div>
+        <div class="az__cols">
+          {%- for letter in abc -%}
+            {%- unless present_letters contains letter -%}{%- continue -%}{%- endunless -%}
+            <div class="az__g" data-letter="{{ letter }}"><p class="az__L">{{ letter }}</p><ul class="az__list">
+              {%- for k in brand_keys -%}
+                {%- assign parts = k | split: '::' -%}
+                {%- assign first_letter = parts[0] | slice: 0 | upcase -%}
+                {%- if first_letter != letter -%}{%- continue -%}{%- endif -%}
+                {%- liquid
+                  assign idx = parts[1] | plus: 0
+                  assign b = brand_blocks[idx]
+                  assign after = b.settings.url | split: '/collections/' | last
+                  assign bh = ''
+                  assign bv = ''
+                  assign bcount = ''
+                  if b.settings.url contains '/collections/'
+                    assign bh = after | split: '?' | first
+                    if after contains 'filter.p.vendor='
+                      assign bv = after | split: 'filter.p.vendor=' | last | split: '&' | first | url_decode | replace: '+', ' '
+                    else
+                      assign bc = collections[bh].products_count
+                      if bc > 0
+                        assign bcount = bc
+                      endif
+                    endif
+                  endif
+                  assign msrc = blank
+                  if b.settings.logo != blank
+                    assign msrc = b.settings.logo | image_url: width: 120
+                  elsif b.settings.logo_file != blank
+                    assign msrc = b.settings.logo_file | asset_url
+                  endif
+                -%}
+                <li data-name="{{ b.settings.name | downcase | escape }}"><a class="az__link{% if b.settings.dark %} brand--dark{% endif %}" href="{{ b.settings.url | default: '#' }}" data-brand="{{ b.settings.name | escape }}" data-h="{{ bh }}" data-v="{{ bv | escape }}">
+                  <span class="az__mini">{%- if msrc != blank -%}<span class="bmark" data-mark><img src="{{ msrc }}" alt="" loading="lazy" width="60" height="60"></span>{%- else -%}<span class="az__ini">{{ b.settings.name | slice: 0 | upcase }}</span>{%- endif -%}</span>
+                  <span class="az__name">{{ b.settings.name | escape }}</span>{%- if bcount != blank -%}<span class="az__n">{{ bcount }}</span>{%- endif -%}</a></li>
+              {%- endfor -%}
+            </ul></div>
+          {%- endfor -%}
+        </div>
+        <p class="az__none" hidden>No brand matches that name.</p>
+      </div>
+      <aside class="az__pv" data-az-pv aria-live="polite"><p class="az__pvhint">Hover a brand to see its bestsellers.</p></aside>
     </div>
-    <p class="az__none" hidden>No brand matches that name.</p>
   </div>
 {%- endcapture -%}
 
@@ -427,7 +486,8 @@
       "limit": 1,
       "settings": [
         { "type": "text", "id": "label", "label": "Menu label", "default": "Brands" },
-        { "type": "text", "id": "all_label", "label": "Link label", "default": "Shop by brand page" }
+        { "type": "text", "id": "all_label", "label": "Link label", "default": "Shop by brand page" },
+        { "type": "text", "id": "featured", "label": "Featured brands", "default": "Science in Sport, Applied Nutrition, RAW Nutrition, RYSE, Myprotein, MuscleTech", "info": "Brand names, comma separated, matching the Brand blocks. Shown as large tiles with product counts." }
       ]
     },
     {
@@ -463,8 +523,9 @@
       "name": "Brand",
       "settings": [
         { "type": "text", "id": "name", "label": "Brand name", "default": "Brand" },
-        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Square tile. Without a logo the name is shown." },
-        { "type": "select", "id": "fit", "label": "Logo fit", "options": [{ "value": "cover", "label": "Fill the tile" }, { "value": "contain", "label": "Padded" }], "default": "cover" },
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Any logo file: it is trimmed to the mark and sized like the others on a white tile. Without a logo, the theme file below or the name is shown." },
+        { "type": "text", "id": "logo_file", "label": "Logo theme file", "info": "Optional: a logo shipped in assets/, e.g. snh-brand-bsn.svg." },
+        { "type": "checkbox", "id": "dark", "label": "Logo on a dark square", "default": false, "info": "Tick for a light logo drawn on a black or coloured square (SiS, RYSE, Myprotein): it is shown as a dark mark on the white tile." },
         { "type": "url", "id": "url", "label": "Link" }
       ]
     },

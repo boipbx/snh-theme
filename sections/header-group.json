@@ -332,7 +332,8 @@
           "type": "brands",
           "settings": {
             "label": "Brands",
-            "all_label": "Shop by brand page"
+            "all_label": "Shop by brand page",
+            "featured": "Science in Sport, Applied Nutrition, RAW Nutrition, RYSE, Myprotein, MuscleTech"
           }
         },
         "offers": {
@@ -365,8 +366,8 @@
           "settings": {
             "name": "Applied Nutrition",
             "url": "/collections/applied-nutrition",
-            "fit": "cover",
-            "logo": "shopify://shop_images/Untitled_design.zip_-_1.png"
+            "logo": "shopify://shop_images/Untitled_design.zip_-_1.png",
+            "dark": false
           }
         },
         "brand_snh": {
@@ -374,8 +375,8 @@
           "settings": {
             "name": "SNH",
             "url": "/collections/everything?filter.p.vendor=Sports+Nutrition+Hub+%28SNH%29",
-            "fit": "contain",
-            "logo": "shopify://shop_images/sn_o.png"
+            "logo": "shopify://shop_images/sn_o.png",
+            "dark": false
           }
         },
         "brand_science_in_sport": {
@@ -383,8 +384,8 @@
           "settings": {
             "name": "Science in Sport",
             "url": "/collections/sis",
-            "fit": "cover",
-            "logo": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png"
+            "logo": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png",
+            "dark": true
           }
         },
         "brand_raw_nutrition": {
@@ -392,8 +393,8 @@
           "settings": {
             "name": "RAW Nutrition",
             "url": "/collections/raw",
-            "fit": "cover",
-            "logo": "shopify://shop_images/IMG_0045.jpg"
+            "logo": "shopify://shop_images/IMG_0045.jpg",
+            "dark": false
           }
         },
         "brand_myprotein": {
@@ -401,8 +402,8 @@
           "settings": {
             "name": "Myprotein",
             "url": "/collections/myprotein",
-            "fit": "cover",
-            "logo": "shopify://shop_images/IMG_0049.png"
+            "logo": "shopify://shop_images/IMG_0049.png",
+            "dark": true
           }
         },
         "brand_revive": {
@@ -410,8 +411,8 @@
           "settings": {
             "name": "Revive",
             "url": "/collections/revive",
-            "fit": "cover",
-            "logo": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png"
+            "logo": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png",
+            "dark": false
           }
         },
         "brand_trace_minerals": {
@@ -419,7 +420,8 @@
           "settings": {
             "name": "Trace Minerals",
             "url": "/collections/everything?filter.p.vendor=Trace+Minerals",
-            "fit": "cover"
+            "logo_file": "snh-brand-trace-minerals.png",
+            "dark": false
           }
         },
         "brand_muscletech": {
@@ -427,8 +429,8 @@
           "settings": {
             "name": "MuscleTech",
             "url": "/collections/muscletech",
-            "fit": "cover",
-            "logo": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png"
+            "logo": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png",
+            "dark": false
           }
         },
         "brand_ryse": {
@@ -436,8 +438,8 @@
           "settings": {
             "name": "RYSE",
             "url": "/collections/ryse",
-            "fit": "cover",
-            "logo": "shopify://shop_images/IMG_0046.jpg"
+            "logo": "shopify://shop_images/IMG_0046.jpg",
+            "dark": true
           }
         },
         "brand_ehp_labs": {
@@ -445,8 +447,8 @@
           "settings": {
             "name": "EHP Labs",
             "url": "/collections/ehplabs",
-            "fit": "cover",
-            "logo": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png"
+            "logo": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png",
+            "dark": false
           }
         },
         "brand_surge": {
@@ -454,8 +456,8 @@
           "settings": {
             "name": "Surge",
             "url": "/collections/surge",
-            "fit": "cover",
-            "logo": "shopify://shop_images/final_surge_logo-01.jpg"
+            "logo": "shopify://shop_images/final_surge_logo-01.jpg",
+            "dark": false
           }
         },
         "brand_healthspan_elite": {
@@ -463,8 +465,8 @@
           "settings": {
             "name": "Healthspan Elite",
             "url": "/collections/healthspan-elite",
-            "fit": "cover",
-            "logo": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png"
+            "logo": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png",
+            "dark": false
           }
         },
         "brand_vitabiotics": {
@@ -472,8 +474,8 @@
           "settings": {
             "name": "Vitabiotics",
             "url": "/collections/everything?filter.p.vendor=VITABIOTICS",
-            "fit": "cover",
-            "logo": "shopify://shop_images/3_e9de3e34-4221-415b-b928-c97558667165.png"
+            "logo_file": "snh-brand-vitabiotics.png",
+            "dark": false
           }
         },
         "brand_ronnie_coleman": {
@@ -481,7 +483,8 @@
           "settings": {
             "name": "Ronnie Coleman",
             "url": "/collections/everything?filter.p.vendor=Ronnie+Coleman",
-            "fit": "cover"
+            "logo_file": "snh-brand-ronnie-coleman.png",
+            "dark": false
           }
         },
         "brand_dymatize": {
@@ -489,8 +492,8 @@
           "settings": {
             "name": "Dymatize",
             "url": "/collections/dymatize",
-            "fit": "cover",
-            "logo": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png"
+            "logo": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png",
+            "dark": false
           }
         },
         "brand_bsn": {
@@ -498,7 +501,8 @@
           "settings": {
             "name": "BSN",
             "url": "/collections/everything?filter.p.vendor=BSN",
-            "fit": "cover"
+            "logo_file": "snh-brand-bsn.svg",
+            "dark": false
           }
         },
         "brand_centrum": {
@@ -506,7 +510,8 @@
           "settings": {
             "name": "Centrum",
             "url": "/collections/everything?filter.p.vendor=CENTRUM",
-            "fit": "cover"
+            "logo_file": "snh-brand-centrum.jpg",
+            "dark": false
           }
         },
         "brand_redcon1": {
@@ -514,8 +519,8 @@
           "settings": {
             "name": "Redcon1",
             "url": "/collections/redcon1",
-            "fit": "cover",
-            "logo": "shopify://shop_images/Untitled_design.zip_-_4.png"
+            "logo": "shopify://shop_images/Untitled_design.zip_-_4.png",
+            "dark": false
           }
         },
         "mpromo_1": {

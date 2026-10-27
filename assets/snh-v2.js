@@ -183,6 +183,33 @@
   liftAll();
   document.addEventListener('DOMContentLoaded', function () { liftAll(); });
 
+  /* ---------- brand logo marks ([data-mark]): trim each logo file to its mark and size it from CSS
+     (--mh mark height, --mw max width), so every tile reads the same whatever padding the file has ---------- */
+  function fitMark(box) {
+    var im = box.querySelector('img'); if (!im || !im.complete || !im.naturalWidth || box.classList.contains('is-fit')) return;
+    var cs = getComputedStyle(box), H = parseFloat(cs.getPropertyValue('--mh')) || 32, MW = parseFloat(cs.getPropertyValue('--mw')) || H * 3.4;
+    var nw = im.naturalWidth, nh = im.naturalHeight, bx = [0, 0, 1, 1];
+    try {
+      var N = 160, c = document.createElement('canvas'); c.width = N; c.height = Math.max(1, Math.round(N * nh / nw));
+      var g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(im, 0, 0, c.width, c.height);
+      var d = g.getImageData(0, 0, c.width, c.height).data, W = c.width, Hh = c.height;
+      var r0 = d[0], g0 = d[1], b0 = d[2], a0 = d[3], x0 = W, y0 = Hh, x1 = -1, y1 = -1;
+      for (var y = 0; y < Hh; y++) for (var x = 0; x < W; x++) { var k = (y * W + x) * 4; var diff = a0 < 30 ? (d[k + 3] > 60 ? 255 : 0) : Math.abs(d[k] - r0) + Math.abs(d[k + 1] - g0) + Math.abs(d[k + 2] - b0); if (diff > 70) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
+      if (x1 > x0 && y1 > y0) bx = [x0 / W, y0 / Hh, (x1 + 1) / W, (y1 + 1) / Hh];
+    } catch (e) {}
+    var asp = ((bx[2] - bx[0]) * nw) / ((bx[3] - bx[1]) * nh), mh = H, mw = mh * asp;
+    if (mw > MW) { mw = MW; mh = mw / asp; }
+    var iw = mw / (bx[2] - bx[0]), ih = mh / (bx[3] - bx[1]);
+    box.style.setProperty('--lw', mw.toFixed(1) + 'px'); box.style.setProperty('--lh', H + 'px');
+    box.style.setProperty('--liw', iw.toFixed(1) + 'px'); box.style.setProperty('--lih', ih.toFixed(1) + 'px');
+    box.style.setProperty('--ll', (-bx[0] * iw).toFixed(1) + 'px'); box.style.setProperty('--lt', ((H - mh) / 2 - bx[1] * ih).toFixed(1) + 'px');
+    box.classList.add('is-fit');
+  }
+  document.addEventListener('load', function (e) { var b = e.target.parentElement; if (b && b.hasAttribute && b.hasAttribute('data-mark')) fitMark(b); }, true);
+  document.addEventListener('DOMContentLoaded', function () { $$('[data-mark]').forEach(fitMark); });
+  $$('[data-mark]').forEach(fitMark);
+  V2.fitMark = fitMark;
+
   /* ---------- reveal on scroll (footer mark, .v-reveal) ---------- */
   var io = root.classList.contains('v-js') ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
@@ -299,9 +326,9 @@
     if (scrim) scrim.addEventListener('click', function () { closeMega(false); });
     $$('.nav__link', wrap).forEach(function (a) { a.addEventListener('mouseenter', function () { clearTimeout(openTimer); closeTimer = setTimeout(function () { closeMega(false); }, 150); }); });
 
-    /* ---- brands A–Z filter ---- */
+    /* ---- brands panel: live filter, letter jumps, hover preview of the brand's top products ---- */
     $$('[data-az]', wrap).forEach(function (az) {
-      var input = az.querySelector('[data-az-filter]'), none = az.querySelector('.az__none');
+      var input = az.querySelector('[data-az-filter]'), none = az.querySelector('.az__none'), pv = az.querySelector('[data-az-pv]');
       input.addEventListener('input', function () {
         var q = input.value.trim().toLowerCase(), any = false;
         $$('.az__g', az).forEach(function (g) {
@@ -312,7 +339,53 @@
         none.hidden = any;
       });
       $$('.az__bar a', az).forEach(function (a) {
-        a.addEventListener('click', function (e) { e.preventDefault(); var t = az.querySelector('[data-letter="' + a.getAttribute('data-to') + '"]'); if (t) t.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); });
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var t = az.querySelector('.az__g[data-letter="' + a.getAttribute('data-to') + '"]'); if (!t) return;
+          t.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+          t.classList.remove('is-flash'); void t.offsetWidth; t.classList.add('is-flash');
+          var first = t.querySelector('a'); if (first) first.focus({ preventScroll: true });
+        });
+      });
+      if (!pv) return;
+      var cache = {}, cur = '', timer = null;
+      var money = function (v) { var n = Math.round(parseFloat(String(v).replace(/[^\d.]/g, '')) || 0); return 'Rs ' + n.toLocaleString('en-US'); };
+      var img = function (u, w) { if (!u) return ''; return u + (u.indexOf('?') > -1 ? '&' : '?') + 'width=' + w; };
+      function load(a) {
+        var name = a.getAttribute('data-brand'), h = a.getAttribute('data-h') || '', v = a.getAttribute('data-v') || '';
+        if (cache[name]) return Promise.resolve(cache[name]);
+        var url = (h && !v) ? shopRoot + 'collections/' + h + '/products.json?limit=2'
+          : shopRoot + 'search/suggest.json?q=' + encodeURIComponent(v || name) + '&resources[type]=product&resources[limit]=10&resources[options][fields]=vendor';
+        var want = (v || '').toLowerCase();
+        return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+          var list = j.products || (j.resources && j.resources.results && j.resources.results.products) || [];
+          // search is fuzzy: keep only this vendor's products
+          if (want) list = list.filter(function (p) { return String(p.vendor || '').toLowerCase() === want; });
+          var items = list.slice(0, 2).map(function (p) {
+            var im = p.images && p.images[0] ? (p.images[0].src || p.images[0]) : (p.featured_image && p.featured_image.url) || p.image || '';
+            var price = p.variants && p.variants[0] ? p.variants[0].price : p.price;
+            return { t: p.title, u: p.url || (shopRoot + 'products/' + p.handle), im: im, pr: price };
+          });
+          cache[name] = { name: name, href: a.getAttribute('href'), items: items };
+          return cache[name];
+        }).catch(function () { return { name: name, href: a.getAttribute('href'), items: [] }; });
+      }
+      function show(a) {
+        var name = a.getAttribute('data-brand'); if (name === cur) return; cur = name;
+        pv.classList.add('is-loading');
+        load(a).then(function (d) {
+          if (cur !== d.name) return;
+          pv.innerHTML = '<p class="mz__h">' + d.name.replace(/</g, '&lt;') + ' bestsellers</p>' +
+            (d.items.length ? '<ul class="az__pvl">' + d.items.map(function (it) {
+              return '<li><a href="' + it.u + '"><span class="az__pvi">' + (it.im ? '<img src="' + img(it.im, 200) + '" alt="" width="100" height="100" loading="lazy">' : '') + '</span><span class="az__pvt">' + it.t.replace(/</g, '&lt;') + '</span><span class="az__pvp">' + money(it.pr) + '</span></a></li>';
+            }).join('') + '</ul>' : '') +
+            '<a class="v-btn v-btn--ink v-btn--sm az__pvall" href="' + d.href + '"><span>Shop all ' + d.name.replace(/</g, '&lt;') + '</span></a>';
+          pv.classList.remove('is-loading');
+        });
+      }
+      $$('[data-brand]', az).forEach(function (a) {
+        a.addEventListener('mouseenter', function () { if (!matchMedia('(hover: hover) and (min-width: 1024px)').matches) return; clearTimeout(timer); timer = setTimeout(function () { show(a); }, 90); });
+        a.addEventListener('focus', function () { if (matchMedia('(min-width: 1024px)').matches) show(a); });
       });
     });
 

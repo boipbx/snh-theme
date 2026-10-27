@@ -1,8 +1,22 @@
-{%- comment -%}One brand logo tile from a header "brand" block. b: the block, size: rendered width.{%- endcomment -%}
-<a class="brand{% if b.settings.fit == 'contain' %} brand--contain{% endif %}" href="{{ b.settings.url | default: '#' }}" title="{{ b.settings.name | escape }}">
-  {%- if b.settings.logo != blank -%}
-    {{- b.settings.logo | image_url: width: size | image_tag: width: size, height: size, loading: 'lazy', alt: b.settings.name -}}
+{%- comment -%}
+  One brand logo tile from a header "brand" block: white tile, the logo trimmed to its mark and sized like every other
+  mark (assets/snh-v2.js [data-mark]). Logo = the block's image, else its theme asset file (assets/snh-brand-…),
+  else a clean wordmark in our type. "Logo on a dark square" turns a light-on-dark file into a dark mark.
+  b: the block, size: image width requested, count (optional): product count line, cls (optional)
+{%- endcomment -%}
+{%- liquid
+  assign src = blank
+  if b.settings.logo != blank
+    assign src = b.settings.logo | image_url: width: size
+  elsif b.settings.logo_file != blank
+    assign src = b.settings.logo_file | asset_url
+  endif
+-%}
+<a class="brand{% if cls %} {{ cls }}{% endif %}{% if b.settings.dark %} brand--dark{% endif %}" href="{{ b.settings.url | default: '#' }}" title="{{ b.settings.name | escape }}" data-brand="{{ b.settings.name | escape }}">
+  {%- if src != blank -%}
+    <span class="bmark" data-mark><img src="{{ src }}" alt="{{ b.settings.name | escape }}" loading="lazy" width="{{ size }}" height="{{ size }}"></span>
   {%- else -%}
     <span class="brand__word">{{ b.settings.name | escape }}</span>
   {%- endif -%}
+  {%- if count != blank -%}<span class="brand__n">{{ count }}</span>{%- endif -%}
 </a>

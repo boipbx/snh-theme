@@ -1604,3 +1604,59 @@ html { scroll-padding-top: 0; }
 /* ---------- R5 · font swap without a jump: a local fallback with Inter's metrics until Inter arrives ---------- */
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Helvetica"); ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; size-adjust: 107.4%; }
 :root { --sans: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+/* ---------- R5 · brand logo tiles: one white tile, every mark trimmed and sized alike (snh-v2.js [data-mark]) ---------- */
+.brand { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: #fff; border: 1px solid rgba(12, 12, 13, .1); }
+.brand:hover { border-color: rgba(12, 12, 13, .3); }
+.bmark { --mh: 26px; --mw: 92px; position: relative; display: block; flex: 0 0 auto; width: var(--lw, calc(var(--mh) * 2.4)); height: var(--lh, var(--mh)); }
+.brand .bmark img, .az__mini .bmark img, .mz__logos .brand .bmark img { position: absolute; inset: auto; left: var(--ll, 0); top: var(--lt, 0); width: var(--liw, 100%); height: var(--lih, 100%); max-width: none; margin: 0; object-fit: contain; mix-blend-mode: multiply; opacity: 0; transition: opacity 200ms var(--ease); }
+.bmark.is-fit img { opacity: 1 !important; }
+/* light logo on a dark square → dark mark on the white tile */
+.brand--dark .bmark img { filter: grayscale(1) contrast(14) invert(1); }
+.brand__word { font: 700 15px/1.15 var(--sans); letter-spacing: -.01em; text-transform: uppercase; color: var(--ink); text-align: center; padding: 0 8px; }
+.brand__n { font: 500 12px/1 var(--sans); color: var(--grey-2, #6b6b6b); }
+.mz__logos .brand { aspect-ratio: 16 / 10; }
+.mz__logos .bmark { --mh: 22px; --mw: 84px; }
+
+/* ---------- R5 · Brands panel: featured tiles, A–Z directory in 4 columns, hover preview ---------- */
+.mega:has(.mega__brands) { height: auto; max-height: calc(100vh - var(--v-hdr, 72px) - 24px); overflow-y: auto; }
+.mega__brands { height: auto; }
+.az { display: grid; gap: 24px; }
+.az__feat .mz__h { margin-bottom: 12px; }
+.az__ftiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.brand--lg { aspect-ratio: 16 / 10; border-radius: 14px; }
+.brand--lg .bmark { --mh: 34px; --mw: 132px; }
+.brand--lg:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -12px rgba(12, 12, 13, .25); }
+.az__main { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 32px; padding-top: 20px; border-top: 1px solid rgba(12, 12, 13, .08); }
+.az__top { padding-bottom: 0; border-bottom: 0; }
+.az__cols { column-count: 4; column-gap: 28px; padding-top: 16px; }
+.az__g { break-inside: avoid; margin: 0 0 14px; }
+.az__g.is-flash { animation: az-flash 1.1s var(--ease); border-radius: 10px; }
+@keyframes az-flash { 0%, 40% { background: #FFF1E9; } 100% { background: transparent; } }
+.az__L { margin: 0 0 4px; padding-left: 6px; font: 700 13px/1.4 var(--sans); letter-spacing: .06em; color: var(--v-accent-ink, #C2410C); }
+.az__list { margin: 0; padding: 0; list-style: none; }
+.az__link { display: flex; align-items: center; gap: 10px; padding: 5px 6px; border-radius: 8px; font: 500 14px/1.25 var(--sans); color: var(--ink); }
+.az__link:hover, .az__link:focus-visible { background: #F5F2EC; }
+.az__mini { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; border: 1px solid rgba(12, 12, 13, .1); border-radius: 8px; background: #fff; overflow: hidden; }
+.az__mini .bmark { --mh: 16px; --mw: 32px; }
+.az__link.brand--dark .bmark img { filter: grayscale(1) contrast(14) invert(1); }
+.az__ini { font: 700 13px/1 var(--sans); color: var(--grey-2, #6b6b6b); }
+.az__name { min-width: 0; }
+.az__n { margin-left: auto; padding-left: 8px; font: 500 12px/1 var(--sans); color: var(--grey-2, #6b6b6b); }
+.az__pv { padding-left: 28px; border-left: 1px solid rgba(12, 12, 13, .08); transition: opacity 160ms var(--ease); }
+.az__pv.is-loading { opacity: .5; }
+.az__pvhint { margin: 8px 0 0; font: 400 14px/1.5 var(--sans); color: var(--grey-2, #6b6b6b); }
+.az__pv .mz__h { margin-bottom: 12px; }
+.az__pvl { display: grid; gap: 10px; margin: 0 0 16px; padding: 0; list-style: none; }
+.az__pvl a { display: grid; grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; align-items: center; }
+.az__pvi { grid-row: 1 / span 2; width: 64px; height: 64px; border-radius: 10px; background: #F5F2EC; overflow: hidden; }
+.az__pvi img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transform: scale(1.18); }
+.az__pvt { align-self: end; font: 600 13.5px/1.3 var(--sans); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.az__pvp { align-self: start; font: 500 13px/1.4 var(--sans); color: var(--grey-1, #4a4a4a); }
+@media (max-width: 1199px) { .az__cols { column-count: 3; } .az__main { grid-template-columns: minmax(0, 1fr) 240px; } }
+/* phones: the same panel in the drill-down menu */
+.mm__scroll .az__ftiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.mm__scroll .brand--lg .bmark { --mh: 24px; --mw: 84px; }
+.mm__scroll .az__main { grid-template-columns: 1fr; padding-top: 14px; }
+.mm__scroll .az__pv { display: none; }
+.mm__scroll .az__cols { column-count: 1; }
