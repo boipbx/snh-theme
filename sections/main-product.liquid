@@ -2749,12 +2749,29 @@
   #shopify-section-{{ section.id }} .snh-gal__thumbs { position: static !important; transform: none !important; inset: auto !important; flex-direction: row !important; width: auto !important; height: auto !important; max-height: none !important; }
 }
 
-#shopify-section-{{ section.id }} [data-v2-details] > .v-wrap { max-inline-size: calc(1152px + 48px) !important; margin-inline: auto !important; }
+#shopify-section-{{ section.id }} .v2pdp-details > .v-wrap { max-inline-size: calc(1152px + 48px) !important; margin-inline: auto !important; }
 #shopify-section-{{ section.id }} .product { position: static !important; left: auto !important; transform: none !important; inline-size: 100% !important; max-inline-size: calc(1152px + 48px) !important; margin-inline: auto !important; }
 #shopify-section-{{ section.id }} .snh-crumbs { max-inline-size: calc(1152px + 48px) !important; }
 
 @media (max-width: 1023px) { #shopify-section-{{ section.id }} .product-info { margin-inline: 0 !important; padding-inline: 0 !important; inline-size: auto !important; max-inline-size: none !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; } }
 
+/* R5: the accordions live in the details band now (rendered in Liquid); keep the buy box free of them */
+#shopify-section-{{ section.id }} .product-info .accordion-group, #shopify-section-{{ section.id }} .product-info > .product-info__accordion, #shopify-section-{{ section.id }} .product-info .product-info__block-item:has(> .product-info__accordion) { display: none !important; }
+/* R5 reviews (Judge.me): v2 type instead of the old Archivo capitals */
+html body .jdgm-rev-widg .jdgm-rev-widg__title { font: 600 var(--fs-h1, clamp(32px, 4vw, 52px))/1.08 var(--sans) !important; letter-spacing: -.025em !important; text-transform: none !important; color: #0C0C0D !important; margin-bottom: 24px !important; }
+html body .jdgm-rev-widg .sn-jdgm-eyebrow { font: 600 12px/1.4 var(--sans) !important; letter-spacing: .08em !important; color: #6E6E6E !important; }
+html body .jdgm-rev-widg .jdgm-rev-widg__summary-average, html body .jdgm-rev-widg .jdgm-rev-widg__summary-text, html body .jdgm-rev-widg .jdgm-rev__author, html body .jdgm-rev-widg .jdgm-rev__title { font-family: var(--sans) !important; font-weight: 600 !important; }
+/* R5 gallery: show every image whole on white (no blind crop of SNH's framed renders) */
+#shopify-section-{{ section.id }} .snh-gal__stage { background: #fff !important; border: 1px solid rgba(12, 12, 13, .08) !important; border-radius: 12px !important; }
+#shopify-section-{{ section.id }} .snh-gal__box img { object-fit: contain !important; }
+#shopify-section-{{ section.id }} .snh-gal__thumb { background: #fff !important; border-color: rgba(12, 12, 13, .1) !important; }
+#shopify-section-{{ section.id }} .snh-gal__thumb.is-active { border-color: #0C0C0D !important; }
+#shopify-section-{{ section.id }} .snh-gal__thumb img { object-fit: contain !important; }
+#shopify-section-{{ section.id }} .snh-gal__slide { height: 100% !important; max-height: 100% !important; min-height: 0 !important; overflow: hidden !important; }
+#shopify-section-{{ section.id }} .snh-gal__box { position: relative !important; height: 100% !important; }
+#shopify-section-{{ section.id }} .snh-gal__box img { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; }
+@media (max-width: 1023px) { #shopify-section-{{ section.id }} .snh-gal { margin-inline: 0 !important; margin-left: calc(50% - 50vw) !important; width: 100vw !important; } #shopify-section-{{ section.id }} .snh-gal__stage { order: 1 !important; } #shopify-section-{{ section.id }} .snh-gal__bar { order: 2 !important; } #shopify-section-{{ section.id }} .snh-gal__thumbs { order: 3 !important; padding: 12px 16px 0 !important; } #shopify-section-{{ section.id }} .snh-gal__bar { width: auto !important; } }
+@media (max-width: 1023px) { #shopify-section-{{ section.id }} .snh-gal__stage { border-radius: 0 !important; border-width: 1px 0 !important; } #shopify-section-{{ section.id }} .snh-gal__thumb.is-active { border-color: #E0521C !important; } }
 #shopify-section-{{ section.id }} .snh-adv-links a { padding: 8px 6px !important; font-size: 12.5px !important; line-height: 1.25 !important; text-align: center !important; white-space: normal !important; }
 </style>
 
@@ -2764,14 +2781,48 @@
     <div class="product">
       {%- if product.media.size > 0 -%}
         {%- liquid
-          assign gal_count = product.media.size
+          # Theme settings → SNH product images → Prefer clean images: leave out media whose file name or alt
+          # matches a frame keyword (SNH's orange-frame renders), as long as at least one image is left.
+          assign gal_skip = ','
+          if settings.snh_clean_images
+            assign kws = settings.snh_frame_keywords | downcase | split: ','
+            assign kept = 0
+            for media in product.media
+              assign probe = media.preview_image.src | split: '?' | first | split: '/' | last | append: ' ' | append: media.alt | downcase
+              assign hit = false
+              for k in kws
+                assign kk = k | strip
+                if kk != blank and probe contains kk
+                  assign hit = true
+                endif
+              endfor
+              if hit
+                assign gal_skip = gal_skip | append: media.id | append: ','
+              else
+                assign kept = kept | plus: 1
+              endif
+            endfor
+            if kept == 0
+              assign gal_skip = ','
+            endif
+          endif
+          assign gal_count = 0
+          for media in product.media
+            assign key = ',' | append: media.id | append: ','
+            unless gal_skip contains key
+              assign gal_count = gal_count | plus: 1
+            endunless
+          endfor
           assign gal_active = product.selected_or_first_available_variant.featured_media | default: product.featured_media
         -%}
         <div class="snh-gal{% if gal_count == 1 %} snh-gal--single{% endif %}" data-snh-gal>
           <div class="snh-gal__stage">
             <ul class="snh-gal__list" data-snh-gal-list>
+              {%- assign gi = 0 -%}
               {%- for media in product.media -%}
-                <li class="snh-gal__slide{% if media.id == gal_active.id %} is-active{% endif %}" data-snh-slide data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}">
+                {%- assign key = ',' | append: media.id | append: ',' -%}
+                {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
+                <li class="snh-gal__slide{% if media.id == gal_active.id %} is-active{% endif %}" data-snh-slide data-index="{{ gi }}" data-media-id="{{ media.id }}">
                   <div class="snh-gal__box" style="--snh-asp: {{ media.preview_image.aspect_ratio | default: 1 }};">
                     {%- if media.media_type == 'image' -%}
                       <img src="{{ media | image_url: width: 1200 }}"
@@ -2779,12 +2830,13 @@
                         sizes="(max-width: 999px) 100vw, 46vw"
                         alt="{{ media.alt | escape }}"
                         width="{{ media.preview_image.width }}" height="{{ media.preview_image.height }}"
-                        loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"{% if forloop.first %} fetchpriority="high"{% endif %} decoding="async">
+                        loading="{% if gi == 0 %}eager{% else %}lazy{% endif %}"{% if gi == 0 %} fetchpriority="high"{% endif %} decoding="async">
                     {%- else -%}
                       {{ media | media_tag: image_size: '1200x' }}
                     {%- endif -%}
                   </div>
                 </li>
+                {%- assign gi = gi | plus: 1 -%}
               {%- endfor -%}
             </ul>
             {%- if gal_count > 1 -%}
@@ -2798,10 +2850,14 @@
               <span class="snh-gal__bar-track"><span class="snh-gal__bar-thumb" data-snh-gal-thumb-bar style="inline-size: {{ 100 | divided_by: gal_count }}%;"></span></span>
             </div>
             <div class="snh-gal__thumbs" data-snh-gal-thumbs role="tablist" aria-label="Product images">
+              {%- assign gi = 0 -%}
               {%- for media in product.media -%}
-                <button type="button" class="snh-gal__thumb{% if media.id == gal_active.id %} is-active{% endif %}" data-snh-thumb data-index="{{ forloop.index0 }}" role="tab" aria-label="Image {{ forloop.index }}">
+                {%- assign key = ',' | append: media.id | append: ',' -%}
+                {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
+                <button type="button" class="snh-gal__thumb{% if media.id == gal_active.id %} is-active{% endif %}" data-snh-thumb data-index="{{ gi }}" role="tab" aria-label="Image {{ gi | plus: 1 }}">
                   <img src="{{ media.preview_image | image_url: width: 160 }}" alt="" loading="lazy" decoding="async" width="80" height="80">
                 </button>
+                {%- assign gi = gi | plus: 1 -%}
               {%- endfor -%}
             </div>
           {%- endif -%}
@@ -2921,13 +2977,122 @@
 {%- if section.settings.v2_bundles -%}
   <div hidden data-v2-bundle-src>{%- render 'snh-v2-bundles', product: product, handles: section.settings.v2_bundle_handles, limit: 3 -%}</div>
 {%- endif -%}
-<section class="v2 v-section v2pdp-details" data-v2-details hidden aria-labelledby="det-{{ section.id }}">
-  <div class="v-wrap split">
-    <div class="head__text"><p class="eyebrow">{{ section.settings.v2_details_eyebrow | escape }}</p><h2 class="v-h1" id="det-{{ section.id }}">{% render 'snh-v2-heading', text: section.settings.v2_details_heading %}</h2>
-      {%- if section.settings.v2_details_lead != blank -%}<p class="lead">{{ section.settings.v2_details_lead | escape }}</p>{%- endif -%}</div>
-    <div class="acc" data-v2-details-slot></div>
+{%- comment -%}
+  "The details" band: full-width tabs on desktop, accordions on phones (assets/snh-v2.js data-v2="dtabs").
+  Panels, each shown only when it has content: Description · How to use (block or custom.how_to_use) ·
+  Ingredients & nutrition (custom.ingredients + the product's nutrition-panel images) · FAQs (custom.faqs) ·
+  Delivery & returns (section setting, with a built-in fallback) · then the template's other collapsible blocks.
+  Merchant rich text is normalised (.det__rte) so pasted headings, grids and tables can't break the layout.
+{%- endcomment -%}
+{%- liquid
+  assign det_tabs = ''
+  assign det_panels = ''
+  assign det_n = 0
+  assign how_done = false
+-%}
+{%- capture det_desc -%}{{ product.description }}{%- endcapture -%}
+{%- capture det_how -%}
+  {%- for b in section.blocks -%}
+    {%- assign bt = b.settings.title | downcase -%}
+    {%- if b.type == 'collapsible_text' and bt contains 'how to' -%}{{ b.settings.page.content | default: b.settings.content }}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign how_text = det_how | strip_html | remove: '.' | strip -%}
+{%- if how_text == blank and product.metafields.custom.how_to_use != blank -%}
+  {%- capture det_how -%}{{ product.metafields.custom.how_to_use | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+{%- capture det_ing -%}
+  {%- if product.metafields.custom.ingredients != blank -%}{{ product.metafields.custom.ingredients | metafield_tag }}{%- endif -%}
+  {%- assign panels_shown = 0 -%}
+  {%- for m in product.media -%}
+    {%- if m.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+    {%- assign fname = m.preview_image.src | split: '?' | first | split: '/' | last | downcase | remove: 'sportsnutritionhub' | remove: 'appliednutrition' | remove: 'rawnutrition' | remove: 'optimumnutrition' | remove: 'nutritionhub' -%}
+    {%- assign probe = m.alt | downcase | append: ' ' | append: fname -%}
+    {%- if probe contains 'nutritional' or fname contains 'nutri' or probe contains 'panel' or probe contains 'facts' or probe contains 'ingredient' or fname contains 'screenshot' -%}
+      <figure class="det__panelimg">{{ m.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 767px) 100vw, 720px', widths: '600,900,1200', alt: m.alt | default: 'Nutrition information' }}</figure>
+      {%- assign panels_shown = panels_shown | plus: 1 -%}
+      {%- if panels_shown >= 2 -%}{%- break -%}{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture det_faq -%}
+  {%- if product.metafields.custom.faqs != blank -%}{{ product.metafields.custom.faqs | metafield_tag }}{%- elsif product.metafields.custom.faq != blank -%}{{ product.metafields.custom.faq | metafield_tag }}{%- endif -%}
+{%- endcapture -%}
+{%- capture det_ship -%}
+  {%- if section.settings.v2_delivery != blank -%}
+    {{ section.settings.v2_delivery }}
+  {%- else -%}
+    {%- assign free_from = settings.cart_free_shipping_threshold | default: 17000 | times: 100 | money_without_trailing_zeros -%}
+    <ul><li><strong>Colombo:</strong> same-day delivery.</li><li><strong>Rest of Sri Lanka:</strong> 2–3 working days.</li><li><strong>Free delivery</strong> on orders over {{ free_from }}.</li><li>Pay by card, bank transfer, cash on delivery or Koko (pay in 3).</li></ul>
+    {%- if shop.refund_policy -%}<p>Returns and refunds: see our <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a>.</p>{%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture det_list -%}description|Description,how|How to use,ing|Ingredients & nutrition,faq|FAQs,ship|Delivery & returns{%- endcapture -%}
+{%- assign det_items = det_list | split: ',' -%}
+{%- for it in det_items -%}
+  {%- assign kv = it | split: '|' -%}
+  {%- case kv[0] -%}
+    {%- when 'description' -%}{%- assign body = det_desc -%}
+    {%- when 'how' -%}{%- assign body = det_how -%}
+    {%- when 'ing' -%}{%- assign body = det_ing -%}
+    {%- when 'faq' -%}{%- assign body = det_faq -%}
+    {%- when 'ship' -%}{%- assign body = det_ship -%}
+  {%- endcase -%}
+  {%- assign txt = body | strip_html | remove: '.' | strip -%}
+  {%- unless txt != blank or body contains '<img' -%}{%- continue -%}{%- endunless -%}
+  {%- assign det_n = det_n | plus: 1 -%}
+  {%- capture pid -%}det-{{ section.id }}-{{ kv[0] }}{%- endcapture -%}
+  {%- capture det_tabs -%}{{ det_tabs }}<button type="button" role="tab" id="{{ pid }}-t" aria-controls="{{ pid }}" aria-selected="{% if det_n == 1 %}true{% else %}false{% endif %}">{{ kv[1] | escape }}</button>{%- endcapture -%}
+  {%- capture det_panels -%}{{ det_panels }}<div class="det__panel{% if det_n == 1 %} is-on{% endif %}" id="{{ pid }}" role="tabpanel" aria-labelledby="{{ pid }}-t"><button type="button" class="det__acc" aria-expanded="{% if det_n == 1 %}true{% else %}false{% endif %}">{{ kv[1] | escape }}<i aria-hidden="true"></i></button><div class="det__body det__rte">{{ body }}</div></div>{%- endcapture -%}
+{%- endfor -%}
+{%- for b in section.blocks -%}
+  {%- if b.type != 'collapsible_text' -%}{%- continue -%}{%- endif -%}
+  {%- assign bt = b.settings.title | downcase -%}
+  {%- if bt contains 'how to' or bt contains 'description' -%}{%- continue -%}{%- endif -%}
+  {%- capture body -%}{{ b.settings.page.content | default: b.settings.content }}{%- endcapture -%}
+  {%- assign txt = body | strip_html | remove: '.' | strip -%}
+  {%- if txt == blank -%}{%- continue -%}{%- endif -%}
+  {%- assign det_n = det_n | plus: 1 -%}
+  {%- capture pid -%}det-{{ section.id }}-{{ b.id }}{%- endcapture -%}
+  {%- capture det_tabs -%}{{ det_tabs }}<button type="button" role="tab" id="{{ pid }}-t" aria-controls="{{ pid }}" aria-selected="false">{{ b.settings.title | escape }}</button>{%- endcapture -%}
+  {%- capture det_panels -%}{{ det_panels }}<div class="det__panel" id="{{ pid }}" role="tabpanel" aria-labelledby="{{ pid }}-t"><button type="button" class="det__acc" aria-expanded="false">{{ b.settings.title | escape }}<i aria-hidden="true"></i></button><div class="det__body det__rte">{{ body }}</div></div>{%- endcapture -%}
+{%- endfor -%}
+{%- comment -%} Stats band: product metafield custom.stats, one "value | label" per line (or a list), up to 4. Nothing renders without it. {%- endcomment -%}
+{%- liquid
+  assign stat_src = product.metafields.custom.stats.value
+  unless product.metafields.custom.stats.type contains 'list'
+    assign stat_src = product.metafields.custom.stats.value | newline_to_br | split: '<br />'
+  endunless
+  assign stat_n = 0
+-%}
+{%- capture stat_html -%}
+  {%- for line in stat_src -%}
+    {%- assign parts = line | strip_html | split: '|' -%}
+    {%- assign sv = parts[0] | strip -%}{%- assign sl = parts[1] | strip -%}
+    {%- if sv == blank or sl == blank -%}{%- continue -%}{%- endif -%}
+    <div class="pstat"><strong>{{ sv | escape }}</strong><span>{{ sl | escape }}</span></div>
+    {%- assign stat_n = stat_n | plus: 1 -%}
+    {%- if stat_n >= 4 -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if stat_n > 0 -%}
+<section class="v2 pstats" aria-label="Key stats"><div class="v-wrap pstats__in">{{ stat_html }}</div></section>
+{%- endif -%}
+{%- if det_n > 0 -%}
+<section class="v2 v-section v2pdp-details" id="details-{{ section.id }}" aria-labelledby="det-{{ section.id }}">
+  <div class="v-wrap">
+    <div class="det__head">
+      {%- if section.settings.v2_details_eyebrow != blank -%}<p class="eyebrow">{{ section.settings.v2_details_eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="v-h1" id="det-{{ section.id }}">{% render 'snh-v2-heading', text: section.settings.v2_details_heading %}</h2>
+      {%- if section.settings.v2_details_lead != blank -%}<p class="lead">{{ section.settings.v2_details_lead | escape }}</p>{%- endif -%}
+    </div>
+    <div class="det" data-v2="dtabs">
+      <div class="det__tabs" role="tablist" aria-label="Product details">{{ det_tabs }}</div>
+      {{ det_panels }}
+    </div>
   </div>
 </section>
+{%- endif -%}
 
 {%- assign buy_buttons_block = section.blocks | where: 'type', 'buy_buttons' | first -%}
 
@@ -4888,6 +5053,7 @@
     { "type": "text", "id": "v2_details_eyebrow", "label": "Details band eyebrow", "default": "The details" },
     { "type": "text", "id": "v2_details_heading", "label": "Details band heading", "default": "Everything *inside*" },
     { "type": "text", "id": "v2_details_lead", "label": "Details band lead", "default": "What it does, how to use it and exactly what goes in." },
+    { "type": "richtext", "id": "v2_delivery", "label": "Delivery & returns tab", "info": "Leave empty for the built-in text: Colombo same day, 2–3 working days elsewhere, free delivery over the cart threshold, payment options and the refund policy link." },
     {
       "type": "checkbox",
       "id": "full_width",

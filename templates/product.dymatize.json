@@ -239,9 +239,9 @@
         "stack_products": false,
         "show_progress_bar": true,
         "products_per_row_mobile": "2",
-        "products_per_row_desktop": 3,
+        "products_per_row_desktop": 4,
         "subheading": "",
-        "title": "MORE FOR YOU",
+        "title": "You may also like",
         "content": "",
         "background": "",
         "background_gradient": "",
@@ -250,17 +250,6 @@
         "heading_gradient": "",
         "product_card_background": "",
         "product_card_text_color": ""
-      }
-    },
-    "text_with_icons_VVapP6": {
-      "type": "text-with-icons",
-      "settings": {
-        "heading": "WHY CHOOSE US?",
-        "heading_color": "#17130f",
-        "subheading": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
-        "bg": "#faf7f2",
-        "card_bg": "#0e0e0f",
-        "accent": "#e0521c"
       }
     },
     "tiktok_profile_f7Ciiw": {
@@ -272,47 +261,8 @@
         "subtext": "Watch new drops, product picks and store updates straight from Sports Nutrition Hub.",
         "handle": "sportsnutritionhub.lk",
         "height": 560
-      }
-    },
-    "faq_qiFxHE": {
-      "type": "faq",
-      "blocks": {
-        "item_RaUN8t": {
-          "type": "item",
-          "settings": {
-            "title": "How long will it take to get my orders?",
-            "content": "<p>It depends on your delivery address.</p><p>Colombo Orders: Same Day<br/>Out of Colombo Orders: 2-3 Working Days</p>"
-          }
-        },
-        "item_dhCwB6": {
-          "type": "item",
-          "settings": {
-            "title": "Where can I come visit physically?",
-            "content": "<p>We have two stores:</p><p>DEHIWALA & WATTALA</p><p>Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear. </p>"
-          }
-        },
-        "item_BCYFpP": {
-          "type": "item",
-          "settings": {
-            "title": "I want to know more",
-            "content": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 77 977 3359</p>"
-          }
-        }
       },
-      "block_order": [
-        "item_RaUN8t",
-        "item_dhCwB6",
-        "item_BCYFpP"
-      ],
-      "settings": {
-        "title": "FAQ’S",
-        "content": "<p>Our customer support is available </p><p>Everyday: 10am-7pm.</p>",
-        "support_image_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/3rdcrd.png?v=1784028499",
-        "support_hours": "",
-        "button_text": "CONTACT FOR MORE",
-        "button_url": "shopify://pages/delivery-and-shipping",
-        "accent_color": "#e0521c"
-      }
+      "disabled": true
     },
     "scrolling_text_yeJznJ": {
       "type": "scrolling-text",
@@ -329,7 +279,8 @@
         "accent_color": "#e0521c",
         "text_color": "#ffffff",
         "text_gradient": ""
-      }
+      },
+      "disabled": true
     },
     "snh_articles": {
       "type": "snh-related-articles",
@@ -342,16 +293,183 @@
         "link_label": "All guides",
         "link_url": "/blogs/news"
       }
+    },
+    "snh_why": {
+      "type": "snh-why-us",
+      "settings": {
+        "eyebrow": "Why choose us",
+        "heading": "The SNH *standard*",
+        "lead": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka."
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "50,000+",
+            "label": "orders delivered"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "",
+            "label": "",
+            "use_rating": true
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "100% authentic",
+            "text": "Direct from brand and authorized distributors."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "card",
+            "title": "Fair pricing",
+            "text": "Transparent prices with frequent bundles and member only deals."
+          }
+        },
+        "benefit_5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "chat",
+            "title": "Expert support",
+            "text": "Fast guidance from our team via chat, phone, or WhatsApp."
+          }
+        },
+        "benefit_6": {
+          "type": "benefit",
+          "settings": {
+            "icon": "badge",
+            "title": "Secure payments",
+            "text": "SSL checkout with cards, bank transfer & KOKO"
+          }
+        },
+        "benefit_7": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Same-day Colombo",
+            "text": "Colombo orders same day, island-wide in 2–3 working days."
+          }
+        },
+        "benefit_8": {
+          "type": "benefit",
+          "settings": {
+            "icon": "bolt",
+            "title": "Earn points",
+            "text": "[bronze]–[gold] back on every order as an SNH Elite member."
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "benefit_3",
+        "benefit_4",
+        "benefit_5",
+        "benefit_6",
+        "benefit_7",
+        "benefit_8"
+      ]
+    },
+    "snh_faq": {
+      "type": "snh-faq",
+      "settings": {
+        "eyebrow": "Support · every day, 10am–7pm",
+        "heading": "Questions, *answered*",
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
+        "style": "light"
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "How long will it take to get my orders?",
+            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I come visit physically?",
+            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "I want to know more",
+            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "Are your supplements genuine?",
+            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "How do I know which supplement is right for me?",
+            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return or exchange a product?",
+            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7"
+      ]
+    },
+    "recently_viewed": {
+      "type": "recently-viewed-products",
+      "settings": {
+        "full_width": false,
+        "products_count": 8,
+        "stack_products": false,
+        "show_progress_bar": true,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "subheading": "",
+        "title": "Recently viewed",
+        "content": ""
+      }
     }
   },
   "order": [
     "main",
-    "snh_articles",
     "175377752863af6b32",
     "related-products",
-    "text_with_icons_VVapP6",
+    "snh_articles",
+    "recently_viewed",
+    "snh_why",
     "tiktok_profile_f7Ciiw",
-    "faq_qiFxHE",
+    "snh_faq",
     "scrolling_text_yeJznJ"
   ]
 }

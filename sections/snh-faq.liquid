@@ -1,15 +1,33 @@
 {%- comment -%}SNH FAQ on ink (prototype "Questions, answered"): heading + support line left, accordion right. One block per question.{%- endcomment -%}
-{%- assign hid = 'faq-' | append: section.id -%}
-<section class="v2 v-section v-section--dark" aria-labelledby="{{ hid }}">
+{%- liquid
+  assign hid = 'faq-' | append: section.id
+  assign light = false
+  if section.settings.style == 'light'
+    assign light = true
+  endif
+  # [whatsapp] in the lead shows the number from Theme settings → SNH contact and reviews, as +94 76 486 3359
+  assign wa = settings.snh_whatsapp | remove: '+' | remove: ' '
+  capture wa_fmt
+    echo '+' | append: wa | slice: 0, 3
+    echo ' '
+    echo wa | slice: 2, 2
+    echo ' '
+    echo wa | slice: 4, 3
+    echo ' '
+    echo wa | slice: 7, 6
+  endcapture
+  assign lead = section.settings.lead | escape | replace: '[whatsapp]', wa_fmt
+-%}
+<section class="v2 v-section{% unless light %} v-section--dark{% endunless %}" aria-labelledby="{{ hid }}">
   <div class="v-wrap split">
     <div class="head__text">
       {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
       <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
-      {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+      {%- if lead != blank -%}<p class="lead">{{ lead }}</p>{%- endif -%}
     </div>
-    <div class="acc acc--dark">
+    <div class="acc{% unless light %} acc--dark{% endunless %}">
       {%- for b in section.blocks -%}
-        <details {{ b.shopify_attributes }}><summary>{{ b.settings.question | escape }}</summary><div class="acc__body v-prose">{{ b.settings.answer }}</div></details>
+        <details {{ b.shopify_attributes }}><summary>{{ b.settings.question | escape }}</summary><div class="acc__body v-prose">{{ b.settings.answer | replace: '[whatsapp]', wa_fmt }}</div></details>
       {%- endfor -%}
     </div>
   </div>
@@ -23,7 +41,8 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Support · every day, 10am–7pm" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Questions, *answered*" },
-    { "type": "textarea", "id": "lead", "label": "Lead", "default": "Call or WhatsApp +94 76 486 3359 for anything not covered here." }
+    { "type": "textarea", "id": "lead", "label": "Lead", "default": "Call or WhatsApp [whatsapp] for anything not covered here.", "info": "[whatsapp] shows the number from Theme settings → SNH contact and reviews." },
+    { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "dark", "label": "Ink" }, { "value": "light", "label": "White" }], "default": "dark" }
   ],
   "blocks": [
     { "type": "question", "name": "Question", "settings": [

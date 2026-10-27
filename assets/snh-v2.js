@@ -542,6 +542,52 @@
   });
 
 
+  /* sticky add to cart: visible only once the main buy button has scrolled above the viewport, and never while the
+     footer is on screen. Mirrors Impact's product-quick-add rule on scroll, so it holds after variant re-renders. */
+  var qaTick = false;
+  function qaSync() {
+    qaTick = false;
+    var ft = document.querySelector('.footer');
+    document.querySelectorAll('product-quick-add').forEach(function (q) {
+      var f = document.getElementById(q.getAttribute('form')), btn = f && (f.querySelector('buy-buttons') || f);
+      var anchor = document.querySelector('.product-info buy-buttons') || btn;
+      if (!anchor) return;
+      var passed = anchor.getBoundingClientRect().bottom < 0;
+      var foot = ft && ft.getBoundingClientRect().top < innerHeight;
+      var on = passed && !foot;
+      if (q.classList.contains('is-visible') !== on) q.classList.toggle('is-visible', on);
+      if (document.body.classList.contains('has-qa') !== on) document.body.classList.toggle('has-qa', on);
+    });
+  }
+  addEventListener('scroll', function () { if (!qaTick) { qaTick = true; requestAnimationFrame(qaSync); } }, { passive: true });
+  addEventListener('resize', qaSync);
+
+  /* product details: tabs on desktop, accordions on phones (same panels) */
+  on('dtabs', function (box) {
+    var tabs = $$('[role="tab"]', box), panels = $$('.det__panel', box);
+    function pick(t, focus) {
+      tabs.forEach(function (x) {
+        var isOn = x === t, p = document.getElementById(x.getAttribute('aria-controls'));
+        x.setAttribute('aria-selected', String(isOn)); x.tabIndex = isOn ? 0 : -1;
+        if (p) p.classList.toggle('is-on', isOn);
+      });
+      if (focus) t.focus();
+    }
+    tabs.forEach(function (t, k) {
+      t.tabIndex = t.getAttribute('aria-selected') === 'true' ? 0 : -1;
+      t.addEventListener('click', function () { pick(t); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        pick(tabs[(k + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
+      });
+    });
+    panels.forEach(function (p) {
+      var b = p.querySelector('.det__acc');
+      if (b) b.addEventListener('click', function () { b.setAttribute('aria-expanded', String(b.getAttribute('aria-expanded') !== 'true')); });
+    });
+  });
+
   /* ================= shop the look: dots ⇄ cards, zoom toward the active dot, popover / bottom sheet ================= */
   on('hotspots', function (hs) {
     var frame = hs.querySelector('.hs__frame');

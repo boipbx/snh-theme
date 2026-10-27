@@ -1007,7 +1007,7 @@
       "settings": {
         "eyebrow": "Support · every day, 10am–7pm",
         "heading": "Questions, *answered*",
-        "lead": "Call or WhatsApp +94 76 486 3359 for anything not covered here."
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here."
       },
       "blocks": {
         "question_1": {
@@ -1028,7 +1028,7 @@
           "type": "question",
           "settings": {
             "question": "I want to know more",
-            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 76 486 3359</p>"
+            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
           }
         },
         "question_4": {

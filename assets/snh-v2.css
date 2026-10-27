@@ -1404,3 +1404,83 @@ product-card.card { display: flex; flex-direction: column; min-width: 0; height:
 /* dark contexts (SiS strip) */
 .sis__cards .card__brand, .sis__cards .card__fact, .sis__cards .card__koko, .sis__cards .card__was, .sis__cards .card__from, .sis__cards .card__count { color: rgba(255, 255, 255, .7); }
 .sis__cards .card__name, .sis__cards .card__now, .sis__cards .card__rating { color: #fff; }
+
+/* ---------- R5 · product details band: tabs (desktop) / accordions (phones), normalised merchant rich text ---------- */
+.v2pdp-details { background: #fff; border-top: 1px solid rgba(12, 12, 13, .08); }
+.det__head { max-width: 72ch; margin: 0 auto 32px; text-align: center; }
+.det__head .lead { margin-top: 8px; }
+.det__tabs { display: none; }
+.det__acc { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 56px; padding: 0; border: 0; border-bottom: 1px solid rgba(12, 12, 13, .1); background: none; font: 600 17px/1.3 var(--sans); color: var(--ink); text-align: left; cursor: pointer; }
+.det__acc i { position: relative; width: 14px; height: 14px; flex: 0 0 14px; }
+.det__acc i::before, .det__acc i::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; border-radius: 1px; background: currentColor; transition: transform var(--t) var(--ease); }
+.det__acc i::after { transform: rotate(90deg); }
+.det__acc[aria-expanded="true"] i::after { transform: rotate(0); }
+.det__body { padding: 16px 0 24px; }
+.det__acc[aria-expanded="false"] + .det__body { display: none; }
+@media (min-width: 1024px) {
+  .det__tabs { display: flex; justify-content: center; gap: 4px; margin: 0 auto 32px; padding: 4px; width: max-content; max-width: 100%; overflow-x: auto; border-radius: 999px; background: #F5F2EC; scrollbar-width: none; }
+  .det__tabs [role="tab"] { flex: 0 0 auto; min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: none; font: 600 14px/1 var(--sans); color: var(--grey-1, #4a4a4a); cursor: pointer; transition: background-color var(--t) var(--ease), color var(--t) var(--ease); }
+  .det__tabs [role="tab"]:hover { color: var(--ink); }
+  .det__tabs [role="tab"][aria-selected="true"] { background: var(--ink); color: #fff; }
+  .det__acc { display: none; }
+  .det__panel:not(.is-on) { display: none; }
+  .det__acc[aria-expanded="false"] + .det__body { display: block; }
+  .det__body { padding: 0; }
+}
+.det__rte { max-width: 72ch; margin-inline: auto; font: 400 16px/1.65 var(--sans); color: #3D3D3D; overflow-wrap: anywhere; }
+.det__rte :where(div, section, article, span) { display: revert; }
+.det__rte div, .det__rte section, .det__rte article { display: block !important; width: auto !important; max-width: none !important; grid-template-columns: none !important; gap: 0 !important; padding: 0 !important; margin: 0 !important; }
+.det__rte > :first-child, .det__rte > div:first-child > :first-child, .det__rte > div:first-child > div:first-child > :first-child { margin-top: 0 !important; }
+.det__rte h1, .det__rte h2, .det__rte h3, .det__rte h4, .det__rte h5, .det__rte h6 { margin: 1.6em 0 .5em !important; font-family: var(--sans) !important; font-weight: 600 !important; letter-spacing: -.01em !important; text-transform: none !important; color: var(--ink) !important; line-height: 1.3 !important; }
+.det__rte h1 { font-size: 24px !important; }
+.det__rte h2 { font-size: 20px !important; }
+.det__rte h3 { font-size: 17px !important; }
+.det__rte h4, .det__rte h5, .det__rte h6 { font-size: 15px !important; }
+.det__rte p { margin: 0 0 1em !important; font: inherit !important; color: inherit !important; }
+.det__rte strong, .det__rte b { font-weight: 600; color: var(--ink); }
+.det__rte ul, .det__rte ol { margin: 0 0 1em !important; padding-left: 1.25em !important; }
+.det__rte ul { list-style: disc !important; }
+.det__rte ol { list-style: decimal !important; }
+.det__rte li { margin: .35em 0 !important; padding: 0 !important; }
+.det__rte li::marker { color: var(--v-accent); }
+.det__rte a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--v-accent); text-underline-offset: 3px; }
+.det__rte img, .det__rte video, .det__rte iframe { max-width: 100% !important; height: auto !important; border-radius: 8px; }
+.det__rte table { display: block; max-width: 100%; overflow-x: auto; margin: 0 0 1em; border-collapse: collapse; font-size: 14px; }
+.det__rte th, .det__rte td { padding: 8px 12px; border-bottom: 1px solid rgba(12, 12, 13, .1); text-align: left; white-space: nowrap; }
+.det__panelimg { margin: 0 0 16px; }
+.det__panelimg img { display: block; width: 100%; max-width: 720px; height: auto; margin-inline: auto; border-radius: 12px; background: #F5F2EC; }
+.det__head .lead { margin-inline: auto; }
+
+/* ---------- R5 · sticky add to cart: a slim full-width bar, only after the main button has scrolled away
+   (Impact's product-quick-add logic), gone while the footer is in view; the page reserves room for it ---------- */
+product-quick-add.product-quick-add { left: 0 !important; right: 0 !important; width: 100% !important; max-width: none !important; margin: 0 !important; z-index: 20; padding: 10px max(16px, calc((100vw - 1152px) / 2)) calc(10px + env(safe-area-inset-bottom)) !important; border: 0; border-top: 1px solid rgba(12, 12, 13, .08); border-radius: 0 !important; background: rgba(255, 255, 255, .97); box-shadow: 0 -12px 32px -16px rgba(12, 12, 13, .25); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+product-quick-add .product-quick-add__variant { display: none; }
+@media (min-width: 700px) {
+  product-quick-add .product-quick-add__variant { display: flex !important; align-items: center; gap: 16px; width: 100%; max-width: none !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+  product-quick-add .product-quick-add__variant variant-media img { width: 48px !important; height: 48px !important; object-fit: contain; border-radius: 8px !important; background: #F5F2EC; }
+  product-quick-add .product-quick-add__variant .v-stack { flex: 1; min-width: 0; gap: 2px !important; }
+  product-quick-add .product-quick-add__variant .v-stack > a { font: 600 15px/1.3 var(--sans) !important; color: var(--ink) !important; }
+  product-quick-add .product-quick-add__variant .v-stack price-list, product-quick-add .product-quick-add__variant .v-stack sale-price { font: 500 14px/1.3 var(--sans) !important; color: var(--grey-1, #4a4a4a) !important; }
+  product-quick-add .product-quick-add__variant .vendor, product-quick-add .product-quick-add__variant .koko-pdp-message { display: none !important; }
+  product-quick-add .product-quick-add__variant buy-buttons { flex: 0 0 auto; margin: 0 !important; }
+}
+#main product-quick-add.product-quick-add buy-buttons .button, #main product-quick-add.product-quick-add button[type="submit"] { min-height: 48px !important; padding: 0 32px !important; border: 0 !important; border-radius: 999px !important; background: var(--ink) !important; color: #fff !important; font: 600 15px/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; box-shadow: none !important; }
+#main product-quick-add.product-quick-add buy-buttons .button:hover, #main product-quick-add.product-quick-add button[type="submit"]:hover { background: var(--v-accent) !important; }
+body:has(product-quick-add) main#main { padding-bottom: 76px; }
+
+/* ---------- R5 · product page lower sections from Impact/apps, brought into the v2 type and rhythm ---------- */
+.shopify-section--product-recommendations, .shopify-section--recently-viewed-products { background: #fff; }
+.shopify-section--product-recommendations .section, .shopify-section--recently-viewed-products .section { padding-block: clamp(48px, 6vw, 88px) !important; }
+:is(.shopify-section--product-recommendations, .shopify-section--recently-viewed-products) .section-header { margin-bottom: 32px; }
+:is(.shopify-section--product-recommendations, .shopify-section--recently-viewed-products) .section-header .h2 { font: 600 var(--fs-h1, clamp(32px, 4vw, 52px))/1.08 var(--sans) !important; letter-spacing: -.025em !important; text-transform: none !important; color: var(--ink) !important; }
+:is(.shopify-section--product-recommendations, .shopify-section--recently-viewed-products) .section-header .subheading { font: 600 12px/1.4 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--grey-2, #6b6b6b); }
+:is(.shopify-section--product-recommendations, .shopify-section--recently-viewed-products) .product-list { --product-list-column-gap: 24px; --product-list-row-gap: 32px; }
+@media (max-width: 699px) { :is(.shopify-section--product-recommendations, .shopify-section--recently-viewed-products) .product-list { --product-list-column-gap: 12px; } }
+/* Judge.me widget: v2 heading, cream band, no extra chrome */
+.shopify-section--apps:has(.jdgm-widget) { background: #FBF9F5; }
+.shopify-section--apps:has(.jdgm-widget) .section { padding-block: clamp(48px, 6vw, 88px) !important; }
+.jdgm-rev-widg__title { font: 600 var(--fs-h1, clamp(32px, 4vw, 52px))/1.08 var(--sans) !important; letter-spacing: -.025em !important; text-transform: none !important; color: var(--ink) !important; }
+.shopify-section--apps:has(.jdgm-widget) .section { padding-block: 56px !important; }
+.shopify-section--apps .jdgm-widget.jdgm-review-widget, .shopify-section--apps .jdgm-rev-widg { box-sizing: border-box !important; width: auto !important; max-width: 1152px !important; margin: 0 auto !important; }
+.shopify-section--apps:has(.jdgm-widget) .container { max-width: calc(1152px + 48px); padding-inline: 24px; }
+:is(.shopify-section--product-recommendations, .shopify-section--recently-viewed-products) .section { background: transparent !important; }

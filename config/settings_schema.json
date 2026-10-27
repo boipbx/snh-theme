@@ -1467,5 +1467,28 @@
         "default": "Google reviews"
       }
     ]
+  },
+  {
+    "name": "SNH product images",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Most packshots carry SNH's orange frame and logo baked into the file. Product cards crop inside the frame automatically. The product page gallery shows images whole."
+      },
+      {
+        "type": "checkbox",
+        "id": "snh_clean_images",
+        "label": "Prefer clean images",
+        "default": false,
+        "info": "Product page gallery leaves out images whose file name or alt text contains a keyword below, when at least one other image remains. Variant images that are left out can't be shown when that variant is picked."
+      },
+      {
+        "type": "text",
+        "id": "snh_frame_keywords",
+        "label": "Framed image keywords",
+        "default": "snh-frame, snh_frame, fromsportsnutritionhub",
+        "info": "Comma separated, matched case-insensitively against the file name and alt text."
+      }
+    ]
   }
 ]
