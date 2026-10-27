@@ -1,92 +1,216 @@
 {%- comment -%}
-  SNH v2 product card (prototype card anatomy): packshot tile, badge, quick add, brand, name, two key facts,
-  price + compare-at, Koko line. Facts come from product.metafields.custom.key_benefits (first two lines).
+  SNH v2 product card, the one card used everywhere (homepage, collections, search, related, recently viewed; the
+  theme's product-card snippet renders this too).
+  Tile: one cream backdrop, the pack contained with even padding. Packshots with SNH's baked-in orange frame
+  (file name contains "SportsNutritionHub" or "snh-frame") are cropped inside the frame; assets/snh-v2.js
+  (data-v2-lift) lifts grey studio backgrounds to white so every pack blends into the tile (mix-blend multiply).
+  Desktop hover crossfades to the next packshot (nutrition panels and screenshots skipped).
+  Body: brand · name (2 lines, whole words) · Judge.me stars (reviews.rating metafields, hidden when none) ·
+  one key fact (custom.key_benefits, whole words) · price, compare-at · Koko.
+  Quick add: single variant adds in one tap (data-v2-add); multi-variant opens the theme's quick-buy drawer.
   product, sizes (optional), eager (optional)
-  Single-variant products add in one tap (assets/snh-v2.js, data-v2-add); multi-variant products open the
-  theme's quick-buy drawer.
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant
-  assign img_sizes = sizes | default: '(max-width: 899px) 50vw, 25vw'
-  assign img_alt = product.featured_image.alt | default: product.title
+  assign img_sizes = sizes | default: '(max-width: 767px) 50vw, (max-width: 1199px) 33vw, 25vw'
+  assign title_full = product.title | escape
+  assign multi = true
+  if product.has_only_default_variant
+    assign multi = false
+  endif
   assign third = product.price | divided_by: 300.0 | round | times: 100
-  assign multi = false
-  if product.has_only_default_variant == false
-    assign multi = true
-  endif
-  assign badge = ''
+  capture retail
+    render 'snh-v2-retail', product: product
+  endcapture
+  assign retail = retail | strip | plus: 0
+
+  assign tags = product.tags | join: '|' | downcase
+  assign badges = ''
   if product.available == false
-    assign badge = 'Sold out'
-  elsif product.compare_at_price > product.price
-    assign badge = 'Sale'
+    assign badges = 'Sold out'
+  else
+    if retail > product.price
+      assign badges = 'Sale'
+    endif
+    assign custom_badges = product.metafields.custom.badges.value
+    for cb in custom_badges
+      assign badges = badges | append: ',' | append: cb
+    endfor
+    if tags contains 'bestseller' or tags contains 'best seller' or tags contains 'best-seller'
+      unless badges contains 'Bestseller'
+        assign badges = badges | append: ',Bestseller'
+      endunless
+    endif
+    if tags contains 'informed sport' or tags contains 'informed-sport'
+      assign badges = badges | append: ',Informed Sport'
+    endif
+    assign now_s = 'now' | date: '%s' | plus: 0
+    assign made_s = product.created_at | date: '%s' | plus: 0
+    assign age = now_s | minus: made_s
+    if age < 3888000
+      assign badges = badges | append: ',New'
+    endif
   endif
-  assign custom_badges = product.metafields.custom.badges.value
-  if badge == blank and custom_badges != blank
-    assign badge = custom_badges | first
+  assign badge_list = badges | remove_first: ',' | split: ','
+
+  assign img1 = product.featured_media.preview_image | default: product.featured_image
+  assign img2 = nil
+  for m in product.media offset: 1
+    if m.media_type != 'image'
+      continue
+    endif
+    # skip nutrition panels, labels and screenshots (file name without brand/store words, and the alt text)
+    assign fname = m.preview_image.src | split: '?' | first | split: '/' | last | downcase | remove: 'sportsnutritionhub' | remove: 'appliednutrition' | remove: 'rawnutrition' | remove: 'optimumnutrition' | remove: 'nutritionhub'
+    assign probe = m.alt | downcase | append: ' ' | append: fname
+    if probe contains 'nutritional' or fname contains 'nutri' or probe contains 'panel' or probe contains 'screenshot' or probe contains 'facts' or fname contains 'label' or probe contains 'ingredient' or probe contains 'nutrition info'
+      continue
+    endif
+    assign img2 = m.preview_image
+    break
+  endfor
+  assign f1 = img1.src | split: '?' | first | downcase
+  assign framed1 = false
+  if f1 contains 'sportsnutritionhub' or f1 contains 'snh-frame'
+    assign framed1 = true
   endif
+  assign f2 = img2.src | split: '?' | first | downcase
+  assign framed2 = false
+  if f2 contains 'sportsnutritionhub' or f2 contains 'snh-frame'
+    assign framed2 = true
+  endif
+
+  assign chip = ''
+  if multi
+    for option in product.options_with_values
+      assign oname = option.name | downcase
+      if option.values.size < 2
+        continue
+      endif
+      if oname contains 'flavo'
+        assign chip = option.values.size | append: ' flavours'
+        break
+      elsif oname contains 'size' and chip == ''
+        assign chip = option.values.size | append: ' sizes'
+      endif
+    endfor
+  endif
+
   assign facts = product.metafields.custom.key_benefits.value
   unless product.metafields.custom.key_benefits.type contains 'list'
     assign facts = facts | newline_to_br | split: '<br />'
   endunless
+  assign fact = ''
+  for f in facts
+    assign t = f | strip_html | split: ':' | first | remove: '•' | remove: '✔' | remove: '✓' | strip
+    for i in (1..3)
+      assign c1 = t | slice: 0
+      if c1 == "'" or c1 == '-' or c1 == '–' or c1 == '—' or c1 == '*' or c1 == '"'
+        assign t = t | slice: 1, 400 | strip
+      endif
+    endfor
+    if t != blank
+      assign fact = t
+      break
+    endif
+  endfor
+
+  assign r_count = product.metafields.reviews.rating_count.value | plus: 0
+  assign r_value = product.metafields.reviews.rating.value.rating | default: 0 | round: 1
 -%}
-<article class="card{% unless product.available %} card--out{% endunless %}">
+<product-card class="card{% unless product.available %} card--out{% endunless %}" handle="{{ product.handle }}">
   <div class="card__media">
-    <a href="{{ product.url }}" aria-label="{{ product.title | escape }}" tabindex="-1">
-      {%- if badge != blank -%}<span class="v-badge{% if badge == 'Sale' or badge == 'Bestseller' %} v-badge--accent{% endif %}">{{ badge | escape }}</span>{%- endif -%}
-      <div class="shot">
-        {%- if product.featured_image -%}
-          {{- product.featured_image | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'lazy', decoding: 'async', sizes: img_sizes, widths: '400,600,800', alt: img_alt -}}
+    <a class="card__tile" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
+      {%- if img1 -%}
+        <span class="card__img{% if framed1 %} is-framed{% endif %}">
+          {%- if eager -%}
+            {{- img1 | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'eager', fetchpriority: 'high', sizes: img_sizes, widths: '300,400,600,800', alt: '', data-v2-lift: '' -}}
+          {%- else -%}
+            {{- img1 | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'lazy', decoding: 'async', sizes: img_sizes, widths: '300,400,600,800', alt: '', data-v2-lift: '' -}}
+          {%- endif -%}
+        </span>
+        {%- if img2 != blank -%}
+          <span class="card__img card__img--alt{% if framed2 %} is-framed{% endif %}" aria-hidden="true">
+            {{- img2 | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'lazy', decoding: 'async', sizes: img_sizes, widths: '300,400,600,800', alt: '', data-v2-lift: '' -}}
+          </span>
         {%- endif -%}
-      </div>
+      {%- else -%}
+        <span class="card__img">{{ 'product-1' | placeholder_svg_tag: 'card__ph' }}</span>
+      {%- endif -%}
     </a>
+    {%- if badge_list.size > 0 -%}
+      <ul class="card__badges">
+        {%- for b in badge_list limit: 2 -%}
+          {%- assign bh = b | handleize -%}
+          <li class="card__badge card__badge--{{ bh }}">{{ b | escape }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if chip != blank -%}<span class="card__chip">{{ chip }}</span>{%- endif -%}
     {%- if product.available -%}
       {%- if multi -%}
         {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-        <button class="quick" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ product.title | escape }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
+        <button class="quick" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ title_full }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
         <quick-buy-drawer id="{{ qb }}" header-bordered open-from="bottom" handle="{{ product.handle }}?variant={{ v.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
       {%- else -%}
-        <button class="quick" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ product.title | escape }} to basket">{% render 'snh-v2-icon', name: 'plus' %}<span class="quick__tick">{% render 'snh-v2-icon', name: 'check' %}</span></button>
+        <button class="quick" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ title_full }} to basket">{% render 'snh-v2-icon', name: 'plus' %}<span class="quick__tick">{% render 'snh-v2-icon', name: 'check' %}</span></button>
       {%- endif -%}
     {%- endif -%}
   </div>
   <div class="card__body">
-    {%- if product.vendor != blank -%}<p class="card__brand eyebrow">{{ product.vendor | escape }}</p>{%- endif -%}
-    <a href="{{ product.url }}" class="card__name">{% render 'snh-v2-title', product: product, short: true %}</a>
-    {%- liquid
-      assign fact1 = ''
-      for fact in facts
-        assign f = fact | strip_html | split: ':' | first | remove: '•' | remove: '✔' | remove: '✓' | strip
-        if f != blank
-          assign fact1 = f
-          break
-        endif
-      endfor
-      assign fact2 = ''
-      if multi
-        for option in product.options_with_values
-          assign oname = option.name | downcase
-          if option.values.size < 2
-            continue
+    <div class="card__top">
+      <p class="card__brand">{{ product.vendor | escape }}</p>
+      {%- if r_count > 0 -%}
+        <p class="card__rating" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="card__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="card__count">({{ r_count }})</span></span></p>
+      {%- endif -%}
+    </div>
+    {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
+    {%- assign words = short | strip_html | strip | split: ' ' -%}
+    <h3 class="card__name"><a href="{{ product.url }}" title="{{ title_full }}">{% for w in words %}<span>{{ w }}</span> {% endfor %}</a></h3>
+    {%- if fact != blank -%}
+      {%- liquid
+        # whole words only, trailing joiners dropped: a long line for wide cards, a short one for phones
+        assign fwords = fact | split: ' '
+        assign joiners = ' and or with for of the a an to per in & + - – , '
+        assign f_long = ''
+        assign f_short = ''
+        for w in fwords
+          assign try = f_long | append: ' ' | append: w | strip
+          if try.size > 44
+            break
           endif
-          if oname contains 'flavo'
-            assign fact2 = option.values.size | append: ' flavours'
-          elsif oname contains 'size' and fact2 == ''
-            assign fact2 = option.values.size | append: ' sizes'
+          assign f_long = try
+        endfor
+        for w in fwords
+          assign try = f_short | append: ' ' | append: w | strip
+          if try.size > 27
+            break
+          endif
+          assign f_short = try
+        endfor
+        for i in (1..3)
+          assign lw = f_long | split: ' ' | last | downcase | prepend: ' ' | append: ' '
+          if joiners contains lw and f_long != fact
+            assign lw = f_long | split: ' ' | last
+            assign f_long = f_long | remove_last: lw | strip
+          endif
+          assign lw = f_short | split: ' ' | last | downcase | prepend: ' ' | append: ' '
+          if joiners contains lw and f_short != fact
+            assign lw = f_short | split: ' ' | last
+            assign f_short = f_short | remove_last: lw | strip
           endif
         endfor
-        if fact2 == '' and product.variants.size > 1
-          assign fact2 = product.variants.size | append: ' options'
+        assign f_long = f_long | remove_last: ',' | remove_last: ' –' | strip
+        assign f_short = f_short | remove_last: ',' | remove_last: ' –' | strip
+        if f_short == blank
+          assign f_short = f_long
         endif
-      endif
-    -%}
-    {%- if fact1 != blank or fact2 != blank -%}
-      <ul class="card__stats">
-        {%- if fact1 != blank -%}<li><span>{{ fact1 | escape }}</span></li>{%- endif -%}
-        {%- if fact2 != blank -%}<li><span>{{ fact2 }}</span></li>{%- endif -%}
-      </ul>
+      -%}
+      <p class="card__fact" title="{{ fact | escape }}"><span class="card__fact-l">{{ f_long | escape }}</span><span class="card__fact-s">{{ f_short | escape }}</span></p>
     {%- endif -%}
-    <p class="card__price"><span class="card__now">{% if product.price_varies %}From {% endif %}{{ product.price | money_without_trailing_zeros }}</span>
-      {%- if product.compare_at_price > product.price -%}<s class="card__per">{{ product.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}</p>
-    <p class="card__koko">or 3 × <b>{{ third | money_without_trailing_zeros }}</b> with Koko</p>
+    <div class="card__foot">
+      <p class="card__price"><span class="card__now{% if retail > product.price %} is-sale{% endif %}">{% if product.price_varies %}<span class="card__from">From</span> {% endif %}{{ product.price | money_without_trailing_zeros }}</span>
+        {%- if retail > product.price -%}<s class="card__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}</p>
+      <p class="card__koko">or 3 × {{ third | money_without_trailing_zeros }} with Koko</p>
+    </div>
   </div>
-</article>
+</product-card>

@@ -102,6 +102,87 @@
     V2.add([{ id: Number(b.getAttribute('data-v2-add')), quantity: 1 }], b);
   });
 
+  /* ---------- product card packshots ----------
+     SNH's packshots carry a baked-in orange frame with the logo on its top edge, at different sizes per image. Find
+     the frame from the pixels and crop just inside it; then lift grey studio backdrops to white so every pack blends
+     into the cream tile (the img uses mix-blend multiply). Runs once per image on load. */
+  var liftCanvas = null;
+  function lift(img) {
+    if (img.__v2lift || !img.complete || !img.naturalWidth) return;
+    img.__v2lift = true;
+    try {
+      var N = Math.min(400, img.naturalWidth);
+      liftCanvas = liftCanvas || document.createElement('canvas');
+      liftCanvas.width = liftCanvas.height = N;
+      var c = liftCanvas.getContext('2d', { willReadFrequently: true });
+      c.clearRect(0, 0, N, N);
+      c.drawImage(img, 0, 0, N, N);
+      var d = c.getImageData(0, 0, N, N).data;
+      var or = function (x, y) { var i = (y * N + x) * 4, r = d[i], g = d[i + 1], b = d[i + 2]; return d[i + 3] > 180 && r > 170 && r - b > 90 && r - g > 50; };
+      var lum = function (x, y) { var i = (y * N + x) * 4; return d[i + 3] < 180 ? 255 : (d[i] + d[i + 1] + d[i + 2]) / 3; };
+      // walk in from an edge to the frame, then through it; returns the first pixel inside the frame or -1
+      var walk = function (from, to, step, at) { for (var k = from; k !== to; k += step) { if (at(k)) { while (k !== to && at(k)) k += step; return k; } } return -1; };
+      var mid = N >> 1, q = Math.round(N * .3), half = Math.round(N * .45);
+      var square = Math.abs(img.naturalWidth / img.naturalHeight - 1) < .04;
+      var l = square ? walk(0, half, 1, function (x) { return or(x, mid); }) : -1;
+      var r = square ? walk(N - 1, N - half, -1, function (x) { return or(x, mid); }) : -1;
+      var t = square ? walk(0, half, 1, function (y) { return or(q, y); }) : -1;
+      var b = square ? walk(N - 1, N - half, -1, function (y) { return or(q, y); }) : -1;
+      var x0 = .03 * N, y0 = .03 * N, x1 = .97 * N, y1 = .97 * N;
+      if (l > 0 && r > 0 && t > 0 && b > 0 && r - l > N * .4 && b - t > N * .4) {
+        // the SNH logo hangs below the top edge on the right: find the lowest row that still has orange there
+        var logo = t;
+        for (var y = t; y < t + N * .12; y++) { var hit = false; for (var x = Math.round(l + (r - l) * .55); x < r; x++) { var k = (y * N + x) * 4; if (d[k] > 150 && d[k] - d[k + 2] > 60) { hit = true; break; } } if (hit) logo = y + 1; }
+        var pad = N * .03;
+        x0 = l + pad; x1 = r - pad; y0 = Math.max(t, logo) + pad; y1 = b - pad;
+      }
+      x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+      var e = Math.round(N * .02), pts = [[x0 + e, y0 + e], [x0 + e, y1 - e], [x1 - e, y1 - e]], br = 0, bgc = 0, bb = 0, L = 0;
+      pts.forEach(function (pt) { var i = (pt[1] * N + pt[0]) * 4; br += d[i] / 3; bgc += d[i + 1] / 3; bb += d[i + 2] / 3; L += lum(pt[0], pt[1]) / 3; });
+      var lf = 1;
+      if (L < 252 && L > 150) { lf = Math.min(1.36, 256 / L); img.style.setProperty('--lift', lf.toFixed(3)); }
+      br = Math.min(255, br * lf); bgc = Math.min(255, bgc * lf); bb = Math.min(255, bb * lf);
+      // the pack itself: bounding box of pixels that differ from the backdrop, so every pack sits at the same size
+      // count differing pixels per column and row; thin full-width bands (studio floor lines, shadows) fall below
+      // the density cut, the pack does not
+      var cols = new Array(N).fill(0), rows = new Array(N).fill(0), st = Math.max(1, Math.round(N / 200));
+      for (var yy = y0; yy <= y1; yy += st) for (var xx = x0; xx <= x1; xx += st) {
+        var k = (yy * N + xx) * 4;
+        if (d[k + 3] > 120 && Math.abs(Math.min(255, d[k] * lf) - br) + Math.abs(Math.min(255, d[k + 1] * lf) - bgc) + Math.abs(Math.min(255, d[k + 2] * lf) - bb) > 48) { cols[xx]++; rows[yy]++; }
+      }
+      var span = function (a) { var m = Math.max.apply(null, a), lo = -1, hi = -1; for (var q = 0; q < N; q++) if (a[q] >= m * .22 && a[q] > 1) { if (lo < 0) lo = q; hi = q; } return [lo, hi]; };
+      var sx = span(cols), sy = span(rows), bx0 = sx[0], bx1 = sx[1], by0 = sy[0], by1 = sy[1];
+      if (bx0 < 0 || by0 < 0) { bx0 = x0; bx1 = x1; by0 = y0; by1 = y1; }
+      var fill = .74, sc, cx, cy;
+      if (bx1 - bx0 > N * .08 && by1 - by0 > N * .08) {
+        sc = fill * N / Math.max(bx1 - bx0, by1 - by0); cx = (bx0 + bx1) / 2; cy = (by0 + by1) / 2;
+        // never push past the crop box (frame) or blow a small render up too far
+        sc = Math.max(sc, N / Math.max(x1 - x0, y1 - y0) * fill); sc = Math.min(sc, 2.2);
+      } else { sc = fill * N / Math.max(x1 - x0, y1 - y0); cx = (x0 + x1) / 2; cy = (y0 + y1) / 2; }
+      img.style.transform = 'scale(' + sc.toFixed(3) + ') translate(' + (50 - cx / N * 100).toFixed(2) + '%, ' + (50 - cy / N * 100).toFixed(2) + '%)';
+      // the frame sits outside the crop box: keep it out of view when the scaled image overflows the tile
+      var X0 = x0 / N * 100, X1 = x1 / N * 100, Y0 = y0 / N * 100, Y1 = y1 / N * 100;
+      if (lf > 1.02) {
+        // studio backdrop: fade the crop edges so the lifted floor and vignette melt into the tile
+        // the fade stays between the crop edge and the pack, never over the pack
+        var f = 7, P = function (v) { return (v / N * 100); };
+        var fx0 = Math.min(X0 + f, P(bx0)), fx1 = Math.max(X1 - f, P(bx1)), fy0 = Math.min(Y0 + f, P(by0)), fy1 = Math.max(Y1 - f, P(by1));
+        var m = 'linear-gradient(to right, transparent ' + X0.toFixed(1) + '%, #000 ' + fx0.toFixed(1) + '%, #000 ' + fx1.toFixed(1) + '%, transparent ' + X1.toFixed(1) + '%), linear-gradient(to bottom, transparent ' + Y0.toFixed(1) + '%, #000 ' + fy0.toFixed(1) + '%, #000 ' + fy1.toFixed(1) + '%, transparent ' + Y1.toFixed(1) + '%)';
+        img.style.webkitMaskImage = img.style.maskImage = m;
+        img.style.webkitMaskComposite = 'source-in'; img.style.maskComposite = 'intersect';
+      } else {
+        img.style.clipPath = 'inset(' + Y0.toFixed(1) + '% ' + (100 - X1).toFixed(1) + '% ' + (100 - Y1).toFixed(1) + '% ' + X0.toFixed(1) + '%)';
+      }
+    } catch (err) { /* unreadable image: leave it as is */ }
+    img.classList.add('is-ready');
+  }
+  root.classList.add('v-lift');
+  document.addEventListener('load', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-v2-lift')) lift(e.target); }, true);
+  document.addEventListener('error', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-v2-lift')) e.target.classList.add('is-ready'); }, true);
+  function liftAll(scope) { (scope || document).querySelectorAll('img[data-v2-lift]').forEach(lift); }
+  liftAll();
+  document.addEventListener('DOMContentLoaded', function () { liftAll(); });
+
   /* ---------- reveal on scroll (footer mark, .v-reveal) ---------- */
   var io = root.classList.contains('v-js') ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });

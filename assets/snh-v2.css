@@ -1340,3 +1340,67 @@ a.hs__pts:hover { color: var(--white); }
   .elite__photo ~ .elite__gift { left: 0; top: 4%; }
   .elite__photo ~ .elite__coins { left: 70%; bottom: -4%; }
 }
+
+/* ---------- R5 · product card (one card everywhere) ---------- */
+.v-sr { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+product-card.card { display: flex; flex-direction: column; min-width: 0; height: 100%; color: var(--ink); text-align: left; }
+.card__media { position: relative; }
+.card__tile { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--v-radius, 14px); background: #F5F2EC; }
+.card__img { position: absolute; inset: 0; display: block; transition: opacity 320ms var(--ease), transform 420ms var(--ease); }
+.card__img img, .card__img svg { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; filter: brightness(var(--lift, 1)); transform: scale(.8); }
+/* assets/snh-v2.js sizes each pack from its pixels; hold the image back until then (no jump) */
+.v-lift .card__img img[data-v2-lift] { opacity: 0; transition: opacity 260ms var(--ease); }
+.v-lift .card__img img[data-v2-lift].is-ready { opacity: 1; }
+/* SNH's framed packshots: scale past the orange frame and its logo, the pack stays centred */
+.card__img.is-framed img { transform: scale(1.12); }
+.card__img--alt { opacity: 0; }
+@media (hover: hover) and (min-width: 900px) {
+  .card:hover .card__img { transform: scale(1.03); }
+  .card:hover .card__img--alt { opacity: 1; }
+  .card:hover .card__img:has(+ .card__img--alt) { opacity: 0; }
+}
+/* sold out: dim the pack itself (opacity on a wrapper would isolate it from the tile and break the blend) */
+.v-lift .card--out .card__img:not(.card__img--alt) img.is-ready, .card--out .card__img:not(.card__img--alt) img { opacity: .5; }
+.card__badges { position: absolute; top: 10px; left: 10px; z-index: 2; display: flex; flex-wrap: wrap; gap: 4px; max-width: calc(100% - 20px); pointer-events: none; }
+.card__badge { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 10.5px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.card__badge--sale { background: var(--v-accent); }
+.card__badge--new { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px rgba(14, 14, 14, .12); }
+.card__badge--informed-sport { background: #0B5F3A; }
+.card__badge--sold-out { background: #fff; color: var(--grey-2, #6b6b6b); box-shadow: inset 0 0 0 1px rgba(14, 14, 14, .12); }
+.card__chip { position: absolute; left: 10px; bottom: 10px; z-index: 2; display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; background: rgba(255, 255, 255, .92); color: var(--ink); font: 500 11.5px/1 var(--sans); box-shadow: 0 1px 2px rgba(14, 14, 14, .08); pointer-events: none; }
+.card .quick { right: 10px; bottom: 10px; width: 40px; height: 40px; box-shadow: 0 4px 12px -4px rgba(14, 14, 14, .35); }
+.card__body { display: flex; flex-direction: column; flex: 1; gap: 0; padding-top: 12px; }
+.card__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 16px; margin-bottom: 4px; }
+.card__brand { flex: 1 1 auto; min-width: 0; margin: 0; font: 600 11px/16px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--grey-2, #6b6b6b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card__rating { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 3px; margin: 0; font: 600 12px/16px var(--sans); color: var(--ink); }
+.card__star { color: #F2A93B; font-size: 13px; line-height: 1; }
+.card__count { font-weight: 400; color: var(--grey-2, #6b6b6b); }
+/* names and facts wrap only between words: each word is an inline-block, extra lines are clipped */
+.card__name { display: block; -webkit-line-clamp: none; line-clamp: none; margin: 0; font: 600 15px/20px var(--sans); letter-spacing: -.005em; height: 40px; overflow: hidden; }
+.card__name a { color: inherit; text-decoration: none; }
+.card__name span { display: inline-block; }
+.card__name a:hover { color: var(--v-accent); }
+.card__fact { margin: 6px 0 0; font: 400 13px/18px var(--sans); color: var(--grey-1, #4a4a4a); height: 18px; overflow: hidden; }
+.card__fact-l { display: none; }
+.card__body { container-type: inline-size; }
+@container (min-width: 250px) { .card__fact-l { display: inline; } .card__fact-s { display: none; } }
+.card__foot { margin-top: auto; padding-top: 12px; }
+.card__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 0; }
+.card__now { font: 600 17px/22px var(--sans); letter-spacing: -.01em; }
+.card__now.is-sale { color: var(--v-accent); }
+.card__from { font-size: 12px; font-weight: 500; color: var(--grey-2, #6b6b6b); }
+.card__was { font: 400 13px/22px var(--sans); color: var(--grey-2, #6b6b6b); }
+.card__koko { margin: 4px 0 0; font: 400 12px/16px var(--sans); color: var(--grey-2, #6b6b6b); }
+@media (max-width: 599px) {
+  .card__badges { top: 8px; left: 8px; }
+  .card__badge { height: 20px; padding: 0 7px; font-size: 9.5px; }
+  .card__chip { left: 8px; bottom: 8px; height: 22px; font-size: 10.5px; padding: 0 7px; }
+  .card .quick { right: 8px; bottom: 8px; width: 36px; height: 36px; }
+  .card__name { font-size: 14px; line-height: 19px; height: 38px; }
+  .card__fact { font-size: 12px; line-height: 17px; height: 17px; }
+  .card__now { font-size: 16px; }
+  .card__koko { font-size: 11px; }
+}
+/* dark contexts (SiS strip) */
+.sis__cards .card__brand, .sis__cards .card__fact, .sis__cards .card__koko, .sis__cards .card__was, .sis__cards .card__from, .sis__cards .card__count { color: rgba(255, 255, 255, .7); }
+.sis__cards .card__name, .sis__cards .card__now, .sis__cards .card__rating { color: #fff; }

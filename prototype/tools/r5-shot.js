@@ -31,6 +31,8 @@ const THIRD = /amose|wpm\/|klaviyo|judge|jdgm|trafficly|clarity|appstle|shop\.ap
       if (+scrollY) { await p.evaluate(y => scrollTo(0, y), +scrollY); await p.waitForTimeout(1200); }
       await p.screenshot({ path: file, type: 'jpeg', quality: 65 });
     } else {
+      // element shots: keep the sticky header out of the frame
+      await p.addStyleTag({ content: '.snh-hdr-sec{position:relative!important;top:0!important}' }).catch(() => {});
       const el = await p.$(target);
       if (!el) { console.log(`${w}: selector not found ${target}`); await ctx.close(); continue; }
       await el.scrollIntoViewIfNeeded(); await p.waitForTimeout(1800);
