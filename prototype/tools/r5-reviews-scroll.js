@@ -11,7 +11,7 @@ let fails = 0;
   for (const w of [390, 1440]) {
     const ctx = await b.newContext({ viewport: { width: w, height: w < 800 ? 844 : 900 }, isMobile: w < 800, hasTouch: w < 800 });
     const p = await ctx.newPage();
-    await p.addInitScript(() => { window.__cls = 0; window.__src = []; new PerformanceObserver(l => { for (const e of l.getEntries()) if (!e.hadRecentInput) { window.__cls += e.value; (e.sources || []).forEach(s => s.node && window.__src.push(s.node.nodeName + '.' + String(s.node.className || '').slice(0, 30))); } }).observe({ type: 'layout-shift', buffered: true }); });
+    await p.addInitScript(() => { window.__cls = 0; window.__src = []; new PerformanceObserver(l => { for (const e of l.getEntries()) if (!e.hadRecentInput) { window.__cls += e.value; (e.sources || []).forEach(s => s.node && window.__src.push((s.node.id || '').split('__').pop() + ' ' + String(s.node.className || '').slice(0, 30) + ' ' + Math.round(s.previousRect.y) + '→' + Math.round(s.currentRect.y) + ' h' + Math.round(s.previousRect.height) + '→' + Math.round(s.currentRect.height))); } }).observe({ type: 'layout-shift', buffered: true }); });
     await p.goto(DEV + '/', { waitUntil: 'domcontentloaded', timeout: 90000 });
     await p.waitForTimeout(800);
     await p.addStyleTag({ content: '.shopify-section--popup,#preview-bar-iframe,privacy-bar{display:none!important}' });

@@ -1803,3 +1803,6 @@ html body .snh-cart-page .empty-state :is(.h4, p.h4) { font: 600 clamp(28px, 3.6
 .shopify-section--main-search .page-spacer { padding-top: 24px !important; }
 .shopify-section--main-search .container:not(.srhead) .page-spacer { padding-top: 8px !important; }
 .shopify-section--main-search .collection { margin-top: 0 !important; row-gap: 0 !important; }
+/* the serif word never sets its line's height: the line box comes from the heading's own font, so Instrument Serif
+   arriving (or not) can't move anything below it */
+.serif { line-height: 0; }
