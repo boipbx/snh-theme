@@ -11,7 +11,12 @@
   "sections": {
     "main": {
       "type": "main-search",
-      "settings": {}
+      "settings": {
+        "filter_layout": "horizontal",
+        "products_per_row_desktop": 4,
+        "show_filters": true,
+        "show_sort_by": true
+      }
     }
   },
   "order": [

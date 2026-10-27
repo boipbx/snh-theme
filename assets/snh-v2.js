@@ -635,6 +635,54 @@
   addEventListener('scroll', function () { if (!qaTick) { qaTick = true; requestAnimationFrame(qaSync); } }, { passive: true });
   addEventListener('resize', qaSync);
 
+  /* collection filter bar: once you scroll past it, the sticky bar condenses to the controls row (find, goals and
+     brands fold away). The folded height moves to margin-bottom, so the grid never jumps. */
+  (function () {
+    var form = document.querySelector('form.snh-bar-form'); if (!form) return;
+    var bar = form.querySelector('.snh-bar'), parts = '.snh-find, .snh-goals, .snh-brands, .snh-nomatch, .snh-recs';
+    var on = false, tick = false, start = 0;
+    function measure() { start = form.getBoundingClientRect().top + scrollY; }
+    function sync() {
+      tick = false;
+      var past = scrollY > start + 160;
+      if (past === on) return;
+      on = past;
+      if (on) {
+        var h = 0; $$(parts, bar).forEach(function (el) { if (el.offsetParent) h += el.getBoundingClientRect().height; });
+        form.classList.add('is-condensed'); form.style.marginBottom = h + 'px';
+      } else { form.classList.remove('is-condensed'); form.style.marginBottom = ''; }
+    }
+    measure(); addEventListener('resize', measure);
+    addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(sync); } }, { passive: true });
+  })();
+
+  /* search: Collections tab (predictive search), next to the Products / Articles result pages */
+  on('srtabs', function (nav) {
+    var btn = nav.querySelector('[data-srtab-col]'), panel = document.getElementById(btn.getAttribute('aria-controls')), done = false;
+    var results = document.querySelector('.shopify-section--main-search .collection');
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('is-on', open);
+      $$('.srtab[aria-current]', nav).forEach(function (a) { a.classList.toggle('is-on', !open); });
+      panel.hidden = !open; if (results) results.hidden = open;
+      if (!open || done) return; done = true;
+      var q = nav.getAttribute('data-q') || '';
+      fetch(shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q) + '&resources[type]=collection&resources[limit]=10').then(function (r) { return r.json(); }).then(function (j) {
+        var C = (j.resources && j.resources.results && j.resources.results.collections) || [];
+        panel.querySelector('[data-srcol-list]').innerHTML = C.length ? C.map(function (c) {
+          var im = c.featured_image && c.featured_image.url;
+          return '<a class="srcol__item" href="' + c.url + '"><span class="srcol__img">' + (im ? '<img src="' + im + (im.indexOf('?') > -1 ? '&' : '?') + 'width=240" alt="" loading="lazy">' : '') + '</span><span class="srcol__t">' + String(c.title).replace(/</g, '&lt;') + '</span></a>';
+        }).join('') : '<p class="srcol__msg">No collections match “' + q.replace(/</g, '&lt;') + '”.</p>';
+      }).catch(function () { panel.querySelector('[data-srcol-list]').innerHTML = '<p class="srcol__msg">Collections could not be loaded.</p>'; });
+    });
+  });
+
+  /* clamped text with a Read more toggle (collection hero) */
+  on('clamp', function (box) {
+    var btn = box.querySelector('button'); if (!btn) return;
+    btn.addEventListener('click', function () { var o = box.classList.toggle('is-open'); btn.setAttribute('aria-expanded', String(o)); btn.textContent = o ? 'Read less' : 'Read more'; });
+  });
+
   /* product details: tabs on desktop, accordions on phones (same panels) */
   on('dtabs', function (box) {
     var tabs = $$('[role="tab"]', box), panels = $$('.det__panel', box);

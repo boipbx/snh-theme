@@ -826,7 +826,7 @@
                       </line-item-quantity>
                     </td>
 
-                    <td class="hidden align-center text-subdued text-end sm:table-cell">{{ line_item.final_line_price | money }}</td>
+                    <td class="hidden align-center text-subdued text-end sm:table-cell">{{ line_item.final_line_price | money_without_trailing_zeros }}</td>
                   </tr>
                 {%- endfor -%}
               </tbody>
@@ -884,7 +884,7 @@
 
                       <div class="h-stack gap-4 justify-between">
                         <span class="text-subdued">{{ 'cart.general.subtotal' | t }}</span>
-                        <span class="text-subdued">{{ cart.items_subtotal_price | money }}</span>
+                        <span class="text-subdued">{{ cart.items_subtotal_price | money_without_trailing_zeros }}</span>
                       </div>
 
                       {% for discount_application in cart.cart_level_discount_applications %}
@@ -893,7 +893,7 @@
                             {%- render 'icon' with 'discount' -%} {{- discount_application.title -}}
                           </div>
 
-                          <span class="text-subdued">-{{ discount_application.total_allocated_amount | money }}</span>
+                          <span class="text-subdued">-{{ discount_application.total_allocated_amount | money_without_trailing_zeros }}</span>
                         </div>
                       {% endfor %}
 

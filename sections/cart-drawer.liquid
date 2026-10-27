@@ -585,12 +585,13 @@
         {%- for item in cart.items -%}
           <article class="snh-cdx-item">
             {%- if item.image -%}
-              <a href="{{ item.url }}"><img src="{{ item.image | image_url: width: 164 }}" alt="{{ item.product_title | escape }}" loading="lazy"></a>
+              <a class="snh-cdx-thumb" href="{{ item.url }}"><span class="card__img"><img src="{{ item.image | image_url: width: 240 }}" alt="{{ item.product_title | escape }}" loading="lazy" data-v2-lift></span></a>
             {%- else -%}
               <span class="snh-cdx-item__placeholder"></span>
             {%- endif -%}
-            <div>
-              <a class="snh-cdx-item__title" href="{{ item.url }}">{{ item.product_title }}</a>
+            <div class="snh-cdx-item__body">
+              <p class="snh-cdx-item__brand">{{ item.vendor | escape }}</p>
+              <a class="snh-cdx-item__title" href="{{ item.url }}">{% render 'snh-v2-title', product: item.product, short: true %}</a>
               {%- if item.variant_title != blank and item.variant_title != 'Default Title' -%}
                 <div class="snh-cdx-item__meta">{{ item.variant_title }}</div>
               {%- endif -%}
@@ -600,7 +601,7 @@
                   <span>{{ item.quantity }}</span>
                   <button type="button" data-snh-line="{{ forloop.index }}" data-snh-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity">+</button>
                 </div>
-                <strong class="snh-cdx-item__price">{{ item.final_line_price | money }}</strong>
+                <strong class="snh-cdx-item__price">{{ item.final_line_price | money_without_trailing_zeros }}</strong>
               </div>
             </div>
           </article>
@@ -613,8 +614,10 @@
       <div class="snh-mini-points" data-snh-points></div>
       <div class="snh-cdx-subtotal">
         <span>Subtotal</span>
-        <span data-snh-subtotal>{{ cart.total_price | money }}</span>
+        <span data-snh-subtotal>{{ cart.total_price | money_without_trailing_zeros }}</span>
       </div>
+      {%- assign koko_third = cart.total_price | divided_by: 300.0 | round | times: 100 -%}
+      <p class="snh-cdx-koko" data-snh-koko{% if cart.item_count == 0 %} hidden{% endif %}>or 3 &times; <b>{{ koko_third | money_without_trailing_zeros }}</b> with Koko</p>
       <p class="snh-cdx-taxnote">
         {%- if cart.taxes_included -%}
           {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
@@ -659,17 +662,23 @@
     function escapeHtml(value = '') {
       return String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
     }
+    /* whole rupees everywhere, like the product cards ("Rs 31,999") */
     function formatMoney(cents) {
-      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
-        return window.Shopify.formatMoney(cents, moneyFormat);
-      }
-      try {
-        return (Number(cents) / 100).toLocaleString(undefined, { style: 'currency', currency: {{ cart.currency.iso_code | default: shop.currency | json }} });
-      } catch (e) { return `${(Number(cents) / 100).toFixed(2)}`; }
+      return `Rs ${Math.round(Number(cents || 0) / 100).toLocaleString('en-US')}`;
     }
     function formatRupees(cents) {
       const amount = Math.max(0, Math.ceil(Number(cents || 0) / 100));
-      return `Rs. ${amount.toLocaleString('en-LK')}`;
+      return `Rs ${amount.toLocaleString('en-US')}`;
+    }
+    /* "APPLIED NUTRITION Critical Whey" → "Critical Whey" (the vendor shows above it) */
+    function shortTitle(title, vendor) {
+      if (!vendor) return title;
+      const v = vendor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return title.replace(new RegExp('^' + v + '( NUTRITION)?\\s+', 'i'), '') || title;
+    }
+    function sizedImage(url, w) {
+      if (!url) return '';
+      return url + (url.indexOf('?') > -1 ? '&' : '?') + 'width=' + w;
     }
     function normalizeImage(image) {
       if (!image) return '';
@@ -844,7 +853,7 @@
       return `
         <article class="snh-mini-rec">
           <a href="${productUrl}">
-            ${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(product.title || '')}" loading="lazy" decoding="async">` : '<span class="snh-mini-rec__placeholder"></span>'}
+            ${imageUrl ? `<span class="snh-mini-rec__thumb"><span class="card__img"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(product.title || '')}" loading="lazy" decoding="async" crossorigin="anonymous" data-v2-lift></span></span>` : '<span class="snh-mini-rec__placeholder"></span>'}
           </a>
           <span class="snh-mini-rec__meta">
             <a class="snh-mini-rec__name" href="${productUrl}">${escapeHtml(product.title || '')}</a>
@@ -970,6 +979,8 @@
       if (countEl) countEl.textContent = cart.item_count;
       const subtotalEl = q('[data-snh-subtotal]');
       if (subtotalEl) subtotalEl.textContent = formatMoney(cart.total_price);
+      const kokoEl = q('[data-snh-koko]');
+      if (kokoEl) { kokoEl.hidden = !cart.item_count; kokoEl.innerHTML = `or 3 &times; <b>${formatMoney(Math.round(cart.total_price / 300) * 100)}</b> with Koko`; }
 
       const items = q('[data-snh-cart-items]');
       if (!items) return;
@@ -986,12 +997,13 @@
       }
 
       items.innerHTML = cart.items.map((item, index) => {
-        const title = item.product_title || item.title || '';
+        const title = shortTitle(item.product_title || item.title || '', item.vendor);
         const variant = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
         return `
         <article class="snh-cdx-item">
-          ${item.image ? `<a href="${item.url}"><img src="${item.image}" alt="${escapeHtml(title)}" loading="lazy"></a>` : '<span class="snh-cdx-item__placeholder"></span>'}
-          <div>
+          ${item.image ? `<a class="snh-cdx-thumb" href="${item.url}"><span class="card__img"><img src="${sizedImage(item.image, 240)}" alt="${escapeHtml(title)}" loading="lazy" crossorigin="anonymous" data-v2-lift></span></a>` : '<span class="snh-cdx-item__placeholder"></span>'}
+          <div class="snh-cdx-item__body">
+            ${item.vendor ? `<p class="snh-cdx-item__brand">${escapeHtml(item.vendor)}</p>` : ''}
             <a class="snh-cdx-item__title" href="${item.url}">${escapeHtml(title)}</a>
             ${variant ? `<div class="snh-cdx-item__meta">${escapeHtml(variant)}</div>` : ''}
             <div class="snh-cdx-item__bottom">

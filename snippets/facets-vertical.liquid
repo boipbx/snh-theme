@@ -257,6 +257,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </summary>
               <div class="snh-drop__panel">
+                <div class="snh-drop__head"><p class="snh-drop__title">{{ filter.label }}</p><button type="button" class="snh-drop__done" data-snh-done>Done</button></div>
                 {%- case filter.type -%}
                   {%- when 'list' -%}
                     {%- if filter.presentation == 'swatch' or color_label_list contains downcase_label -%}
@@ -636,6 +637,10 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
         });
       });
     }
+    document.addEventListener('click', function (e) {
+      var d = e.target.closest && e.target.closest('[data-snh-done]');
+      if (d) { var det = d.closest('details'); if (det) det.open = false; }
+    });
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       document.querySelectorAll('[data-snh-drop][open]').forEach(function (d) { d.open = false; });

@@ -60,6 +60,36 @@
   }
 </style>
 
+{%- comment -%} R5 · v2 collection hero: crumbs, title, description (clamped, read more), count, banner image when set {%- endcomment -%}
+{%- liquid
+  assign hero_desc = collection.description | strip_html | strip
+  assign hero_img = nil
+  if section.settings.v2_hero_image
+    assign hero_img = collection.image
+  endif
+  # titles stored in capitals read as "Whey protein"
+  assign hero_title = collection.title
+  assign up = collection.title | upcase
+  if up == collection.title
+    assign hero_title = collection.title | downcase | capitalize
+  endif
+-%}
+<section class="v2 colhero{% if hero_img != blank %} colhero--img{% endif %}" aria-labelledby="colhero-{{ section.id }}">
+  <div class="v-wrap colhero__in">
+    <div class="colhero__copy">
+      <nav class="colhero__crumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ hero_title | escape }}</span></nav>
+      <h1 class="colhero__title" id="colhero-{{ section.id }}">{{ hero_title | escape }}</h1>
+      {%- if hero_desc != blank -%}
+        <div class="colhero__desc" data-v2="clamp"><div class="colhero__text v-prose">{{ collection.description }}</div>{%- if hero_desc.size > 220 -%}<button type="button" class="colhero__more" aria-expanded="false">Read more</button>{%- endif -%}</div>
+      {%- endif -%}
+      <p class="colhero__count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
+    </div>
+    {%- if hero_img != blank -%}
+      <div class="colhero__media">{{ hero_img | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(max-width: 1023px) 100vw, 40vw', widths: '600,900,1200', alt: hero_img.alt | default: '' }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
 <div class="container">
   {%- if collection.all_products_count == 0 -%}
     <div class="empty-state">
@@ -136,7 +166,16 @@
 
               <reveal-items selector=".product-list > *">
                 <product-list class="product-list" role="region" aria-live="polite">
+                  {%- liquid
+                    # R5: on the default / best-selling / manual order, sold-out products go to the end of the page
+                    assign oos_last = false
+                    assign sb = collection.sort_by | default: collection.default_sort_by
+                    if sb == collection.default_sort_by or sb == 'best-selling' or sb == 'manual'
+                      assign oos_last = true
+                    endif
+                  -%}
                   {%- for product in collection.products -%}
+                    {%- if oos_last and product.available == false -%}{%- continue -%}{%- endif -%}
                     {%- for block in section.blocks -%}
                       {%- if forloop.parentloop.index != block.settings.position -%}
                         {%- continue -%}
@@ -219,6 +258,12 @@
 
                     {%- render 'product-card', product: product, stacked: true, position: forloop.index, show_badges: true -%}
                   {%- endfor -%}
+                  {%- if oos_last -%}
+                    {%- for product in collection.products -%}
+                      {%- if product.available -%}{%- continue -%}{%- endif -%}
+                      {%- render 'product-card', product: product, stacked: true, show_badges: true -%}
+                    {%- endfor -%}
+                  {%- endif -%}
                 </product-list>
               </reveal-items>
             </div>
@@ -451,7 +496,10 @@
         {
           "type": "video_url",
           "id": "external_video_url",
-          "accept": ["vimeo", "youtube"],
+          "accept": [
+            "vimeo",
+            "youtube"
+          ],
           "label": "External video URL",
           "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
         },
@@ -583,6 +631,13 @@
     }
   ],
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "v2_hero_image",
+      "label": "Show the collection image in the title band",
+      "default": false,
+      "info": "Off when the template already has an artwork banner above."
+    },
     {
       "type": "range",
       "id": "products_per_page",

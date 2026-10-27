@@ -5,10 +5,28 @@
 {%- endif -%}
 
 {%- assign active_filters = search.filters | where: 'active_values' -%}
+{%- liquid
+  # R5 · tabs: products and articles are real searches (type=…); collections come from predictive search (JS)
+  assign stype = 'product'
+  if search.types.size == 1 and search.types contains 'article'
+    assign stype = 'article'
+  endif
+  assign q_enc = search.terms | url_encode
+-%}
+{%- capture search_tabs -%}
+  {%- if search.performed -%}
+    <nav class="v2 srtabs" aria-label="Search results" data-v2="srtabs" data-q="{{ search.terms | escape }}">
+      <a class="srtab{% if stype == 'product' %} is-on{% endif %}" href="{{ routes.search_url }}?q={{ q_enc }}&type=product"{% if stype == 'product' %} aria-current="page"{% endif %}>Products{% if stype == 'product' %} <b>{{ search.results_count }}</b>{% endif %}</a>
+      <a class="srtab{% if stype == 'article' %} is-on{% endif %}" href="{{ routes.search_url }}?q={{ q_enc }}&type=article"{% if stype == 'article' %} aria-current="page"{% endif %}>Articles{% if stype == 'article' %} <b>{{ search.results_count }}</b>{% endif %}</a>
+      <button class="srtab" type="button" data-srtab-col aria-expanded="false" aria-controls="srcol-{{ section.id }}">Collections</button>
+    </nav>
+    <div class="v2 srcol" id="srcol-{{ section.id }}" hidden><div class="srcol__list" data-srcol-list><p class="srcol__msg">Looking for collections…</p></div></div>
+  {%- endif -%}
+{%- endcapture -%}
 
 {%- capture search_form -%}
   <form class="main-search-form" action="{{ routes.search_url }}" method="get" role="search">
-    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="type" value="{{ stype }}">
 
     <div class="v-stack gap-6 sm:gap-12">
       <div class="search-input">
@@ -67,13 +85,19 @@
   }
 </style>
 
+{%- if search.performed and search.results_count > 0 or active_filters.size > 0 -%}
+  {%- comment -%} heading, search box and tabs sit above the docked filter bar (it docks before .container) {%- endcomment -%}
+  <div class="container srhead">
+    <div class="v-stack gap-6 sm:gap-8">
+      <h1 class="h2 text-center">{{- 'search.results_count' | t: count: search.results_count, terms: search.terms -}}</h1>
+      {{- search_form -}}
+      {{- search_tabs -}}
+    </div>
+  </div>
+{%- endif -%}
 <div class="container">
   {%- if search.performed and search.results_count > 0 or active_filters.size > 0 -%}
     <div class="page-spacer">
-      <div class="v-stack gap-6 sm:gap-8">
-        <h1 class="h2 text-center">{{- 'search.results_count' | t: count: search.results_count, terms: search.terms -}}</h1>
-        {{- search_form -}}
-      </div>
 
       {%- paginate search.results by section.settings.products_per_page -%}
         <div class="collection {% if show_filters %}collection--filters-{{ section.settings.filter_layout | escape }}{% endif %}">
@@ -132,6 +156,9 @@
 
                 <reveal-items selector=".product-list > *">
                   <product-list class="product-list" role="region" aria-live="polite">
+                    {%- if stype == 'article' -%}
+                      <div class="v2 posts srposts">{%- for a in search.results -%}{%- if a.object_type == 'article' -%}{% render 'snh-v2-post', a: a %}{%- endif -%}{%- endfor -%}</div>
+                    {%- endif -%}
                     {%- assign product_results = search.results | where: 'object_type', 'product' -%}
 
                     {%- for product in product_results -%}
@@ -158,6 +185,7 @@
       </h1>
 
       {{- search_form -}}
+      {{- search_tabs -}}
     </div>
   {%- endif -%}
 </div>
