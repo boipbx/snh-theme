@@ -201,15 +201,15 @@
   #{{ quiz_id }} .snhq__eyebrow {
     display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;
     background:rgba(255,101,0,.16);border:1px solid rgba(255,101,0,.24);
-    color:var(--snhq-orange-soft);font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;margin-bottom:26px;
+    color:var(--snhq-orange-soft);font-size:12px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:26px;
   }
   #{{ quiz_id }} .snhq__eyebrow span { width:9px;height:9px;border-radius:999px;background:var(--snhq-orange);box-shadow:0 0 0 7px rgba(255,101,0,.16);animation:snhqPing 1.8s ease-in-out infinite; }
   #{{ quiz_id }} .snhq__hero-grid { display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:clamp(28px,5vw,64px);align-items:center; }
   #{{ quiz_id }} h1,#{{ quiz_id }} h2,#{{ quiz_id }} h3,#{{ quiz_id }} p { margin:0; }
-  #{{ quiz_id }} h1 { max-width:560px;color:#fff;font-size:clamp(34px,5.2vw,62px);line-height:1.02;letter-spacing:-.03em;font-weight:950; }
-  #{{ quiz_id }} .snhq__hero-copy p { margin-top:22px;max-width:590px;color:rgba(255,255,255,.72);font-size:clamp(16px,1.7vw,19px);line-height:1.62;font-weight:650; }
+  #{{ quiz_id }} h1 { max-width:560px;color:#fff;font-size:var(--t-h1);line-height:1.1;letter-spacing:-.02em;font-weight:950; }
+  #{{ quiz_id }} .snhq__hero-copy p { margin-top:22px;max-width:590px;color:rgba(255,255,255,.72);font-size:20px;line-height:1.5;font-weight:650; }
   #{{ quiz_id }} .snhq__hero-actions { display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:34px; }
-  #{{ quiz_id }} .snhq__hero-actions small,#{{ quiz_id }} .snhq__lead small { color:rgba(255,255,255,.52);font-size:13px;line-height:1.4; }
+  #{{ quiz_id }} .snhq__hero-actions small,#{{ quiz_id }} .snhq__lead small { color:rgba(255,255,255,.52);font-size:13px;line-height:1.5; }
 
   /* PLAY CARD */
   #{{ quiz_id }} .snhq__play-card {
@@ -255,10 +255,10 @@
   #{{ quiz_id }} .snhq__step,#{{ quiz_id }} .snhq__result-badge {
     display:inline-flex;align-items:center;padding:9px 12px;border-radius:999px;
     background:rgba(255,101,0,.15);color:var(--snhq-orange-soft);border:1px solid rgba(255,101,0,.22);
-    font-size:12px;font-weight:950;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;
+    font-size:12px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;
   }
-  #{{ quiz_id }} h2 { color:#fff;font-size:clamp(26px,3.2vw,42px);line-height:1.08;letter-spacing:-.02em;font-weight:850; }
-  #{{ quiz_id }} .snhq__quiz-head p,#{{ quiz_id }} .snhq__result > p,#{{ quiz_id }} .snhq__lead p { margin-top:12px;color:rgba(255,255,255,.66);font-size:15.5px;line-height:1.58;font-weight:650; }
+  #{{ quiz_id }} h2 { color:#fff;font-size:var(--t-h2);line-height:1.1;letter-spacing:-.02em;font-weight:850; }
+  #{{ quiz_id }} .snhq__quiz-head p,#{{ quiz_id }} .snhq__result > p,#{{ quiz_id }} .snhq__lead p { margin-top:12px;color:rgba(255,255,255,.66);font-size:15px;line-height:1.5;font-weight:650; }
   #{{ quiz_id }} .snhq__progress { min-width:150px;text-align:right; }
   #{{ quiz_id }} .snhq__progress strong { color:rgba(255,255,255,.76);font-size:13px;font-weight:950; }
   #{{ quiz_id }} .snhq__progress div { height:9px;width:150px;margin-top:10px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.10); }
@@ -310,8 +310,8 @@
   #{{ quiz_id }} .snhq__option:active { transform:scale(.985);transition-duration:.12s; }
   #{{ quiz_id }} .snhq__option.is-selected { border-color:rgba(255,101,0,.78);background:rgba(255,101,0,.16);box-shadow:0 22px 45px rgba(255,101,0,.12); }
   #{{ quiz_id }} .snhq__option.is-selected::after { border-color:var(--snhq-orange);background:var(--snhq-orange);box-shadow:0 0 0 7px rgba(255,101,0,.16); }
-  #{{ quiz_id }} .snhq__option strong { display:block;color:#fff;font-size:16px;line-height:1.18;font-weight:950; }
-  #{{ quiz_id }} .snhq__option span { display:block;margin-top:7px;color:rgba(255,255,255,.58);font-size:13px;line-height:1.42;font-weight:650; }
+  #{{ quiz_id }} .snhq__option strong { display:block;color:#fff;font-size:16px;line-height:1.1;font-weight:950; }
+  #{{ quiz_id }} .snhq__option span { display:block;margin-top:7px;color:rgba(255,255,255,.58);font-size:13px;line-height:1.5;font-weight:650; }
 
   /* BUTTONS */
   #{{ quiz_id }} .snhq__nav,#{{ quiz_id }} .snhq__result-actions {
@@ -339,7 +339,7 @@
   #{{ quiz_id }} .snhq__result-intro { display:flex;justify-content:center;align-items:center;gap:10px;margin:0 0 16px; }
   #{{ quiz_id }} .snhq__result-logo { width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#0b0c0f;border:1px solid rgba(255,101,0,.28);box-shadow:0 0 0 6px rgba(255,101,0,.08);flex-shrink:0; }
   #{{ quiz_id }} .snhq__result-logo img { width:24px;height:24px;object-fit:contain; }
-  #{{ quiz_id }} .snhq__result-found { position:relative;color:var(--snhq-orange-soft);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase; }
+  #{{ quiz_id }} .snhq__result-found { position:relative;color:var(--snhq-orange-soft);font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase; }
   #{{ quiz_id }} .snhq__burst { position:absolute;left:-6px;top:50%;width:1px;height:1px; }
   #{{ quiz_id }} .snhq__burst i { position:absolute;left:0;top:0;width:4px;height:4px;border-radius:50%;background:var(--snhq-orange);opacity:0;animation:snhqBurst .7s cubic-bezier(.16,1,.3,1) .55s both; }
   #{{ quiz_id }} .snhq__burst i:nth-child(1){--tx:-26px;--ty:-10px}
@@ -349,7 +349,7 @@
   #{{ quiz_id }} .snhq__burst i:nth-child(5){--tx:-4px;--ty:22px;animation-delay:.64s;background:#fff}
   #{{ quiz_id }} .snhq__burst i:nth-child(6){--tx:16px;--ty:-14px;animation-delay:.6s;background:var(--snhq-orange-soft)}
   #{{ quiz_id }} .snhq__result-badge { margin-left:auto;margin-right:auto; }
-  #{{ quiz_id }} .snhq__safe-note { margin:18px auto 0;max-width:680px;padding:14px 16px;border-radius:18px;background:rgba(255,176,107,.12);border:1px solid rgba(255,176,107,.22);color:rgba(255,244,234,.86);font-size:13.5px;line-height:1.5;font-weight:750;text-align:left; }
+  #{{ quiz_id }} .snhq__safe-note { margin:18px auto 0;max-width:680px;padding:14px 16px;border-radius:18px;background:rgba(255,176,107,.12);border:1px solid rgba(255,176,107,.22);color:rgba(255,244,234,.86);font-size:13px;line-height:1.5;font-weight:750;text-align:left; }
 
   /* ═══ PRODUCT CARDS — v3 redesign ═══ */
   #{{ quiz_id }} .snhq__products {
@@ -409,8 +409,8 @@
 
   /* Text body */
   #{{ quiz_id }} .snhq__product-body { padding:18px;display:flex;flex-direction:column;gap:7px;flex:1; }
-  #{{ quiz_id }} .snhq__product-brand { font-size:10px;font-weight:800;color:var(--snhq-orange-soft);text-transform:uppercase;letter-spacing:.08em;line-height:1; }
-  #{{ quiz_id }} .snhq__product-name { font-size:16px;font-weight:850;color:rgba(255,255,255,.95);line-height:1.32; }
+  #{{ quiz_id }} .snhq__product-brand { font-size:12px;font-weight:800;color:var(--snhq-orange-soft);text-transform:uppercase;letter-spacing:.12em;line-height:1.1; }
+  #{{ quiz_id }} .snhq__product-name { font-size:16px;font-weight:850;color:rgba(255,255,255,.95);line-height:1.5; }
   #{{ quiz_id }} .snhq__product-cta {
     margin-top:12px;display:inline-flex;align-items:center;gap:6px;
     font-size:13px;font-weight:950;color:var(--snhq-orange);
@@ -422,12 +422,12 @@
   #{{ quiz_id }} .snhq__result-panel,#{{ quiz_id }} .snhq__lead {
     margin-top:24px;padding:22px;border-radius:28px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);text-align:left;
   }
-  #{{ quiz_id }} h3 { color:#fff;font-size:17px;line-height:1.2;font-weight:950;letter-spacing:-.02em; }
+  #{{ quiz_id }} h3 { color:#fff;font-size:18px;line-height:1.1;font-weight:950;letter-spacing:-.02em; }
   #{{ quiz_id }} .snhq__chips { display:flex;flex-wrap:wrap;gap:10px;margin-top:14px; }
   #{{ quiz_id }} .snhq__chip {
     display:inline-flex;align-items:center;min-height:38px;padding:10px 13px;border-radius:999px;
     background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.86);
-    font-size:13.5px;font-weight:850;opacity:0;transform:translateY(8px);
+    font-size:13px;font-weight:850;opacity:0;transform:translateY(8px);
     animation:snhqOptionIn .38s ease forwards;
     transition:transform .25s cubic-bezier(.22,1,.36,1),background .2s ease,border-color .2s ease;
   }
@@ -476,12 +476,12 @@
     #{{ quiz_id }} .snhq__nav button { flex:1; }
   }
   @media (max-width:640px) {
-    #{{ quiz_id }} h1 { font-size:38px;line-height:1.05; }
+    #{{ quiz_id }} h1 { font-size:36px;line-height:1.1; }
     #{{ quiz_id }} .snhq__play-card { min-height:300px;margin-top:28px; }
     #{{ quiz_id }} .snhq__ring { --orbit-1:72px;--orbit-2:69px;--orbit-3:66px;width:142px;height:142px;top:38%; }
     #{{ quiz_id }} .snhq__ring span { width:74px;height:74px;border-radius:22px; }
     #{{ quiz_id }} .snhq__ring span img { width:48px;height:48px; }
-    #{{ quiz_id }} .snhq__floating-pill { padding:7px 11px 7px 8px;font-size:11.5px; }
+    #{{ quiz_id }} .snhq__floating-pill { padding:7px 11px 7px 8px;font-size:12px; }
     #{{ quiz_id }} .snhq__floating-pill--a { left:12px;top:30px; }
     #{{ quiz_id }} .snhq__floating-pill--b { right:10px;top:88px; }
     #{{ quiz_id }} .snhq__floating-pill--c { left:22px;bottom:110px; }

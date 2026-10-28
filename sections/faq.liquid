@@ -30,16 +30,16 @@
   }
 
   #shopify-section-{{ section.id }} .snh-faq__inner {
-    max-width: 1500px;
+    max-width: calc(var(--container, 1200px) + var(--gutter, 40px) * 2);
     margin-inline: auto;
-    padding: clamp(40px, 4.5vw, 76px) clamp(18px, 4vw, 64px);
+    padding: var(--section, 64px) var(--gutter, 40px);
   }
 
   #shopify-section-{{ section.id }} .snh-faq__layout {
     display: grid;
     grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
     align-items: start;
-    gap: clamp(24px, 3.4vw, 56px);
+    gap: 48px;
   }
 
   /* ---------- intro / support column ---------- */
@@ -47,7 +47,7 @@
     position: sticky;
     top: calc(var(--sticky-area-height, 0px) + 24px);
     display: grid;
-    gap: clamp(18px, 2vw, 26px);
+    gap: 24px;
     min-width: 0;
   }
 
@@ -55,10 +55,10 @@
     margin: 0;
     color: var(--faq-ink);
     font-family: var(--snh-font-display);
-    font-size: clamp(28px, 3.4vw, 46px);
+    font-size: var(--t-h2);
     font-weight: 800;
-    line-height: 0.98;
-    letter-spacing: -0.03em;
+    line-height: 1.1;
+    letter-spacing: -.02em;
     text-transform: uppercase;
   }
 
@@ -66,10 +66,10 @@
     margin-block-start: 14px;
     max-width: 360px;
     color: var(--faq-muted);
-    font-size: clamp(14px, 1.05vw, 16px);
+    font-size: 16px;
     font-weight: 500;
-    line-height: 1.55;
-    letter-spacing: -0.01em;
+    line-height: 1.5;
+    letter-spacing: 0;
   }
   #shopify-section-{{ section.id }} .snh-faq__content strong { color: var(--faq-ink); font-weight: 700; }
   #shopify-section-{{ section.id }} .snh-faq__hours {
@@ -78,7 +78,7 @@
     gap: 9px;
     margin-block-start: 12px;
     color: var(--faq-ink);
-    font-size: clamp(13px, 1vw, 14.5px);
+    font-size: 14px;
     font-weight: 600;
   }
   #shopify-section-{{ section.id }} .snh-faq__hours::before {
@@ -112,7 +112,7 @@
     -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 99%);
     mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 99%);
   }
-  #shopify-section-{{ section.id }} .snh-faq__card-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.2; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); }
+  #shopify-section-{{ section.id }} .snh-faq__card-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.1; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); }
   #shopify-section-{{ section.id }} .snh-faq__card-btn:hover { filter: brightness(.92); transform: translateY(-1px); box-shadow: none; }
   #shopify-section-{{ section.id }} .snh-faq__card-btn svg { width: 15px; height: 15px; flex: 0 0 auto; }
 
@@ -150,10 +150,10 @@
     text-align: left;
     color: var(--faq-ink);
     font-family: var(--snh-font-display);
-    font-size: clamp(14px, 1.1vw, 17px);
+    font-size: 18px;
     font-weight: 800;
-    letter-spacing: -0.01em;
-    line-height: 1.25;
+    letter-spacing: 0;
+    line-height: 1.1;
     transition: color 180ms ease;
     -webkit-tap-highlight-color: transparent;
   }
@@ -200,10 +200,10 @@
   #shopify-section-{{ section.id }} .snh-faq__answer {
     padding: 2px clamp(16px, 1.6vw, 24px) 20px;
     color: var(--faq-muted);
-    font-size: clamp(13px, 1vw, 14.5px);
+    font-size: 14px;
     font-weight: 500;
-    line-height: 1.6;
-    letter-spacing: -0.01em;
+    line-height: 1.5;
+    letter-spacing: 0;
     opacity: 0;
     transform: translateY(-4px);
     transition: opacity 320ms ease, transform 320ms ease;
@@ -238,9 +238,6 @@
   }
 
   @media screen and (max-width: 699px) {
-    #shopify-section-{{ section.id }} .snh-faq__inner {
-      padding: 36px clamp(16px, 5vw, 22px) 44px;
-    }
     #shopify-section-{{ section.id }} .snh-faq__intro { grid-template-columns: 1fr; }
     #shopify-section-{{ section.id }} .snh-faq__content { max-width: none; }
     #shopify-section-{{ section.id }} .snh-faq__card-media { aspect-ratio: 4 / 3.4; }

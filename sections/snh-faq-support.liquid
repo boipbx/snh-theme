@@ -60,13 +60,14 @@
   #shopify-section-{{ section.id }} .snh-faq {
     background: var(--faq-bg);
     color: var(--faq-text);
-    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    padding-block: var(--section, 64px);
     overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .snh-faq__wrap {
-    width: min(100% - 40px, 1440px);
+    max-width: calc(var(--container, 1200px) + var(--gutter, 40px) * 2);
     margin-inline: auto;
+    padding-inline: var(--gutter, 40px);
   }
 
   #shopify-section-{{ section.id }} .snh-faq__panel {
@@ -85,19 +86,19 @@
     margin: 0 0 12px;
     color: var(--faq-orange);
     font-size: 12px;
-    line-height: 1;
+    line-height: 1.1;
     font-weight: 800;
-    letter-spacing: 0.34em;
+    letter-spacing: .12em;
     text-transform: uppercase;
   }
 
   #shopify-section-{{ section.id }} .snh-faq__heading {
     margin: 0;
     color: var(--faq-text);
-    font-size: clamp(58px, 7vw, 116px);
-    line-height: 0.82;
+    font-size: var(--t-display);
+    line-height: 1.1;
     font-weight: 950;
-    letter-spacing: -0.085em;
+    letter-spacing: -.02em;
     text-transform: uppercase;
   }
 
@@ -105,17 +106,17 @@
     margin-block-start: 20px;
     max-width: 410px;
     color: var(--faq-muted);
-    font-size: clamp(15px, 1.05vw, 19px);
-    line-height: 1.45;
+    font-size: 20px;
+    line-height: 1.5;
     font-weight: 780;
-    letter-spacing: -0.025em;
+    letter-spacing: -.02em;
   }
 
   #shopify-section-{{ section.id }} .snh-faq__subheading p {
     margin: 0 0 8px;
   }
 
-  #shopify-section-{{ section.id }} .snh-faq__cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.2; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); margin-block-start: 28px; }
+  #shopify-section-{{ section.id }} .snh-faq__cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--snh-btn-h, 52px); padding: 0 28px; border: 0; border-radius: var(--snh-radius-button, 12px); background: var(--snh-accent); color: #fff; font-family: var(--snh-font-body); font-size: 15px; font-weight: 600; line-height: 1.1; letter-spacing: 0; text-transform: none; text-decoration: none; box-shadow: none; cursor: pointer; transition: filter 200ms var(--snh-ease), transform 200ms var(--snh-ease), background-color 200ms var(--snh-ease), color 200ms var(--snh-ease); margin-block-start: 28px; }
 
   #shopify-section-{{ section.id }} .snh-faq__cta:hover { filter: brightness(.92); transform: translateY(-1px); box-shadow: none; }
 
@@ -157,10 +158,10 @@
 
   #shopify-section-{{ section.id }} .snh-faq-item__question {
     color: var(--faq-text);
-    font-size: clamp(17px, 1.1vw, 21px);
-    line-height: 1.22;
+    font-size: var(--t-h5);
+    line-height: 1.1;
     font-weight: 800;
-    letter-spacing: -0.035em;
+    letter-spacing: -.02em;
   }
 
   #shopify-section-{{ section.id }} .snh-faq-item__icon {
@@ -204,10 +205,10 @@
     max-width: 760px;
     padding: 0 clamp(22px, 3vw, 40px) 28px;
     color: rgba(23, 23, 23, 0.68);
-    font-size: clamp(15px, 1vw, 18px);
-    line-height: 1.58;
+    font-size: 18px;
+    line-height: 1.5;
     font-weight: 650;
-    letter-spacing: -0.02em;
+    letter-spacing: -.02em;
   }
 
   #shopify-section-{{ section.id }} .snh-faq-item__answer p {
@@ -230,16 +231,9 @@
   }
 
   @media screen and (max-width: 760px) {
-    #shopify-section-{{ section.id }} .snh-faq {
-      padding-block: {{ section.settings.mobile_padding_top }}px {{ section.settings.mobile_padding_bottom }}px;
-    }
-
-    #shopify-section-{{ section.id }} .snh-faq__wrap {
-      width: min(100% - 28px, 1440px);
-    }
 
     #shopify-section-{{ section.id }} .snh-faq__heading {
-      font-size: clamp(56px, 18vw, 86px);
+      font-size: var(--t-display);
     }
 
     #shopify-section-{{ section.id }} .snh-faq__list {
@@ -273,10 +267,10 @@
     { "type": "url", "id": "cta_link", "label": "CTA link" },
     { "type": "checkbox", "id": "open_first", "label": "Open first FAQ by default", "default": true },
     { "type": "range", "id": "radius", "label": "Panel radius", "min": 8, "max": 28, "step": 1, "unit": "px", "default": 18 },
-    { "type": "range", "id": "padding_top", "label": "Desktop top spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 88 },
-    { "type": "range", "id": "padding_bottom", "label": "Desktop bottom spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 96 },
-    { "type": "range", "id": "mobile_padding_top", "label": "Mobile top spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 56 },
-    { "type": "range", "id": "mobile_padding_bottom", "label": "Mobile bottom spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_top", "label": "Desktop top spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 88, "info": "Not used since Round 6: every section follows the site rhythm (64px desktop, 48px mobile)." },
+    { "type": "range", "id": "padding_bottom", "label": "Desktop bottom spacing", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 96, "info": "Not used since Round 6: every section follows the site rhythm (64px desktop, 48px mobile)." },
+    { "type": "range", "id": "mobile_padding_top", "label": "Mobile top spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 56, "info": "Not used since Round 6: every section follows the site rhythm (64px desktop, 48px mobile)." },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "Mobile bottom spacing", "min": 28, "max": 120, "step": 4, "unit": "px", "default": 64, "info": "Not used since Round 6: every section follows the site rhythm (64px desktop, 48px mobile)." },
     { "type": "color", "id": "background", "label": "Background", "default": "#f3f3f2" },
     { "type": "color", "id": "panel_background", "label": "Panel background", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#171717" },

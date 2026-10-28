@@ -82,24 +82,24 @@ body {
   color: var(--snh-ink);
   font-family: var(--snh-font-body);
   font-size: var(--snh-fs-body);
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 :is(h1, h2, h3, h4, h5, h6, .h0, .h1, .h2, .h3, .h4, .h5, .h6) {
   font-family: var(--snh-font-display);
-  letter-spacing: -0.03em;
-  line-height: 1;
+  letter-spacing: -.02em;
+  line-height: 1.1;
 }
 
-.snh-display { font: 800 var(--snh-fs-display)/0.95 var(--snh-font-display); letter-spacing: -0.03em; text-transform: uppercase; margin: 0; }
-.snh-h1 { font: 800 var(--snh-fs-h1)/0.98 var(--snh-font-display); letter-spacing: -0.03em; margin: 0; }
-.snh-h2 { font: 800 var(--snh-fs-h2)/1 var(--snh-font-display); letter-spacing: -0.03em; margin: 0; }
-.snh-h3 { font: 700 var(--snh-fs-h3)/1.05 var(--snh-font-display); letter-spacing: -0.03em; margin: 0; }
-.snh-body { font: 400 var(--snh-fs-body)/1.55 var(--snh-font-body); }
-.snh-small { font: 400 var(--snh-fs-small)/1.45 var(--snh-font-body); color: var(--snh-muted); }
+.snh-display { font: 800 var(--snh-fs-display)/1.1 var(--snh-font-display); letter-spacing: -.02em; text-transform: uppercase; margin: 0; }
+.snh-h1 { font: 800 var(--snh-fs-h1)/1.1 var(--snh-font-display); letter-spacing: -.02em; margin: 0; }
+.snh-h2 { font: 800 var(--snh-fs-h2)/1.1 var(--snh-font-display); letter-spacing: -.02em; margin: 0; }
+.snh-h3 { font: 700 var(--snh-fs-h3)/1.1 var(--snh-font-display); letter-spacing: -.02em; margin: 0; }
+.snh-body { font: 400 var(--snh-fs-body)/1.5 var(--snh-font-body); }
+.snh-small { font: 400 var(--snh-fs-small)/1.5 var(--snh-font-body); color: var(--snh-muted); }
 .snh-eyebrow {
   display: inline-block;
-  font: 600 var(--snh-fs-eyebrow)/1.2 var(--snh-font-body);
+  font: 600 var(--snh-fs-eyebrow)/1.1 var(--snh-font-body);
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--snh-muted);
@@ -123,7 +123,7 @@ body {
   font-family: var(--snh-font-body);
   font-size: 15px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.1;
   letter-spacing: 0;
   text-decoration: none;
   white-space: nowrap;
@@ -230,7 +230,7 @@ input[type="email"], input[type="text"], input[type="search"], input[type="tel"]
   color: #fff;
   font-size: 12px;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.1;
 }
 .snh-pc__badge--sale { background: var(--snh-accent); }
 .snh-pc__badge--soldout { background: var(--snh-muted); }
@@ -270,8 +270,8 @@ input[type="email"], input[type="text"], input[type="search"], input[type="tel"]
   font-family: var(--snh-font-body);
   font-size: 15px;
   font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -.005em;
+  line-height: 1.5;
+  letter-spacing: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
