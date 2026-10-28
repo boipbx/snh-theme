@@ -96,9 +96,9 @@ Customize → Home page → **SNH brand marquee** → add, remove or drag *Logo*
 - Use **Logo scale** to even out logos with lots of empty space around them.
 - **Speed** is in pixels per second, so the speed stays the same as logos are added.
 
-## Product page
+## Product page (Rounds 1–4, superseded in Round 6)
 
-`sections/main-product.liquid` keeps all its existing logic and blocks, laid out to the prototype:
+`sections/main-product.liquid` (now unused, kept in the repo) kept all its existing logic and blocks, laid out to the prototype:
 - 12-column grid: gallery 7 columns, buy box 5, both sticky.
 - Buy box order: title, brand/stock, subtitle, price + per serving, Koko + points, flavour then size, purchase options,
   quantity, *Add to cart* + *Buy now*, WhatsApp, bundle box, why-athletes ticks, SNH Elite strip, description.
@@ -133,7 +133,7 @@ New settings under **SNH v2 layout**:
   New (45 days), Sold out. Flavour/size chip. Quick add: one variant adds, more open the quick-buy drawer.
 - Rating: Judge.me `reviews.rating` / `reviews.rating_count` metafields. Fact: first `custom.key_benefits` point.
 
-## Product page (Round 5)
+## Product page (Round 5, superseded in Round 6)
 - **Details band** (Liquid, tabs on desktop, accordions on phones): Description · How to use (the "How to use"
   collapsible block or `custom.how_to_use`) · Ingredients & nutrition (`custom.ingredients` + the product's
   nutrition-panel images) · FAQs (`custom.faqs`) · Delivery & returns (setting *Delivery & returns tab*, else the
@@ -164,7 +164,7 @@ square*. Every logo is trimmed to its mark and sized alike.
 ## Notes for whoever edits code next
 - Impact's own sticky add-to-cart bar and floating filter button look for `.footer` and `.shopify-section--footer`.
   The SNH footer carries both classes; keep them.
-- In `main-product.liquid`, `v2Layout()` runs after every `restructureInfo()` pass. Keep its writes conditional:
+- (Old, unused file) In `main-product.liquid`, `v2Layout()` runs after every `restructureInfo()` pass. Keep its writes conditional:
   `snhTrimCaptions()` and the theme re-renders have their own MutationObservers, and an unconditional write loops
   forever.
 - New section settings do **not** take their schema default in existing JSON templates; write the values into the
@@ -173,3 +173,45 @@ square*. Every logo is trimmed to its mark and sized alike.
 - Section group JSON (header/footer) can upload before a new schema setting it uses: if a setting doesn't show up
   on 9292, change the group file's content (an identical re-save is skipped) so it re-uploads.
 - `snh-design-system.js` fades sections in on scroll; it skips sections with app blocks, iframes or review widgets.
+
+## Round 6: product page rebuilt, one scale site-wide
+
+### Product page: `sections/snh-product.liquid`
+All 16 product templates use it (`prototype/theme_tools/r6_product_templates.py` did the switch; `main-product.liquid`
+is still in the repo, on no template). Fresh markup; CSS in `assets/snh-product.css`; JS in `assets/snh-product.js`
+(gallery, variant change, quantity, add to cart, sticky add to cart, info dialogs). No DOM moving, no MutationObservers.
+
+- **Buy box blocks** (reorder/hide in Customize): Brand (name, or a 20px logo) · Title · Rating and stock · Subtitle
+  (`custom.subtitle`, else `custom.summery_brief`) · Price (compare-at, saving, per serving from a "61 Servings"
+  size) · Koko line · SNH points line (rates from Theme settings → SNH Elite) · Divider · Variant picker · Subscribe
+  & save (selling plans; hidden when Appstle's app block is on the page) · Gift note · Buy buttons (quantity, Add to
+  cart, Buy it now; label editable, e.g. *Pre-order*) · WhatsApp order (global number) · Trust row · Bundle & save
+  · Key benefits (max 3, `custom.key_benefits`) · SNH Elite strip · Text · Custom Liquid · any app block.
+- Blocks of one group (brand/title/rating/subtitle; price/Koko/points; buttons/WhatsApp) sit 12px apart, everything
+  else 24px. Gallery 7 cols / buy box 5, 64px gap, container 1280 with 40px gutters (20px under 1024).
+- **Variant change** re-renders the price, Koko, points, stock, sold-out pills, purchase options and sticky bar from
+  the section itself (Section Rendering API), so they always match the Liquid.
+- **Buy it now** posts the product form with `return_to=/checkout`; the Koko checkout router (layout snippet
+  `koko-checkout-modal`) intercepts it first, exactly as before.
+- **Rating** reads the product's review metafields (Judge.me syncs them): stars + count, or "Be the first to review".
+  The old Judge.me badge app block and the Hoppy trust badges block were dropped from the templates (the rating row
+  and trust row replace them); the brand banner image block and the "By {brand}" text block too.
+- **Below the fold**, each its own section: SNH product stats (`custom.stats`, only with data) · SNH product details
+  (tabs desktop / accordions mobile, 760px reading column; old collapsible blocks carried over as *Tab* blocks) · SNH
+  app band (Judge.me widget, themed to ink via its CSS variables) · SNH recommendations ×2 (*Frequently bought
+  together* = Shopify complementary products from Search & Discovery, hidden until some are set; *You may also like*
+  = related) · related articles · SNH recently viewed. Why choose us / FAQ follow where the template had them.
+- QA: `prototype/tools/r6-pdp-measure.js` (4 products × 390/768/1024/1280/1440) → `prototype/shots/r6/pdp-measure.md`.
+
+### One scale site-wide
+- Type: 12 13 14 15 16 18 20 24 28 36 44 56 72 96 · line-height 1.1 headings / 1.5 body · tracking 0, -0.02em
+  (headings), 0.12em (uppercase labels) · Inter + Instrument Serif. Heading sizes are stepped tokens in
+  `assets/snh-v2.css` (`--t-display`, `--t-h1` … `--t-h5`, changing at 768 and 1200), not fluid `clamp()`.
+  The only exception: the product title is 26px on phones (spec).
+- `prototype/theme_tools/r6_type_scale.py` rewrote every SNH stylesheet onto that scale; re-run it after adding CSS.
+- Impact's own tokens (`--text-h*`, `--container-*`, `--section-outer-spacing-block`) are re-pointed at the same
+  scale at the end of `snh-v2.css`, so Impact sections (about, locations, cart, search, policies) match.
+- Sections pad 48px (phones) / 64px (desktop), top and bottom; the brand marquee band 96px on desktop.
+- Collection templates set to Impact's *sidebar* filters (the brand collections) now show the SNH filter bar full
+  width above a 4-column grid, like the others.
+- Audit: `prototype/tools/r6-site-audit.js [label]` → `prototype/shots/r6/audit-<label>.md`.

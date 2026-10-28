@@ -27,10 +27,10 @@
   assign tags = product.tags | join: '|' | downcase
   assign badges = ''
   if product.available == false
-    assign badges = 'Sold out'
+    assign badges = ',Sold out'
   else
     if retail > product.price
-      assign badges = 'Sale'
+      assign badges = ',Sale'
     endif
     assign custom_badges = product.metafields.custom.badges.value
     for cb in custom_badges

@@ -1778,3 +1778,9 @@ body { line-height: 1.5; }
 }
 .section { padding-block-start: var(--calculated-section-spacing-block-end); }
 .text-subdued, .timeline__nav-label { line-height: 1.5; }
+/* collection templates set to Impact's sidebar filters (the brand collections): the SNH filter bar replaces the
+   sidebar, so they lay out like the horizontal ones (bar full width above a 4-column grid) */
+.collection--filters-sidebar:has(.snh-bar-form) { grid-template-columns: minmax(0, 1fr); }
+.collection--filters-sidebar:has(.snh-bar-form) .collection__top-bar { display: none; }
+.collection--filters-sidebar:has(.snh-bar-form) .collection__facets-scroller { position: static; }
+@media (min-width: 1000px) { .collection--filters-sidebar:has(.snh-bar-form) form.snh-bar-form .snh-bar { max-width: none; padding-inline: 0; } }
