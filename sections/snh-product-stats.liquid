@@ -1,0 +1,35 @@
+{%- comment -%}
+  Product stats band (Round 6): product metafield custom.stats, one "value | label" per line (or a list), up to 4.
+  Renders nothing at all without data.
+{%- endcomment -%}
+{%- liquid
+  assign stat_src = product.metafields.custom.stats.value
+  unless product.metafields.custom.stats.type contains 'list'
+    assign stat_src = product.metafields.custom.stats.value | newline_to_br | split: '<br />'
+  endunless
+  assign stat_n = 0
+-%}
+{%- capture stat_html -%}
+  {%- for line in stat_src -%}
+    {%- assign parts = line | strip_html | split: '|' -%}
+    {%- assign sv = parts[0] | strip -%}{%- assign sl = parts[1] | strip -%}
+    {%- if sv == blank or sl == blank -%}{%- continue -%}{%- endif -%}
+    <div class="sp-stat"><strong>{{ sv | escape }}</strong><span>{{ sl | escape }}</span></div>
+    {%- assign stat_n = stat_n | plus: 1 -%}
+    {%- if stat_n >= 4 -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if stat_n > 0 -%}
+  {{ 'snh-product.css' | asset_url | stylesheet_tag }}
+  <section class="v2 sp-sec sp-stats" aria-label="Key stats"><div class="sp-wrap sp-stats__in" style="--n: {{ stat_n }}">{{ stat_html }}</div></section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SNH product stats",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "paragraph", "content": "Reads the product metafield custom.stats: one \"value | label\" per line, up to 4 (e.g. \"25g | protein per serving\"). Hidden when empty." }
+  ]
+}
+{% endschema %}

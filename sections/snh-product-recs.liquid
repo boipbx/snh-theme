@@ -1,0 +1,37 @@
+{%- comment -%}
+  Product recommendations (Round 6): "Frequently bought together" (Shopify complementary products, set in Search &
+  Discovery) or "You may also like" (related). The v2 card, 2 columns on phones, 4 on desktop. Loaded by the theme's
+  <product-recommendations> element from this same section; the section stays hidden (CSS :has) until it has cards.
+{%- endcomment -%}
+{{ 'snh-product.css' | asset_url | stylesheet_tag }}
+{%- assign hid = 'recs-' | append: section.id -%}
+<section class="v2 sp-sec{% if section.settings.cream %} sp-sec--cream{% endif %}" data-sp-recs aria-labelledby="{{ hid }}">
+  <product-recommendations product="{{ product.id }}" limit="{{ section.settings.limit }}" intent="{{ section.settings.intent }}">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="sp-wrap">
+        <div class="sp-head">
+          {%- if section.settings.eyebrow != blank -%}<p class="sp-head__k">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          <h2 class="sp-head__t" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+        </div>
+        <div class="sp-cards">
+          {%- for p in recommendations.products -%}{%- render 'snh-v2-card', product: p, sizes: '(max-width: 1023px) 50vw, 300px' -%}{%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </product-recommendations>
+</section>
+
+{% schema %}
+{
+  "name": "SNH recommendations",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "select", "id": "intent", "label": "Products", "options": [{ "value": "complementary", "label": "Frequently bought together (complementary)" }, { "value": "related", "label": "Related (you may also like)" }], "default": "related" },
+    { "type": "range", "id": "limit", "label": "Number of products", "min": 2, "max": 8, "step": 2, "default": 4 },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You may also *like*" },
+    { "type": "checkbox", "id": "cream", "label": "Cream background", "default": false }
+  ],
+  "presets": [{ "name": "SNH recommendations" }]
+}
+{% endschema %}

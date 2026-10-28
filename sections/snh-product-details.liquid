@@ -1,0 +1,104 @@
+{%- comment -%}
+  Product details (Round 6): tabs on desktop, accordions on phones (assets/snh-v2.js data-v2="dtabs"), content 760px wide
+  and centred. Built-in panels, each shown only when it has content: Description · How to use (custom.how_to_use) ·
+  Ingredients & nutrition (custom.ingredients + up to 2 nutrition-panel images from the product media) · FAQs
+  (custom.faqs) · Delivery & returns (setting, with a built-in text). Then one panel per "Tab" block.
+  Merchant rich text is normalised by .sp-rte (assets/snh-product.css).
+{%- endcomment -%}
+{{ 'snh-product.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign hid = 'det-' | append: section.id
+  assign det_tabs = ''
+  assign det_panels = ''
+  assign det_n = 0
+-%}
+{%- capture det_desc -%}{{ product.description }}{%- endcapture -%}
+{%- capture det_how -%}{%- if product.metafields.custom.how_to_use != blank -%}{{ product.metafields.custom.how_to_use | metafield_tag }}{%- endif -%}{%- endcapture -%}
+{%- capture det_ing -%}
+  {%- if product.metafields.custom.ingredients != blank -%}{{ product.metafields.custom.ingredients | metafield_tag }}{%- endif -%}
+  {%- assign panels_shown = 0 -%}
+  {%- for m in product.media -%}
+    {%- if m.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+    {%- assign fname = m.preview_image.src | split: '?' | first | split: '/' | last | downcase | remove: 'sportsnutritionhub' | remove: 'appliednutrition' | remove: 'rawnutrition' | remove: 'optimumnutrition' | remove: 'nutritionhub' -%}
+    {%- assign probe = m.alt | downcase | append: ' ' | append: fname -%}
+    {%- if probe contains 'nutritional' or fname contains 'nutri' or probe contains 'panel' or probe contains 'facts' or probe contains 'ingredient' or fname contains 'screenshot' -%}
+      <figure class="sp-panelimg">{{ m.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 767px) 100vw, 760px', widths: '600,900,1200', alt: m.alt }}</figure>
+      {%- assign panels_shown = panels_shown | plus: 1 -%}
+      {%- if panels_shown >= 2 -%}{%- break -%}{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture det_faq -%}
+  {%- if product.metafields.custom.faqs != blank -%}{{ product.metafields.custom.faqs | metafield_tag }}{%- elsif product.metafields.custom.faq != blank -%}{{ product.metafields.custom.faq | metafield_tag }}{%- endif -%}
+{%- endcapture -%}
+{%- capture det_ship -%}
+  {%- if section.settings.delivery != blank -%}
+    {{ section.settings.delivery }}
+  {%- else -%}
+    {%- assign free_from = settings.cart_free_shipping_threshold | default: 17000 | times: 100 | money_without_trailing_zeros -%}
+    <ul><li><strong>Colombo:</strong> same-day delivery.</li><li><strong>Rest of Sri Lanka:</strong> 1 to 3 working days.</li><li><strong>Free delivery</strong> on orders over {{ free_from }}.</li><li>Pay by card, bank transfer, cash on delivery or Koko (pay in 3).</li></ul>
+    {%- if shop.refund_policy -%}<p>Returns and refunds: see our <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a>.</p>{%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture det_list -%}description|Description,how|How to use,ing|Ingredients & nutrition,faq|FAQs,ship|Delivery & returns{%- endcapture -%}
+{%- assign det_items = det_list | split: ',' -%}
+{%- for it in det_items -%}
+  {%- assign kv = it | split: '|' -%}
+  {%- case kv[0] -%}
+    {%- when 'description' -%}{%- assign body = det_desc -%}
+    {%- when 'how' -%}{%- assign body = det_how -%}
+    {%- when 'ing' -%}{%- assign body = det_ing -%}
+    {%- when 'faq' -%}{%- assign body = det_faq -%}
+    {%- when 'ship' -%}{%- assign body = det_ship -%}
+  {%- endcase -%}
+  {%- assign txt = body | strip_html | remove: '.' | strip -%}
+  {%- unless txt != blank or body contains '<img' -%}{%- continue -%}{%- endunless -%}
+  {%- assign det_n = det_n | plus: 1 -%}
+  {%- capture pid -%}det-{{ section.id }}-{{ kv[0] }}{%- endcapture -%}
+  {%- capture det_tabs -%}{{ det_tabs }}<button type="button" role="tab" id="{{ pid }}-t" aria-controls="{{ pid }}" aria-selected="{% if det_n == 1 %}true{% else %}false{% endif %}">{{ kv[1] | escape }}</button>{%- endcapture -%}
+  {%- capture det_panels -%}{{ det_panels }}<div class="det__panel{% if det_n == 1 %} is-on{% endif %}" id="{{ pid }}" role="tabpanel" aria-labelledby="{{ pid }}-t"><button type="button" class="det__acc" aria-expanded="{% if det_n == 1 %}true{% else %}false{% endif %}">{{ kv[1] | escape }}<i aria-hidden="true"></i></button><div class="det__body sp-rte">{{ body }}</div></div>{%- endcapture -%}
+{%- endfor -%}
+{%- for b in section.blocks -%}
+  {%- capture body -%}{{ b.settings.page.content | default: b.settings.content }}{%- endcapture -%}
+  {%- assign txt = body | strip_html | remove: '.' | strip -%}
+  {%- if txt == blank or b.settings.title == blank -%}{%- continue -%}{%- endif -%}
+  {%- assign det_n = det_n | plus: 1 -%}
+  {%- capture pid -%}det-{{ section.id }}-{{ b.id }}{%- endcapture -%}
+  {%- capture det_tabs -%}{{ det_tabs }}<button type="button" role="tab" id="{{ pid }}-t" aria-controls="{{ pid }}" aria-selected="{% if det_n == 1 %}true{% else %}false{% endif %}" {{ b.shopify_attributes }}>{{ b.settings.title | escape }}</button>{%- endcapture -%}
+  {%- capture det_panels -%}{{ det_panels }}<div class="det__panel{% if det_n == 1 %} is-on{% endif %}" id="{{ pid }}" role="tabpanel" aria-labelledby="{{ pid }}-t"><button type="button" class="det__acc" aria-expanded="{% if det_n == 1 %}true{% else %}false{% endif %}">{{ b.settings.title | escape }}<i aria-hidden="true"></i></button><div class="det__body sp-rte">{{ body }}</div></div>{%- endcapture -%}
+{%- endfor -%}
+{%- if det_n > 0 -%}
+<section class="v2 sp-sec{% if section.settings.cream %} sp-sec--cream{% endif %}" id="details" aria-labelledby="{{ hid }}">
+  <div class="sp-wrap">
+    <div class="sp-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="sp-head__k">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="sp-head__t" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+    </div>
+    <div class="det sp-det" data-v2="dtabs">
+      <div class="det__tabs" role="tablist" aria-label="Product details">{{ det_tabs }}</div>
+      {{ det_panels }}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SNH product details",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The details" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Everything *inside*", "info": "Wrap a word in *asterisks* for the serif italic." },
+    { "type": "richtext", "id": "delivery", "label": "Delivery & returns tab", "info": "Leave empty for the built-in text: Colombo same day, 1 to 3 working days elsewhere, free delivery over the cart threshold, payment options and the refund policy link." },
+    { "type": "checkbox", "id": "cream", "label": "Cream background", "default": false }
+  ],
+  "blocks": [
+    { "type": "tab", "name": "Tab", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Tab" },
+      { "type": "richtext", "id": "content", "label": "Content" },
+      { "type": "page", "id": "page", "label": "Or show a page" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH product details" }]
+}
+{% endschema %}

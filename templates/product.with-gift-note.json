@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
+      "type": "snh-product",
       "blocks": {
         "vendor": {
           "type": "vendor",
@@ -18,123 +18,106 @@
         },
         "title": {
           "type": "title",
-          "settings": {
-            "heading_tag": "h2"
-          }
-        },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "hide_sold_out_variants": false,
-            "stack_blocks": true,
-            "selector_style": "block",
-            "swatch_selector_style": "swatch",
-            "variant_image_options": "",
-            "size_chart_page": ""
-          }
-        },
-        "badges": {
-          "type": "badges",
           "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {
-            "show_taxes_notice": false
-          }
-        },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "payment_terms": {
-          "type": "payment_terms",
-          "settings": {}
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_payment_button": true,
-            "show_gift_card_recipient": true,
-            "atc_button_background": "#ffffff",
-            "atc_button_text_color": "#1a1a1a",
-            "payment_button_background": "#e0521c",
-            "payment_button_text_color": "#ffffff"
-          }
         },
         "rating": {
           "type": "rating",
           "settings": {
-            "show_empty": false
+            "low_stock": 5
           }
         },
-        "separator": {
-          "type": "separator",
+        "subtitle": {
+          "type": "subtitle",
           "settings": {}
         },
-        "description": {
-          "type": "description",
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "koko": {
+          "type": "koko",
+          "settings": {}
+        },
+        "points": {
+          "type": "points",
+          "settings": {}
+        },
+        "divider": {
+          "type": "divider",
+          "settings": {}
+        },
+        "options": {
+          "type": "options",
+          "settings": {}
+        },
+        "purchase_options": {
+          "type": "purchase_options",
+          "settings": {}
+        },
+        "gift_note": {
+          "type": "gift_note",
           "settings": {
-            "collapse_content": false
+            "label": "Gift note"
           }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "atc_label": "Add to cart",
+            "show_buy_now": true
+          }
+        },
+        "whatsapp": {
+          "type": "whatsapp",
+          "settings": {
+            "label": "Order on WhatsApp"
+          }
+        },
+        "trust": {
+          "type": "trust",
+          "settings": {
+            "item_1": "Official distributor",
+            "item_2": "100% authentic",
+            "item_3": "Same-day Colombo"
+          }
+        },
+        "bundles": {
+          "type": "bundles",
+          "settings": {
+            "handles": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers"
+          }
+        },
+        "benefits": {
+          "type": "benefits",
+          "settings": {}
+        },
+        "elite": {
+          "type": "elite",
+          "settings": {}
         }
       },
       "block_order": [
         "vendor",
         "title",
-        "variant_picker",
-        "badges",
-        "price",
-        "quantity_selector",
-        "payment_terms",
-        "buy_buttons",
         "rating",
-        "separator",
-        "description"
+        "subtitle",
+        "price",
+        "koko",
+        "points",
+        "divider",
+        "options",
+        "purchase_options",
+        "gift_note",
+        "buy_buttons",
+        "whatsapp",
+        "trust",
+        "bundles",
+        "benefits",
+        "elite"
       ],
       "settings": {
-        "full_width": true,
-        "show_fixed_add_to_cart": true,
-        "desktop_media_width": 55,
-        "desktop_media_layout": "carousel_thumbnails_left",
-        "mobile_media_size": "contained",
-        "mobile_carousel_control": "thumbnails",
-        "enable_video_autoplay": false,
-        "enable_video_looping": true,
-        "enable_image_zoom": true,
-        "max_image_zoom_level": 3,
-        "background": "rgba(0,0,0,0)",
-        "background_gradient": "",
-        "text_color": "rgba(0,0,0,0)",
-        "input_background": "rgba(0,0,0,0)",
-        "input_text_color": "#1a1a1a",
-        "v2_bundles": true,
-        "v2_bundle_handles": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers",
-        "v2_details_eyebrow": "The details",
-        "v2_details_heading": "Everything *inside*",
-        "v2_details_lead": "What it does, how to use it and exactly what goes in."
-      }
-    },
-    "related-products": {
-      "type": "related-products",
-      "settings": {
-        "recommendations_count": 6,
-        "products": [],
-        "full_width": true,
-        "stack_products": false,
-        "show_progress_bar": false,
-        "products_per_row_mobile": "2",
-        "products_per_row_desktop": 4,
-        "subheading": "",
-        "title": "You may also like",
-        "content": "",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": "",
-        "product_card_background": "",
-        "product_card_text_color": ""
+        "show_crumbs": true,
+        "sticky_atc": true
       }
     },
     "collection_list_9byzdx": {
@@ -321,28 +304,60 @@
         "question_7"
       ]
     },
-    "recently_viewed": {
-      "type": "recently-viewed-products",
+    "product_stats": {
+      "type": "snh-product-stats",
+      "settings": {}
+    },
+    "product_details": {
+      "type": "snh-product-details",
+      "blocks": {},
+      "block_order": [],
       "settings": {
-        "full_width": false,
-        "products_count": 8,
-        "stack_products": false,
-        "show_progress_bar": true,
-        "products_per_row_mobile": "2",
-        "products_per_row_desktop": 4,
-        "subheading": "",
-        "title": "Recently viewed",
-        "content": ""
+        "eyebrow": "The details",
+        "heading": "Everything *inside*",
+        "cream": false
+      }
+    },
+    "bought_together": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "complementary",
+        "limit": 4,
+        "eyebrow": "Pairs well with",
+        "heading": "Frequently bought *together*",
+        "cream": false
+      }
+    },
+    "related": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "related",
+        "limit": 4,
+        "eyebrow": "",
+        "heading": "You may also *like*",
+        "cream": false
+      }
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {
+        "limit": 4,
+        "heading": "Recently *viewed*",
+        "cream": false
       }
     }
   },
   "order": [
     "main",
-    "related-products",
+    "product_stats",
+    "product_details",
+    "bought_together",
+    "related",
     "snh_articles",
-    "recently_viewed",
+    "recent",
     "collection_list_9byzdx",
     "snh_why",
     "snh_faq"
   ]
 }
+

@@ -1,0 +1,446 @@
+{%- comment -%}
+  SNH product (Round 6): the product page's main section, written from scratch. Breadcrumb, gallery (7 cols) and buy
+  box (5 cols). Every module of the buy box is a block, rendered in the editor's order by Liquid alone: nothing is
+  moved after render. Blocks of the same group (head, price, buy) sit 12px apart, groups 24px apart
+  (assets/snh-product.css). Behaviour: assets/snh-product.js (gallery, variant change, quantity, sticky add to cart,
+  info dialogs). Variant change re-renders the [data-sp-sync] parts from this section through the Section Rendering API,
+  so prices, Koko, points, stock and sold-out pills always come from this Liquid.
+  Below the fold lives in its own sections: snh-product-stats, snh-product-details, snh-app-band (reviews),
+  snh-product-recs (bought together / related), snh-related-articles, snh-recently-viewed.
+{%- endcomment -%}
+{{ 'snh-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-product.js' | asset_url }}" defer></script>
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign form_id = 'sp-form-' | append: section.id
+  assign rate_lo = settings.snh_rate_bronze | default: 3
+  assign rate_hi = settings.snh_rate_gold | default: 10
+  assign free_from = settings.cart_free_shipping_threshold | default: 17000 | times: 100 | money_without_trailing_zeros
+  assign wa = settings.snh_whatsapp | remove: '+' | remove: ' ' | remove: '-'
+
+  # Theme settings → SNH product images → Prefer clean images: leave out media whose file name or alt matches a frame
+  # keyword (SNH's orange-frame renders), as long as one image is left.
+  assign gal_skip = ','
+  if settings.snh_clean_images
+    assign kws = settings.snh_frame_keywords | downcase | split: ','
+    assign kept = 0
+    for media in product.media
+      assign probe = media.preview_image.src | split: '?' | first | split: '/' | last | append: ' ' | append: media.alt | downcase
+      assign hit = false
+      for k in kws
+        assign kk = k | strip
+        if kk != blank and probe contains kk
+          assign hit = true
+        endif
+      endfor
+      if hit
+        assign gal_skip = gal_skip | append: media.id | append: ','
+      else
+        assign kept = kept | plus: 1
+      endif
+    endfor
+    if kept == 0
+      assign gal_skip = ','
+    endif
+  endif
+  assign gal_count = 0
+  for media in product.media
+    assign key = ',' | append: media.id | append: ','
+    unless gal_skip contains key
+      assign gal_count = gal_count | plus: 1
+    endunless
+  endfor
+  assign gal_active = v.featured_media | default: product.featured_media
+
+  # breadcrumb: the collection named like the product type, else the first collection that isn't a catch-all or promo
+  assign bc_url = ''
+  assign bc_title = ''
+  assign ptype = product.type | downcase | strip
+  for c in product.collections
+    assign ct = c.title | downcase
+    if ptype != blank and ct == ptype
+      assign bc_url = c.url
+      assign bc_title = c.title
+      break
+    endif
+  endfor
+  if bc_url == ''
+    for c in product.collections
+      assign ct = c.title | downcase
+      if ct == 'all' or ct contains 'all products' or ct contains 'everything' or ct contains 'home page' or ct contains 'frontpage' or ct contains 'best' or ct contains 'sri lanka' or ct contains 'sale' or ct contains 'offer' or ct contains 'new' or ct contains 'deal' or ct contains 'trending'
+        continue
+      endif
+      assign bc_url = c.url
+      assign bc_title = c.title
+      break
+    endfor
+  endif
+-%}
+{%- capture short_title -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
+
+<section class="v2 sp" id="sp-{{ section.id }}" data-sp data-section="{{ section.id }}" data-url="{{ product.url }}" data-form="{{ form_id }}">
+  <div class="sp-wrap">
+    {%- if section.settings.show_crumbs -%}
+      <nav class="sp-crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        {%- if bc_url != '' -%}<span aria-hidden="true">/</span><a href="{{ bc_url }}">{{ bc_title | downcase | capitalize | escape }}</a>{%- endif -%}
+        <span aria-hidden="true">/</span><span aria-current="page">{{ short_title | strip }}</span>
+      </nav>
+    {%- endif -%}
+
+    <div class="sp-grid">
+      {%- comment -%} ── Gallery ── {%- endcomment -%}
+      <div class="sp-gal{% if gal_count < 2 %} sp-gal--single{% endif %}" data-sp-gal>
+        {%- if gal_count > 1 -%}
+          <div class="sp-rail" role="tablist" aria-label="Product images">
+            {%- assign gi = 0 -%}
+            {%- for media in product.media -%}
+              {%- assign key = ',' | append: media.id | append: ',' -%}
+              {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
+              <button type="button" class="sp-thumb" role="tab" data-sp-thumb="{{ gi }}" aria-label="Image {{ gi | plus: 1 }} of {{ gal_count }}" aria-selected="{% if media.id == gal_active.id %}true{% else %}false{% endif %}">
+                {{- media.preview_image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' -}}
+              </button>
+              {%- assign gi = gi | plus: 1 -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <div class="sp-stage">
+          <ul class="sp-slides" data-sp-slides tabindex="0" aria-label="{{ product.title | escape }} images">
+            {%- assign gi = 0 -%}
+            {%- for media in product.media -%}
+              {%- assign key = ',' | append: media.id | append: ',' -%}
+              {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
+              <li class="sp-slide" data-sp-slide="{{ gi }}" data-media="{{ media.id }}"{% if media.id == gal_active.id %} data-active{% endif %}>
+                {%- if media.media_type == 'image' -%}
+                  {%- if gi == 0 -%}
+                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'eager', fetchpriority: 'high', alt: media.alt -}}
+                  {%- else -%}
+                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'lazy', alt: media.alt -}}
+                  {%- endif -%}
+                {%- else -%}
+                  {{- media | media_tag: image_size: '1200x' -}}
+                {%- endif -%}
+              </li>
+              {%- assign gi = gi | plus: 1 -%}
+            {%- endfor -%}
+            {%- if gal_count == 0 -%}<li class="sp-slide">{{ 'product-1' | placeholder_svg_tag }}</li>{%- endif -%}
+          </ul>
+          {%- if gal_count > 1 -%}
+            <div class="sp-progress" aria-hidden="true"><span data-sp-progress style="--n: {{ gal_count }}"></span></div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ── Buy box ── {%- endcomment -%}
+      <div class="sp-buy" data-sp-buy>
+        {%- form 'product', product, id: form_id, class: 'sp-form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ v.id }}" data-sp-id>
+        {%- endform -%}
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              <div class="sp-b sp-app" {{ block.shopify_attributes }}>{% render block %}</div>
+
+            {%- when 'vendor' -%}
+              <div class="sp-b sp-vendor" data-g="head" {{ block.shopify_attributes }}>
+                {%- if block.settings.logo != blank -%}
+                  <a class="sp-brandlogo" href="{{ product.vendor | url_for_vendor }}">{{ block.settings.logo | image_url: height: 40 | image_tag: height: 20, alt: product.vendor }}</a>
+                {%- else -%}
+                  <a class="sp-eyebrow" href="{{ product.vendor | url_for_vendor }}">{{ product.vendor | escape }}</a>
+                {%- endif -%}
+              </div>
+
+            {%- when 'title' -%}
+              <h1 class="sp-b sp-title" data-g="head" {{ block.shopify_attributes }}>{{ short_title | strip }}</h1>
+
+            {%- when 'rating' -%}
+              {%- liquid
+                assign r_count = product.metafields.reviews.rating_count.value | default: 0
+                assign r_val = product.metafields.reviews.rating.value.rating | default: 0
+                assign low_at = block.settings.low_stock
+              -%}
+              <div class="sp-b sp-meta" data-g="head" {{ block.shopify_attributes }}>
+                {%- if r_count > 0 -%}
+                  <a class="sp-stars" href="#reviews" style="--r: {{ r_val | divided_by: 5.0 | times: 100 }}%"><span class="sp-stars__ico" aria-hidden="true"></span><span>{{ r_val | round: 1 }} · {{ r_count }} review{% if r_count != 1 %}s{% endif %}</span></a>
+                {%- else -%}
+                  <a class="sp-stars sp-stars--none" href="#reviews">Be the first to review</a>
+                {%- endif -%}
+                <span class="sp-stock" data-sp-sync="stock">
+                  {%- if v.available == false -%}
+                    <span class="sp-pillstate sp-pillstate--out">Sold out</span>
+                  {%- elsif v.inventory_management == 'shopify' and v.inventory_quantity > 0 and v.inventory_quantity <= low_at -%}
+                    <span class="sp-pillstate sp-pillstate--low">Only {{ v.inventory_quantity }} left</span>
+                  {%- else -%}
+                    <span class="sp-pillstate">In stock</span>
+                  {%- endif -%}
+                </span>
+              </div>
+
+            {%- when 'subtitle' -%}
+              {%- liquid
+                assign sub = product.metafields.custom.subtitle.value | default: product.metafields.custom.summery_brief.value
+                assign sub = sub | strip_html | strip
+              -%}
+              {%- if sub != blank -%}<p class="sp-b sp-sub" data-g="head" {{ block.shopify_attributes }}>{{ sub | escape }}</p>{%- endif -%}
+
+            {%- when 'price' -%}
+              {%- liquid
+                assign servings = 0
+                for o in v.options
+                  assign od = o | downcase
+                  if od contains 'serving'
+                    assign servings = o | split: ' ' | first | plus: 0
+                  endif
+                endfor
+              -%}
+              <div class="sp-b sp-price" data-g="price" data-sp-sync="price" {{ block.shopify_attributes }}>
+                <p class="sp-price__row">
+                  <span class="sp-price__now">{{ v.price | money_without_trailing_zeros }}</span>
+                  {%- if v.compare_at_price > v.price -%}
+                    <s class="sp-price__was"><span class="visually-hidden">Was </span>{{ v.compare_at_price | money_without_trailing_zeros }}</s>
+                    <span class="sp-chip">Save {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>
+                  {%- endif -%}
+                </p>
+                {%- if servings > 0 -%}<p class="sp-price__per">{{ v.price | divided_by: servings | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros }} per serving · {{ servings }} servings</p>{%- endif -%}
+              </div>
+
+            {%- when 'koko' -%}
+              {%- if v.price > 0 -%}
+                <p class="sp-b sp-line" data-g="price" data-sp-sync="koko" {{ block.shopify_attributes }}>
+                  <img class="sp-koko" src="https://paykoko.com/img/logo1.7ff549c0.png" alt="Koko" width="45" height="16" loading="lazy">
+                  <span>or 3 × <b>{{ v.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</b>, interest-free</span>
+                  <button type="button" class="sp-info" data-sp-modal="payment" aria-label="Payment options">i</button>
+                </p>
+              {%- endif -%}
+
+            {%- when 'points' -%}
+              {%- liquid
+                assign pts_lo = v.price | times: rate_lo | divided_by: 100 | money_without_currency | split: '.' | first
+                assign pts_hi = v.price | times: rate_hi | divided_by: 100 | money_without_currency | split: '.' | first
+              -%}
+              <button type="button" class="sp-b sp-line sp-line--btn" data-g="price" data-sp-modal="elite" data-sp-sync="points" {{ block.shopify_attributes }}>
+                {%- render 'snh-product-icon', name: 'zap' -%}
+                <span>Earn <b>{{ pts_lo }}–{{ pts_hi }}</b> SNH points on this order</span>
+              </button>
+
+            {%- when 'divider' -%}
+              <hr class="sp-b sp-hr" {{ block.shopify_attributes }}>
+
+            {%- when 'options' -%}
+              {%- unless product.has_only_default_variant -%}
+                <div class="sp-b sp-opts" data-sp-sync="options" {{ block.shopify_attributes }}>
+                  {%- for option in product.options_with_values -%}
+                    {%- assign oname = option.name | replace: 'Flavor', 'Flavour' | replace: 'flavor', 'flavour' -%}
+                    <fieldset class="sp-opt" data-sp-opt="{{ forloop.index0 }}">
+                      <legend class="sp-opt__label">{{ oname | escape }}: <span>{{ option.selected_value | remove: ' - Informed-Sport Tested' | escape }}</span></legend>
+                      <div class="sp-pills">
+                        {%- for value in option.values -%}
+                          <label class="sp-pill{% unless value.available %} is-out{% endunless %}">
+                            <input type="radio" name="sp-{{ section.id }}-{{ option.position }}" value="{{ value | escape }}"{% if value.selected %} checked{% endif %}>
+                            <span>{{ value | remove: ' - Informed-Sport Tested' | escape }}</span>
+                            {%- unless value.available -%}<span class="visually-hidden">, sold out</span>{%- endunless -%}
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    </fieldset>
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+            {%- when 'purchase_options' -%}
+              {%- if product.selling_plan_groups.size > 0 -%}
+                <div class="sp-b" data-sp-sync="popt" {{ block.shopify_attributes }}>{%- render 'snh-v2-purchase-options', product: product, form_id: form_id -%}</div>
+              {%- endif -%}
+
+            {%- when 'gift_note' -%}
+              <div class="sp-b sp-field" {{ block.shopify_attributes }}>
+                <label for="sp-note-{{ section.id }}">{{ block.settings.label | escape }}</label>
+                <textarea id="sp-note-{{ section.id }}" name="properties[{{ block.settings.label | escape }}]" form="{{ form_id }}" rows="3" maxlength="250"></textarea>
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              {%- capture atc_label -%}{%- if v.available -%}{{ block.settings.atc_label | default: 'Add to cart' }}{%- else -%}Sold out{%- endif -%}{%- endcapture -%}
+              <div class="sp-b sp-buttons" data-g="buy" {{ block.shopify_attributes }}>
+                <div class="sp-buyrow">
+                  <div class="sp-qty">
+                    <button type="button" data-sp-qty="-1" aria-label="Decrease quantity"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                    <input type="number" name="quantity" value="1" min="1" inputmode="numeric" form="{{ form_id }}" aria-label="Quantity" data-sp-qtyin>
+                    <button type="button" data-sp-qty="1" aria-label="Increase quantity"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                  </div>
+                  <button type="submit" class="sp-btn sp-btn--ink" form="{{ form_id }}" data-sp-add data-sp-sync="atc"{% unless v.available %} disabled{% endunless %}>{{ atc_label | strip }}</button>
+                </div>
+                {%- if block.settings.show_buy_now -%}
+                  <button type="submit" class="sp-btn sp-btn--accent" form="{{ form_id }}" name="return_to" value="/checkout" data-snh-checkout-trigger data-snh-product-buy-now data-sp-buynow{% unless v.available %} hidden{% endunless %}>Buy it now</button>
+                {%- endif -%}
+              </div>
+
+            {%- when 'whatsapp' -%}
+              {%- if wa != blank -%}
+                {%- capture wa_text -%}Hi SNH! I'd like to order: {{ product.title }} {{ shop.url }}{{ product.url }}{%- endcapture -%}
+                <a class="sp-b sp-btn sp-btn--wa" data-g="buy" href="https://wa.me/{{ wa }}?text={{ wa_text | url_encode }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+                  {%- render 'snh-product-icon', name: 'whatsapp' -%}<span>{{ block.settings.label | escape }}</span>
+                </a>
+              {%- endif -%}
+
+            {%- when 'trust' -%}
+              <ul class="sp-b sp-trust" {{ block.shopify_attributes }}>
+                <li><button type="button" data-sp-modal="authentic">{% render 'snh-product-icon', name: 'award' %}<span>{{ block.settings.item_1 | escape }}</span></button></li>
+                <li><button type="button" data-sp-modal="authentic">{% render 'snh-product-icon', name: 'shield' %}<span>{{ block.settings.item_2 | escape }}</span></button></li>
+                <li><button type="button" data-sp-modal="delivery">{% render 'snh-product-icon', name: 'truck' %}<span>{{ block.settings.item_3 | escape }}</span></button></li>
+              </ul>
+
+            {%- when 'bundles' -%}
+              {%- capture bx -%}{%- render 'snh-v2-bundles', product: product, handles: block.settings.handles, limit: 3 -%}{%- endcapture -%}
+              {%- if bx != blank -%}<div class="sp-b sp-bundles" {{ block.shopify_attributes }}>{{ bx }}</div>{%- endif -%}
+
+            {%- when 'benefits' -%}
+              {%- liquid
+                assign kb = product.metafields.custom.key_benefits.value
+                unless product.metafields.custom.key_benefits.type contains 'list'
+                  assign kb = kb | newline_to_br | split: '<br />'
+                endunless
+                assign kb_n = 0
+              -%}
+              {%- capture kb_html -%}
+                {%- for point in kb -%}
+                  {%- assign pt = point | strip_html | strip -%}
+                  {%- if pt == blank -%}{%- continue -%}{%- endif -%}
+                  <li>{% render 'snh-product-icon', name: 'check' %}<span>{{ pt | escape }}</span></li>
+                  {%- assign kb_n = kb_n | plus: 1 -%}
+                  {%- if kb_n >= 3 -%}{%- break -%}{%- endif -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+              {%- if kb_n > 0 -%}<ul class="sp-b sp-benefits" {{ block.shopify_attributes }}>{{ kb_html }}</ul>{%- endif -%}
+
+            {%- when 'elite' -%}
+              <button type="button" class="sp-b sp-elite" data-sp-modal="elite" {{ block.shopify_attributes }}>
+                {%- render 'snh-product-icon', name: 'zap' -%}
+                <span><b>SNH Elite</b> · earn up to {{ rate_hi }}% back in points</span>
+                <span class="sp-elite__cta">Join free</span>
+              </button>
+
+            {%- when 'text' -%}
+              <div class="sp-b sp-text" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+            {%- when 'liquid' -%}
+              <div class="sp-b" {{ block.shopify_attributes }}>{{ block.settings.liquid }}</div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ── Sticky add to cart: shown by assets/snh-product.js once the main button has scrolled away ── {%- endcomment -%}
+  {%- if section.settings.sticky_atc -%}
+    {%- assign thumb = v.featured_media | default: product.featured_media -%}
+    <div class="sp-sticky" data-sp-sticky aria-hidden="true">
+      <div class="sp-wrap sp-sticky__in">
+        {%- if thumb -%}<span class="sp-sticky__img">{{ thumb | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy' }}</span>{%- endif -%}
+        <span class="sp-sticky__text">
+          <span class="sp-sticky__name">{{ short_title | strip }}</span>
+          <span class="sp-sticky__price" data-sp-sync="sprice">{{ v.price | money_without_trailing_zeros }}{% unless product.has_only_default_variant %}<span> · {{ v.title | remove: ' - Informed-Sport Tested' | replace: ' / ', ' · ' | escape }}</span>{% endunless %}</span>
+        </span>
+        <button type="submit" class="sp-btn sp-btn--ink" form="{{ form_id }}" tabindex="-1" data-sp-sync="satc"{% unless v.available %} disabled{% endunless %}>{% if v.available %}Add to cart{% else %}Sold out{% endif %}</button>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── Info dialogs (delivery / payment / authentic / Elite) ── {%- endcomment -%}
+  {%- capture m_delivery -%}<p>Free delivery on every order over {{ free_from }}.</p><p>Colombo orders placed before 2 PM arrive the same day.</p><p>Everywhere else in Sri Lanka in 1 to 3 working days, fully tracked.</p>{%- endcapture -%}
+  {%- capture m_payment -%}<p>Visa and Mastercard, direct bank transfer, or cash on delivery.</p><p>Split any order into 3 interest-free instalments with Koko at checkout.</p><p>Every checkout is SSL-encrypted and secure.</p>{%- endcapture -%}
+  {%- capture m_authentic -%}<p>Sports Nutrition Hub is an official distributor: every product comes directly from the brand or its certified distributor.</p><p>Batch codes are verifiable with the manufacturer.</p><p>Informed-Sport certified ranges are available for tested athletes.</p>{%- endcapture -%}
+  {%- capture m_elite -%}<p>Members earn points back on every eligible order: Bronze {{ settings.snh_rate_bronze | default: 3 }}%, Silver {{ settings.snh_rate_silver | default: 7 }}%, Gold {{ rate_hi }}%.</p><p>Points add up automatically and convert to money off your next order.</p>{%- endcapture -%}
+  {%- capture m_elite_actions -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_register_url }}">Join free</a><a class="sp-btn sp-btn--line" href="{{ routes.account_login_url }}">Log in</a>{%- endcapture -%}
+  {%- liquid
+    assign modal_keys = 'delivery,payment,authentic,elite' | split: ','
+  -%}
+  {%- for k in modal_keys -%}
+    {%- case k -%}
+      {%- when 'delivery' -%}{%- assign m_k = 'Delivery' -%}{%- assign m_t = 'Fast, tracked, island-wide' -%}{%- assign m_b = m_delivery -%}{%- assign m_a = '' -%}
+      {%- when 'payment' -%}{%- assign m_k = 'Payment' -%}{%- assign m_t = 'Pay the way you want' -%}{%- assign m_b = m_payment -%}{%- assign m_a = '' -%}
+      {%- when 'authentic' -%}{%- assign m_k = 'Authenticity' -%}{%- assign m_t = '100% authentic, always' -%}{%- assign m_b = m_authentic -%}{%- assign m_a = '' -%}
+      {%- when 'elite' -%}{%- assign m_k = 'SNH Elite' -%}{%- assign m_t = 'Earn on every order' -%}{%- assign m_b = m_elite -%}{%- assign m_a = m_elite_actions -%}
+    {%- endcase -%}
+    <dialog class="sp-modal" id="sp-m-{{ k }}-{{ section.id }}" data-sp-dialog="{{ k }}" aria-labelledby="sp-m-{{ k }}-{{ section.id }}-t">
+      <form method="dialog"><button class="sp-modal__x" aria-label="Close">×</button></form>
+      <p class="sp-modal__k">{{ m_k }}</p>
+      <h2 class="sp-modal__t" id="sp-m-{{ k }}-{{ section.id }}-t">{{ m_t }}</h2>
+      <div class="sp-modal__b">{{ m_b }}</div>
+      {%- if m_a != '' -%}<div class="sp-modal__a">{{ m_a }}</div>{%- endif -%}
+    </dialog>
+  {%- endfor -%}
+
+  <script type="application/json" data-sp-json>
+    {
+      "variants": [{%- for x in product.variants -%}{"id": {{ x.id }}, "options": {{ x.options | json }}, "available": {{ x.available | json }}, "media": {{ x.featured_media.id | default: 0 }}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]
+    }
+  </script>
+  <script type="application/ld+json">{{ product | structured_data }}</script>
+</section>
+
+{% schema %}
+{
+  "name": "SNH product",
+  "tag": "div",
+  "class": "snh-sec snh-sec--product",
+  "settings": [
+    { "type": "checkbox", "id": "show_crumbs", "label": "Breadcrumb", "default": true },
+    { "type": "checkbox", "id": "sticky_atc", "label": "Sticky add to cart bar", "default": true, "info": "Appears once the main Add to cart button has scrolled out of view, hides at the footer." }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "vendor", "name": "Brand", "limit": 1, "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Brand logo", "info": "Shown 20px tall instead of the brand name. Leave empty for the name." }
+    ] },
+    { "type": "title", "name": "Title", "limit": 1, "settings": [] },
+    { "type": "rating", "name": "Rating and stock", "limit": 1, "settings": [
+      { "type": "number", "id": "low_stock", "label": "Show \"Only N left\" at or below", "default": 5 }
+    ] },
+    { "type": "subtitle", "name": "Subtitle", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Product metafield custom.subtitle, else custom.summery_brief." }
+    ] },
+    { "type": "price", "name": "Price", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Price, compare-at price, saving and price per serving (from a size like \"61 Servings\")." }
+    ] },
+    { "type": "koko", "name": "Koko line", "limit": 1, "settings": [] },
+    { "type": "points", "name": "SNH points line", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Rates come from Theme settings → SNH Elite." }
+    ] },
+    { "type": "divider", "name": "Divider", "settings": [] },
+    { "type": "options", "name": "Variant picker", "limit": 1, "settings": [] },
+    { "type": "purchase_options", "name": "Subscribe & save", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "One-time or subscription, from the product's selling plans (Appstle). Hidden when the product has none, or when Appstle's own app block is on the page." }
+    ] },
+    { "type": "gift_note", "name": "Gift note", "limit": 1, "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Gift note" }
+    ] },
+    { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
+      { "type": "text", "id": "atc_label", "label": "Add to cart label", "default": "Add to cart", "info": "E.g. \"Pre-order\" on the pre-order template." },
+      { "type": "checkbox", "id": "show_buy_now", "label": "Buy it now button", "default": true }
+    ] },
+    { "type": "whatsapp", "name": "WhatsApp order", "limit": 1, "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Order on WhatsApp" },
+      { "type": "paragraph", "content": "Number: Theme settings → SNH contact and reviews." }
+    ] },
+    { "type": "trust", "name": "Trust row", "limit": 1, "settings": [
+      { "type": "text", "id": "item_1", "label": "Item 1", "default": "Official distributor" },
+      { "type": "text", "id": "item_2", "label": "Item 2", "default": "100% authentic" },
+      { "type": "text", "id": "item_3", "label": "Item 3", "default": "Same-day Colombo" }
+    ] },
+    { "type": "bundles", "name": "Bundle & save", "limit": 1, "settings": [
+      { "type": "text", "id": "handles", "label": "Bundle collections", "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers", "info": "Shows the store's bundle products whose description names this product (up to 3)." }
+    ] },
+    { "type": "benefits", "name": "Key benefits", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Up to 3 points from the product metafield custom.key_benefits. Hidden when empty." }
+    ] },
+    { "type": "elite", "name": "SNH Elite strip", "limit": 1, "settings": [] },
+    { "type": "text", "name": "Text", "settings": [
+      { "type": "richtext", "id": "text", "label": "Text" }
+    ] },
+    { "type": "liquid", "name": "Custom Liquid", "settings": [
+      { "type": "liquid", "id": "liquid", "label": "Liquid" }
+    ] }
+  ]
+}
+{% endschema %}
