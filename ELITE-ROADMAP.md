@@ -172,3 +172,23 @@ others link to the bundle.
 | localStorage `snh_vector_avatar` | initials · bolt · barbell · shield · flame · trophy · heart · dumbbell | theme | theme | Same key as V8. |
 | localStorage `snh_goal_prompt_off` | "1" | theme | theme | Dismissed personalise prompt. |
 | Theme settings → SNH Elite | rates, thresholds, welcome points, redeem from, Rs per point, perks | client | everything Elite | Never hard-coded in the app. |
+
+## 6. Member promotion metaobject (to create in admin)
+Type handle **`member_promotion`**, storefront access **on** (the theme reads `metaobjects.member_promotion.values`).
+
+| Field key | Type | Notes |
+|---|---|---|
+| `title` | single line text | `*word*` turns serif |
+| `text` | multi-line text | one or two sentences |
+| `cta_label` | single line text | default "Shop now" |
+| `link` | URL | |
+| `image` | file (image) | landscape works best for the hero |
+| `start_date` / `end_date` | date | empty = always on |
+| `target_tiers` | list of single line text | bronze, silver, gold |
+| `target_goals` | list of single line text | goal values (§4) |
+| `target_sports` | list of single line text | sport values |
+| `target_diets` | list of single line text | none, vegetarian, vegan, lactose-free |
+| `bought_triggers` | list of single line text | brand / type / product words, e.g. creatine, RYSE |
+| `priority` | integer 0–9 | higher wins |
+
+As soon as one entry exists, the theme uses the metaobject entries only (the account page blocks are ignored).

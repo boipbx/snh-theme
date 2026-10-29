@@ -28,6 +28,8 @@
 
 {%- render 'snh-app-active', orders: recent, sid: sid -%}
 
+{%- render 'snh-app-promos', blocks: blocks, tier: m[0], goal: goal, goal2: goal2, sport: sport, diet: diet, recent: recent, sid: sid, mock: mock -%}
+
 {%- if goal == blank and s.goal_prompt != false -%}
   <aside class="app__prompt" data-goal-prompt aria-labelledby="{{ sid }}-prompt-h">
     <span class="app__prompt-ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'target' %}</span>
@@ -190,6 +192,13 @@
       if sv == 0
         continue
       endif
+      # a member who now eats vegan / lactose-free isn't nudged to rebuy whey
+      if diet == 'vegan' or diet == 'lactose-free'
+        assign tl = it[1] | downcase
+        if tl contains 'whey' or tl contains 'casein'
+          continue
+        endif
+      endif
       assign total = sv | times: it[3]
       assign left = total | minus: days
       if left < 10 and left > -30 and low_n < 3
@@ -228,4 +237,4 @@
   </section>
 {%- endif -%}
 
-{%- render 'snh-app-picks', recent: recent, s: s, blocks: blocks, goal: goal, sid: sid -%}
+{%- render 'snh-app-picks', recent: recent, s: s, blocks: blocks, goal: goal, goal2: goal2, diet: diet, budget: budget, sid: sid -%}

@@ -28,7 +28,125 @@
         "addresses": 0,
         "orders": "",
         "view": "app"
-      }
+      },
+      "blocks": {
+        "promo_ryse": {
+          "type": "promo",
+          "settings": {
+            "title": "The new *RYSE* range has landed",
+            "text": "Loaded protein, pre-workout and more, now in store and online.",
+            "cta": "Shop RYSE",
+            "link": "/collections/ryse",
+            "start": "",
+            "end": "2026-12-31",
+            "tiers": "",
+            "goals": "",
+            "sports": "",
+            "diets": "",
+            "bought": "",
+            "priority": 4,
+            "collection": "ryse"
+          }
+        },
+        "promo_vegan": {
+          "type": "promo",
+          "settings": {
+            "title": "Plant protein, *properly* good",
+            "text": "Vegan protein picks that mix smooth and hit your target.",
+            "cta": "Shop plant protein",
+            "link": "/collections/vegan-protein",
+            "start": "",
+            "end": "",
+            "tiers": "",
+            "goals": "",
+            "sports": "",
+            "diets": "vegan, lactose-free",
+            "bought": "",
+            "priority": 6,
+            "collection": "vegan-protein"
+          }
+        },
+        "promo_match": {
+          "type": "promo",
+          "settings": {
+            "title": "Fuel for *match day*",
+            "text": "Gels and electrolytes for back-to-back games in the heat.",
+            "cta": "Shop match-day fuel",
+            "link": "/collections/hydration-recovery",
+            "start": "",
+            "end": "",
+            "tiers": "",
+            "goals": "sport-specific, endurance",
+            "sports": "cricket, padel, football, rugby, running",
+            "diets": "",
+            "bought": "",
+            "priority": 5,
+            "collection": "hydration-recovery"
+          }
+        },
+        "promo_creatine": {
+          "type": "promo",
+          "settings": {
+            "title": "Stack your *creatine*",
+            "text": "You already take creatine. Whey alongside it covers your recovery.",
+            "cta": "Shop whey",
+            "link": "/collections/whey-protein",
+            "start": "",
+            "end": "",
+            "tiers": "",
+            "goals": "build-muscle",
+            "sports": "",
+            "diets": "none, vegetarian",
+            "bought": "creatine",
+            "priority": 5,
+            "collection": "whey-protein"
+          }
+        },
+        "promo_dec": {
+          "type": "promo",
+          "settings": {
+            "title": "Train through *December*",
+            "text": "Keep the streak going over the holidays: everything for home and gym sessions.",
+            "cta": "Shop training",
+            "link": "/collections/train-perform",
+            "start": "2026-12-01",
+            "end": "2026-12-31",
+            "tiers": "",
+            "goals": "",
+            "sports": "",
+            "diets": "",
+            "bought": "",
+            "priority": 7,
+            "collection": "train-perform"
+          }
+        },
+        "promo_gold": {
+          "type": "promo",
+          "settings": {
+            "title": "First look at *new drops*",
+            "text": "As a Gold member you see new arrivals first.",
+            "cta": "See what's new",
+            "link": "/collections/new-arrivals",
+            "start": "",
+            "end": "",
+            "tiers": "gold",
+            "goals": "",
+            "sports": "",
+            "diets": "",
+            "bought": "",
+            "priority": 6,
+            "collection": "new-arrivals"
+          }
+        }
+      },
+      "block_order": [
+        "promo_ryse",
+        "promo_vegan",
+        "promo_match",
+        "promo_creatine",
+        "promo_dec",
+        "promo_gold"
+      ]
     }
   },
   "order": [

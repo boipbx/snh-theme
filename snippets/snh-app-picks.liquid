@@ -3,7 +3,10 @@
   1. goal tag (goal:*) → that Goal block's collection (defaults below)
   2. else order history → "Order history → complementary collections" rules (section setting pick_map)
   3. then bestsellers (section setting, else /collections/everything) to fill up to 6.
-  recent: snh-app-order-data records · s: section settings · blocks · goal · sid
+  Round 10: weighted by the plan quiz: the second goal's collection follows the first; vegan / lactose-free puts
+  plant protein first and drops whey, casein and collagen; vegetarian drops fish oil and collagen; a monthly budget
+  under Rs 20,000 drops products above it.
+  recent: snh-app-order-data records · s: section settings · blocks · goal · goal2 · diet · budget · sid
 {%- endcomment -%}
 {%- liquid
   assign map = s.pick_map
@@ -29,29 +32,44 @@
   assign handles = ''
   assign why = ''
   if goal != blank
-    for b in blocks
-      if b.type == 'goal' and b.settings.key == goal and b.settings.collection != blank
-        assign handles = b.settings.collection.handle
+    # goal, then the second goal: each one's Goal block collection, else the defaults
+    assign gs = goal | append: ',' | append: goal2 | split: ','
+    for g in gs
+      if g == blank
+        continue
       endif
+      assign gh = ''
+      for b in blocks
+        if b.type == 'goal' and b.settings.key == g and b.settings.collection != blank
+          assign gh = b.settings.collection.handle
+        endif
+      endfor
+      if gh == ''
+        case g
+          when 'build-muscle'
+            assign gh = 'muscle-and-strength'
+          when 'lose-fat'
+            assign gh = 'fat-loss'
+          when 'endurance'
+            assign gh = 'energy-and-endurance'
+          when 'hydration-recovery'
+            assign gh = 'hydration-recovery'
+          when 'daily-health'
+            assign gh = 'health-wellness'
+          else
+            assign gh = 'train-perform'
+        endcase
+      endif
+      assign handles = handles | append: ',' | append: gh
     endfor
-    if handles == ''
-      case goal
-        when 'build-muscle'
-          assign handles = 'muscle-and-strength'
-        when 'lose-fat'
-          assign handles = 'fat-loss'
-        when 'endurance'
-          assign handles = 'energy-and-endurance'
-        when 'hydration-recovery'
-          assign handles = 'hydration-recovery'
-        when 'daily-health'
-          assign handles = 'health-wellness'
-        else
-          assign handles = 'train-perform'
-      endcase
+    if diet == 'vegan' or diet == 'lactose-free'
+      assign handles = ',vegan-protein' | append: handles
     endif
     assign gl = goal | replace: '-', ' ' | replace: 'hydration recovery', 'hydration and recovery'
     assign why = 'For your goal: ' | append: gl
+    if diet != blank and diet != 'none'
+      assign why = why | append: ' · ' | append: diet | replace: '-', ' '
+    endif
   elsif hay != ''
     for rule in map
       assign pr = rule | split: '=>'
@@ -79,6 +97,24 @@
   endif
   assign best = s.best_collection.handle | default: 'everything'
   assign handles = handles | append: ',' | append: best | remove_first: ','
+  # quiz answers weight the picks: no whey/casein/collagen for vegan or lactose-free, no fish oil or collagen for
+  # vegetarian, nothing over the monthly budget
+  assign avoid = ''
+  case diet
+    when 'vegan', 'lactose-free'
+      assign avoid = 'whey,casein,collagen,beef'
+    when 'vegetarian'
+      assign avoid = 'fish oil,omega 3 fish,collagen,beef'
+  endcase
+  assign avoid = avoid | split: ','
+  case budget
+    when 'under-10k'
+      assign cap = 1000000
+    when '10-20k'
+      assign cap = 2000000
+    else
+      assign cap = 0
+  endcase
   assign hl = handles | split: ','
 
   assign picked = ','
@@ -91,6 +127,11 @@
       {%- if n >= 6 -%}{%- break -%}{%- endif -%}
       {%- assign key = ',' | append: p.id | append: ',' -%}
       {%- if p.available == false or bought contains key or picked contains key -%}{%- continue -%}{%- endif -%}
+      {%- if cap > 0 and p.price > cap -%}{%- continue -%}{%- endif -%}
+      {%- assign pt = p.title | append: ' ' | append: p.type | downcase -%}
+      {%- assign bad = false -%}
+      {%- for w in avoid -%}{%- if pt contains w -%}{%- assign bad = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+      {%- if bad -%}{%- continue -%}{%- endif -%}
       {%- assign picked = picked | append: p.id | append: ',' -%}
       {%- assign n = n | plus: 1 -%}
       {%- render 'snh-v2-card', product: p, sizes: '(max-width: 767px) 50vw, (max-width: 1199px) 33vw, 280px' -%}

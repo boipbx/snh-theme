@@ -159,6 +159,35 @@
 .rwd .rwd__btn:hover { background: #FFF4EE; color: #B23C11; }
 @media (min-width: 768px) { .rwd { padding: 32px; } }
 
+/* personalised promos (Round 10): a hero card + up to two smaller ones */
+.elpromos { display: grid; gap: 12px; }
+@media (min-width: 768px) { .elpromos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } .elpromo--hero { grid-column: 1 / -1; } }
+.elpromo { position: relative; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: var(--white); color: var(--ink); transition: border-color var(--t) var(--ease), transform var(--t) var(--ease); }
+.elpromo:hover { border-color: var(--ink); transform: translateY(-2px); }
+.elpromo__img { position: relative; display: block; width: 96px; height: 96px; border-radius: 16px; background: var(--cream); overflow: hidden; }
+.elpromo__img img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.elpromo__b { display: grid; gap: 4px; min-width: 0; }
+.elpromo__eb { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--v-accent); }
+.elpromo__t { font: 600 18px/1.1 var(--sans); letter-spacing: -.02em; }
+.elpromo__t em, .elpromo--hero .elpromo__t em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.elpromo__p { font-size: 14px; line-height: 1.5; color: var(--grey-1); }
+.elpromo__go { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font: 600 14px/1.5 var(--sans); }
+.elpromo__go svg { width: 16px; height: 16px; transition: transform var(--t) var(--ease); }
+.elpromo:hover .elpromo__go svg { transform: translateX(4px); }
+.elpromo--hero { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0; overflow: hidden; isolation: isolate; border: 0; background: var(--ink); color: var(--white); }
+.elpromo--hero .elpromo__img { width: 100%; height: 200px; border-radius: 0; background: #F4EFE6; }
+.elpromo--hero .elpromo__b { gap: 8px; padding: 24px 20px; }
+.elpromo--hero .elpromo__eb { color: #FFB27A; }
+.elpromo--hero .elpromo__t { font-size: var(--t-h3); }
+.elpromo--hero .elpromo__p { color: rgba(255, 255, 255, .8); font-size: 15px; }
+.elpromo--hero .elpromo__go { justify-self: start; height: 44px; margin-top: 8px; padding: 0 20px; border-radius: var(--pill); background: var(--white); color: var(--ink); }
+@media (min-width: 768px) {
+  .elpromo--hero { grid-template-columns: minmax(0, 1fr) 280px; }
+  .elpromo--hero .elpromo__img { order: 2; height: 100%; min-height: 240px; }
+  .elpromo--hero .elpromo__b { padding: 32px; }
+}
+@media (prefers-reduced-motion: reduce) { .elpromo { transition: none; } .elpromo:hover { transform: none; } }
+
 /* ---------- overview widgets ---------- */
 .app__prompt { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto auto; gap: 16px; align-items: center; padding: 16px 12px 16px 20px; border-radius: 16px; background: var(--cream); }
 .app__prompt > div { display: grid; gap: 4px; }

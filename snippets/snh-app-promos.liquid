@@ -1,0 +1,179 @@
+{%- comment -%}
+  Member app · personalised promotions (Round 10, rule-based, client-editable). Overview shows the top 1–3 matching
+  promos: the best as a hero card, the next as smaller cards. Seasonal swaps happen by themselves through each promo's
+  date window.
+  Source 1: the "Member promotion" metaobject (type member_promotion, defined in admin; fields in ELITE-ROADMAP.md
+  §6) when it has entries. Source 2, until then: "Member promotion" blocks on the account page (same fields).
+  Matching (all set fields must match; empty = everyone): date window · tiers · goals (goal: or goal2:) · sports ·
+  diets · "bought" triggers (words found in the vendor, type, title or handle of anything in recent orders).
+  Score = priority × 10 + one point per matched targeting field, so a targeted promo beats a general one at the
+  same priority.
+  blocks · tier (bronze/silver/gold) · goal · goal2 · sport · diet · recent (order records) · sid · mock
+{%- endcomment -%}
+{%- liquid
+  assign now = 'now' | date: '%s' | plus: 0
+  assign hay = ''
+  for r in recent
+    assign o = r | split: '|'
+    assign lis = o[14] | split: ';;'
+    for li in lis
+      assign it = li | split: '~'
+      assign hay = hay | append: ' ' | append: it[1] | append: ' ' | append: it[9] | append: ' ' | append: it[10] | append: ' ' | append: it[11]
+    endfor
+  endfor
+  assign hay = hay | downcase
+
+  # 1. normalise both sources to records: title~text~cta~link~image~start~end~tiers~goals~sports~diets~bought~priority
+  assign recs = ''
+  assign mo = metaobjects.member_promotion.values
+  if mo.size > 0
+    for p in mo
+      capture rec
+        echo p.title.value | append: '~' | append: p.text.value | append: '~' | append: p.cta_label.value | append: '~' | append: p.link.value | append: '~'
+        if p.image.value
+          echo p.image.value | image_url: width: 900
+        endif
+        echo '~'
+        if p.start_date.value
+          echo p.start_date.value | date: '%s'
+        endif
+        echo '~'
+        if p.end_date.value
+          echo p.end_date.value | date: '%s'
+        endif
+        # list fields (list.single_line_text_field) or plain comma-separated text both work
+        assign t_t = p.target_tiers.value | join: ','
+        assign t_g = p.target_goals.value | join: ','
+        assign t_s = p.target_sports.value | join: ','
+        assign t_d = p.target_diets.value | join: ','
+        assign t_b = p.bought_triggers.value | join: ','
+        echo '~' | append: t_t | append: '~' | append: t_g | append: '~' | append: t_s | append: '~' | append: t_d | append: '~' | append: t_b | append: '~' | append: p.priority.value
+      endcapture
+      assign recs = recs | append: rec | append: '@@'
+    endfor
+  else
+    for b in blocks
+      if b.type != 'promo'
+        continue
+      endif
+      assign bs = b.settings
+      capture rec
+        echo bs.title | append: '~' | append: bs.text | append: '~' | append: bs.cta | append: '~'
+        echo bs.link | default: bs.collection.url | append: '~'
+        if bs.image != blank
+          echo bs.image | image_url: width: 900
+        elsif bs.collection.featured_image
+          echo bs.collection.featured_image | image_url: width: 900
+        elsif bs.collection.products.first.featured_image
+          echo bs.collection.products.first.featured_image | image_url: width: 600
+        endif
+        echo '~'
+        if bs.start != blank
+          echo bs.start | date: '%s'
+        endif
+        echo '~'
+        if bs.end != blank
+          echo bs.end | append: ' 23:59:59' | date: '%s'
+        endif
+        echo '~' | append: bs.tiers | append: '~' | append: bs.goals | append: '~' | append: bs.sports | append: '~' | append: bs.diets | append: '~' | append: bs.bought | append: '~' | append: bs.priority
+      endcapture
+      assign recs = recs | append: rec | append: '@@'
+    endfor
+  endif
+  assign recs = recs | strip_newlines | split: '@@'
+
+  # 2. match and score; keep "score~index" pairs, then pick the top 3
+  assign scored = ''
+  for r in recs
+    assign f = r | split: '~'
+    if f[0] == blank
+      continue
+    endif
+    assign ok = true
+    assign sc = f[12] | plus: 0 | times: 10
+    if f[5] != blank
+      assign st = f[5] | plus: 0
+      if now < st
+        assign ok = false
+      endif
+    endif
+    if f[6] != blank
+      assign en = f[6] | plus: 0
+      if now > en
+        assign ok = false
+      endif
+    endif
+    assign checks = 'tiers,goals,sports,diets' | split: ','
+    for c in checks
+      case c
+        when 'tiers'
+          assign want = f[7]
+          assign have = tier
+        when 'goals'
+          assign want = f[8]
+          assign have = goal | append: ',' | append: goal2
+        when 'sports'
+          assign want = f[9]
+          assign have = sport
+        else
+          assign want = f[10]
+          assign have = diet | default: 'none'
+      endcase
+      assign want = want | downcase | remove: ' '
+      if want == blank
+        continue
+      endif
+      assign hit = false
+      assign ws = want | split: ','
+      assign hs = have | downcase | split: ','
+      for w in ws
+        if hs contains w
+          assign hit = true
+        endif
+      endfor
+      if hit
+        assign sc = sc | plus: 1
+      else
+        assign ok = false
+      endif
+    endfor
+    if f[11] != blank
+      assign hit = false
+      assign ws = f[11] | downcase | split: ','
+      for w in ws
+        assign w = w | strip
+        if w != blank and hay contains w
+          assign hit = true
+        endif
+      endfor
+      if hit
+        assign sc = sc | plus: 1
+      else
+        assign ok = false
+      endif
+    endif
+    if ok
+      assign pad = sc | plus: 10000
+      assign scored = scored | append: pad | append: '-' | append: forloop.index0 | append: ','
+    endif
+  endfor
+  assign top = scored | remove_last: ',' | split: ',' | sort | reverse
+-%}
+{%- if top.size > 0 and top[0] != blank -%}
+  <section class="elpromos" aria-label="For you">
+    {%- for t in top limit: 3 -%}
+      {%- assign idx = t | split: '-' | last | plus: 0 -%}
+      {%- assign f = recs[idx] | split: '~' -%}
+      {%- assign parts = f[0] | split: '*' -%}
+      <a class="elpromo{% if forloop.first %} elpromo--hero{% endif %}" href="{{ f[3] | default: routes.all_products_collection_url }}">
+        {%- if f[4] != blank -%}<span class="elpromo__img"><img src="{{ f[4] }}" alt="" loading="lazy" width="600" height="600"></span>{%- endif -%}
+        <span class="elpromo__b">
+          <span class="elpromo__eb">{% if forloop.first %}Picked for you{% else %}For you{% endif %}</span>
+          <span class="elpromo__t">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</span>
+          {%- if f[1] != blank -%}<span class="elpromo__p">{{ f[1] | escape }}</span>{%- endif -%}
+          <span class="elpromo__go">{{ f[2] | default: 'Shop now' | escape }} {% render 'snh-v2-icon', name: 'arrow' %}</span>
+        </span>
+      </a>
+    {%- endfor -%}
+  </section>
+{%- endif -%}

@@ -62,7 +62,7 @@
       </div>
     </div>
   {%- else -%}
-    {%- render 'snh-app', m: m, me: me, recent: recent, page_orders: recent, pagination_html: '', page_no: 1, sid: section.id, mock: true, mock_address: p.address -%}
+    {%- render 'snh-app', m: m, me: me, recent: recent, page_orders: recent, pagination_html: '', page_no: 1, sid: section.id, mock: true, mock_address: p.address, blocks: section.blocks -%}
   {%- endif -%}
 </div>
 <style>
@@ -74,23 +74,202 @@
 {
   "name": "DEV · SNH Elite app mock",
   "settings": [
-    { "type": "paragraph", "content": "Dev only. A mock persona for QA screenshots. Do not add to a live page." },
-    { "type": "select", "id": "view", "label": "Show", "options": [{ "value": "app", "label": "Member app" }, { "value": "quiz", "label": "Onboarding quiz only" }], "default": "app" },
-    { "type": "text", "id": "label", "label": "Persona label" },
-    { "type": "text", "id": "first_name", "label": "First name" },
-    { "type": "text", "id": "last_name", "label": "Last name" },
-    { "type": "text", "id": "email", "label": "Email" },
-    { "type": "text", "id": "phone", "label": "Mobile (empty = none)" },
-    { "type": "text", "id": "bday", "label": "Birthday YYYY-MM-DD (empty = none)" },
-    { "type": "text", "id": "joined", "label": "Joined YYYY-MM-DD" },
-    { "type": "text", "id": "tier", "label": "loyalty_tier (empty = none)" },
-    { "type": "text", "id": "points", "label": "loyalty_points (empty = none)" },
-    { "type": "text", "id": "spend", "label": "annual_spend (empty = none)" },
-    { "type": "text", "id": "tags", "label": "Customer tags", "info": "Comma separated, e.g. goal:build-muscle, freq:4x, sport:gym" },
-    { "type": "checkbox", "id": "marketing", "label": "Accepts email marketing", "default": false },
-    { "type": "html", "id": "address", "label": "Default address (HTML)" },
-    { "type": "number", "id": "addresses", "label": "Address count", "default": 0 },
-    { "type": "textarea", "id": "orders", "label": "Orders (newest first)", "info": "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url" }
+    {
+      "type": "paragraph",
+      "content": "Dev only. A mock persona for QA screenshots. Do not add to a live page."
+    },
+    {
+      "type": "select",
+      "id": "view",
+      "label": "Show",
+      "options": [
+        {
+          "value": "app",
+          "label": "Member app"
+        },
+        {
+          "value": "quiz",
+          "label": "Onboarding quiz only"
+        }
+      ],
+      "default": "app"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Persona label"
+    },
+    {
+      "type": "text",
+      "id": "first_name",
+      "label": "First name"
+    },
+    {
+      "type": "text",
+      "id": "last_name",
+      "label": "Last name"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Mobile (empty = none)"
+    },
+    {
+      "type": "text",
+      "id": "bday",
+      "label": "Birthday YYYY-MM-DD (empty = none)"
+    },
+    {
+      "type": "text",
+      "id": "joined",
+      "label": "Joined YYYY-MM-DD"
+    },
+    {
+      "type": "text",
+      "id": "tier",
+      "label": "loyalty_tier (empty = none)"
+    },
+    {
+      "type": "text",
+      "id": "points",
+      "label": "loyalty_points (empty = none)"
+    },
+    {
+      "type": "text",
+      "id": "spend",
+      "label": "annual_spend (empty = none)"
+    },
+    {
+      "type": "text",
+      "id": "tags",
+      "label": "Customer tags",
+      "info": "Comma separated, e.g. goal:build-muscle, freq:4x, sport:gym"
+    },
+    {
+      "type": "checkbox",
+      "id": "marketing",
+      "label": "Accepts email marketing",
+      "default": false
+    },
+    {
+      "type": "html",
+      "id": "address",
+      "label": "Default address (HTML)"
+    },
+    {
+      "type": "number",
+      "id": "addresses",
+      "label": "Address count",
+      "default": 0
+    },
+    {
+      "type": "textarea",
+      "id": "orders",
+      "label": "Orders (newest first)",
+      "info": "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Member promotion",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Used until a \"Member promotion\" metaobject has entries (ELITE-ROADMAP.md §6). Empty targeting = every member."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Wrap a word in *asterisks* for the serif."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Empty = the collection below."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Link and image fallback."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "start",
+          "label": "Starts (YYYY-MM-DD)",
+          "info": "Empty = now."
+        },
+        {
+          "type": "text",
+          "id": "end",
+          "label": "Ends (YYYY-MM-DD)",
+          "info": "Empty = no end. Seasonal promos swap themselves by date."
+        },
+        {
+          "type": "text",
+          "id": "tiers",
+          "label": "Tiers",
+          "info": "bronze, silver, gold. Empty = all."
+        },
+        {
+          "type": "text",
+          "id": "goals",
+          "label": "Goals",
+          "info": "build-muscle, lose-fat, endurance, hydration-recovery, daily-health, sport-specific (goal or second goal)."
+        },
+        {
+          "type": "text",
+          "id": "sports",
+          "label": "Sports",
+          "info": "cricket, padel, running, gym, cycling, swimming, football, rugby, other"
+        },
+        {
+          "type": "text",
+          "id": "diets",
+          "label": "Diets",
+          "info": "none, vegetarian, vegan, lactose-free"
+        },
+        {
+          "type": "text",
+          "id": "bought",
+          "label": "Bought triggers",
+          "info": "Words found in the brand, type, title or handle of anything they've ordered, e.g. creatine, Applied Nutrition, RYSE."
+        },
+        {
+          "type": "range",
+          "id": "priority",
+          "label": "Priority",
+          "min": 0,
+          "max": 9,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
   ]
 }
 {% endschema %}
