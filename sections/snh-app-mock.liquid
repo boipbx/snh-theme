@@ -55,10 +55,10 @@
       <div class="v-wrap mock-app__quiz">
         <header class="app__head">
           <p class="eyebrow">After sign-up · or Goals</p>
-          <h1 class="app__h">Personalise your <em>SNH</em></h1>
-          <p class="app__lead">Three quick questions, then birthday and mobile (optional).</p>
+          <h1 class="app__h">Build your SNH <em>plan</em></h1>
+          <p class="app__lead">13 quick questions with branching, the shaker game, then your stack and plan card.</p>
         </header>
-        <div class="app__card">{%- render 'snh-onboarding-quiz', id: 'mock-quiz', mode: 'app', contact: true, mock: true -%}</div>
+        <div class="app__card gview__quiz" data-first="{{ p.first_name | default: 'Kasun' | escape }}">{%- render 'snh-onboarding-quiz', id: 'mock-quiz', mode: 'app', contact: true, email: p.email, a: p.tags, mock: true -%}</div>
       </div>
     </div>
   {%- else -%}

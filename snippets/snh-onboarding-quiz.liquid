@@ -1,28 +1,39 @@
 {%- comment -%}
-  SNH onboarding quiz (Round 8): goal → training frequency → sport → (optional) birthday + mobile → done, with a
-  progress bar. Used by the member app's Goals view, the register page (step 3, "Personalise your SNH") and the QA mock.
-  Questions/answers come from "Quiz question" blocks (step goal/freq/sport, answers "value | label" per line), else the
-  defaults below. Answers become tags goal:<value>, freq:<value>, sport:<value> (+ bday:YYYY-MM-DD, mobile:+94…).
-  blocks · id (unique) · mode: 'app' | 'register' · contact: true adds the birthday + mobile step · goal/freq/sport/
-  phone/bday: current values to preselect · mock: true never submits.
-  Saving (Round 10): one normal page POST, never fetch, so Shopify's hCaptcha runs. App mode: the last step's "Save"
-  is the submit button of the customer form below (POST /contact, contact[tags], data-shopify-captcha), back to
-  /account#goals with a banner. Register mode: the answers fill customer[tags] on the create_customer form. In
-  register mode the radios belong to no form (form="…-none"), so only the tags field posts. JS: assets/snh-app.js.
+  "Build your SNH plan" (Round 10; the Round 8 onboarding quiz, deeper and gamified). Used by the member app's Goals
+  view, the register page (step 3) and the QA mock.
+  13 questions with branching (assets/snh-app.js reads data-if): primary goal · secondary goal (the primary one is
+  hidden) · experience level · training days · session type · sport · diet · budget · supplement experience · what
+  you already take (multi, only if not new to supplements) · biggest challenge · flavour (not for daily health) · age
+  range + birthday + mobile (contact: true).
+  Gamified: XP bar that fills per answer, one-tap tiles with icons, a "level up" at the halfway point. App mode adds
+  the results: the "Shake your shaker" tap game (5 s, just for fun, no points or discounts), then "Your SNH stack"
+  (3–5 products from snh-quiz-stackdata, why each fits, total, a bundle saving if one applies), a tip card and a
+  shareable plan card (PNG via canvas).
+  Questions/answers: "Quiz question" blocks (step, question, help, answers "value | label | icon" per line), else the
+  defaults below. Answers become compact tags (ELITE-ROADMAP.md §4): goal: goal2: lvl: freq: sess: sport: diet:
+  budget: exp: take: (one per item) challenge: flavour: age: bday: mobile:.
+  Saving (Round 10): one normal page POST, never fetch, so Shopify's hCaptcha runs. App mode: "Save my plan" on the
+  results is the submit button of the customer form below (POST /contact, contact[tags], data-shopify-captcha), back
+  to /account#goals with a banner. Register mode: answers fill customer[tags] on the create_customer form; radios
+  belong to no form (form="…-none"), so only the tags field posts. mock: true never submits.
+  blocks · id (unique) · mode: 'app' | 'register' · contact · email · a: current answers as tags string (preselect)
+  · phone · bday · stack: stack categories setting · bundle_handles · mock
 {%- endcomment -%}
 {%- liquid
-  assign keys = 'goal,freq,sport' | split: ','
-  if contact
-    assign total = 4
-  else
-    assign total = 3
-  endif
+  assign keys = 'goal,goal2,lvl,freq,sess,sport,diet,budget,exp,take,challenge,flavour,age' | split: ','
+  assign cur_tags = a | default: '' | downcase | remove: ' ' | split: ','
+  assign total = keys.size
 -%}
-<div class="quiz" data-quiz data-mode="{{ mode | default: 'app' }}" id="{{ id }}"{% if mock %} data-mock{% endif %}>
-  <div class="quiz__top">
-    <p class="quiz__count" data-quiz-count aria-live="polite">Step 1 of {{ total }}</p>
-    <div class="quiz__bar" aria-hidden="true"><i data-quiz-bar style="width: {{ 100 | divided_by: total }}%"></i></div>
+<div class="quiz qz" data-quiz data-mode="{{ mode | default: 'app' }}" id="{{ id }}"{% if mock %} data-mock{% endif %} data-total="{{ total }}">
+  <div class="qz__top">
+    <div class="qz__xp" aria-hidden="true">
+      <span class="qz__lvl" data-qz-lvl>Level 1</span>
+      <div class="qz__bar"><i data-quiz-bar></i></div>
+      <span class="qz__pts" data-qz-xp>0 XP</span>
+    </div>
+    <p class="quiz__count" data-quiz-count aria-live="polite">Question 1 of {{ total }}</p>
   </div>
+
   {%- for k in keys -%}
     {%- liquid
       assign q = ''
@@ -35,65 +46,148 @@
           assign answers = b.settings.answers | newline_to_br | split: '<br />'
         endif
       endfor
+      assign type = 'one'
+      assign cond = ''
       case k
         when 'goal'
-          assign cur = goal
-          assign q = q | default: "What's your main goal right now?"
-          assign help = help | default: 'Pick the one that matters most. You can change it any time.'
-          if answers == ''
-            assign answers = 'build-muscle | Build muscle,lose-fat | Lose fat,endurance | Endurance,hydration-recovery | Hydration & recovery,daily-health | Daily health,sport-specific | Sport-specific' | split: ','
-          endif
+          assign dq = "What's your main goal right now?"
+          assign dh = 'Pick the one that matters most. You can change it any time.'
+          assign da = 'build-muscle | Build muscle | dumbbell,lose-fat | Lose fat | flame,endurance | Endurance | run,hydration-recovery | Hydration & recovery | drop,daily-health | Daily health | heart,sport-specific | Sport performance | trophy'
+        when 'goal2'
+          assign dq = 'Anything else you want from your stack?'
+          assign dh = 'A second goal. Skip if one is enough.'
+          assign da = 'build-muscle | Build muscle | dumbbell,lose-fat | Lose fat | flame,endurance | Endurance | run,hydration-recovery | Hydration & recovery | drop,daily-health | Daily health | heart,sport-specific | Sport performance | trophy'
+        when 'lvl'
+          assign dq = 'How long have you been training?'
+          assign dh = 'Honest answers get better picks.'
+          assign da = 'beginner | Just starting | sparkle,intermediate | 1–3 years | bolt,advanced | 3+ years | trophy'
         when 'freq'
-          assign cur = freq
-          assign q = q | default: 'How often do you train?'
-          assign help = help | default: 'A normal week, roughly.'
-          if answers == ''
-            assign answers = '1-2x | 1–2 days a week,3x | 3 days a week,4x | 4 days a week,5x | 5 or more days' | split: ','
-          endif
+          assign dq = 'How many days a week do you train?'
+          assign dh = 'A normal week, roughly.'
+          assign da = '1-2x | 1–2 days | clock,3x | 3 days | clock,4x | 4 days | bolt,5x | 5 days | flame,6x | 6–7 days | trophy'
+        when 'sess'
+          assign dq = 'What do most sessions look like?'
+          assign dh = 'Your usual workout.'
+          assign da = 'strength | Weights & strength | dumbbell,cardio | Cardio & running | run,hiit | HIIT & classes | flame,mixed | A bit of everything | refresh,skill | Sport practice | ball'
+        when 'sport'
+          assign dq = "What's your main sport?"
+          assign dh = 'For match-day tips and guides.'
+          assign da = 'cricket | Cricket | bat,padel | Padel | racket,running | Running | run,gym | Gym | dumbbell,cycling | Cycling | bike,swimming | Swimming | wave,football | Football | ball,rugby | Rugby | ball,other | Something else | star'
+        when 'diet'
+          assign dq = 'How do you eat?'
+          assign dh = 'So we never suggest something you avoid.'
+          assign da = 'none | No preference | smile,vegetarian | Vegetarian | leaf,vegan | Vegan | leaf,lactose-free | Lactose-free | drop'
+        when 'budget'
+          assign dq = "What's your monthly supplement budget?"
+          assign dh = 'Your stack will fit inside it.'
+          assign da = 'under-10k | Under Rs 10,000 | wallet,10-20k | Rs 10,000–20,000 | wallet,20-35k | Rs 20,000–35,000 | wallet,35k-plus | Rs 35,000+ | wallet'
+        when 'exp'
+          assign dq = 'How well do you know supplements?'
+          assign dh = 'No wrong answers.'
+          assign da = 'new | New to them | sparkle,some | Tried a few | pill,experienced | I know my stack | trophy'
+        when 'take'
+          assign type = 'many'
+          assign cond = 'exp!=new'
+          assign dq = 'What do you already take?'
+          assign dh = 'Pick all that apply. We won’t suggest them again.'
+          assign da = 'protein | Protein | shaker,creatine | Creatine | dumbbell,pre-workout | Pre-workout | bolt,electrolytes | Electrolytes | drop,multivitamin | Multivitamin | pill,omega-3 | Omega-3 | heart,magnesium | Magnesium | moon'
+        when 'challenge'
+          assign dq = "What's your biggest challenge?"
+          assign dh = 'We’ll put this first in your tips.'
+          assign da = 'energy | Energy | bolt,recovery | Recovery | refresh,cravings | Cravings | cup,consistency | Consistency | target,sleep | Sleep | moon'
+        when 'flavour'
+          assign cond = 'goal!=daily-health'
+          assign dq = 'Pick a flavour team'
+          assign dh = 'For shakes and drinks.'
+          assign da = 'chocolate | Chocolate | cup,vanilla | Vanilla & cookies | sparkle,fruity | Fruity | drop,unflavoured | Unflavoured | shaker,any | Surprise me | star'
         else
-          assign cur = sport
-          assign q = q | default: "What's your main sport?"
-          assign help = help | default: 'We use it for match-day tips and guides.'
-          if answers == ''
-            assign answers = 'cricket | Cricket,padel | Padel,running | Running,gym | Gym,cycling | Cycling,swimming | Swimming,other | Something else' | split: ','
-          endif
+          assign dq = 'Last one: your age'
+          assign dh = 'Age ranges help us tune doses and tips.'
+          assign da = '18-24 | 18–24 | sparkle,25-34 | 25–34 | bolt,35-44 | 35–44 | target,45-plus | 45+ | heart'
       endcase
+      if answers == ''
+        assign answers = da | split: ','
+      endif
+      assign q = q | default: dq
+      assign help = help | default: dh
     -%}
-    <fieldset class="quiz__step" data-step="{{ k }}"{% unless forloop.first %} hidden{% endunless %}>
+    <fieldset class="quiz__step qz__step" data-step="{{ k }}" data-type="{{ type }}"{% if cond != '' %} data-if="{{ cond }}"{% endif %} hidden>
       <legend class="quiz__q">{{ q | escape }}</legend>
       {%- if help != blank -%}<p class="quiz__help">{{ help | escape }}</p>{%- endif -%}
-      <div class="quiz__opts">
-        {%- for a in answers -%}
-          {%- assign pr = a | split: '|' -%}
+      <div class="qz__tiles">
+        {%- for an in answers -%}
+          {%- assign pr = an | split: '|' -%}
           {%- assign val = pr[0] | strip | handleize -%}
           {%- if val == blank -%}{%- continue -%}{%- endif -%}
           {%- assign lab = pr[1] | default: pr[0] | strip -%}
-          <label class="quiz__opt"><input type="radio" name="{{ id }}-{{ k }}" value="{{ val }}"{% if mode == 'register' %} form="{{ id }}-none"{% endif %}{% if val == cur %} checked{% endif %} data-label="{{ lab | escape }}"><span>{{ lab | escape }}</span></label>
+          {%- assign ic = pr[2] | strip | default: 'check' -%}
+          {%- assign tag = k | append: ':' | append: val -%}
+          <label class="qz__tile"><input type="{% if type == 'many' %}checkbox{% else %}radio{% endif %}" name="{{ id }}-{{ k }}" value="{{ val }}"{% if mode == 'register' %} form="{{ id }}-none"{% endif %}{% if cur_tags contains tag %} checked{% endif %} data-label="{{ lab | escape }}"><span class="qz__ic" aria-hidden="true">{% render 'snh-v2-icon', name: ic %}</span><span class="qz__l">{{ lab | escape }}</span></label>
         {%- endfor -%}
       </div>
+      {%- if k == 'age' and contact -%}
+        <div class="aform__grid qz__contact">
+          <label class="fld"><span>Birthday <i class="quiz__opt-l">(optional, for your birthday reward)</i></span><input type="date" data-quiz-bday min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" value="{{ bday | escape }}" autocomplete="bday"></label>
+          <label class="fld"><span>Mobile number</span><input type="tel" data-quiz-mobile data-sl-mobile inputmode="tel" value="{{ phone | escape }}" placeholder="07X XXX XXXX" autocomplete="tel" aria-describedby="{{ id }}-mob-err"></label>
+          <p class="fld__err fld--full" id="{{ id }}-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
+        </div>
+      {%- endif -%}
     </fieldset>
   {%- endfor -%}
-  {%- if contact -%}
-    <fieldset class="quiz__step" data-step="contact" hidden>
-      <legend class="quiz__q">Birthday and mobile <span class="quiz__opt-l">(optional)</span></legend>
-      <p class="quiz__help">Your birthday unlocks your birthday reward. Your mobile is for delivery updates.</p>
-      <div class="aform__grid">
-        <label class="fld"><span>Birthday</span><input type="date" data-quiz-bday min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" value="{{ bday | escape }}" autocomplete="bday"></label>
-        <label class="fld"><span>Mobile number</span><input type="tel" data-quiz-mobile data-sl-mobile inputmode="tel" value="{{ phone | escape }}" placeholder="07X XXX XXXX" autocomplete="tel" aria-describedby="{{ id }}-mob-err"></label>
-        <p class="fld__err fld--full" id="{{ id }}-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
-      </div>
-    </fieldset>
-  {%- endif -%}
+
+  <div class="qz__lvlup" data-qz-levelup hidden aria-live="polite">
+    <span class="qz__badge" aria-hidden="true">{% render 'snh-v2-icon', name: 'trophy' %}</span>
+    <p><b>Level up!</b> Halfway there. Your plan is taking shape.</p>
+  </div>
+
   <div class="quiz__done" data-step="done" hidden tabindex="-1">
     <p class="quiz__q">You're all set</p>
     <p class="quiz__help" data-quiz-summary></p>
-    <p class="aform__err" data-quiz-fail hidden role="alert">We couldn't save that just now. Your answers are kept on this device; try again in a moment.</p>
   </div>
+
+  {%- if mode != 'register' -%}
+    <div class="qz__game" data-step="game" hidden tabindex="-1">
+      <p class="eyebrow">Your stack is mixing</p>
+      <p class="quiz__q">Shake your <em>shaker</em></p>
+      <p class="quiz__help" data-qz-game-help>Tap the shaker as fast as you can for 5 seconds to reveal your stack.</p>
+      <button class="qz__shaker" type="button" data-qz-shake aria-label="Shake the shaker">
+        <svg viewBox="0 0 120 180" aria-hidden="true"><defs><clipPath id="{{ id }}-cup"><path d="M22 52h76l-8 118H30z"/></clipPath></defs><rect x="30" y="18" width="60" height="30" rx="6" class="qz__lid"/><rect x="48" y="6" width="24" height="16" rx="4" class="qz__lid"/><path d="M22 52h76l-8 118H30z" class="qz__cup"/><g clip-path="url(#{{ id }}-cup)"><rect x="0" y="170" width="120" height="120" class="qz__liq" data-qz-liq/></g><path d="M22 52h76l-8 118H30z" class="qz__glass"/><text x="60" y="118" text-anchor="middle" class="qz__logo">SNH</text></svg>
+      </button>
+      <div class="qz__meter"><i data-qz-meter></i></div>
+      <p class="qz__score" data-qz-score aria-live="polite">0 shakes</p>
+      <button class="v-link quiz__skip" type="button" data-qz-skipgame>Skip the game</button>
+    </div>
+
+    <div class="qz__res" data-step="results" hidden tabindex="-1">
+      <div class="qz__res-h">
+        <p class="eyebrow">Your plan</p>
+        <h3 class="app__h2">Your SNH <em>stack</em></h3>
+        <p class="app__muted" data-qz-res-sum></p>
+      </div>
+      <ol class="qz__stack" role="list" data-qz-stack></ol>
+      <div class="qz__tot" data-qz-tot></div>
+      <aside class="qz__tip" data-qz-tip></aside>
+      <div class="qz__share">
+        <canvas class="qz__card" width="1080" height="1350" data-qz-canvas role="img" aria-label="Your SNH plan card"></canvas>
+        <div class="qz__share-b">
+          <p class="app__h3">Your plan card</p>
+          <p class="app__muted">Save it, share it, screenshot it for the gym.</p>
+          <button class="v-btn v-btn--line v-btn--sm" type="button" data-qz-png>{% render 'snh-v2-icon', name: 'arrow' %}<span>Download PNG</span></button>
+        </div>
+      </div>
+      <p class="app__note">Picks are general guidance from your answers, not medical advice. The game is just for fun: no points or discounts.</p>
+    </div>
+    {%- render 'snh-quiz-stackdata', map: stack, handles: bundle_handles -%}
+  {%- endif -%}
+
   <div class="quiz__nav">
     <button class="v-btn v-btn--line" type="button" data-quiz-back hidden><span>Back</span></button>
-    <button class="v-link quiz__skip" type="button" data-quiz-skip>{% if mode == 'register' %}Skip for now{% else %}Skip this question{% endif %}</button>
+    <button class="v-link quiz__skip" type="button" data-quiz-skip>{% if mode == 'register' %}Skip the rest{% else %}Skip this question{% endif %}</button>
     <button class="v-btn v-btn--ink" type="button" data-quiz-next><span>Next</span></button>
-    {%- if mode != 'register' -%}<button class="v-btn v-btn--accent" type="submit" form="{{ id }}-form" data-quiz-save hidden{% if mock %} disabled{% endif %}><span>Save my answers</span></button>{%- endif -%}
+    {%- if mode != 'register' -%}
+      <button class="v-btn v-btn--accent" type="submit" form="{{ id }}-form" data-quiz-save hidden{% if mock %} disabled{% endif %}><span>Save my plan</span></button>
+      <button class="v-btn v-btn--line" type="button" data-qz-retake hidden><span>Retake</span></button>
+    {%- endif -%}
   </div>
   {%- if mode != 'register' -%}
     {%- assign fid = id | append: '-form' -%}

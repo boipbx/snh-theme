@@ -1,0 +1,121 @@
+{%- comment -%}
+  "Build your SNH plan" product data (Round 10): the candidates the results screen builds "Your SNH stack" from, as
+  JSON for assets/snh-app.js (no extra requests). One category per line in `map` (section setting "Plan quiz → stack
+  categories"), "key | collection handle | words (optional)": up to 6 available products per category whose title
+  contains one of the words (empty = any). Keys the rules use: protein, vegan, clear, creatine, pre, hydra, gel,
+  magnesium, multi, omega, fat, bar. Bundles: products of the bundle collections (for "save with a bundle"), with the
+  lower-cased description so the JS can see which stack products a bundle contains (same rule as snh-v2-bundles).
+  map · handles: bundle collection handles
+{%- endcomment -%}
+{%- liquid
+  if map == blank
+    assign map = 'protein | whey-protein | |vegan | vegan-protein | |clear | clear-protein | |creatine | creatine | monohydrate, creatine|pre | pre-workout-1 | |hydra | hydration-recovery | hydro, electrolyte, isotonic, hydration|gel | energy-gels | |magnesium | magnesium | |multi | multivitamins | |omega | vitamins-minerals | omega, fish oil|fat | fat-loss | carnitine, burner, shred, thermo, cla|bar | protein-bars | ' | split: '|'
+    assign lines = ''
+    for x in map
+      assign mod = forloop.index0 | modulo: 3
+      if mod == 0
+        assign lines = lines | append: x
+      else
+        assign lines = lines | append: '|' | append: x
+      endif
+      if mod == 2
+        assign lines = lines | append: '@@'
+      endif
+    endfor
+    assign map = lines | split: '@@'
+  else
+    assign map = map | newline_to_br | split: '<br />'
+  endif
+  assign retail_sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+-%}
+<script type="application/json" data-qz-data>{"cats":{
+{%- assign first_cat = true -%}
+{%- for line in map -%}
+  {%- assign pr = line | split: '|' -%}
+  {%- assign key = pr[0] | strip -%}
+  {%- assign hh = pr[1] | strip -%}
+  {%- if key == blank or hh == blank -%}{%- continue -%}{%- endif -%}
+  {%- assign words = pr[2] | strip | downcase | split: ',' -%}
+  {%- unless first_cat -%},{%- endunless -%}{%- assign first_cat = false -%}
+  {{ key | json }}:[
+  {%- assign n = 0 -%}
+  {%- for p in collections[hh].products limit: 40 -%}
+    {%- if n >= 6 -%}{%- break -%}{%- endif -%}
+    {%- unless p.available -%}{%- continue -%}{%- endunless -%}
+    {%- assign tl = p.title | downcase -%}
+    {%- assign ok = true -%}
+    {%- if words.size > 0 -%}
+      {%- assign ok = false -%}
+      {%- for w in words -%}{%- assign w = w | strip -%}{%- if w != blank and tl contains w -%}{%- assign ok = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+    {%- endif -%}
+    {%- unless ok -%}{%- continue -%}{%- endunless -%}
+    {%- liquid
+      assign dt = p.title
+      assign vu = p.vendor | upcase
+      assign head = dt | slice: 0, vu.size | upcase
+      if vu != blank and head == vu and p.vendor != vu
+        assign dt = dt | slice: vu.size, 300 | prepend: p.vendor
+      endif
+      assign short = dt | remove_first: p.vendor | strip
+      assign base = ''
+      assign ws = short | split: ' '
+      for w in ws
+        assign digits = w | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+        if digits != w
+          break
+        endif
+        assign base = base | append: ' ' | append: w
+      endfor
+      assign base = base | strip | downcase
+      assign v = p.selected_or_first_available_variant
+      assign vid = ''
+      if p.has_only_default_variant
+        assign vid = v.id
+      endif
+      assign fi = p.featured_image.src | downcase
+      assign framed = false
+      if fi contains 'sportsnutritionhub' or fi contains 'snh-frame'
+        assign framed = true
+      endif
+      assign vt = p.variants | map: 'title' | join: ' ' | downcase
+    -%}
+    {%- if n > 0 -%},{%- endif -%}{%- assign n = n | plus: 1 -%}
+    {"t":{{ dt | json }},"b":{{ p.vendor | json }},"u":{{ p.url | json }},"i":{{ p.featured_image | image_url: width: 360 | json }},"f":{{ framed | json }},"p":{{ p.price | json }},"v":{{ vid | json }},"n":{{ base | json }},"x":{{ tl | append: ' ' | append: vt | truncate: 400, '' | json }}}
+  {%- endfor -%}]
+{%- endfor -%}
+},"bundles":[
+{%- assign n = 0 -%}
+{%- assign hl = handles | default: 'training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers' | split: ',' -%}
+{%- assign seen = ',' -%}
+{%- for h in hl -%}
+  {%- assign hh = h | strip -%}
+  {%- for bp in collections[hh].products limit: 60 -%}
+    {%- assign key = ',' | append: bp.id | append: ',' -%}
+    {%- if bp.available == false or seen contains key or n >= 40 -%}{%- continue -%}{%- endif -%}
+    {%- assign seen = seen | append: bp.id | append: ',' -%}
+    {%- liquid
+      assign retail = 0
+      if bp.compare_at_price > bp.price
+        assign retail = bp.compare_at_price
+      else
+        for pair in retail_sheet
+          assign kv = pair | split: '='
+          if kv[0] == bp.handle
+            assign retail = kv[1] | times: 1
+          endif
+        endfor
+      endif
+      assign saving = 0
+      if retail > bp.price
+        assign saving = retail | minus: bp.price
+      endif
+      assign bv = ''
+      if bp.has_only_default_variant
+        assign bv = bp.selected_or_first_available_variant.id
+      endif
+    -%}
+    {%- if n > 0 -%},{%- endif -%}{%- assign n = n | plus: 1 -%}
+    {"t":{{ bp.title | json }},"u":{{ bp.url | json }},"p":{{ bp.price | json }},"s":{{ saving | json }},"v":{{ bv | json }},"d":{{ bp.description | strip_html | downcase | replace: '&amp;', '&' | truncate: 700, '' | json }}}
+  {%- endfor -%}
+{%- endfor -%}
+]}</script>

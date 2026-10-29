@@ -60,8 +60,8 @@
           </div>
         </fieldset>
         <fieldset class="reg__step reg__step--quiz" data-reg-step="3" hidden>
-          <legend class="auth__step-h">Personalise your SNH <span>(optional)</span></legend>
-          <p class="fld__help">Three quick questions so your dashboard, picks and tips fit your training. Skip if you like.</p>
+          <legend class="auth__step-h">Build your SNH plan <span>(optional)</span></legend>
+          <p class="fld__help">Quick taps so your dashboard, picks and tips fit your training. Skip whenever you like.</p>
           {%- render 'snh-onboarding-quiz', blocks: section.blocks, id: 'reg-quiz', mode: 'register' -%}
           <div class="reg__acts">
             <button class="v-btn v-btn--line" type="button" data-reg-back><span>Edit details</span></button>
@@ -97,11 +97,11 @@
   "blocks": [
     { "type": "quiz", "name": "Quiz question", "settings": [
       { "type": "select", "id": "step", "label": "Step", "options": [
-        { "value": "goal", "label": "Goal" }, { "value": "freq", "label": "Training frequency" }, { "value": "sport", "label": "Sport" }
+        { "value": "goal", "label": "Primary goal" }, { "value": "goal2", "label": "Secondary goal" }, { "value": "lvl", "label": "Experience level" }, { "value": "freq", "label": "Training days" }, { "value": "sess", "label": "Session type" }, { "value": "sport", "label": "Sport" }, { "value": "diet", "label": "Diet" }, { "value": "budget", "label": "Budget" }, { "value": "exp", "label": "Supplement experience" }, { "value": "take", "label": "Already taking (multi-select)" }, { "value": "challenge", "label": "Biggest challenge" }, { "value": "flavour", "label": "Flavour" }, { "value": "age", "label": "Age range" }
       ], "default": "goal" },
       { "type": "text", "id": "question", "label": "Question" },
       { "type": "text", "id": "help", "label": "Help text" },
-      { "type": "textarea", "id": "answers", "label": "Answers", "info": "One per line: tag value | label. Keep these the same as the quiz blocks on the account page." }
+      { "type": "textarea", "id": "answers", "label": "Answers", "info": "One per line: tag value | label | icon. The value is saved as a tag (goal:value …, see ELITE-ROADMAP.md). Keep goal values matching the Goal blocks. Icons: dumbbell flame run drop heart trophy sparkle bolt clock refresh ball bat racket bike wave leaf smile wallet pill shaker cup moon target star." }
     ] },
     { "type": "faq", "name": "Question", "settings": [
       { "type": "text", "id": "q", "label": "Question" },

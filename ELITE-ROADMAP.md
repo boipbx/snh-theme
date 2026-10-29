@@ -69,6 +69,17 @@ account-created date), orders and line items, addresses, `accepts_marketing`. Pr
 - Running low = servings (`custom.servings`, else "61 Servings" in the title/variant) × quantity − days since the
   order, at one serving a day. Shown under 10 days left (and not more than 30 days past empty). Hidden when nothing qualifies.
 
+### "Build your SNH plan" quiz (Round 10)
+13 questions (Quiz question blocks, else defaults), branching: the secondary goal hides the primary, *what you
+already take* only when not new to supplements, *flavour* not for daily health. XP bar, level up at halfway, one-tap
+tiles. Results: the *Shake your shaker* game (5 s, for fun only: **no points or discounts**; issuing them needs the
+app), then *Your SNH stack*: 3–5 in-stock products from *Plan quiz → stack categories* (key | collection | words),
+picked by goal → challenge → second goal → extras, skipping what they take, honouring diet (vegan/lactose-free → plant
+protein, no whey or bars; vegetarian/vegan → no fish oil), flavour first, trimmed to the monthly budget; a bundle
+from the bundle collections when it names 2+ of the stack; a tip card; a plan card drawn on canvas (1080×1350 PNG).
+*Save my plan* posts the tags once. Rules: `assets/snh-app.js` (PLANS, CHALLENGE, TAKES, FLAV, BUDGET, TIPS).
+App idea: award XP/points for completing the plan once the app can write points.
+
 ### Picked for you (client can edit)
 1. Goal tag → that Goal block's collection (defaults: build-muscle → muscle-and-strength, lose-fat → fat-loss,
    endurance → energy-and-endurance, hydration-recovery → hydration-recovery, daily-health → health-wellness,
@@ -136,16 +147,26 @@ others link to the bundle.
 | `customer.metafields.custom.joined_at` | date | Flow (customer created) | app (activity feed) | Optional. |
 | `product.metafields.custom.servings` | integer | merchandising | app (Running low) | Optional, else parsed from "61 Servings". |
 | tag `Trigger_Redeem_2500` | tag | theme (member's redeem request) | Flow (issue reward), app (pending) | Flow should remove it after issuing. |
-| tag `goal:<value>` | build-muscle · lose-fat · endurance · hydration-recovery · daily-health · sport-specific | theme (quiz) | app (goal card, picks, prompt) | Values come from the Quiz/Goal blocks. |
-| tag `freq:<value>` | 1-2x · 3x · 4x · 5x | theme (quiz) | app | |
-| tag `sport:<value>` | cricket · padel · running · gym · cycling · swimming · other | theme (quiz) | app | |
-| tag `bday:YYYY-MM-DD` | tag | theme (quiz / sign-up copy) | app | Move to `facts.birth_date` via Flow. |
-| tag `mobile:+94XXXXXXXXX` | tag | theme (quiz / sign-up copy) | app | Move to the customer phone via Flow. |
+| tag `goal:<value>` | build-muscle · lose-fat · endurance · hydration-recovery · daily-health · sport-specific | theme (plan quiz) | app (goal card, picks, promos, prompt) | Values match the Goal blocks. |
+| tag `goal2:<value>` | same values as `goal:`, never the same as it | quiz | stack builder, promos | Optional second goal. |
+| tag `lvl:<value>` | beginner · intermediate · advanced | quiz | stack, Klaviyo | Training experience. |
+| tag `freq:<value>` | 1-2x · 3x · 4x · 5x · 6x | quiz | goal card, Klaviyo | Training days a week. |
+| tag `sess:<value>` | strength · cardio · hiit · mixed · skill | quiz | Klaviyo | Usual session type. |
+| tag `sport:<value>` | cricket · padel · running · gym · cycling · swimming · football · rugby · other | quiz | goal card, promos | |
+| tag `diet:<value>` | none · vegetarian · vegan · lactose-free | quiz | stack, picks (vegan/lactose-free → no whey), promos | |
+| tag `budget:<value>` | under-10k · 10-20k · 20-35k · 35k-plus | quiz | stack (trimmed to fit) | Per month, rupees. |
+| tag `exp:<value>` | new · some · experienced | quiz | stack (no pre-workout for new), branching | Supplement experience. |
+| tag `take:<value>` (one tag each) | protein · creatine · pre-workout · electrolytes · multivitamin · omega-3 · magnesium | quiz | stack (not suggested again), picks | Only asked when `exp` isn't new. |
+| tag `challenge:<value>` | energy · recovery · cravings · consistency · sleep | quiz | stack, tip card, Klaviyo | |
+| tag `flavour:<value>` | chocolate · vanilla · fruity · unflavoured · any | quiz | stack (flavour match first) | Not asked for daily health. |
+| tag `age:<value>` | 18-24 · 25-34 · 35-44 · 45-plus | quiz | Klaviyo | |
+| tag `bday:YYYY-MM-DD` | tag | theme (quiz, sign-up) | app | Move to `facts.birth_date` via Flow. |
+| tag `mobile:+94XXXXXXXXX` | tag | theme (quiz, sign-up) | app | Move to the customer phone via Flow. |
 | tag `joined:YYYY-MM-DD` | tag | optional, backend | app | Alternative to `custom.joined_at`. |
 | tag `newsletter` | tag | theme (popup, Profile subscribe) | Klaviyo sync | With `accepts_marketing`. |
 | customer note `Phone: / Address: / City: / Birthday:` | text, one per line | theme (register) | Flow / staff | Phone is +94XXXXXXXXX from Round 8. |
 | localStorage `snh_app_view` | overview … profile | theme | theme | Last view. |
-| localStorage `snh_goals` | JSON {goal,freq,sport,bday,mobile,email,at} | theme | theme | Instant UI; tags are the record. |
+| localStorage `snh_goals` | JSON {goal,freq,sport,bday,mobile,email,at} | theme | theme | Instant UI after Save; tags are the record. |
 | localStorage `snh_onboard_pending` | — | — | — | Retired in Round 10 (the app deletes any leftover). |
 | sessionStorage `snh_posting` | redeem · goals · news | theme (on submit) | theme (banner) | Which form just posted. |
 | localStorage `snh_vector_avatar` | initials · bolt · barbell · shield · flame · trophy · heart · dumbbell | theme | theme | Same key as V8. |

@@ -35,7 +35,7 @@
       <div><dt>Name</dt><dd>{{ me[1] | default: '—' | escape }}</dd></div>
       <div><dt>Email</dt><dd>{{ me[2] | escape }}</dd></div>
       <div><dt>Mobile</dt><dd>{% if phone != blank %}{{ phone | escape }}{% else %}<span class="pill pill--wait">Required</span> <button class="v-link pro__add" type="button" data-edit-open>Add your mobile</button>{% endif %}</dd></div>
-      <div><dt>Birthday</dt><dd data-bday-out>{% if bday != blank %}{{ bday | date: '%d %B' }}{% else %}<a class="v-link" href="#goals" data-go="goals" data-quiz-to="contact">Add for your birthday reward</a>{% endif %}</dd></div>
+      <div><dt>Birthday</dt><dd data-bday-out>{% if bday != blank %}{{ bday | date: '%d %B' }}{% else %}<a class="v-link" href="#goals" data-go="goals" data-quiz-to="age">Add for your birthday reward</a>{% endif %}</dd></div>
     </dl>
   </section>
 

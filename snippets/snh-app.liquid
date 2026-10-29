@@ -65,7 +65,7 @@
     endcapture
   endif
 -%}
-<div class="v2 app" data-app data-tier="{{ m[0] }}"{% if mock %} data-mock{% endif %} data-email="{{ me[2] | escape }}" data-goal="{{ goal | escape }}">
+<div class="v2 app" data-app data-tier="{{ m[0] }}"{% if mock %} data-mock{% endif %} data-email="{{ me[2] | escape }}" data-first="{{ me[0] | escape }}" data-goal="{{ goal | escape }}">
   <script>
     (function (a) {
       var v = (location.hash || '').slice(1).split(/[?&]/)[0], ok = /^(overview|rewards|orders|goals|profile)$/;
@@ -124,7 +124,7 @@
         {%- render 'snh-app-orders', m: m, me: me, page_orders: page_orders, pagination_html: pagination_html, page_no: page_no, sid: sid, mock: mock, bundles: bundles -%}
       </section>
       <section class="app__view" data-pane="goals" aria-labelledby="{{ sid }}-goals-h">
-        {%- render 'snh-app-goals', me: me, blocks: blocks, sid: sid, mock: mock, goal: goal, freq: freq, sport: sport, phone: phone, bday: bday -%}
+        {%- render 'snh-app-goals', me: me, blocks: blocks, sid: sid, mock: mock, goal: goal, freq: freq, sport: sport, phone: phone, bday: bday, stack_map: s.stack_map, bundle_handles: s.bundle_handles -%}
       </section>
       <section class="app__view" data-pane="profile" aria-labelledby="{{ sid }}-profile-h">
         {%- render 'snh-app-profile', m: m, me: me, s: s, sid: sid, mock: mock, mock_address: mock_address, phone: phone, bday: bday -%}

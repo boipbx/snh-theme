@@ -73,7 +73,7 @@
       <ul class="prof__list" role="list">
         <li class="is-done" data-check="email">{% render 'snh-v2-icon', name: 'check' %}<span>Email</span></li>
         <li{% if has_phone %} class="is-done"{% endif %} data-check="phone">{% render 'snh-v2-icon', name: 'check' %}{% if has_phone %}<span>Mobile number</span>{% else %}<a href="#profile" data-go="profile" data-open-edit>Add your mobile number</a>{% endif %}</li>
-        <li{% if has_bday %} class="is-done"{% endif %} data-check="bday">{% render 'snh-v2-icon', name: 'check' %}{% if has_bday %}<span>Birthday</span>{% else %}<a href="#goals" data-go="goals" data-quiz-to="contact">Add your birthday</a>{% endif %}</li>
+        <li{% if has_bday %} class="is-done"{% endif %} data-check="bday">{% render 'snh-v2-icon', name: 'check' %}{% if has_bday %}<span>Birthday</span>{% else %}<a href="#goals" data-go="goals" data-quiz-to="age">Add your birthday</a>{% endif %}</li>
         <li{% if has_addr %} class="is-done"{% endif %} data-check="addr">{% render 'snh-v2-icon', name: 'check' %}{% if has_addr %}<span>Delivery address</span>{% else %}<a href="#profile" data-go="profile" data-open-addr>Add a delivery address</a>{% endif %}</li>
         <li{% if has_goal %} class="is-done"{% endif %} data-check="goal">{% render 'snh-v2-icon', name: 'check' %}{% if has_goal %}<span>Training goal</span>{% else %}<a href="#goals" data-go="goals">Set your training goal</a>{% endif %}</li>
       </ul>

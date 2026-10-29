@@ -25,9 +25,12 @@
   </div>
 
   <div class="app__card gview__quiz" data-goal-quiz{% if goal != blank %} hidden{% endif %}>
-    <h2 class="app__h3">Personalise your SNH</h2>
+    <div class="qz__intro">
+      <p class="eyebrow">13 quick taps · about 2 minutes</p>
+      <h2 class="app__h2">Build your SNH <em>plan</em></h2>
+    </div>
     {%- assign qid = sid | append: '-quiz' -%}
-    {%- render 'snh-onboarding-quiz', blocks: blocks, id: qid, mode: 'app', contact: true, email: me[2], goal: goal, freq: freq, sport: sport, phone: phone, bday: bday, mock: mock -%}
+    {%- render 'snh-onboarding-quiz', blocks: blocks, id: qid, mode: 'app', contact: true, email: me[2], a: me[11], phone: phone, bday: bday, stack: stack_map, bundle_handles: bundle_handles, mock: mock -%}
   </div>
 
   {%- for k in keys -%}

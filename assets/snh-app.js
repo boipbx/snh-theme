@@ -126,104 +126,352 @@
     after.insertAdjacentElement('afterend', p);
   }
 
-  /* ---------- onboarding quiz ---------- */
+  /* ---------- "Build your SNH plan" (Round 10): branching questions, XP, level up, shaker game, stack, plan card ---------- */
+  var MANY = { take: 1 };
+  var KEYS = ['goal', 'goal2', 'lvl', 'freq', 'sess', 'sport', 'diet', 'budget', 'exp', 'take', 'challenge', 'flavour', 'age'];
   function quizInit(q, onDone) {
     if (q.__quiz) return q.__quiz;
-    var steps = $$('[data-step]', q).filter(function (s) { return s.getAttribute('data-step') !== 'done'; });
-    var done = q.querySelector('[data-step="done"]');
+    var mode = q.getAttribute('data-mode'), mock = q.hasAttribute('data-mock');
+    var steps = $$('.qz__step', q);
+    var done = q.querySelector('[data-step="done"]'), game = q.querySelector('[data-step="game"]'), res = q.querySelector('[data-step="results"]');
     var back = q.querySelector('[data-quiz-back]'), next = q.querySelector('[data-quiz-next]'), skip = q.querySelector('[data-quiz-skip]');
+    var save = q.querySelector('[data-quiz-save]'), retake = q.querySelector('[data-qz-retake]'), form = save && save.form;
     var bar = q.querySelector('[data-quiz-bar]'), count = q.querySelector('[data-quiz-count]');
-    var mode = q.getAttribute('data-mode'), i = 0;
-    var save = q.querySelector('[data-quiz-save]'), form = save && save.form;
+    var xpEl = q.querySelector('[data-qz-xp]'), lvlEl = q.querySelector('[data-qz-lvl]'), lvlup = q.querySelector('[data-qz-levelup]');
+    var i = 0, stage = 'q', leveled = false, ptr = false;
     $$('[data-sl-mobile]', q).forEach(bindMobile);
-    function val(k) { var r = q.querySelector('[data-step="' + k + '"] input:checked'); return r ? r.value : ''; }
-    function lab(k) { var r = q.querySelector('[data-step="' + k + '"] input:checked'); return r ? r.getAttribute('data-label') : ''; }
+
+    function stepOf(k) { return q.querySelector('.qz__step[data-step="' + k + '"]'); }
+    function val(k) {
+      var c = $$('.qz__step[data-step="' + k + '"] input:checked', q).map(function (r) { return r.value; });
+      return MANY[k] ? c : (c[0] || '');
+    }
+    function lab(k, v) {
+      var r = q.querySelector('.qz__step[data-step="' + k + '"] input' + (v ? '[value="' + v + '"]' : ':checked'));
+      return r ? r.getAttribute('data-label') : '';
+    }
     function answers() {
-      var b = q.querySelector('[data-quiz-bday]'), m = q.querySelector('[data-quiz-mobile]');
-      return { goal: val('goal'), freq: val('freq'), sport: val('sport'), bday: b ? b.value : '', mobile: m ? (slMobile(m.value) || '') : '' };
+      var a = {}, b = q.querySelector('[data-quiz-bday]'), m = q.querySelector('[data-quiz-mobile]');
+      KEYS.forEach(function (k) { a[k] = stepOf(k) && applies(stepOf(k), a) ? val(k) : (MANY[k] ? [] : ''); });
+      if (a.goal2 === a.goal) a.goal2 = '';
+      a.bday = b ? b.value : '';
+      a.mobile = m ? (slMobile(m.value) || '') : '';
+      return a;
+    }
+    // data-if="exp!=new" / "goal=x": a step only applies when the earlier answer matches
+    function applies(s, a) {
+      var c = s.getAttribute('data-if');
+      if (!c) return true;
+      var m = c.match(/^(\w+)(!?=)(.+)$/);
+      if (!m) return true;
+      var v = a ? a[m[1]] : val(m[1]);
+      return m[2] === '=' ? v === m[3] : v !== m[3];
+    }
+    function list() { return steps.filter(function (s) { return applies(s); }); }
+    function answered() { return list().filter(function (s) { var v = val(s.getAttribute('data-step')); return MANY[s.getAttribute('data-step')] ? v.length : v; }).length; }
+    function xp() {
+      var n = answered(), tot = list().length, half = Math.ceil(tot / 2), lv = n >= tot ? 3 : n >= half ? 2 : 1;
+      if (xpEl) { xpEl.textContent = n * 10 + ' XP'; xpEl.classList.remove('is-bump'); void xpEl.offsetWidth; xpEl.classList.add('is-bump'); }
+      if (lvlEl) lvlEl.textContent = 'Level ' + lv;
+      if (lv >= 2 && !leveled && lvlup && stage === 'q') {
+        leveled = true;
+        lvlup.hidden = false;
+        setTimeout(function () { lvlup.hidden = true; }, 2600);
+      }
+    }
+    function nav() {
+      var L = list(), inQ = stage === 'q', last = i === L.length - 1;
+      back.hidden = !(inQ && i > 0) && stage !== 'results';
+      next.hidden = !inQ;
+      skip.hidden = !inQ;
+      var nl = next.querySelector('span');
+      if (nl) nl.textContent = last ? (mode === 'register' ? 'Done' : 'See my stack') : 'Next';
+      if (save) save.hidden = stage !== 'results';
+      if (retake) retake.hidden = stage !== 'results';
     }
     function go(n, focus) {
-      i = Math.max(0, Math.min(n, steps.length));
-      steps.forEach(function (s, k) { s.hidden = k !== i; });
-      if (done) done.hidden = i < steps.length;
-      var end = i >= steps.length;
-      var last = i === steps.length - 1;
-      back.hidden = i === 0 || end;
-      next.hidden = end || (last && !!save);
-      if (save) save.hidden = !last;
-      skip.hidden = end || (last && !!save);
-      bar.style.width = (end ? 100 : Math.round((i + 1) / steps.length * 100)) + '%';
-      count.textContent = end ? 'Done' : 'Step ' + (i + 1) + ' of ' + steps.length;
-      var nl = next.querySelector('span');
-      if (nl) nl.textContent = last ? 'Done' : 'Next';
-      if (focus) {
-        var f = end ? done : steps[i].querySelector('input:checked, input');
-        if (f) f.focus({ preventScroll: true });
-      }
-      if (end) finish();
+      var L = list();
+      // goal2 never offers the primary goal again
+      var g = val('goal');
+      $$('.qz__step[data-step="goal2"] .qz__tile', q).forEach(function (t) { var inp = t.querySelector('input'); t.hidden = inp.value === g; if (t.hidden) inp.checked = false; });
+      i = Math.max(0, Math.min(n, L.length));
+      stage = i >= L.length ? (mode === 'register' ? 'done' : 'game') : 'q';
+      steps.forEach(function (s) { s.hidden = stage !== 'q' || s !== L[i]; });
+      if (done) done.hidden = stage !== 'done';
+      if (game) game.hidden = stage !== 'game';
+      if (res) res.hidden = stage !== 'results';
+      bar.style.width = (stage === 'q' ? Math.round(answered() / L.length * 100) : 100) + '%';
+      count.textContent = stage === 'q' ? 'Question ' + (i + 1) + ' of ' + L.length : stage === 'done' ? 'Done' : 'Plan ready';
+      nav();
       sync();
+      if (stage === 'done') finish();
+      if (stage === 'game') startGame();
+      if (focus) {
+        var f = stage === 'q' ? (L[i].querySelector('input:checked') || L[i].querySelector('input')) : q.querySelector('[data-step="' + stage + '"]');
+        if (f) f.focus({ preventScroll: true });
+        var top = q.getBoundingClientRect().top;
+        if (top < 0) q.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+      }
     }
     function finish() {
       var a = answers(), bits = [lab('goal'), lab('freq'), lab('sport')].filter(Boolean);
       var sum = q.querySelector('[data-quiz-summary]');
-      if (sum) sum.textContent = mode === 'register'
-        ? (bits.length ? bits.join(' · ') + '. We’ll save this to your account once it’s created.' : 'No problem, you can set your goals from your account any time.')
-        : (bits.length ? bits.join(' · ') + '. Your picks and tips now follow your goal.' : 'Saved. You can change your answers any time.');
+      if (sum) sum.textContent = bits.length ? bits.join(' · ') + '. Your plan is saved to your account when you create it.' : 'No problem, you can build your plan from your account any time.';
       if (onDone) onDone(a, bits, false);
     }
+    function sync() { var t = q.__tagsField || (form && form.querySelector('[data-quiz-tags]')); if (t) t.value = tagsFor(answers(), t.__extra); }
+
     next.addEventListener('click', function () {
-      var m = steps[i] && steps[i].querySelector('[data-sl-mobile]');
+      var L = list(), m = L[i] && L[i].querySelector('[data-sl-mobile]');
       if (m && m.__check && !m.__check(true)) { m.focus(); return; }
       go(i + 1, true);
     });
     skip.addEventListener('click', function () {
-      $$('input[type="radio"]', steps[i]).forEach(function (r) { r.checked = false; });
-      if (mode === 'register') { go(steps.length, true); return; }
-      go(i + 1, true);
+      var L = list();
+      $$('input[type="radio"], input[type="checkbox"]', L[i]).forEach(function (r) { r.checked = false; });
+      xp();
+      go(mode === 'register' ? L.length : i + 1, true);
     });
-    back.addEventListener('click', function () { go(i - 1, true); });
-    // the tags field always holds the current answers, so whichever way the form posts, it posts these
-    function sync() { var t = q.__tagsField || (form && form.querySelector('[data-quiz-tags]')); if (t) t.value = tagsFor(answers(), t.__extra); }
-    q.addEventListener('change', sync);
+    back.addEventListener('click', function () { if (stage === 'results') { go(list().length - 1, true); return; } go(i - 1, true); });
+    if (retake) retake.addEventListener('click', function () { leveled = false; go(0, true); });
+    // one tap answers: a pointer pick on a single-choice tile moves on by itself (keyboard users press Next)
+    q.addEventListener('pointerdown', function (e) { ptr = !!e.target.closest('.qz__tile'); });
+    q.addEventListener('keydown', function () { ptr = false; });
+    q.addEventListener('change', function (e) {
+      var t = e.target.closest('.qz__tile');
+      if (t) { t.classList.remove('is-pop'); void t.offsetWidth; t.classList.add('is-pop'); xp(); }
+      sync();
+      if (t && ptr && e.target.type === 'radio' && stage === 'q') {
+        var at = i;
+        setTimeout(function () { if (i === at && stage === 'q') go(i + 1, true); }, reduce ? 0 : 320);
+      }
+    });
     q.addEventListener('input', sync);
+
+    /* the shaker game: tap fast for 5 s, the shaker fills, then the stack appears. Purely for fun. */
+    var shaker = q.querySelector('[data-qz-shake]'), liq = q.querySelector('[data-qz-liq]'), meter = q.querySelector('[data-qz-meter]'), score = q.querySelector('[data-qz-score]');
+    var taps = 0, t0 = 0, timer = null, FULL = 30;
+    function startGame() {
+      taps = 0; t0 = 0; clearTimeout(timer);
+      if (liq) liq.setAttribute('y', 170);
+      if (meter) meter.style.width = '0%';
+      if (score) score.textContent = 'Tap to start';
+    }
+    function endGame() {
+      clearTimeout(timer);
+      if (score) score.textContent = taps + ' shakes. ' + (taps >= FULL ? 'Perfectly mixed!' : taps >= FULL / 2 ? 'Nicely mixed!' : 'Mixed enough!');
+      setTimeout(showResults, reduce ? 0 : 900);
+    }
+    if (shaker) shaker.addEventListener('click', function () {
+      if (stage !== 'game') return;
+      if (!t0) { t0 = Date.now(); timer = setTimeout(endGame, 5000); }
+      taps++;
+      var f = Math.min(taps / FULL, 1);
+      liq.setAttribute('y', String(170 - f * 118));
+      meter.style.width = Math.round(f * 100) + '%';
+      score.textContent = taps + ' shake' + (taps === 1 ? '' : 's');
+      if (!reduce) { shaker.classList.remove('is-shake'); void shaker.offsetWidth; shaker.classList.add('is-shake'); }
+      if (taps >= FULL) endGame();
+    });
+    var skipGame = q.querySelector('[data-qz-skipgame]');
+    if (skipGame) skipGame.addEventListener('click', function () { clearTimeout(timer); showResults(); });
+
+    function showResults() {
+      if (stage !== 'game') return;
+      stage = 'results';
+      game.hidden = true; res.hidden = false;
+      buildStack(q, answers(), lab);
+      nav();
+      res.focus({ preventScroll: true });
+      if (!reduce) res.classList.add('is-in');
+    }
+
     if (form) form.addEventListener('submit', function (e) {
       var m = q.querySelector('[data-quiz-mobile]');
-      if (m && m.__check && !m.__check(true)) { e.preventDefault(); m.focus(); return; }
+      if (m && m.__check && !m.__check(true)) { e.preventDefault(); go(list().length - 1, true); return; }
       var a = answers();
       sync();
-      if (!a.goal && !a.freq && !a.sport && !a.bday && !a.mobile) { e.preventDefault(); go(steps.length, true); return; }
+      if (!a.goal && !a.freq && !a.sport && !a.bday && !a.mobile && !a.diet) { e.preventDefault(); return; }
       if (onDone) onDone(a, null, true);
       try { sessionStorage.setItem('snh_posting', 'goals'); } catch (x) {}
       var l = save.querySelector('span');
       if (l) l.textContent = 'Saving…';
       save.setAttribute('aria-busy', 'true');
       // still here after a few seconds = the bot check is waiting for the member (or loading): let them press again
-      setTimeout(function () { save.removeAttribute('aria-busy'); if (l) l.textContent = 'Save my answers'; }, 6000);
+      setTimeout(function () { save.removeAttribute('aria-busy'); if (l) l.textContent = 'Save my plan'; }, 6000);
     });
+
     var api = {
       go: go,
       sync: sync,
       answers: answers,
-      to: function (key) { var k = steps.map(function (s) { return s.getAttribute('data-step'); }).indexOf(key); go(k < 0 ? 0 : k, true); },
+      to: function (key) { var L = list(), k = L.map(function (s) { return s.getAttribute('data-step'); }).indexOf(key); go(k < 0 ? 0 : k, true); },
       fill: function (a) {
-        ['goal', 'freq', 'sport'].forEach(function (k) {
-          var r = a && a[k] && q.querySelector('[data-step="' + k + '"] input[value="' + a[k] + '"]');
-          if (r) r.checked = true;
+        KEYS.forEach(function (k) {
+          [].concat(a && a[k] || []).forEach(function (v) { var r = q.querySelector('.qz__step[data-step="' + k + '"] input[value="' + v + '"]'); if (r) r.checked = true; });
         });
         var b = q.querySelector('[data-quiz-bday]'), m = q.querySelector('[data-quiz-mobile]');
         if (b && a && a.bday) b.value = a.bday;
         if (m && a && a.mobile) m.value = a.mobile;
       },
-      label: function (k, v) { var r = q.querySelector('[data-step="' + k + '"] input[value="' + v + '"]'); return r ? r.getAttribute('data-label') : ''; }
+      label: function (k, v) { return lab(k, v); }
     };
     q.__quiz = api;
     go(0, false);
+    xp();
     return api;
   }
   function tagsFor(a, extra) {
-    return [a.goal && 'goal:' + a.goal, a.freq && 'freq:' + a.freq, a.sport && 'sport:' + a.sport, a.bday && 'bday:' + a.bday, a.mobile && 'mobile:' + a.mobile]
-      .concat(extra ? extra() : []).filter(Boolean).join(', ');
+    var t = [];
+    KEYS.forEach(function (k) { [].concat(a[k] || []).forEach(function (v) { if (v) t.push(k + ':' + v); }); });
+    if (a.bday) t.push('bday:' + a.bday);
+    if (a.mobile) t.push('mobile:' + a.mobile);
+    return t.concat(extra ? extra() : []).filter(Boolean).join(', ');
   }
+
+  /* "Your SNH stack": 3–5 products from the categories in snh-quiz-stackdata, by goal, second goal, challenge, diet,
+     what they already take, flavour and budget. Rules are plain data so they're easy to tune. */
+  var PLANS = {
+    'build-muscle': [['P', 'Hits your daily protein target without extra cooking.'], ['creatine', 'The most researched strength supplement: 3–5 g a day, every day.'], ['pre', 'More drive for heavy days.', 'notnew']],
+    'lose-fat': [['P', 'High protein keeps your muscle while you cut.'], ['fat', 'Supports your training in a calorie deficit.'], ['bar', 'A high-protein snack for when cravings hit.']],
+    'endurance': [['hydra', 'Replaces the sodium you sweat out in Sri Lankan heat.'], ['gel', 'Fast carbs for sessions over 90 minutes.'], ['P', 'Protein to recover after long sessions.']],
+    'hydration-recovery': [['hydra', 'Rehydrates faster than water alone.'], ['magnesium', 'Supports sleep and muscle recovery.'], ['P', 'Protein to rebuild after training.']],
+    'daily-health': [['multi', 'Covers the everyday basics in one go.'], ['omega', 'Omega-3 for heart, joints and recovery.'], ['magnesium', 'Supports sleep and stress.']],
+    'sport-specific': [['hydra', 'Pre-load electrolytes on match day.'], ['gel', 'A quick top-up between games or sets.'], ['creatine', 'Power for sprints, swings and smashes.']]
+  };
+  var CHALLENGE = {
+    energy: ['pre', 'Your challenge is energy: a pre-workout for the sessions that matter.'],
+    recovery: ['magnesium', 'Your challenge is recovery: magnesium in the evening helps you bounce back.'],
+    cravings: ['bar', 'Your challenge is cravings: keep a protein bar in your bag.'],
+    consistency: ['creatine', 'Your challenge is consistency: creatine works through a simple daily habit.'],
+    sleep: ['magnesium', 'Your challenge is sleep: magnesium in the evening helps you wind down.']
+  };
+  var TAKES = { protein: ['P'], creatine: ['creatine'], 'pre-workout': ['pre'], electrolytes: ['hydra'], multivitamin: ['multi'], 'omega-3': ['omega'], magnesium: ['magnesium'] };
+  var FLAV = { chocolate: ['choc', 'cocoa', 'brownie'], vanilla: ['vanilla', 'cookie', 'cream'], fruity: ['berry', 'fruit', 'orange', 'mango', 'lemon', 'strawberr', 'tropical', 'raspberr', 'melon', 'pineapple', 'peach', 'apple', 'grape'], unflavoured: ['unflavo'] };
+  var BUDGET = { 'under-10k': 10000, '10-20k': 20000, '20-35k': 35000 };
+  var TIPS = {
+    energy: 'Eat a carb-rich meal 2–3 hours before training, and save caffeine for the sessions that need it.',
+    recovery: 'Get 20–40 g of protein within two hours of training, and protect your sleep: it’s when you recover.',
+    cravings: 'Build meals around protein and fibre. Plan a high-protein snack for the time of day cravings usually hit.',
+    consistency: 'Pick the same time every day for your supplements, next to a habit you already have, like breakfast.',
+    sleep: 'Keep caffeine before 2 pm, dim the screens an hour before bed, and take magnesium in the evening.',
+    'build-muscle': 'Aim for 1.6–2.2 g of protein per kg of bodyweight a day, spread over 3–5 meals.',
+    'lose-fat': 'A steady 300–500 calorie daily deficit, high protein and lifting keeps the weight you lose as fat.',
+    endurance: 'Over 90 minutes, take in 60–90 g of carbs an hour, and practise it in training first.',
+    'hydration-recovery': 'Weigh yourself before and after training: every kilo lost is about a litre to replace.',
+    'daily-health': 'Consistency beats dose. Take fat-soluble vitamins and omega-3 with a meal.',
+    'sport-specific': 'Eat a carb-rich meal 3–4 hours before you play, and pre-load electrolytes on hot days.'
+  };
+  function rs(n) { return 'Rs ' + Math.round(n).toLocaleString('en-US'); }
+  function buildStack(q, a, lab) {
+    var el = q.querySelector('[data-qz-data]'), data = { cats: {}, bundles: [] };
+    try { data = JSON.parse(el.textContent); } catch (e) {}
+    var P = a.diet === 'vegan' || a.diet === 'lactose-free' ? 'vegan' : a.goal === 'lose-fat' && a.diet !== 'vegetarian' ? 'clear' : 'protein';
+    var skip = {}, taken = [].concat(a.take || []);
+    taken.forEach(function (t) { (TAKES[t] || []).forEach(function (c) { skip[c] = 1; if (c === 'P') { skip.protein = skip.vegan = skip.clear = 1; } }); });
+    if (a.diet === 'vegan' || a.diet === 'lactose-free') { skip.protein = skip.clear = skip.bar = 1; }
+    if (a.diet === 'vegan' || a.diet === 'vegetarian') skip.omega = 1;   // fish oil
+    var want = [];
+    function add(c, why, cond) {
+      if (c === 'P') c = P;
+      if (cond === 'notnew' && a.exp === 'new') return;
+      if (skip[c] || want.some(function (w) { return w[0] === c; })) return;
+      want.push([c, why]);
+    }
+    // priority (budget trims from the end): the goal's core picks, the challenge, the second goal, then optional extras
+    var plan = PLANS[a.goal] || PLANS['daily-health'];
+    plan.forEach(function (x) { if (!x[2]) add(x[0], x[1]); });
+    if (a.challenge && CHALLENGE[a.challenge]) { var ch = CHALLENGE[a.challenge]; add(ch[0], ch[1], ch[0] === 'pre' ? 'notnew' : ''); }
+    if (a.goal2 && PLANS[a.goal2]) PLANS[a.goal2].some(function (x) { var n = want.length; add(x[0], x[1], x[2]); return want.length > n; });
+    plan.forEach(function (x) { if (x[2]) add(x[0], x[1], x[2]); });
+    // categories with no product in stock drop out; top up from the main plan's backups
+    var words = FLAV[a.flavour] || [], cheap = a.budget === 'under-10k' || a.budget === '10-20k', used = {};
+    var stack = [];
+    want.forEach(function (w) {
+      if (stack.length >= 5) return;
+      var list = (data.cats[w[0]] || []).filter(function (p) { return !used[p.u]; });
+      if (!list.length) return;
+      list = list.slice().sort(function (x, y) {
+        var fx = words.some(function (k) { return x.x.indexOf(k) > -1; }) ? 0 : 1, fy = words.some(function (k) { return y.x.indexOf(k) > -1; }) ? 0 : 1;
+        return fx - fy || (cheap ? x.p - y.p : 0);
+      });
+      used[list[0].u] = 1;
+      stack.push({ p: list[0], why: w[1], c: w[0] });
+    });
+    ['P', 'hydra', 'multi', 'magnesium'].forEach(function (c) {
+      if (stack.length >= 3) return;
+      c = c === 'P' ? P : c;
+      if (skip[c] || stack.some(function (s) { return s.c === c; })) return;
+      var p = (data.cats[c] || []).filter(function (x) { return !used[x.u]; })[0];
+      if (p) { used[p.u] = 1; stack.push({ p: p, why: 'A solid all-round base for your plan.', c: c }); }
+    });
+    var max = BUDGET[a.budget], trimmed = false;
+    function sum() { return stack.reduce(function (t, s) { return t + s.p.p / 100; }, 0); }
+    while (max && sum() > max && stack.length > 2) { stack.pop(); trimmed = true; }
+
+    var bits = [lab('goal'), lab('freq'), lab('sport')].filter(Boolean);
+    q.querySelector('[data-qz-res-sum]').textContent = (bits.length ? bits.join(' · ') + '. ' : '') + (lab('diet') && a.diet !== 'none' ? lab('diet') + ' friendly. ' : '') + (trimmed ? 'Trimmed to fit your budget.' : '');
+    var ol = q.querySelector('[data-qz-stack]'), mockQ = q.hasAttribute('data-mock');
+    ol.innerHTML = stack.map(function (s, n) {
+      var p = s.p;
+      return '<li class="qz__item" style="--n:' + n + '"><span class="oimg' + (p.f ? ' is-framed' : '') + '"><img src="' + esc(p.i) + '" alt="" width="88" height="88"></span>' +
+        '<div class="qz__it"><p class="qz__brand">' + esc(p.b) + '</p><a class="qz__name" href="' + esc(p.u) + '">' + esc(p.t.replace(p.b, '').trim() || p.t) + '</a><p class="qz__why">' + esc(s.why) + '</p></div>' +
+        '<div class="qz__buy"><b>' + rs(p.p / 100) + '</b>' + (p.v ? '<button class="v-btn v-btn--ink v-btn--sm" type="button" data-app-reorder="' + p.v + ':1"' + (mockQ ? ' disabled' : '') + '><span>Add</span></button>' : '<a class="v-btn v-btn--line v-btn--sm" href="' + esc(p.u) + '"><span>Choose</span></a>') + '</div></li>';
+    }).join('') || '<li class="app__muted">We couldn’t find products in stock for these answers right now. Try a different budget or diet.</li>';
+    // a bundle that holds 2+ of the stack (its description names them)
+    var best = null;
+    data.bundles.forEach(function (b) {
+      var hit = stack.filter(function (s) { return s.p.n && s.p.n.length > 5 && b.d.indexOf(s.p.n) > -1; }).length;
+      if (hit >= 2 && (!best || hit > best.hit || (hit === best.hit && b.s > best.b.s))) best = { b: b, hit: hit };
+    });
+    var tot = q.querySelector('[data-qz-tot]');
+    tot.innerHTML = '<p><span>Stack total</span><b>' + rs(sum()) + '</b></p>' + (best ? '<div class="qz__bundle"><p>Get ' + best.hit + ' of these in the <b>' + esc(best.b.t) + '</b>' + (best.b.s ? ' and save ' + rs(best.b.s / 100) : '') + '.</p>' +
+      (best.b.v ? '<button class="v-btn v-btn--accent v-btn--sm" type="button" data-app-reorder="' + best.b.v + ':1"' + (mockQ ? ' disabled' : '') + '><span>Add bundle · ' + rs(best.b.p / 100) + '</span></button>' : '<a class="v-btn v-btn--accent v-btn--sm" href="' + esc(best.b.u) + '"><span>See bundle</span></a>') + '</div>' : '');
+    var tip = q.querySelector('[data-qz-tip]');
+    tip.innerHTML = '<span class="qz__tip-ic" aria-hidden="true">★</span><div><p class="eyebrow">Your tip</p><p>' + esc(TIPS[a.challenge] || TIPS[a.goal] || TIPS['daily-health']) + '</p></div>';
+    drawCard(q.querySelector('[data-qz-canvas]'), a, lab, stack, q.closest('[data-first]'));
+    var png = q.querySelector('[data-qz-png]');
+    if (png && !png.__b) {
+      png.__b = true;
+      png.addEventListener('click', function () {
+        var c = q.querySelector('[data-qz-canvas]'), l = document.createElement('a');
+        l.download = 'my-snh-plan.png';
+        l.href = c.toDataURL('image/png');
+        l.click();
+      });
+    }
+  }
+  // the shareable plan card, drawn as an image (1080 × 1350, Instagram portrait)
+  function drawCard(c, a, lab, stack, app) {
+    if (!c || !c.getContext) return;
+    var x = c.getContext('2d'), W = c.width, H = c.height, sans = 'Inter, Helvetica, Arial, sans-serif', serif = '"Instrument Serif", Georgia, serif';
+    x.fillStyle = '#0C0C0D'; x.fillRect(0, 0, W, H);
+    var g = x.createRadialGradient(W * .85, 0, 0, W * .85, 0, W * .9);
+    g.addColorStop(0, 'rgba(224,82,28,.75)'); g.addColorStop(1, 'rgba(224,82,28,0)');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#fff'; x.textBaseline = 'alphabetic';
+    x.font = '600 40px ' + sans; x.fillText('SNH', 80, 120);
+    x.font = 'italic 40px ' + serif; x.fillText('Elite', 182, 120);
+    x.font = '600 28px ' + sans; x.fillStyle = 'rgba(255,255,255,.7)'; x.fillText('MY SNH PLAN', 80, 250);
+    var name = app && app.getAttribute('data-first') ? app.getAttribute('data-first') + '’s stack' : 'My stack';
+    x.fillStyle = '#fff'; x.font = '600 96px ' + sans; x.fillText(name, 80, 360, W - 160);
+    x.font = 'italic 64px ' + serif; x.fillStyle = '#FFB27A';
+    x.fillText([lab('goal'), lab('sport')].filter(Boolean).join(' · ') || 'Built for me', 80, 450, W - 160);
+    x.font = '500 34px ' + sans; x.fillStyle = 'rgba(255,255,255,.75)';
+    x.fillText([lab('freq') ? lab('freq') + ' a week' : '', lab('lvl')].filter(Boolean).join(' · '), 80, 515, W - 160);
+    var y = 640;
+    stack.forEach(function (s, n) {
+      x.fillStyle = 'rgba(255,255,255,.08)'; roundRect(x, 80, y - 70, W - 160, 120, 28); x.fill();
+      x.fillStyle = '#E0521C'; x.beginPath(); x.arc(150, y - 10, 34, 0, Math.PI * 2); x.fill();
+      x.fillStyle = '#fff'; x.font = '600 34px ' + sans; x.textAlign = 'center'; x.fillText(String(n + 1), 150, y + 2); x.textAlign = 'left';
+      x.font = '600 36px ' + sans; x.fillText(s.p.t.replace(s.p.b, '').trim().slice(0, 34), 210, y - 14, W - 330);
+      x.font = '400 26px ' + sans; x.fillStyle = 'rgba(255,255,255,.65)'; x.fillText(s.p.b, 210, y + 26, W - 330);
+      y += 150;
+    });
+    x.fillStyle = 'rgba(255,255,255,.6)'; x.font = '500 28px ' + sans; x.fillText('sportsnutritionhub.lk', 80, H - 80);
+    x.textAlign = 'right'; x.fillText('Built with the SNH plan quiz', W - 80, H - 80); x.textAlign = 'left';
+  }
+  function roundRect(x, l, t, w, h, r) { x.beginPath(); x.moveTo(l + r, t); x.arcTo(l + w, t, l + w, t + h, r); x.arcTo(l + w, t + h, l, t + h, r); x.arcTo(l, t + h, l, t, r); x.arcTo(l, t, l + w, t, r); x.closePath(); }
 
   /* ---------- forms that write tags (Round 10): normal page POSTs with Shopify's hCaptcha ----------
      Every tag-writing form is a Liquid {% form 'customer' %} with data-shopify-captcha="true", so Shopify's captcha
