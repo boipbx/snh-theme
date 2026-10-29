@@ -44,7 +44,7 @@
         </ul>
         <div class="ep__ctas">
           {%- if customer -%}
-            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}"><span>See my points</span></a>
+            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}#rewards"><span>See my points</span></a>
             <a class="v-btn v-btn--line v-btn--on-dark" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
           {%- else -%}
             <a class="v-btn v-btn--ink" href="{{ routes.account_register_url }}"><span>Join free</span></a>
@@ -106,7 +106,7 @@
       <h2 class="ep__h2" id="ep-end-{{ section.id }}">{%- for p in cta_parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
       <div class="ep__ctas">
         {%- if customer -%}
-          <a class="v-btn v-btn--ink" href="{{ routes.account_url }}"><span>Go to my dashboard</span></a>
+          <a class="v-btn v-btn--ink" href="{{ routes.account_url }}#overview"><span>Go to my dashboard</span></a>
         {%- else -%}
           <a class="v-btn v-btn--ink" href="{{ routes.account_register_url }}"><span>Join free</span></a>
           <a class="v-btn v-btn--line v-btn--on-dark" href="{{ routes.account_login_url }}"><span>Sign in</span></a>

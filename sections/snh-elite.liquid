@@ -28,7 +28,7 @@
         {%- if section.settings.chips != blank -%}<ul class="chips-row">{%- for c in chips -%}{%- assign t = c | strip -%}{%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}
         <div class="band__cta">
           {%- if customer -%}
-            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}"><span>{{ section.settings.cta_member | default: 'See my points' | escape }}</span></a>
+            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}#rewards"><span>{{ section.settings.cta_member | default: 'See my points' | escape }}</span></a>
             <a class="v-btn v-btn--line v-btn--on-dark" href="{% render 'snh-elite-url' %}"><span>{{ section.settings.cta2_member | default: 'How SNH Elite works' | escape }}</span></a>
           {%- else -%}
             {%- if section.settings.cta != blank -%}<a class="v-btn v-btn--ink" href="{{ section.settings.cta_link | default: routes.account_register_url }}"><span>{{ section.settings.cta | escape }}</span></a>{%- endif -%}

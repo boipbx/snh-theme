@@ -77,9 +77,11 @@
         </div>
 
         <nav class="acp__links" aria-label="Account">
-          <a href="{{ routes.account_url }}">{% render 'snh-v2-icon', name: 'user' %}<span>Dashboard</span></a>
+          <a href="{{ routes.account_url }}#overview">{% render 'snh-v2-icon', name: 'home' %}<span>Overview</span></a>
+          <a href="{{ routes.account_url }}#rewards">{% render 'snh-v2-icon', name: 'gift' %}<span>Rewards</span></a>
           <a href="{{ routes.account_url }}#orders">{% render 'snh-v2-icon', name: 'bag' %}<span>Orders</span></a>
-          <a href="{{ routes.account_addresses_url }}">{% render 'snh-v2-icon', name: 'pin' %}<span>Addresses</span></a>
+          <a href="{{ routes.account_url }}#goals">{% render 'snh-v2-icon', name: 'target' %}<span>Goals</span></a>
+          <a href="{{ routes.account_url }}#profile">{% render 'snh-v2-icon', name: 'pin' %}<span>Profile &amp; addresses</span></a>
           <a href="{{ elite_url | strip }}">{% render 'snh-v2-icon', name: 'badge' %}<span>How SNH Elite works</span></a>
         </nav>
         <a class="v-btn v-btn--line acp__out" href="{{ routes.account_logout_url }}" data-no-instant><span>Sign out</span></a>

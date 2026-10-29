@@ -906,7 +906,7 @@
                       {%- if customer -%}
                         <div class="snh-cart-points">
                           <span class="snh-cart-points__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-                          <span class="snh-cart-points__text">You'll earn <b>{{ snh_points | floor }} points</b> on this order as a {{ snh_tier }} member ({{ snh_rate }}% back).</span>
+                          <span class="snh-cart-points__text">You'll earn <b>{{ snh_points | floor }} points</b> on this order as a {{ snh_tier }} member ({{ snh_rate }}% back). <a href="{{ routes.account_url }}#rewards">See my points</a></span>
                         </div>
                       {%- else -%}
                         <div class="snh-cart-points">

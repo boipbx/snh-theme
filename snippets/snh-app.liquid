@@ -1,0 +1,130 @@
+{%- comment -%}
+  SNH Elite member app shell (Round 8). Rendered by sections/snh-account-app (real member) and sections/snh-app-mock
+  (QA personas), so both show the same thing.
+  m: split snh-elite-calc output · me: split member fields (0 first name · 1 name · 2 email · 3 phone · 4 member no. ·
+  5 initials · 6 accepts marketing 1/0 · 7 birthday · 8 joined (unix) · 9 orders count · 10 addresses count · 11 tags,
+  comma separated) · recent: latest orders (snh-app-order-data records) · page_orders + pagination_html + page_no: the
+  Orders view page · s: section settings · blocks: section blocks (goal, quiz, faq) · sid · mock: true on the QA page.
+  Views: #overview #rewards #orders #goals #profile (assets/snh-app.js; the inline script picks the view before paint).
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+{{ 'snh-app.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-account.js' | asset_url }}" defer></script>
+<script src="{{ 'snh-app.js' | asset_url }}" defer></script>
+{%- liquid
+  assign goal = ''
+  assign freq = ''
+  assign sport = ''
+  assign t_bday = ''
+  assign t_mobile = ''
+  assign t_joined = ''
+  assign pending = false
+  assign tag_list = me[11] | split: ','
+  for t in tag_list
+    assign tl = t | strip | downcase
+    assign k = tl | split: ':' | first
+    assign v = tl | remove_first: k | remove_first: ':' | strip
+    case k
+      when 'goal'
+        if goal == ''
+          assign goal = v
+        endif
+      when 'freq'
+        if freq == ''
+          assign freq = v
+        endif
+      when 'sport'
+        if sport == ''
+          assign sport = v
+        endif
+      when 'bday'
+        assign t_bday = v
+      when 'mobile'
+        assign t_mobile = t | strip | remove_first: 'mobile:' | remove_first: 'Mobile:'
+      when 'joined'
+        assign t_joined = v | date: '%s'
+      when 'trigger_redeem_2500'
+        assign pending = true
+    endcase
+  endfor
+  assign phone = me[3] | default: t_mobile
+  assign bday = me[7] | default: t_bday
+  assign joined = me[8] | default: t_joined
+
+  assign views = 'overview,rewards,orders,goals,profile' | split: ','
+  assign pts_label = 'No points yet'
+  if m[3] != 'x'
+    capture pts_label
+      render 'snh-num', n: m[3]
+      echo ' points'
+    endcapture
+  endif
+-%}
+<div class="v2 app" data-app data-tier="{{ m[0] }}"{% if mock %} data-mock{% endif %} data-email="{{ me[2] | escape }}" data-goal="{{ goal | escape }}">
+  <script>
+    (function (a) {
+      var v = (location.hash || '').slice(1), ok = /^(overview|rewards|orders|goals|profile)$/;
+      if (!ok.test(v)) { try { v = localStorage.getItem('snh_app_view') || ''; } catch (e) { v = ''; } }
+      if (!ok.test(v)) v = 'overview';
+      a.classList.add('is-js');
+      a.setAttribute('data-view', v);
+    })(document.currentScript.parentNode);
+  </script>
+  <div class="v-wrap app__in">
+    <aside class="app__side" aria-label="Your SNH Elite account">
+      <div class="app__me" data-tier="{{ m[0] }}">
+        <span class="app__av" data-avatar-slot data-initials="{{ me[5] | escape }}" aria-hidden="true"><span>{{ me[5] | escape }}</span></span>
+        <div class="app__who">
+          <p class="app__name">{{ me[1] | default: me[2] | escape }}</p>
+          <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member</p>
+          <p class="app__pts">{{ pts_label }}</p>
+        </div>
+      </div>
+      <nav class="app__nav" aria-label="Account">
+        {%- for v in views -%}
+          {%- case v -%}
+            {%- when 'overview' -%}{%- assign ic = 'home' -%}{%- assign lb = 'Overview' -%}
+            {%- when 'rewards' -%}{%- assign ic = 'gift' -%}{%- assign lb = 'Rewards' -%}
+            {%- when 'orders' -%}{%- assign ic = 'bag' -%}{%- assign lb = 'Orders' -%}
+            {%- when 'goals' -%}{%- assign ic = 'target' -%}{%- assign lb = 'Goals' -%}
+            {%- else -%}{%- assign ic = 'user' -%}{%- assign lb = 'Profile & addresses' -%}
+          {%- endcase -%}
+          <a class="app__link" href="#{{ v }}" data-go="{{ v }}">{% render 'snh-v2-icon', name: ic %}<span>{{ lb }}</span>{% if v == 'orders' and me[9] != '0' %}<b class="app__badge">{{ me[9] }}</b>{% endif %}</a>
+        {%- endfor -%}
+        <a class="app__link app__link--out" href="{% if mock %}#profile{% else %}{{ routes.account_logout_url }}{% endif %}" data-no-instant>{% render 'snh-v2-icon', name: 'out' %}<span>Sign out</span></a>
+      </nav>
+    </aside>
+
+    <div class="app__main">
+      <section class="app__view" data-pane="overview" aria-labelledby="{{ sid }}-overview-h">
+        {%- render 'snh-app-overview', m: m, me: me, recent: recent, s: s, blocks: blocks, sid: sid, mock: mock, goal: goal, pending: pending, phone: phone, bday: bday, joined: joined -%}
+      </section>
+      <section class="app__view" data-pane="rewards" aria-labelledby="{{ sid }}-rewards-h">
+        {%- render 'snh-app-rewards', m: m, me: me, blocks: blocks, sid: sid, mock: mock, pending: pending -%}
+      </section>
+      <section class="app__view" data-pane="orders" aria-labelledby="{{ sid }}-orders-h">
+        {%- render 'snh-app-orders', m: m, me: me, page_orders: page_orders, pagination_html: pagination_html, page_no: page_no, sid: sid, mock: mock -%}
+      </section>
+      <section class="app__view" data-pane="goals" aria-labelledby="{{ sid }}-goals-h">
+        {%- render 'snh-app-goals', me: me, blocks: blocks, sid: sid, mock: mock, goal: goal, freq: freq, sport: sport, phone: phone, bday: bday -%}
+      </section>
+      <section class="app__view" data-pane="profile" aria-labelledby="{{ sid }}-profile-h">
+        {%- render 'snh-app-profile', m: m, me: me, s: s, sid: sid, mock: mock, mock_address: mock_address, phone: phone, bday: bday -%}
+      </section>
+    </div>
+  </div>
+
+  <nav class="app__tabs" aria-label="Account sections">
+    {%- for v in views -%}
+      {%- case v -%}
+        {%- when 'overview' -%}{%- assign ic = 'home' -%}{%- assign lb = 'Overview' -%}
+        {%- when 'rewards' -%}{%- assign ic = 'gift' -%}{%- assign lb = 'Rewards' -%}
+        {%- when 'orders' -%}{%- assign ic = 'bag' -%}{%- assign lb = 'Orders' -%}
+        {%- when 'goals' -%}{%- assign ic = 'target' -%}{%- assign lb = 'Goals' -%}
+        {%- else -%}{%- assign ic = 'user' -%}{%- assign lb = 'Profile' -%}
+      {%- endcase -%}
+      <a class="app__tab" href="#{{ v }}" data-go="{{ v }}">{% render 'snh-v2-icon', name: ic %}<span>{{ lb }}</span></a>
+    {%- endfor -%}
+  </nav>
+  <p class="v-sr" aria-live="polite" data-app-live></p>
+</div>

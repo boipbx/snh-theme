@@ -66,7 +66,7 @@
           {%- if first != blank -%}
             {%- assign pts = first.price | times: points_rate | divided_by: 10000.0 | round | times: 100 -%}
             {%- if customer -%}
-              <a class="hs__pts" href="{{ routes.account_url }}"><span class="hs__pts-tag">SNH Elite</span>You'll earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points on {% render 'snh-v2-title', product: first %} ({{ points_rate }}%)</a>
+              <a class="hs__pts" href="{{ routes.account_url }}#rewards"><span class="hs__pts-tag">SNH Elite</span>You'll earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points on {% render 'snh-v2-title', product: first %} ({{ points_rate }}%)</a>
             {%- else -%}
               <a class="hs__pts" href="{{ routes.account_login_url }}"><span class="hs__pts-tag">SNH Elite</span>Sign in to earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points</a>
             {%- endif -%}

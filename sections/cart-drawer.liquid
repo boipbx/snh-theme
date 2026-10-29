@@ -813,7 +813,7 @@
         const rate = Number(cfg('loyaltyRate', 3));
         const tier = cfg('loyaltyTier', 'Bronze');
         const points = Math.floor((Number(cart.total_price || 0) / 100) * rate / 100);
-        el.innerHTML = `${bolt}<span>You'll earn <b>${points} points</b> on this order as a ${escapeHtml(tier)} member (${rate}% back).</span>`;
+        el.innerHTML = `${bolt}<span>You'll earn <b>${points} points</b> on this order as a ${escapeHtml(tier)} member (${rate}% back). <a href="{{ routes.account_url }}#rewards">See my points</a></span>`;
       } else {
         el.innerHTML = `${bolt}<span><a href="${accountLoginUrl}">Log in</a> or <a href="${accountRegisterUrl}">join SNH Elite</a> to earn {{ settings.snh_rate_bronze | default: 3 }}% back.</span>`;
       }

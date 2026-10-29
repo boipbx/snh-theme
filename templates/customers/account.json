@@ -10,14 +10,47 @@
 {
   "sections": {
     "main": {
-      "type": "snh-account",
+      "type": "snh-account-app",
+      "blocks": {
+        "faq-refund": {
+          "type": "faq",
+          "settings": {
+            "q": "What happens to my points if I return something?",
+            "a": "<p>Refunds reverse the points that order earned, so your balance always matches what you kept.</p>"
+          }
+        },
+        "faq-sync": {
+          "type": "faq",
+          "settings": {
+            "q": "Why hasn't my tier or balance updated yet?",
+            "a": "<p>Points and tiers update after a paid order syncs with our loyalty system, usually within a day. Orders that are still pending don't count yet.</p>"
+          }
+        },
+        "faq-email": {
+          "type": "faq",
+          "settings": {
+            "q": "I bought something but didn't get points",
+            "a": "<p>Use the same email at checkout as on your account, online and in store, so the order connects to you. If it still doesn't show after a couple of days, message us on WhatsApp.</p>"
+          }
+        },
+        "faq-value": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I use my points?",
+            "a": "<p>Once you reach the redeem threshold, tap Redeem on this page and confirm. Your cash-off reward arrives by email, usually within a working day.</p>"
+          }
+        }
+      },
+      "block_order": ["faq-refund", "faq-sync", "faq-email", "faq-value"],
       "settings": {
-        "refer_text": "Give Rs 500, get Rs 500",
-        "refer_link": "/pages/contact"
+        "pick_map": "whey, isolate, protein powder, mass gainer => creatine, accessories-1\npre-workout, pre workout, pump => creatine, hydration-recovery\ncreatine => whey-protein, pre-workout-1\ngel, carb, beta fuel => hydration-recovery, energy-and-endurance\nelectrolyte, hydro, hydration => energy-gels, magnesium\nmagnesium, sleep => vitamins-minerals, probiotics\nvitamin, omega, fish oil, multi => magnesium, probiotics\ncollagen => joint-and-mobility, vitamins-minerals\nfat burner, carnitine, weight => fat-loss, clear-protein",
+        "refer_text": "Give Rs 500, *get* Rs 500",
+        "refer_body": "Share SNH Elite with a friend. When they shop, you both win.",
+        "refer_link": "/pages/contact",
+        "sms_live": false,
+        "goal_prompt": true
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }
