@@ -108,7 +108,7 @@
           {%- elsif mock -%}
             <button class="v-btn v-btn--ink v-btn--sm" type="button" disabled><span>Subscribe</span></button>
           {%- else -%}
-            {%- form 'customer', class: 'pref__form' -%}
+            {%- form 'customer', class: 'pref__form', id: 'snh-news-form', data-shopify-captcha: 'true', data-snh-post: 'news', return_to: '/account?snh_posted=news#profile' -%}
               <input type="hidden" name="contact[email]" value="{{ customer.email | escape }}">
               <input type="hidden" name="contact[tags]" value="newsletter">
               <input type="hidden" name="contact[accepts_marketing]" value="true">

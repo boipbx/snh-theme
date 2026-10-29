@@ -2,8 +2,9 @@
    - routing: #overview #rewards #orders #goals #profile, last view remembered (localStorage snh_app_view)
    - count-up figures, redeem confirm, re-order (V8 logic without the old cart clear), order search/filter/details
    - avatar picker (cosmetic, localStorage snh_vector_avatar, same key as V8), edit-profile dialog (V8 two steps)
-   - onboarding quiz (any [data-quiz]): answers → localStorage snh_goals + customer tags through the customer form
-     (POST /contact). On the register page answers wait in snh_onboard_pending until the first dashboard load.
+   - onboarding quiz (any [data-quiz]): answers → localStorage snh_goals (instant UI) + customer tags. Round 10: tags are
+     written by one normal page POST of a Liquid {% form %} (never fetch), so Shopify's hCaptcha runs: the customer form
+     → /contact in the app, customer[tags] on create_customer at sign-up. Success banner from ?snh_posted= (flash).
    Vanilla, no dependencies. Nothing is submitted on the mock page ([data-mock]). */
 (function () {
   if (window.__snhApp) return;
@@ -130,6 +131,7 @@
     var back = q.querySelector('[data-quiz-back]'), next = q.querySelector('[data-quiz-next]'), skip = q.querySelector('[data-quiz-skip]');
     var bar = q.querySelector('[data-quiz-bar]'), count = q.querySelector('[data-quiz-count]');
     var mode = q.getAttribute('data-mode'), i = 0;
+    var save = q.querySelector('[data-quiz-save]'), form = save && save.form;
     $$('[data-sl-mobile]', q).forEach(bindMobile);
     function val(k) { var r = q.querySelector('[data-step="' + k + '"] input:checked'); return r ? r.value : ''; }
     function lab(k) { var r = q.querySelector('[data-step="' + k + '"] input:checked'); return r ? r.getAttribute('data-label') : ''; }
@@ -142,18 +144,21 @@
       steps.forEach(function (s, k) { s.hidden = k !== i; });
       if (done) done.hidden = i < steps.length;
       var end = i >= steps.length;
+      var last = i === steps.length - 1;
       back.hidden = i === 0 || end;
-      next.hidden = end;
-      skip.hidden = end;
+      next.hidden = end || (last && !!save);
+      if (save) save.hidden = !last;
+      skip.hidden = end || (last && !!save);
       bar.style.width = (end ? 100 : Math.round((i + 1) / steps.length * 100)) + '%';
       count.textContent = end ? 'Done' : 'Step ' + (i + 1) + ' of ' + steps.length;
       var nl = next.querySelector('span');
-      if (nl) nl.textContent = i === steps.length - 1 ? (mode === 'register' ? 'Done' : 'Save') : 'Next';
+      if (nl) nl.textContent = last ? 'Done' : 'Next';
       if (focus) {
         var f = end ? done : steps[i].querySelector('input:checked, input');
         if (f) f.focus({ preventScroll: true });
       }
       if (end) finish();
+      sync();
     }
     function finish() {
       var a = answers(), bits = [lab('goal'), lab('freq'), lab('sport')].filter(Boolean);
@@ -161,7 +166,7 @@
       if (sum) sum.textContent = mode === 'register'
         ? (bits.length ? bits.join(' · ') + '. We’ll save this to your account once it’s created.' : 'No problem, you can set your goals from your account any time.')
         : (bits.length ? bits.join(' · ') + '. Your picks and tips now follow your goal.' : 'Saved. You can change your answers any time.');
-      if (onDone) onDone(a, bits);
+      if (onDone) onDone(a, bits, false);
     }
     next.addEventListener('click', function () {
       var m = steps[i] && steps[i].querySelector('[data-sl-mobile]');
@@ -174,8 +179,27 @@
       go(i + 1, true);
     });
     back.addEventListener('click', function () { go(i - 1, true); });
+    // the tags field always holds the current answers, so whichever way the form posts, it posts these
+    function sync() { var t = q.__tagsField || (form && form.querySelector('[data-quiz-tags]')); if (t) t.value = tagsFor(answers(), t.__extra); }
+    q.addEventListener('change', sync);
+    q.addEventListener('input', sync);
+    if (form) form.addEventListener('submit', function (e) {
+      var m = q.querySelector('[data-quiz-mobile]');
+      if (m && m.__check && !m.__check(true)) { e.preventDefault(); m.focus(); return; }
+      var a = answers();
+      sync();
+      if (!a.goal && !a.freq && !a.sport && !a.bday && !a.mobile) { e.preventDefault(); go(steps.length, true); return; }
+      if (onDone) onDone(a, null, true);
+      try { sessionStorage.setItem('snh_posting', 'goals'); } catch (x) {}
+      var l = save.querySelector('span');
+      if (l) l.textContent = 'Saving…';
+      save.setAttribute('aria-busy', 'true');
+      // still here after a few seconds = the bot check is waiting for the member (or loading): let them press again
+      setTimeout(function () { save.removeAttribute('aria-busy'); if (l) l.textContent = 'Save my answers'; }, 6000);
+    });
     var api = {
       go: go,
+      sync: sync,
       answers: answers,
       to: function (key) { var k = steps.map(function (s) { return s.getAttribute('data-step'); }).indexOf(key); go(k < 0 ? 0 : k, true); },
       fill: function (a) {
@@ -193,19 +217,34 @@
     go(0, false);
     return api;
   }
-  function tagsFor(a) {
-    return [a.goal && 'goal:' + a.goal, a.freq && 'freq:' + a.freq, a.sport && 'sport:' + a.sport, a.bday && 'bday:' + a.bday, a.mobile && 'mobile:' + a.mobile].filter(Boolean).join(', ');
+  function tagsFor(a, extra) {
+    return [a.goal && 'goal:' + a.goal, a.freq && 'freq:' + a.freq, a.sport && 'sport:' + a.sport, a.bday && 'bday:' + a.bday, a.mobile && 'mobile:' + a.mobile]
+      .concat(extra ? extra() : []).filter(Boolean).join(', ');
   }
-  // POST the customer form (/contact) in the background; a bot challenge or error falls back to the normal submit
-  function saveTags(form, a, native) {
-    if (!form) return Promise.reject(new Error('no form'));
-    form.querySelector('[data-quiz-tags]').value = tagsFor(a);
-    return fetch(form.action, { method: 'POST', body: new FormData(form), credentials: 'same-origin' }).then(function (r) {
-      if (!r.ok || /\/challenge/.test(r.url)) {
-        if (native) { form.submit(); return new Promise(function () {}); }
-        throw new Error('challenge');
-      }
+
+  /* ---------- forms that write tags (Round 10): normal page POSTs with Shopify's hCaptcha ----------
+     Every tag-writing form is a Liquid {% form 'customer' %} with data-shopify-captcha="true", so Shopify's captcha
+     bootstrap binds it on load; Shopify.captcha.protect() is the same call for any form that missed that. Never
+     fetch() or form.submit() these: both skip the captcha and land on Shopify's "Missing CAPTCHA token" page. */
+  function protectForms(scope) {
+    $$('form[data-snh-post]', scope).forEach(function (f) {
+      try { if (!f.dataset.cptcha && window.Shopify && Shopify.captcha && Shopify.captcha.protect) Shopify.captcha.protect(f); } catch (e) {}
+      f.addEventListener('submit', function () { try { sessionStorage.setItem('snh_posting', f.getAttribute('data-snh-post')); } catch (e) {} });
     });
+  }
+  // back from a POST: return_to is /account?snh_posted=<kind>#<view>; Shopify's own ?customer_posted=true also counts
+  function flash(app, view) {
+    var box = app.querySelector('[data-flash]'), href = location.href;
+    var kind = (href.match(/[?&]snh_posted=([a-z]+)/) || [])[1];
+    if (!kind && /[?&](customer|contact)_posted=true/.test(href)) { try { kind = sessionStorage.getItem('snh_posting'); } catch (e) {} }
+    try { sessionStorage.removeItem('snh_posting'); } catch (e) {}
+    if (!kind) return;
+    history.replaceState(null, '', location.pathname + '#' + view);
+    var msg = box && box.getAttribute('data-msg-' + kind);
+    if (!msg) return;
+    box.querySelector('[data-flash-msg]').textContent = msg;
+    box.hidden = false;
+    box.querySelector('[data-flash-close]').addEventListener('click', function () { box.hidden = true; });
   }
 
   /* ---------- the app ---------- */
@@ -233,11 +272,13 @@
       if (opt.focus && h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
       countUp(pane);
     }
-    var start = (location.hash || '').slice(1);
+    var start = (location.hash || '').slice(1).split(/[?&]/)[0];
     if (VIEWS.indexOf(start) < 0) start = app.getAttribute('data-view');
     show(start, { anim: false });
+    flash(app, start);
+    protectForms(app);
     window.addEventListener('hashchange', function () {
-      var v = location.hash.slice(1);
+      var v = location.hash.slice(1).split(/[?&]/)[0];
       if (VIEWS.indexOf(v) > -1 && v !== app.getAttribute('data-view')) show(v, { scroll: true, focus: true });
     });
 
@@ -379,15 +420,12 @@
       quizBox.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
     }
     if (quizEl) {
-      quiz = quizInit(quizEl, function (a) {
-        if (!a.goal && !a.freq && !a.sport && !a.bday && !a.mobile) { paint(state()); return; }
+      // onDone runs as the form posts (saving = true) or when the quiz ends with nothing to save
+      quiz = quizInit(quizEl, function (a, bits, saving) {
+        if (!saving) { paint(state()); return; }
         var prev = state();
         var s = { goal: a.goal || prev.goal || '', freq: a.freq || prev.freq || '', sport: a.sport || prev.sport || '', bday: a.bday, mobile: a.mobile, email: app.getAttribute('data-email'), at: Date.now() };
         lsSet('snh_goals', JSON.stringify(s));
-        paint(s, true);
-        if (mock) return;
-        var fail = quizEl.querySelector('[data-quiz-fail]');
-        saveTags(quizEl.querySelector('.quiz__form'), s, true).catch(function () { if (fail) fail.hidden = false; });
       });
       quiz.fill(state());
       paint(state());
@@ -395,20 +433,7 @@
       var pc = app.querySelector('[data-prompt-close]');
       if (pc) pc.addEventListener('click', function () { lsSet('snh_goal_prompt_off', '1'); pc.closest('[data-goal-prompt]').hidden = true; });
 
-      /* answers given at sign-up wait in localStorage until this first dashboard load */
-      var pend = lsJson('snh_onboard_pending');
-      if (pend && !mock && (pend.email || '').toLowerCase() === (app.getAttribute('data-email') || '').toLowerCase()) {
-        var cur = state();
-        if (!cur.goal && (pend.goal || pend.freq || pend.sport || pend.bday || pend.mobile)) {
-          quiz.fill(pend);
-          saveTags(quizEl.querySelector('.quiz__form'), pend, false).then(function () {
-            pend.email = app.getAttribute('data-email'); pend.at = Date.now();
-            lsSet('snh_goals', JSON.stringify(pend));
-            lsDel('snh_onboard_pending');
-            paint(pend);
-          }, function () { /* challenged: answers are prefilled in Goals, one tap saves them */ });
-        } else lsDel('snh_onboard_pending');
-      }
+      lsDel('snh_onboard_pending'); // Round 8 leftover: sign-up answers now post with the account itself
     }
 
     /* complete-your-profile ring follows what's filled in on this device too */
@@ -435,18 +460,20 @@
     }
   }
 
-  /* ---------- register: step 3 quiz → localStorage until the account exists ---------- */
+  /* ---------- register: step 3 quiz → customer[tags] on the create_customer form (one POST, hCaptcha included) ---------- */
   function registerQuiz() {
     var reg = document.getElementById('snh-register'), q = reg && document.querySelector('[data-quiz][data-mode="register"]');
-    if (!q) return;
+    var field = reg && reg.querySelector('[data-reg-tags]');
+    if (!q || !field) return;
+    field.__extra = function () {
+      var ph = reg.querySelector('[name="customer[note][Phone]"]'), bd = reg.querySelector('[name="customer[note][Birthday]"]');
+      var mob = ph && slMobile(ph.value);
+      return [mob && 'mobile:' + mob, bd && bd.value && 'bday:' + bd.value];
+    };
+    q.__tagsField = field;
     var api = quizInit(q, null);
-    reg.addEventListener('submit', function () {
-      var a = api.answers(), email = reg.querySelector('[name="customer[email]"]'), ph = reg.querySelector('[name="customer[note][Phone]"]'), bd = reg.querySelector('[name="customer[note][Birthday]"]');
-      a.email = email ? email.value.trim() : '';
-      a.mobile = ph ? slMobile(ph.value) || '' : '';
-      a.bday = bd ? bd.value : '';
-      lsSet('snh_onboard_pending', JSON.stringify(a));
-    });
+    reg.addEventListener('change', api.sync);
+    reg.addEventListener('submit', api.sync);
   }
 
   function init() {

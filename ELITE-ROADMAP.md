@@ -22,9 +22,9 @@ Links into the views: header account panel, account nav (order + addresses pages
 ### Every place the theme writes data
 | What | How | Where in code |
 |---|---|---|
-| Redeem request | customer form → `POST /contact`, `form_type=customer`, `contact[email]`, `contact[tags]=Trigger_Redeem_2500`. Only shown at or above *Redeem from* points, after a confirm step ("Trade 2,500 points for Rs 2,500 off?"). Unchanged from V8. | `snippets/snh-app-rewards` |
-| Goals and onboarding | the same customer form, `contact[tags]="goal:build-muscle, freq:4x, sport:padel"` (+ `bday:YYYY-MM-DD`, `mobile:+94XXXXXXXXX` when given). Sent in the background (fetch); a bot challenge falls back to the normal submit. Also kept in localStorage `snh_goals` so the UI updates at once. | `snippets/snh-onboarding-quiz`, `assets/snh-app.js` |
-| Answers given at sign-up | localStorage `snh_onboard_pending` (with the email) until the first dashboard load, then sent as tags as above. A different email on the same device is ignored. | `assets/snh-app.js` (`registerQuiz`, pending block) |
+| Redeem request | Liquid `{% form 'customer' %}` → `POST /contact`, `form_type=customer`, `contact[email]`, `contact[tags]=Trigger_Redeem_2500`, `return_to=/account?snh_posted=redeem#rewards`. Only shown at or above *Redeem from* points, after a confirm step. A normal page POST (see *CAPTCHA* below). | `snippets/snh-app-rewards` |
+| Goals and onboarding | the same kind of customer form, `contact[tags]` = the quiz tags (§4), one POST when the member presses *Save my answers* on the last question, `return_to=/account?snh_posted=goals#goals`. Also kept in localStorage `snh_goals` so the UI updates at once. | `snippets/snh-onboarding-quiz`, `assets/snh-app.js` |
+| Answers given at sign-up | `customer[tags]` on the `create_customer` form itself (quiz tags + `mobile:` + `bday:` from step 2), so they arrive with the new account in the same POST. The Round 8 "save on first dashboard load" is gone. | `sections/snh-account-register`, `assets/snh-app.js` (`registerQuiz`) |
 | Register | `create_customer`: first/last name, email, password; `customer[note][Phone]` (**required, Sri Lankan mobile, saved as +94XXXXXXXXX**), `customer[note][Address]`, `customer[note][City]`, `customer[note][Birthday]` (YYYY-MM-DD). Same note keys as the old theme, so the birthday flow keeps working. `return_to=/account#overview`. | `sections/snh-account-register` |
 | Edit profile | `customer_address` form on the default address (or a new one): first/last name, `address[phone]` (required, +94 normalised), address1, city, zip, country Sri Lanka, `address[default]=1`. Saved in the background, then back to `#profile` (V8 behaviour). | `snippets/snh-app-profile`, `snh-app-edit-fields` |
 | Addresses | native `customer_address` add / edit, delete with `_method=delete` after an inline confirm | `snippets/snh-address-form`, `snh-app-profile` |
@@ -32,9 +32,30 @@ Links into the views: header account panel, account nav (order + addresses pages
 | Re-order | `/cart/add.js` with every line, falls back line by line and says what couldn't be added. **The V8 auto cart-clear (empty the cart if it was last touched 3+ days ago) is removed**: it emptied carts without asking. | `assets/snh-app.js` |
 | Avatar | localStorage `snh_vector_avatar` (same key as V8; cosmetic, this device only) | `assets/snh-app.js` |
 
-The **customer note can't be read by Liquid**, so phone/birthday from registration don't show on the dashboard until a
-backend copies them somewhere readable (see §2). Meanwhile the first dashboard load copies them into tags (`mobile:`,
-`bday:`) on the member's own device.
+The **customer note can't be read by Liquid**, so phone/birthday from registration are also sent as tags (`mobile:`,
+`bday:`) with the new account, until a backend copies them somewhere readable (see §2).
+
+### CAPTCHA (Round 10)
+Shopify protects every storefront form that posts `form_type=customer` to `/contact` with hCaptcha. Its bootstrap
+script (in `content_for_header`) binds a form on focus/change, or on page load when the form has
+`data-shopify-captcha="true"`, and then runs an invisible check on the form's own **submit event**. Anything that
+skips that event (`fetch()`, `form.submit()`) posts without a token and lands on Shopify's error page **"Missing
+CAPTCHA token"**. Round 8's goal saving did exactly that (fetch, then `form.submit()` as the fallback).
+
+Now every tag-writing form is a Liquid `{% form 'customer', data-shopify-captcha: 'true', return_to: … %}`, posted as
+a normal full page POST by a real submit button; `assets/snh-app.js` also calls `Shopify.captcha.protect()` on any
+that missed the load-time binding. Shopify redirects to `return_to` (`/account?snh_posted=<redeem|goals|news>#<view>`)
+and the app shows a green banner, then cleans the URL. `?customer_posted=true` (Shopify's default) also counts.
+QA checks the markup only; nothing was submitted.
+
+**Old live theme (`main`, `sections/main-customers-account.liquid` line ~1350):** the redeem button is a raw HTML
+`<form method="post" action="/contact">` with hand-written `form_type`/`utf8` inputs. Shopify's script still treats it
+as protected, but nothing binds it before the click (no focus/change happens in a one-button form, and Safari doesn't
+focus buttons on click), so the submit is either swallowed or posts without a token. **Same bug, static check only.**
+The fix there is the same: the Liquid form tag + `data-shopify-captcha="true"`.
+
+**Long-term fix:** the SNH Elite app proxy (§5). Writes go through `/apps/elite/*` with Shopify's proxy signature
+proving who the customer is, straight to metafields, with no CAPTCHA and no tags.
 
 ### What the theme reads
 `customer.metafields.custom.loyalty_tier / loyalty_points / annual_spend` (display only; empty → estimate from
@@ -100,7 +121,8 @@ account-created date), orders and line items, addresses, `accepts_marketing`. Pr
 | customer note `Phone: / Address: / City: / Birthday:` | text, one per line | theme (register) | Flow / staff | Phone is +94XXXXXXXXX from Round 8. |
 | localStorage `snh_app_view` | overview … profile | theme | theme | Last view. |
 | localStorage `snh_goals` | JSON {goal,freq,sport,bday,mobile,email,at} | theme | theme | Instant UI; tags are the record. |
-| localStorage `snh_onboard_pending` | JSON, as above | register page | first dashboard load | Removed once saved. |
+| localStorage `snh_onboard_pending` | — | — | — | Retired in Round 10 (the app deletes any leftover). |
+| sessionStorage `snh_posting` | redeem · goals · news | theme (on submit) | theme (banner) | Which form just posted. |
 | localStorage `snh_vector_avatar` | initials · bolt · barbell · shield · flame · trophy · heart · dumbbell | theme | theme | Same key as V8. |
 | localStorage `snh_goal_prompt_off` | "1" | theme | theme | Dismissed personalise prompt. |
 | Theme settings → SNH Elite | rates, thresholds, welcome points, redeem from, Rs per point, perks | client | everything Elite | Never hard-coded in the app. |

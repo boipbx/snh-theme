@@ -23,7 +23,7 @@
     {%- if mock -%}
       <button class="v-btn v-btn--accent" type="button" disabled><span>Trade {% render 'snh-num', n: redeem_from %} points</span></button>
     {%- else -%}
-      {%- form 'customer', class: 'rcard__form' -%}
+      {%- form 'customer', class: 'rcard__form', data-shopify-captcha: 'true', data-snh-post: 'redeem', return_to: '/account?snh_posted=redeem#rewards' -%}
         <input type="hidden" name="contact[email]" value="{{ customer.email | escape }}">
         <input type="hidden" name="contact[tags]" value="Trigger_Redeem_2500">
         {%- if form.posted_successfully? -%}

@@ -61,19 +61,14 @@
           <div class="bal__btns"><button class="v-btn v-btn--accent" type="{% if mock %}button{% else %}submit{% endif %}"{% if mock %} disabled{% endif %}><span>Yes, trade them</span></button><button class="v-btn v-btn--line" type="button" data-redeem-cancel><span>Not now</span></button></div>
         </div>
       {%- endcapture -%}
-      {%- if mock -%}
-        {{ ask }}
-      {%- else -%}
-        {%- form 'customer', class: 'bal__form' -%}
-          {%- if form.posted_successfully? -%}
-            <p class="aform__ok" role="status">Request sent. Your reward will arrive by email.</p>
-          {%- else -%}
-            <input type="hidden" name="contact[email]" value="{{ customer.email | escape }}">
-            <input type="hidden" name="contact[tags]" value="Trigger_Redeem_2500">
-            {{ ask }}
-          {%- endif -%}
+        {%- comment -%} Round 10: a real Liquid form, submitted as a normal page POST so Shopify's hCaptcha runs
+          (data-shopify-captcha binds it on page load). Back to #rewards with a banner (assets/snh-app.js, flash).
+          The mock renders the same markup for QA with its submit button disabled, so it can never post. {%- endcomment -%}
+        {%- form 'customer', class: 'bal__form', id: 'snh-redeem-form', data-shopify-captcha: 'true', data-snh-post: 'redeem', return_to: '/account?snh_posted=redeem#rewards' -%}
+          <input type="hidden" name="contact[email]" value="{{ me[2] | escape }}">
+          <input type="hidden" name="contact[tags]" value="Trigger_Redeem_2500">
+          {{ ask }}
         {%- endform -%}
-      {%- endif -%}
     {%- else -%}
       <p class="bal__p"><b>{% render 'snh-num', n: m[15] %} points</b> to your first reward. At {{ m[7] }}% back that's about {{ m[15] | times: 100 | divided_by: m[7] | times: 100 | money_without_trailing_zeros }} of shopping.</p>
       <div class="bal__bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ redeem_from }}" aria-valuenow="{{ have }}" aria-label="Points towards your first reward"><i style="width: {{ pct }}%"></i></div>

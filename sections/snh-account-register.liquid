@@ -2,8 +2,9 @@
   SNH register (Round 7, Round 8): Elite welcome pitch beside Shopify's create_customer form. Step 1 login, step 2 the
   old fields (mobile, address, city, birthday → customer[note][Phone|Address|City|Birthday]; the birthday drives
   birthday rewards). Mobile is required and must be a Sri Lankan mobile; it's saved as +94XXXXXXXXX (assets/snh-app.js).
-  Step 3 (optional) "Personalise your SNH": the onboarding quiz; answers wait in localStorage and are saved as tags on
-  the first dashboard load. Steps and the password check: assets/snh-account.js. Errors return to step 1.
+  Step 3 (optional) "Personalise your SNH": the onboarding quiz. Round 10: answers go straight onto the new customer as
+  customer[tags] (goal:, freq:, …, plus mobile: and bday: from step 2) in this one create_customer POST, so nothing is
+  saved later in the background and Shopify's hCaptcha covers it. Steps and the password check: assets/snh-account.js. Errors return to step 1.
 {%- endcomment -%}
 {{ 'snh-account.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'snh-account.js' | asset_url }}" defer></script>
@@ -24,6 +25,7 @@
       {%- form 'create_customer', class: 'aform reg', id: 'snh-register' -%}
         {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
         <input type="hidden" name="return_to" value="{{ routes.account_url }}#overview">
+        <input type="hidden" name="customer[tags]" value="" data-reg-tags>
         <ol class="reg__steps" aria-label="Steps">
           <li class="is-on" data-reg-dot="1"><span>1</span>Your login</li>
           <li data-reg-dot="2"><span>2</span>Delivery and birthday</li>

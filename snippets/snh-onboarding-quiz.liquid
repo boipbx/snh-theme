@@ -3,11 +3,12 @@
   progress bar. Used by the member app's Goals view, the register page (step 3, "Personalise your SNH") and the QA mock.
   Questions/answers come from "Quiz question" blocks (step goal/freq/sport, answers "value | label" per line), else the
   defaults below. Answers become tags goal:<value>, freq:<value>, sport:<value> (+ bday:YYYY-MM-DD, mobile:+94…).
-  blocks · id (unique) · mode: 'app' (saves through the hidden customer form) | 'register' (keeps answers in
-  localStorage until the first dashboard load) · contact: true adds the birthday + mobile step · goal/freq/sport/
-  phone/bday: current values to preselect · mock: true never submits. In register mode the radios belong to no form
-  (form="…-none"), so nothing extra posts with create_customer.
-  Saving: assets/snh-app.js (app) and assets/snh-account.js (register).
+  blocks · id (unique) · mode: 'app' | 'register' · contact: true adds the birthday + mobile step · goal/freq/sport/
+  phone/bday: current values to preselect · mock: true never submits.
+  Saving (Round 10): one normal page POST, never fetch, so Shopify's hCaptcha runs. App mode: the last step's "Save"
+  is the submit button of the customer form below (POST /contact, contact[tags], data-shopify-captcha), back to
+  /account#goals with a banner. Register mode: the answers fill customer[tags] on the create_customer form. In
+  register mode the radios belong to no form (form="…-none"), so only the tags field posts. JS: assets/snh-app.js.
 {%- endcomment -%}
 {%- liquid
   assign keys = 'goal,freq,sport' | split: ','
@@ -92,9 +93,11 @@
     <button class="v-btn v-btn--line" type="button" data-quiz-back hidden><span>Back</span></button>
     <button class="v-link quiz__skip" type="button" data-quiz-skip>{% if mode == 'register' %}Skip for now{% else %}Skip this question{% endif %}</button>
     <button class="v-btn v-btn--ink" type="button" data-quiz-next><span>Next</span></button>
+    {%- if mode != 'register' -%}<button class="v-btn v-btn--accent" type="submit" form="{{ id }}-form" data-quiz-save hidden{% if mock %} disabled{% endif %}><span>Save my answers</span></button>{%- endif -%}
   </div>
-  {%- if mode != 'register' and mock != true -%}
-    {%- form 'customer', class: 'quiz__form' -%}
+  {%- if mode != 'register' -%}
+    {%- assign fid = id | append: '-form' -%}
+    {%- form 'customer', class: 'quiz__form', id: fid, data-shopify-captcha: 'true', data-snh-post: 'goals', return_to: '/account?snh_posted=goals#goals' -%}
       <input type="hidden" name="contact[email]" value="{{ email | escape }}">
       <input type="hidden" name="contact[tags]" value="" data-quiz-tags>
     {%- endform -%}

@@ -63,7 +63,7 @@
 <div class="v2 app" data-app data-tier="{{ m[0] }}"{% if mock %} data-mock{% endif %} data-email="{{ me[2] | escape }}" data-goal="{{ goal | escape }}">
   <script>
     (function (a) {
-      var v = (location.hash || '').slice(1), ok = /^(overview|rewards|orders|goals|profile)$/;
+      var v = (location.hash || '').slice(1).split(/[?&]/)[0], ok = /^(overview|rewards|orders|goals|profile)$/;
       if (!ok.test(v)) { try { v = localStorage.getItem('snh_app_view') || ''; } catch (e) { v = ''; } }
       if (!ok.test(v)) v = 'overview';
       a.classList.add('is-js');
@@ -96,6 +96,18 @@
     </aside>
 
     <div class="app__main">
+      {%- liquid
+        assign per_point = settings.snh_point_value | default: 1
+        assign redeem_rs = settings.snh_redeem_from | default: 2500 | times: per_point
+      -%}
+      <div class="app__flash" data-flash hidden role="status" tabindex="-1"
+        data-msg-redeem="Request sent. Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} reward arrives by email, usually within a working day."
+        data-msg-goals="Your plan is saved. Picks, tips and guides now follow your answers."
+        data-msg-news="You're subscribed. Look out for member offers and new drops.">
+        <span class="app__flash-ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'check' %}</span>
+        <p data-flash-msg></p>
+        <button class="app__x" type="button" data-flash-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
+      </div>
       <section class="app__view" data-pane="overview" aria-labelledby="{{ sid }}-overview-h">
         {%- render 'snh-app-overview', m: m, me: me, recent: recent, s: s, blocks: blocks, sid: sid, mock: mock, goal: goal, pending: pending, phone: phone, bday: bday, joined: joined -%}
       </section>
