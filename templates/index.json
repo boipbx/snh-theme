@@ -1142,6 +1142,74 @@
         "success": "Thanks, you're on the list.",
         "tags": "newsletter,homepage"
       }
+    },
+    "snh_instagram": {
+      "type": "snh-instagram",
+      "blocks": {
+        "post1": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4440.jpg",
+            "link": "https://www.instagram.com/sportsnutritionhub.lk/",
+            "alt": "Sports Nutrition Hub on Instagram"
+          }
+        },
+        "post2": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4441.jpg",
+            "link": "https://www.instagram.com/sportsnutritionhub.lk/",
+            "alt": "Sports Nutrition Hub on Instagram"
+          }
+        },
+        "post3": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4442.jpg",
+            "link": "https://www.instagram.com/sportsnutritionhub.lk/",
+            "alt": "Sports Nutrition Hub on Instagram"
+          }
+        },
+        "post4": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4444.jpg",
+            "link": "https://www.instagram.com/sportsnutritionhub.lk/",
+            "alt": "Sports Nutrition Hub on Instagram"
+          }
+        },
+        "post5": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4445.jpg",
+            "link": "https://www.instagram.com/sportsnutritionhub.lk/",
+            "alt": "Sports Nutrition Hub on Instagram"
+          }
+        },
+        "post6": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4446.jpg",
+            "link": "https://www.instagram.com/sportsnutritionhub.lk/",
+            "alt": "Sports Nutrition Hub on Instagram"
+          }
+        }
+      },
+      "block_order": [
+        "post1",
+        "post2",
+        "post3",
+        "post4",
+        "post5",
+        "post6"
+      ],
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Follow us on *Instagram*",
+        "lead": "Stores, drops and the athletes we fuel. Tag us to be featured.",
+        "follow_label": "Follow on Instagram",
+        "cream": false
+      }
     }
   },
   "order": [
@@ -1160,6 +1228,7 @@
     "snh_guides",
     "snh_faq",
     "snh_stores",
+    "snh_instagram",
     "snh_news"
   ]
 }

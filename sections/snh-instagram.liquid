@@ -1,0 +1,74 @@
+{%- comment -%}
+  SNH Instagram (Round 9; replaces the old instafeed-modern section, which put the Instagram access token in the
+  public HTML — the client must rotate that token). No token, no Instagram API: a curated grid of Post blocks
+  (image + post link), 6 on desktop, 4 on phones, hover overlay with the Instagram icon, follow CTA. Images come from
+  Shopify's CDN, lazy-loaded, so the section makes no Instagram requests at all.
+  If an Instagram feed app is installed later (e.g. Instafeed), add its app block to this section: the app's feed
+  then replaces the curated grid inside the same heading and follow button. Styles: assets/snh-social.css.
+{%- endcomment -%}
+{{ 'snh-social.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign handle = section.settings.handle | default: 'sportsnutritionhub.lk' | remove: '@' | strip
+  assign profile = 'https://www.instagram.com/' | append: handle | append: '/'
+  assign hid = 'igr-' | append: section.id
+  assign apps = section.blocks | where: 'type', '@app'
+  assign posts = section.blocks | where: 'type', 'post'
+-%}
+<section class="v2 v-section{% if section.settings.cream %} v-section--cream{% endif %} igr" aria-labelledby="{{ hid }}">
+  <div class="v-wrap">
+    <div class="head">
+      <div class="head__text">
+        <p class="eyebrow"><a class="igr__handle" href="{{ profile }}" target="_blank" rel="noopener">@{{ handle }}</a></p>
+        <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+      </div>
+      <a class="v-btn v-btn--ink igr__follow" href="{{ profile }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'instagram' %}<span>{{ section.settings.follow_label | escape }}</span></a>
+    </div>
+
+    {%- if apps.size > 0 -%}
+      <div class="igr__app">{%- for b in apps -%}{% render b %}{%- endfor -%}</div>
+    {%- else -%}
+      <ul class="igr__grid" role="list">
+        {%- for b in posts limit: 6 -%}
+          <li class="igr__item" {{ b.shopify_attributes }}>
+            <a class="igr__tile" href="{{ b.settings.link | default: profile }}" target="_blank" rel="noopener" aria-label="{{ b.settings.alt | default: 'Instagram post' | escape }} (opens Instagram)">
+              {%- if b.settings.image != blank -%}
+                {{ b.settings.image | image_url: width: 600, height: 600, crop: 'center' | image_tag: width: 600, height: 600, loading: 'lazy', alt: b.settings.alt, sizes: '(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 16vw', widths: '300,450,600' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'igr__ph' }}
+              {%- endif -%}
+              <span class="igr__ov" aria-hidden="true">{% render 'snh-v2-icon', name: 'instagram' %}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <div class="igr__foot">
+      <a class="v-btn v-btn--line" href="{{ profile }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'instagram' %}<span>Follow @{{ handle }}</span></a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH Instagram",
+  "class": "snh-sec snh-sec--igr",
+  "settings": [
+    { "type": "paragraph", "content": "Curated posts, no access token. Install an Instagram feed app (e.g. Instafeed) and add its app block here for an automatic feed." },
+    { "type": "text", "id": "handle", "label": "Instagram handle", "default": "sportsnutritionhub.lk" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Follow us on *Instagram*", "info": "Wrap a word in *asterisks* for the serif." },
+    { "type": "text", "id": "lead", "label": "Text", "default": "Stores, drops and the athletes we fuel. Tag us to be featured." },
+    { "type": "text", "id": "follow_label", "label": "Follow button", "default": "Follow on Instagram" },
+    { "type": "checkbox", "id": "cream", "label": "Cream background", "default": false }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "post", "name": "Post", "limit": 6, "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image", "info": "Square crop. Use the post's own photo." },
+      { "type": "url", "id": "link", "label": "Post link", "info": "The Instagram post URL. Empty = the profile." },
+      { "type": "text", "id": "alt", "label": "Image description" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH Instagram", "blocks": [{ "type": "post" }, { "type": "post" }, { "type": "post" }, { "type": "post" }, { "type": "post" }, { "type": "post" }] }]
+}
+{% endschema %}
