@@ -1,6 +1,6 @@
 # SNH Elite: what the theme does now, and what it needs next
 
-Round 8, 29 Oct 2026. The theme reads loyalty data and writes only a few small things, through the storefront's own
+Round 8 + Round 10, 29 Oct 2026. The theme reads loyalty data and writes only a few small things, through the storefront's own
 forms. Balances, tiers and rewards are owned by the loyalty/POS integration. This file covers what the theme does
 today, what needs a backend, and the data dictionary.
 
@@ -130,12 +130,13 @@ newest order with that product, and the first match on Overview. Single-variant 
 others link to the bundle.
 
 
+## 3. The custom app for the SNH 360 back office (future)
 - **Admin dashboard**: members by tier, growth, points issued/redeemed, liability (points × Rs value).
 - **Points ledger**: every earn / redeem / refund reversal / manual adjustment with reason and staff user; becomes the
   source of truth that writes `loyalty_points`, `loyalty_tier`, `annual_spend` back to the customer.
 - **Manual adjustments** with approval and audit trail; redeem requests queue (replaces the tag + Flow round trip).
 - **Campaign targeting** by goal / sport / frequency / tier / last order (segments or Klaviyo lists).
-- **App proxy** (`/apps/snh/...`) so the storefront can write goals, birthday and preferences straight to metafields,
+- **App proxy** (`/apps/elite/...`, spec in §5) so the storefront can write goals, birthday and preferences straight to metafields,
   with the logged-in customer id verified by the proxy signature (no tags, no bot challenges).
 - POS (in-store) earn and redeem by mobile number.
 
@@ -175,6 +176,79 @@ others link to the bundle.
 | localStorage `snh_goal_prompt_off` | "1" | theme | theme | Dismissed personalise prompt. |
 | Theme settings → SNH Elite | rates, thresholds, welcome points, redeem from, Rs per point, perks | client | everything Elite | Never hard-coded in the app. |
 
+## 5. SNH Elite app: spec for the backend (Round 10)
+A custom Shopify app (one store, no App Store listing) that owns loyalty writes. The theme keeps working without it:
+every endpoint below has a theme fallback today (tags + Flow, localStorage, "coming soon").
+
+### 5.1 App proxy (storefront → app)
+Proxy prefix **`/apps/elite`** (subpath `elite`, prefix `apps`). Shopify signs every proxied request (`signature`
+query param, HMAC-SHA256 with the app secret) and adds `logged_in_customer_id`; the app **must verify the signature
+and use that id**, never an id from the body. No CAPTCHA is involved, which ends the Phase 0 problem.
+
+| Endpoint | Method | Body | Does | Returns | Theme today |
+|---|---|---|---|---|---|
+| `/apps/elite/goals` | POST (JSON) | the plan answers `{goal, goal2, lvl, freq, sess, sport, diet, budget, exp, take[], challenge, flavour, age, bday, mobile}` | validates against the §4 values, writes metafields `elite.plan` (JSON) + `facts.birth_date` + customer phone (if free), removes old plan tags, emits Klaviyo `Elite Plan Saved` | `{ok, plan}` | customer form → tags |
+| `/apps/elite/redeem` | POST | `{points: 2500}` | checks balance and the redeem threshold, creates a single-use discount code (Rs value from settings), writes the ledger, lowers `loyalty_points`, emits `Elite Reward Issued` | `{ok, code, value, expires_at}` → the theme can show the code at once | tag `Trigger_Redeem_2500` + Flow |
+| `/apps/elite/avatar` | POST multipart | `avatar` (jpg/png/webp, ≤ 5 MB) | resizes to 480×480, uploads with `fileCreate`, sets `customer.metafields.custom.avatar` (file_reference), deletes the previous file | `{url}` (CDN, square) — the theme swaps it in without a reload | setting off, presets |
+| `/apps/elite/referral` | GET | — | returns (creates once) the member's code and share link | `{code, url, invited, joined, earned_points}` | "coming soon" |
+| `/apps/elite/recommendations` | GET | `?context=overview\|goals&limit=6` | personalised picks + the promo to show (5.4) | `{products:[{handle, reason}], promo_id, tip}` | Liquid rules (§1) |
+| `/apps/elite/orders` | GET | — | real shipment status per fulfilment (delivered, out for delivery) from the courier | `{orders:[{name, status, delivered_at, tracking_url}]}` | assumed delivery (§2) |
+
+Errors: `401` not signed in, `422` invalid input (`{error, field}`), `429` rate limit (10/min per customer). All
+JSON responses `Cache-Control: no-store`.
+
+**Avatar contract (Phase 6):** the theme shows *Upload a photo* only with *Account page → Show "Upload a photo"* on.
+It POSTs `FormData{avatar}` to `/apps/elite/avatar` with `Accept: application/json` and expects `200 {url}`; anything
+else shows "Photo upload isn't available yet". On every page load the theme reads `customer.metafields.custom.avatar`
+(definition: *file reference, image*; a plain URL string also works) and shows it instead of the presets everywhere
+(sidebar, sheets, profile).
+
+### 5.2 Data model
+| Where | Key | Type | Notes |
+|---|---|---|---|
+| customer metafield | `custom.loyalty_points` / `loyalty_tier` / `annual_spend` | as today (§4) | the app becomes the writer |
+| customer metafield | `elite.plan` | JSON | the quiz answers + `saved_at`; replaces the plan tags |
+| customer metafield | `facts.birth_date` | date | from the plan / profile |
+| customer metafield | `custom.avatar` | file reference (image) | 5.1 |
+| customer metafield | `elite.referral_code` | single line text | |
+| customer metafield | `custom.joined_at` | date | written on *customer created* |
+| order metafield | `custom.delivered_at` | date_time | courier webhook → real "Delivered" |
+| metaobject | `member_promotion` | §6 | promos |
+| app database | ledger (`customer_id, delta, reason, order_id, staff, created_at`), referrals (`code, referrer, referee, status, rewarded_at`), redeem codes | | source of truth; metafields are the cache the theme reads |
+
+### 5.3 Referral programme: what the app must do
+- **Unique code per member** (e.g. `KASUN-7F3Q`), share link `https://www.sportsnutritionhub.lk/?ref=CODE` that
+  stores the code in a cookie for 30 days and pre-fills it at sign-up.
+- **Double-sided reward**, amounts in app settings (the old card promised *Give Rs 500, get Rs 500*; confirm before
+  launch): the friend gets a welcome discount on their first order; the referrer gets the equivalent in **points**
+  when that first order is paid and past the return window (14 days).
+- **Tracking:** attribution by code/cookie, checked against the friend's email/phone (no self-referrals, one reward per
+  new customer, block duplicate households by address if abused); status `invited → joined → ordered → rewarded`.
+- **Payout as points** through the loyalty integration: a ledger entry with reason `referral`, then
+  `loyalty_points` updated; Klaviyo events `Elite Referral Joined` / `Elite Referral Rewarded`.
+- The theme then shows the code, share buttons (WhatsApp first) and progress through a referral app block or
+  `/apps/elite/referral`; turn on *Referral rewards are live*. Members who asked to be told carry the tag
+  `notify:referrals` (Klaviyo segment for the launch email).
+
+### 5.4 Personalised picks and promo choice with Claude (server-side only)
+- The app calls the Claude API **from the server** (never from the theme: no API key in the browser). Inputs: the
+  plan (`elite.plan`), tier, last 12 months of order lines (titles, types, vendors, dates), what's in stock in the
+  stack categories (handles, titles, prices), and the active `member_promotion` entries.
+- Ask for structured output (tool use / JSON schema): `{products: [{handle, reason ≤ 90 chars}], promo_id, tip ≤ 160
+  chars}`; validate that every handle is in the in-stock list and the promo id exists, else fall back to the Liquid
+  rules.
+- Model: **Claude Haiku 5.5** (`claude-haiku-5-5`) for the per-member picks (fast, cheap, high volume); **Claude
+  Sonnet 5.5** (`claude-sonnet-5-5`) for writing promo and email copy in batches. Cache the catalogue part of the
+  prompt (prompt caching) and the result per member for 24 h, refreshed on *order paid* or *plan saved*.
+- Guardrails: no medical claims, never invent discounts, respect diet (no whey for vegan/lactose-free), keep the
+  reasons short and factual. Log inputs/outputs for review; members can opt out via a profile toggle later.
+
+### 5.5 Klaviyo events the app emits
+`Elite Points Earned` (order paid: points, new balance, tier), `Elite Points Reversed` (refund), `Elite Tier Changed`
+(old, new), `Elite Reward Issued` (code, value, expiry), `Elite Plan Saved` (plan fields), `Elite Near Reward`
+(balance ≥ 80 % of the redeem threshold, once per crossing), `Elite Referral Joined` / `Rewarded`,
+`Elite Running Low` (product, est. days left, from servings × qty, §1).
+
 ## 6. Member promotion metaobject (to create in admin)
 Type handle **`member_promotion`**, storefront access **on** (the theme reads `metaobjects.member_promotion.values`).
 
@@ -194,3 +268,27 @@ Type handle **`member_promotion`**, storefront access **on** (the theme reads `m
 | `priority` | integer 0–9 | higher wins |
 
 As soon as one entry exists, the theme uses the metaobject entries only (the account page blocks are ignored).
+
+## 7. Klaviyo plan
+Templates: `klaviyo-templates/` (HTML files only, nothing connected). Brand: Inter, SNH orange `#E0521C`, ink
+`#0C0C0D`, cream `#F4EFE6`. Profile properties are synced from the customer metafields by the app (or a Flow → Klaviyo
+action until then).
+
+**Customer properties to sync:** `loyalty_points`, `loyalty_tier`, `annual_spend`, `points_value_rs`,
+`next_tier`, `rs_to_next_tier`, `next_tier_progress` (0–100), `redeem_from`, `points_to_reward`, `birth_date`,
+`plan_goal`, `plan_goal2`, `plan_sport`, `plan_diet`, `plan_budget`, `plan_challenge`, `last_order_date`,
+`orders_count`, `referral_code`, `joined_at`, `notify_referrals` (bool), plus the settings the emails quote:
+`welcome_points`, `earn_rate`, `next_tier_rate`, `reward_value_rs` (from *Theme settings → SNH Elite*, so no number is
+hard-coded in an email). Event properties: `Elite Near Reward` → `points_to_reward`, `spend_to_reward`;
+`Elite Running Low` → `product_title`, `product_image`, `product_url`, `days_left`.
+
+| Flow | Trigger | Data it needs | Template |
+|---|---|---|---|
+| Welcome + 500 points | Added to list *SNH Elite members* (customer created / tag) | first_name, welcome points, redeem_from, tier rates | `welcome.html` |
+| Month-end points statement | Date (1st of each month), segment: has points | loyalty_points, points_value_rs, points earned last month (event sum), tier, next_tier, rs_to_next_tier | `points-statement.html` |
+| Tier progress nudge | `next_tier_progress` ≥ 75 and < 100 (segment, weekly check) | next_tier, rs_to_next_tier, next tier rate | `tier-progress.html` |
+| Near-reward nudge | event `Elite Near Reward` | points_to_reward, redeem_from, reward value | `near-reward.html` |
+| Replenishment reminder | event `Elite Running Low` (or 25 days after a consumable order) | product title, image, URL, est. days left | `replenishment.html` |
+| Birthday | date property `birth_date` (7 days before) | first_name, tier, birthday reward % (Silver 10, Gold 15) | `birthday.html` |
+| Win-back | no order for 90 days (last_order_date) | first_name, loyalty_points, points_value_rs, plan_goal | `win-back.html` |
+| Post-purchase review | Fulfilled Order + 7 days | first item title/image, review link (Judge.me) | `review-request.html` |

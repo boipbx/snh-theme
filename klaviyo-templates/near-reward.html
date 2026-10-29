@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<title>Your reward is close</title>
+<!-- SNH Elite · Klaviyo template: Near-reward nudge. Draft (Round 10): files only, not connected to Klaviyo.
+     Variables: Klaviyo syntax. Person properties from ELITE-ROADMAP.md §7, synced by the SNH Elite app. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; padding:0; background:#F4EFE6; }
+  a { color:#0C0C0D; }
+  @media (max-width: 620px) { .wrap { width:100% !important; } .pad { padding:24px 20px !important; } h1 { font-size:28px !important; } }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F4EFE6;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{ event.points_to_reward }} points to go.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#F4EFE6">
+<tr><td align="center" style="padding:24px 12px;">
+  <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+    <tr><td style="padding:0 8px 16px;"><a href="https://www.sportsnutritionhub.lk" style="font:600 22px/1.1 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:-.02em;color:#E0521C;text-decoration:none;">SNH</a> <span style="font:400 20px/1.1 'Instrument Serif', Georgia, 'Times New Roman', serif;font-style:italic;color:#0C0C0D;">Elite</span></td></tr>
+    <tr><td bgcolor="#0C0C0D" class="pad" style="padding:40px;border-radius:24px 24px 0 0;background:#0C0C0D;background-image:radial-gradient(circle at 90% 0%, rgba(224,82,28,.55), rgba(224,82,28,0) 60%);"><p style="margin:0;font:600 12px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#FFB27A;">Nearly there</p><h1 style="margin:8px 0 0;font:600 40px/1.1 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:-.02em;color:#FFFFFF;">{{ event.points_to_reward|default:"500" }} points to your <em style="font-family:'Instrument Serif', Georgia, 'Times New Roman', serif;font-style:italic;font-weight:400;letter-spacing:0;">reward</em></h1><p style="margin:12px 0 0;font:400 16px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;color:rgba(255,255,255,.8);">Hi {{ first_name|default:"there" }}, one more order could do it.</p></td></tr>
+    <tr><td bgcolor="#FFFFFF" class="pad" style="padding:40px;border-radius:0 0 24px 24px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 0;"><tr><td width="33%" valign="top" style="padding:16px;background:#F4EFE6;border-radius:16px;"><p style="margin:0;font:600 12px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#5C5C61;">Balance</p><p style="margin:4px 0 0;font:600 24px/1.1 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:-.02em;color:#0C0C0D;">{{ person|lookup:'loyalty_points' }}</p></td><td width="8" style="font-size:0;">&nbsp;</td><td width="33%" valign="top" style="padding:16px;background:#F4EFE6;border-radius:16px;"><p style="margin:0;font:600 12px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#5C5C61;">Reward at</p><p style="margin:4px 0 0;font:600 24px/1.1 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:-.02em;color:#0C0C0D;">{{ person|lookup:'redeem_from'|default:"2,500" }} pts</p></td><td width="8" style="font-size:0;">&nbsp;</td><td width="33%" valign="top" style="padding:16px;background:#F4EFE6;border-radius:16px;"><p style="margin:0;font:600 12px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#5C5C61;">Reward</p><p style="margin:4px 0 0;font:600 24px/1.1 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;letter-spacing:-.02em;color:#0C0C0D;">Rs {{ person|lookup:'reward_value_rs'|default:"2,500" }}</p></td></tr></table><p style="margin:24px 0 0;font:400 16px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;color:#0C0C0D;">At your {{ person|lookup:'loyalty_tier'|default:"Bronze" }} rate, about <b>Rs {{ event.spend_to_reward|default:"" }}</b> of shopping gets you there. Then trade your points for cash off from your account.</p><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 0;"><tr><td bgcolor="#E0521C" style="border-radius:999px;"><a href="https://www.sportsnutritionhub.lk/collections/all" style="display:inline-block;padding:14px 28px;font:600 16px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;color:#FFFFFF;text-decoration:none;border-radius:999px;">Shop to earn</a></td></tr></table></td></tr>
+    <tr><td style="padding:24px 8px;font:400 13px/1.5 Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;color:#5C5C61;">
+      Points and tiers update once each paid order syncs. Rates, thresholds and point value follow the SNH Elite terms on our site.<br><br>
+      {{ organization.name }} · {{ organization.full_address }}<br>
+      <a href="https://www.sportsnutritionhub.lk/account#overview" style="color:#5C5C61;">My SNH Elite</a> · {% unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Preferences' %}
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
