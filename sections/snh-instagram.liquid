@@ -1,4 +1,9 @@
 {%- comment -%}
+  Round 11: your feed is back (OLD-COMPONENTS.md §5): with a token in Theme settings → SNH contact and reviews →
+  Instagram access token, assets/snh-social.js calls graph.instagram.com/me/media (the old section's endpoint and
+  fields) when the section is near, caches it for 1h in sessionStorage, and swaps the curated tiles for the latest 6
+  posts in your old card style (square media, type tag, dark caption + date). Missing / expired token or any error =
+  the curated tiles stay. The token still reaches the browser; the long-term fix is the SNH Elite app (THEME-V2.md).
   SNH Instagram (Round 9; replaces the old instafeed-modern section, which put the Instagram access token in the
   public HTML — the client must rotate that token). No token, no Instagram API: a curated grid of Post blocks
   (image + post link), 6 on desktop, 4 on phones, hover overlay with the Instagram icon, follow CTA. Images come from
@@ -7,6 +12,7 @@
   then replaces the curated grid inside the same heading and follow button. Styles: assets/snh-social.css.
 {%- endcomment -%}
 {{ 'snh-social.css' | asset_url | stylesheet_tag }}
+{%- if settings.snh_instagram_token != blank -%}<script src="{{ 'snh-social.js' | asset_url }}" defer></script>{%- endif -%}
 {%- liquid
   assign handle = section.settings.handle | default: 'sportsnutritionhub.lk' | remove: '@' | strip
   assign profile = 'https://www.instagram.com/' | append: handle | append: '/'
@@ -28,7 +34,7 @@
     {%- if apps.size > 0 -%}
       <div class="igr__app">{%- for b in apps -%}{% render b %}{%- endfor -%}</div>
     {%- else -%}
-      <ul class="igr__grid" role="list">
+      <ul class="igr__grid" role="list"{% if settings.snh_instagram_token != blank %} data-ig data-ig-token="{{ settings.snh_instagram_token | strip | escape }}" data-ig-count="6"{% endif %}>
         {%- for b in posts limit: 6 -%}
           <li class="igr__item" {{ b.shopify_attributes }}>
             <a class="igr__tile" href="{{ b.settings.link | default: profile }}" target="_blank" rel="noopener" aria-label="{{ b.settings.alt | default: 'Instagram post' | escape }} (opens Instagram)">
@@ -39,6 +45,7 @@
               {%- endif -%}
               <span class="igr__ov" aria-hidden="true">{% render 'snh-v2-icon', name: 'instagram' %}</span>
             </a>
+            {%- if b.settings.alt != blank -%}<p class="igr__cap"><span>{{ b.settings.alt | escape }}</span></p>{%- endif -%}
           </li>
         {%- endfor -%}
       </ul>

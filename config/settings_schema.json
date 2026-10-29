@@ -1530,6 +1530,16 @@
         "label": "Global FAQ",
         "default": "How fast is delivery? :: Colombo orders arrive the same day. Outside Colombo, 2–3 working days. Delivery is free over Rs 17,000.\nWhere are your stores? :: Three stores: Dehiwala (133A Kawdana Road), Wattala (880 Negombo Road) and Nugegoda (555 High Level Road). Search “Sports Nutrition Hub” on Google Maps.\nHow can I pay? :: Card, bank transfer, cash on delivery, or Koko: split your order into 3 interest-free payments at checkout.\nAre your supplements genuine? :: Yes. We stock only genuine products sourced directly from authorised distributors and the brands themselves.\nHow do SNH Elite points work? :: Every paid order earns points: 3% back at Bronze, 7% at Silver and 10% at Gold. Trade them for cash off from your account. Joining is free.\nCan I return or exchange a product? :: Unopened, unused products in their original sealed condition can be returned or exchanged under our return policy. If an order arrives damaged or wrong, contact us within 24 hours and we'll fix it.\nWhich supplement is right for me? :: Tell us your goal, diet and training, or build your plan in your account. Call or WhatsApp [whatsapp] and our team will recommend only what you need.",
         "info": "One per line: Question :: Answer. Used by every SNH FAQ section without its own questions (product pages first use the product's custom.faqs metafield). [whatsapp] = the number above."
+      },
+      {
+        "type": "header",
+        "content": "Instagram feed"
+      },
+      {
+        "type": "text",
+        "id": "snh_instagram_token",
+        "label": "Instagram access token (private: paste only, never share)",
+        "info": "A long-lived Instagram API token. It expires about every 60 days; refresh it (see THEME-V2.md) or the homepage falls back to the curated posts. Empty = curated posts only."
       }
     ]
   },

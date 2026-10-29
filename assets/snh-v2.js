@@ -601,6 +601,7 @@
       $$('video', hero).forEach(function (x) { if (x !== v || p) x.pause(); });
       if (v && !(reduce || hold.hidden || hold.off)) {
         if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
+        v.muted = true; v.defaultMuted = true; v.playsInline = true;   // iOS only autoplays a video it knows is muted
         var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
       }
     }
@@ -610,8 +611,10 @@
     hero.addEventListener('focusout', function (e) { if (!hero.contains(e.relatedTarget)) { hold.focus = false; sync(); } });
     document.addEventListener('visibilitychange', function () { hold.hidden = document.hidden; sync(); });
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { hold.off = en[0].intersectionRatio < 0.35; sync(); }, { threshold: [0, 0.35, 0.6, 1] }).observe(hero);
+      new IntersectionObserver(function (en) { hold.off = en[0].intersectionRatio < 0.3; sync(); }, { threshold: [0, 0.3, 0.6, 1] }).observe(hero);
     }
+    // reduced motion: the poster only (cancel the autoplay attribute and drop any started playback)
+    if (reduce) $$('video', hero).forEach(function (v) { v.autoplay = false; v.removeAttribute('autoplay'); v.pause(); v.preload = 'none'; try { v.load(); } catch (e) {} });
     $$('video[data-poster-m]', hero).forEach(function (v) { if (window.matchMedia('(max-width: 767px)').matches && v.getAttribute('data-poster-m')) v.poster = v.getAttribute('data-poster-m'); });
     hero.addEventListener('keydown', function (e) {
       if (e.target.closest('input, textarea')) return;

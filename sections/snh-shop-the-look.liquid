@@ -4,6 +4,10 @@
   vertical position). Dots and list items are linked both ways; desktop opens a popover card at the dot, mobile a
   bottom sheet (assets/snh-v2.js data-v2="hotspots").
   SNH Elite points strip: tier-aware earn rate from the customer's total spend vs the thresholds below.
+  Round 11 (OLD-COMPONENTS.md §3): the list items are your horizontal product cards (pack shot, name, price +
+  compare-at, "or 3 × Rs X with KOKO", "+ Add"); phones get them as a swipe rail under the image, like the old
+  section. The SNH Elite strip is your dark bar ("● SNH ELITE" · "You'll earn Rs X back in points") and follows the
+  product that's active (dot or card, hover or tap). Brand logo setting: "Shop the look:" + the logo as the heading.
 {%- endcomment -%}
 {%- liquid
   assign hid = 'stl-' | append: section.id
@@ -21,7 +25,17 @@
 -%}
 <section class="v2 v-section v-section--cream hs" aria-labelledby="{{ hid }}" data-v2="hotspots" data-popover="{{ section.settings.popover }}" style="--hs-zoom: {{ section.settings.zoom | divided_by: 100.0 }}">
   <div class="v-wrap">
-    {%- render 'snh-v2-head', s: section.settings, id: hid -%}
+    {%- if section.settings.brand_logo != blank -%}
+      <div class="head"><div class="head__text">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="v-h1 hs__brandh" id="{{ hid }}"><span>Shop the look:</span>{{ section.settings.brand_logo | image_url: height: 112 | image_tag: height: 56, alt: section.settings.brand_logo.alt | default: 'Brand of the month', class: 'hs__logo' }}</h2>
+        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.link_label != blank -%}<a class="v-link" href="{{ section.settings.link_url | default: '#' }}">{{ section.settings.link_label | escape }}</a>{%- endif -%}
+      </div>
+    {%- else -%}
+      {%- render 'snh-v2-head', s: section.settings, id: hid -%}
+    {%- endif -%}
     <div class="hs__grid">
       <div class="hs__media">
         <div class="hs__frame">
@@ -54,10 +68,24 @@
           {%- for b in section.blocks -%}
             {%- assign p = b.settings.product -%}
             {%- if p == blank -%}{%- continue -%}{%- endif -%}
-            <li class="hs__item" data-spot="{{ forloop.index0 }}"><span class="hs__n">{{ forloop.index }}</span>
+            {%- liquid
+              assign pts_i = p.price | times: points_rate | divided_by: 10000.0 | round | times: 100
+              capture retail
+                render 'snh-v2-retail', product: p
+              endcapture
+              assign retail = retail | strip | plus: 0
+              assign third = p.price | divided_by: 300.0 | round | times: 100
+            -%}
+            <li class="hs__item hpc" data-spot="{{ forloop.index0 }}" data-earn="{{ pts_i | money_without_trailing_zeros }}">
+              <span class="hs__n">{{ forloop.index }}</span>
               <a class="hs__img" href="{{ p.url }}" tabindex="-1"><span class="card__img">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: width: 150, height: 150, loading: 'lazy', alt: '', data-v2-lift: '' }}{%- endif -%}</span></a>
-              <span class="hs__info"><span class="eyebrow">{{ p.vendor | escape }}</span><a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a><span class="hs__price">{{ p.price | money_without_trailing_zeros }}</span></span>
-              {%- render 'snh-v2-stl-add', product: p, cls: 'v-btn v-btn--ink v-btn--sm hs__add', label: 'Add' -%}
+              <span class="hs__info">
+                <span class="hpc__brand">{{ p.vendor | escape }}</span>
+                <a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a>
+                <span class="hs__price">{% if p.price_varies %}From {% endif %}{{ p.price | money_without_trailing_zeros }}{% if retail > p.price %} <s>{{ retail | money_without_trailing_zeros }}</s>{% endif %}</span>
+                <span class="hpc__koko">or 3 × {{ third | money_without_trailing_zeros }} with <b>KOKO</b></span>
+              </span>
+              {%- render 'snh-v2-stl-add', product: p, cls: 'hpc__add', label: '+ Add' -%}
             </li>
           {%- endfor -%}
         </ol>
@@ -65,17 +93,25 @@
           {%- assign first = section.blocks.first.settings.product -%}
           {%- if first != blank -%}
             {%- assign pts = first.price | times: points_rate | divided_by: 10000.0 | round | times: 100 -%}
-            {%- if customer -%}
-              <a class="hs__pts" href="{{ routes.account_url }}#rewards"><span class="hs__pts-tag">SNH Elite</span>You'll earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points on {% render 'snh-v2-title', product: first %} ({{ points_rate }}%)</a>
-            {%- else -%}
-              <a class="hs__pts" href="{{ routes.account_login_url }}"><span class="hs__pts-tag">SNH Elite</span>Sign in to earn <strong>{{ pts | money_without_trailing_zeros }}</strong> back in points</a>
-            {%- endif -%}
+            <a class="hs__pts" href="{% if customer %}{{ routes.account_url }}#rewards{% else %}{{ routes.account_login_url }}{% endif %}" data-hs-pts>
+              <span class="hs__pts-tag">SNH Elite</span>
+              <span class="hs__pts-t">{% if customer %}You'll earn{% else %}Sign in to earn{% endif %} <strong data-hs-earn>{{ pts | money_without_trailing_zeros }}</strong> back in points{% if customer %} ({{ points_rate }}%){% endif %}</span>
+            </a>
           {%- endif -%}
         {%- endif -%}
        </div>
       </div>
     </div>
   </div>
+  <script>
+    /* the Elite strip follows the active product (dot or card; hover, focus or tap) */
+    (function (sec) {
+      var strip = sec.querySelector('[data-hs-earn]');
+      if (!strip) return;
+      function to(i) { var it = sec.querySelector('.hs__item[data-spot="' + i + '"]'); if (it && it.dataset.earn) strip.textContent = it.dataset.earn; }
+      ['mouseover', 'focusin', 'click'].forEach(function (t) { sec.addEventListener(t, function (e) { var d = e.target.closest('[data-spot]'); if (d) to(d.getAttribute('data-spot')); }); });
+    })(document.currentScript.closest('section'));
+  </script>
   {%- for b in section.blocks -%}
     {%- assign p = b.settings.product -%}
     {%- if p != blank and p.available and p.has_only_default_variant == false -%}
@@ -102,6 +138,12 @@
       "label": "Heading",
       "default": "Shop the *look*",
       "info": "Wrap a word in *asterisks* for the serif italic."
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Brand logo",
+      "info": "When set, the heading reads \"Shop the look:\" + this logo instead of the text heading."
     },
     {
       "type": "text",

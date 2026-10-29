@@ -484,3 +484,36 @@ real choices open quick buy. Used by every grid through `snippets/product-card.l
   in the grid → Collection keywords => article tags* (seeded from the blog's real tags), plus title matches, then the
   latest; never repeated on a page. Tile: product-card height, image, "Guide · N min read", serif title, "Read
   guide". `snippets/snh-article-tile.liquid`.
+
+### Phase 5: homepage sections
+- **Shop the Look** (`snh-shop-the-look`): your horizontal product cards (80px pack shot, brand, name, price +
+  compare-at, "or 3 × Rs X with KOKO", "+ Add") in the v2 image + list layout, with the dot ↔ card sync kept; on
+  phones they're a swipe rail under the image, as before. Your dark SNH Elite strip ("● SNH ELITE" · "You'll earn
+  Rs X back in points", tier-aware; guests "Sign in to earn") follows the active product. New setting **Brand logo**:
+  the heading becomes "Shop the look:" + the logo.
+- **Bestsellers**: the new card, tabs kept.
+- **SiS video**: it plays (verified in Chrome desktop and iPhone emulation: playing in view, paused off-screen).
+  Playwright's bundled Chromium has no H.264, which looked like "not playing" in automated runs. Now `autoplay muted
+  loop playsinline preload="metadata"`, `muted` set in JS before play (iOS), starts at 30 % in view, reduced motion =
+  poster only. The trust badges moved into the slide copy right above the eyebrow (12px phones / 16px desktop).
+- **SNH Elite band** (`snh-elite`): full-bleed background (*Background image*, else the athlete photo
+  `cricket.jpg`; *Background video* when you add one), orange → black gradient, eyebrow, headline, one sentence, one
+  row of three tier chips (rates from Theme settings), two buttons. Tier boxes and the floating card collage removed.
+- **TikTok** (`snh-tiktok`, home + all products): hard 6s limit from set-up (no skeleton after 6s; the follow card
+  instead). Video blocks are the main content: vertical 9:16 cards; TikTok's oEmbed (CORS ok) no longer returns
+  thumbnails, so each card shows TikTok's own player as its picture (muted, paused, lazy), and a tap opens the player
+  in a lightbox. Profile embed setting: only when there are no video blocks (default) / always / never. **Add your
+  TikTok video URLs as blocks.**
+- **Instagram** (`snh-instagram`): your old feed's API (`graph.instagram.com/me/media`, same fields) with the token
+  in **Theme settings → SNH contact and reviews → Instagram access token** (empty in this theme: nothing is
+  hard-coded in templates or docs). Fetched only near the viewport, cached 1h (sessionStorage `snh_ig_v1`), your old
+  card (square media, type tag, dark caption + date) with a hover overlay, 6 desktop (3 × 2) / 4 phones (2 × 2), post
+  links. No token / expired / any error = the curated tiles stay (verified with mocked success and an expired-token
+  190 response; zero requests before scrolling near).
+  - **Rotate the old token**: it is still live (read-only test, 29 Oct 2026) and in `main`'s git history.
+  - Long-lived tokens expire after **about 60 days**. Refresh before then:
+    `GET https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=<current token>`
+    (returns a new 60-day token; paste it into the setting). A token older than 60 days can't be refreshed: generate a
+    new one in the Meta developer app (Instagram API with Instagram Login).
+  - Long-term: serve the feed from the SNH Elite app backend (ELITE-ROADMAP §5), so the token never reaches the
+    browser and is refreshed on a schedule.

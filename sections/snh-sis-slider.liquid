@@ -5,12 +5,11 @@
   Behaviour: assets/snh-v2.js data-v2="carousel" (the video plays only while its slide is on screen).
 {%- endcomment -%}
 {%- assign n = section.blocks.size -%}
-<section class="v2 sisx" aria-label="{{ section.settings.label | escape }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
-  <div class="hero hero--sis" data-v2="carousel" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}" style="--hero-interval: {{ section.settings.interval }}s">
-    <div class="sisx__badge v-wrap">
-      {%- render 'snh-v2-img', image: section.settings.logo, url: section.settings.logo_url, width: 300, w: 96, h: 60, alt: 'Science in Sport' -%}
+{%- comment -%} Round 11: the trust badges sit in the slide copy, right above the eyebrow (12px / 16px gaps), instead of
+  pinned to the top of a full-screen slide far from the text. {%- endcomment -%}
+{%- capture trust -%}
       {%- if section.settings.trust_1_title != blank or section.settings.trust_2_title != blank -%}
-        <ul class="sisx__trust" aria-label="Why buy SiS from SNH">
+        <ul class="sisx__trust sisx__trust--inline" aria-label="Why buy SiS from SNH">
           {%- if section.settings.trust_1_title != blank -%}
             <li class="tbadge">
               <span class="tbadge__ic tbadge__ic--logo">{%- if section.settings.trust_1_logo != blank -%}{{ section.settings.trust_1_logo | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy' }}{%- else -%}<img src="{{ 'snh-informed-sport-white.png' | asset_url }}" width="40" height="40" alt="" loading="lazy">{%- endif -%}</span>
@@ -25,6 +24,11 @@
           {%- endif -%}
         </ul>
       {%- endif -%}
+{%- endcapture -%}
+<section class="v2 sisx" aria-label="{{ section.settings.label | escape }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="hero hero--sis" data-v2="carousel" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}" style="--hero-interval: {{ section.settings.interval }}s">
+    <div class="sisx__badge v-wrap">
+      {%- render 'snh-v2-img', image: section.settings.logo, url: section.settings.logo_url, width: 300, w: 96, h: 60, alt: 'Science in Sport' -%}
     </div>
     <div class="hero__stage">
       {%- for b in section.blocks -%}
@@ -62,9 +66,10 @@
               endif
             -%}
             <div class="hero__slide hero__slide--overlay hero__slide--video{{ on }}" {{ attrs }}>
-              <video class="sisv" muted loop playsinline preload="none"{% if poster != blank %} poster="{{ poster }}"{% endif %}{% if poster_m != blank %} data-poster-m="{{ poster_m }}"{% endif %} aria-hidden="true">{%- if vsrc != blank -%}<source src="{{ vsrc }}" type="video/mp4">{%- endif -%}</video>
+              <video class="sisv" muted autoplay loop playsinline preload="metadata"{% if poster != blank %} poster="{{ poster }}"{% endif %}{% if poster_m != blank %} data-poster-m="{{ poster_m }}"{% endif %} aria-hidden="true">{%- if vsrc != blank -%}<source src="{{ vsrc }}" type="video/mp4">{%- endif -%}</video>
               <div class="hero__shade"></div>
               <div class="hero__copy v-wrap">
+                {{ trust }}
                 {%- if b.settings.eyebrow != blank -%}<p class="eyebrow">{{ b.settings.eyebrow | escape }}</p>{%- endif -%}
                 <h2 class="display">{% render 'snh-v2-heading', text: b.settings.heading %}</h2>
                 {%- if b.settings.sub != blank -%}<p class="hero__sub">{{ b.settings.sub | escape }}</p>{%- endif -%}

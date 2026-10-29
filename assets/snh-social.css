@@ -80,3 +80,49 @@
 @media (min-width: 768px) { .igr__foot { display: none; } }
 @media (max-width: 767px) { .igr__follow { display: none; } }
 @media (prefers-reduced-motion: reduce) { .igr__tile img, .igr__ov { transition: none; } .igr__tile:hover img { transform: none; } }
+
+/* Round 11: TikTok video cards (oEmbed thumbnail + caption) and the lightbox player */
+.ttv-list { grid-auto-columns: 220px; }
+@media (min-width: 1024px) { .ttv-list { grid-auto-columns: calc((100% - 5 * 24px) / 6); grid-auto-flow: column; overflow: visible; } }
+.ttv { list-style: none; scroll-snap-align: start; }
+.ttv__card { position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; padding: 0; border: 0; border-radius: 20px; overflow: hidden; isolation: isolate; cursor: pointer; color: var(--white); text-align: left; background: radial-gradient(120% 70% at 85% 0%, rgba(254, 44, 85, .45), transparent 60%), radial-gradient(90% 60% at 0% 100%, rgba(37, 244, 238, .3), transparent 60%), #0C0C0D; }
+.ttv__thumb { position: absolute; inset: 0; z-index: -1; }
+.ttv__thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 400ms var(--ease); }
+.ttv.is-loaded .ttv__thumb img { opacity: 1; }
+.ttv__thumb::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .08), rgba(255, 255, 255, 0)); background-size: 200% 100%; animation: ttk-shim 1.4s linear infinite; }
+.ttv.is-loaded .ttv__thumb::before, .ttv.is-failed .ttv__thumb::before { display: none; }
+.ttv__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12, 12, 13, 0) 45%, rgba(12, 12, 13, .85) 100%); }
+.ttv__play { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; background: rgba(255, 255, 255, .22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: transform var(--t) var(--ease), background-color var(--t) var(--ease); }
+.ttv__play svg { width: 24px; height: 24px; margin-left: 3px; }
+.ttv__card:hover .ttv__play { transform: scale(1.08); background: var(--v-accent); }
+.ttv__cap { position: absolute; left: 16px; right: 16px; bottom: 16px; display: grid; gap: 4px; font: 500 14px/1.5 var(--sans); }
+.ttv__cap > span:last-child { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.ttv__by { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 255, 255, .7); }
+.ttv__card:focus-visible { outline: 3px solid var(--v-accent); outline-offset: 3px; }
+.ttl { width: min(400px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 20px; overflow: visible; background: #0C0C0D; color: var(--white); }
+.ttl::backdrop { background: rgba(12, 12, 13, .8); }
+.ttl__frame { aspect-ratio: 9 / 16; max-height: calc(100dvh - 120px); border-radius: 20px; overflow: hidden; }
+.ttl__frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.ttl__x { position: absolute; top: -52px; right: 0; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .14); color: var(--white); cursor: pointer; }
+.ttl__x svg { width: 20px; height: 20px; }
+.ttl__out { display: block; padding: 12px 16px; font: 600 14px/1.5 var(--sans); text-align: center; color: var(--white); }
+.ttk__box--solo { height: 360px; }
+@media (prefers-reduced-motion: reduce) { .ttv__thumb::before { animation: none; } .ttv__thumb img { transition: none; } }
+.ttv { position: relative; border-radius: 20px; overflow: hidden; }
+.ttv__thumb { border-radius: 20px; overflow: hidden; background: #0C0C0D; z-index: 0; }
+.ttv__thumb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; opacity: 0; transition: opacity 400ms var(--ease); }
+.ttv.is-player .ttv__thumb iframe { opacity: 1; }
+.ttv__card { background: transparent; z-index: 1; }
+.ttv.is-failed .ttv__card, .ttv:not(.is-loaded) .ttv__card { background: radial-gradient(120% 70% at 85% 0%, rgba(254, 44, 85, .45), transparent 60%), radial-gradient(90% 60% at 0% 100%, rgba(37, 244, 238, .3), transparent 60%), rgba(12, 12, 13, .6); }
+.ttv.is-player .ttv__shade { background: linear-gradient(180deg, rgba(12, 12, 13, 0) 55%, rgba(12, 12, 13, .85) 100%); }
+
+/* Instagram (Round 11): your old feed card (square media, type tag, dark caption + date), 3 × 2 desktop / 2 × 2 phones */
+.igr__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 768px) { .igr__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+.igr__item { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: #151515; box-shadow: 0 14px 32px rgba(20, 20, 20, .1); }
+.igr__item .igr__tile { border-radius: 0; }
+.igr__type { position: absolute; top: 12px; right: 12px; z-index: 1; display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: var(--pill); background: rgba(12, 12, 13, .7); color: var(--white); font: 600 12px/1.1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+.igr__cap { display: grid; gap: 4px; padding: 12px 16px 16px; color: var(--white); }
+.igr__cap span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font: 500 14px/1.5 var(--sans); }
+.igr__cap time { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 255, 255, .6); }
+@media (max-width: 767px) { .igr__cap { padding: 8px 12px 12px; } .igr__cap span { font-size: 13px; } .igr__type { display: none; } }

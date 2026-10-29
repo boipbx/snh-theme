@@ -1,80 +1,44 @@
 {%- comment -%}
-  SNH Elite glass band (prototype #elite): animated mesh layer (#elite-bg), glass card with copy, chips, buttons,
-  tier ladder + tier cards, and the visual (cutout, CSS membership card, floating gift + coins).
-  Rates and thresholds come from Theme settings → SNH Elite (one source for the whole store).
+  SNH Elite band (Round 11, simplified like the SiS section): a full-bleed background (Background image, else the
+  athlete photo; Background video when set, muted and looping, poster = the image) under an orange → black gradient,
+  and a minimal foreground: eyebrow, headline, one sentence, one row of three tier chips (Bronze · Silver · Gold with
+  the rates from Theme settings → SNH Elite), two buttons. The old tier boxes and the floating card collage are gone.
 {%- endcomment -%}
 {%- liquid
   assign hid = 'elite-' | append: section.id
-  assign silver = settings.snh_silver_threshold | default: 198000 | at_least: 1
-  assign gold = settings.snh_gold_threshold | default: 300000 | at_least: silver
-  assign silver_pos = silver | times: 100 | divided_by: gold
-  assign silver_k = silver | divided_by: 1000
-  assign gold_k = gold | divided_by: 1000
   assign r_b = settings.snh_rate_bronze | default: 3 | append: '%'
   assign r_s = settings.snh_rate_silver | default: 7 | append: '%'
   assign r_g = settings.snh_rate_gold | default: 10 | append: '%'
   assign lead = section.settings.lead | escape | replace: '[bronze]', r_b | replace: '[silver]', r_s | replace: '[gold]', r_g
-  assign chips_text = section.settings.chips | replace: '[bronze]', r_b | replace: '[silver]', r_s | replace: '[gold]', r_g
+  assign bg = section.settings.bg_image | default: section.settings.person
+  assign focal = section.settings.bg_focal | default: '70% 25%' | prepend: 'object-position: '
 -%}
-<section class="v2 elite v-section" aria-labelledby="{{ hid }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
-  <div id="elite-bg" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="v-wrap elite__grid">
-    <div class="glass elite__card">
-      <div class="elite__copy">
-        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
-        <h2 class="v-h2" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
-        {%- if lead != blank -%}<p class="lead">{{ lead }}</p>{%- endif -%}
-        {%- assign chips = chips_text | newline_to_br | split: '<br />' -%}
-        {%- if section.settings.chips != blank -%}<ul class="chips-row">{%- for c in chips -%}{%- assign t = c | strip -%}{%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}
-        <div class="band__cta">
-          {%- if customer -%}
-            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}#rewards"><span>{{ section.settings.cta_member | default: 'See my points' | escape }}</span></a>
-            <a class="v-btn v-btn--line v-btn--on-dark" href="{% render 'snh-elite-url' %}"><span>{{ section.settings.cta2_member | default: 'How SNH Elite works' | escape }}</span></a>
-          {%- else -%}
-            {%- if section.settings.cta != blank -%}<a class="v-btn v-btn--ink" href="{{ section.settings.cta_link | default: routes.account_register_url }}"><span>{{ section.settings.cta | escape }}</span></a>{%- endif -%}
-            {%- if section.settings.cta2 != blank -%}<a class="v-btn v-btn--line v-btn--on-dark" href="{{ section.settings.cta2_link | default: routes.account_login_url }}"><span>{{ section.settings.cta2 | escape }}</span></a>{%- endif -%}
-          {%- endif -%}
-        </div>
-      </div>
-      <div class="elite__tiers">
-        <div class="ladder" aria-label="Tier ladder by annual spend">
-          <div class="ladder__bar"><span class="ladder__fill"></span><i style="left:0%"></i><i style="left:{{ silver_pos }}%"></i><i style="left:100%"></i></div>
-          <div class="ladder__labels"><span>Rs 0</span><span style="left:{{ silver_pos }}%">Rs {{ silver_k }}k</span><span>Rs {{ gold_k }}k</span></div>
-        </div>
-        <ul class="tcards">
-          {%- for b in section.blocks -%}
-            {%- liquid
-              case b.settings.metal
-                when 'gold'
-                  assign t_rate = settings.snh_rate_gold | default: 10
-                  assign t_line = 'From Rs ' | append: gold_k | append: 'k a year'
-                when 'silver'
-                  assign t_rate = settings.snh_rate_silver | default: 7
-                  assign t_line = 'From Rs ' | append: silver_k | append: 'k a year'
-                else
-                  assign t_rate = settings.snh_rate_bronze | default: 3
-                  assign t_line = 'Free to join'
-              endcase
-            -%}
-            <li class="tcard tcard--{{ b.settings.metal }}" {{ b.shopify_attributes }}><span class="tcard__name">{{ b.settings.name | escape }}</span><strong>{{ t_rate }}%</strong><span class="tcard__th">{{ t_line }}</span><span class="tcard__perk">{{ b.settings.perk | escape }}</span></li>
-          {%- endfor -%}
-        </ul>
-      </div>
-    </div>
-    <div class="elite__visual" aria-hidden="true">
-      {%- if section.settings.person != blank -%}
-        {%- if section.settings.person_style == 'cutout' -%}
-          {{ section.settings.person | image_url: width: 900 | image_tag: loading: 'lazy', alt: '', class: 'elite__girl' }}
-        {%- else -%}
-          {%- assign focal = section.settings.person_focal | default: '50% 30%' | prepend: 'object-position: ' -%}
-          <span class="elite__photo">{{ section.settings.person | image_url: width: 1000 | image_tag: loading: 'lazy', alt: '', sizes: '(max-width: 767px) 70vw, 340px', widths: '400,600,800,1000', style: focal }}</span>
-        {%- endif -%}
+<section class="v2 eband" aria-labelledby="{{ hid }}"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="eband__bg" aria-hidden="true">
+    {%- if section.settings.bg_video != blank -%}
+      {%- assign poster = bg | image_url: width: 1920 -%}
+      {{ section.settings.bg_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', poster: poster, class: 'eband__vid' }}
+    {%- elsif bg != blank -%}
+      {{ bg | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '800,1200,1600,2000', sizes: '100vw', alt: '', class: 'eband__img', style: focal }}
+    {%- endif -%}
+  </div>
+  <div class="v-wrap eband__in">
+    {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h2 class="v-h1 eband__h" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+    {%- if lead != blank -%}<p class="eband__lead">{{ lead }}</p>{%- endif -%}
+    <ul class="eband__tiers" role="list" aria-label="Tiers">
+      <li class="eband__chip eband__chip--bronze"><i aria-hidden="true"></i>Bronze <b>{{ r_b }}</b></li>
+      <li class="eband__chip eband__chip--silver"><i aria-hidden="true"></i>Silver <b>{{ r_s }}</b></li>
+      <li class="eband__chip eband__chip--gold"><i aria-hidden="true"></i>Gold <b>{{ r_g }}</b></li>
+    </ul>
+    <div class="eband__cta">
+      {%- if customer -%}
+        <a class="v-btn v-btn--accent" href="{{ routes.account_url }}#rewards"><span>{{ section.settings.cta_member | default: 'See my points' | escape }}</span></a>
+        <a class="v-btn v-btn--white" href="{% render 'snh-elite-url' %}"><span>{{ section.settings.cta2_member | default: 'How SNH Elite works' | escape }}</span></a>
+      {%- else -%}
+        {%- if section.settings.cta != blank -%}<a class="v-btn v-btn--accent" href="{{ section.settings.cta_link | default: routes.account_register_url }}"><span>{{ section.settings.cta | escape }}</span></a>{%- endif -%}
+        {%- if section.settings.cta2 != blank -%}<a class="v-btn v-btn--white" href="{{ section.settings.cta2_link | default: routes.account_login_url }}"><span>{{ section.settings.cta2 | escape }}</span></a>{%- endif -%}
       {%- endif -%}
-      <div class="mcard glass"><div class="mcard__top">{%- if section.settings.card_logo != blank -%}{{ section.settings.card_logo | image_url: width: 300 | image_tag: width: 80, height: 23, loading: 'lazy', alt: '' }}{%- endif -%}<span>ELITE</span></div>
-        <div class="mcard__mid"><span class="mcard__label">Points balance</span><strong>{{ section.settings.card_points | escape }}</strong></div>
-        <div class="mcard__bot"><span>{{ section.settings.card_tier | escape }}</span><span>{{ settings.snh_rate_gold | default: 10 }}% back</span></div></div>
-      {%- if section.settings.gift != blank -%}{{ section.settings.gift | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: '', class: 'elite__gift' }}{%- endif -%}
-      {%- if section.settings.coins != blank -%}{{ section.settings.coins | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: '', class: 'elite__coins' }}{%- endif -%}
     </div>
   </div>
 </section>
@@ -85,6 +49,29 @@
   "class": "snh-sec",
   "max_blocks": 4,
   "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image",
+      "info": "Empty = the athlete photo below. Also the video's poster."
+    },
+    {
+      "type": "video",
+      "id": "bg_video",
+      "label": "Background video",
+      "info": "Plays muted and looping behind the band."
+    },
+    {
+      "type": "text",
+      "id": "bg_focal",
+      "label": "Focal point",
+      "default": "70% 25%",
+      "info": "x% y%: the part of the photo that stays in view."
+    },
     {
       "type": "text",
       "id": "anchor",

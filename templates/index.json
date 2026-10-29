@@ -920,7 +920,8 @@
         "card_points": "2,860",
         "card_tier": "Gold member",
         "person_style": "photo",
-        "person_focal": "50% 28%"
+        "person_focal": "50% 28%",
+        "bg_focal": "70% 25%"
       },
       "blocks": {
         "tier_1": {
@@ -1152,6 +1153,13 @@
         "follow_label": "Follow on Instagram",
         "cream": false
       }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "tone": "light",
+        "profile": "auto"
+      }
     }
   },
   "order": [
@@ -1170,6 +1178,7 @@
     "snh_guides",
     "snh_faq",
     "snh_stores",
+    "snh_tiktok",
     "snh_instagram",
     "snh_news"
   ]

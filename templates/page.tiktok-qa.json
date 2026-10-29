@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main": {
+      "type": "snh-tiktok",
+      "blocks": {
+        "v1": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@scout2015/video/6718335390845095173",
+            "caption": ""
+          }
+        },
+        "v2": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@snh.qa/video/1",
+            "caption": "Broken URL test: falls back"
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2"
+      ],
+      "settings": {
+        "tone": "cream",
+        "profile": "auto"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
