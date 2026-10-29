@@ -26,6 +26,8 @@
   {%- render 'snh-app-reward', m: m, pending: pending, id: sid -%}
 </div>
 
+{%- render 'snh-app-active', orders: recent, sid: sid -%}
+
 {%- if goal == blank and s.goal_prompt != false -%}
   <aside class="app__prompt" data-goal-prompt aria-labelledby="{{ sid }}-prompt-h">
     <span class="app__prompt-ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'target' %}</span>
@@ -83,9 +85,12 @@
   <h2 class="v-sr" id="{{ sid }}-qa-h">Quick actions</h2>
   <ul class="qact" role="list">
     {%- if has_orders -%}
-      <li><button class="qact__a" type="button" data-app-reorder="{{ last[13] }}"{% if mock or last[13] == blank %} disabled{% endif %}>{% render 'snh-v2-icon', name: 'refresh' %}<span><b>Reorder last order</b><i>{{ last[0] }} · {{ last[10] }} item{% if last[10] != '1' %}s{% endif %}</i></span></button></li>
+      {%- capture ic -%}{% render 'snh-v2-icon', name: 'refresh' %}{%- endcapture -%}
+      {%- capture lb -%}<b>Reorder last order</b><i>{{ last[0] }} · {{ last[10] }} item{% if last[10] != '1' %}s{% endif %}</i>{%- endcapture -%}
+      {%- assign qid = sid | append: '-qa-re' -%}
+      <li>{%- render 'snh-app-reorder', o: last, did: qid, cls: 'qact__a', icon: ic, label: lb, mock: mock -%}</li>
       {%- if last[12] != blank -%}{%- assign track = last[12] -%}{%- else -%}{%- assign track = last[1] -%}{%- endif -%}
-      <li><a class="qact__a" href="{{ track }}"{% if last[12] != blank %} target="_blank" rel="noopener"{% endif %}>{% render 'snh-v2-icon', name: 'truck' %}<span><b>Track latest order</b><i>{{ last[6] }}</i></span></a></li>
+      <li><a class="qact__a" href="{{ track }}"{% if last[12] != blank %} target="_blank" rel="noopener"{% endif %}>{% render 'snh-v2-icon', name: 'truck' %}<span><b>Track latest order</b><i>{{ last[16] }}{% if last[18] != blank %} · {{ last[18] | escape }}{% endif %}</i></span></a></li>
     {%- else -%}
       <li><a class="qact__a" href="{{ routes.all_products_collection_url }}">{% render 'snh-v2-icon', name: 'bag' %}<span><b>Start shopping</b><i>Earn {{ m[7] }}% back</i></span></a></li>
     {%- endif -%}
@@ -100,6 +105,11 @@
     </a>
   {%- endif -%}
 </section>
+
+{%- if bundles.size > 0 and bundles[0] != blank -%}
+  {%- assign bb = bundles[0] | split: '~' -%}
+  {%- render 'snh-app-bundle-card', b: bb, mock: mock -%}
+{%- endif -%}
 
 <section class="app__block" aria-labelledby="{{ sid }}-feed-h">
   <div class="app__bh">
@@ -123,16 +133,7 @@
         assign o = r | split: '|'
         assign shown = shown | plus: 1
         assign earn = o[7] | divided_by: 100 | times: rate | divided_by: 100
-        if o[11] == '1'
-          assign pill = 'off'
-          assign st = 'Cancelled'
-        elsif o[5] == 'fulfilled'
-          assign pill = 'ok'
-          assign st = o[6]
-        else
-          assign pill = 'wait'
-          assign st = o[6]
-        endif
+        assign st = o[16]
       -%}
       {%- if o[9] != '0' and o[9] != blank -%}
         {%- assign back = o[9] | divided_by: 100 | times: rate | divided_by: 100 -%}
@@ -149,7 +150,7 @@
           <p class="feed__t"><a href="{{ o[1] }}">Order {{ o[0] }}</a> placed</p>
           <p class="feed__s"><time datetime="{{ o[2] | date: '%Y-%m-%d' }}">{{ o[2] | date: '%d %b %Y' }}</time> · {{ o[10] }} item{% if o[10] != '1' %}s{% endif %} · {{ o[8] | money_without_trailing_zeros }}{% if o[3] contains 'paid' or o[3] == 'partially_refunded' %}{% if o[11] != '1' %} · <span class="feed__pts">+{% render 'snh-num', n: earn %} pts est.</span>{% endif %}{% endif %}</p>
         </div>
-        <span class="pill pill--{{ pill }}">{{ st }}</span>
+        <span class="ostat ostat--{{ o[15] }}"><i aria-hidden="true"></i>{{ st }}</span>
       </li>
     {%- endfor -%}
     {%- assign oc = me[9] | plus: 0 -%}

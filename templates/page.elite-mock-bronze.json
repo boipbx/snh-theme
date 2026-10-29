@@ -12,7 +12,7 @@
     "main": {
       "type": "snh-app-mock",
       "settings": {
-        "label": "Active Bronze · 3 orders, 1,840 points, goal set",
+        "label": "Active Bronze · shipped order on its way, bundle match, 1,840 points, goal set",
         "first_name": "Ishara",
         "last_name": "Jayawardena",
         "email": "ishara@example.com",
@@ -26,7 +26,7 @@
         "marketing": true,
         "address": "Ishara Jayawardena<br>12 Temple Road<br>Nugegoda<br>Sri Lanka<br>+94 77 123 4567",
         "addresses": 1,
-        "orders": "#18466|12|paid|fulfilled|0|applied-nutrition-critical-whey-2kg:1,applied-nutrition-creatine-monohydrate:1|\n#18302|70|paid|fulfilled|0|ryse-loaded-protein-2lb:1|\n#18110|80|paid|fulfilled|0|ryse-loaded-pre-workout:1|",
+        "orders": "#18531|2|paid|fulfilled|0|applied-nutrition-creatine-monohydrate:1,applied-nutrition-critical-whey-2kg:1|https://www.koombiyodelivery.lk/Track/track_id|1|Koombiyo Delivery|KD 4471 2209\n#18466|12|paid|fulfilled|0|applied-nutrition-critical-whey-2kg:1,applied-nutrition-creatine-monohydrate:1|\n#18302|70|paid|fulfilled|0|ryse-loaded-protein-2lb:1|\n#18110|80|paid|fulfilled|0|ryse-loaded-pre-workout:1|",
         "view": "app"
       }
     }

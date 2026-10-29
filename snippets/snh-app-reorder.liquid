@@ -1,0 +1,50 @@
+{%- comment -%}
+  Member app · Re-order with a preview (Round 10). The button opens a sheet listing what will be added, each line with
+  today's availability and price; "Add N items" then adds only the available lines (assets/snh-app.js, the V8
+  re-order logic: all lines at once, then line by line, says what couldn't be added; no cart clearing).
+  o: split snh-app-order-data record · did: unique id · cls: button classes · label · mock: true = never adds
+  Running low's single-item re-order stays a direct add.
+{%- endcomment -%}
+{%- liquid
+  assign lis = o[14] | split: ';;'
+  assign ids = ''
+  assign ok = 0
+  assign total = 0
+  for li in lis
+    assign it = li | split: '~'
+    if it[12] == '1' and it[8] != blank
+      assign ids = ids | append: it[8] | append: ':' | append: it[3] | append: ','
+      assign ok = ok | plus: it[3]
+      assign line = it[13] | times: it[3]
+      assign total = total | plus: line
+    endif
+  endfor
+  assign ids = ids | remove_last: ','
+-%}
+<button class="{{ cls | default: 'v-btn v-btn--ink v-btn--sm' }}" type="button" data-reorder-open="{{ did }}" aria-haspopup="dialog">{{ icon }}<span>{{ label | default: 'Re-order' }}</span></button>
+<template id="{{ did }}">
+  <p class="rep__h">Re-order {{ o[0] }}</p>
+  <p class="app__muted">{% if ok == 0 %}Nothing from this order is in stock right now.{% else %}Here's what goes in your basket, at today's prices.{% endif %}</p>
+  <ul class="rep__list" role="list">
+    {%- for li in lis -%}
+      {%- assign it = li | split: '~' -%}
+      {%- assign framed = false -%}
+      {%- assign iu = it[5] | downcase -%}{%- if iu contains 'sportsnutritionhub' or iu contains 'snh-frame' -%}{%- assign framed = true -%}{%- endif -%}
+      <li class="rep__i{% if it[12] != '1' or it[8] == blank %} is-out{% endif %}">
+        <span class="oimg{% if framed %} is-framed{% endif %}">{% if it[5] != blank %}<img src="{{ it[5] }}" alt="" width="56" height="56">{% endif %}</span>
+        <span class="rep__t"><b>{{ it[1] | escape }}</b>{% if it[2] != blank %}<i>{{ it[2] | escape }}</i>{% endif %}</span>
+        <span class="rep__q">× {{ it[3] }}</span>
+        <span class="rep__s">{% if it[12] == '1' and it[8] != blank %}<span class="rep__p">{{ it[13] | times: it[3] | money_without_trailing_zeros }}</span><span class="pill pill--ok">In stock</span>{% else %}<span class="pill pill--off">Sold out</span>{% endif %}</span>
+      </li>
+    {%- endfor -%}
+  </ul>
+  {%- if ok > 0 -%}
+    <p class="rep__tot"><span>{{ ok }} item{% if ok != 1 %}s{% endif %}</span><b>{{ total | money_without_trailing_zeros }}</b></p>
+    <div class="rep__btns" data-reorder-box>
+      <button class="v-btn v-btn--accent" type="button" data-app-reorder="{{ ids }}" data-reorder-done{% if mock %} disabled{% endif %}><span>Add {{ ok }} item{% if ok != 1 %}s{% endif %} to basket</span></button>
+      <button class="v-btn v-btn--line" type="button" data-reorder-close><span>Cancel</span></button>
+    </div>
+  {%- else -%}
+    <div class="rep__btns"><a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Browse what's in stock</span></a></div>
+  {%- endif -%}
+</template>

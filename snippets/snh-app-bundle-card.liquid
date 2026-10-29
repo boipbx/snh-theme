@@ -1,0 +1,28 @@
+{%- comment -%}
+  Member app · "Now in a bundle" card (Round 10): "You bought [product]. Get it in the [bundle] and save [saving]",
+  with Add bundle (straight into the basket through the re-order logic) or See bundle when options must be picked.
+  b: split snh-app-bundles record · compact: true under an order, else the larger Overview card · mock
+{%- endcomment -%}
+{%- liquid
+  assign save = ''
+  if b[3] != '0' and b[3] != blank
+    assign save = b[3] | plus: 0 | money_without_trailing_zeros
+  elsif b[4] != blank
+    assign save = b[4]
+  endif
+-%}
+<aside class="bcard{% if compact %} bcard--sm{% endif %}" aria-label="Now in a bundle">
+  <span class="bcard__img">{% if b[7] != blank %}<img src="{{ b[7] }}" alt="" width="96" height="96" loading="lazy">{% endif %}</span>
+  <div class="bcard__b">
+    <p class="bcard__eb">Now in a bundle</p>
+    <p class="bcard__t">You bought {{ b[1] | escape }}. Get it in the <b>{{ b[2] | escape }}</b>{% if save != '' %}{% if b[3] != '0' and b[3] != blank %} and save {{ save }}{% else %} · {{ save | escape }}{% endif %}{% endif %}.</p>
+    {%- if b[8] != '0' and b[8] != blank and compact != true -%}<p class="app__muted">Bundle price {{ b[8] | plus: 0 | money_without_trailing_zeros }}</p>{%- endif -%}
+  </div>
+  <div class="bcard__act" data-reorder-box>
+    {%- if b[5] != blank -%}
+      <button class="v-btn v-btn--accent v-btn--sm" type="button" data-app-reorder="{{ b[5] }}"{% if mock or b[9] == '0' %} disabled{% endif %}><span>Add bundle</span></button>
+    {%- else -%}
+      <a class="v-btn v-btn--accent v-btn--sm" href="{{ b[6] }}"><span>See bundle</span></a>
+    {%- endif -%}
+  </div>
+</aside>

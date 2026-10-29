@@ -1,0 +1,180 @@
+{%- comment -%}
+  Member app · "Now in a bundle" matches (Round 10). For the products in a member's recent orders, finds a bundle
+  that contains them, from the two places the theme already keeps bundles:
+  1. Theme settings → SNH bundle offers (bundle_1…12: product list + offer name + saving label), the bundle box's list
+  2. bundle products in the bundle collections (section setting, default the PDP "Bundle & save" handles): a bundle
+     matches when its description names the product's base name (title without brand and size), the same rule as
+     snippets/snh-v2-bundles. Saving = compare-at price, else SNH's bundle price sheet (same figures as that snippet).
+  recent: snh-app-order-data records · handles: comma-separated collection handles · limit (default 6 products)
+  Prints records joined by "@@", fields "~": 0 bought product id · 1 bought title · 2 bundle name · 3 saving (cents,
+  0 = unknown) · 4 saving label (settings offers) · 5 add "variant:qty,…" ('' = choose options) · 6 bundle url ·
+  7 image url · 8 bundle price (cents, 0 = unknown) · 9 bundle available 1/0
+  First match per bought product only. Display only; adding goes through the cart like re-order.
+{%- endcomment -%}
+{%- liquid
+  assign retail_sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+  assign max = limit | default: 6
+  assign seen = ','
+  assign bought = ''
+  assign n = 0
+  for r in recent
+    if r == blank
+      continue
+    endif
+    assign o = r | split: '|'
+    if o[11] == '1'
+      continue
+    endif
+    assign lis = o[14] | split: ';;'
+    for li in lis
+      assign it = li | split: '~'
+      assign key = ',' | append: it[0] | append: ','
+      if seen contains key or it[0] == blank
+        continue
+      endif
+      assign seen = seen | append: it[0] | append: ','
+      # base name: title without the brand prefix, up to the first word with a digit ("Critical Whey Protein 2kg" → "critical whey protein")
+      assign t = it[1]
+      assign vu = it[10] | upcase
+      assign pres = vu | append: ' NUTRITION|' | append: vu | split: '|'
+      for pre in pres
+        assign head = t | slice: 0, pre.size | upcase
+        if pre != blank and head == pre
+          assign t = t | slice: pre.size, 200 | strip
+          break
+        endif
+      endfor
+      assign words = t | split: ' '
+      assign base = ''
+      for w in words
+        assign digits = w | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+        if digits != w
+          break
+        endif
+        assign base = base | append: ' ' | append: w
+      endfor
+      assign base = base | strip | downcase | replace: '&amp;', '&'
+      assign bought = bought | append: it[0] | append: '~' | append: t | append: '~' | append: base | append: '~' | append: it[11] | append: '@@'
+      assign n = n | plus: 1
+      if n >= max
+        break
+      endif
+    endfor
+    if n >= max
+      break
+    endif
+  endfor
+  assign bought = bought | split: '@@'
+  assign found = ','
+  assign out = ''
+-%}
+{%- for b in bought -%}
+  {%- liquid
+    assign bp_ = b | split: '~'
+    assign pkey = ',' | append: bp_[0] | append: ','
+    if found contains pkey
+      continue
+    endif
+    # 1. the theme's bundle offers
+    for i in (1..12)
+      assign lk = 'bundle_' | append: i | append: '_products'
+      assign list = settings[lk]
+      if list == blank
+        continue
+      endif
+      assign hit = false
+      for lp in list
+        assign lid = lp.id | append: ''
+        if lid == bp_[0]
+          assign hit = true
+        endif
+      endfor
+      unless hit
+        continue
+      endunless
+      assign tk = 'bundle_' | append: i | append: '_title'
+      assign sk = 'bundle_' | append: i | append: '_save'
+      assign ids = ''
+      assign price = 0
+      assign avail = 1
+      for lp in list
+        assign lv = lp.selected_or_first_available_variant
+        if lp.available == false
+          assign avail = 0
+        endif
+        assign price = price | plus: lv.price
+        if list.size == 1
+          assign ids = lv.id | append: ':2'
+        else
+          assign ids = ids | append: lv.id | append: ':1,'
+        endif
+      endfor
+      assign ids = ids | remove_last: ','
+      capture rec
+        echo bp_[0] | append: '~' | append: bp_[1] | append: '~' | append: settings[tk] | append: '~0~' | append: settings[sk] | append: '~' | append: ids | append: '~' | append: list[0].url | append: '~'
+        echo list[0].featured_image | image_url: width: 240
+        echo '~' | append: price | append: '~' | append: avail
+      endcapture
+      assign out = out | append: rec | append: '@@'
+      assign found = found | append: bp_[0] | append: ','
+      break
+    endfor
+  -%}
+{%- endfor -%}
+{%- liquid
+  assign hl = handles | default: 'training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers' | split: ','
+  for h in hl
+    assign hh = h | strip
+    assign c = collections[hh]
+    for bp in c.products limit: 60
+      if bp.available == false
+        continue
+      endif
+      assign d = ''
+      for b in bought
+        assign bp_ = b | split: '~'
+        assign pkey = ',' | append: bp_[0] | append: ','
+        if found contains pkey or bp_[2].size < 6
+          continue
+        endif
+        assign bid = bp.id | append: ''
+        if bid == bp_[0]
+          continue
+        endif
+        if d == ''
+          assign d = bp.description | strip_html | downcase | replace: '&amp;', '&'
+        endif
+        unless d contains bp_[2]
+          continue
+        endunless
+        assign retail = 0
+        if bp.compare_at_price > bp.price
+          assign retail = bp.compare_at_price
+        else
+          for pair in retail_sheet
+            assign kv = pair | split: '='
+            if kv[0] == bp.handle
+              assign retail = kv[1] | times: 1
+            endif
+          endfor
+        endif
+        assign saving = 0
+        if retail > bp.price
+          assign saving = retail | minus: bp.price
+        endif
+        assign ids = ''
+        if bp.has_only_default_variant
+          assign ids = bp.selected_or_first_available_variant.id | append: ':1'
+        endif
+        capture rec
+          echo bp_[0] | append: '~' | append: bp_[1] | append: '~' | append: bp.title | append: '~' | append: saving | append: '~~' | append: ids | append: '~' | append: bp.url | append: '~'
+          echo bp.featured_image | image_url: width: 240
+          echo '~' | append: bp.price | append: '~1'
+        endcapture
+        assign out = out | append: rec | append: '@@'
+        assign found = found | append: bp_[0] | append: ','
+      endfor
+    endfor
+  endfor
+  echo out | remove: '|' | strip_newlines
+-%}

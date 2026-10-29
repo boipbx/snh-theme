@@ -3,12 +3,12 @@
   every widget (feed, orders, running low, picks, quick actions) reads one format.
   Real: order. Mock: mock: true, line "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url
   |dispatched days ago|courier|tracking number|cancelled 1" (products come from all_products, so the mock shows real
-  packs; the re-order ids are blanked). deliver_days: days after dispatch an order counts as delivered (section setting).
+  packs; the order-level re-order list is blanked and every add button is disabled on the mock). deliver_days: days after dispatch an order counts as delivered (section setting).
   Prints fields joined by "|": 0 name · 1 url · 2 created (unix) · 3 financial key · 4 financial label · 5 fulfilment key
   · 6 fulfilment label · 7 subtotal (cents) · 8 total (cents) · 9 refunded (cents) · 10 item count · 11 cancelled 1/0 ·
   12 tracking url · 13 re-order "variant:qty,…" · 14 items, joined by ";;", each "~"-separated: product id · title ·
   variant title · qty · line price (cents) · image url · url · servings (0 = unknown) · variant id · type · vendor · handle
-  Round 10 adds, after the items: 15 status key · 16 status label · 17 dispatched (unix, '' = not yet) · 18 courier ·
+  · available now 1/0 · price now (cents, one unit). Round 10 adds, after the items: 15 status key · 16 status label · 17 dispatched (unix, '' = not yet) · 18 courier ·
   19 tracking number · 20 delivered by (unix, estimate).
   One human status from Shopify's financial + fulfilment states (Liquid has no delivery confirmation):
   cancelled → Cancelled · refunded / voided → Refunded · unfulfilled → Processing · fulfilled or partly fulfilled
@@ -61,9 +61,22 @@
         if p.has_only_default_variant
           assign vt = ''
         endif
+        # brand in its own casing, as the v2 card shows it ("APPLIED NUTRITION Critical Whey" → "Applied Nutrition Critical Whey")
+        assign dt = p.title
+        assign vu = p.vendor | upcase
+        assign head = dt | slice: 0, vu.size | upcase
+        if vu != blank and head == vu and p.vendor != vu
+          assign dt = dt | slice: vu.size, 300 | prepend: p.vendor
+        endif
         capture it
-          echo p.id | append: '~' | append: p.title | append: '~' | append: vt | append: '~' | append: q | append: '~' | append: lp | append: '~'
-          echo p.featured_image | image_url: width: 200 | append: '~' | append: p.url | append: '~' | append: sv | append: '~~' | append: p.type | append: '~' | append: p.vendor | append: '~' | append: p.handle
+          echo p.id | append: '~' | append: dt | append: '~' | append: vt | append: '~' | append: q | append: '~' | append: lp | append: '~'
+          echo p.featured_image | image_url: width: 240 | append: '~' | append: p.url | append: '~' | append: sv | append: '~' | append: v.id | append: '~' | append: p.type | append: '~' | append: p.vendor | append: '~' | append: p.handle
+          if v.available
+            echo '~1~'
+          else
+            echo '~0~'
+          endif
+          echo v.price
         endcapture
         if items != ''
           assign items = items | append: ';;'
@@ -136,12 +149,23 @@
         assign vt = ''
       endif
       assign t = li.product.title | default: li.title
+      assign vu = li.vendor | upcase
+      assign head = t | slice: 0, vu.size | upcase
+      if vu != blank and head == vu and li.vendor != vu
+        assign t = t | slice: vu.size, 300 | prepend: li.vendor
+      endif
       capture it
         echo li.product_id | append: '~' | append: t | append: '~' | append: vt | append: '~' | append: li.quantity | append: '~' | append: li.final_line_price | append: '~'
         if li.image
-          echo li.image | image_url: width: 200
+          echo li.image | image_url: width: 240
         endif
         echo '~' | append: li.url | append: '~' | append: sv | append: '~' | append: li.variant_id | append: '~' | append: li.product.type | append: '~' | append: li.vendor | append: '~' | append: li.product.handle
+        if li.variant.available
+          echo '~1~'
+        else
+          echo '~0~'
+        endif
+        echo li.variant.price
       endcapture
       if items != ''
         assign items = items | append: ';;'

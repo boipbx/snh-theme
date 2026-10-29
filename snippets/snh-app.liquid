@@ -51,6 +51,11 @@
   assign bday = me[7] | default: t_bday
   assign joined = me[8] | default: t_joined
 
+  capture bundles
+    render 'snh-app-bundles', recent: recent, handles: s.bundle_handles
+  endcapture
+  assign bundles = bundles | strip | split: '@@'
+
   assign views = 'overview,rewards,orders,goals,profile' | split: ','
   assign pts_label = 'No points yet'
   if m[3] != 'x'
@@ -110,13 +115,13 @@
         <button class="app__x" type="button" data-flash-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
       </div>
       <section class="app__view" data-pane="overview" aria-labelledby="{{ sid }}-overview-h">
-        {%- render 'snh-app-overview', m: m, me: me, recent: recent, s: s, blocks: blocks, sid: sid, mock: mock, goal: goal, pending: pending, phone: phone, bday: bday, joined: joined -%}
+        {%- render 'snh-app-overview', m: m, me: me, recent: recent, s: s, blocks: blocks, sid: sid, mock: mock, goal: goal, pending: pending, phone: phone, bday: bday, joined: joined, bundles: bundles -%}
       </section>
       <section class="app__view" data-pane="rewards" aria-labelledby="{{ sid }}-rewards-h">
         {%- render 'snh-app-rewards', m: m, me: me, blocks: blocks, sid: sid, mock: mock, pending: pending -%}
       </section>
       <section class="app__view" data-pane="orders" aria-labelledby="{{ sid }}-orders-h">
-        {%- render 'snh-app-orders', m: m, me: me, page_orders: page_orders, pagination_html: pagination_html, page_no: page_no, sid: sid, mock: mock -%}
+        {%- render 'snh-app-orders', m: m, me: me, page_orders: page_orders, pagination_html: pagination_html, page_no: page_no, sid: sid, mock: mock, bundles: bundles -%}
       </section>
       <section class="app__view" data-pane="goals" aria-labelledby="{{ sid }}-goals-h">
         {%- render 'snh-app-goals', me: me, blocks: blocks, sid: sid, mock: mock, goal: goal, freq: freq, sport: sport, phone: phone, bday: bday -%}
@@ -140,6 +145,14 @@
     {%- endfor -%}
   </nav>
   <p class="v-sr" aria-live="polite" data-app-live></p>
+
+  {%- comment -%} Re-order preview (Round 10): filled from the order's <template> (snippets/snh-app-reorder) {%- endcomment -%}
+  <dialog class="out rep" data-reorder-dlg aria-label="Re-order">
+    <div class="out__in rep__in">
+      <button class="app__x rep__x" type="button" data-reorder-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
+      <div class="rep__body" data-reorder-body></div>
+    </div>
+  </dialog>
 
   {%- comment -%} Sign out (Round 10): a confirm sheet; the links still sign out directly without JS {%- endcomment -%}
   <dialog class="out" data-signout aria-labelledby="{{ sid }}-out-h">

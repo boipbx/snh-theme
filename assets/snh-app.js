@@ -106,6 +106,9 @@
         return p.then(function (last) { return post([it], '').then(function (j) { return j; }, function () { failed++; return last; }); });
       }, Promise.resolve(null)).then(function (j) { if (failed === items.length) throw new Error('none'); return j; });
     }).then(function (added) {
+      // from the preview sheet: close it first so the cart drawer opens on top
+      var dlg = btn.closest('dialog');
+      if (dlg && !failed) dlg.close();
       return cartEvents(added, btn).then(function () {
         if (failed) showErr(box, 'Added ' + (items.length - failed) + ' of ' + items.length + ' items. The rest are sold out or have changed since your order.');
         else say('Added to your basket');
@@ -298,6 +301,8 @@
       }
       var r = e.target.closest('[data-app-reorder]');
       if (r && !r.disabled && !mock) reorder(r);
+      var ro = e.target.closest('[data-reorder-open]');
+      if (ro) openReorder(ro.getAttribute('data-reorder-open'));
     });
     window.addEventListener('popstate', function () { var v = location.hash.slice(1); if (VIEWS.indexOf(v) > -1) show(v, { scroll: true }); });
 
@@ -335,6 +340,22 @@
         box.hidden = !on;
       });
     });
+
+    /* re-order preview: what goes in the basket, per-item stock and price, then "Add N items" */
+    var rdlg = app.querySelector('[data-reorder-dlg]');
+    function openReorder(id) {
+      var tpl = document.getElementById(id);
+      if (!rdlg || !tpl || !rdlg.showModal) return;
+      var body = rdlg.querySelector('[data-reorder-body]');
+      body.innerHTML = '';
+      body.appendChild(tpl.content.cloneNode(true));
+      rdlg.showModal();
+      var go = body.querySelector('[data-app-reorder]:not([disabled])') || rdlg.querySelector('[data-reorder-close]');
+      if (go) go.focus();
+    }
+    if (rdlg) {
+      rdlg.addEventListener('click', function (e) { if (e.target === rdlg || e.target.closest('[data-reorder-close]')) rdlg.close(); });
+    }
 
     /* sign out: confirm sheet ("Stay signed in" is the default) */
     var out = app.querySelector('[data-signout]');

@@ -1,0 +1,48 @@
+{%- comment -%}
+  Member app · "Active order" (Round 10): the newest order that is still processing, packed or shipped, pinned at the
+  top of Orders and on Overview, with the compact status stepper and Track parcel / View order.
+  orders: snh-app-order-data records (newest first) · sid · h: heading level class (default app__h2)
+{%- endcomment -%}
+{%- liquid
+  assign act = nil
+  for r in orders
+    if r == blank
+      continue
+    endif
+    assign o = r | split: '|'
+    if o[15] == 'processing' or o[15] == 'packed' or o[15] == 'shipped'
+      assign act = o
+      break
+    endif
+  endfor
+-%}
+{%- if act -%}
+  {%- assign lis = act[14] | split: ';;' -%}
+  <section class="active" aria-labelledby="{{ sid }}-act-h">
+    <div class="active__top">
+      <div class="active__id">
+        <p class="eyebrow">Active order</p>
+        <h2 class="app__h3" id="{{ sid }}-act-h">Order {{ act[0] }} · <span class="active__st">{{ act[16] }}</span></h2>
+        <p class="app__muted">Placed {{ act[2] | date: '%d %b' }} · {{ act[10] }} item{% if act[10] != '1' %}s{% endif %} · {{ act[8] | money_without_trailing_zeros }}</p>
+      </div>
+      <ul class="active__imgs" role="list" aria-hidden="true">
+        {%- for li in lis limit: 3 -%}
+          {%- assign it = li | split: '~' -%}
+          {%- assign framed = false -%}
+          {%- assign iu = it[5] | downcase -%}{%- if iu contains 'sportsnutritionhub' or iu contains 'snh-frame' -%}{%- assign framed = true -%}{%- endif -%}
+          <li class="oimg{% if framed %} is-framed{% endif %}">{% if it[5] != blank %}<img src="{{ it[5] }}" alt="" width="56" height="56" loading="lazy">{% endif %}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    {%- render 'snh-app-timeline', o: act, compact: true -%}
+    <div class="active__acts">
+      {%- if act[12] != blank -%}
+        <a class="v-btn v-btn--accent v-btn--sm" href="{{ act[12] }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'truck' %}<span>Track parcel</span></a>
+        {%- if act[18] != blank -%}<span class="app__muted">{{ act[18] | escape }}{% if act[19] != blank %} · {{ act[19] | escape }}{% endif %}</span>{%- endif -%}
+      {%- else -%}
+        <span class="app__muted">{% if act[15] == 'shipped' %}{{ act[18] | default: 'On its way' | escape }}{% if act[19] != blank %} · {{ act[19] | escape }}{% endif %}{% else %}Tracking appears here once it's dispatched.{% endif %}</span>
+      {%- endif -%}
+      <a class="v-link active__view" href="{{ act[1] }}">View order</a>
+    </div>
+  </section>
+{%- endif -%}

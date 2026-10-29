@@ -1,0 +1,119 @@
+{%- comment -%}
+  Member app · order status timeline (Round 10): Ordered → Paid → Packed → Shipped → Delivered, from what Shopify
+  gives the theme: order created_at, financial status, fulfilment status, and the latest fulfilment (created_at,
+  tracking_company, tracking_number, tracking_url). Cancelled / refunded orders end in that state instead.
+  Liquid has no delivery confirmation, so "Delivered" is assumed a set number of days after dispatch (section setting)
+  and labelled "around". What the POS/courier must write for real tracking: ELITE-ROADMAP.md §2.
+  o: split snh-app-order-data record · compact: true = the horizontal stepper (active order) · tid: unique id
+{%- endcomment -%}
+{%- liquid
+  assign sk = o[15]
+  assign paid = false
+  if o[3] == 'paid' or o[3] == 'partially_refunded' or o[3] == 'refunded' or o[3] == 'partially_paid'
+    assign paid = true
+  endif
+  case sk
+    when 'processing'
+      if paid
+        assign at = 3
+      else
+        assign at = 2
+      endif
+    when 'packed'
+      assign at = 4
+    when 'shipped'
+      assign at = 5
+    when 'delivered'
+      assign at = 6
+    else
+      assign at = 0
+  endcase
+  assign steps = 'Ordered,Paid,Packed,Shipped,Delivered' | split: ','
+  if sk == 'cancelled'
+    assign steps = 'Ordered,Cancelled' | split: ','
+  elsif sk == 'refunded'
+    assign steps = 'Ordered,Paid,Refunded' | split: ','
+  endif
+-%}
+<ol class="otl{% if compact %} otl--row{% endif %}{% if at == 0 %} otl--end{% endif %}" role="list" aria-label="Order progress">
+  {%- for st in steps -%}
+    {%- liquid
+      assign i = forloop.index
+      assign cls = ''
+      if at == 0
+        if forloop.last
+          assign cls = 'is-off'
+        else
+          assign cls = 'is-done'
+        endif
+      elsif i < at
+        assign cls = 'is-done'
+      elsif i == at
+        assign cls = 'is-now'
+      endif
+      assign when = ''
+      assign note = ''
+      case st
+        when 'Ordered'
+          assign when = o[2] | date: '%d %b, %H:%M'
+        when 'Paid'
+          if paid
+            assign note = 'Payment received'
+          elsif o[3] == 'authorized'
+            assign note = 'Payment authorised'
+          else
+            assign note = 'Awaiting payment'
+          endif
+        when 'Packed'
+          if o[17] != blank
+            assign when = o[17] | date: '%d %b'
+          elsif i == at
+            assign note = 'We’re picking and packing it'
+          endif
+        when 'Shipped'
+          if i < at or i == at
+            if o[17] != blank
+              assign when = o[17] | date: '%d %b'
+            endif
+            if o[18] != blank
+              assign note = o[18]
+              if o[19] != blank
+                assign note = note | append: ' · ' | append: o[19]
+              endif
+            elsif i < at
+              assign note = 'Out for delivery'
+            endif
+          endif
+        when 'Delivered'
+          if i < at
+            assign when = o[20] | date: '%d %b'
+            assign note = 'Around this date'
+          elsif o[20] != blank
+            capture note
+              echo 'Expected by '
+              echo o[20] | date: '%d %b'
+            endcapture
+          endif
+        when 'Cancelled'
+          assign note = 'This order was cancelled'
+        when 'Refunded'
+          assign note = o[9] | money_without_trailing_zeros | prepend: 'Refunded '
+      endcase
+    -%}
+    <li class="otl__s {{ cls }}"{% if i == at %} aria-current="step"{% endif %}>
+      <span class="otl__dot" aria-hidden="true">{% if cls == 'is-done' %}{% render 'snh-v2-icon', name: 'check' %}{% elsif cls == 'is-off' %}{% render 'snh-v2-icon', name: 'close' %}{% endif %}</span>
+      <span class="otl__b">
+        <b>{{ st }}</b>
+        {%- if when != blank -%}<i>{{ when }}</i>{%- endif -%}
+        {%- if note != blank and compact != true -%}<i>{{ note | escape }}</i>{%- endif -%}
+      </span>
+    </li>
+  {%- endfor -%}
+</ol>
+{%- unless compact -%}
+  {%- if o[12] != blank -%}
+    <a class="v-btn v-btn--ink v-btn--sm otl__track" href="{{ o[12] }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'truck' %}<span>Track parcel</span></a>
+  {%- elsif sk == 'processing' or sk == 'packed' -%}
+    <p class="app__note otl__wait">{% render 'snh-v2-icon', name: 'clock' %}Tracking appears here once your order is dispatched.</p>
+  {%- endif -%}
+{%- endunless -%}

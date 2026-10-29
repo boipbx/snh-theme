@@ -1,0 +1,67 @@
+{%- comment -%}
+  Member app · one order card (Round 10): order number, date, one human status with a colour, the lines (clean pack
+  shot with the SNH orange frame cropped like the v2 product card, name + variant, qty, price), total, est. points,
+  "Track & details" (status timeline + tracking), Re-order with a preview, and a "Now in a bundle" card when a bought
+  product is in a bundle.
+  o: split snh-app-order-data record · rate · did: unique id · bundle: one snh-app-bundles record or '' · mock
+{%- endcomment -%}
+{%- liquid
+  assign lis = o[14] | split: ';;'
+  assign earn = o[7] | divided_by: 100 | times: rate | divided_by: 100
+  assign titles = o[0] | remove: '#'
+  for li in lis
+    assign it = li | split: '~'
+    assign titles = titles | append: ' ' | append: it[1] | append: ' ' | append: it[2] | append: ' ' | append: it[10]
+  endfor
+  assign st = o[15] | append: ' ' | append: o[3]
+  assign bm = nil
+  if bundle != blank
+    assign bm = bundle | split: '~'
+  endif
+-%}
+<li class="ocard" data-order data-status="{{ st | escape }}" data-q="{{ o[0] | append: ' ' | append: titles | downcase | escape }}">
+  <div class="ocard__top">
+    <div class="ocard__id">
+      <p class="ocard__no"><a href="{{ o[1] }}">Order {{ o[0] }}</a></p>
+      <p class="ocard__m"><time datetime="{{ o[2] | date: '%Y-%m-%d' }}">{{ o[2] | date: '%d %b %Y' }}</time> · {{ o[10] }} item{% if o[10] != '1' %}s{% endif %}</p>
+    </div>
+    <span class="ostat ostat--{{ o[15] }}"><i aria-hidden="true"></i>{{ o[16] }}</span>
+  </div>
+  <ul class="ocard__lines" role="list">
+    {%- for li in lis limit: 3 -%}
+      {%- assign it = li | split: '~' -%}
+      {%- assign framed = false -%}
+      {%- assign iu = it[5] | downcase -%}{%- if iu contains 'sportsnutritionhub' or iu contains 'snh-frame' -%}{%- assign framed = true -%}{%- endif -%}
+      <li class="oline">
+        <a class="oimg{% if framed %} is-framed{% endif %}" href="{{ it[6] }}" tabindex="-1" aria-hidden="true">{% if it[5] != blank %}<img src="{{ it[5] }}" alt="" width="72" height="72" loading="lazy">{% else %}<i>SNH</i>{% endif %}</a>
+        <span class="oline__t"><a href="{{ it[6] }}">{{ it[1] | escape }}</a>{% if it[2] != blank %}<i>{{ it[2] | escape }}</i>{% endif %}<i class="oline__q">Qty {{ it[3] }}</i></span>
+        <span class="oline__p">{{ it[4] | money_without_trailing_zeros }}</span>
+      </li>
+    {%- endfor -%}
+  </ul>
+  {%- if lis.size > 3 -%}<p class="ocard__more">+ {{ lis.size | minus: 3 }} more item{% if lis.size != 4 %}s{% endif %} in Track &amp; details</p>{%- endif -%}
+  <div class="ocard__sum">
+    {%- if o[3] contains 'paid' or o[3] == 'partially_refunded' -%}{%- if o[11] != '1' -%}<span class="ocard__pts">{% render 'snh-v2-icon', name: 'badge' %}+{% render 'snh-num', n: earn %} pts est.</span>{%- endif -%}{%- endif -%}
+    <p class="ocard__total"><span>Total</span> <b>{{ o[8] | money_without_trailing_zeros }}</b></p>
+  </div>
+  <div class="ocard__acts">
+    <button class="v-btn v-btn--line v-btn--sm ocard__det" type="button" aria-expanded="false" aria-controls="{{ did }}" data-order-toggle><span>Track &amp; details</span>{% render 'snh-v2-icon', name: 'chev' %}</button>
+    {%- assign rid = did | append: '-re' -%}
+    {%- if o[13] != blank or mock -%}{%- render 'snh-app-reorder', o: o, did: rid, mock: mock -%}{%- endif -%}
+    <a class="v-link ocard__view" href="{{ o[1] }}">View order</a>
+  </div>
+  <div class="ocard__detail" id="{{ did }}" hidden>
+    {%- render 'snh-app-timeline', o: o -%}
+    {%- if lis.size > 3 -%}
+      <ul class="ocard__lines ocard__lines--rest" role="list">
+        {%- for li in lis offset: 3 -%}
+          {%- assign it = li | split: '~' -%}
+          {%- assign framed = false -%}
+          {%- assign iu = it[5] | downcase -%}{%- if iu contains 'sportsnutritionhub' or iu contains 'snh-frame' -%}{%- assign framed = true -%}{%- endif -%}
+          <li class="oline"><span class="oimg{% if framed %} is-framed{% endif %}">{% if it[5] != blank %}<img src="{{ it[5] }}" alt="" width="72" height="72" loading="lazy">{% endif %}</span><span class="oline__t"><a href="{{ it[6] }}">{{ it[1] | escape }}</a>{% if it[2] != blank %}<i>{{ it[2] | escape }}</i>{% endif %}<i class="oline__q">Qty {{ it[3] }}</i></span><span class="oline__p">{{ it[4] | money_without_trailing_zeros }}</span></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+  {%- if bm -%}{%- render 'snh-app-bundle-card', b: bm, mock: mock, compact: true -%}{%- endif -%}
+</li>

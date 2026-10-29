@@ -91,7 +91,32 @@ account-created date), orders and line items, addresses, `accepts_marketing`. Pr
 | Points-expiry and birthday emails | the theme can't send anything | Klaviyo flows on the synced profile properties: `loyalty_points`, `loyalty_tier`, `facts.birth_date` (date-property trigger), expiry date from the loyalty system. |
 | OTP / mobile sign-in | not possible with classic accounts in a theme | New customer accounts (one-time code by **email**) or a passwordless app. The sign-in page has a hidden, disabled placeholder slot (*Mobile sign-in* setting). |
 
-## 3. The custom app for the SNH 360 back office (future)
+### Order tracking: what the POS / courier must write to Shopify (Round 10)
+The Orders view turns Shopify's states into one status and a timeline (Ordered → Paid → Packed → Shipped →
+Delivered). The theme can only read what's on the order:
+
+| Timeline step | Read from | Who must write it |
+|---|---|---|
+| Ordered | `order.created_at` | Shopify (automatic) |
+| Paid | `order.financial_status` (`paid`, `partially_refunded`…) | Checkout / POS when payment is captured; **COD orders must be marked paid on delivery** or they stay "Awaiting payment" |
+| Packed | a fulfilment exists (`fulfillment.created_at`) | POS / staff **create the fulfilment when the parcel is packed and handed over** (not days later) |
+| Shipped | the fulfilment has `tracking_number` and/or `tracking_url` (+ `tracking_company`) | POS / courier integration adds tracking to the fulfilment. Without a number the order shows **Packed** and "Tracking appears here once dispatched". With a URL a **Track parcel** button appears. Use the courier's public tracking URL with the number in it. |
+| Delivered | **not available to Liquid.** The theme assumes delivery N days after dispatch (*Account page → Orders → Show an order as delivered after*, default 4) and says "around" | For a real delivered state: the courier integration (or Flow) should update the fulfilment's shipment status (`delivered`) through the Admin API. Liquid still can't read that, so the SNH Elite app proxy (§5) should serve `/apps/elite/orders` with the real shipment status, or write `order.metafields.custom.delivered_at` (date), which the theme can then read. |
+| Cancelled / Refunded | `order.cancelled`, `financial_status` `refunded`/`voided` | Shopify (automatic) |
+
+Status rules (`snippets/snh-app-order-data`): cancelled → Cancelled · refunded/voided → Refunded · no fulfilment →
+Processing · fulfilment without tracking → Packed · with tracking → Shipped · fulfilled and dispatched N+ days ago →
+Delivered. Partial fulfilments show Packed/Shipped until the rest is sent.
+
+### "Now in a bundle" (Round 10)
+For each product in the member's recent orders (first 6), the app looks for a bundle in **Theme settings → SNH bundle
+offers** (product lists, the PDP bundle box) and then in the **bundle collections** (*Account page → Bundle
+collections*, default the PDP *Bundle & save* handles): a bundle product whose description names the bought product's
+base name. Saving = compare-at price, else the bundle price sheet already used on the PDP. Shown once under the
+newest order with that product, and the first match on Overview. Single-variant bundles add straight to the basket;
+others link to the bundle.
+
+
 - **Admin dashboard**: members by tier, growth, points issued/redeemed, liability (points × Rs value).
 - **Points ledger**: every earn / redeem / refund reversal / manual adjustment with reason and staff user; becomes the
   source of truth that writes `loyalty_points`, `loyalty_tier`, `annual_spend` back to the customer.
