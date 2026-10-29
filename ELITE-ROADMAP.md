@@ -30,7 +30,9 @@ Links into the views: header account panel, account nav (order + addresses pages
 | Addresses | native `customer_address` add / edit, delete with `_method=delete` after an inline confirm | `snippets/snh-address-form`, `snh-app-profile` |
 | Email marketing | customer form with `contact[accepts_marketing]=true`, tag `newsletter` (only shown when not subscribed) | `snh-app-profile` |
 | Re-order | `/cart/add.js` with every line, falls back line by line and says what couldn't be added. **The V8 auto cart-clear (empty the cart if it was last touched 3+ days ago) is removed**: it emptied carts without asking. | `assets/snh-app.js` |
-| Avatar | localStorage `snh_vector_avatar` (same key as V8; cosmetic, this device only) | `assets/snh-app.js` |
+| Avatar | localStorage `snh_vector_avatar` (V8 key; V8 icons + Round 10 sporty presets `s-run`, `s-racket` …) and `snh_avatar_colour` (tier · orange · ink · teal · violet · green); cosmetic, this device only. Optional photo upload → app proxy `/apps/elite/avatar` (setting, off; contract in §5) | `snippets/snh-app-profile`, `assets/snh-app.js` |
+| Birthday (Profile) | customer form, `contact[tags]=bday:YYYY-MM-DD`, `return_to=/account?snh_posted=bday#profile` (normal POST, hCaptcha) | `snippets/snh-app-profile` |
+| Referral notify-me | customer form, `contact[tags]=notify:referrals`, back to `#overview` (only while referral rewards aren't live) | `snippets/snh-app-overview` |
 
 The **customer note can't be read by Liquid**, so phone/birthday from registration are also sent as tags (`mobile:`,
 `bday:`) with the new account, until a backend copies them somewhere readable (see §2).

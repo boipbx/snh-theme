@@ -46,6 +46,15 @@
       endunless
     endfor
   endcapture
+  # photo avatar (Round 10): customer.metafields.custom.avatar, a file reference or a URL, written by the future
+  # app proxy /apps/elite/avatar (ELITE-ROADMAP.md §5). Empty = the preset avatars.
+  assign av = customer.metafields.custom.avatar.value
+  assign avatar_url = ''
+  if av.src or av.preview_image
+    assign avatar_url = av | image_url: width: 240, height: 240, crop: 'center'
+  elsif av != blank
+    assign avatar_url = av | append: ''
+  endif
 -%}
 {%- paginate customer.orders by 16 -%}
   {%- capture page_orders -%}
@@ -67,7 +76,8 @@
   page_no: page_no,
   s: section.settings,
   blocks: section.blocks,
-  sid: section.id
+  sid: section.id,
+  avatar_url: avatar_url
 -%}
 
 {% schema %}
@@ -85,7 +95,10 @@
     { "type": "header", "content": "Referral" },
     { "type": "text", "id": "refer_text", "label": "Referral card heading", "default": "Give Rs 500, *get* Rs 500", "info": "Leave empty to hide. Wrap a word in *asterisks* for the serif." },
     { "type": "text", "id": "refer_body", "label": "Referral card text", "default": "Share SNH Elite with a friend. When they shop, you both win." },
-    { "type": "url", "id": "refer_link", "label": "Referral link", "info": "Until a referral app is installed this goes to the contact page." },
+    { "type": "url", "id": "refer_link", "label": "Referral link", "info": "Only used with \"Referral rewards are live\"." },
+    { "type": "checkbox", "id": "refer_live", "label": "Referral rewards are live", "default": false, "info": "Off: the card says referral rewards are coming soon, with a notify-me button. A referral app's block (Add block → Apps) replaces the card." },
+    { "type": "header", "content": "Profile photo" },
+    { "type": "checkbox", "id": "avatar_upload", "label": "Show \"Upload a photo\"", "default": false, "info": "Needs the SNH Elite app proxy (/apps/elite/avatar). Leave off until it's live." },
     { "type": "header", "content": "Marketing preferences" },
     { "type": "checkbox", "id": "sms_live", "label": "SMS updates are live", "default": false, "info": "Off shows SMS as \"coming soon\". The app also switches it on when it finds an SMS app (Postscript, Attentive, Yotpo SMS) on the page." },
     { "type": "header", "content": "Goals" },
@@ -93,6 +106,7 @@
     { "type": "checkbox", "id": "goal_prompt", "label": "Prompt members with no goal to personalise", "default": true }
   ],
   "blocks": [
+    { "type": "@app" },
     { "type": "goal", "name": "Goal", "settings": [
       { "type": "select", "id": "key", "label": "Goal", "options": [
         { "value": "build-muscle", "label": "Build muscle" },

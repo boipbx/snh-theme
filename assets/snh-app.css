@@ -240,6 +240,13 @@
   .refer__go { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; height: 44px; padding: 0 20px; border-radius: var(--pill); background: var(--white); color: var(--ink); }
 }
 .refer__go svg { width: 16px; height: 16px; transition: transform var(--t) var(--ease); }
+.refer__form { display: contents; }
+.refer--soon button.refer__go { border: 0; cursor: pointer; font-family: var(--sans); }
+.refer--soon .refer__go { color: inherit; background: none; padding: 0; }
+@media (min-width: 768px) { .refer--soon .refer__go { color: var(--ink); background: var(--white); padding: 0 20px; } }
+.refer__go--on svg { width: 16px; height: 16px; }
+.refer--app { display: block; padding: 0; background: none; color: var(--ink); }
+.refer--app::before { display: none; }
 .refer:hover .refer__go svg { transform: translateX(4px); }
 
 .feed { display: grid; margin: 0; padding: 0; list-style: none; }
@@ -677,13 +684,51 @@
 
 /* ---------- profile ---------- */
 .pro { display: grid; gap: 40px; }
-.pro__id { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; }
+/* profile header (Round 10): big avatar inside the completeness ring, name, tier, actions, avatar studio */
+.pro__id { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px 24px; align-items: center; padding: 24px 20px; border-radius: 24px; overflow: hidden; isolation: isolate; background: var(--cream); }
+.pro__id::before { content: ""; position: absolute; right: -10%; top: -60%; z-index: -1; width: 50%; aspect-ratio: 1; border-radius: 50%; background: linear-gradient(150deg, var(--mc1), var(--mc3)); opacity: .18; filter: blur(40px); }
+.pro__av { position: relative; display: grid; place-items: center; width: 128px; height: 128px; }
+.pro__ring { position: absolute; inset: 0; }
+.pro__ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.pro__ring circle { fill: none; stroke-width: 4; stroke: rgba(12, 12, 13, .08); }
+.pro__ring circle + circle { stroke: var(--v-accent); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p)); animation: pro-ring 1s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes pro-ring { from { stroke-dashoffset: 100; } }
+.app__av--xl { width: 112px; height: 112px; font-size: 36px; color: var(--mc-ink); background: linear-gradient(150deg, var(--mc1), var(--mc3)); box-shadow: 0 8px 20px var(--mc-sh); }
+.app__av--xl svg { width: 48px; height: 48px; }
+.app__av img { width: 100%; height: 100%; object-fit: cover; }
 .pro__who { display: grid; gap: 4px; min-width: 0; }
-.pro__name { font: 600 var(--t-h4)/1.1 var(--sans); letter-spacing: -.02em; overflow-wrap: anywhere; }
-.pro__id .app__tier { color: var(--grey-1); }
+.pro__name { font: 600 var(--t-h3)/1.1 var(--sans); letter-spacing: -.02em; overflow-wrap: break-word; }
+.pro__id .app__tier { flex-wrap: wrap; color: var(--grey-1); font-size: 14px; }
 .pro__id .app__dot { box-shadow: 0 0 0 2px var(--white), 0 0 0 3px var(--line); }
-.pro__id .v-btn svg { width: 16px; height: 16px; }
-@media (max-width: 599px) { .pro__id { grid-template-columns: auto minmax(0, 1fr); } .pro__id .v-btn { grid-column: 1 / -1; } }
+.pro__pct { font-size: 14px; line-height: 1.5; color: var(--grey-1); }
+.pro__pct b { color: var(--v-accent); }
+.pro__pct a { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.pro__acts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.pro__acts .v-btn svg { width: 16px; height: 16px; }
+.pro__avp { grid-column: 1 / -1; display: grid; gap: 16px; padding: 20px; border-radius: 16px; background: var(--white); }
+.pro__avp[hidden] { display: none; }
+.avp__g { display: grid; gap: 8px; }
+.avp__l { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2); }
+.avp__c { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 2px solid transparent; border-radius: 50%; background: none; cursor: pointer; }
+.avp__c i { width: 32px; height: 32px; border-radius: 50%; background: var(--av-bg); }
+.avp__c[aria-checked="true"] { border-color: var(--ink); }
+[data-av-c="tier"] { --av-bg: linear-gradient(150deg, var(--mc1), var(--mc3)); }
+[data-av-c="orange"] { --av-bg: linear-gradient(150deg, #F2763F, #B23C11); }
+[data-av-c="ink"] { --av-bg: linear-gradient(150deg, #3A3A3D, #0C0C0D); }
+[data-av-c="teal"] { --av-bg: linear-gradient(150deg, #2BB5A6, #0E5E57); }
+[data-av-c="violet"] { --av-bg: linear-gradient(150deg, #8E6BE8, #43248F); }
+[data-av-c="green"] { --av-bg: linear-gradient(150deg, #47B26B, #175C31); }
+.app__av[data-av-c] { background: var(--av-bg); color: var(--white); }
+.avp__up .v-btn { position: relative; justify-self: start; cursor: pointer; }
+.avp__up .v-btn svg { width: 16px; height: 16px; }
+@media (min-width: 768px) {
+  .pro__id { grid-template-columns: auto minmax(0, 1fr) auto; padding: 32px; }
+  .pro__acts { grid-column: auto; flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 599px) { .pro__av { width: 104px; height: 104px; } .app__av--xl { width: 88px; height: 88px; font-size: 28px; } .pro__id { grid-template-columns: 1fr; justify-items: start; } }
+.pro__bday { display: block; }
+.pro__bday [data-bday-box]:not([hidden]) { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 4px; }
+.pro__bday .fld { flex: 1 1 180px; }
 .pro__add { padding: 0; border: 0; background: none; font-size: 15px; cursor: pointer; }
 .pro__addrs { margin: 0; }
 @media (min-width: 1200px) { .pro .addrs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -738,7 +783,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .out[open] { animation: none; }
-  .ostat i, .tj__fill, .tj__you, .tnext:hover .metal__sheen { animation: none; }
+  .pro__ring circle + circle, .ostat i, .tj__fill, .tj__you, .tnext:hover .metal__sheen { animation: none; }
   .app__view.is-in, .edit[open], .metal__stats > div, .metal__track i, .rwd__fx, .rwd__ath { animation: none; }
   .metal:hover .metal__sheen, .tmetal:hover .metal__sheen { animation: none; }
   .rwd__ath--1 { opacity: .28; }

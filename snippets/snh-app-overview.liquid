@@ -98,13 +98,36 @@
     {%- endif -%}
     <li><a class="qact__a" href="#rewards" data-go="rewards"{% if m[14] == '1' and pending != true %} data-redeem-open{% endif %}>{% render 'snh-v2-icon', name: 'gift' %}<span><b>Redeem points</b><i>{% if pending %}Request pending{% elsif m[14] == '1' %}Reward ready{% elsif m[3] == 'x' %}From {% render 'snh-num', n: redeem_from %} points{% else %}{% render 'snh-num', n: m[15] %} to go{% endif %}</i></span></a></li>
   </ul>
-  {%- if s.refer_text != blank or s == nil -%}
-    {%- assign rparts = s.refer_text | default: 'Give Rs 500, *get* Rs 500' | split: '*' -%}
+  {%- comment -%}
+    Refer a friend (Round 10): a referral app's block (Add block → Apps) replaces the card; with "Referral rewards
+    are live" the card links out; otherwise it says rewards are coming soon, honestly, with a notify-me button
+    (customer form, tag notify:referrals, normal POST with hCaptcha). Requirements: ELITE-ROADMAP.md §5.
+  {%- endcomment -%}
+  {%- assign ref_apps = blocks | where: 'type', '@app' -%}
+  {%- assign tl = me[11] | downcase -%}
+  {%- if ref_apps.size > 0 -%}
+    <div class="refer refer--app">{%- for b in ref_apps -%}{% render b %}{%- endfor -%}</div>
+  {%- elsif s.refer_live and s.refer_text != blank -%}
+    {%- assign rparts = s.refer_text | split: '*' -%}
     <a class="refer" href="{% if mock %}#overview{% else %}{{ s.refer_link | default: '/pages/contact' }}{% endif %}">
       <span class="refer__h">{%- for p in rparts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</span>
       <span class="refer__p">{{ s.refer_body | default: 'Share SNH Elite with a friend. When they shop, you both win.' | escape }}</span>
       <span class="refer__go">Refer a friend {% render 'snh-v2-icon', name: 'arrow' %}</span>
     </a>
+  {%- else -%}
+    <div class="refer refer--soon">
+      <span class="refer__h">Referral rewards are <em>coming soon</em></span>
+      <span class="refer__p">Soon you'll get points when a friend you invite places their first order, and they'll get a welcome reward too.</span>
+      {%- if tl contains 'notify:referrals' -%}
+        <span class="refer__go refer__go--on">{% render 'snh-v2-icon', name: 'check' %} You're on the list</span>
+      {%- else -%}
+        {%- form 'customer', class: 'refer__form', id: 'snh-notify-form', data-shopify-captcha: 'true', data-snh-post: 'notify', return_to: '/account?snh_posted=notify#overview' -%}
+          <input type="hidden" name="contact[email]" value="{{ me[2] | escape }}">
+          <input type="hidden" name="contact[tags]" value="notify:referrals">
+          <button class="refer__go" type="{% if mock %}button{% else %}submit{% endif %}"{% if mock %} disabled{% endif %}>Notify me {% render 'snh-v2-icon', name: 'arrow' %}</button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
   {%- endif -%}
 </section>
 

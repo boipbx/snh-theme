@@ -634,18 +634,60 @@
       out.addEventListener('click', function (e) { if (e.target === out) out.close(); });
     }
 
-    /* avatar (V8 set) */
-    var picks = $$('.avp__b', app);
+    /* avatar studio (V8 icons + Round 10 sporty presets + a colour; this device only). A photo from the app
+       (custom.avatar, data-photo) always wins over the presets. */
+    var picks = $$('.avp__b', app), cols = $$('.avp__c', app);
+    var slots = $$('[data-avatar-slot]', app).filter(function (s) { return !s.hasAttribute('data-photo'); });
     function setAvatar(k, save) {
       var btn = picks.filter(function (b) { return b.getAttribute('data-avatar') === k; })[0] || picks[0];
       if (!btn) return;
       k = btn.getAttribute('data-avatar');
-      $$('[data-avatar-slot]', app).forEach(function (s) { s.innerHTML = k === 'initials' ? '<span>' + esc(s.getAttribute('data-initials')) + '</span>' : btn.innerHTML; });
+      slots.forEach(function (s) { s.innerHTML = k === 'initials' ? '<span>' + esc(s.getAttribute('data-initials')) + '</span>' : btn.innerHTML; });
       picks.forEach(function (b) { b.setAttribute('aria-checked', String(b === btn)); });
       if (save) lsSet('snh_vector_avatar', k);
     }
+    function setColour(c, save) {
+      var btn = cols.filter(function (b) { return b.getAttribute('data-avatar-colour') === c; })[0];
+      c = btn ? c : 'tier';
+      $$('[data-avatar-slot]', app).forEach(function (s) { if (c === 'tier') s.removeAttribute('data-av-c'); else s.setAttribute('data-av-c', c); });
+      cols.forEach(function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-avatar-colour') === c)); });
+      if (save) lsSet('snh_avatar_colour', c);
+    }
     setAvatar(lsGet('snh_vector_avatar') || 'initials', false);
+    setColour(lsGet('snh_avatar_colour') || 'tier', false);
     picks.forEach(function (b) { b.addEventListener('click', function () { setAvatar(b.getAttribute('data-avatar'), true); }); });
+    cols.forEach(function (b) { b.addEventListener('click', function () { setColour(b.getAttribute('data-avatar-colour'), true); }); });
+    $$('[data-avp-toggle]', app).forEach(function (t) {
+      t.addEventListener('click', function () {
+        var box = document.getElementById(t.getAttribute('aria-controls')), on = t.getAttribute('aria-expanded') !== 'true';
+        t.setAttribute('aria-expanded', String(on)); box.hidden = !on;
+      });
+    });
+    // photo upload (setting, off by default): the SNH Elite app proxy stores it and writes customer.metafields.custom.avatar
+    var up = app.querySelector('[data-avatar-file]');
+    if (up) up.addEventListener('change', function () {
+      var f = up.files && up.files[0], msg = app.querySelector('[data-avatar-msg]');
+      if (!f) return;
+      if (f.size > 5 * 1024 * 1024) { msg.textContent = 'That photo is over 5 MB. Try a smaller one.'; return; }
+      var fd = new FormData(); fd.append('avatar', f);
+      msg.textContent = 'Uploading…';
+      fetch('/apps/elite/avatar', { method: 'POST', body: fd, credentials: 'same-origin', headers: { Accept: 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+        .then(function (j) {
+          if (!j || !j.url) throw new Error('no url');
+          $$('[data-avatar-slot]', app).forEach(function (s) { s.setAttribute('data-photo', ''); s.innerHTML = '<img src="' + esc(j.url) + '" alt="">'; });
+          msg.textContent = 'Photo saved.';
+        })
+        .catch(function () { msg.textContent = "Photo upload isn't available yet. Pick an avatar above instead."; });
+    });
+
+    /* birthday: reveal the field, the customer form posts tag bday:YYYY-MM-DD (normal POST, hCaptcha) */
+    var bOpen = app.querySelector('[data-bday-open]');
+    if (bOpen) {
+      var bBox = app.querySelector('[data-bday-box]'), bIn = app.querySelector('[data-bday-in]'), bTag = app.querySelector('[data-bday-tag]');
+      bOpen.addEventListener('click', function () { bBox.hidden = false; bOpen.hidden = true; bOpen.setAttribute('aria-expanded', 'true'); bIn.focus(); });
+      bIn.addEventListener('input', function () { bTag.value = bIn.value ? 'bday:' + bIn.value : ''; });
+    }
 
     /* edit profile (V8 two steps on the customer_address form; saved in the background, then back to #profile) */
     var dlg = app.querySelector('[data-edit]');

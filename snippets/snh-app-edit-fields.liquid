@@ -1,8 +1,8 @@
 {%- comment -%}
-  Edit-profile fields (Round 8, member app Profile): step 1 name + mobile + avatar, step 2 delivery address.
+  Edit-profile fields (Round 8, member app Profile): step 1 name + mobile, step 2 delivery address. (Round 10: the
+  avatar picker moved to the profile header, snippets/snh-app-profile.)
   f: the customer_address form object (real) or nil (mock) · me · phone · sid · mock.
 {%- endcomment -%}
-{%- assign avatars = 'bolt,barbell,shield,flame,trophy,heart,dumbbell' | split: ',' -%}
 <fieldset class="reg__step" data-edit-step="1">
   <legend class="v-sr">You</legend>
   <div class="aform__grid">
@@ -11,13 +11,6 @@
     <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="address[phone]" value="{{ f.phone | default: phone | escape }}" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" required data-sl-mobile aria-describedby="{{ sid }}-ph-err {{ sid }}-ph-help"></label>
     <p class="fld__err fld--full" id="{{ sid }}-ph-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
     <p class="fld__help fld--full" id="{{ sid }}-ph-help">For delivery updates. Saved as +94XXXXXXXXX.</p>
-    <div class="fld fld--full">
-      <span>Avatar</span>
-      <div class="avp" role="radiogroup" aria-label="Avatar">
-        <button class="avp__b" type="button" role="radio" aria-checked="true" data-avatar="initials" aria-label="Initials"><span>{{ me[5] | escape }}</span></button>
-        {%- for a in avatars -%}<button class="avp__b" type="button" role="radio" aria-checked="false" data-avatar="{{ a }}" aria-label="{{ a | capitalize }}">{% render 'snh-avatar-svg', name: a %}</button>{%- endfor -%}
-      </div>
-    </div>
   </div>
   <div class="reg__acts reg__acts--end"><button class="v-btn v-btn--ink" type="button" data-edit-next><span>Continue to delivery</span></button></div>
 </fieldset>

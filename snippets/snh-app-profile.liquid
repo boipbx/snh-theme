@@ -1,6 +1,8 @@
 {%- comment -%}
-  Member app · Profile & addresses (Round 8): profile card with the V8 avatar picker (cosmetic, localStorage
-  snh_vector_avatar), the V8 edit-profile flow (two steps on the native customer_address form for the default address:
+  Member app · Profile & addresses (Round 8; Round 10: a bigger header with the completeness ring, the avatar studio
+  (V8 icons + 8 sporty presets + a colour, localStorage snh_vector_avatar / snh_avatar_colour), an optional photo
+  upload (setting, app proxy /apps/elite/avatar, metafield custom.avatar), and a birthday add flow (customer form,
+  tag bday:), the V8 edit-profile flow (two steps on the native customer_address form for the default address:
   name + mobile, then street/city/postcode, country Sri Lanka, set as default), all addresses with native add / edit /
   delete (snippets/snh-address-form), marketing preferences, sign out.
   Mobile is required here and checked as a Sri Lankan number (normalised to +94XXXXXXXXX) by assets/snh-app.js.
@@ -20,13 +22,67 @@
 </header>
 
 <div class="pro">
-  <section class="app__card pro__id" data-tier="{{ m[0] }}" aria-label="Your profile">
-    <span class="app__av app__av--lg" data-avatar-slot data-initials="{{ me[5] | escape }}" aria-hidden="true"><span>{{ me[5] | escape }}</span></span>
+  {%- liquid
+    assign done = 2
+    if phone != blank
+      assign done = done | plus: 1
+    endif
+    if bday != blank
+      assign done = done | plus: 1
+    endif
+    if me[10] != '0' and me[10] != blank
+      assign done = done | plus: 1
+    endif
+    if goal != blank
+      assign done = done | plus: 1
+    endif
+    assign pct = done | times: 100 | divided_by: 6
+    assign icons = 'bolt,barbell,shield,flame,trophy,heart,dumbbell' | split: ','
+    assign sporty = 'run,racket,bat,bike,wave,ball,shaker,target' | split: ','
+    assign colours = 'tier,orange,ink,teal,violet,green' | split: ','
+  -%}
+  <section class="pro__id" data-tier="{{ m[0] }}" aria-label="Your profile">
+    <div class="pro__av">
+      <span class="app__av app__av--xl" data-avatar-slot data-initials="{{ me[5] | escape }}"{% if avatar_url != blank %} data-photo{% endif %} aria-hidden="true">{% if avatar_url != blank %}<img src="{{ avatar_url }}" alt="" width="112" height="112">{% else %}<span>{{ me[5] | escape }}</span>{% endif %}</span>
+      <span class="pro__ring" style="--p: {{ pct }}" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="56" pathLength="100"/></svg></span>
+    </div>
     <div class="pro__who">
       <p class="pro__name" title="{{ me[1] | default: me[2] | escape }}">{{ me[1] | default: me[2] | escape }}</p>
-      <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member · {{ m[7] }}% back</p>
+      <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member · {{ m[7] }}% back{% if joined != blank %} · since {{ joined | date: '%b %Y' }}{% endif %}</p>
+      <p class="pro__pct"><b>{{ pct }}%</b> complete{% if pct < 100 %} · <a href="#overview" data-go="overview">see what's missing</a>{% endif %}</p>
     </div>
-    <button class="v-btn v-btn--ink v-btn--sm" type="button" data-edit-open aria-haspopup="dialog">{% render 'snh-v2-icon', name: 'edit' %}<span>Edit profile</span></button>
+    <div class="pro__acts">
+      <button class="v-btn v-btn--ink v-btn--sm" type="button" data-edit-open aria-haspopup="dialog">{% render 'snh-v2-icon', name: 'edit' %}<span>Edit profile</span></button>
+      <button class="v-btn v-btn--line v-btn--sm" type="button" aria-expanded="false" aria-controls="{{ sid }}-avp" data-avp-toggle>{% render 'snh-v2-icon', name: 'user' %}<span>Change avatar</span></button>
+    </div>
+    <div class="pro__avp" id="{{ sid }}-avp" hidden>
+      <div class="avp__g">
+        <p class="avp__l">Classic</p>
+        <div class="avp" role="radiogroup" aria-label="Avatar">
+          <button class="avp__b" type="button" role="radio" aria-checked="true" data-avatar="initials" aria-label="Initials"><span>{{ me[5] | escape }}</span></button>
+          {%- for a in icons -%}<button class="avp__b" type="button" role="radio" aria-checked="false" data-avatar="{{ a }}" aria-label="{{ a | capitalize }}">{% render 'snh-avatar-svg', name: a %}</button>{%- endfor -%}
+        </div>
+      </div>
+      <div class="avp__g">
+        <p class="avp__l">Sporty</p>
+        <div class="avp" role="radiogroup" aria-label="Sporty avatar">
+          {%- for a in sporty -%}<button class="avp__b" type="button" role="radio" aria-checked="false" data-avatar="s-{{ a }}" aria-label="{{ a | capitalize }}">{% render 'snh-v2-icon', name: a %}</button>{%- endfor -%}
+        </div>
+      </div>
+      <div class="avp__g">
+        <p class="avp__l">Colour</p>
+        <div class="avp avp--c" role="radiogroup" aria-label="Avatar colour">
+          {%- for c in colours -%}<button class="avp__c" type="button" role="radio" aria-checked="{% if forloop.first %}true{% else %}false{% endif %}" data-avatar-colour="{{ c }}" aria-label="{% if c == 'tier' %}{{ m[1] }} metal{% else %}{{ c | capitalize }}{% endif %}"><i data-av-c="{{ c }}"></i></button>{%- endfor -%}
+        </div>
+      </div>
+      {%- if s.avatar_upload and mock != true -%}
+        <div class="avp__g avp__up" data-avatar-upload>
+          <label class="v-btn v-btn--line v-btn--sm">{% render 'snh-v2-icon', name: 'plus' %}<span>Upload a photo</span><input class="v-sr" type="file" accept="image/jpeg,image/png,image/webp" data-avatar-file></label>
+          <p class="app__note" data-avatar-msg>JPG or PNG, up to 5 MB. Shown on your account only.</p>
+        </div>
+      {%- endif -%}
+      <p class="app__note">Your avatar and colour are saved on this device.</p>
+    </div>
   </section>
 
   <section class="app__card" aria-labelledby="{{ sid }}-det-h">
@@ -35,7 +91,21 @@
       <div><dt>Name</dt><dd>{{ me[1] | default: '—' | escape }}</dd></div>
       <div><dt>Email</dt><dd>{{ me[2] | escape }}</dd></div>
       <div><dt>Mobile</dt><dd>{% if phone != blank %}{{ phone | escape }}{% else %}<span class="pill pill--wait">Required</span> <button class="v-link pro__add" type="button" data-edit-open>Add your mobile</button>{% endif %}</dd></div>
-      <div><dt>Birthday</dt><dd data-bday-out>{% if bday != blank %}{{ bday | date: '%d %B' }}{% else %}<a class="v-link" href="#goals" data-go="goals" data-quiz-to="age">Add for your birthday reward</a>{% endif %}</dd></div>
+      <div><dt>Birthday</dt><dd data-bday-out>
+        {%- if bday != blank -%}{{ bday | date: '%d %B' }}
+        {%- else -%}
+          <button class="v-link pro__add" type="button" aria-expanded="false" aria-controls="{{ sid }}-bday" data-bday-open>Add for your birthday reward</button>
+          {%- comment -%} Phase 0 pattern: a real customer form (tag bday:YYYY-MM-DD), normal POST with hCaptcha {%- endcomment -%}
+          {%- form 'customer', class: 'pro__bday', id: 'snh-bday-form', data-shopify-captcha: 'true', data-snh-post: 'bday', return_to: '/account?snh_posted=bday#profile' -%}
+            <div id="{{ sid }}-bday" hidden data-bday-box>
+              <input type="hidden" name="contact[email]" value="{{ me[2] | escape }}">
+              <input type="hidden" name="contact[tags]" value="" data-bday-tag>
+              <label class="fld"><span class="v-sr">Birthday</span><input type="date" required min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" autocomplete="bday" data-bday-in></label>
+              <button class="v-btn v-btn--ink v-btn--sm" type="{% if mock %}button{% else %}submit{% endif %}"{% if mock %} disabled{% endif %}><span>Save birthday</span></button>
+            </div>
+          {%- endform -%}
+        {%- endif -%}
+      </dd></div>
     </dl>
   </section>
 

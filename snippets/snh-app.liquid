@@ -96,7 +96,7 @@
   <div class="v-wrap app__in">
     <aside class="app__side" aria-label="Your SNH Elite account">
       <div class="app__me" data-tier="{{ m[0] }}">
-        <span class="app__av" data-avatar-slot data-initials="{{ me[5] | escape }}" aria-hidden="true"><span>{{ me[5] | escape }}</span></span>
+        <span class="app__av" data-avatar-slot data-initials="{{ me[5] | escape }}"{% if avatar_url != blank %} data-photo{% endif %} aria-hidden="true">{% if avatar_url != blank %}<img src="{{ avatar_url }}" alt="" width="56" height="56">{% else %}<span>{{ me[5] | escape }}</span>{% endif %}</span>
         <div class="app__who">
           {%- assign full_name = me[1] | default: me[2] -%}
           <p class="app__name{% if full_name.size > 20 %} app__name--long{% endif %}" title="{{ full_name | escape }}">{{ full_name | escape }}</p>
@@ -127,7 +127,9 @@
       <div class="app__flash" data-flash hidden role="status" tabindex="-1"
         data-msg-redeem="Request sent. Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} reward arrives by email, usually within a working day."
         data-msg-goals="Your plan is saved. Picks, tips and guides now follow your answers."
-        data-msg-news="You're subscribed. Look out for member offers and new drops.">
+        data-msg-news="You're subscribed. Look out for member offers and new drops."
+        data-msg-bday="Birthday saved. Your birthday reward will find you."
+        data-msg-notify="Thanks! We'll email you when referral rewards go live.">
         <span class="app__flash-ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'check' %}</span>
         <p data-flash-msg></p>
         <button class="app__x" type="button" data-flash-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
@@ -145,7 +147,7 @@
         {%- render 'snh-app-goals', me: me, blocks: blocks, sid: sid, mock: mock, goal: goal, freq: freq, sport: sport, phone: phone, bday: bday, stack_map: s.stack_map, bundle_handles: s.bundle_handles -%}
       </section>
       <section class="app__view" data-pane="profile" aria-labelledby="{{ sid }}-profile-h">
-        {%- render 'snh-app-profile', m: m, me: me, s: s, sid: sid, mock: mock, mock_address: mock_address, phone: phone, bday: bday -%}
+        {%- render 'snh-app-profile', m: m, me: me, s: s, sid: sid, mock: mock, mock_address: mock_address, phone: phone, bday: bday, goal: goal, joined: joined, avatar_url: avatar_url -%}
       </section>
     </div>
   </div>
@@ -176,7 +178,7 @@
   <dialog class="out" data-signout aria-labelledby="{{ sid }}-out-h">
     <div class="out__in">
       <div class="app__me out__me" data-tier="{{ m[0] }}">
-        <span class="app__av" data-avatar-slot data-initials="{{ me[5] | escape }}" aria-hidden="true"><span>{{ me[5] | escape }}</span></span>
+        <span class="app__av" data-avatar-slot data-initials="{{ me[5] | escape }}"{% if avatar_url != blank %} data-photo{% endif %} aria-hidden="true">{% if avatar_url != blank %}<img src="{{ avatar_url }}" alt="" width="56" height="56">{% else %}<span>{{ me[5] | escape }}</span>{% endif %}</span>
         <div class="app__who">
           <p class="app__name" title="{{ full_name | escape }}">{{ full_name | escape }}</p>
           <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member</p>
