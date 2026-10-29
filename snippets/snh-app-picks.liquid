@@ -1,0 +1,112 @@
+{%- comment -%}
+  Member app · "Picked for you" (Round 8): 6 v2 product cards, skipping anything already bought.
+  1. goal tag (goal:*) → that Goal block's collection (defaults below)
+  2. else order history → "Order history → complementary collections" rules (section setting pick_map)
+  3. then bestsellers (section setting, else /collections/everything) to fill up to 6.
+  recent: snh-app-order-data records · s: section settings · blocks · goal · sid
+{%- endcomment -%}
+{%- liquid
+  assign map = s.pick_map
+  if map == blank
+    assign map = 'whey, isolate, protein powder, mass gainer => creatine, accessories-1|pre-workout, pre workout, pump => creatine, hydration-recovery|creatine => whey-protein, pre-workout-1|gel, carb, beta fuel => hydration-recovery, energy-and-endurance|electrolyte, hydro, hydration => energy-gels, magnesium|magnesium, sleep => vitamins-minerals, probiotics|vitamin, omega, fish oil, multi => magnesium, probiotics|collagen => joint-and-mobility, vitamins-minerals|fat burner, carnitine, weight => fat-loss, clear-protein' | split: '|'
+  else
+    assign map = map | newline_to_br | split: '<br />'
+  endif
+
+  assign bought = ','
+  assign hay = ''
+  for r in recent
+    assign o = r | split: '|'
+    assign lis = o[14] | split: ';;'
+    for li in lis
+      assign it = li | split: '~'
+      assign bought = bought | append: it[0] | append: ','
+      assign hay = hay | append: ' ' | append: it[9] | append: ' ' | append: it[1]
+    endfor
+  endfor
+  assign hay = hay | downcase
+
+  assign handles = ''
+  assign why = ''
+  if goal != blank
+    for b in blocks
+      if b.type == 'goal' and b.settings.key == goal and b.settings.collection != blank
+        assign handles = b.settings.collection.handle
+      endif
+    endfor
+    if handles == ''
+      case goal
+        when 'build-muscle'
+          assign handles = 'muscle-and-strength'
+        when 'lose-fat'
+          assign handles = 'fat-loss'
+        when 'endurance'
+          assign handles = 'energy-and-endurance'
+        when 'hydration-recovery'
+          assign handles = 'hydration-recovery'
+        when 'daily-health'
+          assign handles = 'health-wellness'
+        else
+          assign handles = 'train-perform'
+      endcase
+    endif
+    assign gl = goal | replace: '-', ' ' | replace: 'hydration recovery', 'hydration and recovery'
+    assign why = 'For your goal: ' | append: gl
+  elsif hay != ''
+    for rule in map
+      assign pr = rule | split: '=>'
+      if pr.size < 2
+        continue
+      endif
+      assign words = pr[0] | downcase | split: ','
+      for w in words
+        assign w = w | strip
+        if w != '' and hay contains w
+          assign hs = pr[1] | split: ','
+          for h in hs
+            assign h = h | strip
+            unless handles contains h
+              assign handles = handles | append: ',' | append: h
+            endunless
+          endfor
+          break
+        endif
+      endfor
+    endfor
+    if handles != ''
+      assign why = 'Goes with what you buy'
+    endif
+  endif
+  assign best = s.best_collection.handle | default: 'everything'
+  assign handles = handles | append: ',' | append: best | remove_first: ','
+  assign hl = handles | split: ','
+
+  assign picked = ','
+  assign n = 0
+-%}
+{%- capture cards -%}
+  {%- for h in hl -%}
+    {%- assign c = collections[h] -%}
+    {%- for p in c.products limit: 24 -%}
+      {%- if n >= 6 -%}{%- break -%}{%- endif -%}
+      {%- assign key = ',' | append: p.id | append: ',' -%}
+      {%- if p.available == false or bought contains key or picked contains key -%}{%- continue -%}{%- endif -%}
+      {%- assign picked = picked | append: p.id | append: ',' -%}
+      {%- assign n = n | plus: 1 -%}
+      {%- render 'snh-v2-card', product: p, sizes: '(max-width: 767px) 50vw, (max-width: 1199px) 33vw, 280px' -%}
+    {%- endfor -%}
+    {%- if n >= 6 -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if n > 0 -%}
+  <section class="app__block" aria-labelledby="{{ sid }}-picks-h">
+    <div class="app__bh">
+      <div class="app__bt">
+        <h2 class="app__h2" id="{{ sid }}-picks-h">Picked <em>for you</em></h2>
+        <p class="app__muted">{{ why | default: 'Our bestsellers right now' | capitalize }}</p>
+      </div>
+      <a class="v-link" href="{{ routes.all_products_collection_url }}">Shop all</a>
+    </div>
+    <div class="grid app__grid">{{ cards }}</div>
+  </section>
+{%- endif -%}

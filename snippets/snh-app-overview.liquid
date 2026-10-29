@@ -1,0 +1,230 @@
+{%- comment -%}
+  Member app · Overview (Round 8): metal card + reward card, "Personalise your SNH" prompt (no goal yet), complete
+  your profile ring, quick actions, recent activity, "Running low?", "Picked for you".
+  Params as snippets/snh-app, plus goal, pending, phone, bday, joined (parsed there).
+{%- endcomment -%}
+{%- liquid
+  assign rate = m[7] | plus: 0
+  assign now = 'now' | date: '%s' | plus: 0
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  assign per_point = settings.snh_point_value | default: 1
+  assign redeem_rs = redeem_from | times: per_point
+  assign welcome = settings.snh_welcome_points | default: 500
+  assign has_orders = false
+  if recent.size > 0 and recent[0] != blank
+    assign has_orders = true
+    assign last = recent[0] | split: '|'
+  endif
+-%}
+<header class="app__head">
+  <p class="eyebrow">My SNH Elite</p>
+  <h1 class="app__h" id="{{ sid }}-overview-h">Welcome back, <em>{{ me[0] | default: 'there' | escape }}</em></h1>
+</header>
+
+<div class="app__hero">
+  {%- render 'snh-app-tiercard', m: m, name: me[1], no: me[4] -%}
+  {%- render 'snh-app-reward', m: m, pending: pending, id: sid -%}
+</div>
+
+{%- if goal == blank and s.goal_prompt != false -%}
+  <aside class="app__prompt" data-goal-prompt aria-labelledby="{{ sid }}-prompt-h">
+    <span class="app__prompt-ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'target' %}</span>
+    <div>
+      <h2 class="app__h3" id="{{ sid }}-prompt-h">Personalise your SNH</h2>
+      <p class="app__muted">Three quick questions about your training. We'll tune your picks, tips and guides to match.</p>
+    </div>
+    <a class="v-btn v-btn--ink v-btn--sm" href="#goals" data-go="goals"><span>Start</span></a>
+    <button class="app__x" type="button" data-prompt-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
+  </aside>
+{%- endif -%}
+
+{%- liquid
+  assign done = 1
+  assign has_phone = false
+  assign has_bday = false
+  assign has_addr = false
+  assign has_goal = false
+  if phone != blank
+    assign has_phone = true
+    assign done = done | plus: 1
+  endif
+  if bday != blank
+    assign has_bday = true
+    assign done = done | plus: 1
+  endif
+  if me[10] != '0' and me[10] != blank
+    assign has_addr = true
+    assign done = done | plus: 1
+  endif
+  if goal != blank
+    assign has_goal = true
+    assign done = done | plus: 1
+  endif
+  assign pct = done | times: 100 | divided_by: 5
+-%}
+{%- if done < 5 -%}
+  <section class="app__card prof" data-profile-card aria-labelledby="{{ sid }}-prof-h">
+    <div class="prof__ring" style="--p: {{ pct }}" data-ring aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><circle cx="24" cy="24" r="20" pathLength="100"/></svg><b data-ring-n>{{ pct }}%</b></div>
+    <div class="prof__body">
+      <h2 class="app__h3" id="{{ sid }}-prof-h">Complete your profile</h2>
+      <p class="app__muted">A full profile means faster checkout and your birthday reward on time.</p>
+      <ul class="prof__list" role="list">
+        <li class="is-done" data-check="email">{% render 'snh-v2-icon', name: 'check' %}<span>Email</span></li>
+        <li{% if has_phone %} class="is-done"{% endif %} data-check="phone">{% render 'snh-v2-icon', name: 'check' %}{% if has_phone %}<span>Mobile number</span>{% else %}<a href="#profile" data-go="profile" data-open-edit>Add your mobile number</a>{% endif %}</li>
+        <li{% if has_bday %} class="is-done"{% endif %} data-check="bday">{% render 'snh-v2-icon', name: 'check' %}{% if has_bday %}<span>Birthday</span>{% else %}<a href="#goals" data-go="goals" data-quiz-to="contact">Add your birthday</a>{% endif %}</li>
+        <li{% if has_addr %} class="is-done"{% endif %} data-check="addr">{% render 'snh-v2-icon', name: 'check' %}{% if has_addr %}<span>Delivery address</span>{% else %}<a href="#profile" data-go="profile" data-open-addr>Add a delivery address</a>{% endif %}</li>
+        <li{% if has_goal %} class="is-done"{% endif %} data-check="goal">{% render 'snh-v2-icon', name: 'check' %}{% if has_goal %}<span>Training goal</span>{% else %}<a href="#goals" data-go="goals">Set your training goal</a>{% endif %}</li>
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+<section class="app__block app__qa" aria-labelledby="{{ sid }}-qa-h">
+  <h2 class="v-sr" id="{{ sid }}-qa-h">Quick actions</h2>
+  <ul class="qact" role="list">
+    {%- if has_orders -%}
+      <li><button class="qact__a" type="button" data-app-reorder="{{ last[13] }}"{% if mock or last[13] == blank %} disabled{% endif %}>{% render 'snh-v2-icon', name: 'refresh' %}<span><b>Reorder last order</b><i>{{ last[0] }} · {{ last[10] }} item{% if last[10] != '1' %}s{% endif %}</i></span></button></li>
+      {%- if last[12] != blank -%}{%- assign track = last[12] -%}{%- else -%}{%- assign track = last[1] -%}{%- endif -%}
+      <li><a class="qact__a" href="{{ track }}"{% if last[12] != blank %} target="_blank" rel="noopener"{% endif %}>{% render 'snh-v2-icon', name: 'truck' %}<span><b>Track latest order</b><i>{{ last[6] }}</i></span></a></li>
+    {%- else -%}
+      <li><a class="qact__a" href="{{ routes.all_products_collection_url }}">{% render 'snh-v2-icon', name: 'bag' %}<span><b>Start shopping</b><i>Earn {{ m[7] }}% back</i></span></a></li>
+    {%- endif -%}
+    <li><a class="qact__a" href="#rewards" data-go="rewards"{% if m[14] == '1' and pending != true %} data-redeem-open{% endif %}>{% render 'snh-v2-icon', name: 'gift' %}<span><b>Redeem points</b><i>{% if pending %}Request pending{% elsif m[14] == '1' %}Reward ready{% elsif m[3] == 'x' %}From {% render 'snh-num', n: redeem_from %} points{% else %}{% render 'snh-num', n: m[15] %} to go{% endif %}</i></span></a></li>
+  </ul>
+  {%- if s.refer_text != blank or s == nil -%}
+    {%- assign rparts = s.refer_text | default: 'Give Rs 500, *get* Rs 500' | split: '*' -%}
+    <a class="refer" href="{% if mock %}#overview{% else %}{{ s.refer_link | default: '/pages/contact' }}{% endif %}">
+      <span class="refer__h">{%- for p in rparts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</span>
+      <span class="refer__p">{{ s.refer_body | default: 'Share SNH Elite with a friend. When they shop, you both win.' | escape }}</span>
+      <span class="refer__go">Refer a friend {% render 'snh-v2-icon', name: 'arrow' %}</span>
+    </a>
+  {%- endif -%}
+</section>
+
+<section class="app__block" aria-labelledby="{{ sid }}-feed-h">
+  <div class="app__bh">
+    <h2 class="app__h2" id="{{ sid }}-feed-h">Recent activity</h2>
+    {%- if has_orders -%}<a class="v-link" href="#orders" data-go="orders">View all orders</a>{%- endif -%}
+  </div>
+  <ol class="feed" role="list">
+    {%- assign shown = 0 -%}
+    {%- if pending -%}
+      {%- assign shown = 1 -%}
+      <li class="feed__i feed__i--hot">
+        <span class="feed__dot" aria-hidden="true">{% render 'snh-v2-icon', name: 'gift' %}</span>
+        <div class="feed__b"><p class="feed__t">Redeem request sent</p><p class="feed__s">Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} cash-off reward is on its way by email.</p></div>
+        <span class="pill pill--wait">Pending</span>
+      </li>
+    {%- endif -%}
+    {%- for r in recent -%}
+      {%- if shown >= 7 -%}{%- break -%}{%- endif -%}
+      {%- if r == blank -%}{%- continue -%}{%- endif -%}
+      {%- liquid
+        assign o = r | split: '|'
+        assign shown = shown | plus: 1
+        assign earn = o[7] | divided_by: 100 | times: rate | divided_by: 100
+        if o[11] == '1'
+          assign pill = 'off'
+          assign st = 'Cancelled'
+        elsif o[5] == 'fulfilled'
+          assign pill = 'ok'
+          assign st = o[6]
+        else
+          assign pill = 'wait'
+          assign st = o[6]
+        endif
+      -%}
+      {%- if o[9] != '0' and o[9] != blank -%}
+        {%- assign back = o[9] | divided_by: 100 | times: rate | divided_by: 100 -%}
+        <li class="feed__i">
+          <span class="feed__dot feed__dot--off" aria-hidden="true">{% render 'snh-v2-icon', name: 'refresh' %}</span>
+          <div class="feed__b"><p class="feed__t">Refund on {{ o[0] }}</p><p class="feed__s">{{ o[9] | money_without_trailing_zeros }} refunded · <span class="feed__pts feed__pts--off">−{% render 'snh-num', n: back %} pts est.</span></p></div>
+          <span class="pill pill--off">{{ o[4] }}</span>
+        </li>
+        {%- assign shown = shown | plus: 1 -%}
+      {%- endif -%}
+      <li class="feed__i">
+        <span class="feed__dot" aria-hidden="true">{% render 'snh-v2-icon', name: 'bag' %}</span>
+        <div class="feed__b">
+          <p class="feed__t"><a href="{{ o[1] }}">Order {{ o[0] }}</a> placed</p>
+          <p class="feed__s"><time datetime="{{ o[2] | date: '%Y-%m-%d' }}">{{ o[2] | date: '%d %b %Y' }}</time> · {{ o[10] }} item{% if o[10] != '1' %}s{% endif %} · {{ o[8] | money_without_trailing_zeros }}{% if o[3] contains 'paid' or o[3] == 'partially_refunded' %}{% if o[11] != '1' %} · <span class="feed__pts">+{% render 'snh-num', n: earn %} pts est.</span>{% endif %}{% endif %}</p>
+        </div>
+        <span class="pill pill--{{ pill }}">{{ st }}</span>
+      </li>
+    {%- endfor -%}
+    {%- assign oc = me[9] | plus: 0 -%}
+    {%- if oc <= 7 -%}
+      <li class="feed__i">
+        <span class="feed__dot feed__dot--brand" aria-hidden="true">{% render 'snh-v2-icon', name: 'badge' %}</span>
+        <div class="feed__b"><p class="feed__t">Joined SNH Elite</p><p class="feed__s">{% if joined != blank %}<time datetime="{{ joined | date: '%Y-%m-%d' }}">{{ joined | date: '%d %b %Y' }}</time> · {% endif %}{% render 'snh-num', n: welcome %} welcome points</p></div>
+      </li>
+    {%- endif -%}
+  </ol>
+  <p class="app__note">Points marked "est." are worked out at your {{ m[1] }} rate ({{ m[7] }}%). Your balance updates once each paid order syncs.</p>
+</section>
+
+{%- comment -%} Running low: consumables at 1 serving a day, newest order per product, under 10 days left {%- endcomment -%}
+{%- liquid
+  assign seen = ','
+  assign low = ''
+  assign low_n = 0
+  for r in recent
+    if r == blank
+      continue
+    endif
+    assign o = r | split: '|'
+    if o[11] == '1' or o[14] == blank
+      continue
+    endif
+    assign days = now | minus: o[2] | divided_by: 86400
+    assign lis = o[14] | split: ';;'
+    for li in lis
+      assign it = li | split: '~'
+      assign key = ',' | append: it[0] | append: ','
+      if seen contains key
+        continue
+      endif
+      assign seen = seen | append: it[0] | append: ','
+      assign sv = it[7] | plus: 0
+      if sv == 0
+        continue
+      endif
+      assign total = sv | times: it[3]
+      assign left = total | minus: days
+      if left < 10 and left > -30 and low_n < 3
+        assign low_n = low_n | plus: 1
+        assign low = low | append: li | append: '~' | append: left | append: '~' | append: total | append: '@@'
+      endif
+    endfor
+  endfor
+-%}
+{%- if low_n > 0 -%}
+  <section class="app__card low" aria-labelledby="{{ sid }}-low-h">
+    <div class="app__bh">
+      <h2 class="app__h2" id="{{ sid }}-low-h">Running <em>low?</em></h2>
+      <p class="app__muted">Worked out at one serving a day since your order.</p>
+    </div>
+    <ul class="low__list" role="list">
+      {%- assign lows = low | split: '@@' -%}
+      {%- for l in lows -%}
+        {%- liquid
+          assign it = l | split: '~'
+          assign left = it[12] | plus: 0
+          assign tot = it[13] | plus: 0 | at_least: 1
+          assign w = left | at_least: 0 | times: 100 | divided_by: tot
+        -%}
+        <li class="low__i">
+          <a class="low__img" href="{{ it[6] }}" tabindex="-1" aria-hidden="true">{% if it[5] != blank %}<img src="{{ it[5] }}" alt="" width="72" height="72" loading="lazy">{% endif %}</a>
+          <div class="low__b">
+            <a class="low__t" href="{{ it[6] }}">{{ it[1] }}</a>
+            <p class="low__s">{% if left > 0 %}About {{ left }} day{% if left != 1 %}s{% endif %} left{% elsif left == 0 %}Runs out today{% else %}Probably ran out {{ left | abs }} day{% if left != -1 %}s{% endif %} ago{% endif %}</p>
+            <div class="low__bar" aria-hidden="true"><i style="width: {{ w }}%"></i></div>
+          </div>
+          <button class="v-btn v-btn--ink v-btn--sm" type="button" data-app-reorder="{{ it[8] }}:1"{% if mock or it[8] == blank %} disabled{% endif %}><span>Reorder</span></button>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </section>
+{%- endif -%}
+
+{%- render 'snh-app-picks', recent: recent, s: s, blocks: blocks, goal: goal, sid: sid -%}

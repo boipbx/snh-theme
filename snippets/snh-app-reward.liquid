@@ -1,0 +1,44 @@
+{%- comment -%}
+  SNH Elite reward card (Round 8, ported from the V8 dashboard): orange card, slow athlete rotation (padel, weights,
+  gym, cricket, swim cutouts from the store's Files), floating coin and gift accents, points that count up.
+  m: split snh-elite-calc output · pending: a redeem request is waiting (Trigger_Redeem_2500 tag).
+  The CTA opens the redeem confirm on #rewards; the form itself lives there (snippets/snh-app-rewards).
+{%- endcomment -%}
+{%- liquid
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  assign per_point = settings.snh_point_value | default: 1
+  assign welcome = settings.snh_welcome_points | default: 500
+  assign cdn = 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/'
+-%}
+<aside class="rwd" aria-labelledby="rwd-h-{{ id }}">
+  <div class="rwd__stage" aria-hidden="true">
+    <img class="rwd__ath rwd__ath--1" src="{{ cdn }}padl.png?v=1783835906&width=480" alt="" width="480" height="480" loading="lazy" decoding="async">
+    <img class="rwd__ath rwd__ath--2" src="{{ cdn }}weigh.png?v=1783835906&width=480" alt="" width="480" height="480" loading="lazy" decoding="async">
+    <img class="rwd__ath rwd__ath--3" src="{{ cdn }}ym.png?v=1783835907&width=480" alt="" width="480" height="480" loading="lazy" decoding="async">
+    <img class="rwd__ath rwd__ath--4" src="{{ cdn }}cric.png?v=1783835907&width=480" alt="" width="480" height="480" loading="lazy" decoding="async">
+    <img class="rwd__ath rwd__ath--5" src="{{ cdn }}swi.png?v=1783835907&width=480" alt="" width="480" height="480" loading="lazy" decoding="async">
+  </div>
+  <img class="rwd__fx rwd__fx--coins" src="{{ cdn }}2_37969279-4a78-43c8-8fdf-5256e55c6030.png?v=1783764457&width=120" alt="" width="60" height="60" loading="lazy" aria-hidden="true">
+  <img class="rwd__fx rwd__fx--gift" src="{{ cdn }}1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png?v=1783764454&width=96" alt="" width="44" height="44" loading="lazy" aria-hidden="true">
+  <div class="rwd__in">
+    <p class="rwd__label" id="rwd-h-{{ id }}">Available points</p>
+    {%- if m[3] == 'x' -%}
+      <p class="rwd__pts">—</p>
+      <p class="rwd__p">Your balance shows here once your first paid order syncs. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
+      <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+    {%- else -%}
+      <p class="rwd__pts" data-count>{% render 'snh-num', n: m[3] %}</p>
+      <p class="rwd__val">Worth {{ m[4] | times: 100 | money_without_trailing_zeros }}</p>
+      {%- if pending -%}
+        <p class="rwd__p">Your redeem request is in. Your reward arrives by email.</p>
+        <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See rewards</span></a>
+      {%- elsif m[14] == '1' -%}
+        <p class="rwd__p">Your cash-off reward is ready. Trade it in before you check out.</p>
+        <a class="v-btn rwd__btn" href="#rewards" data-go="rewards" data-redeem-open><span>Redeem {% render 'snh-num', n: redeem_from %} points</span></a>
+      {%- else -%}
+        <p class="rwd__p">You're {% render 'snh-num', n: m[15] %} points from your first cash-off reward.</p>
+        <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</aside>

@@ -1,0 +1,15 @@
+{%- comment -%}
+  Servings in one pack (Round 8, "Running low?"): product.metafields.custom.servings if set, else the number before
+  "servings" in text (title + variant title, e.g. "61 Servings / Chocolate"). Prints 0 when unknown (the item is skipped).
+{%- endcomment -%}
+{%- liquid
+  assign s = product.metafields.custom.servings.value | default: 0 | plus: 0
+  if s == 0
+    assign t = text | downcase
+    if t contains 'serving'
+      assign before = t | split: 'serving' | first | strip | split: ' ' | last
+      assign s = before | remove: '(' | remove: '[' | remove: ',' | plus: 0
+    endif
+  endif
+-%}
+{{- s -}}

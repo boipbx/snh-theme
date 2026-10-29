@@ -1,0 +1,131 @@
+{%- comment -%}
+  One order as a flat record for the member app (Round 8). The real account and the QA mock both go through this, so
+  every widget (feed, orders, running low, picks, quick actions) reads one format.
+  Real: order. Mock: mock: true, line "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url"
+  (products come from all_products, so the mock shows real packs; the re-order ids are blanked).
+  Prints fields joined by "|": 0 name · 1 url · 2 created (unix) · 3 financial key · 4 financial label · 5 fulfilment key
+  · 6 fulfilment label · 7 subtotal (cents) · 8 total (cents) · 9 refunded (cents) · 10 item count · 11 cancelled 1/0 ·
+  12 tracking url · 13 re-order "variant:qty,…" · 14 items, joined by ";;", each "~"-separated: product id · title ·
+  variant title · qty · line price (cents) · image url · url · servings (0 = unknown) · variant id · type · vendor · handle
+{%- endcomment -%}
+{%- liquid
+  if mock
+    assign f = line | split: '|'
+    assign now = 'now' | date: '%s' | plus: 0
+    assign ago = f[1] | plus: 0 | times: 86400
+    assign o_name = f[0] | strip
+    assign o_url = '#orders'
+    assign o_at = now | minus: ago
+    assign fin = f[2] | strip | default: 'paid'
+    assign ful = f[3] | strip | default: 'fulfilled'
+    assign o_refunded = f[4] | plus: 0 | times: 100
+    assign o_track = f[6] | strip
+    assign o_cancel = 0
+    assign sub = 0
+    assign n = 0
+    assign items = ''
+    assign pairs = f[5] | split: ','
+    for pr in pairs
+      assign hq = pr | strip | split: ':'
+      assign p = all_products[hq[0]]
+      if p.id
+        assign q = hq[1] | default: 1 | plus: 0
+        assign v = p.selected_or_first_available_variant
+        assign lp = v.price | times: q
+        assign sub = sub | plus: lp
+        assign n = n | plus: q
+        capture txt
+          echo p.title | append: ' ' | append: v.title
+        endcapture
+        capture sv
+          render 'snh-servings', product: p, text: txt
+        endcapture
+        assign vt = v.title
+        if p.has_only_default_variant
+          assign vt = ''
+        endif
+        capture it
+          echo p.id | append: '~' | append: p.title | append: '~' | append: vt | append: '~' | append: q | append: '~' | append: lp | append: '~'
+          echo p.featured_image | image_url: width: 200 | append: '~' | append: p.url | append: '~' | append: sv | append: '~~' | append: p.type | append: '~' | append: p.vendor | append: '~' | append: p.handle
+        endcapture
+        if items != ''
+          assign items = items | append: ';;'
+        endif
+        assign items = items | append: it
+      endif
+    endfor
+    assign o_sub = sub
+    assign o_total = sub
+    assign o_count = n
+    assign o_ids = ''
+    case fin
+      when 'paid'
+        assign fin_l = 'Paid'
+      when 'pending'
+        assign fin_l = 'Pending'
+      when 'refunded'
+        assign fin_l = 'Refunded'
+      when 'partially_refunded'
+        assign fin_l = 'Partially refunded'
+      else
+        assign fin_l = fin | capitalize
+    endcase
+    case ful
+      when 'fulfilled'
+        assign ful_l = 'Fulfilled'
+      when 'partial'
+        assign ful_l = 'Partially fulfilled'
+      else
+        assign ful_l = 'Unfulfilled'
+    endcase
+  else
+    assign o_name = order.name
+    assign o_url = order.customer_url
+    assign o_at = order.created_at | date: '%s'
+    assign fin = order.financial_status | default: 'pending'
+    assign fin_l = order.financial_status_label
+    assign ful = order.fulfillment_status | default: 'unfulfilled'
+    assign ful_l = order.fulfillment_status_label
+    assign o_sub = order.subtotal_price
+    assign o_total = order.total_price
+    assign o_refunded = order.total_refunded_amount | default: 0
+    assign o_count = order.item_count
+    assign o_cancel = 0
+    if order.cancelled
+      assign o_cancel = 1
+    endif
+    assign fl = order.line_items | where: 'fulfillment' | map: 'fulfillment' | sort: 'created_at' | last
+    assign o_track = fl.tracking_url
+    assign items = ''
+    assign o_ids = ''
+    for li in order.line_items
+      if li.variant_id
+        assign o_ids = o_ids | append: li.variant_id | append: ':' | append: li.quantity | append: ','
+      endif
+      capture txt
+        echo li.title | append: ' ' | append: li.variant.title
+      endcapture
+      capture sv
+        render 'snh-servings', product: li.product, text: txt
+      endcapture
+      assign vt = li.variant.title
+      if li.product.has_only_default_variant or vt == 'Default Title'
+        assign vt = ''
+      endif
+      assign t = li.product.title | default: li.title
+      capture it
+        echo li.product_id | append: '~' | append: t | append: '~' | append: vt | append: '~' | append: li.quantity | append: '~' | append: li.final_line_price | append: '~'
+        if li.image
+          echo li.image | image_url: width: 200
+        endif
+        echo '~' | append: li.url | append: '~' | append: sv | append: '~' | append: li.variant_id | append: '~' | append: li.product.type | append: '~' | append: li.vendor | append: '~' | append: li.product.handle
+      endcapture
+      if items != ''
+        assign items = items | append: ';;'
+      endif
+      assign items = items | append: it
+    endfor
+    assign o_ids = o_ids | remove_last: ','
+  endif
+-%}
+{{- o_name | remove: '|' }}|{{ o_url }}|{{ o_at }}|{{ fin }}|{{ fin_l }}|{{ ful }}|{{ ful_l }}|{{ o_sub }}|{{ o_total }}|{{ o_refunded }}|{{ o_count }}|{{ o_cancel }}|{{ o_track | remove: '|' }}|{{ o_ids }}|{{ items | remove: '|' | remove: '@@' | strip_newlines -}}

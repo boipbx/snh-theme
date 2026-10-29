@@ -1,0 +1,40 @@
+{%- comment -%}
+  SNH Elite metal membership card (Round 8, ported from the V8 dashboard): the tier is the surface (bronze / silver /
+  gold lit metal), sheen on hover, verified chip, stats that count up, progress rail along the whole ladder to Gold.
+  m: split snh-elite-calc output · name · no: member number · h: heading tag (default h2).
+{%- endcomment -%}
+{%- liquid
+  assign gold = settings.snh_gold_threshold | default: 300000 | at_least: 1
+  assign tag = h | default: 'h2'
+-%}
+<section class="metal" data-tier="{{ m[0] }}" aria-label="SNH Elite membership card">
+  <i class="metal__sheen" aria-hidden="true"></i>
+  <div class="metal__top">
+    <span class="metal__brand">SNH <em>Elite</em></span>
+    <span class="metal__no">{{ m[1] | upcase }} · No. {{ no }}</span>
+  </div>
+  <div class="metal__who">
+    <{{ tag }} class="metal__name">{{ name | escape }}</{{ tag }}>
+    <p class="metal__tier">{{ m[1] }} member{% if m[2] == '1' %} <span class="metal__est">· estimated from your orders</span>{% endif %}</p>
+  </div>
+  <dl class="metal__stats">
+    <div>
+      <dt>Spend this year</dt>
+      <dd data-count>{{ m[5] | times: 100 | money_without_trailing_zeros }}</dd>
+      {%- if m[6] == '1' -%}<dd class="metal__sub">Estimated</dd>{%- endif -%}
+    </div>
+    <div>
+      <dt>Earn rate</dt>
+      <dd>{{ m[7] }}%</dd>
+    </div>
+    <div>
+      <dt>{% if m[12] == '1' %}Status{% else %}To {{ m[8] }}{% endif %}</dt>
+      <dd{% if m[12] != '1' %} data-count{% endif %}>{% if m[12] == '1' %}Top tier{% else %}{{ m[10] | times: 100 | money_without_trailing_zeros }}{% endif %}</dd>
+    </div>
+    <div class="metal__chip"><dt class="v-sr">Membership</dt><dd>{% render 'snh-v2-icon', name: 'check' %}Verified</dd></div>
+  </dl>
+  <div class="metal__rail">
+    <p class="metal__rl"><span>{% if m[12] == '1' %}Gold status active{% else %}On the way to {{ m[8] }}{% endif %}</span><span>Gold at {{ gold | times: 100 | money_without_trailing_zeros }}</span></p>
+    <div class="metal__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[13] }}" aria-label="Spend towards Gold"><i style="--w: {{ m[13] }}%"></i></div>
+  </div>
+</section>
