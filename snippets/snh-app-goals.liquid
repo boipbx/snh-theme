@@ -1,0 +1,137 @@
+{%- comment -%}
+  Member app · Goals (Round 8): the onboarding quiz, then a goal card (goal · frequency · sport, tips), products for
+  the goal and buying guides. One card per goal is rendered; assets/snh-app.js shows the member's (tags, or what they
+  just picked, from localStorage). Content: "Goal" blocks (heading, tips, collection, guides), else the defaults here.
+{%- endcomment -%}
+{%- liquid
+  assign keys = 'build-muscle,lose-fat,endurance,hydration-recovery,daily-health,sport-specific' | split: ','
+-%}
+<header class="app__head">
+  <p class="eyebrow">Goals</p>
+  <h1 class="app__h" id="{{ sid }}-goals-h">Train with a <em>plan</em></h1>
+  <p class="app__lead">Tell us what you're working towards. Your picks, tips and guides follow your answers.</p>
+</header>
+
+<div class="gview" data-goal-root data-goal="{{ goal | escape }}" data-freq="{{ freq | escape }}" data-sport="{{ sport | escape }}">
+  <div class="gview__set" data-goal-set{% if goal == blank %} hidden{% endif %}>
+    <div class="gview__sum app__card">
+      <div>
+        <p class="eyebrow">Your goal</p>
+        <p class="gview__name" data-goal-name></p>
+        <p class="gview__meta" data-goal-meta></p>
+      </div>
+      <button class="v-btn v-btn--line v-btn--sm" type="button" data-goal-edit>{% render 'snh-v2-icon', name: 'edit' %}<span>Change answers</span></button>
+    </div>
+  </div>
+
+  <div class="app__card gview__quiz" data-goal-quiz{% if goal != blank %} hidden{% endif %}>
+    <h2 class="app__h3">Personalise your SNH</h2>
+    {%- assign qid = sid | append: '-quiz' -%}
+    {%- render 'snh-onboarding-quiz', blocks: blocks, id: qid, mode: 'app', contact: true, email: me[2], goal: goal, freq: freq, sport: sport, phone: phone, bday: bday, mock: mock -%}
+  </div>
+
+  {%- for k in keys -%}
+    {%- liquid
+      assign gb = nil
+      for b in blocks
+        if b.type == 'goal' and b.settings.key == k
+          assign gb = b
+        endif
+      endfor
+      case k
+        when 'build-muscle'
+          assign d_t = 'Build *muscle*'
+          assign d_tips = "Hit 1.6–2.2 g of protein per kg of bodyweight a day, spread over 3–5 meals.|Creatine monohydrate, 3–5 g every day, is the best-studied strength supplement there is.|Progressive overload: add a rep or a little weight each week.|Sleep 7–9 hours. Muscle is built while you recover."
+          assign d_c = 'muscle-and-strength'
+          assign d_g = 'Whey concentrate vs isolate | /blogs/news/whey-protein-concentrate-vs-isolate-sri-lanka|How to take creatine every day | /blogs/news/how-to-take-creatine-monohydrate-every-day|Can you take creatine and whey together? | /blogs/news/can-you-take-creatine-and-whey-protein-together'
+        when 'lose-fat'
+          assign d_t = 'Lose *fat*, keep the muscle'
+          assign d_tips = "Aim for a small, steady calorie deficit: about 300–500 a day.|Keep protein high so the weight you lose is fat, not muscle.|Keep lifting. Strength work protects muscle in a deficit.|Clear whey and protein bars make high-protein snacks easy."
+          assign d_c = 'fat-loss'
+          assign d_g = 'Clear whey vs regular whey | /blogs/news/clear-whey-vs-regular-whey|Protein bars vs protein shakes | /blogs/news/protein-bars-vs-protein-shakes-sri-lanka|How to read a protein label | /blogs/news/how-to-read-protein-powder-label-sri-lanka'
+        when 'endurance'
+          assign d_t = 'Go the *distance*'
+          assign d_tips = "Over 90 minutes, take in 60–90 g of carbs an hour.|Practise your race-day fuelling in training, never for the first time on the day.|Replace sodium as well as water in the heat.|Refuel with carbs and protein within an hour of finishing."
+          assign d_c = 'energy-and-endurance'
+          assign d_g = 'The endurance carb blueprint | /blogs/news/the-endurance-carb-blueprint-sustaining-peak-power-over-multi-hour-tournaments|Energy gels: when to take them | /blogs/news/energy-gels-explained-when-to-take-them|SiS GO Isotonic vs Beta Fuel | /blogs/news/sis-go-isotonic-vs-beta-fuel'
+        when 'hydration-recovery'
+          assign d_t = 'Hydrate and *recover*'
+          assign d_tips = "In Sri Lankan heat you can lose over a litre of sweat an hour. Weigh yourself before and after to see.|Sodium matters more than potassium for cramps.|Hypotonic drinks rehydrate fastest. Isotonic drinks add fuel.|Magnesium glycinate in the evening helps sleep and recovery."
+          assign d_c = 'hydration-recovery'
+          assign d_g = 'Electrolytes: when water isn’t enough | /blogs/news/electrolytes-explained-when-water-isnt-enough|Hypotonic vs isotonic vs water | /blogs/news/hypotonic-vs-isotonic-vs-water-the-real-science-of-tropical-sweat|Recover tonight, win tomorrow | /blogs/news/the-tournament-turnaround-how-to-recover-tonight-and-win-again-tomorrow'
+        when 'daily-health'
+          assign d_t = 'Feel good *every day*'
+          assign d_tips = "Cover the basics first: a multivitamin, vitamin D and omega-3.|Take fat-soluble vitamins with a meal.|Magnesium glycinate supports sleep and stress.|Consistency beats dose. Pick a daily routine you'll keep."
+          assign d_c = 'health-wellness'
+          assign d_g = 'Omega-3 fish oil buying guide | /blogs/news/omega-3-fish-oil-buying-guide-sri-lanka|Magnesium glycinate for sleep and stress | /blogs/news/magnesium-glycinate-for-sleep-stress-recovery|Do you need magnesium glycinate? | /blogs/news/do-you-need-magnesium-glycinate'
+        else
+          assign d_t = 'Win on *match day*'
+          assign d_tips = "Eat a carb-rich meal 3–4 hours before you play.|Between games or sets, use a gel or isotonic drink to top up.|Pre-load electrolytes on hot days, not just water.|Plan your recovery for back-to-back match days."
+          assign d_c = 'train-perform'
+          assign d_g = 'Energy gels for cricket, rugby and padel | /blogs/news/energy-gels-cricket-rugby-padel-pickleball|Padel hydration and electrolytes | /blogs/news/padel-electrolytes-hydration|Performing in local tournaments | /blogs/news/a-beginner-s-guide-to-sustaining-performance-in-local-tournaments'
+      endcase
+      assign title = gb.settings.title | default: d_t
+      assign parts = title | split: '*'
+      if gb.settings.tips != blank
+        assign tips = gb.settings.tips | newline_to_br | split: '<br />'
+      else
+        assign tips = d_tips | split: '|'
+      endif
+      if gb.settings.guides != blank
+        assign guides = gb.settings.guides | newline_to_br | split: '<br />'
+      else
+        assign guides = d_g | split: '|'
+        assign gl = ''
+        for x in guides
+          if forloop.index0 == 0
+            assign gl = x
+          else
+            assign mod = forloop.index0 | modulo: 2
+            if mod == 1
+              assign gl = gl | append: '|' | append: x
+            else
+              assign gl = gl | append: '@@' | append: x
+            endif
+          endif
+        endfor
+        assign guides = gl | split: '@@'
+      endif
+      if gb.settings.collection != blank
+        assign col = gb.settings.collection
+      else
+        assign col = collections[d_c]
+      endif
+    -%}
+    <div class="gview__card" data-goal-card="{{ k }}"{% if k != goal %} hidden{% endif %}>
+      <section class="app__card gview__tips" aria-labelledby="{{ sid }}-g-{{ k }}">
+        <h2 class="app__h2" id="{{ sid }}-g-{{ k }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+        <ol class="gview__list" role="list">
+          {%- for t in tips -%}{%- assign t = t | strip -%}{%- if t != blank -%}<li><span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><p>{{ t | escape }}</p></li>{%- endif -%}{%- endfor -%}
+        </ol>
+      </section>
+      {%- assign pc = col.products_count | plus: 0 -%}
+      {%- if pc > 0 -%}
+        <section class="app__block" aria-labelledby="{{ sid }}-gp-{{ k }}">
+          <div class="app__bh">
+            <h2 class="app__h2" id="{{ sid }}-gp-{{ k }}">For your <em>goal</em></h2>
+            <a class="v-link" href="{{ col.url }}">See all</a>
+          </div>
+          <div class="grid app__grid">
+            {%- for p in col.products limit: 6 -%}{%- if p.available -%}{% render 'snh-v2-card', product: p, sizes: '(max-width: 767px) 50vw, (max-width: 1199px) 33vw, 280px' %}{%- endif -%}{%- endfor -%}
+          </div>
+        </section>
+      {%- endif -%}
+      <section class="app__block" aria-labelledby="{{ sid }}-gg-{{ k }}">
+        <h2 class="app__h2" id="{{ sid }}-gg-{{ k }}">Buying <em>guides</em></h2>
+        <ul class="guides" role="list">
+          {%- for g in guides -%}
+            {%- assign gp = g | split: '|' -%}
+            {%- assign gu = gp[1] | strip -%}
+            {%- if gu == blank -%}{%- continue -%}{%- endif -%}
+            <li><a class="guides__a" href="{{ gu }}"><span>{{ gp[0] | strip | escape }}</span>{% render 'snh-v2-icon', name: 'arrow' %}</a></li>
+          {%- endfor -%}
+        </ul>
+      </section>
+    </div>
+  {%- endfor -%}
+</div>

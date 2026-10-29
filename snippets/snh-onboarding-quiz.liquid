@@ -1,0 +1,101 @@
+{%- comment -%}
+  SNH onboarding quiz (Round 8): goal → training frequency → sport → (optional) birthday + mobile → done, with a
+  progress bar. Used by the member app's Goals view, the register page (step 3, "Personalise your SNH") and the QA mock.
+  Questions/answers come from "Quiz question" blocks (step goal/freq/sport, answers "value | label" per line), else the
+  defaults below. Answers become tags goal:<value>, freq:<value>, sport:<value> (+ bday:YYYY-MM-DD, mobile:+94…).
+  blocks · id (unique) · mode: 'app' (saves through the hidden customer form) | 'register' (keeps answers in
+  localStorage until the first dashboard load) · contact: true adds the birthday + mobile step · goal/freq/sport/
+  phone/bday: current values to preselect · mock: true never submits.
+  Saving: assets/snh-app.js (app) and assets/snh-account.js (register).
+{%- endcomment -%}
+{%- liquid
+  assign keys = 'goal,freq,sport' | split: ','
+  if contact
+    assign total = 4
+  else
+    assign total = 3
+  endif
+-%}
+<div class="quiz" data-quiz data-mode="{{ mode | default: 'app' }}" id="{{ id }}"{% if mock %} data-mock{% endif %}>
+  <div class="quiz__top">
+    <p class="quiz__count" data-quiz-count aria-live="polite">Step 1 of {{ total }}</p>
+    <div class="quiz__bar" aria-hidden="true"><i data-quiz-bar style="width: {{ 100 | divided_by: total }}%"></i></div>
+  </div>
+  {%- for k in keys -%}
+    {%- liquid
+      assign q = ''
+      assign help = ''
+      assign answers = ''
+      for b in blocks
+        if b.type == 'quiz' and b.settings.step == k and b.settings.answers != blank
+          assign q = b.settings.question
+          assign help = b.settings.help
+          assign answers = b.settings.answers | newline_to_br | split: '<br />'
+        endif
+      endfor
+      case k
+        when 'goal'
+          assign cur = goal
+          assign q = q | default: "What's your main goal right now?"
+          assign help = help | default: 'Pick the one that matters most. You can change it any time.'
+          if answers == ''
+            assign answers = 'build-muscle | Build muscle,lose-fat | Lose fat,endurance | Endurance,hydration-recovery | Hydration & recovery,daily-health | Daily health,sport-specific | Sport-specific' | split: ','
+          endif
+        when 'freq'
+          assign cur = freq
+          assign q = q | default: 'How often do you train?'
+          assign help = help | default: 'A normal week, roughly.'
+          if answers == ''
+            assign answers = '1-2x | 1–2 days a week,3x | 3 days a week,4x | 4 days a week,5x | 5 or more days' | split: ','
+          endif
+        else
+          assign cur = sport
+          assign q = q | default: "What's your main sport?"
+          assign help = help | default: 'We use it for match-day tips and guides.'
+          if answers == ''
+            assign answers = 'cricket | Cricket,padel | Padel,running | Running,gym | Gym,cycling | Cycling,swimming | Swimming,other | Something else' | split: ','
+          endif
+      endcase
+    -%}
+    <fieldset class="quiz__step" data-step="{{ k }}"{% unless forloop.first %} hidden{% endunless %}>
+      <legend class="quiz__q">{{ q | escape }}</legend>
+      {%- if help != blank -%}<p class="quiz__help">{{ help | escape }}</p>{%- endif -%}
+      <div class="quiz__opts">
+        {%- for a in answers -%}
+          {%- assign pr = a | split: '|' -%}
+          {%- assign val = pr[0] | strip | handleize -%}
+          {%- if val == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign lab = pr[1] | default: pr[0] | strip -%}
+          <label class="quiz__opt"><input type="radio" name="{{ id }}-{{ k }}" value="{{ val }}"{% if val == cur %} checked{% endif %} data-label="{{ lab | escape }}"><span>{{ lab | escape }}</span></label>
+        {%- endfor -%}
+      </div>
+    </fieldset>
+  {%- endfor -%}
+  {%- if contact -%}
+    <fieldset class="quiz__step" data-step="contact" hidden>
+      <legend class="quiz__q">Birthday and mobile <span class="quiz__opt-l">(optional)</span></legend>
+      <p class="quiz__help">Your birthday unlocks your birthday reward. Your mobile is for delivery updates.</p>
+      <div class="aform__grid">
+        <label class="fld"><span>Birthday</span><input type="date" data-quiz-bday min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" value="{{ bday | escape }}" autocomplete="bday"></label>
+        <label class="fld"><span>Mobile number</span><input type="tel" data-quiz-mobile data-sl-mobile inputmode="tel" value="{{ phone | escape }}" placeholder="07X XXX XXXX" autocomplete="tel" aria-describedby="{{ id }}-mob-err"></label>
+        <p class="fld__err fld--full" id="{{ id }}-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
+      </div>
+    </fieldset>
+  {%- endif -%}
+  <div class="quiz__done" data-step="done" hidden tabindex="-1">
+    <p class="quiz__q">You're all set</p>
+    <p class="quiz__help" data-quiz-summary></p>
+    <p class="aform__err" data-quiz-fail hidden role="alert">We couldn't save that just now. Your answers are kept on this device; try again in a moment.</p>
+  </div>
+  <div class="quiz__nav">
+    <button class="v-btn v-btn--line" type="button" data-quiz-back hidden><span>Back</span></button>
+    <button class="v-link quiz__skip" type="button" data-quiz-skip>{% if mode == 'register' %}Skip for now{% else %}Skip this question{% endif %}</button>
+    <button class="v-btn v-btn--ink" type="button" data-quiz-next><span>Next</span></button>
+  </div>
+  {%- if mode != 'register' and mock != true -%}
+    {%- form 'customer', class: 'quiz__form' -%}
+      <input type="hidden" name="contact[email]" value="{{ email | escape }}">
+      <input type="hidden" name="contact[tags]" value="" data-quiz-tags>
+    {%- endform -%}
+  {%- endif -%}
+</div>
