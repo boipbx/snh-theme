@@ -10,17 +10,11 @@
 {
   "sections": {
     "main": {
-      "type": "main-customers-account",
-      "blocks": {
-        "orders": {
-          "type": "orders",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "orders"
-      ],
-      "settings": {}
+      "type": "snh-account",
+      "settings": {
+        "refer_text": "Give Rs 500, get Rs 500",
+        "refer_link": "/pages/contact"
+      }
     }
   },
   "order": [

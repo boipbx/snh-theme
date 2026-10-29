@@ -10,8 +10,11 @@
 {
   "sections": {
     "main": {
-      "type": "main-customers-activate-account",
-      "settings": {}
+      "type": "snh-account-password",
+      "settings": {
+        "heading": "Welcome to *SNH Elite*",
+        "lead": "Points on every order, a birthday reward and perks that grow with you."
+      }
     }
   },
   "order": [

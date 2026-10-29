@@ -1,0 +1,58 @@
+{%- comment -%}
+  One row of the account orders table (Round 7). order: a customer order. Mock (QA): mock: true with name, date,
+  pay (paid/pending/refunded…), pay_label, ful_label, total (Rs), items, title.
+  Re-order adds the order's variants again (assets/snh-account.js → V2.add); hidden when none are left.
+{%- endcomment -%}
+{%- liquid
+  if mock
+    assign o_name = name
+    assign o_url = '#'
+    assign o_date = date
+    assign o_pay = pay | downcase
+    assign o_pay_label = pay_label
+    assign o_ful_label = ful_label
+    assign o_total = total | times: 100 | money_without_trailing_zeros
+    assign o_items = items
+    assign o_title = title
+    assign o_ids = ''
+  else
+    assign o_name = order.name
+    assign o_url = order.customer_url
+    assign o_date = order.created_at | date: '%d %b %Y'
+    assign o_pay = order.financial_status | default: 'pending'
+    assign o_pay_label = order.financial_status_label
+    assign o_ful_label = order.fulfillment_status_label
+    assign o_total = order.total_price | money_without_trailing_zeros
+    assign o_items = order.item_count
+    assign o_title = order.line_items.first.title
+    capture o_ids
+      for li in order.line_items
+        if li.variant_id
+          echo li.variant_id | append: ':' | append: li.quantity | append: ','
+        endif
+      endfor
+    endcapture
+    if order.cancelled
+      assign o_pay = 'cancelled'
+      assign o_pay_label = 'Cancelled'
+    endif
+  endif
+  assign o_ids = o_ids | strip | remove_last: ','
+  if o_pay contains 'paid'
+    assign pill = 'ok'
+  elsif o_pay contains 'refund' or o_pay contains 'void' or o_pay contains 'cancel'
+    assign pill = 'off'
+  else
+    assign pill = 'wait'
+  endif
+-%}
+<tr class="otr">
+  <th scope="row" class="otr__no"><a href="{{ o_url }}">{{ o_name }}</a><span class="otr__sub">{{ o_title | truncate: 44 | escape }}{% if o_items > 1 %} · {{ o_items }} items{% endif %}</span></th>
+  <td class="otr__date" data-l="Date">{{ o_date }}</td>
+  <td data-l="Status"><span class="pill pill--{{ pill }}">{{ o_pay_label }}</span>{% if o_ful_label != blank %} <span class="pill">{{ o_ful_label }}</span>{% endif %}</td>
+  <td class="otr__total" data-l="Total">{{ o_total }}</td>
+  <td class="otr__act">
+    <a class="v-btn v-btn--line v-btn--sm" href="{{ o_url }}"><span>View</span></a>
+    {%- if o_ids != blank or mock -%}<button class="v-btn v-btn--ink v-btn--sm" type="button" data-reorder="{{ o_ids }}"{% if mock %} disabled{% endif %}><span>Re-order</span></button>{%- endif -%}
+  </td>
+</tr>

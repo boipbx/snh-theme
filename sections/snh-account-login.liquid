@@ -1,0 +1,60 @@
+{%- comment -%}
+  SNH sign in (Round 7, customers/login): Elite pitch + Shopify's customer_login form; "Forgot password?" swaps in
+  recover_customer_password in place (opened automatically after it posts or errors, or at #recover).
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-account.js' | asset_url }}" defer></script>
+{%- assign welcome = settings.snh_welcome_points | default: 500 -%}
+{%- form 'recover_customer_password' -%}
+  {%- if form.errors or form.posted_successfully? -%}{%- assign recover_open = true -%}{%- endif -%}
+{%- endform -%}
+<div class="v2 acc-page auth">
+  <div class="v-wrap auth__grid">
+    {%- render 'snh-auth-aside', heading: section.settings.heading, lead: section.settings.lead, image: section.settings.image -%}
+    <div class="auth__main" data-auth>
+      <div class="auth__pane" id="login" {% if recover_open %}hidden{% endif %} data-auth-pane="login">
+        <p class="eyebrow">Welcome back</p>
+        <h1 class="auth__title">Sign in</h1>
+        <p class="auth__sub">Your points, tier and orders in one place.</p>
+        {%- form 'customer_login', class: 'aform' -%}
+          {%- if form.errors -%}<div class="aform__err" role="alert" id="login-err">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <label class="fld"><span>Email</span><input type="email" name="customer[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required{% if form.errors %} aria-invalid="true" aria-describedby="login-err"{% endif %}></label>
+          <label class="fld"><span class="fld__row">Password <a class="fld__link" href="#recover" data-auth-go="recover">Forgot password?</a></span><input type="password" name="customer[password]" autocomplete="current-password" required></label>
+          <button class="v-btn v-btn--accent auth__btn" type="submit"><span>Sign in</span></button>
+        {%- endform -%}
+        <p class="auth__alt">New to SNH? <a class="v-link" href="{{ routes.account_register_url }}">Create an account</a> and get {% render 'snh-num', n: welcome %} welcome points.</p>
+        {%- if shop.checkout.guest_login -%}
+          {%- form 'guest_login' -%}<button class="v-btn v-btn--line auth__btn" type="submit"><span>Continue as a guest</span></button>{%- endform -%}
+        {%- endif -%}
+      </div>
+
+      <div class="auth__pane" id="recover" {% unless recover_open %}hidden{% endunless %} data-auth-pane="recover">
+        <p class="eyebrow">Account recovery</p>
+        <h1 class="auth__title">Reset your password</h1>
+        {%- form 'recover_customer_password', class: 'aform' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="aform__ok" role="status">If that email has an account, a reset link is on its way. Check your inbox.</p>
+          {%- else -%}
+            <p class="auth__sub">Enter your account email and we'll send you a link to set a new password.</p>
+            {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+            <label class="fld"><span>Email</span><input type="email" name="email" autocomplete="email" autocapitalize="off" spellcheck="false" required></label>
+            <button class="v-btn v-btn--accent auth__btn" type="submit"><span>Send reset link</span></button>
+          {%- endif -%}
+        {%- endform -%}
+        <p class="auth__alt"><a class="v-link" href="#login" data-auth-go="login">Back to sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SNH sign in",
+  "class": "shopify-section--snh-account",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Pitch heading", "info": "Wrap a word in *asterisks* for the serif.", "default": "Your rewards are *waiting*" },
+    { "type": "text", "id": "lead", "label": "Pitch text", "default": "Sign in to see your points, your tier and every order in one place." },
+    { "type": "image_picker", "id": "image", "label": "Pitch image", "info": "Optional cutout or photo behind the pitch." }
+  ]
+}
+{% endschema %}

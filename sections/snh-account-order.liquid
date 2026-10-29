@@ -1,0 +1,114 @@
+{%- comment -%}
+  SNH order detail (Round 7, customers/order): status, tracking, items, totals, addresses, points earned at the
+  member's rate (shown as an estimate: the loyalty integration credits the real points), re-order.
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-account.js' | asset_url }}" defer></script>
+{%- liquid
+  capture m
+    render 'snh-elite-calc', customer: customer
+  endcapture
+  assign m = m | strip | split: '|'
+  assign fulfillment = order.line_items | where: 'fulfillment' | map: 'fulfillment' | sort: 'created_at' | last
+  assign pay = order.financial_status | default: 'pending'
+  if pay contains 'paid'
+    assign pill = 'ok'
+  elsif pay contains 'refund' or pay contains 'void'
+    assign pill = 'off'
+  else
+    assign pill = 'wait'
+  endif
+  assign earn = order.subtotal_price | divided_by: 100 | times: m[7] | divided_by: 100
+  capture ids
+    for li in order.line_items
+      if li.variant_id
+        echo li.variant_id | append: ':' | append: li.quantity | append: ','
+      endif
+    endfor
+  endcapture
+  assign ids = ids | strip | remove_last: ','
+-%}
+<div class="v2 acc-page">
+  <div class="v-wrap acc">
+    <header class="acc__head acc__head--row">
+      <div>
+        <a class="acc__back" href="{{ routes.account_url }}#orders">{% render 'snh-v2-icon', name: 'back' %}<span>All orders</span></a>
+        <h1 class="acc__h">Order <em>{{ order.name }}</em></h1>
+        <p class="acc__muted">Placed {{ order.created_at | date: '%d %b %Y, %-I:%M %p' }}</p>
+      </div>
+      <div class="acc__pills">
+        {%- if order.cancelled -%}<span class="pill pill--off">Cancelled</span>{%- else -%}<span class="pill pill--{{ pill }}">{{ order.financial_status_label }}</span>{%- endif -%}
+        <span class="pill">{{ order.fulfillment_status_label }}</span>
+      </div>
+    </header>
+    {%- render 'snh-account-nav', active: 'orders' -%}
+
+    {%- if order.cancelled -%}
+      <p class="acc__banner acc__banner--off">Cancelled on {{ order.cancelled_at | date: '%d %b %Y' }}{% if order.cancel_reason_label != blank %}: {{ order.cancel_reason_label }}{% endif %}.</p>
+    {%- elsif fulfillment -%}
+      <div class="acc__banner">
+        <p>Shipped {{ fulfillment.created_at | date: '%d %b %Y' }}{% if fulfillment.tracking_company != blank %} with {{ fulfillment.tracking_company }}{% endif %}{% if fulfillment.tracking_number != blank %} · tracking {{ fulfillment.tracking_number }}{% endif %}.</p>
+        {%- if fulfillment.tracking_url != blank -%}<a class="v-btn v-btn--ink v-btn--sm" href="{{ fulfillment.tracking_url }}" target="_blank" rel="noopener"><span>Track parcel</span></a>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ord">
+      <section class="acc__card ord__items" aria-labelledby="ord-items">
+        <h2 class="acc__h3" id="ord-items">Items</h2>
+        <ul class="ord__list" role="list">
+          {%- for li in order.line_items -%}
+            <li class="ord__li">
+              <span class="ord__img">{%- if li.image -%}{{ li.image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: li.title }}{%- endif -%}</span>
+              <span class="ord__t">
+                {%- if li.url != blank -%}<a href="{{ li.url }}">{{ li.product.title | default: li.title | escape }}</a>{%- else -%}{{ li.title | escape }}{%- endif -%}
+                {%- unless li.product.has_only_default_variant -%}<span class="acc__muted">{{ li.variant.title | escape }}</span>{%- endunless -%}
+                {%- for d in li.line_level_discount_allocations -%}<span class="acc__muted">{{ d.discount_application.title | escape }} (−{{ d.amount | money_without_trailing_zeros }})</span>{%- endfor -%}
+                {%- if li.selling_plan_allocation -%}<span class="acc__muted">{{ li.selling_plan_allocation.selling_plan.name | escape }}</span>{%- endif -%}
+              </span>
+              <span class="ord__q">× {{ li.quantity }}</span>
+              <span class="ord__p">{%- if li.original_line_price != li.final_line_price -%}<s>{{ li.original_line_price | money_without_trailing_zeros }}</s>{%- endif -%}{{ li.final_line_price | money_without_trailing_zeros }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <dl class="ord__sum">
+          <div><dt>Subtotal</dt><dd>{{ order.line_items_subtotal_price | money_without_trailing_zeros }}</dd></div>
+          {%- for d in order.cart_level_discount_applications -%}<div><dt>Discount ({{ d.title | escape }})</dt><dd>−{{ d.total_allocated_amount | money_without_trailing_zeros }}</dd></div>{%- endfor -%}
+          {%- for s in order.shipping_methods -%}<div><dt>Delivery ({{ s.title | escape }})</dt><dd>{{ s.price | money_without_trailing_zeros }}</dd></div>{%- endfor -%}
+          {%- for t in order.tax_lines -%}<div><dt>{% if order.taxes_included %}Includes {% endif %}{{ t.title }} {{ t.rate_percentage }}%</dt><dd>{{ t.price | money_without_trailing_zeros }}</dd></div>{%- endfor -%}
+          {%- if order.total_duties > 0 -%}<div><dt>Duties</dt><dd>{{ order.total_duties | money_without_trailing_zeros }}</dd></div>{%- endif -%}
+          {%- if order.total_refunded_amount > 0 -%}<div><dt>Refunded</dt><dd>−{{ order.total_refunded_amount | money_without_trailing_zeros }}</dd></div>{%- endif -%}
+          <div class="ord__total"><dt>Total</dt><dd>{{ order.total_net_amount | money_with_currency }}</dd></div>
+        </dl>
+      </section>
+
+      <aside class="ord__side">
+        {%- unless order.cancelled -%}
+          <section class="acc__card ord__pts" data-tier="{{ m[0] }}" aria-labelledby="ord-pts">
+            <h2 class="acc__h3" id="ord-pts">SNH Elite</h2>
+            <p>This order earns about <b>{% render 'snh-num', n: earn %} points</b> at your {{ m[1] }} rate ({{ m[7] }}%).</p>
+            <p class="acc__muted">Points are credited once the order is paid and synced{% if order.total_refunded_amount > 0 %}; refunded amounts don't earn{% endif %}.</p>
+          </section>
+        {%- endunless -%}
+        <section class="acc__card" aria-labelledby="ord-ship">
+          <h2 class="acc__h3" id="ord-ship">Delivery address</h2>
+          {%- if order.shipping_address -%}<address class="acc__addr">{{ order.shipping_address | format_address }}</address>{%- else -%}<p class="acc__muted">No delivery address (collected in store).</p>{%- endif -%}
+        </section>
+        <section class="acc__card" aria-labelledby="ord-bill">
+          <h2 class="acc__h3" id="ord-bill">Billing address</h2>
+          {%- if order.billing_address -%}<address class="acc__addr">{{ order.billing_address | format_address }}</address>{%- else -%}<p class="acc__muted">Same as delivery.</p>{%- endif -%}
+        </section>
+        {%- if ids != blank -%}
+          <button class="v-btn v-btn--ink ord__again" type="button" data-reorder="{{ ids }}"><span>Re-order these items</span></button>
+        {%- endif -%}
+      </aside>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SNH order",
+  "class": "shopify-section--snh-account",
+  "settings": []
+}
+{% endschema %}

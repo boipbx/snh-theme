@@ -1,0 +1,71 @@
+{%- comment -%}
+  SNH addresses (Round 7, customers/addresses): address cards with edit / delete, add form. Native customer_address
+  forms (snippets/snh-address-form); delete posts _method=delete after an inline confirm (assets/snh-account.js).
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-account.js' | asset_url }}" defer></script>
+<div class="v2 acc-page">
+  <div class="v-wrap acc">
+    <header class="acc__head acc__head--row">
+      <div>
+        <p class="eyebrow">My account</p>
+        <h1 class="acc__h">Your <em>addresses</em></h1>
+      </div>
+      <button class="v-btn v-btn--accent" type="button" aria-expanded="false" aria-controls="addr-new" data-aform-open="new"><span>Add an address</span></button>
+    </header>
+    {%- render 'snh-account-nav', active: 'addresses' -%}
+
+    <section class="acc__card addr-new" id="addr-new" aria-labelledby="addr-new-t" hidden data-aform-box="new">
+      <h2 class="acc__h3" id="addr-new-t">New address</h2>
+      {%- render 'snh-address-form', address: customer.new_address -%}
+    </section>
+
+    {%- paginate customer.addresses by 20 -%}
+      {%- if customer.addresses_count == 0 -%}
+        <div class="acc__empty">
+          <p class="acc__empty-h">No saved addresses</p>
+          <p>Save an address for faster checkout and same-day Colombo delivery.</p>
+        </div>
+      {%- else -%}
+        <ul class="addrs" role="list">
+          {%- for address in customer.addresses -%}
+            <li class="acc__card addr{% if address == customer.default_address %} is-default{% endif %}">
+              <div class="addr__view" data-aform-view="{{ address.id }}">
+                <div class="addr__head">
+                  <h2 class="acc__h3">{% if address == customer.default_address %}Default address{% else %}Address {{ forloop.index }}{% endif %}</h2>
+                  {%- if address == customer.default_address -%}<span class="pill pill--ok">Default</span>{%- endif -%}
+                </div>
+                <address class="acc__addr">{{ address | format_address }}</address>
+                <div class="addr__acts">
+                  <button class="v-btn v-btn--line v-btn--sm" type="button" aria-expanded="false" aria-controls="addr-{{ address.id }}" data-aform-open="{{ address.id }}"><span>Edit</span></button>
+                  <form method="post" action="{{ address.url }}" class="addr__del" data-addr-del>
+                    <input type="hidden" name="_method" value="delete">
+                    <button class="v-link addr__delbtn" type="button" data-del-ask>Delete</button>
+                    <span class="addr__confirm" hidden data-del-confirm>
+                      <span>Delete this address?</span>
+                      <button class="v-btn v-btn--ink v-btn--sm" type="submit"><span>Delete</span></button>
+                      <button class="v-link" type="button" data-del-cancel>Keep</button>
+                    </span>
+                  </form>
+                </div>
+              </div>
+              <div id="addr-{{ address.id }}" hidden data-aform-box="{{ address.id }}">
+                <h2 class="acc__h3">Edit address</h2>
+                {%- render 'snh-address-form', address: address -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- render 'pagination', paginate: paginate -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SNH addresses",
+  "class": "shopify-section--snh-account",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,8 @@
+{%- comment -%} Account sub-navigation (Round 7). active: dashboard / orders / addresses. {%- endcomment -%}
+<nav class="anav" aria-label="Account">
+  <a href="{{ routes.account_url }}"{% if active == 'dashboard' %} aria-current="page"{% endif %}>Dashboard</a>
+  <a href="{{ routes.account_url }}#orders"{% if active == 'orders' %} aria-current="page"{% endif %}>Orders</a>
+  <a href="{{ routes.account_addresses_url }}"{% if active == 'addresses' %} aria-current="page"{% endif %}>Addresses</a>
+  <a href="{% render 'snh-elite-url' %}">SNH Elite</a>
+  <a class="anav__out" href="{{ routes.account_logout_url }}" data-no-instant>Sign out</a>
+</nav>

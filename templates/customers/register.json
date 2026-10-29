@@ -10,8 +10,47 @@
 {
   "sections": {
     "main": {
-      "type": "main-customers-register",
-      "settings": {}
+      "type": "snh-account-register",
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "q": "Is SNH Elite really free?",
+            "a": "<p>Yes. Creating an account is free and starts you at Bronze with 500 welcome points.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I earn SNH Elite points?",
+            "a": "<p>Sign in before checkout. Bronze earns 3%, Silver 7% and Gold 10% back in points on your order subtotal.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I upgrade to Silver or Gold?",
+            "a": "<p>Your annual spend updates after paid orders. Silver unlocks at Rs 198,000 a year and Gold at Rs 300,000.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "q": "What happens when I refund an order?",
+            "a": "<p>The points earned on the refunded amount come off your balance.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4"
+      ],
+      "settings": {
+        "heading": "Fuel your goals. *Earn* your rewards.",
+        "lead": "Create your free account, claim your welcome points and earn back on every order."
+      }
     }
   },
   "order": [

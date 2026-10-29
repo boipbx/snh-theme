@@ -1456,6 +1456,32 @@
         "label": "Rs value of one point",
         "info": "Used to show a balance in rupees. Confirm with the client.",
         "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Tier perks"
+      },
+      {
+        "type": "paragraph",
+        "content": "One perk per line. Shown on the account dashboard, the register page and the SNH Elite page. The earn rate line is added automatically."
+      },
+      {
+        "type": "textarea",
+        "id": "snh_perks_bronze",
+        "label": "Bronze perks",
+        "default": "500 welcome points when you join\nRedeem as soon as you reach 2,500 points\nSpend tracked automatically from paid orders"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_perks_silver",
+        "label": "Silver perks",
+        "default": "A 10% reward every birthday\n5% off every gift voucher\nPriority access to member-only campaigns"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_perks_gold",
+        "label": "Gold perks",
+        "default": "Free shipping on every order\nA 15% reward every birthday\n10% off gift vouchers and first access to new drops"
       }
     ]
   },

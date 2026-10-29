@@ -10,12 +10,10 @@
 {
   "sections": {
     "main": {
-      "type": "main-customers-login",
+      "type": "snh-account-login",
       "settings": {
-        "background": "",
-        "text_color": "",
-        "button_background": "#e0521c",
-        "button_text_color": "#ffffff"
+        "heading": "Your rewards are *waiting*",
+        "lead": "Sign in to see your points, your tier and every order in one place."
       }
     },
     "faq_rgYHYt": {

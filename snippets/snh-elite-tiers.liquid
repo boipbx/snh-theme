@@ -1,0 +1,59 @@
+{%- comment -%}
+  SNH Elite tier ladder cards (Round 7): Bronze / Silver / Gold with rate, threshold and perks, all from Theme settings
+  → SNH Elite. current: tier key to mark ("bronze"/"silver"/"gold"), optional. tone: "dark" for glass on a dark band.
+{%- endcomment -%}
+{%- capture d_b -%}500 welcome points when you join
+Redeem as soon as you reach 2,500 points
+Spend tracked automatically from paid orders{%- endcapture -%}
+{%- capture d_s -%}A 10% reward every birthday
+5% off every gift voucher
+Priority access to member-only campaigns{%- endcapture -%}
+{%- capture d_g -%}Free shipping on every order
+A 15% reward every birthday
+10% off gift vouchers and first access to new drops{%- endcapture -%}
+{%- liquid
+  assign silver = settings.snh_silver_threshold | default: 198000
+  assign gold = settings.snh_gold_threshold | default: 300000
+  assign p_b = settings.snh_perks_bronze | default: d_b
+  assign p_s = settings.snh_perks_silver | default: d_s
+  assign p_g = settings.snh_perks_gold | default: d_g
+  assign keys = 'bronze,silver,gold' | split: ','
+-%}
+<ul class="etiers{% if tone == 'dark' %} etiers--dark{% endif %}" role="list">
+  {%- for k in keys -%}
+    {%- liquid
+      case k
+        when 'bronze'
+          assign name = 'Bronze'
+          assign rate = settings.snh_rate_bronze | default: 3
+          assign perks = p_b
+        when 'silver'
+          assign name = 'Silver'
+          assign rate = settings.snh_rate_silver | default: 7
+          assign perks = p_s
+        else
+          assign name = 'Gold'
+          assign rate = settings.snh_rate_gold | default: 10
+          assign perks = p_g
+      endcase
+    -%}
+    <li class="etier{% if current == k %} is-current{% endif %}" data-tier="{{ k }}">
+      <div class="etier__head">
+        <span class="etier__name">{{ name }}</span>
+        {%- if current == k -%}<span class="etier__you">Your tier</span>{%- endif -%}
+      </div>
+      <p class="etier__rate"><strong>{{ rate }}%</strong> back in points</p>
+      <p class="etier__th">
+        {%- case k -%}
+          {%- when 'bronze' -%}Free to join
+          {%- when 'silver' -%}From {{ silver | times: 100 | money_without_trailing_zeros }} a year
+          {%- else -%}From {{ gold | times: 100 | money_without_trailing_zeros }} a year
+        {%- endcase -%}
+      </p>
+      <ul class="etier__perks">
+        {%- assign lines = perks | newline_to_br | split: '<br />' -%}
+        {%- for l in lines -%}{%- assign l = l | strip -%}{%- if l != blank -%}<li>{% render 'snh-v2-icon', name: 'check' %}<span>{{ l | escape }}</span></li>{%- endif -%}{%- endfor -%}
+      </ul>
+    </li>
+  {%- endfor -%}
+</ul>

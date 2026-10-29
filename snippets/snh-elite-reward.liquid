@@ -1,0 +1,42 @@
+{%- comment -%}
+  SNH Elite rewards card (Round 7, account dashboard + mock). m: split output of snippets/snh-elite-calc.
+  At the redeem threshold it shows the old theme's redeem request: Shopify's customer form, tag Trigger_Redeem_2500
+  (the store's Flow issues the reward; the theme changes no balance). mock: true renders the button inert.
+{%- endcomment -%}
+{%- liquid
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  assign welcome = settings.snh_welcome_points | default: 500
+  if m[3] != 'x'
+    assign have = m[3] | plus: 0
+    assign pct = have | times: 100 | divided_by: redeem_from | at_most: 100
+  endif
+-%}
+<aside class="rcard" aria-labelledby="rcard-t">
+  <p class="eyebrow">Rewards</p>
+  {%- if m[3] == 'x' -%}
+    <h2 class="rcard__h" id="rcard-t">Your points are on the way</h2>
+    <p class="rcard__p">Your balance shows here once your first paid order syncs. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
+    <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+  {%- elsif m[14] == '1' -%}
+    <h2 class="rcard__h" id="rcard-t">Your reward is <em>ready</em></h2>
+    <p class="rcard__p">Trade {% render 'snh-num', n: redeem_from %} points for a cash-off reward. We'll send it to {% if mock %}your email{% else %}{{ customer.email | escape }}{% endif %}.</p>
+    {%- if mock -%}
+      <button class="v-btn v-btn--accent" type="button" disabled><span>Trade {% render 'snh-num', n: redeem_from %} points</span></button>
+    {%- else -%}
+      {%- form 'customer', class: 'rcard__form' -%}
+        <input type="hidden" name="contact[email]" value="{{ customer.email | escape }}">
+        <input type="hidden" name="contact[tags]" value="Trigger_Redeem_2500">
+        {%- if form.posted_successfully? -%}
+          <p class="rcard__ok" role="status">Request sent. Your reward will arrive by email.</p>
+        {%- else -%}
+          <button class="v-btn v-btn--accent" type="submit"><span>Trade {% render 'snh-num', n: redeem_from %} points</span></button>
+        {%- endif -%}
+      {%- endform -%}
+    {%- endif -%}
+  {%- else -%}
+    <h2 class="rcard__h" id="rcard-t">{% render 'snh-num', n: m[15] %} points to your first reward</h2>
+    <div class="rcard__bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ redeem_from }}" aria-valuenow="{{ have }}" aria-label="Points towards your first reward"><i style="width: {{ pct }}%"></i></div>
+    <p class="rcard__p">Rewards unlock at {% render 'snh-num', n: redeem_from %} points. At {{ m[7] }}% back, that's about {{ m[15] | times: 100 | divided_by: m[7] | times: 100 | money_without_trailing_zeros }} of shopping.</p>
+    <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+  {%- endif -%}
+</aside>

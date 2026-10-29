@@ -1,0 +1,55 @@
+{%- comment -%}
+  SNH Elite membership card (Round 7, account dashboard + mock): dark glass, tier colour accent, member name, tier,
+  points + Rs value, earn rate, annual spend, ladder to Gold with "Spend Rs X more to reach …".
+  m: the split output of snippets/snh-elite-calc. name: member name. no: member number. h: heading level tag (h1/h2).
+{%- endcomment -%}
+{%- liquid
+  assign silver = settings.snh_silver_threshold | default: 198000 | at_least: 1
+  assign gold = settings.snh_gold_threshold | default: 300000 | at_least: silver
+  assign silver_at = silver | times: 100 | divided_by: gold | round
+  assign tag = h | default: 'h2'
+-%}
+<section class="ecard" data-tier="{{ m[0] }}" aria-label="SNH Elite membership card">
+  <div class="ecard__glow" aria-hidden="true"><i></i><i></i></div>
+  <div class="ecard__top">
+    <span class="ecard__brand">SNH <em>Elite</em></span>
+    <span class="ecard__no">{{ m[1] | upcase }} · No. {{ no }}</span>
+  </div>
+  <div class="ecard__who">
+    <{{ tag }} class="ecard__name">{{ name | escape }}</{{ tag }}>
+    <span class="tbadge tbadge--{{ m[0] }}">{{ m[1] }} member</span>
+    {%- if m[2] == '1' -%}<span class="ecard__est">Tier estimated from your orders</span>{%- endif -%}
+  </div>
+  <dl class="ecard__stats">
+    <div>
+      <dt>Points</dt>
+      {%- if m[3] == 'x' -%}
+        <dd><strong>—</strong><span>Shows after your first paid order</span></dd>
+      {%- else -%}
+        <dd><strong>{% render 'snh-num', n: m[3] %}</strong><span>Worth {{ m[4] | times: 100 | money_without_trailing_zeros }}</span></dd>
+      {%- endif -%}
+    </div>
+    <div>
+      <dt>Earn rate</dt>
+      <dd><strong>{{ m[7] }}%</strong><span>back on every order</span></dd>
+    </div>
+    <div>
+      <dt>Spend this year</dt>
+      <dd><strong>{{ m[5] | times: 100 | money_without_trailing_zeros }}</strong><span>{% if m[6] == '1' %}Estimated from your orders{% else %}Counts towards your tier{% endif %}</span></dd>
+    </div>
+  </dl>
+  <div class="ecard__ladder">
+    <div class="ecard__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[13] }}" aria-label="Spend towards Gold">
+      <i class="ecard__fill" style="width: {{ m[13] }}%"></i>
+      <b style="left: 0%"></b><b style="left: {{ silver_at }}%"></b><b style="left: 100%"></b>
+    </div>
+    <div class="ecard__marks" aria-hidden="true">
+      <span style="left: 0%">Bronze</span><span style="left: {{ silver_at }}%">Silver</span><span style="left: 100%">Gold</span>
+    </div>
+    <p class="ecard__next">
+      {%- if m[12] == '1' -%}You're at the top: <b>{{ m[7] }}% back</b> and every Gold perk.
+      {%- elsif m[10] == '0' -%}You've reached the {{ m[8] }} spend. Your tier updates after your next paid order syncs.
+      {%- else -%}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ m[8] }}.{%- endif -%}
+    </p>
+  </div>
+</section>

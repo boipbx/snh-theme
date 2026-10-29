@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "main-customers-order",
+      "type": "snh-account-order",
       "settings": {}
     }
   },

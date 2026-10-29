@@ -1,0 +1,32 @@
+{%- comment -%}
+  Address add/edit form (Round 7, customers/addresses): Shopify's native customer_address form.
+  address: customer.new_address or an existing address. Country/province selects: assets/snh-account.js.
+{%- endcomment -%}
+{%- liquid
+  assign fid = address.id | default: 'new'
+  if address.id
+    assign country = address.country | default: 'Sri Lanka'
+  else
+    assign country = 'Sri Lanka'
+  endif
+-%}
+{%- form 'customer_address', address, class: 'aform' -%}
+  {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+  <div class="aform__grid">
+    <label class="fld"><span>First name</span><input type="text" name="address[first_name]" value="{{ form.first_name | escape }}" autocomplete="given-name" required></label>
+    <label class="fld"><span>Last name</span><input type="text" name="address[last_name]" value="{{ form.last_name | escape }}" autocomplete="family-name"></label>
+    <label class="fld fld--full"><span>Company <i>(optional)</i></span><input type="text" name="address[company]" value="{{ form.company | escape }}" autocomplete="organization"></label>
+    <label class="fld fld--full"><span>Street address</span><input type="text" name="address[address1]" value="{{ form.address1 | escape }}" autocomplete="address-line1" required></label>
+    <label class="fld fld--full"><span>Apartment, suite, etc. <i>(optional)</i></span><input type="text" name="address[address2]" value="{{ form.address2 | escape }}" autocomplete="address-line2"></label>
+    <label class="fld"><span>City</span><input type="text" name="address[city]" value="{{ form.city | escape }}" autocomplete="address-level2" required></label>
+    <label class="fld"><span>Postal code <i>(optional)</i></span><input type="text" name="address[zip]" value="{{ form.zip | escape }}" autocomplete="postal-code"></label>
+    <label class="fld"><span>Country</span><select name="address[country]" data-country data-default="{{ form.country | default: country | escape }}" autocomplete="country">{{ all_country_option_tags }}</select></label>
+    <label class="fld" data-province-wrap hidden><span>Province</span><select name="address[province]" data-province data-default="{{ form.province | escape }}" autocomplete="address-level1"></select></label>
+    <label class="fld fld--full"><span>Phone</span><input type="tel" name="address[phone]" value="{{ form.phone | escape }}" autocomplete="tel" placeholder="+94 77 123 4567"></label>
+    <label class="chk fld--full"><input type="checkbox" name="address[default]" value="1"{% if form.set_as_default_checkbox contains 'checked' or address == customer.default_address %} checked{% endif %}><span>Use as my default address</span></label>
+  </div>
+  <div class="aform__acts">
+    <button class="v-btn v-btn--ink" type="submit"><span>{% if address.id %}Save address{% else %}Add address{% endif %}</span></button>
+    <button class="v-btn v-btn--line" type="button" data-aform-cancel="{{ fid }}"><span>Cancel</span></button>
+  </div>
+{%- endform -%}

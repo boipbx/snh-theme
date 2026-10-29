@@ -1,0 +1,53 @@
+{%- comment -%}
+  SNH account dashboard (Round 7, customers/account): SNH Elite membership card, rewards, how points work, tier
+  benefits, orders (10 per page, re-order), default address, details, quick links.
+  Loyalty figures: snippets/snh-elite-calc (customer.metafields.custom.loyalty_tier / loyalty_points / annual_spend,
+  display only). Layout: snippets/snh-account-dashboard (shared with the QA mock). Styles: assets/snh-account.css.
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-account.js' | asset_url }}" defer></script>
+{%- liquid
+  capture m
+    render 'snh-elite-calc', customer: customer
+  endcapture
+  assign m = m | strip | split: '|'
+  assign no = customer.id | modulo: 900 | plus: 100
+  assign phone = customer.phone | default: customer.default_address.phone
+  if customer.default_address
+    assign address = customer.default_address | format_address
+  endif
+-%}
+{%- paginate customer.orders by 10 -%}
+  {%- capture rows -%}{%- for order in customer.orders -%}{% render 'snh-order-row', order: order %}{%- endfor -%}{%- endcapture -%}
+  {%- capture pages -%}{% render 'pagination', paginate: paginate, hash: 'orders' %}{%- endcapture -%}
+{%- endpaginate -%}
+<div class="v2 acc-page">
+  {%- render 'snh-account-dashboard',
+    m: m,
+    first_name: customer.first_name,
+    name: customer.name,
+    email: customer.email,
+    phone: phone,
+    no: no,
+    address: address,
+    addresses_count: customer.addresses_count,
+    orders_html: rows,
+    orders_count: customer.orders_count,
+    pagination_html: pages,
+    refer_text: section.settings.refer_text,
+    refer_link: section.settings.refer_link
+  -%}
+</div>
+
+{% schema %}
+{
+  "name": "SNH account dashboard",
+  "class": "shopify-section--snh-account",
+  "settings": [
+    { "type": "paragraph", "content": "Points, tier and spend come from the customer's loyalty metafields. Rates, thresholds and perks: Theme settings → SNH Elite." },
+    { "type": "header", "content": "Quick links" },
+    { "type": "text", "id": "refer_text", "label": "Referral link text", "default": "Give Rs 500, get Rs 500", "info": "Leave empty to hide." },
+    { "type": "url", "id": "refer_link", "label": "Referral link" }
+  ]
+}
+{% endschema %}
