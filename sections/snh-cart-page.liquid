@@ -1,0 +1,302 @@
+{%- comment -%}
+  SNH cart page (Round 11, app-like). Items left, the drawer's summary in a sticky column right; same renderer as the
+  drawer (assets/snh-cart.js, mode "page"), so lines, bars, banners and totals behave identically.
+  Around it: an offers strip (Member promotion metaobject, else this section's Member promotion blocks, matched by
+  tier / goal / sport / diet / date), the free-delivery gap-filler, "Complete your stack" (complements of the basket),
+  bundle swaps ("Swap to the bundle and save Rs X", bundle collections, same rule as the PDP Bundle & save), "Try
+  something new" (bars and snacks they haven't ordered before), recently viewed (next section), a delivery estimate,
+  payment options; guests get the join benefits + the plan quiz, members their points and tier progress. Empty
+  basket: bestsellers + Build your plan.
+{%- endcomment -%}
+{{ 'snh-cart.css' | asset_url | stylesheet_tag }}
+{{ 'snh-app.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-cart.js' | asset_url }}" defer></script>
+{%- liquid
+  assign s = section.settings
+  assign hid = 'cp-' | append: section.id
+  assign t = customer.metafields.custom.loyalty_tier.value | downcase
+  assign tier = 'bronze'
+  if t == 'silver'
+    assign tier = 'silver'
+  elsif t == 'gold' or t == 'maxed out'
+    assign tier = 'gold'
+  endif
+  assign goal = ''
+  assign goal2 = ''
+  assign sport = ''
+  assign diet = ''
+  for tg in customer.tags
+    assign tl = tg | downcase
+    assign k = tl | split: ':' | first
+    assign v = tl | remove_first: k | remove_first: ':' | strip
+    case k
+      when 'goal'
+        assign goal = v
+      when 'goal2'
+        assign goal2 = v
+      when 'sport'
+        assign sport = v
+      when 'diet'
+        assign diet = v
+    endcase
+  endfor
+  # products this member has ordered before (for "Try something new")
+  assign bought = ','
+  if customer
+    for o in customer.orders limit: 20
+      for li in o.line_items
+        assign bought = bought | append: li.product_id | append: ','
+      endfor
+    endfor
+  endif
+  assign welcome = settings.snh_welcome_points | default: 500
+  assign r_b = settings.snh_rate_bronze | default: 3
+  assign r_g = settings.snh_rate_gold | default: 10
+  assign retail_sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+-%}
+<section class="v2 v-section scp" aria-labelledby="{{ hid }}">
+  <div class="v-wrap">
+    <header class="scp__head">
+      <h1 class="v-h1" id="{{ hid }}">Your <em>basket</em> <span class="scd__count" data-cart-count>{{ cart.item_count }}</span></h1>
+      <p class="scp__eta" data-cart-eta>{% render 'snh-v2-icon', name: 'truck' %}<span>Colombo: <b>same-day delivery</b> · Rest of Sri Lanka: <b>2–3 working days</b></span></p>
+    </header>
+
+    {%- capture promos -%}{%- render 'snh-app-promos', blocks: section.blocks, tier: tier, goal: goal, goal2: goal2, sport: sport, diet: diet, recent: '', sid: section.id -%}{%- endcapture -%}
+    {%- if promos != blank -%}<div class="scp__offers">{{ promos }}</div>{%- endif -%}
+
+    <div class="scp__grid" data-cart-root data-mode="page">
+      {%- render 'snh-cart-cfg', threshold: s.free_shipping_threshold, tolerance: s.free_delivery_tolerance, addons: s.addons.handle, bestsellers: s.bestsellers.handle, rating: s.rating, page: true, picks_products: s.picks_products -%}
+      <div class="scp__main">
+        <div data-cart-bar></div>
+        <div class="scp__body" data-cart-body>
+          {%- if cart.item_count > 0 -%}<div class="scd__skel" aria-hidden="true"><i></i><i></i><i></i></div>{%- endif -%}
+        </div>
+        <section class="scd__block scp__more" data-cart-stack hidden></section>
+        <section class="scd__block scp__more" data-cart-swap hidden></section>
+        <section class="scd__block scp__more" data-cart-try hidden></section>
+      </div>
+      <aside class="scp__side" aria-label="Order summary">
+        <div class="scp__sticky">
+          <div class="scp__card" data-cart-foot{% if cart.item_count == 0 %} hidden{% endif %}></div>
+          <div class="scp__card scp__pay">
+            <p class="scp__h">Ways to pay</p>
+            <ul class="scp__ways" role="list">
+              <li><span class="pay">Card</span>Visa, Mastercard, Amex</li>
+              <li><span class="pay pay--kk">Koko</span>3 interest-free payments</li>
+              <li><span class="pay">COD</span>Cash on delivery</li>
+              <li><span class="pay">Bank</span>Bank transfer</li>
+            </ul>
+          </div>
+          {%- if customer -%}
+            <div class="scp__card scp__elite">
+              <p class="scp__h">SNH Elite</p>
+              <p class="app__muted">Points and tier progress for this order are in the summary above.</p>
+              <a class="v-link" href="{{ routes.account_url }}#goals">Your SNH plan</a>
+            </div>
+          {%- else -%}
+            <div class="scp__card scp__join">
+              <p class="scp__h">Join SNH Elite, it's free</p>
+              <ul class="scp__perks" role="list">
+                <li>{% render 'snh-v2-icon', name: 'gift' %}{% render 'snh-num', n: welcome %} welcome points</li>
+                <li>{% render 'snh-v2-icon', name: 'bolt' %}{{ r_b }}–{{ r_g }}% back on every order</li>
+                <li>{% render 'snh-v2-icon', name: 'cake' %}Birthday rewards at Silver and Gold</li>
+              </ul>
+              <div class="scp__join-cta"><a class="v-btn v-btn--ink v-btn--sm" href="{{ routes.account_register_url }}"><span>Join free</span></a><a class="v-btn v-btn--line v-btn--sm" href="{{ routes.account_login_url }}"><span>Sign in</span></a></div>
+              <a class="scp__quiz" href="{{ routes.account_register_url }}">{% render 'snh-v2-icon', name: 'target' %}<span>Not sure what you need? <b>Build your SNH plan</b> in 2 minutes</span></a>
+            </div>
+          {%- endif -%}
+        </div>
+      </aside>
+    </div>
+  </div>
+  {%- comment -%} bundle products (for "Swap to the bundle") and "Try something new" candidates, read by assets/snh-cart.js {%- endcomment -%}
+  <script type="application/json" data-cart-page-data>{
+    "bundles": [
+      {%- assign n = 0 -%}{%- assign seen = ',' -%}
+      {%- assign hl = s.bundle_handles | default: 'training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers' | split: ',' -%}
+      {%- for h in hl -%}{%- assign hh = h | strip -%}
+        {%- for bp in collections[hh].products limit: 60 -%}
+          {%- assign key = ',' | append: bp.id | append: ',' -%}
+          {%- if bp.available == false or seen contains key or n >= 40 -%}{%- continue -%}{%- endif -%}
+          {%- assign seen = seen | append: bp.id | append: ',' -%}
+          {%- liquid
+            assign retail = 0
+            if bp.compare_at_price > bp.price
+              assign retail = bp.compare_at_price
+            else
+              for pair in retail_sheet
+                assign kv = pair | split: '='
+                if kv[0] == bp.handle
+                  assign retail = kv[1] | times: 1
+                endif
+              endfor
+            endif
+            assign saving = 0
+            if retail > bp.price
+              assign saving = retail | minus: bp.price
+            endif
+            assign bv = ''
+            if bp.has_only_default_variant
+              assign bv = bp.selected_or_first_available_variant.id
+            endif
+          -%}
+          {%- if n > 0 -%},{%- endif -%}{%- assign n = n | plus: 1 -%}
+          {"id": {{ bp.id }}, "t": {{ bp.title | json }}, "u": {{ bp.url | json }}, "p": {{ bp.price }}, "s": {{ saving }}, "v": {{ bv | json }}, "i": {{ bp.featured_image | image_url: width: 200 | json }}, "d": {{ bp.description | strip_html | downcase | replace: '&amp;', '&' | truncate: 700, '' | json }}}
+        {%- endfor -%}
+      {%- endfor -%}
+    ],
+    "try": [
+      {%- assign n = 0 -%}
+      {%- for p in s.try_collection.products limit: 40 -%}
+        {%- assign key = ',' | append: p.id | append: ',' -%}
+        {%- if p.available == false or bought contains key or n >= 12 -%}{%- continue -%}{%- endif -%}
+        {%- assign v = p.selected_or_first_available_variant -%}
+        {%- if n > 0 -%},{%- endif -%}{%- assign n = n | plus: 1 -%}
+        {"id": {{ p.id }}, "vid": {{ v.id }}, "title": {{ p.title | json }}, "vendor": {{ p.vendor | json }}, "price": {{ v.price }}, "image": {{ p.featured_image | image_url: width: 200 | json }}, "url": {{ p.url | json }}, "multi": {% if p.variants.size > 1 %}true{% else %}false{% endif %}}
+      {%- endfor -%}
+    ]
+  }</script>
+</section>
+
+{% schema %}
+{
+  "name": "SNH cart page",
+  "class": "snh-sec",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Same renderer and summary as the cart drawer. Rates and points: Theme settings → SNH Elite."
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free delivery over (Rs)",
+      "default": 17000
+    },
+    {
+      "type": "number",
+      "id": "free_delivery_tolerance",
+      "label": "Hide the bar within (Rs) of free delivery",
+      "default": 100
+    },
+    {
+      "type": "collection",
+      "id": "addons",
+      "label": "Cart add-ons",
+      "info": "Low-ticket gap-closers. Empty = Shopify's recommendations."
+    },
+    {
+      "type": "product_list",
+      "id": "picks_products",
+      "label": "Bestsellers (hand-picked)",
+      "limit": 8,
+      "info": "Shown to guests and members without a goal (and in the empty basket). Empty = the collection below."
+    },
+    {
+      "type": "collection",
+      "id": "bestsellers",
+      "label": "Bestsellers (guests, empty basket)"
+    },
+    {
+      "type": "collection",
+      "id": "try_collection",
+      "label": "Try something new",
+      "info": "Bars and snacks; products a member has ordered before are skipped."
+    },
+    {
+      "type": "text",
+      "id": "bundle_handles",
+      "label": "Bundle collections",
+      "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Trust row rating"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Member promotion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "start",
+          "label": "Starts (YYYY-MM-DD)"
+        },
+        {
+          "type": "text",
+          "id": "end",
+          "label": "Ends (YYYY-MM-DD)"
+        },
+        {
+          "type": "text",
+          "id": "tiers",
+          "label": "Tiers"
+        },
+        {
+          "type": "text",
+          "id": "goals",
+          "label": "Goals"
+        },
+        {
+          "type": "text",
+          "id": "sports",
+          "label": "Sports"
+        },
+        {
+          "type": "text",
+          "id": "diets",
+          "label": "Diets"
+        },
+        {
+          "type": "text",
+          "id": "bought",
+          "label": "Bought triggers"
+        },
+        {
+          "type": "range",
+          "id": "priority",
+          "label": "Priority",
+          "min": 0,
+          "max": 9,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

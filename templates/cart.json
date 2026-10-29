@@ -10,57 +10,53 @@
 {
   "sections": {
     "main": {
-      "type": "main-cart",
+      "type": "snh-cart-page",
+      "settings": {
+        "free_shipping_threshold": 17000,
+        "free_delivery_tolerance": 100,
+        "try_collection": "protein-bars",
+        "picks_products": [
+          "applied-nutrition-creatine-monohydrate",
+          "sis-go-hydro-tablets",
+          "applied-nutrition-critical-whey-2kg",
+          "sis-go-isotonic-energy-gel",
+          "raw-cbum-itholate-protein",
+          "raw-thavage-pre-workout",
+          "ryse-loaded-protein-2lb",
+          "ryse-loaded-pre-workout"
+        ]
+      },
       "blocks": {
-        "totals": {
-          "type": "totals",
+        "promo_ryse": {
+          "type": "promo",
           "settings": {
-            "show_order_weight": false,
-            "show_shipping_text": true
+            "title": "The new *RYSE* range has landed",
+            "text": "Loaded protein, pre-workout and more.",
+            "cta": "Shop RYSE",
+            "link": "/collections/ryse",
+            "collection": "ryse",
+            "priority": 4
           }
-        },
-        "cart_note": {
-          "type": "cart_note",
-          "settings": {}
-        },
-        "checkout_button": {
-          "type": "checkout_button",
-          "settings": {}
         }
       },
       "block_order": [
-        "totals",
-        "cart_note",
-        "checkout_button"
-      ],
+        "promo_ryse"
+      ]
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {}
+    },
+    "faq": {
+      "type": "snh-faq",
       "settings": {
-        "crosssell_title": "Complete your order",
-        "crosssell_subtitle": "Popular add-ons other athletes pair with this.",
-        "crosssell_products": [
-          "applied-nutrition-diet-protein-bar",
-          "applied-nutrition-protein-cheese-bites",
-          "applied-nutrition-protein-chips",
-          "myprotein-extra-protein-cookie",
-          "myprotein-gooey-filled-cookie",
-          "myprotein-pop-roll",
-          "myprotein-popped-protein-crisps",
-          "myprotein-protein-brownie",
-          "myprotein-the-myprotein-bar",
-          "myprotein-layered-bar"
-        ],
-        "trending_title": "Trending this month",
-        "trending_subtitle": "What other athletes are stocking up on right now.",
-        "trending_products": [
-          "applied-nutrition-black-stak-health-pack",
-          "sis-beta-fuel-gel",
-          "sis-go-isotonic-energy-gel"
-        ],
-        "show_shipping_estimator": true,
-        "show_payment_icons": true
+        "style": "light"
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "recent",
+    "faq"
   ]
 }

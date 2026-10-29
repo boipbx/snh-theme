@@ -7,13 +7,13 @@
   (bundle_N offers), personalised picks (goal) or bestsellers, summary with savings, points, Koko 3×, trust row.
   The element is Impact's plain <x-drawer id="cart-drawer"> so header buttons still open it, but only
   assets/snh-cart.js renders its content (from /cart.js), so nothing re-renders it behind our back. Max 440px wide;
-  a full-screen sheet on phones. The cart page (sections/main-cart) uses the same renderer and summary.
+  a full-screen sheet on phones. The cart page (sections/snh-cart-page) uses the same renderer and summary.
 {%- endcomment -%}
 {{ 'snh-cart.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'snh-cart.js' | asset_url }}" defer></script>
 <x-drawer class="cart-drawer drawer snh-cd" id="cart-drawer" open-from="right" aria-label="Your basket" data-snh-elite>
   <div class="scd" data-cart-root data-mode="drawer">
-    {%- render 'snh-cart-cfg', threshold: section.settings.free_shipping_threshold, tolerance: section.settings.free_delivery_tolerance, addons: section.settings.addons.handle, bestsellers: section.settings.bestsellers.handle, rating: section.settings.rating -%}
+    {%- render 'snh-cart-cfg', threshold: section.settings.free_shipping_threshold, tolerance: section.settings.free_delivery_tolerance, addons: section.settings.addons.handle, bestsellers: section.settings.bestsellers.handle, rating: section.settings.rating, picks_products: section.settings.picks_products -%}
     <header class="scd__head">
       <h2 class="scd__title">Your basket <span class="scd__count" data-cart-count>{{ cart.item_count }}</span></h2>
       <button type="button" is="close-button" class="scd__x" aria-label="Close basket">{% render 'snh-v2-icon', name: 'close' %}</button>
@@ -34,15 +34,65 @@
   "name": "Cart drawer",
   "class": "shopify-section--cart-drawer",
   "settings": [
-    { "type": "paragraph", "content": "The SNH cart drawer. Rates and points come from Theme settings → SNH Elite; bundle upsells from Theme settings → SNH bundle offers." },
-    { "type": "number", "id": "free_shipping_threshold", "label": "Free delivery over (Rs)", "default": 17000 },
-    { "type": "number", "id": "free_delivery_tolerance", "label": "Hide the bar within (Rs) of free delivery", "default": 100, "info": "Within this gap the order is treated as free delivery." },
-    { "type": "collection", "id": "addons", "label": "Cart add-ons", "info": "Low-ticket gap-closers (bars, snacks, gels, shakers). Empty or no match = Shopify's recommendations for the basket." },
-    { "type": "collection", "id": "bestsellers", "label": "Bestsellers (guests)", "info": "Members with a goal see their goal's collection. Empty = all products." },
-    { "type": "text", "id": "rating", "label": "Trust row rating", "info": "e.g. 4.9 on Google · 1,200+ reviews. Empty = \"Real customer reviews\"." },
-    { "type": "checkbox", "id": "show_gap_picks", "label": "Show free-delivery gap-filler", "default": true },
-    { "type": "checkbox", "id": "show_fbt", "label": "Show picks", "default": true },
-    { "type": "url", "id": "empty_cart_link", "label": "Empty basket link" }
+    {
+      "type": "paragraph",
+      "content": "The SNH cart drawer. Rates and points come from Theme settings → SNH Elite; bundle upsells from Theme settings → SNH bundle offers."
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free delivery over (Rs)",
+      "default": 17000
+    },
+    {
+      "type": "number",
+      "id": "free_delivery_tolerance",
+      "label": "Hide the bar within (Rs) of free delivery",
+      "default": 100,
+      "info": "Within this gap the order is treated as free delivery."
+    },
+    {
+      "type": "collection",
+      "id": "addons",
+      "label": "Cart add-ons",
+      "info": "Low-ticket gap-closers (bars, snacks, gels, shakers). Empty or no match = Shopify's recommendations for the basket."
+    },
+    {
+      "type": "product_list",
+      "id": "picks_products",
+      "label": "Bestsellers (hand-picked)",
+      "limit": 8,
+      "info": "Shown to guests and members without a goal (and in the empty basket). Empty = the collection below."
+    },
+    {
+      "type": "collection",
+      "id": "bestsellers",
+      "label": "Bestsellers (guests)",
+      "info": "Members with a goal see their goal's collection. Empty = all products."
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Trust row rating",
+      "info": "e.g. 4.9 on Google · 1,200+ reviews. Empty = \"Real customer reviews\"."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gap_picks",
+      "label": "Show free-delivery gap-filler",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fbt",
+      "label": "Show picks",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "empty_cart_link",
+      "label": "Empty basket link"
+    }
   ]
 }
 {% endschema %}

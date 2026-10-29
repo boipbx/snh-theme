@@ -38,7 +38,7 @@ const HIDE = '.shopify-section--popup,#preview-bar-iframe,privacy-bar,#shopify-p
         const desk = innerWidth >= 1024;
         const gut = desk ? 40 : 20;
         const cLeft = Math.max(0, (innerWidth - 1280) / 2) + gut;
-        const skip = '[aria-hidden="true"], script, style, noscript, svg, iframe, .shopify-app-block, [id^="judgeme"], .jdgm-widget, .jdgm-rev-widg, #snh-pay-router, .sp-modal, dialog, .visually-hidden, .sr-only, [inert]';
+        const skip = '[aria-hidden="true"], script, style, noscript, svg, iframe, .shopify-app-block, [id^="judgeme"], .jdgm-widget, .jdgm-rev-widg, #snh-pay-router, .sp-modal, dialog, .visually-hidden, .sr-only, [inert], .tiktok-embed';   // .tiktok-embed: TikTok's own markup, styled by its script
         const sections = [...document.querySelectorAll('main .shopify-section, .shopify-section-group-header-group, .shopify-section-group-footer-group')].filter(vis);
         const type = [], pad = [], align = [];
         const sname = (sec) => (sec.id.replace('shopify-section-', '').split('__').pop() || sec.className.split(' ').find((c) => /--/.test(c)) || '?').slice(0, 30);

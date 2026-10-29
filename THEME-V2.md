@@ -540,3 +540,18 @@ nothing re-renders it behind the renderer's back (the old observer/dedupe workar
   authentic, Card / Koko / COD) at the end of the scroll. 440px wide; a full-screen sheet on phones.
 - QA: `prototype/tools/r11-cart-qa.js` (mocked `/cart.js`, `/cart/change.js`, `/cart/add.js`; gaps Rs 1,500 / Rs 3,000
   / unlocked × guest / member × 390 / 1440) → `prototype/shots/r11/cart/qa.md`.
+
+### Phase 7: cart page (`sections/snh-cart-page`, template `cart.json`)
+App-like: items left, the drawer's summary in a sticky column right (same renderer, mode "page", so lines, bars,
+banners and totals behave identically). Header: "Your basket" + count + a delivery estimate (Colombo same-day, rest of
+Sri Lanka by <date> in 2–3 working days, Mon–Sat). Offers strip: Member promotion metaobject, else this section's
+*Member promotion* blocks (one seeded: the RYSE launch). Below the items: the gap-filler, **Complete your stack**
+(Shopify complementary/related for the basket), **Swap to a bundle** (a bundle in the bundle collections whose
+description names an in-cart product: "Swap to the bundle and save Rs X", Add bundle / See bundle), **Try something
+new** (*Try something new* collection, default `protein-bars`; products a member has ordered before are skipped).
+Right column: the full summary (subtotal, discounts, delivery, you save, total, points; members also "This order gets
+you Rs X closer to Gold"), Koko 3×, Secure checkout, trust row; **Ways to pay** (Card, Koko, COD, bank transfer);
+guests: **Join SNH Elite** benefits + "Build your SNH plan in 2 minutes". Empty basket: Start shopping + Build your
+plan + bestsellers. Then recently viewed and the FAQ. Hand-picked **Bestsellers** setting on the drawer and the page
+(seeded with the homepage bestsellers' "All" tab), since the store has no bestsellers collection.
+The old `main-cart` section stays in the repo, on no template.

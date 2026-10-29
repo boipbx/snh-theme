@@ -64,12 +64,13 @@
   Cart.prototype.render = function (cart) {
     var self = this, c = this.cfg;
     this.cart = cart;
-    $$('[data-cart-count]', this.el).forEach(function (n) { n.textContent = cart.item_count; });
+    $$('[data-cart-count]', this.el.closest('section, x-drawer') || this.el).forEach(function (n) { n.textContent = cart.item_count; });
     if (!cart.item_count) {
       this.body.innerHTML = '<div class="scd__empty"><p class="scd__empty-h">Your basket is empty</p><p>Add your favourites and they\'ll appear here instantly.</p>' +
         '<div class="scd__empty-cta"><a class="v-btn v-btn--accent" href="' + esc(c.shop) + '"><span>Start shopping</span></a><a class="v-btn v-btn--line" href="' + esc(c.plan) + '"><span>Build your plan</span></a></div></div>' +
         '<section class="scd__block" data-cart-picks></section>';
       this.foot.hidden = true;
+      if (this.mode === 'page') this.pageExtras(cart);
       this.picks(cart);
       this.emit('render', cart);
       return;
@@ -88,14 +89,79 @@
     var banner = dkeys.length ? '<div class="sdisc" role="status">' + icons.tag + '<p><b>' + esc(dkeys.join(' + ')) + '</b> applied automatically · you save ' + rs(dkeys.reduce(function (s, k) { return s + disc[k]; }, 0)) + '</p></div>' : '';
     var lines = '<ul class="slines" role="list">' + cart.items.map(function (it, i) { return self.line(it, i + 1); }).join('') + '</ul>';
     this.body.innerHTML = (this.mode === 'drawer' ? bar + banner : banner) + lines +
-      '<section class="scd__block" data-cart-gap hidden></section><section class="scd__block" data-cart-bundle hidden></section><section class="scd__block" data-cart-picks></section>';
+      '<section class="scd__block" data-cart-gap hidden></section><section class="scd__block" data-cart-bundle hidden></section>' + (this.mode === 'drawer' ? '<section class="scd__block" data-cart-picks></section>' : '');
     if (this.mode === 'page') { var pb = $('[data-cart-bar]', this.el); if (pb) pb.innerHTML = bar; }
     this.summary(cart, disc);
     this.enrich(cart);
     if (!unlocked) this.gap(cart, gap); else if (this.mode === 'page') { var gp = $('[data-cart-gap]', this.el); if (gp) gp.hidden = true; }
     this.bundle(cart);
-    this.picks(cart);
+    if (this.mode === 'page') this.pageExtras(cart); else this.picks(cart);
     this.emit('render', cart);
+  };
+
+  /* ---------- cart page extras: complete your stack, bundle swaps, try something new, delivery date ---------- */
+  Cart.prototype.pageData = function () {
+    if (this.__pd) return this.__pd;
+    try { this.__pd = JSON.parse($('[data-cart-page-data]', this.el.closest('section') || document).textContent); } catch (e) { this.__pd = { bundles: [], 'try': [] }; }
+    return this.__pd;
+  };
+  Cart.prototype.pageExtras = function (cart) {
+    var self = this, d = this.pageData(), empty = !cart.item_count, inCart = {};
+    (cart.items || []).forEach(function (it) { inCart[it.product_id] = 1; });
+    var bar = $('[data-cart-bar]', this.el); if (bar && empty) bar.innerHTML = '';
+    ['stack', 'swap', 'try'].forEach(function (k) { var b = $('[data-cart-' + k + ']', self.el); if (b && empty) { b.hidden = true; b.innerHTML = ''; } });
+    // delivery estimate: Colombo same day; elsewhere 2–3 working days (Mon–Sat)
+    var eta = $('[data-cart-eta] span', this.el.closest('section') || document);
+    if (eta) {
+      var dd = new Date(), n = 0; while (n < 3) { dd.setDate(dd.getDate() + 1); if (dd.getDay() !== 0) n++; }
+      eta.innerHTML = 'Colombo: <b>same-day delivery</b> · Rest of Sri Lanka: <b>by ' + dd.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + '</b> (2–3 working days)';
+    }
+    if (empty) return;
+    // complete your stack: Shopify's complementary / related products for the basket
+    var stack = $('[data-cart-stack]', this.el);
+    if (stack) {
+      Promise.all(cart.items.slice(0, 3).map(function (it) {
+        var k = 'rec_' + it.product_id;
+        if (!listCache[k]) listCache[k] = Promise.all(['complementary', 'related'].map(function (intent) { return json(root + 'recommendations/products.json?product_id=' + it.product_id + '&limit=10&intent=' + intent).then(function (j) { return j.products || []; }).catch(function () { return []; }); })).then(function (two) { return two[0].concat(two[1]); });
+        return listCache[k];
+      })).then(function (sets) {
+        var seen = {}, out = [];
+        sets.forEach(function (s) { s.forEach(function (p) { if (seen[p.id] || inCart[p.id] || p.available === false) return; seen[p.id] = 1; var v = (p.variants || []).filter(function (x) { return x.available !== false; })[0]; if (v) out.push({ id: p.id, vid: v.id, title: p.title, vendor: p.vendor, price: cents(v.price), image: p.featured_image || (p.images && p.images[0]) || '', url: '/products/' + p.handle, multi: (p.variants || []).length > 1 }); }); });
+        out = out.slice(0, 4);
+        if (!out.length) { stack.hidden = true; return; }
+        stack.innerHTML = '<h2 class="scp__bt">Complete your <em>stack</em></h2><ul class="sminis sminis--grid" role="list">' + out.map(function (p) { return self.mini(p, ''); }).join('') + '</ul>';
+        stack.hidden = false;
+      });
+    }
+    // bundle swaps: a bundle whose description names an in-cart product's base name ("critical whey protein")
+    var swap = $('[data-cart-swap]', this.el);
+    if (swap) {
+      var cards = [];
+      cart.items.forEach(function (it) {
+        var words = shortTitle(it.product_title, it.vendor).split(' '), base = [];
+        for (var i = 0; i < words.length && !/\d/.test(words[i]); i++) base.push(words[i]);
+        var b = base.join(' ').toLowerCase();
+        if (b.length < 6) return;
+        var hit = (d.bundles || []).filter(function (x) { return !inCart[x.id] && x.d.indexOf(b) > -1; }).sort(function (a, c) { return c.s - a.s; })[0];
+        if (hit && !cards.some(function (c) { return c.hit.id === hit.id; })) cards.push({ it: it, hit: hit });
+      });
+      cards = cards.slice(0, 2);
+      if (!cards.length) { swap.hidden = true; swap.innerHTML = ''; }
+      else {
+        swap.innerHTML = '<h2 class="scp__bt">Swap to a <em>bundle</em></h2>' + cards.map(function (c) {
+          return '<div class="sbundle"><img src="' + esc(c.hit.i) + '" alt="" width="64" height="64" loading="lazy"><div><p class="sbundle__eb">Bundle swap</p><p class="sbundle__t">' + esc(shortTitle(c.it.product_title, c.it.vendor)) + ' comes in the <b>' + esc(c.hit.t) + '</b>' + (c.hit.s ? '. Swap to the bundle and save <b>' + rs(c.hit.s) + '</b>' : '') + '.</p></div>' +
+            (c.hit.v ? '<button type="button" class="v-btn v-btn--accent v-btn--sm" data-add="' + c.hit.v + ':1"><span>Add bundle · ' + rs(c.hit.p) + '</span></button>' : '<a class="v-btn v-btn--accent v-btn--sm" href="' + esc(c.hit.u) + '"><span>See bundle · ' + rs(c.hit.p) + '</span></a>') + '</div>';
+        }).join('');
+        swap.hidden = false;
+      }
+    }
+    // try something new: bars and snacks not ordered before (server list) and not in the basket
+    var tr = $('[data-cart-try]', this.el);
+    if (tr) {
+      var list = (d['try'] || []).filter(function (p) { return !inCart[p.id]; }).slice(0, 4);
+      if (!list.length) { tr.hidden = true; tr.innerHTML = ''; }
+      else { tr.innerHTML = '<h2 class="scp__bt">Try something <em>new</em></h2><ul class="sminis sminis--grid" role="list">' + list.map(function (p) { return self.mini(p, ''); }).join('') + '</ul>'; tr.hidden = false; }
+    }
   };
   Cart.prototype.line = function (it, n) {
     var sub = it.selling_plan_allocation && it.selling_plan_allocation.selling_plan ? it.selling_plan_allocation.selling_plan.name : '';
@@ -154,7 +220,7 @@
     var tier = '';
     if (this.mode === 'page' && c.member) {
       var after = c.spend + cart.total_price / 100, next = c.spend < c.silver ? ['Silver', c.silver] : c.spend < c.gold ? ['Gold', c.gold] : null;
-      if (next) tier = '<p class="ssum__tier">' + icons.bolt + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>.' : 'This order gets you <b>' + rs(cart.total_price) + '</b> closer to ' + next[0] + ' (' + rs((next[1] - after) * 100) + ' to go).') + '</p>';
+      if (next) tier = '<p class="ssum__tier">' + icons.bolt + '<span>' + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>.' : 'This order gets you <b>' + rs(cart.total_price) + '</b> closer to ' + next[0] + ' (' + rs((next[1] - after) * 100) + ' to go).') + '</span></p>';
     }
     var rows =
       '<dl class="ssum">' +
@@ -270,7 +336,16 @@
   };
   Cart.prototype.picks = function (cart) {
     var self = this, c = this.cfg, box = $('[data-cart-picks]', this.el);
-    if (!box || !c.picks) return;
+    if (!box) return;
+    // hand-picked bestsellers (setting) come first; else the goal / bestsellers collection
+    if (c.picksProducts && c.picksProducts.length) {
+      var inC = {};
+      (cart.items || []).forEach(function (it) { inC[it.product_id] = 1; });
+      var hp = c.picksProducts.filter(function (x) { return !inC[x.id]; }).slice(0, 4);
+      box.innerHTML = hp.length ? '<p class="scd__bh"><span>' + esc(c.picksLabel || 'Bestsellers right now') + '</span></p><ul class="sminis' + (this.mode === 'page' ? ' sminis--grid' : '') + '" role="list">' + hp.map(function (x) { return self.mini(x, ''); }).join('') + '</ul>' : '';
+      return;
+    }
+    if (!c.picks) return;
     this.picksList().then(function (list) {
       var inCart = {};
       (cart.items || []).forEach(function (it) { inCart[it.product_id] = 1; });

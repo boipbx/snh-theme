@@ -66,7 +66,17 @@
         "free_delivery_tolerance": 100,
         "show_gap_picks": true,
         "show_fbt": true,
-        "empty_cart_link": ""
+        "empty_cart_link": "",
+        "picks_products": [
+          "applied-nutrition-creatine-monohydrate",
+          "sis-go-hydro-tablets",
+          "applied-nutrition-critical-whey-2kg",
+          "sis-go-isotonic-energy-gel",
+          "raw-cbum-itholate-protein",
+          "raw-thavage-pre-workout",
+          "ryse-loaded-protein-2lb",
+          "ryse-loaded-pre-workout"
+        ]
       }
     },
     "search-drawer": {
