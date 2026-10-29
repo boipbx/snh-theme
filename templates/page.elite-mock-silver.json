@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "snh-app-mock",
+      "settings": {
+        "label": "Silver · mid-progress, redeemable points, running low",
+        "first_name": "Nimal",
+        "last_name": "Perera",
+        "email": "nimal@example.com",
+        "phone": "+94771234567",
+        "bday": "1991-06-14",
+        "joined": "2025-01-18",
+        "tier": "Silver",
+        "points": "3120",
+        "spend": "241500",
+        "tags": "",
+        "marketing": true,
+        "address": "Nimal Perera<br>42 Galle Road<br>Colombo 03<br>Sri Lanka<br>+94 77 123 4567",
+        "addresses": 2,
+        "orders": "#18452|3|paid|unfulfilled|0|sis-go-hydro-tablets:2,sis-go-isotonic-energy-gel:6|\n#18311|25|paid|fulfilled|0|raw-thavage-pre-workout:1|\n#18190|55|paid|fulfilled|0|applied-nutrition-critical-whey-2kg:1|\n#17902|92|paid|fulfilled|0|revive-magnesium-glycinate:1|\n#17750|130|paid|fulfilled|0|applied-nutrition-creatine-monohydrate:1|",
+        "view": "app"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

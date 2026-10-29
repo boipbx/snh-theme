@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "snh-app-mock",
+      "settings": {
+        "label": "Gold · top tier, many orders, refund in history, redeem pending",
+        "first_name": "Dilani",
+        "last_name": "Fernando",
+        "email": "dilani@example.com",
+        "phone": "+94764860000",
+        "bday": "1988-02-03",
+        "joined": "2023-08-09",
+        "tier": "Gold",
+        "points": "12480",
+        "spend": "326000",
+        "tags": "goal:endurance, freq:5x, sport:padel, Trigger_Redeem_2500",
+        "marketing": true,
+        "address": "Dilani Fernando<br>18 Ward Place<br>Colombo 07<br>Sri Lanka<br>+94 76 486 0000",
+        "addresses": 1,
+        "orders": "#18460|2|paid|unfulfilled|0|sis-beta-fuel-gel:6,sis-go-hydro-tablets:2|\n#18377|16|paid|fulfilled|0|raw-cbum-itholate-protein:1|\n#18301|31|partially_refunded|fulfilled|6500|ryse-loaded-pump-25-servings:1,revive-magnesium-glycinate:1|\n#18220|45|paid|fulfilled|0|applied-nutrition-critical-whey-2kg:1|\n#18102|60|paid|fulfilled|0|sis-go-isotonic-energy-gel:12|\n#17988|78|paid|fulfilled|0|applied-nutrition-multi-vitamin-complex:2|\n#17841|95|refunded|fulfilled|9800|ryse-loaded-pre-workout:1|\n#17702|120|paid|fulfilled|0|applied-nutrition-creatine-monohydrate:1|\n#17590|150|paid|fulfilled|0|raw-thavage-pre-workout:1|\n#17433|190|paid|fulfilled|0|ryse-loaded-protein-2lb:2|",
+        "view": "app"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

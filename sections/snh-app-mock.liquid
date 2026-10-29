@@ -1,0 +1,96 @@
+{%- comment -%}
+  DEV ONLY (Round 8 QA): the SNH Elite member app with a mock persona, because a real customer can't be signed in for
+  screenshots. One persona per template: page.elite-mock-new / -bronze / -silver / -gold (open any page with
+  ?view=elite-mock-silver …), plus page.elite-mock-quiz (the onboarding quiz on its own). Not linked anywhere.
+  Orders are lines "name|days ago|financial|fulfilment|refunded Rs|handle:qty,…|tracking url" and use real products
+  (all_products), so packs, prices and servings are real. Nothing is submitted: forms are inert, re-order is disabled.
+{%- endcomment -%}
+{%- liquid
+  assign p = section.settings
+  if p.view == 'quiz'
+    assign quiz_only = true
+  endif
+  capture m
+    render 'snh-elite-calc', mock: true, tier: p.tier, points: p.points, spend: p.spend
+  endcapture
+  assign m = m | strip | split: '|'
+  assign lines = p.orders | newline_to_br | split: '<br />'
+  assign n = 0
+  capture recent
+    for l in lines
+      assign l = l | strip
+      if l == blank
+        continue
+      endif
+      if n > 0
+        echo '@@'
+      endif
+      assign n = n | plus: 1
+      render 'snh-app-order-data', mock: true, line: l
+    endfor
+  endcapture
+  assign recent = recent | strip | split: '@@'
+  assign ini = p.first_name | slice: 0 | append: '' | upcase
+  assign ini = p.last_name | slice: 0 | upcase | prepend: ini
+  assign full = p.first_name | append: ' ' | append: p.last_name | strip
+  assign mkt = 0
+  if p.marketing
+    assign mkt = 1
+  endif
+  assign joined_s = p.joined | date: '%s'
+  capture me
+    echo p.first_name | append: '|' | append: full | append: '|' | append: p.email | append: '|' | append: p.phone | append: '|427|'
+    echo ini | append: '|' | append: mkt | append: '|' | append: p.bday | append: '|' | append: joined_s
+    echo '|' | append: n | append: '|' | append: p.addresses | append: '|' | append: p.tags
+  endcapture
+  assign me = me | strip_newlines | split: '|'
+-%}
+<div class="mock-app">
+  <p class="mock-app__flag" role="note">Dev only · mock persona: {{ p.label }} · nothing is saved or submitted</p>
+  {%- if quiz_only -%}
+    {{ 'snh-account.css' | asset_url | stylesheet_tag }}
+    {{ 'snh-app.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'snh-app.js' | asset_url }}" defer></script>
+    <div class="v2 app">
+      <div class="v-wrap mock-app__quiz">
+        <header class="app__head">
+          <p class="eyebrow">After sign-up · or Goals</p>
+          <h1 class="app__h">Personalise your <em>SNH</em></h1>
+          <p class="app__lead">Three quick questions, then birthday and mobile (optional).</p>
+        </header>
+        <div class="app__card">{%- render 'snh-onboarding-quiz', id: 'mock-quiz', mode: 'app', contact: true, mock: true -%}</div>
+      </div>
+    </div>
+  {%- else -%}
+    {%- render 'snh-app', m: m, me: me, recent: recent, page_orders: recent, pagination_html: '', page_no: 1, sid: section.id, mock: true, mock_address: p.address -%}
+  {%- endif -%}
+</div>
+<style>
+  .mock-app__flag { position: relative; z-index: 30; padding: 8px var(--gutter); background: #FFE08A; color: var(--ink); font: 600 13px/1.5 var(--sans); text-align: center; }
+  .mock-app__quiz { display: grid; gap: 32px; max-width: 760px; }
+</style>
+
+{% schema %}
+{
+  "name": "DEV · SNH Elite app mock",
+  "settings": [
+    { "type": "paragraph", "content": "Dev only. A mock persona for QA screenshots. Do not add to a live page." },
+    { "type": "select", "id": "view", "label": "Show", "options": [{ "value": "app", "label": "Member app" }, { "value": "quiz", "label": "Onboarding quiz only" }], "default": "app" },
+    { "type": "text", "id": "label", "label": "Persona label" },
+    { "type": "text", "id": "first_name", "label": "First name" },
+    { "type": "text", "id": "last_name", "label": "Last name" },
+    { "type": "text", "id": "email", "label": "Email" },
+    { "type": "text", "id": "phone", "label": "Mobile (empty = none)" },
+    { "type": "text", "id": "bday", "label": "Birthday YYYY-MM-DD (empty = none)" },
+    { "type": "text", "id": "joined", "label": "Joined YYYY-MM-DD" },
+    { "type": "text", "id": "tier", "label": "loyalty_tier (empty = none)" },
+    { "type": "text", "id": "points", "label": "loyalty_points (empty = none)" },
+    { "type": "text", "id": "spend", "label": "annual_spend (empty = none)" },
+    { "type": "text", "id": "tags", "label": "Customer tags", "info": "Comma separated, e.g. goal:build-muscle, freq:4x, sport:gym" },
+    { "type": "checkbox", "id": "marketing", "label": "Accepts email marketing", "default": false },
+    { "type": "html", "id": "address", "label": "Default address (HTML)" },
+    { "type": "number", "id": "addresses", "label": "Address count", "default": 0 },
+    { "type": "textarea", "id": "orders", "label": "Orders (newest first)", "info": "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url" }
+  ]
+}
+{% endschema %}

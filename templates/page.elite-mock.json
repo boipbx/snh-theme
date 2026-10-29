@@ -3,6 +3,10 @@
     "main": {
       "type": "snh-elite-mock",
       "blocks": {
+        "links": {
+          "type": "links",
+          "settings": {}
+        },
         "out": {
           "type": "out",
           "settings": {
@@ -63,6 +67,7 @@
         }
       },
       "block_order": [
+        "links",
         "out",
         "bronze",
         "silver",

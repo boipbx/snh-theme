@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "snh-app-mock",
+      "settings": {
+        "label": "Active Bronze · 3 orders, 1,840 points, goal set",
+        "first_name": "Ishara",
+        "last_name": "Jayawardena",
+        "email": "ishara@example.com",
+        "phone": "+94771234567",
+        "bday": "",
+        "joined": "2026-03-02",
+        "tier": "Bronze",
+        "points": "1840",
+        "spend": "42600",
+        "tags": "goal:build-muscle, freq:4x, sport:gym",
+        "marketing": true,
+        "address": "Ishara Jayawardena<br>12 Temple Road<br>Nugegoda<br>Sri Lanka<br>+94 77 123 4567",
+        "addresses": 1,
+        "orders": "#18466|12|paid|fulfilled|0|applied-nutrition-critical-whey-2kg:1,applied-nutrition-creatine-monohydrate:1|\n#18302|70|paid|fulfilled|0|ryse-loaded-protein-2lb:1|\n#18110|80|paid|fulfilled|0|ryse-loaded-pre-workout:1|",
+        "view": "app"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

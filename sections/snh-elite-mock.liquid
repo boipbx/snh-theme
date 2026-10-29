@@ -8,6 +8,13 @@
 <div class="v2 mock">
   <p class="mock__flag" role="note">Dev only · mock customer data · not linked anywhere</p>
   {%- for b in section.blocks -%}
+    {%- if b.type == 'links' -%}
+      <nav class="v-wrap mock__links" aria-label="Round 8 member app personas" {{ b.shopify_attributes }}>
+        <span class="mock__label">Round 8 · member app personas</span>
+        <a class="v-link" href="?view=elite-mock-new">New Bronze</a><a class="v-link" href="?view=elite-mock-bronze">Active Bronze</a><a class="v-link" href="?view=elite-mock-silver">Silver</a><a class="v-link" href="?view=elite-mock-gold">Gold</a><a class="v-link" href="?view=elite-mock-quiz">Onboarding quiz</a>
+      </nav>
+      {%- continue -%}
+    {%- endif -%}
     {%- if b.type == 'out' -%}
       <section class="mock__state" id="state-{{ b.settings.key }}" data-state="{{ b.settings.key }}" {{ b.shopify_attributes }}>
         <div class="v-wrap mock__bar"><span class="mock__label">{{ b.settings.label }}</span>{% render 'snh-acct-button' %}</div>
@@ -55,6 +62,7 @@
   .mock__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .mock__label { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2); }
   .mock__panel { padding-block: 24px; }
+  .mock__links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block: 24px; font-size: 15px; line-height: 1.5; }
   .mock__panel .acp { width: min(420px, 100%); }
 </style>
 
@@ -63,6 +71,7 @@
   "name": "DEV · SNH Elite mock",
   "settings": [{ "type": "paragraph", "content": "Dev only. Mock data for QA screenshots. Do not add to a live page." }],
   "blocks": [
+    { "type": "links", "name": "Round 8 persona links", "limit": 1, "settings": [] },
     { "type": "out", "name": "Signed-out state", "settings": [
       { "type": "text", "id": "key", "label": "Key", "default": "out" },
       { "type": "text", "id": "label", "label": "Label", "default": "Signed out" }
