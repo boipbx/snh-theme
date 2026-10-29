@@ -499,9 +499,43 @@
       $$('[data-open-search]', mm).forEach(function (b) { b.addEventListener('click', function () { openSearch(b); }); });
     }
 
+    /* ---- account panel (R7): right-side sheet, full height on phones ---- */
+    var acp = wrap.querySelector('.acp:not(.acp--static)'), acpScrim = wrap.querySelector('.acp-scrim'), acpOpener = null;
+    function openAcp(from) {
+      if (!acp) return;
+      acpOpener = from || document.activeElement;
+      closeMega(false);
+      acp.hidden = false; if (acpScrim) acpScrim.hidden = false;
+      requestAnimationFrame(function () { acp.classList.add('is-open'); if (acpScrim) acpScrim.classList.add('is-on'); });
+      $$('[data-acp-open]', wrap).forEach(function (b) { b.setAttribute('aria-expanded', 'true'); });
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () { var c = acp.querySelector('.acp__close'); if (c) c.focus({ preventScroll: true }); }, 60);
+    }
+    function closeAcp() {
+      if (!acp || acp.hidden) return;
+      acp.classList.remove('is-open'); if (acpScrim) acpScrim.classList.remove('is-on');
+      $$('[data-acp-open]', wrap).forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+      setTimeout(function () { acp.hidden = true; if (acpScrim) acpScrim.hidden = true; }, 320);
+      document.body.style.overflow = '';
+      if (acpOpener && acpOpener.focus && acpOpener.offsetParent !== null) acpOpener.focus();
+    }
+    if (acp) {
+      $$('[data-acp-open]', wrap).forEach(function (b) {
+        b.setAttribute('aria-expanded', 'false');
+        b.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (mm && !mm.hidden) { mm.classList.remove('is-open'); mmBtn.setAttribute('aria-expanded', 'false'); setTimeout(function () { mm.hidden = true; }, 320); openAcp(mmBtn); return; }
+          openAcp(b);
+        });
+      });
+      $$('[data-acp-close]', wrap).forEach(function (b) { b.addEventListener('click', closeAcp); });
+      acp.addEventListener('keydown', function (e) { trapTab(acp, e); });
+    }
+
     document.addEventListener('keydown', function (e) {
       if (e.key === '/' && srch && srch.hidden && !/input|textarea|select/i.test(document.activeElement.tagName) && !document.activeElement.isContentEditable) { e.preventDefault(); openSearch(); return; }
       if (e.key !== 'Escape') return;
+      if (acp && !acp.hidden) { closeAcp(); return; }
       if (srch && !srch.hidden) { closeSearch(); return; }
       if (openBtn) { closeMega(true); return; }
       if (mm && !mm.hidden) { if (mmStack.length > 1) mmBack(); else closeMenu(); }

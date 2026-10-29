@@ -1,0 +1,20 @@
+{%- comment -%}
+  Header account button (Round 7). Opens the account panel (#acp, snippets/snh-acct-panel). Logged in: the member's
+  initial with a tier dot. Without JS it's a link to the account page. cls: hide-s (desktop/tablet) or show-s (phones).
+{%- endcomment -%}
+{%- liquid
+  if customer
+    capture m
+      render 'snh-elite-calc', customer: customer
+    endcapture
+    assign tier_key = m | strip | split: '|' | first
+    assign who = customer.first_name | default: customer.email
+  endif
+-%}
+<a class="icon-btn acct-btn {{ cls }}" href="{{ routes.account_url }}" data-acp-open aria-controls="acp" aria-haspopup="dialog" aria-label="{% if customer %}Account: {{ who | escape }}{% else %}Sign in or join SNH Elite{% endif %}">
+  {%- if customer -%}
+    <span class="acct-ini" aria-hidden="true">{{ who | slice: 0 | upcase }}<i class="tdot" data-tier="{{ tier_key }}"></i></span>
+  {%- else -%}
+    {%- render 'snh-v2-icon', name: 'user' -%}
+  {%- endif -%}
+</a>

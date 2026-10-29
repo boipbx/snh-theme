@@ -159,7 +159,10 @@
 
   <header class="hdr{% if overlay %} hdr--overlay is-overlay{% endif %}">
     <div class="v-wrap hdr__in">
-      <button class="icon-btn hdr__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mmenu-{{ section.id }}">{% render 'snh-v2-icon', name: 'menu' %}</button>
+      <div class="hdr__start">
+        <button class="icon-btn hdr__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mmenu-{{ section.id }}">{% render 'snh-v2-icon', name: 'menu' %}</button>
+        {%- if shop.customer_accounts_enabled -%}{% render 'snh-acct-button', cls: 'show-s' %}{%- endif -%}
+      </div>
       <a class="hdr__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} home" style="--logo-w: {{ section.settings.logo_width }}px">
         {%- if logo != blank -%}
           {{- logo | image_url: width: 400 | image_tag: width: section.settings.logo_width, height: logo_h, alt: shop.name, class: 'hdr__logo-img', loading: 'eager' -}}
@@ -185,26 +188,7 @@
       </nav>
       <div class="hdr__icons">
         <button class="icon-btn" type="button" aria-label="Search" aria-controls="srch-{{ section.id }}" data-open-search>{% render 'snh-v2-icon', name: 'search' %}</button>
-        {%- if shop.customer_accounts_enabled -%}
-          <div class="acct hide-s">
-            <a class="icon-btn" href="{{ routes.account_url }}" aria-label="{% if customer %}My account{% else %}Sign in{% endif %}">{% render 'snh-v2-icon', name: 'user' %}</a>
-            <div class="acct__pop">
-              {%- if customer -%}
-                {%- assign tier = customer.metafields.custom.loyalty_tier.value | default: customer.metafields.custom.loyalty_tier | default: 'Bronze' -%}
-                {%- assign pts = customer.metafields.custom.loyalty_points.value | default: customer.metafields.custom.loyalty_points | default: 0 -%}
-                <p class="acct__hi">Hi {{ customer.first_name | default: 'there' | escape }}</p>
-                <p class="acct__tier"><b>{{ tier | escape }}</b> member · {{ pts }} points</p>
-                <a class="v-btn v-btn--ink v-btn--sm" href="{{ routes.account_url }}"><span>My account</span></a>
-                <a class="v-link acct__out" href="{{ routes.account_logout_url }}">Sign out</a>
-              {%- else -%}
-                <p class="acct__hi">SNH Elite</p>
-                <p class="acct__tier">{{ section.settings.account_note | escape }}</p>
-                <a class="v-btn v-btn--ink v-btn--sm" href="{{ routes.account_login_url }}"><span>Sign in</span></a>
-                <a class="v-link" href="{{ routes.account_register_url }}">Join, it's free</a>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
+        {%- if shop.customer_accounts_enabled -%}{% render 'snh-acct-button', cls: 'hide-s' %}{%- endif -%}
         <a class="icon-btn" href="{{ routes.cart_url }}" data-no-instant aria-label="Basket" {% if settings.cart_type != 'page' and request.page_type != 'cart' %}aria-controls="cart-drawer"{% endif %}>
           {%- render 'snh-v2-icon', name: 'bag' -%}
           <cart-count class="icon-btn__count{% if cart.item_count == 0 %} opacity-0{% endif %}">{{ cart.item_count }}</cart-count>
@@ -315,6 +299,11 @@
   <div class="srch-scrim" hidden></div>
 
   {%- comment -%} mobile drill-down {%- endcomment -%}
+  {%- if shop.customer_accounts_enabled -%}
+    {%- render 'snh-acct-panel', id: 'acp', note: section.settings.account_note -%}
+    <div class="acp-scrim" hidden data-acp-close></div>
+  {%- endif -%}
+
   <div class="mmenu" id="mmenu-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Menu" hidden>
     <div class="mmenu__top">
       {%- if logo != blank -%}{{ logo | image_url: width: 300 | image_tag: width: 82, height: 24, alt: shop.name, loading: 'lazy' }}{%- else -%}<span>{{ shop.name }}</span>{%- endif -%}
@@ -332,7 +321,7 @@
                 <li><a class="mm__go" href="{{ b.settings.url | default: '#' }}">{{ b.settings.label | escape }}</a></li>
             {%- endcase -%}
           {%- endfor -%}
-          <li><a class="mm__go" href="{{ routes.account_url }}">{% if customer %}My account{% else %}Sign in{% endif %}</a></li>
+          {%- if shop.customer_accounts_enabled -%}<li><a class="mm__go" href="{{ routes.account_url }}" data-acp-open aria-controls="acp">{% if customer %}My account{% else %}Sign in{% endif %}</a></li>{%- endif -%}
         </ul>
         {%- assign mpromos = section.blocks | where: 'type', 'mobile_promo' -%}
         {%- if mpromos.size > 0 -%}
@@ -440,7 +429,7 @@
     { "type": "text", "id": "popular", "label": "Popular searches", "info": "Comma separated.", "default": "Whey protein, Creatine, Pre-workout, Magnesium glycinate, Electrolytes, SiS gels, Multivitamin, Ashwagandha" },
     { "type": "collection", "id": "trending", "label": "Trending now (first 4 products)" },
     { "type": "header", "content": "Account" },
-    { "type": "text", "id": "account_note", "label": "Signed-out note", "default": "Earn [bronze]–[gold] back in points on every order." }
+    { "type": "text", "id": "account_note", "label": "Account panel note (signed out)", "info": "[bronze], [silver] and [gold] print the earn rates.", "default": "Join free and earn [bronze]–[gold] back in points on every order." }
   ],
   "blocks": [
     {

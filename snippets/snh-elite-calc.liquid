@@ -1,0 +1,103 @@
+{%- comment -%}
+  SNH Elite: one place that turns a member's data into display figures. Display only, never writes anything.
+  Prints one line of fields separated by "|", for `capture` + `split: '|'`:
+    0 tier key (bronze/silver/gold) · 1 tier label · 2 tier estimated (1/0) · 3 points ('x' = no balance yet)
+    4 points Rs value · 5 spend Rs · 6 spend estimated (1/0) · 7 earn rate % · 8 next tier label ('' at the top)
+    9 next threshold Rs · 10 Rs to next tier · 11 % of the way to the next tier · 12 top tier (1/0)
+    13 % along the whole ladder (0 → Gold) · 14 reward ready (1/0) · 15 points to the first reward
+  Sources (ELITE-INVENTORY.md §2): customer.metafields.custom.loyalty_tier / loyalty_points / annual_spend, filled by
+  the store's loyalty integration. Empty tier or spend falls back to an estimate from customer.total_spent and the
+  thresholds in Theme settings → SNH Elite, flagged so the page can label it.
+  Mock (QA only): pass mock: true with tier, points ('' = none) and spend ('' = none) instead of customer.
+{%- endcomment -%}
+{%- liquid
+  assign silver = settings.snh_silver_threshold | default: 198000 | at_least: 1
+  assign gold = settings.snh_gold_threshold | default: 300000 | at_least: silver
+  assign per_point = settings.snh_point_value | default: 1
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+
+  if mock
+    assign raw_tier = tier
+    assign raw_points = points
+    assign raw_spend = spend
+    assign lifetime = lifetime_spend | default: 0
+  else
+    assign raw_tier = customer.metafields.custom.loyalty_tier.value
+    assign raw_points = customer.metafields.custom.loyalty_points.value
+    assign raw_spend = customer.metafields.custom.annual_spend.value
+    assign lifetime = customer.total_spent | divided_by: 100
+  endif
+
+  assign spend_est = 0
+  if raw_spend == blank
+    assign spend_est = 1
+    assign spend_rs = lifetime | plus: 0 | round
+  else
+    assign spend_rs = raw_spend | plus: 0 | round
+  endif
+
+  assign t = raw_tier | strip | downcase
+  assign tier_est = 0
+  assign maxed = 0
+  if t == 'maxed out'
+    assign t = 'gold'
+    assign maxed = 1
+  endif
+  unless t == 'bronze' or t == 'silver' or t == 'gold'
+    assign tier_est = 1
+    if spend_rs >= gold
+      assign t = 'gold'
+    elsif spend_rs >= silver
+      assign t = 'silver'
+    else
+      assign t = 'bronze'
+    endif
+  endunless
+
+  case t
+    when 'gold'
+      assign label = 'Gold'
+      assign rate = settings.snh_rate_gold | default: 10
+      assign next_label = ''
+      assign next_at = gold
+      assign pct = 100
+    when 'silver'
+      assign label = 'Silver'
+      assign rate = settings.snh_rate_silver | default: 7
+      assign next_label = 'Gold'
+      assign next_at = gold
+      assign span = gold | minus: silver | at_least: 1
+      assign pct = spend_rs | minus: silver | at_least: 0 | times: 100 | divided_by: span
+    else
+      assign label = 'Bronze'
+      assign rate = settings.snh_rate_bronze | default: 3
+      assign next_label = 'Silver'
+      assign next_at = silver
+      assign pct = spend_rs | times: 100 | divided_by: silver
+  endcase
+  assign pct = pct | at_least: 0 | at_most: 100 | round
+  if t == 'gold'
+    assign maxed = 1
+    assign remaining = 0
+  else
+    assign remaining = next_at | minus: spend_rs | at_least: 0
+  endif
+  assign ladder = spend_rs | times: 100 | divided_by: gold | at_least: 0 | at_most: 100 | round
+
+  if raw_points == blank
+    assign pts = 'x'
+    assign pts_rs = 0
+    assign ready = 0
+    assign gap = redeem_from
+  else
+    assign pts = raw_points | plus: 0 | round
+    assign pts_rs = pts | times: per_point | round
+    assign gap = redeem_from | minus: pts | at_least: 0
+    if gap == 0
+      assign ready = 1
+    else
+      assign ready = 0
+    endif
+  endif
+-%}
+{{- t }}|{{ label }}|{{ tier_est }}|{{ pts }}|{{ pts_rs }}|{{ spend_rs }}|{{ spend_est }}|{{ rate }}|{{ next_label }}|{{ next_at }}|{{ remaining }}|{{ pct }}|{{ maxed }}|{{ ladder }}|{{ ready }}|{{ gap -}}

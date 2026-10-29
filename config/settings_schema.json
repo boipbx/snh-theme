@@ -1429,6 +1429,33 @@
         "id": "snh_gold_threshold",
         "label": "Gold from (Rs annual spend)",
         "default": 300000
+      },
+      {
+        "type": "header",
+        "content": "Points"
+      },
+      {
+        "type": "paragraph",
+        "content": "Balances, tiers and annual spend come from the customer metafields custom.loyalty_points, custom.loyalty_tier and custom.annual_spend. The theme only shows them."
+      },
+      {
+        "type": "number",
+        "id": "snh_welcome_points",
+        "label": "Welcome points",
+        "default": 500
+      },
+      {
+        "type": "number",
+        "id": "snh_redeem_from",
+        "label": "Redeem from (points)",
+        "default": 2500
+      },
+      {
+        "type": "number",
+        "id": "snh_point_value",
+        "label": "Rs value of one point",
+        "info": "Used to show a balance in rupees. Confirm with the client.",
+        "default": 1
       }
     ]
   },

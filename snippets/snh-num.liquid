@@ -1,0 +1,2 @@
+{%- comment -%} Whole number with thousands separators (5400 → 5,400), via the shop's money format. {%- endcomment -%}
+{{- n | round | times: 100 | money_without_currency | split: '.' | first -}}

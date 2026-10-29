@@ -1,0 +1,105 @@
+{%- comment -%}
+  Header account panel (Round 7): right-side glass sheet, full height on phones. Opened by any [data-acp-open]
+  (assets/snh-v2.js, header init). Logged out: sign in / create account + the Elite pitch. Logged in: name, tier,
+  points + Rs value, progress to the next tier, account links. Figures from snippets/snh-elite-calc (display only).
+  id: element id. note: signed-out lead ([bronze]/[silver]/[gold] print the rates). mock (QA, page.elite-mock only): static, with first_name, tier, points, spend; signed_out: true for
+  the logged-out state.
+{%- endcomment -%}
+{%- liquid
+  assign signed_in = false
+  if mock
+    unless signed_out
+      assign signed_in = true
+    endunless
+    assign who = first_name | default: 'there'
+  elsif customer
+    assign signed_in = true
+    assign who = customer.first_name | default: customer.email | split: '@' | first
+  endif
+  capture elite_url
+    render 'snh-elite-url'
+  endcapture
+  assign r_lo = settings.snh_rate_bronze | default: 3
+  assign r_hi = settings.snh_rate_gold | default: 10
+  assign r_b = r_lo | append: '%'
+  assign r_s = settings.snh_rate_silver | default: 7 | append: '%'
+  assign r_g = r_hi | append: '%'
+  assign welcome = settings.snh_welcome_points | default: 500
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  if signed_in
+    if mock
+      capture m
+        render 'snh-elite-calc', mock: true, tier: tier, points: points, spend: spend
+      endcapture
+    else
+      capture m
+        render 'snh-elite-calc', customer: customer
+      endcapture
+    endif
+    assign m = m | strip | split: '|'
+  endif
+-%}
+<div class="v2 acp{% if mock %} acp--static{% endif %}" id="{{ id }}" role="dialog" aria-modal="{% if mock %}false{% else %}true{% endif %}" aria-labelledby="{{ id }}-t"{% unless mock %} hidden{% endunless %} data-acp>
+  <div class="acp__sheet">
+    <div class="acp__top">
+      <span class="acp__brand">SNH <em>Elite</em></span>
+      <button class="icon-btn acp__close" type="button" aria-label="Close account panel" data-acp-close>{% render 'snh-v2-icon', name: 'close' %}</button>
+    </div>
+    <div class="acp__body">
+      {%- if signed_in -%}
+        <div class="acp__who">
+          <span class="acp__av" data-tier="{{ m[0] }}">{{ who | slice: 0 | upcase }}</span>
+          <div class="acp__id">
+            <p class="acp__name" id="{{ id }}-t">Hi, {{ who | escape }}</p>
+            <span class="tbadge tbadge--{{ m[0] }}">{{ m[1] }} member{% if m[2] == '1' %} · estimated{% endif %}</span>
+          </div>
+        </div>
+
+        <div class="acp__card" data-tier="{{ m[0] }}">
+          <span class="acp__lbl">Points balance</span>
+          {%- if m[3] == 'x' -%}
+            <strong class="acp__pts">—</strong>
+            <span class="acp__val">Your balance appears after your first paid order syncs.</span>
+          {%- else -%}
+            <strong class="acp__pts">{% render 'snh-num', n: m[3] %}</strong>
+            <span class="acp__val">Worth {{ m[4] | times: 100 | money_without_trailing_zeros }}{% if m[14] == '1' %} · ready to redeem{% else %} · {% render 'snh-num', n: m[15] %} to your first reward{% endif %}</span>
+          {%- endif -%}
+          <div class="acp__prog">
+            <div class="acp__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="Progress to {{ m[8] | default: 'the top tier' }}"><i style="width: {{ m[11] }}%"></i></div>
+            <p class="acp__next">
+              {%- if m[12] == '1' -%}Top tier · {{ m[7] }}% back on every order
+              {%- elsif m[10] == '0' -%}{{ m[8] }} unlocks when your tier updates
+              {%- else -%}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ m[8] }}{%- endif -%}
+            </p>
+            {%- if m[6] == '1' -%}<p class="acp__est">Estimated from your orders. Your Elite balance updates after each paid order.</p>{%- endif -%}
+          </div>
+        </div>
+
+        <nav class="acp__links" aria-label="Account">
+          <a href="{{ routes.account_url }}">{% render 'snh-v2-icon', name: 'user' %}<span>Dashboard</span></a>
+          <a href="{{ routes.account_url }}#orders">{% render 'snh-v2-icon', name: 'bag' %}<span>Orders</span></a>
+          <a href="{{ routes.account_addresses_url }}">{% render 'snh-v2-icon', name: 'pin' %}<span>Addresses</span></a>
+          <a href="{{ elite_url | strip }}">{% render 'snh-v2-icon', name: 'badge' %}<span>How SNH Elite works</span></a>
+        </nav>
+        <a class="v-btn v-btn--line acp__out" href="{{ routes.account_logout_url }}" data-no-instant><span>Sign out</span></a>
+      {%- else -%}
+        <h2 class="acp__h" id="{{ id }}-t">Earn on <em>every</em> order</h2>
+        <p class="acp__lead">
+          {%- if note != blank -%}
+            {{- note | escape | replace: '[bronze]', r_b | replace: '[silver]', r_s | replace: '[gold]', r_g -}}
+          {%- else -%}Join SNH Elite free and every order earns points back, from {{ r_lo }}% up to {{ r_hi }}%.{%- endif -%}
+        </p>
+        <ul class="acp__perks">
+          <li><b>{% render 'snh-num', n: welcome %}</b><span>welcome points when you join</span></li>
+          <li><b>{{ r_lo }}–{{ r_hi }}%</b><span>back in points, by tier</span></li>
+          <li><b>{% render 'snh-num', n: redeem_from %}</b><span>points and you can redeem</span></li>
+        </ul>
+        <div class="acp__ctas">
+          <a class="v-btn v-btn--accent" href="{{ routes.account_login_url }}"><span>Sign in</span></a>
+          <a class="v-btn v-btn--line" href="{{ routes.account_register_url }}"><span>Create account</span></a>
+        </div>
+        <a class="acp__more" href="{{ elite_url | strip }}">How SNH Elite works {% render 'snh-v2-icon', name: 'next' %}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

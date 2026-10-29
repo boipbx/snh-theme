@@ -1,0 +1,2 @@
+{%- comment -%} SNH Elite page link: the page with handle "snh-elite" once it exists in admin, else the homepage Elite band. {%- endcomment -%}
+{%- if pages['snh-elite'].url != blank -%}{{ pages['snh-elite'].url }}{%- else -%}{{ routes.root_url | append: '#elite' | replace: '//#', '/#' }}{%- endif -%}
