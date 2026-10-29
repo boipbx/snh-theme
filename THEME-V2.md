@@ -268,3 +268,35 @@ JS `assets/snh-app.js`. Data, writes, backend to-dos and the data dictionary: **
 - Register: mobile required (Sri Lankan, saved +94XXXXXXXXX in the note), step 3 "Personalise your SNH" (optional).
 - Sign in: *Mobile sign-in* placeholder slot (setting, off; disabled button, no fake functionality).
 - CSS class names in the app avoid the homepage Elite band's `.mcard`/`.tcard`/`.goal`/`.tiers` (they collided).
+
+## Round 9: social sections
+
+### Seen on TikTok — `sections/snh-tiktok`
+- On all 16 product templates, right below the related products (*You may also like*); on the homepage via
+  *Add section → SNH Seen on TikTok*. The old `tiktok-profile` section is still in the repo and still in the product
+  templates, switched off.
+- TikTok's creator profile embed for the handle (no token) + up to 6 *TikTok video* blocks (paste the video URL).
+- **Lazy:** `assets/snh-social.js` loads `tiktok.com/embed.js` only when the section is within 600px of the
+  viewport. QA: zero TikTok requests at page load.
+- **No layout shift:** the profile embed box is a fixed height (setting, default 640px, 560px on phones), video cards
+  are 580px. QA: CLS 0 from the section.
+- **Fallback:** a box counts as loaded only when TikTok's iframe posts a message back to the page. If the script is
+  blocked, or no message arrives within 10s, the box shows the fallback card ("Watch us on TikTok
+  @sportsnutritionhub.lk" + Follow). On 29 Oct 2026, TikTok's creator embed served its own error page
+  ("overload-protect triggered") on both 127.0.0.1 and the real domain, which is why the old section looked empty. The
+  fallback card shows instead, and the real embed takes over by itself when TikTok serves it again. Video embeds for
+  specific posts are a separate TikTok endpoint and worth adding as blocks.
+
+### Instagram — `sections/snh-instagram` (homepage, above the newsletter)
+- **No Instagram feed app is installed** (no app block or embed in any template or settings_data), so this is a
+  curated grid: *Post* blocks (image + post link), 6 on desktop (3 on tablets), 4 on phones, hover overlay with the
+  Instagram icon, follow button. No token and no Instagram requests; images are Shopify CDN, lazy.
+- The seeded posts use store photos already in Files (`IMG_4440`–`IMG_4446`) and link to the profile. **Swap them for
+  real post images and post links.**
+- **Automatic feed:** install an Instagram feed app (e.g. Instafeed), then add its app block to this section
+  (*Add block → Apps*). The app's feed replaces the curated grid inside the same heading and follow button.
+- ⚠ **Rotate the Instagram access token.** The old `instafeed-modern` section printed it in public HTML
+  (`data-token`), and it is in the `main` branch's `templates/index.json` in git. Treat it as leaked: revoke it in the
+  Meta developer app or regenerate it. The v2 theme stores no token.
+
+QA: `prototype/tools/r9-qa.js` → `prototype/shots/r9/qa.md` + screenshots (390 / 768 / 1440).

@@ -1,7 +1,9 @@
 /* SNH social sections (Round 9): lazy TikTok embeds for sections/snh-tiktok.
    Nothing is requested from TikTok until a [data-ttk] section is within 600px of the viewport; then embed.js loads once
-   and renders every .tiktok-embed on the page. Each box gets .is-loaded when TikTok's iframe appears, or .is-failed
-   (fallback card) if the script is blocked or no iframe shows within 10s. Boxes have fixed heights, so nothing moves. */
+   and renders every .tiktok-embed on the page. A box gets .is-loaded only when its TikTok iframe talks back (embed.js
+   sizes the iframe by postMessage), so an iframe that loads TikTok's error page ("overload-protect triggered", seen in
+   QA) still counts as failed. .is-failed shows the fallback card: script blocked, or no message within 10s.
+   Boxes have fixed heights, so nothing moves. */
 (function () {
   if (window.__snhSocial) return;
   window.__snhSocial = true;
@@ -15,13 +17,19 @@
       var done = false;
       function ok() { if (done) return; done = true; box.classList.add('is-loaded'); }
       function fail() { if (done) return; done = true; box.classList.add('is-failed'); update(sec); }
-      if (box.querySelector('iframe')) return ok();
-      var mo = new MutationObserver(function () { if (box.querySelector('iframe')) { mo.disconnect(); ok(); } });
-      mo.observe(box, { childList: true, subtree: true });
-      box.__ttkFail = function () { mo.disconnect(); fail(); };
-      setTimeout(function () { if (!box.querySelector('iframe')) box.__ttkFail(); }, 10000);
+      box.__ttkOk = ok;
+      box.__ttkFail = fail;
+      setTimeout(function () { if (!box.classList.contains('is-loaded')) fail(); }, 10000);
     });
   }
+  // a message from a box's own TikTok iframe = the embed really rendered
+  window.addEventListener('message', function (e) {
+    if (!/(^|\.)tiktok\.com$/.test((e.origin || '').replace(/^https?:\/\//, ''))) return;
+    [].forEach.call(document.querySelectorAll('[data-ttk-box]'), function (box) {
+      var f = box.querySelector('iframe');
+      if (f && f.contentWindow === e.source && box.__ttkOk) box.__ttkOk();
+    });
+  });
   function update(sec) {
     var p = sec.querySelector('.ttk__box--profile');
     sec.classList.toggle('is-failed-all', !!(p && p.classList.contains('is-failed')));
