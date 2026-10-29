@@ -1,6 +1,10 @@
 {%- comment -%}
-  SNH v2 product card, the one card used everywhere (homepage, collections, search, related, recently viewed; the
-  theme's product-card snippet renders this too).
+  SNH product card (Round 11: your old card's structure, OLD-COMPONENTS.md §1, in v2 type and spacing). The one card
+  used everywhere (home, collections, search, related, recently viewed, cart suggestions, account; the theme's
+  product-card snippet renders this too).
+  Bordered card → inset image tile (badges: one saving/note pill top-left, status stack top-right, flavour count
+  bottom-left, quick view bottom-right) → brand · rating → name (2 lines) → options / per serving → price pill +
+  Add / Choose pill → Koko 3× → SNH Elite "earn Rs X back". Every text row has a fixed height, so rows line up.
   Tile: one cream backdrop, the pack contained with even padding. Packshots with SNH's baked-in orange frame
   (file name contains "SportsNutritionHub" or "snh-frame") are cropped inside the frame; assets/snh-v2.js
   (data-v2-lift) lifts grey studio backgrounds to white so every pack blends into the tile (mix-blend multiply).
@@ -8,15 +12,18 @@
   Body: brand · name (2 lines, whole words) · Judge.me stars (reviews.rating metafields, hidden when none) ·
   one key fact (custom.key_benefits, whole words) · price, compare-at · Koko.
   Quick add: single variant adds in one tap (data-v2-add); multi-variant opens the theme's quick-buy drawer.
+  Round 11 adds per-serving price (custom.servings or "N servings" in the title) and the tier-aware earn line
+  (rates from Theme settings → SNH Elite, tier from custom.loyalty_tier; guests see the Bronze rate and a sign-in link).
   product, sizes (optional), eager (optional)
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant
   assign img_sizes = sizes | default: '(max-width: 767px) 50vw, (max-width: 1199px) 33vw, 25vw'
   assign title_full = product.title | escape
-  assign multi = true
-  if product.has_only_default_variant
-    assign multi = false
+  # Choose (quick buy) only when there is a real choice; a single named variant adds in one tap
+  assign multi = false
+  if product.variants.size > 1
+    assign multi = true
   endif
   assign third = product.price | divided_by: 300.0 | round | times: 100
   capture retail
@@ -116,10 +123,64 @@
 
   assign r_count = product.metafields.reviews.rating_count.value | plus: 0
   assign r_value = product.metafields.reviews.rating.value.rating | default: 0 | round: 1
+
+  # saving pill (old card: "Save Rs X", else a note), status badges top-right
+  assign saving = 0
+  if retail > product.price
+    assign saving = retail | minus: product.price
+  endif
+  assign note = ''
+  assign status = ''
+  for b in badge_list
+    case b
+      when 'Sale'
+      when 'Sold out'
+        assign status = status | append: ',Sold out'
+      when 'New', 'Bestseller', 'Informed Sport'
+        if note == ''
+          assign note = b
+        endif
+      else
+        assign status = status | append: ',' | append: b
+    endcase
+  endfor
+  assign status_list = status | remove_first: ',' | split: ','
+
+  # options line: flavours / sizes / options, else the product type; then price per serving when we know servings
+  assign sub = chip
+  if sub == blank and multi
+    assign sub = product.variants.size | append: ' options'
+  endif
+  if sub == blank
+    assign sub = product.type
+  endif
+  capture txt
+    echo product.title | append: ' ' | append: v.title
+  endcapture
+  capture sv
+    render 'snh-servings', product: product, text: txt
+  endcapture
+  assign sv = sv | strip | plus: 0
+  assign per = 0
+  if sv > 1
+    assign per = v.price | divided_by: sv | divided_by: 100.0 | round | times: 100
+  endif
+
+  # SNH Elite earn line: the member's tier rate, guests the entry rate
+  assign rate = settings.snh_rate_bronze | default: 3
+  assign t = customer.metafields.custom.loyalty_tier.value | downcase
+  if t == 'silver'
+    assign rate = settings.snh_rate_silver | default: 7
+  elsif t == 'gold' or t == 'maxed out'
+    assign rate = settings.snh_rate_gold | default: 10
+  endif
+  assign pv = settings.snh_point_value | default: 1
+  assign earn = product.price | times: rate | divided_by: 100 | times: pv | divided_by: 100.0 | round | times: 100
 -%}
-<product-card class="card{% unless product.available %} card--out{% endunless %}" handle="{{ product.handle }}">
-  <div class="card__media">
-    <a class="card__tile" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
+
+<product-card class="card pc{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}">
+  <div class="pc__frame">
+    <a class="card__tile pc__shot" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
       {%- if img1 -%}
         <span class="card__img{% if framed1 %} is-framed{% endif %}">
           {%- if eager -%}
@@ -137,80 +198,49 @@
         <span class="card__img">{{ 'product-1' | placeholder_svg_tag: 'card__ph' }}</span>
       {%- endif -%}
     </a>
-    {%- if badge_list.size > 0 -%}
-      <ul class="card__badges">
-        {%- for b in badge_list limit: 2 -%}
-          {%- assign bh = b | handleize -%}
-          <li class="card__badge card__badge--{{ bh }}">{{ b | escape }}</li>
-        {%- endfor -%}
-      </ul>
+    {%- if saving > 0 and product.available -%}
+      <span class="pc__badge">Save {{ saving | money_without_trailing_zeros }}</span>
+    {%- elsif note != blank -%}
+      <span class="pc__badge pc__badge--note">{{ note | escape }}</span>
     {%- endif -%}
-    {%- if chip != blank -%}<span class="card__chip">{{ chip }}</span>{%- endif -%}
+    {%- if status_list.size > 0 -%}
+      <ul class="pc__status" role="list">{%- for b in status_list limit: 2 -%}<li class="pc__st pc__st--{{ b | handleize }}">{{ b | escape }}</li>{%- endfor -%}</ul>
+    {%- endif -%}
+    {%- if chip != blank -%}<span class="pc__chip">{{ chip }}</span>{%- endif -%}
     {%- if product.available -%}
-      {%- if multi -%}
-        {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-        <button class="quick" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ title_full }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
-        <quick-buy-drawer id="{{ qb }}" header-bordered open-from="bottom" handle="{{ product.handle }}?variant={{ v.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
-      {%- else -%}
-        <button class="quick" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ title_full }} to basket">{% render 'snh-v2-icon', name: 'plus' %}<span class="quick__tick">{% render 'snh-v2-icon', name: 'check' %}</span></button>
-      {%- endif -%}
+      {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+      <button class="pc__peek" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Quick view {{ title_full }}">{% render 'snh-v2-icon', name: 'search' %}</button>
+      <quick-buy-drawer id="{{ qb }}" header-bordered open-from="bottom" handle="{{ product.handle }}?variant={{ v.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
     {%- endif -%}
   </div>
-  <div class="card__body">
-    <div class="card__top">
-      <p class="card__brand">{{ product.vendor | escape }}</p>
+  <div class="pc__body">
+    <div class="pc__top">
+      <p class="pc__brand">{{ product.vendor | escape }}</p>
       {%- if r_count > 0 -%}
-        <p class="card__rating" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="card__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="card__count">({{ r_count }})</span></span></p>
+        <p class="pc__rating" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="pc__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="pc__count">({{ r_count }})</span></span></p>
       {%- endif -%}
     </div>
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
-    {%- assign words = short | strip_html | strip | split: ' ' -%}
-    <h3 class="card__name"><a href="{{ product.url }}" title="{{ title_full }}">{% for w in words %}<span>{{ w }}</span> {% endfor %}</a></h3>
-    {%- if fact != blank -%}
-      {%- liquid
-        # whole words only, trailing joiners dropped: a long line for wide cards, a short one for phones
-        assign fwords = fact | split: ' '
-        assign joiners = ' and or with for of the a an to per in & + - – , '
-        assign f_long = ''
-        assign f_short = ''
-        for w in fwords
-          assign try = f_long | append: ' ' | append: w | strip
-          if try.size > 44
-            break
-          endif
-          assign f_long = try
-        endfor
-        for w in fwords
-          assign try = f_short | append: ' ' | append: w | strip
-          if try.size > 27
-            break
-          endif
-          assign f_short = try
-        endfor
-        for i in (1..3)
-          assign lw = f_long | split: ' ' | last | downcase | prepend: ' ' | append: ' '
-          if joiners contains lw and f_long != fact
-            assign lw = f_long | split: ' ' | last
-            assign f_long = f_long | remove_last: lw | strip
-          endif
-          assign lw = f_short | split: ' ' | last | downcase | prepend: ' ' | append: ' '
-          if joiners contains lw and f_short != fact
-            assign lw = f_short | split: ' ' | last
-            assign f_short = f_short | remove_last: lw | strip
-          endif
-        endfor
-        assign f_long = f_long | remove_last: ',' | remove_last: ' –' | strip
-        assign f_short = f_short | remove_last: ',' | remove_last: ' –' | strip
-        if f_short == blank
-          assign f_short = f_long
-        endif
-      -%}
-      <p class="card__fact" title="{{ fact | escape }}"><span class="card__fact-l">{{ f_long | escape }}</span><span class="card__fact-s">{{ f_short | escape }}</span></p>
-    {%- endif -%}
-    <div class="card__foot">
-      <p class="card__price"><span class="card__now{% if retail > product.price %} is-sale{% endif %}">{% if product.price_varies %}<span class="card__from">From</span> {% endif %}{{ product.price | money_without_trailing_zeros }}</span>
-        {%- if retail > product.price -%}<s class="card__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}</p>
-      <p class="card__koko">or 3 × {{ third | money_without_trailing_zeros }} with Koko</p>
+    <h3 class="pc__name"><a href="{{ product.url }}" title="{{ title_full }}">{{ short | strip }}</a></h3>
+    <p class="pc__sub">{{ sub | escape }}{% if per > 0 %} · {{ per | money_without_trailing_zeros }} / serving{% endif %}</p>
+    <div class="pc__foot">
+      <p class="pc__price{% if saving > 0 %} pc__price--sale{% endif %}">
+        <span class="pc__now">{% if product.price_varies %}<span class="pc__from">From </span>{% endif %}{{ product.price | money_without_trailing_zeros }}</span>
+        {%- if saving > 0 -%}<s class="pc__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}
+      </p>
+      {%- if product.available == false -%}
+        <span class="pc__sold">Sold out</span>
+      {%- elsif multi -%}
+        <button class="pc__add" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ title_full }}"><span>Choose</span><i class="pc__dot" aria-hidden="true"></i></button>
+      {%- else -%}
+        <button class="pc__add" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ title_full }} to basket"><span>Add</span><i class="pc__dot" aria-hidden="true"></i></button>
+      {%- endif -%}
     </div>
+    <p class="pc__koko">or 3 × {{ third | money_without_trailing_zeros }} with <span class="pc__kk">KOKO</span></p>
+    {%- if customer -%}
+      <p class="pc__earn">Earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back in points</p>
+    {%- else -%}
+      <a class="pc__earn" href="{{ routes.account_login_url }}">Sign in to earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back</a>
+    {%- endif -%}
   </div>
 </product-card>

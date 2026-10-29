@@ -458,3 +458,14 @@ Instagram feed), with live screenshots in `prototype/shots/r11/old/`. Audits + s
   gold, the dashboard's metals), SNH *Elite* wordmark, EMV chip, member no. (customer id, as on the dashboard), name,
   points + Rs value, progress rail to the next tier, sheen on hover, pointer tilt (fine pointers only, off with
   reduced motion; `assets/snh-v2.js`). Nav list: 52px rows with chevrons.
+
+### Phase 3: product card (`snippets/snh-v2-card.liquid`, class `.pc`)
+Your old card's structure (OLD-COMPONENTS.md §1) in v2 type: bordered card (12px radius, lift + shadow on hover)
+with an inset 1:1 cream tile (clean pack shots: grey studio backgrounds lifted to white, the SNH orange frame
+cropped, hover crossfade to the next pack shot), "Save Rs X" pill (red) or a note pill (New / Bestseller / Informed
+Sport) top-left, status stack top-right (Sold out, Bundle…), flavour count bottom-left, quick view bottom-right
+(Impact's quick-buy drawer). Body: brand · ★ rating (count) → name (2 lines) → options + price per serving → price
+pill (sale = red, compare-at struck) + Add / Choose pill with the arrow dot → "or 3 × Rs X with KOKO" → SNH Elite
+"Earn Rs X back" (member tier rate) or "Sign in to earn Rs X back". Every row has a fixed height, so rows of cards
+line up (measured: identical offsets across a row at 390 and 1440). Single-variant products add in one tap; only
+real choices open quick buy. Used by every grid through `snippets/product-card.liquid`.

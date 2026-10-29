@@ -182,7 +182,7 @@
 /* Round 11: column headings read like the main nav items; links are compact uppercase */
 .mz__h { margin: 0 0 16px; font: 500 15px/1.5 var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink); }
 .mz__list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.mz__list a { display: block; padding: 0; font: 600 13px/1.5 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--grey-1); transition: color var(--t) var(--ease), transform var(--t) var(--ease); }
+.mz__list a { display: block; padding: 0; font: 600 13px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-1); transition: color var(--t) var(--ease), transform var(--t) var(--ease); }
 .mz__list a:hover, .mz__list a:focus-visible { color: var(--v-accent); transform: translateX(3px); }
 .mz__all { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .mz__all:hover { color: var(--v-accent); }
@@ -1941,3 +1941,70 @@ body { line-height: 1.5; }
 .ccard__rail i { display: block; height: 100%; min-width: 3px; border-radius: inherit; background: var(--mc-ink); }
 .acp__prog .acp__next { margin-top: 0; }
 @media (prefers-reduced-motion: reduce) { .ccard__face { transform: none; transition: none; } .ccard:hover .ccard__sheen { animation: none; } }
+
+/* ---------- product card (Round 11): your old card (OLD-COMPONENTS.md §1) in v2 type and spacing ----------
+   bordered card · inset 1:1 tile · fixed-height text rows so a row of cards lines up */
+.pc { height: 100%; border: 1px solid #ECE6DD; border-radius: 12px; background: var(--white); overflow: hidden; transition: border-color 600ms var(--ease), box-shadow 700ms var(--ease), transform 700ms var(--ease); }
+.pc:hover { border-color: rgba(23, 19, 15, .16); transform: translateY(-3px); box-shadow: 0 16px 38px rgba(23, 19, 15, .08); }
+.pc__frame { position: relative; padding: 8px 8px 0; }
+.pc .card__tile { border-radius: 8px; }
+.pc:hover .card__img { transform: scale(1.04); }
+.pc__badge { position: absolute; top: 16px; left: 16px; z-index: 3; display: inline-flex; align-items: center; height: 28px; max-width: calc(100% - 32px); padding: 0 12px; border-radius: var(--pill); background: #C02A1B; color: var(--white); font: 600 12px/1.1 var(--sans); white-space: nowrap; }
+.pc__badge--note { background: var(--ink); }
+.pc__status { position: absolute; top: 16px; right: 16px; z-index: 3; display: grid; justify-items: end; gap: 4px; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.pc__st { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: var(--pill); background: rgba(23, 19, 15, .86); color: var(--white); font: 600 12px/1.1 var(--sans); }
+.pc__st--sold-out { background: var(--white); color: var(--grey-1); box-shadow: inset 0 0 0 1px var(--line); }
+.pc__chip { position: absolute; left: 16px; bottom: 8px; z-index: 3; display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: var(--pill); background: rgba(255, 255, 255, .94); color: var(--ink); font: 500 12px/1.1 var(--sans); box-shadow: 0 1px 2px rgba(14, 14, 14, .08); pointer-events: none; }
+.pc__peek { position: absolute; right: 16px; bottom: 8px; z-index: 3; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid rgba(23, 19, 15, .1); border-radius: 50%; background: rgba(255, 255, 255, .94); color: var(--ink); cursor: pointer; box-shadow: 0 3px 12px rgba(23, 19, 15, .08); transition: transform var(--t) var(--ease), border-color var(--t) var(--ease); }
+.pc__peek:hover { transform: scale(1.06); border-color: rgba(23, 19, 15, .25); }
+.pc__peek svg { width: 16px; height: 16px; }
+.pc__body { display: flex; flex-direction: column; flex: 1; padding: 16px 16px 16px; }
+.pc__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 18px; }
+.pc__brand { min-width: 0; overflow: hidden; font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; text-overflow: ellipsis; color: var(--grey-2); }
+.pc__rating { flex: none; display: inline-flex; align-items: center; gap: 4px; font: 600 12px/1.5 var(--sans); color: var(--ink); }
+.pc__star { color: #F2A93B; font-size: 13px; line-height: 1.1; }
+.pc__count { font-weight: 400; color: var(--grey-2); }
+.pc__name { height: 48px; margin: 8px 0 0; overflow: hidden; font: 600 16px/1.5 var(--sans); letter-spacing: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-wrap: pretty; }
+.pc__name a { color: inherit; }
+.pc__name a:hover { color: var(--v-accent); }
+.pc__sub { height: 20px; margin-top: 4px; overflow: hidden; font: 400 13px/1.5 var(--sans); white-space: nowrap; text-overflow: ellipsis; color: var(--grey-2); }
+.pc__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 16px; }
+.pc__price { display: inline-flex; flex-direction: column; justify-content: center; min-width: 0; min-height: 44px; padding: 4px 16px; border-radius: 22px; background: #F2EEE7; }
+.pc__now { font: 600 16px/1.1 var(--sans); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pc__from { font-weight: 400; font-size: 12px; color: var(--grey-2); }
+.pc__was { font: 400 12px/1.5 var(--sans); color: var(--grey-2); white-space: nowrap; }
+.pc__price--sale { background: rgba(192, 42, 27, .06); }
+.pc__price--sale .pc__now { color: #C02A1B; }
+.pc__add { flex: none; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 6px 0 16px; border: 0; border-radius: var(--pill); background: var(--ink); color: var(--white); font: 600 14px/1.1 var(--sans); cursor: pointer; white-space: nowrap; transition: background-color var(--t) var(--ease); }
+.pc__add:hover { background: var(--v-accent); }
+.pc__add.is-added { background: #157A3A; }
+.pc__dot { display: block; width: 32px; height: 32px; border-radius: 50%; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230c0c0d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12m-5-5 5 5-5 5'/%3E%3C/svg%3E") center / 16px no-repeat; transition: transform var(--t) var(--ease); }
+.pc__add:hover .pc__dot { transform: translateX(2px); }
+.pc__sold { flex: none; display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: var(--pill); background: #F2EEE7; color: var(--grey-1); font: 600 14px/1.1 var(--sans); }
+.pc__koko { margin-top: 8px; font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
+.pc__kk { font-weight: 600; letter-spacing: .12em; color: #5B4BD5; }
+.pc__earn { display: block; margin-top: 12px; padding-top: 12px; border-top: 1px solid #ECE6DD; font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
+.pc__earn strong { font-weight: 600; color: var(--v-accent); }
+a.pc__earn:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.pc--out { opacity: .72; }
+@container (max-width: 240px) { .pc__foot { flex-direction: column; align-items: stretch; } }
+.pc { container-type: inline-size; }
+@media (max-width: 767px) {
+  .pc, .pc:hover { transform: none; box-shadow: none; }
+  .pc__frame { padding: 6px 6px 0; }
+  .pc__badge, .pc__status { top: 12px; }
+  .pc__badge { left: 12px; height: 24px; padding: 0 8px; }
+  .pc__status { right: 12px; }
+  .pc__chip { left: 12px; }
+  .pc__peek { right: 12px; width: 32px; height: 32px; }
+  .pc__body { padding: 12px 12px 12px; }
+  .pc__name { height: 42px; font-size: 14px; }
+  .pc__sub { font-size: 12px; height: 18px; }
+  .pc__foot { flex-direction: column; align-items: stretch; gap: 8px; padding-top: 12px; }
+  .pc__price { min-height: 40px; padding: 4px 12px; border-radius: 20px; }
+  .pc__add { justify-content: space-between; height: 40px; padding: 0 4px 0 14px; font-size: 13px; }
+  .pc__dot { width: 30px; height: 30px; background-size: 14px; }
+  .pc__sold { justify-content: center; height: 40px; }
+  .pc__earn { margin-top: 8px; padding-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .pc, .pc:hover { transition: none; transform: none; } .pc:hover .card__img { transform: none; } }
