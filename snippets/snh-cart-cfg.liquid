@@ -1,0 +1,91 @@
+{%- comment -%}
+  SNH cart (Round 11): the settings + store data assets/snh-cart.js needs, as JSON, shared by the cart drawer and the
+  cart page. threshold/tolerance in cents · member tier and rate (Theme settings → SNH Elite, tier from
+  custom.loyalty_tier) · gap-filler collection ("Cart add-ons") · picks collection (the member's goal collection, else
+  bestsellers) · bundle offers bundle_1…12 (Theme settings → SNH bundle offers) · trust rating text.
+  threshold, tolerance (rupees), addons, bestsellers: collection handles · rating · page: true on the cart page
+{%- endcomment -%}
+{%- liquid
+  assign t = customer.metafields.custom.loyalty_tier.value | downcase
+  assign rate = settings.snh_rate_bronze | default: 3
+  assign tier = 'Bronze'
+  if t == 'silver'
+    assign rate = settings.snh_rate_silver | default: 7
+    assign tier = 'Silver'
+  elsif t == 'gold' or t == 'maxed out'
+    assign rate = settings.snh_rate_gold | default: 10
+    assign tier = 'Gold'
+  endif
+  assign goal = ''
+  for tg in customer.tags
+    assign tl = tg | downcase
+    if tl contains 'goal:'
+      assign goal = tl | remove: 'goal:' | strip
+      break
+    endif
+  endfor
+  case goal
+    when 'build-muscle'
+      assign gh = 'muscle-and-strength'
+    when 'lose-fat'
+      assign gh = 'fat-loss'
+    when 'endurance'
+      assign gh = 'energy-and-endurance'
+    when 'hydration-recovery'
+      assign gh = 'hydration-recovery'
+    when 'daily-health'
+      assign gh = 'health-wellness'
+    when 'sport-specific'
+      assign gh = 'train-perform'
+    else
+      assign gh = ''
+  endcase
+  assign picks = bestsellers | default: 'all'
+  assign picks_label = 'Bestsellers right now'
+  if customer and gh != ''
+    assign picks = gh
+    assign picks_label = 'Picked for your goal'
+  endif
+  assign silver = settings.snh_silver_threshold | default: 198000
+  assign gold = settings.snh_gold_threshold | default: 300000
+  assign spend = customer.metafields.custom.annual_spend.value | default: 0 | plus: 0
+-%}
+<script type="application/json" data-cart-cfg>{
+  "threshold": {{ threshold | default: 17000 | times: 100 }},
+  "tolerance": {{ tolerance | default: 100 | times: 100 }},
+  "member": {% if customer %}true{% else %}false{% endif %},
+  "first": {{ customer.first_name | default: '' | json }},
+  "tier": {{ tier | json }},
+  "rate": {{ rate }},
+  "baseRate": {{ settings.snh_rate_bronze | default: 3 }},
+  "pointValue": {{ settings.snh_point_value | default: 1 }},
+  "spend": {{ spend }},
+  "silver": {{ silver }},
+  "gold": {{ gold }},
+  "addons": {{ addons | default: 'cart-add-ons' | json }},
+  "picks": {{ picks | json }},
+  "picksLabel": {{ picks_label | json }},
+  "rating": {{ rating | default: '' | json }},
+  "login": {{ routes.account_login_url | json }},
+  "register": {{ routes.account_register_url | json }},
+  "account": {{ routes.account_url | json }},
+  "cartUrl": {{ routes.cart_url | json }},
+  "shop": {{ routes.all_products_collection_url | json }},
+  "plan": {% if customer %}{{ routes.account_url | append: '#goals' | json }}{% else %}{{ routes.account_register_url | json }}{% endif %},
+  "page": {% if page %}true{% else %}false{% endif %},
+  "bundles": [
+    {%- assign first_b = true -%}
+    {%- for i in (1..12) -%}
+      {%- assign lk = 'bundle_' | append: i | append: '_products' -%}
+      {%- assign list = settings[lk] -%}
+      {%- if list == blank or list.size == 0 -%}{%- continue -%}{%- endif -%}
+      {%- assign tk = 'bundle_' | append: i | append: '_title' -%}
+      {%- assign sk = 'bundle_' | append: i | append: '_save' -%}
+      {%- unless first_b -%},{%- endunless -%}{%- assign first_b = false -%}
+      {"title": {{ settings[tk] | json }}, "save": {{ settings[sk] | json }}, "items": [
+        {%- for p in list -%}{%- assign v = p.selected_or_first_available_variant -%}{"pid": {{ p.id }}, "vid": {{ v.id }}, "title": {{ p.title | json }}, "price": {{ v.price }}, "available": {{ p.available | json }}, "image": {{ p.featured_image | image_url: width: 200 | json }}, "single": {{ list.size | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+      ]}
+    {%- endfor -%}
+  ]
+}</script>
+<script type="application/json" data-cart-initial>{{ cart | json }}</script>

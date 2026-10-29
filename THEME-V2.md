@@ -517,3 +517,26 @@ real choices open quick buy. Used by every grid through `snippets/product-card.l
     new one in the Meta developer app (Instagram API with Instagram Login).
   - Long-term: serve the feed from the SNH Elite app backend (ELITE-ROADMAP §5), so the token never reaches the
     browser and is refreshed on a schedule.
+
+### Phase 6: cart drawer (`sections/cart-drawer`, `assets/snh-cart.js`, `assets/snh-cart.css`, `snippets/snh-cart-cfg`)
+Your drawer (OLD-COMPONENTS.md §4) rebuilt in v2, every feature kept: free-delivery card (incl. the Rs 100
+tolerance), qty steppers, smart gap picks, picks, SNH Elite points line, subtotal + tax note, View basket + Checkout
+(Koko intercepts `button[name=checkout]`), empty state, the basket toast after closing. One renderer for drawer and
+cart page, from `/cart.js` (first paint from the cart JSON in the page), so every change re-renders at once. The
+element is Impact's plain `<x-drawer id="cart-drawer">`: header buttons still open it, `variant:add` opens it, and
+nothing re-renders it behind the renderer's back (the old observer/dedupe workarounds are gone).
+- **New:** free delivery unlocked state (green); auto-discount banner; per line: brand, name, variant,
+  subscription label, saving tags (Bundle saving / Member price / the discount), stepper, remove, line price +
+  compare-at (from `/products/<handle>.js`, cached).
+- **Smart gap-filler** under the threshold: gap ≤ price ≤ gap + Rs 2,500, cheapest closer first, low-ticket items
+  (bars, snacks, gels, shakers, tablets) favoured; source **Cart drawer → Cart add-ons** collection, else Shopify
+  recommendations for the basket (complementary + related), then the picks collection; never in-cart or sold-out;
+  "Add one of these to unlock free delivery"; recalculated on every change.
+- **Bundle upsell** when an in-cart product is in a Theme settings bundle_N offer ("Make it a pair" / "Complete the
+  bundle"). **Picks:** a member's goal collection, else *Bestsellers (guests)*.
+- **Summary:** compact sticky footer in the drawer (savings or delivery, total, Secure checkout, Koko 3×, View
+  basket); breakdown (subtotal, discounts, delivery, you save, total), points (members: "You'll earn N points … as a
+  Silver member (7%)", guests: "Sign in to earn N points") and the trust row (rating setting, same-day Colombo, 100 %
+  authentic, Card / Koko / COD) at the end of the scroll. 440px wide; a full-screen sheet on phones.
+- QA: `prototype/tools/r11-cart-qa.js` (mocked `/cart.js`, `/cart/change.js`, `/cart/add.js`; gaps Rs 1,500 / Rs 3,000
+  / unlocked × guest / member × 390 / 1440) → `prototype/shots/r11/cart/qa.md`.
