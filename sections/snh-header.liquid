@@ -181,7 +181,7 @@
                   {%- if lp.size > 1 -%}{{ lp[0] | escape }}<span class="nav__x"> &amp; {{ lp[1] | escape }}</span>{%- else -%}{{ b.settings.label | escape }}{%- endif -%}
                   {%- render 'snh-v2-icon', name: 'chev' -%}</button></li>
               {%- when 'link' -%}
-                <li><a class="nav__link" href="{{ b.settings.url | default: '#' }}" {{ b.shopify_attributes }}>{{ b.settings.label | escape }}</a></li>
+                <li><a class="nav__link" href="{% if b.settings.url contains '#elite' %}{% render 'snh-elite-url' %}{% else %}{{ b.settings.url | default: '#' }}{% endif %}" {{ b.shopify_attributes }}>{{ b.settings.label | escape }}</a></li>
             {%- endcase -%}
           {%- endfor -%}
         </ul>
@@ -318,7 +318,7 @@
               {%- when 'mega', 'brands', 'offers' -%}
                 <li><button class="mm__go" type="button" data-level="mm-{{ b.id }}">{{ b.settings.label | escape }}{% render 'snh-v2-icon', name: 'next' %}</button></li>
               {%- when 'link' -%}
-                <li><a class="mm__go" href="{{ b.settings.url | default: '#' }}">{{ b.settings.label | escape }}</a></li>
+                <li><a class="mm__go" href="{% if b.settings.url contains '#elite' %}{% render 'snh-elite-url' %}{% else %}{{ b.settings.url | default: '#' }}{% endif %}">{{ b.settings.label | escape }}</a></li>
             {%- endcase -%}
           {%- endfor -%}
           {%- if shop.customer_accounts_enabled -%}<li><a class="mm__go" href="{{ routes.account_url }}" data-acp-open aria-controls="acp">{% if customer %}My account{% else %}Sign in{% endif %}</a></li>{%- endif -%}

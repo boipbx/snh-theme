@@ -27,8 +27,13 @@
         {%- assign chips = chips_text | newline_to_br | split: '<br />' -%}
         {%- if section.settings.chips != blank -%}<ul class="chips-row">{%- for c in chips -%}{%- assign t = c | strip -%}{%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}
         <div class="band__cta">
-          {%- if section.settings.cta != blank -%}<a class="v-btn v-btn--ink" href="{{ section.settings.cta_link | default: routes.account_register_url }}"><span>{{ section.settings.cta | escape }}</span></a>{%- endif -%}
-          {%- if section.settings.cta2 != blank -%}<a class="v-btn v-btn--line v-btn--on-dark" href="{{ section.settings.cta2_link | default: routes.account_login_url }}"><span>{{ section.settings.cta2 | escape }}</span></a>{%- endif -%}
+          {%- if customer -%}
+            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}"><span>{{ section.settings.cta_member | default: 'See my points' | escape }}</span></a>
+            <a class="v-btn v-btn--line v-btn--on-dark" href="{% render 'snh-elite-url' %}"><span>{{ section.settings.cta2_member | default: 'How SNH Elite works' | escape }}</span></a>
+          {%- else -%}
+            {%- if section.settings.cta != blank -%}<a class="v-btn v-btn--ink" href="{{ section.settings.cta_link | default: routes.account_register_url }}"><span>{{ section.settings.cta | escape }}</span></a>{%- endif -%}
+            {%- if section.settings.cta2 != blank -%}<a class="v-btn v-btn--line v-btn--on-dark" href="{{ section.settings.cta2_link | default: routes.account_login_url }}"><span>{{ section.settings.cta2 | escape }}</span></a>{%- endif -%}
+          {%- endif -%}
         </div>
       </div>
       <div class="elite__tiers">
@@ -133,6 +138,19 @@
       "id": "cta2_link",
       "label": "Second button link",
       "info": "Defaults to the sign-in page."
+    },
+    {
+      "type": "text",
+      "id": "cta_member",
+      "label": "Button for signed-in members",
+      "default": "See my points",
+      "info": "Signed-in members see this (to their account) and the second one (to the SNH Elite page) instead."
+    },
+    {
+      "type": "text",
+      "id": "cta2_member",
+      "label": "Second button for signed-in members",
+      "default": "How SNH Elite works"
     },
     {
       "type": "paragraph",

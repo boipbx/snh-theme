@@ -1,0 +1,72 @@
+{
+  "sections": {
+    "main": {
+      "type": "snh-elite-page",
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "q": "Is SNH Elite really free?",
+            "a": "<p>Yes. Creating an account is free and starts you at Bronze with 500 welcome points.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I earn points?",
+            "a": "<p>Sign in before you check out, online or in store. Bronze earns 3%, Silver 7% and Gold 10% back in points on your order subtotal.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I move up to Silver or Gold?",
+            "a": "<p>Your spend over the year is tracked from paid orders. Silver unlocks at Rs 198,000 and Gold at Rs 300,000.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I redeem?",
+            "a": "<p>Once you have 2,500 points, open your account dashboard and choose <strong>Trade 2,500 points</strong>. We'll send your cash-off reward by email.</p>"
+          }
+        },
+        "faq_5": {
+          "type": "faq",
+          "settings": {
+            "q": "What happens when I refund an order?",
+            "a": "<p>The points earned on the refunded amount come off your balance, so it always stays accurate.</p>"
+          }
+        },
+        "faq_6": {
+          "type": "faq",
+          "settings": {
+            "q": "Why hasn't my tier or balance updated yet?",
+            "a": "<p>Points and tiers update once a paid order syncs. Use the same email at checkout as your account so your orders count.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5",
+        "faq_6"
+      ],
+      "settings": {
+        "eyebrow": "SNH Elite · free to join",
+        "heading": "Every order *pays* you back",
+        "lead": "Sri Lanka's premium supplement rewards club. Earn [bronze] to [gold] back in points on everything you buy, and climb to Silver and Gold as you go.",
+        "sample_name": "Your name here",
+        "how_heading": "Join, earn, redeem",
+        "tiers_heading": "Three tiers, one climb",
+        "faq_heading": "Questions, answered",
+        "cta_heading": "Start earning on your *next* order"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

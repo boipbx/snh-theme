@@ -317,7 +317,7 @@
               <button type="button" class="sp-b sp-elite" data-sp-modal="elite" {{ block.shopify_attributes }}>
                 {%- render 'snh-product-icon', name: 'zap' -%}
                 <span><b>SNH Elite</b> · earn up to {{ rate_hi }}% back in points</span>
-                <span class="sp-elite__cta">Join free</span>
+                <span class="sp-elite__cta">{% if customer %}Your points{% else %}Join free{% endif %}</span>
               </button>
 
             {%- when 'text' -%}
@@ -351,7 +351,10 @@
   {%- capture m_payment -%}<p>Visa and Mastercard, direct bank transfer, or cash on delivery.</p><p>Split any order into 3 interest-free instalments with Koko at checkout.</p><p>Every checkout is SSL-encrypted and secure.</p>{%- endcapture -%}
   {%- capture m_authentic -%}<p>Sports Nutrition Hub is an official distributor: every product comes directly from the brand or its certified distributor.</p><p>Batch codes are verifiable with the manufacturer.</p><p>Informed-Sport certified ranges are available for tested athletes.</p>{%- endcapture -%}
   {%- capture m_elite -%}<p>Members earn points back on every eligible order: Bronze {{ settings.snh_rate_bronze | default: 3 }}%, Silver {{ settings.snh_rate_silver | default: 7 }}%, Gold {{ rate_hi }}%.</p><p>Points add up automatically and convert to money off your next order.</p>{%- endcapture -%}
-  {%- capture m_elite_actions -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_register_url }}">Join free</a><a class="sp-btn sp-btn--line" href="{{ routes.account_login_url }}">Log in</a>{%- endcapture -%}
+  {%- capture m_elite_actions -%}
+    {%- if customer -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_url }}">See my points</a><a class="sp-btn sp-btn--line" href="{% render 'snh-elite-url' %}">How it works</a>
+    {%- else -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_register_url }}">Join free</a><a class="sp-btn sp-btn--line" href="{{ routes.account_login_url }}">Log in</a>{%- endif -%}
+  {%- endcapture -%}
   {%- liquid
     assign modal_keys = 'delivery,payment,authentic,elite' | split: ','
   -%}

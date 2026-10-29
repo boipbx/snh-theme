@@ -292,3 +292,36 @@ td .pill + .pill { margin-left: 4px; }
 .qa[open] summary::after { transform: rotate(45deg); }
 .qa__a { padding-bottom: 16px; font-size: 15px; line-height: 1.5; color: var(--grey-1); }
 .qa__a p + p { margin-top: 8px; }
+
+/* SNH Elite page (sections/snh-elite-page) */
+.ep__hero, .ep__end { position: relative; color: var(--white); background: #1A0A04; overflow: hidden; isolation: isolate; }
+.ep__hero-in { display: grid; gap: 32px; align-items: center; padding-block: var(--section); }
+.ep__copy { display: grid; gap: 16px; align-content: start; }
+.ep__copy .eyebrow { color: rgba(255, 255, 255, .9); }
+.ep__h { font: 600 var(--t-display)/1.1 var(--sans); letter-spacing: -.02em; text-wrap: balance; }
+.ep__h2 { font: 600 var(--t-h2)/1.1 var(--sans); letter-spacing: -.02em; text-wrap: balance; }
+.ep__h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.ep__lead { max-width: 560px; font-size: 18px; line-height: 1.5; color: rgba(255, 255, 255, .92); }
+.ep__copy .auth__perks { max-width: 560px; }
+.ep__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.ep__card { display: grid; gap: 12px; }
+.ep__card .ecard { box-shadow: 0 30px 80px rgba(40, 10, 0, .45); }
+.ep__sample { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .78); }
+.ep__block { display: grid; gap: 32px; }
+.ep__bh { display: grid; gap: 12px; max-width: 720px; }
+.ep__bh .eyebrow { color: var(--v-accent); }
+.ep__sub { font-size: 16px; line-height: 1.5; color: var(--grey-1); }
+.ep__steps li { padding: 24px; background: var(--white); }
+.ep__faq { display: grid; gap: 24px; }
+.ep__end-in { display: grid; gap: 24px; justify-items: start; padding-block: var(--section); }
+.ep__end .v-btn--ink { background: var(--white); color: var(--ink); }
+.ep__hero .v-btn--ink, .ep__end .v-btn--ink:hover { background: var(--ink); color: var(--white); }
+.ep .v-btn--on-dark:hover span { color: var(--ink); }
+@media (max-width: 599px) {
+  .ep__ctas .v-btn { flex: 1; }
+}
+@media (min-width: 1024px) {
+  .ep__hero-in { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 64px; }
+  .ep__faq { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+  .ep__end-in { grid-template-columns: 1fr auto; align-items: center; }
+}
