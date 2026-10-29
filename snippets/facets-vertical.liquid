@@ -228,8 +228,16 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
       <div class="snh-recs__rail" data-snh-recs-rail></div>
     </div>
 
-    {%- comment -%} ── controls ── {%- endcomment -%}
-    <div class="snh-bar__row">
+    {%- comment -%} ── controls ── (Round 11: on phones a "Filters" button opens them as a full-screen sheet) {%- endcomment -%}
+    <div class="snh-mtrig">
+      <button type="button" class="snh-mtrig__btn" data-snh-sheet-open aria-controls="snh-sheet-{{ section.id }}" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="7" r="2" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="17" r="2" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Filter &amp; sort</span>{%- if active_total > 0 -%}<b>{{ active_total }}</b>{%- endif -%}
+      </button>
+      <span class="snh-mtrig__n">{{ results.products_count }} product{% if results.products_count != 1 %}s{% endif %}</span>
+    </div>
+    <div class="snh-bar__row" id="snh-sheet-{{ section.id }}" data-snh-sheet role="group" aria-label="Filter and sort">
+      <div class="snh-sheet__head"><p class="snh-sheet__t">Filter &amp; sort</p><button type="button" class="snh-sheet__x" data-snh-sheet-close aria-label="Close filters"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
       {%- if show_filters -%}
         {%- for filter in results.filters -%}
           {%- unless useful_list contains filter.param_name -%}{%- continue -%}{%- endunless -%}
@@ -276,6 +284,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
                           <label class="snh-opt" data-snh-row data-snh-label="{{ filter_value.label | downcase | escape }}">
                             <input type="checkbox" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" {% if filter_value.active %}checked{% endif %}>
                             <span>{{ filter_value.label }}</span>
+                            <span class="snh-opt__n">{{ filter_value.count }}</span>
                           </label>
                         {%- endfor -%}
                       </div>
@@ -301,6 +310,10 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
           </select>
         </label>
       {%- endif -%}
+      <div class="snh-sheet__foot">
+        {%- if active_total > 0 -%}<a class="snh-sheet__clear" href="{{ results.url | default: request.path }}">Clear all</a>{%- endif -%}
+        <button type="button" class="snh-sheet__go" data-snh-sheet-close>Show {{ results.products_count }} product{% if results.products_count != 1 %}s{% endif %}</button>
+      </div>
     </div>
 
     {%- if show_filters and active_total > 0 -%}
@@ -329,240 +342,154 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
 </form>
 
 <style>
-  .snh-bar-form {
-    --snh-o: var(--snh-accent);
-    --snh-ink: var(--snh-ink);
-    --snh-line: rgba(23, 19, 15, .1);
-    --snh-ease: cubic-bezier(.22, 1, .36, 1);
-    font-family: var(--snh-font-body);
-  }
-  [is="facet-drawer-opener"],
-  [class*="facets-drawer"],
-  [class*="filter-and-sort"],
-  [class*="mobile-filter"],
-  [class*="filters-toggle"],
-  facets-horizontal,
-  .facets-horizontal,
-  .facets-vertical { display: none !important; }
-
-  .snh-bar-form {
-    position: sticky;
-    /* set from the real header height at runtime, so it pins below it */
-    top: var(--snh-bar-top, 0px);
-    z-index: 12;
-    background: #fff;
-  }
-  .snh-bar {
-    display: grid;
-    margin-block-end: 20px;
-    background: #fff;
-  }
-
-  /* ── quick find ─────────────────────────────────────────────────── */
+  /* Round 11: your filter bar (OLD-COMPONENTS.md §2) in v2: Inter, the 12–96 scale, v2 colours, 4px spacing.
+     Same bands and behaviour. Phones: the controls row becomes a full-screen "Filter & sort" sheet. */
+  .snh-bar-form { --snh-o: var(--v-accent, #E0521C); --snh-ink: var(--ink, #0C0C0D); --snh-line: var(--line, rgba(12, 12, 13, .1)); --snh-ease: var(--ease, cubic-bezier(.22, 1, .36, 1)); font-family: var(--sans); }
+  [is="facet-drawer-opener"], [class*="facets-drawer"], [class*="filter-and-sort"], [class*="mobile-filter"], [class*="filters-toggle"], facets-horizontal, .facets-horizontal, .facets-vertical { display: none !important; }
+  .snh-bar-form { position: sticky; top: var(--snh-bar-top, 0px); z-index: 12; background: var(--white, #fff); }
+  .snh-bar { display: grid; margin-block-end: 24px; background: var(--white, #fff); }
   .snh-bar > * { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
   .snh-brands { padding-inline: 0; }
   .snh-brands__rail { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
 
-  .snh-find { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; padding-block: 12px; border-block-end: 1px solid var(--snh-line); }
-  .snh-find__input { flex: 1 1 240px; }
-  .snh-find__all { order: 9; flex: 1 0 100%; }
-  .snh-find__icon { width: 17px; height: 17px; color: rgba(23, 19, 15, .35); }
-  .snh-find__input { min-width: 0; min-block-size: 26px; border: 0; background: none; font-family: inherit; font-size: 14.5px; font-weight: 600; color: var(--snh-ink); }
-  .snh-find__input::placeholder { color: rgba(23, 19, 15, .34); font-weight: 550; }
+  /* quick find */
+  .snh-find { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding-block: 12px; border-block-end: 1px solid var(--snh-line); }
+  .snh-find__icon { width: 20px; height: 20px; color: var(--grey-2); }
+  .snh-find__input { flex: 1 1 240px; min-width: 0; height: 28px; border: 0; background: none; font: 500 15px/1.5 var(--sans); color: var(--snh-ink); }
+  .snh-find__input::placeholder { color: var(--grey-2); font-weight: 400; }
   .snh-find__input:focus { outline: none; }
-  .snh-find__clear { display: grid; place-items: center; inline-size: 26px; block-size: 26px; padding: 0; border: 0; border-radius: 50%; background: rgba(23, 19, 15, .07); color: var(--snh-ink); cursor: pointer; }
+  .snh-find__clear { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: var(--cream); color: var(--snh-ink); cursor: pointer; }
   .snh-find__clear svg { width: 12px; height: 12px; }
-  .snh-find__count { font-size: 12px; font-weight: 700; color: rgba(23, 19, 15, .45); white-space: nowrap; }
-  .snh-find__count[hidden] { display: none; }
-  .snh-find__all { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 800; color: var(--snh-accent-hover); text-decoration: none; white-space: nowrap; }
-  .snh-find__all svg { width: 13px; height: 13px; opacity: .8; }
-  .snh-find__clear[hidden], .snh-find__all[hidden] { display: none; }
+  .snh-find__count { font: 600 12px/1.5 var(--sans); color: var(--grey-2); white-space: nowrap; }
+  .snh-find__all { order: 9; flex: 1 0 100%; display: inline-flex; align-items: center; gap: 8px; font: 600 13px/1.5 var(--sans); color: var(--snh-o); white-space: nowrap; }
+  .snh-find__all svg { width: 14px; height: 14px; }
+  .snh-find__count[hidden], .snh-find__clear[hidden], .snh-find__all[hidden] { display: none; }
 
-  /* ── goals ──────────────────────────────────────────────────────── */
-  .snh-goals { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px; padding-block: 11px; border-block-end: 1px solid var(--snh-line); }
-  .snh-goals__label { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(23, 19, 15, .4); white-space: nowrap; }
-  .snh-goals__rail { display: flex; gap: 6px; min-width: 0; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  /* goals / refine */
+  .snh-goals { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; padding-block: 12px; border-block-end: 1px solid var(--snh-line); }
+  .snh-goals__label { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2); white-space: nowrap; }
+  .snh-goals__rail { display: flex; gap: 8px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .snh-goals__rail::-webkit-scrollbar { display: none; }
-  .snh-goal {
-    flex: 0 0 auto; display: inline-flex; align-items: center; min-block-size: 32px; padding: 0 13px;
-    border: 1px solid var(--snh-line); border-radius: 99px; background: #fff;
-    font-size: 12.5px; font-weight: 700; letter-spacing: -.005em; color: var(--snh-ink); text-decoration: none;
-    transition: border-color .22s var(--snh-ease), background .22s var(--snh-ease), color .22s var(--snh-ease);
-  }
-  .snh-goal:hover { border-color: var(--snh-o); color: var(--snh-accent-hover); }
-  .snh-goal.is-on { background: var(--snh-ink); border-color: var(--snh-ink); color: #fff; }
+  .snh-goal { flex: 0 0 auto; display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border: 1px solid var(--snh-line); border-radius: var(--pill, 999px); background: var(--white); font: 500 14px/1.1 var(--sans); color: var(--snh-ink); transition: border-color var(--t, .2s) var(--snh-ease), background-color var(--t, .2s) var(--snh-ease), color var(--t, .2s) var(--snh-ease); }
+  .snh-goal:hover { border-color: var(--snh-ink); }
+  .snh-goal.is-on { background: var(--snh-ink); border-color: var(--snh-ink); color: var(--white); }
   .snh-goal[hidden] { display: none; }
 
-  /* ── brand plates ───────────────────────────────────────────────── */
+  /* brand plates */
   .snh-brands { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); border-block-end: 1px solid var(--snh-line); }
-  .snh-brands__rail {
-    display: flex;
-    min-width: 0;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    /* fade where the rail runs off the edge instead of cutting a logo in half */
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-  }
+  .snh-brands__rail { display: flex; min-width: 0; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); }
   .snh-brands__rail::-webkit-scrollbar { display: none; }
-  /* position: relative contains the absolutely positioned checkbox; without it the
-     hidden inputs escaped the rail's overflow and widened the whole page (audit H-1) */
   .snh-brand { position: relative; flex: 0 0 auto; cursor: pointer; }
   .snh-brand[hidden] { display: none; }
   .snh-brand__input { position: absolute; opacity: 0; pointer-events: none; }
-  .snh-brand__face {
-    position: relative; display: grid; place-items: center;
-    min-inline-size: 108px; padding: 16px 20px;
-    border-block-end: 2px solid transparent;
-    border-inline-end: 1px solid var(--snh-line);
-    transition: border-color .26s var(--snh-ease), background .26s var(--snh-ease);
-  }
+  .snh-brand__face { position: relative; display: grid; place-items: center; min-width: 112px; padding: 16px 20px; border-block-end: 2px solid transparent; border-inline-end: 1px solid var(--snh-line); transition: border-color var(--t, .2s) var(--snh-ease), background-color var(--t, .2s) var(--snh-ease); }
   .snh-brand:first-child .snh-brand__face { border-inline-start: 1px solid var(--snh-line); }
   .snh-brand:last-child .snh-brand__face { border-inline-end-color: transparent; }
-  .snh-brand__plate { display: grid; place-items: center; block-size: 26px; }
-  .snh-brand__plate img {
-    display: block; max-block-size: 26px; max-inline-size: 106px; width: auto; height: auto; object-fit: contain;
-    /* one neutral treatment, so marks in wildly different colours sit level */
-    filter: grayscale(1) brightness(.35);
-    opacity: .55;
-    transition: filter .26s var(--snh-ease), opacity .26s var(--snh-ease);
-  }
-  .snh-brand__plate em {
-    display: none; font-style: normal; font-size: 12.5px; font-weight: 800; letter-spacing: .05em;
-    text-transform: uppercase; color: rgba(23, 19, 15, .55); white-space: nowrap; transition: color .26s var(--snh-ease);
-  }
+  .snh-brand__plate { display: grid; place-items: center; height: 28px; }
+  .snh-brand__plate img { display: block; max-height: 28px; max-width: 104px; width: auto; height: auto; object-fit: contain; filter: grayscale(1) brightness(.35); opacity: .55; transition: filter var(--t, .2s) var(--snh-ease), opacity var(--t, .2s) var(--snh-ease); }
+  .snh-brand__plate em { display: none; font: 600 12px/1.5 var(--sans); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2); white-space: nowrap; }
   .snh-brand__plate.is-text em { display: block; }
-  .snh-brand:hover .snh-brand__face { background: rgba(23, 19, 15, .025); }
+  .snh-brand:hover .snh-brand__face { background: var(--cream); }
   .snh-brand:hover .snh-brand__plate img { filter: grayscale(1) brightness(.2); opacity: .85; }
-  .snh-brand:hover .snh-brand__plate em { color: rgba(23, 19, 15, .85); }
-  .snh-brand__input:checked + .snh-brand__face { border-block-end-color: var(--snh-o); background: rgba(224, 82, 28, .05); }
+  .snh-brand__input:checked + .snh-brand__face { border-block-end-color: var(--snh-o); background: rgba(224, 82, 28, .06); }
   .snh-brand__input:checked + .snh-brand__face .snh-brand__plate img { filter: none; opacity: 1; }
   .snh-brand__input:checked + .snh-brand__face .snh-brand__plate em { color: var(--snh-ink); }
   .snh-brand__input:focus-visible + .snh-brand__face { outline: 2px solid var(--snh-o); outline-offset: -3px; }
-
-  .snh-brands__nudge {
-    position: absolute; inset-block: 0; z-index: 3; display: none; place-items: center;
-    inline-size: 38px; padding: 0; border: 0; color: var(--snh-ink); cursor: pointer;
-    background: linear-gradient(90deg, #fff 40%, rgba(255, 255, 255, 0));
-  }
-  .snh-brands__nudge.is-prev { inset-inline-start: 0; }
-  .snh-brands__nudge.is-next { inset-inline-end: 0; background: linear-gradient(270deg, #fff 40%, rgba(255, 255, 255, 0)); }
-  .snh-brands__nudge svg { width: 17px; height: 17px; opacity: .7; }
+  .snh-brands__nudge { position: absolute; top: 0; bottom: 0; z-index: 3; display: none; place-items: center; width: 40px; padding: 0; border: 0; color: var(--snh-ink); cursor: pointer; background: linear-gradient(90deg, var(--white) 40%, rgba(255, 255, 255, 0)); }
+  .snh-brands__nudge.is-prev { left: 0; }
+  .snh-brands__nudge.is-next { right: 0; background: linear-gradient(270deg, var(--white) 40%, rgba(255, 255, 255, 0)); }
+  .snh-brands__nudge svg { width: 18px; height: 18px; }
   .snh-brands__nudge[hidden] { display: none !important; }
   @media (hover: hover) and (min-width: 1000px) { .snh-brands__nudge { display: grid; } }
-
-  .snh-nomatch { margin: 0; padding-block: 12px; font-size: 13px; font-weight: 600; color: rgba(23, 19, 15, .5); }
-  .snh-nomatch[hidden] { display: none; }
-
-  .snh-recs { display: grid; gap: 9px; padding-block: 14px; border-block-start: 1px solid var(--snh-line); }
-  .snh-recs[hidden] { display: none; }
-  .snh-recs__label { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--snh-o); }
-  .snh-recs__rail { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+  .snh-nomatch { margin: 0; padding-block: 12px; font: 500 14px/1.5 var(--sans); color: var(--grey-2); }
+  .snh-nomatch[hidden], .snh-recs[hidden] { display: none; }
+  .snh-recs { display: grid; gap: 8px; padding-block: 16px; border-block-start: 1px solid var(--snh-line); }
+  .snh-recs__label { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--snh-o); }
+  .snh-recs__rail { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; }
   .snh-recs__rail::-webkit-scrollbar { display: none; }
-  .snh-rec {
-    flex: 0 0 auto; display: grid; grid-template-columns: 46px minmax(0, 1fr); align-items: center; gap: 11px;
-    inline-size: 258px; padding: 9px 13px 9px 9px;
-    border: 1px solid var(--snh-line); border-radius: 10px; background: #fff; text-decoration: none;
-    transition: border-color .22s var(--snh-ease), box-shadow .22s var(--snh-ease);
-  }
-  .snh-rec:hover { border-color: rgba(23, 19, 15, .26); box-shadow: 0 8px 22px rgba(23, 19, 15, .07); }
-  .snh-rec img { inline-size: 46px; block-size: 46px; border-radius: 7px; object-fit: cover; background: #f2eee7; }
+  .snh-rec { flex: 0 0 auto; display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 12px; width: 240px; padding: 8px; border: 1px solid var(--snh-line); border-radius: 12px; color: var(--snh-ink); }
+  .snh-rec img, .snh-rec__ph { width: 48px; height: 48px; border-radius: 8px; object-fit: contain; background: var(--cream); }
   .snh-rec__copy { display: grid; gap: 2px; min-width: 0; }
-  .snh-rec__title { font-size: 13px; font-weight: 700; line-height: 1.25; color: var(--snh-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .snh-rec__price { font-size: 12px; font-weight: 800; color: rgba(23, 19, 15, .5); }
+  .snh-rec__title { font: 600 13px/1.5 var(--sans); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .snh-rec__price { font: 600 12px/1.5 var(--sans); color: var(--grey-2); }
 
-  /* ── controls ───────────────────────────────────────────────────── */
+  /* controls */
+  .snh-mtrig, .snh-sheet__head, .snh-sheet__foot { display: none; }
   .snh-bar__row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding-block: 12px; }
-  .snh-switch { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; }
+  .snh-switch { position: relative; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
   .snh-switch input { position: absolute; opacity: 0; pointer-events: none; }
-  .snh-switch__track { position: relative; display: block; inline-size: 36px; block-size: 21px; border-radius: 99px; background: rgba(23, 19, 15, .15); transition: background .24s var(--snh-ease); }
-  .snh-switch__knob { position: absolute; inset-block-start: 3px; inset-inline-start: 3px; inline-size: 15px; block-size: 15px; border-radius: 50%; background: #fff; transition: transform .24s var(--snh-ease); }
+  .snh-switch__track { position: relative; display: block; width: 36px; height: 20px; border-radius: var(--pill, 999px); background: rgba(12, 12, 13, .16); transition: background-color var(--t, .2s) var(--snh-ease); }
+  .snh-switch__knob { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--white); transition: transform var(--t, .2s) var(--snh-ease); }
   .snh-switch input:checked + .snh-switch__track { background: var(--snh-o); }
-  .snh-switch input:checked + .snh-switch__track .snh-switch__knob { transform: translateX(15px); }
-  .snh-switch__text { font-size: 13.5px; font-weight: 700; color: var(--snh-ink); }
-
+  .snh-switch input:checked + .snh-switch__track .snh-switch__knob { transform: translateX(16px); }
+  .snh-switch input:focus-visible + .snh-switch__track { outline: 2px solid var(--snh-o); outline-offset: 2px; }
+  .snh-switch__text { font: 500 14px/1.5 var(--sans); color: var(--snh-ink); }
   .snh-drop { position: relative; }
-  .snh-drop__pill {
-    display: inline-flex; align-items: center; gap: 7px; min-block-size: 36px; padding: 0 14px;
-    border: 1px solid var(--snh-line); border-radius: 8px; background: #fff;
-    font-size: 13px; font-weight: 700; color: var(--snh-ink); cursor: pointer; list-style: none;
-    transition: border-color .22s var(--snh-ease), background .22s var(--snh-ease), color .22s var(--snh-ease);
-  }
+  .snh-drop__pill { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid var(--snh-line); border-radius: var(--pill, 999px); background: var(--white); font: 500 14px/1.1 var(--sans); color: var(--snh-ink); cursor: pointer; list-style: none; transition: border-color var(--t, .2s) var(--snh-ease), background-color var(--t, .2s) var(--snh-ease), color var(--t, .2s) var(--snh-ease); }
   .snh-drop__pill::-webkit-details-marker { display: none; }
-  .snh-drop__pill:hover { border-color: rgba(23, 19, 15, .3); }
-  .snh-drop[open] .snh-drop__pill { border-color: var(--snh-ink); background: var(--snh-ink); color: #fff; }
-  .snh-drop__pill svg { width: 14px; height: 14px; opacity: .5; transition: transform .24s var(--snh-ease); }
-  .snh-drop[open] .snh-drop__pill svg { transform: rotate(180deg); opacity: 1; }
-  .snh-drop__pill b { display: inline-grid; place-items: center; min-inline-size: 17px; block-size: 17px; padding: 0 4px; border-radius: 99px; background: var(--snh-o); color: #fff; font-size: 10.5px; font-weight: 800; }
-  .snh-drop__panel {
-    position: absolute; z-index: 20; inset-block-start: calc(100% + 7px); inset-inline-start: 0;
-    min-inline-size: 258px; max-inline-size: 340px; padding: 12px;
-    border: 1px solid var(--snh-line); border-radius: 12px; background: #fff;
-    box-shadow: 0 20px 48px rgba(23, 19, 15, .13);
-  }
-  .snh-drop__find { inline-size: 100%; min-block-size: 36px; margin-block-end: 8px; padding: 0 11px; border: 1px solid var(--snh-line); border-radius: 8px; font-family: inherit; font-size: 13px; }
-  .snh-drop__find:focus { outline: none; border-color: var(--snh-o); }
-  .snh-drop__list { display: grid; gap: 1px; }
-  .snh-drop__list.is-scroll { max-block-size: 238px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(224, 82, 28, .4) transparent; }
-  .snh-drop__list.is-scroll::-webkit-scrollbar { width: 4px; }
-  .snh-drop__list.is-scroll::-webkit-scrollbar-thumb { background: rgba(224, 82, 28, .38); border-radius: 2px; }
+  .snh-drop__pill:hover { border-color: var(--snh-ink); }
+  .snh-drop[open] .snh-drop__pill { border-color: var(--snh-ink); background: var(--snh-ink); color: var(--white); }
+  .snh-drop__pill svg { width: 14px; height: 14px; transition: transform var(--t, .2s) var(--snh-ease); }
+  .snh-drop[open] .snh-drop__pill svg { transform: rotate(180deg); }
+  .snh-drop__pill b, .snh-mtrig__btn b { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: var(--pill, 999px); background: var(--snh-o); color: var(--white); font: 600 12px/1.1 var(--sans); }
+  .snh-drop__panel { position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; display: grid; gap: 8px; min-width: 280px; max-width: 360px; padding: 12px; border: 1px solid var(--snh-line); border-radius: 16px; background: var(--white); box-shadow: 0 20px 48px rgba(12, 12, 13, .14); }
+  .snh-drop__head { display: none; }
+  .snh-drop__find { width: 100%; height: 40px; padding: 0 12px; border: 1px solid var(--snh-line); border-radius: 12px; font: 400 14px/1.5 var(--sans); }
+  .snh-drop__find:focus { outline: none; border-color: var(--snh-ink); }
+  .snh-drop__list { display: grid; gap: 2px; }
+  .snh-drop__list.is-scroll { max-height: 264px; overflow-y: auto; scrollbar-width: thin; }
   .snh-drop__swatches { display: flex; flex-wrap: wrap; gap: 8px; }
-  .snh-opt { display: grid; grid-template-columns: 16px minmax(0, 1fr); align-items: center; gap: 10px; min-block-size: 34px; padding: 0 6px; border-radius: 7px; font-size: 13.5px; font-weight: 550; color: var(--snh-ink); cursor: pointer; }
-  .snh-opt:hover { background: rgba(23, 19, 15, .04); }
-  .snh-opt input { accent-color: var(--snh-o); width: 16px; height: 16px; }
+  .snh-opt { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 40px; padding: 0 8px; border-radius: 8px; font: 400 14px/1.5 var(--sans); color: var(--snh-ink); cursor: pointer; }
+  .snh-opt:hover { background: var(--cream); }
+  .snh-opt input { width: 18px; height: 18px; accent-color: var(--snh-o); }
+  .snh-opt__n { font-size: 12px; color: var(--grey-2); font-variant-numeric: tabular-nums; }
   .snh-opt[hidden] { display: none; }
-
   .snh-sort { margin-inline-start: auto; }
-  .snh-sort select {
-    appearance: none; min-block-size: 36px; padding: 0 26px 0 10px;
-    inline-size: var(--snh-sort-w, auto);
-    border: 1px solid transparent; border-radius: 8px;
-    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317130f' stroke-width='1.7'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center/13px;
-    font-family: inherit; font-size: 13px; font-weight: 700; color: var(--snh-ink); cursor: pointer;
-  }
+  .snh-sort select { appearance: none; height: 40px; padding: 0 32px 0 12px; border: 1px solid transparent; border-radius: var(--pill, 999px); background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230c0c0d' stroke-width='1.8'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 14px; font: 600 14px/1.1 var(--sans); color: var(--snh-ink); cursor: pointer; }
   .snh-sort select:hover { border-color: var(--snh-line); }
 
-  /* ── active filters ─────────────────────────────────────────────── */
+  /* active filters */
   .snh-active { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding-block-end: 12px; }
-  .snh-active__chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
-  .snh-chip {
-    display: inline-flex; align-items: center; gap: 7px; min-block-size: 30px; padding: 0 11px;
-    border-radius: 99px; background: rgba(23, 19, 15, .06);
-    font-size: 12.5px; font-weight: 700; color: var(--snh-ink); text-decoration: none;
-    transition: background .2s var(--snh-ease), color .2s var(--snh-ease);
-  }
-  .snh-chip:hover { background: rgba(224, 82, 28, .14); color: var(--snh-accent-hover); }
-  .snh-chip svg { width: 13px; height: 13px; opacity: .45; }
-  .snh-active__clear { margin-inline-start: auto; font-size: 12.5px; font-weight: 800; color: var(--snh-accent-hover); text-decoration: none; border-block-end: 1px solid rgba(178, 60, 17, .3); }
-  .snh-active__clear:hover { border-block-end-color: var(--snh-accent-hover); }
-
-  /* ── condensed: once scrolled, only what you need to keep filtering ── */
+  .snh-active__chips { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+  .snh-chip { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: var(--pill, 999px); background: var(--cream); font: 500 13px/1.1 var(--sans); color: var(--snh-ink); transition: background-color var(--t, .2s) var(--snh-ease); }
+  .snh-chip:hover { background: rgba(224, 82, 28, .14); }
+  .snh-chip svg { width: 14px; height: 14px; opacity: .6; }
+  .snh-active__clear { margin-inline-start: auto; font: 600 13px/1.5 var(--sans); color: var(--snh-o); text-decoration: underline; text-underline-offset: 4px; }
   .snh-bar.is-busy { opacity: .55; pointer-events: none; }
 
   @media screen and (max-width: 999px) {
     .snh-bar { margin-block-end: 16px; }
-    .snh-find { padding-block: 11px; }
-    .snh-find__input { font-size: 14px; }
-    .snh-find__all { justify-content: flex-start; padding-inline-start: 25px; }
-    .snh-goals { grid-template-columns: minmax(0, 1fr); gap: 7px; }
+    .snh-goals { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .snh-goals__label { display: none; }
     .snh-brands__rail { -webkit-mask-image: none; mask-image: none; }
-    .snh-brand__face { min-inline-size: 94px; padding: 13px 15px; }
-    .snh-brand__plate { block-size: 22px; }
-    .snh-brand__plate img { max-block-size: 22px; max-inline-size: 90px; }
-    .snh-bar__row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-    .snh-bar__row::-webkit-scrollbar { display: none; }
-    .snh-bar__row > * { flex: 0 0 auto; }
-    .snh-sort { margin-inline-start: 0; }
-    /* fixed, because the controls row scrolls sideways and would clip an
-       absolute panel — the top is set from the pill when it opens */
-    .snh-drop__panel { position: fixed; inset-inline: 12px; inset-block-start: var(--snh-panel-top, 0px); min-inline-size: 0; max-inline-size: none; max-block-size: 58vh; overflow-y: auto; }
-    /* hidden until it has been told where the pill is */
-    .snh-drop[open] .snh-drop__panel:not([data-snh-placed]) { visibility: hidden; }
+    .snh-brand__face { min-width: 96px; padding: 12px 16px; }
+    .snh-brand__plate, .snh-brand__plate img { max-height: 24px; height: auto; }
+    /* phones and tablets: one "Filter & sort" button; the controls open as a full-screen sheet */
+    .snh-mtrig { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+    .snh-mtrig__btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--snh-ink); border-radius: var(--pill, 999px); background: var(--snh-ink); color: var(--white); font: 600 14px/1.1 var(--sans); cursor: pointer; }
+    .snh-mtrig__btn svg { width: 18px; height: 18px; }
+    .snh-mtrig__n { font: 500 13px/1.5 var(--sans); color: var(--grey-2); }
+    .snh-bar__row { position: fixed; inset: 0; z-index: 120; display: flex; flex-direction: column; align-items: stretch; flex-wrap: nowrap; gap: 0; padding: 0 var(--gutter, 20px); overflow-y: auto; overscroll-behavior: contain; background: var(--white); transform: translateY(100%); visibility: hidden; transition: transform 320ms var(--snh-ease), visibility 0s linear 320ms; }
+    .snh-bar__row.is-open { transform: none; visibility: visible; transition: transform 320ms var(--snh-ease); }
+    .snh-sheet__head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; min-height: 64px; margin: 0 calc(var(--gutter, 20px) * -1); padding: 0 var(--gutter, 20px); background: var(--white); border-bottom: 1px solid var(--snh-line); }
+    .snh-sheet__t { font: 600 20px/1.1 var(--sans); letter-spacing: -.02em; }
+    .snh-sheet__x { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -10px; padding: 0; border: 0; background: none; color: var(--snh-ink); cursor: pointer; }
+    .snh-sheet__x svg { width: 22px; height: 22px; }
+    .snh-bar__row > .snh-switch { min-height: 56px; border-bottom: 1px solid var(--snh-line); }
+    .snh-drop { border-bottom: 1px solid var(--snh-line); }
+    .snh-drop__pill { width: 100%; justify-content: space-between; height: 56px; padding: 0; border: 0; border-radius: 0; background: none; font: 600 16px/1.5 var(--sans); }
+    .snh-drop__pill span { margin-right: auto; }
+    .snh-drop[open] .snh-drop__pill { background: none; color: var(--snh-ink); }
+    .snh-drop__panel, .snh-drop[open] .snh-drop__panel:not([data-snh-placed]) { position: static; visibility: visible; min-width: 0; max-width: none; max-height: none; padding: 0 0 16px; border: 0; border-radius: 0; box-shadow: none; }
+    .snh-drop__list.is-scroll { max-height: none; }
+    .snh-sort { order: 0; margin: 0; padding-block: 12px; border-bottom: 1px solid var(--snh-line); }
+    .snh-sort select { width: 100%; height: 48px; border-color: var(--snh-line); border-radius: 12px; }
+    .snh-sheet__foot { position: sticky; bottom: 0; display: flex; align-items: center; gap: 16px; margin: auto calc(var(--gutter, 20px) * -1) 0; padding: 16px var(--gutter, 20px) calc(16px + env(safe-area-inset-bottom)); background: var(--white); border-top: 1px solid var(--snh-line); }
+    .snh-sheet__clear { font: 600 14px/1.5 var(--sans); color: var(--snh-ink); text-decoration: underline; text-underline-offset: 4px; }
+    .snh-sheet__go { flex: 1; display: grid; place-items: center; text-align: center; height: 52px; border: 0; border-radius: var(--pill, 999px); background: var(--snh-o); color: var(--white); font: 600 16px/1.1 var(--sans); cursor: pointer; }
     .snh-active__clear { margin-inline-start: 0; }
-
+    body.snh-sheet-open { overflow: hidden; }
+    body.snh-sheet-open .snh-bar-form { z-index: 130; }
   }
   @media (prefers-reduced-motion: reduce) {
     .snh-bar-form *, .snh-bar-form *::before { transition: none !important; }
@@ -1176,5 +1103,33 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
       var scope = watch && watch.parentElement ? watch.parentElement : null;
       if (scope) mo.observe(scope, { childList: true });
     }
+  })();
+</script>
+<script>
+  /* Round 11: phones/tablets open the controls row as a full-screen "Filter & sort" sheet. The facet form still
+     updates on every change (Impact re-renders the section), so "Show N products" just closes the sheet. */
+  (function () {
+    if (window.__snhSheet) return;
+    window.__snhSheet = true;
+    function sheet() { return document.querySelector('[data-snh-sheet]'); }
+    function set(on) {
+      var s = sheet(), b = document.querySelector('[data-snh-sheet-open]');
+      if (!s) return;
+      s.classList.toggle('is-open', on);
+      document.body.classList.toggle('snh-sheet-open', on);
+      if (b) b.setAttribute('aria-expanded', String(on));
+      if (on) { var x = s.querySelector('[data-snh-sheet-close]'); if (x) x.focus({ preventScroll: true }); }
+      try { sessionStorage.setItem('snh_sheet_open', on ? '1' : ''); } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[data-snh-sheet-open]')) { e.preventDefault(); set(true); }
+      else if (e.target.closest('[data-snh-sheet-close]')) { e.preventDefault(); set(false); }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet() && sheet().classList.contains('is-open')) set(false); });
+    // the section re-renders after each change: keep the sheet open while the shopper is still filtering
+    function restore() { var keep = false; try { keep = sessionStorage.getItem('snh_sheet_open') === '1'; } catch (e) {} if (keep && matchMedia('(max-width: 999px)').matches) set(true); }
+    document.addEventListener('facet:update', function () { setTimeout(restore, 30); });
+    new MutationObserver(function () { var s = sheet(); if (s && !s.__seen) { s.__seen = true; restore(); } }).observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('pageshow', function () { try { sessionStorage.removeItem('snh_sheet_open'); } catch (e) {} });
   })();
 </script>

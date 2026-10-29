@@ -168,6 +168,7 @@
                 <product-list class="product-list" role="region" aria-live="polite">
                   {%- liquid
                     # R5: on the default / best-selling / manual order, sold-out products go to the end of the page
+                    assign shown_n = 0
                     assign oos_last = false
                     assign sb = collection.sort_by | default: collection.default_sort_by
                     if sb == collection.default_sort_by or sb == 'best-selling' or sb == 'manual'
@@ -256,14 +257,127 @@
                       </div>
                     {%- endfor -%}
 
-                    {%- render 'product-card', product: product, stacked: true, position: forloop.index, show_badges: true -%}
+                    {%- assign shown_n = shown_n | plus: 1 -%}{%- render 'product-card', product: product, stacked: true, position: shown_n, show_badges: true -%}
                   {%- endfor -%}
                   {%- if oos_last -%}
                     {%- for product in collection.products -%}
                       {%- if product.available -%}{%- continue -%}{%- endif -%}
-                      {%- render 'product-card', product: product, stacked: true, show_badges: true -%}
+                      {%- assign shown_n = shown_n | plus: 1 -%}
+                      {%- render 'product-card', product: product, stacked: true, position: shown_n, show_badges: true -%}
                     {%- endfor -%}
                   {%- endif -%}
+                  {%- comment -%}
+                    Round 11: related guides inside the grid, after row 3, row 5, then every 4 rows (2 / 3 / 4 columns, so
+                    the order differs per width). Articles: Collection → Article cards → keyword map (words found in the
+                    collection handle or title => article tags; an article also matches when its title has the word),
+                    then the latest. Never the same article twice on a page.
+                  {%- endcomment -%}
+                  {%- liquid
+                    assign blog = section.settings.article_blog | default: blogs.news
+                    assign hay = collection.handle | append: ' ' | append: collection.title | downcase | replace: '-', ' '
+                    assign map = section.settings.article_map | newline_to_br | split: '<br />'
+                    assign want_tags = ','
+                    assign want_words = ','
+                    for line in map
+                      assign pr = line | split: '=>'
+                      if pr.size < 2
+                        continue
+                      endif
+                      assign ks = pr[0] | downcase | split: ','
+                      for k in ks
+                        assign k = k | strip
+                        if k != blank and hay contains k
+                          assign want_words = want_words | append: k | append: ','
+                          assign ts = pr[1] | downcase | split: ','
+                          for t in ts
+                            assign want_tags = want_tags | append: t | strip | append: ','
+                          endfor
+                        endif
+                      endfor
+                    endfor
+                    assign picked = ','
+                    assign n_art = 0
+                    assign slots = 0
+                    assign rows = shown_n | plus: 3 | divided_by: 4
+                    assign r = 3
+                    for i in (1..12)
+                      if r > rows
+                        break
+                      endif
+                      assign slots = slots | plus: 1
+                      if slots == 1
+                        assign r = 5
+                      else
+                        assign r = r | plus: 4
+                      endif
+                    endfor
+                    if section.settings.show_articles == false or blog == blank
+                      assign slots = 0
+                    endif
+                    capture art_ids
+                      for pass in (1..2)
+                        for a in blog.articles limit: 60
+                          if n_art >= slots
+                            break
+                          endif
+                          assign key = ',' | append: a.id | append: ','
+                          if picked contains key
+                            continue
+                          endif
+                          assign ok = false
+                          if pass == 2
+                            assign ok = true
+                          else
+                            for t in a.tags
+                              assign tk = ',' | append: t | downcase | append: ','
+                              if want_tags contains tk
+                                assign ok = true
+                                break
+                              endif
+                            endfor
+                            unless ok
+                              assign at = a.title | downcase
+                              assign ws = want_words | split: ','
+                              for w in ws
+                                if w != blank and at contains w
+                                  assign ok = true
+                                  break
+                                endif
+                              endfor
+                            endunless
+                          endif
+                          if ok
+                            assign picked = picked | append: a.id | append: ','
+                            assign n_art = n_art | plus: 1
+                            echo a.handle | append: ','
+                          endif
+                        endfor
+                      endfor
+                    endcapture
+                    assign art_ids = art_ids | strip | split: ','
+                  -%}
+                  {%- assign r = 3 -%}
+                  {%- for h in art_ids -%}
+                    {%- liquid
+                      assign art = nil
+                      for a in blog.articles limit: 60
+                        if a.handle == h
+                          assign art = a
+                          break
+                        endif
+                      endfor
+                      assign om = r | times: 20 | plus: 5
+                      assign ot = r | times: 30 | plus: 5
+                      assign od = r | times: 40 | plus: 5
+                      assign ord = om | append: ',' | append: ot | append: ',' | append: od
+                      if forloop.first
+                        assign r = 5
+                      else
+                        assign r = r | plus: 4
+                      endif
+                    -%}
+                    {%- if art -%}{%- render 'snh-article-tile', article: art, o: ord -%}{%- endif -%}
+                  {%- endfor -%}
                 </product-list>
               </reveal-items>
             </div>
@@ -727,6 +841,30 @@
       "id": "open_first_filter_group",
       "label": "Open first group by default",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Guides in the grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_articles",
+      "label": "Show related guides between products",
+      "default": true,
+      "info": "After row 3, row 5, then every 4 rows."
+    },
+    {
+      "type": "blog",
+      "id": "article_blog",
+      "label": "Blog",
+      "info": "Empty = News."
+    },
+    {
+      "type": "textarea",
+      "id": "article_map",
+      "label": "Collection keywords => article tags",
+      "default": "creatine => creatine, creatine-monohydrate\nwhey, protein, isolate, casein, clear => clear-whey-protein, muscle-building, label-reading\ngainer, mass => mass-gainer, muscle-building\nhydration, electrolyte, isotonic, hydro => hydration, electrolytes\nenergy, endurance, gel, carb => energy-gels, endurance, carbohydrate\nmagnesium, sleep, stress => magnesium, magnesium-glycinate\nomega, fish oil, vitamin, health, wellness => fish-oil, evidence-based-nutrition\ncollagen, beauty, skin, joint => collagen\npre workout, pre-workout, caffeine => caffeine, evening-training\nfat, carnitine, weight, burner => metabolic-health, glucose-metabolism",
+      "info": "One rule per line. Words found in the collection's handle or title => article tags. An article also matches when its title contains the word. No match = the latest guides."
     }
   ]
 }

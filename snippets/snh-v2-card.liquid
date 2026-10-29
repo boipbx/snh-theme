@@ -178,7 +178,7 @@
   assign earn = product.price | times: rate | divided_by: 100 | times: pv | divided_by: 100.0 | round | times: 100
 -%}
 
-<product-card class="card pc{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}">
+<product-card class="card pc{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}"{% if position %} style="--o: {{ position | times: 10 }}"{% endif %}>
   <div class="pc__frame">
     <a class="card__tile pc__shot" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
       {%- if img1 -%}

@@ -469,3 +469,18 @@ pill (sale = red, compare-at struck) + Add / Choose pill with the arrow dot → 
 "Earn Rs X back" (member tier rate) or "Sign in to earn Rs X back". Every row has a fixed height, so rows of cards
 line up (measured: identical offsets across a row at 390 and 1440). Single-variant products add in one tap; only
 real choices open quick buy. Used by every grid through `snippets/product-card.liquid`.
+
+### Phase 4: collections
+- **Filter bar** (`snippets/facets-vertical.liquid`): your bar (OLD-COMPONENTS.md §2) with every band and behaviour
+  kept: quick find (live narrowing, synonyms, store search, "SNH recommends"), goal/refine chips from the goal map,
+  brand logo rail (multi-select), in-stock switch, one dropdown per useful filter group (now with a count per value,
+  in-list search over 10 values, price range), sort, active chips + Clear all, sticky under the header, condensed on
+  scroll. Restyled in v2 (Inter, scale, pills). **Phones/tablets:** one "Filter & sort" button (with the active
+  count) opens a full-screen sheet: groups as accordions, sort, sticky "Show N products" + Clear all; it stays open
+  while filters re-render. Data: Search & Discovery filters (`collection.filters`). The Round 5 per-dropdown bottom
+  sheets and the double container padding in `snh-v2.css` are gone.
+- **Guides in the grid:** article tiles after row 3, row 5, then every 4 rows; CSS `order` places them on the same row
+  at 2 / 3 / 4 columns (measured: after 6 and 10 products at 390, 12 and 20 at 1440). Matching: *Collection → Guides
+  in the grid → Collection keywords => article tags* (seeded from the blog's real tags), plus title matches, then the
+  latest; never repeated on a page. Tile: product-card height, image, "Guide · N min read", serif title, "Read
+  guide". `snippets/snh-article-tile.liquid`.

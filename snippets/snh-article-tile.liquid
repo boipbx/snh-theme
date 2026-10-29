@@ -1,0 +1,22 @@
+{%- comment -%}
+  Editorial article card inside a product grid (Round 11, collections): same height as the product card it sits
+  beside. Image, "Guide · N min read", title, "Read guide". article · o: "mobile,tablet,desktop" CSS order values
+  (the grid is 2 / 3 / 4 columns), so it lands after the same row at every width.
+{%- endcomment -%}
+{%- liquid
+  assign ord = o | split: ','
+  assign words = article.content | strip_html | split: ' ' | size
+  assign mins = words | divided_by: 200 | at_least: 1
+-%}
+<article class="art-tile" style="--om: {{ ord[0] }}; --ot: {{ ord[1] }}; --od: {{ ord[2] }}">
+  <a class="art-tile__in" href="{{ article.url }}">
+    <span class="art-tile__img">
+      {%- if article.image -%}{{ article.image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '360,500,700', sizes: '(max-width: 999px) 50vw, 25vw', alt: article.image.alt | default: '' }}{%- else -%}{{ 'image' | placeholder_svg_tag: 'art-tile__ph' }}{%- endif -%}
+    </span>
+    <span class="art-tile__b">
+      <span class="art-tile__eb">Guide · {{ mins }} min read</span>
+      <span class="art-tile__t">{{ article.title | escape }}</span>
+      <span class="art-tile__go">Read guide {% render 'snh-v2-icon', name: 'arrow' %}</span>
+    </span>
+  </a>
+</article>
