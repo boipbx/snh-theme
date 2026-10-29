@@ -325,3 +325,12 @@ td .pill + .pill { margin-left: 4px; }
   .ep__faq { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
   .ep__end-in { grid-template-columns: 1fr auto; align-items: center; }
 }
+
+/* Round 8: register step 3 (onboarding quiz), sign-in OTP placeholder */
+.reg__step--quiz .quiz { padding: 20px; border: 1px solid var(--line); border-radius: 16px; }
+.auth__step-h { float: left; width: 100%; padding: 0; font: 600 var(--t-h4)/1.1 var(--sans); letter-spacing: -.02em; }
+.auth__step-h span { font-weight: 400; font-size: 15px; letter-spacing: 0; color: var(--grey-2); }
+.auth__step-h + * { clear: both; }
+.auth__otp { display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--line); }
+.auth__otp .v-btn { width: 100%; }
+.auth__otp .v-btn[disabled] { opacity: .6; cursor: not-allowed; }

@@ -24,22 +24,25 @@
       });
     });
 
-    /* ---- register: two steps ---- */
+    /* ---- register: steps (Round 8: 3, the last one the optional quiz); each step is checked before the next ---- */
     var reg = document.getElementById('snh-register');
     if (reg) {
-      var steps = $$('[data-reg-step]', reg), dots = $$('[data-reg-dot]', reg);
+      var steps = $$('[data-reg-step]', reg), dots = $$('[data-reg-dot]', reg), cur = 1;
       function go(n) {
+        cur = n;
         steps.forEach(function (s) { s.hidden = s.getAttribute('data-reg-step') !== String(n); });
         dots.forEach(function (d) { d.classList.toggle('is-on', +d.getAttribute('data-reg-dot') <= n); });
-        var first = reg.querySelector('[data-reg-step="' + n + '"] input');
+        var first = reg.querySelector('[data-reg-step="' + n + '"] input:not([type="radio"])') || reg.querySelector('[data-reg-step="' + n + '"] input');
         if (first) first.focus();
       }
-      reg.querySelector('[data-reg-next]').addEventListener('click', function () {
-        var bad = $$('[data-reg-step="1"] input', reg).filter(function (i) { return !i.checkValidity(); })[0];
-        if (bad) { bad.reportValidity(); return; }
-        go(2);
+      $$('[data-reg-next]', reg).forEach(function (b) {
+        b.addEventListener('click', function () {
+          var bad = $$('[data-reg-step="' + cur + '"] input', reg).filter(function (i) { if (i.__check) i.__check(true); return !i.checkValidity(); })[0];
+          if (bad) { bad.reportValidity(); return; }
+          go(cur + 1);
+        });
       });
-      reg.querySelector('[data-reg-back]').addEventListener('click', function () { go(1); });
+      $$('[data-reg-back]', reg).forEach(function (b) { b.addEventListener('click', function () { go(cur - 1); }); });
     }
 
     /* ---- sign in ↔ recover ---- */

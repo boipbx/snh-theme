@@ -18,11 +18,18 @@
         <p class="auth__sub">Your points, tier and orders in one place.</p>
         {%- form 'customer_login', class: 'aform' -%}
           {%- if form.errors -%}<div class="aform__err" role="alert" id="login-err">{{ form.errors | default_errors }}</div>{%- endif -%}
-          <label class="fld"><span>Email</span><input type="email" name="customer[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required{% if form.errors %} aria-invalid="true" aria-describedby="login-err"{% endif %}></label>
-          <label class="fld"><span class="fld__row">Password <a class="fld__link" href="#recover" data-auth-go="recover">Forgot password?</a></span><input type="password" name="customer[password]" autocomplete="current-password" required></label>
+          <label class="fld"><span>Email</span><input type="email" name="customer[email]" value="{{ form.email | escape }}" autocomplete="email" autocapitalize="off" spellcheck="false" required{% if form.errors %} aria-invalid="true" aria-describedby="login-err" autofocus{% endif %}></label>
+          <label class="fld"><span class="fld__row">Password <a class="fld__link" href="#recover" data-auth-go="recover">Forgot password?</a></span><input type="password" name="customer[password]" autocomplete="current-password" required{% if form.errors %} aria-invalid="true" aria-describedby="login-err"{% endif %}></label>
+          {%- if form.errors -%}<p class="fld__help">Check the email and password. Forgotten it? <a class="v-link" href="#recover" data-auth-go="recover">Reset your password</a>.</p>{%- endif -%}
           <button class="v-btn v-btn--accent auth__btn" type="submit"><span>Sign in</span></button>
         {%- endform -%}
         <p class="auth__alt">New to SNH? <a class="v-link" href="{{ routes.account_register_url }}">Create an account</a> and get {% render 'snh-num', n: welcome %} welcome points.</p>
+        {%- if section.settings.show_otp -%}
+          <div class="auth__otp">
+            <button class="v-btn v-btn--line" type="button" disabled aria-describedby="otp-note"><span>Sign in with your mobile</span></button>
+            <p class="fld__help" id="otp-note">{{ section.settings.otp_note | escape }}</p>
+          </div>
+        {%- endif -%}
         {%- if shop.checkout.guest_login -%}
           {%- form 'guest_login' -%}<button class="v-btn v-btn--line auth__btn" type="submit"><span>Continue as a guest</span></button>{%- endform -%}
         {%- endif -%}
@@ -54,7 +61,10 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Pitch heading", "info": "Wrap a word in *asterisks* for the serif.", "default": "Your rewards are *waiting*" },
     { "type": "text", "id": "lead", "label": "Pitch text", "default": "Sign in to see your points, your tier and every order in one place." },
-    { "type": "image_picker", "id": "image", "label": "Pitch image", "info": "Optional cutout or photo behind the pitch." }
+    { "type": "image_picker", "id": "image", "label": "Pitch image", "info": "Optional cutout or photo behind the pitch." },
+    { "type": "header", "content": "Mobile sign-in (placeholder)" },
+    { "type": "checkbox", "id": "show_otp", "label": "Show the \"Sign in with your mobile\" slot", "default": false, "info": "Visual placeholder only, the button is disabled. Wire it up once an OTP login app or the custom app exists (ELITE-ROADMAP.md)." },
+    { "type": "text", "id": "otp_note", "label": "Placeholder note", "default": "Mobile sign-in with a one-time code is coming soon." }
   ]
 }
 {% endschema %}

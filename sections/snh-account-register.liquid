@@ -1,10 +1,14 @@
 {%- comment -%}
-  SNH register (Round 7, customers/register): Elite welcome pitch beside Shopify's create_customer form, in two steps
-  like the old page. Step 2 keeps the old fields (phone, address, city, birthday → customer[note][…]); the birthday
-  drives birthday rewards. Steps and the password match check: assets/snh-account.js. Errors return to step 1.
+  SNH register (Round 7, Round 8): Elite welcome pitch beside Shopify's create_customer form. Step 1 login, step 2 the
+  old fields (mobile, address, city, birthday → customer[note][Phone|Address|City|Birthday]; the birthday drives
+  birthday rewards). Mobile is required and must be a Sri Lankan mobile; it's saved as +94XXXXXXXXX (assets/snh-app.js).
+  Step 3 (optional) "Personalise your SNH": the onboarding quiz; answers wait in localStorage and are saved as tags on
+  the first dashboard load. Steps and the password check: assets/snh-account.js. Errors return to step 1.
 {%- endcomment -%}
 {{ 'snh-account.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'snh-account.js' | asset_url }}" defer></script>
+{{ 'snh-app.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-app.js' | asset_url }}" defer></script>
 {%- liquid
   assign welcome = settings.snh_welcome_points | default: 500
   assign r_b = settings.snh_rate_bronze | default: 3
@@ -19,9 +23,11 @@
       <p class="auth__sub">{% render 'snh-num', n: welcome %} welcome points, then {{ r_b }}–{{ r_g }}% back on everything you buy.</p>
       {%- form 'create_customer', class: 'aform reg', id: 'snh-register' -%}
         {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <input type="hidden" name="return_to" value="{{ routes.account_url }}#overview">
         <ol class="reg__steps" aria-label="Steps">
           <li class="is-on" data-reg-dot="1"><span>1</span>Your login</li>
           <li data-reg-dot="2"><span>2</span>Delivery and birthday</li>
+          <li data-reg-dot="3"><span>3</span>Personalise</li>
         </ol>
         <fieldset class="reg__step" data-reg-step="1">
           <legend class="v-sr">Your login</legend>
@@ -38,7 +44,9 @@
         <fieldset class="reg__step" data-reg-step="2" hidden>
           <legend class="v-sr">Delivery and birthday</legend>
           <div class="aform__grid">
-            <label class="fld fld--full"><span>Phone</span><input type="tel" name="customer[note][Phone]" autocomplete="tel" placeholder="+94 77 123 4567" required></label>
+            <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="customer[note][Phone]" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" pattern="[+0-9 ()\-]{9,17}" required data-sl-mobile aria-describedby="reg-mob-err reg-mob-help"></label>
+            <p class="fld__err fld--full" id="reg-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
+            <p class="fld__help fld--full" id="reg-mob-help">For delivery updates and your points. Saved as +94XXXXXXXXX.</p>
             <label class="fld"><span>Street address</span><input type="text" name="customer[note][Address]" autocomplete="address-line1" required></label>
             <label class="fld"><span>City</span><input type="text" name="customer[note][City]" autocomplete="address-level2" placeholder="Colombo" required></label>
             <label class="fld fld--full"><span>Birthday</span><input type="date" name="customer[note][Birthday]" min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" autocomplete="bday" required aria-describedby="reg-bday-help"></label>
@@ -46,6 +54,15 @@
           </div>
           <div class="reg__acts">
             <button class="v-btn v-btn--line" type="button" data-reg-back><span>Back</span></button>
+            <button class="v-btn v-btn--accent" type="button" data-reg-next><span>Continue</span></button>
+          </div>
+        </fieldset>
+        <fieldset class="reg__step reg__step--quiz" data-reg-step="3" hidden>
+          <legend class="auth__step-h">Personalise your SNH <span>(optional)</span></legend>
+          <p class="fld__help">Three quick questions so your dashboard, picks and tips fit your training. Skip if you like.</p>
+          {%- render 'snh-onboarding-quiz', blocks: section.blocks, id: 'reg-quiz', mode: 'register' -%}
+          <div class="reg__acts">
+            <button class="v-btn v-btn--line" type="button" data-reg-back><span>Edit details</span></button>
             <button class="v-btn v-btn--accent" type="submit"><span>Create account</span></button>
           </div>
           <p class="fld__help">Free forever. No card needed.</p>
@@ -53,10 +70,11 @@
       {%- endform -%}
       <p class="auth__alt">Already a member? <a class="v-link" href="{{ routes.account_login_url }}">Sign in</a></p>
 
-      {%- if section.blocks.size > 0 -%}
+      {%- assign faqs = section.blocks | where: 'type', 'faq' -%}
+      {%- if faqs.size > 0 -%}
         <div class="auth__faq">
           <h2 class="acc__h3">Questions</h2>
-          {%- for b in section.blocks -%}
+          {%- for b in section.blocks -%}{%- if b.type != 'faq' -%}{%- continue -%}{%- endif -%}
             <details class="qa" {{ b.shopify_attributes }}><summary>{{ b.settings.q | escape }}</summary><div class="qa__a">{{ b.settings.a }}</div></details>
           {%- endfor -%}
         </div>
@@ -75,6 +93,14 @@
     { "type": "image_picker", "id": "image", "label": "Pitch image" }
   ],
   "blocks": [
+    { "type": "quiz", "name": "Quiz question", "settings": [
+      { "type": "select", "id": "step", "label": "Step", "options": [
+        { "value": "goal", "label": "Goal" }, { "value": "freq", "label": "Training frequency" }, { "value": "sport", "label": "Sport" }
+      ], "default": "goal" },
+      { "type": "text", "id": "question", "label": "Question" },
+      { "type": "text", "id": "help", "label": "Help text" },
+      { "type": "textarea", "id": "answers", "label": "Answers", "info": "One per line: tag value | label. Keep these the same as the quiz blocks on the account page." }
+    ] },
     { "type": "faq", "name": "Question", "settings": [
       { "type": "text", "id": "q", "label": "Question" },
       { "type": "richtext", "id": "a", "label": "Answer" }

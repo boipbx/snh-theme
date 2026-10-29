@@ -5,7 +5,8 @@
   defaults below. Answers become tags goal:<value>, freq:<value>, sport:<value> (+ bday:YYYY-MM-DD, mobile:+94…).
   blocks · id (unique) · mode: 'app' (saves through the hidden customer form) | 'register' (keeps answers in
   localStorage until the first dashboard load) · contact: true adds the birthday + mobile step · goal/freq/sport/
-  phone/bday: current values to preselect · mock: true never submits.
+  phone/bday: current values to preselect · mock: true never submits. In register mode the radios belong to no form
+  (form="…-none"), so nothing extra posts with create_customer.
   Saving: assets/snh-app.js (app) and assets/snh-account.js (register).
 {%- endcomment -%}
 {%- liquid
@@ -66,7 +67,7 @@
           {%- assign val = pr[0] | strip | handleize -%}
           {%- if val == blank -%}{%- continue -%}{%- endif -%}
           {%- assign lab = pr[1] | default: pr[0] | strip -%}
-          <label class="quiz__opt"><input type="radio" name="{{ id }}-{{ k }}" value="{{ val }}"{% if val == cur %} checked{% endif %} data-label="{{ lab | escape }}"><span>{{ lab | escape }}</span></label>
+          <label class="quiz__opt"><input type="radio" name="{{ id }}-{{ k }}" value="{{ val }}"{% if mode == 'register' %} form="{{ id }}-none"{% endif %}{% if val == cur %} checked{% endif %} data-label="{{ lab | escape }}"><span>{{ lab | escape }}</span></label>
         {%- endfor -%}
       </div>
     </fieldset>
