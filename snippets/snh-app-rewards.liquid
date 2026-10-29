@@ -1,0 +1,114 @@
+{%- comment -%}
+  Member app · Rewards (Round 8): balance + Rs value, the redeem request with a confirm step, how earning works,
+  the V8 tier ladder, points FAQ (faq blocks, else the defaults below).
+  Redeem = the old theme's request, unchanged: customer form → /contact, contact[email], contact[tags]=Trigger_Redeem_2500.
+  The store's Flow on that tag issues the reward; the theme never changes a balance. While the tag is on the customer
+  the button shows "pending" (a second request would add the same tag, which Flow wouldn't see as new).
+{%- endcomment -%}
+{%- liquid
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  assign per_point = settings.snh_point_value | default: 1
+  assign redeem_rs = redeem_from | times: per_point
+  assign welcome = settings.snh_welcome_points | default: 500
+  assign r_b = settings.snh_rate_bronze | default: 3
+  assign r_s = settings.snh_rate_silver | default: 7
+  assign r_g = settings.snh_rate_gold | default: 10
+  assign ex_rs = 10000
+  assign ex_pts = ex_rs | times: m[7] | divided_by: 100
+  if m[3] != 'x'
+    assign have = m[3] | plus: 0
+    assign pct = have | times: 100 | divided_by: redeem_from | at_most: 100
+  endif
+  assign faqs = 0
+  for b in blocks
+    if b.type == 'faq'
+      assign faqs = faqs | plus: 1
+    endif
+  endfor
+-%}
+<header class="app__head">
+  <p class="eyebrow">Rewards</p>
+  <h1 class="app__h" id="{{ sid }}-rewards-h">Your <em>rewards</em></h1>
+</header>
+
+<div class="bal" data-tier="{{ m[0] }}">
+  <div class="bal__fig">
+    <p class="bal__l">Points balance</p>
+    {%- if m[3] == 'x' -%}
+      <p class="bal__n">—</p>
+      <p class="bal__v">Shows once your first paid order syncs</p>
+    {%- else -%}
+      <p class="bal__n">{% render 'snh-num', n: m[3] %}</p>
+      <p class="bal__v">Worth {{ m[4] | times: 100 | money_without_trailing_zeros }} · 1 point = {{ per_point | times: 100 | money_without_trailing_zeros }}</p>
+    {%- endif -%}
+  </div>
+  <div class="bal__act" data-redeem>
+    {%- if m[3] == 'x' -%}
+      <p class="bal__p">New members start with {% render 'snh-num', n: welcome %} welcome points. Rewards unlock at {% render 'snh-num', n: redeem_from %} points.</p>
+      <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+    {%- elsif pending -%}
+      <p class="bal__st"><span class="pill pill--wait">Request pending</span></p>
+      <p class="bal__p">We've got your request to trade {% render 'snh-num', n: redeem_from %} points. Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} reward arrives by email, usually within a working day.</p>
+    {%- elsif m[14] == '1' -%}
+      {%- capture ask -%}
+        <div data-redeem-ask>
+          <p class="bal__p">Your reward is ready: trade {% render 'snh-num', n: redeem_from %} points for {{ redeem_rs | times: 100 | money_without_trailing_zeros }} off.</p>
+          <button class="v-btn v-btn--accent" type="button" data-redeem-go><span>Trade {% render 'snh-num', n: redeem_from %} points</span></button>
+        </div>
+        <div class="bal__confirm" data-redeem-confirm hidden role="group" aria-labelledby="{{ sid }}-rc-h">
+          <p class="bal__q" id="{{ sid }}-rc-h" tabindex="-1">Trade {% render 'snh-num', n: redeem_from %} points for {{ redeem_rs | times: 100 | money_without_trailing_zeros }} off?</p>
+          <p class="bal__p">We'll email the reward to {{ me[2] | escape }}. Your balance drops by {% render 'snh-num', n: redeem_from %} once it's issued.</p>
+          <div class="bal__btns"><button class="v-btn v-btn--accent" type="{% if mock %}button{% else %}submit{% endif %}"{% if mock %} disabled{% endif %}><span>Yes, trade them</span></button><button class="v-btn v-btn--line" type="button" data-redeem-cancel><span>Not now</span></button></div>
+        </div>
+      {%- endcapture -%}
+      {%- if mock -%}
+        {{ ask }}
+      {%- else -%}
+        {%- form 'customer', class: 'bal__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="aform__ok" role="status">Request sent. Your reward will arrive by email.</p>
+          {%- else -%}
+            <input type="hidden" name="contact[email]" value="{{ customer.email | escape }}">
+            <input type="hidden" name="contact[tags]" value="Trigger_Redeem_2500">
+            {{ ask }}
+          {%- endif -%}
+        {%- endform -%}
+      {%- endif -%}
+    {%- else -%}
+      <p class="bal__p"><b>{% render 'snh-num', n: m[15] %} points</b> to your first reward. At {{ m[7] }}% back that's about {{ m[15] | times: 100 | divided_by: m[7] | times: 100 | money_without_trailing_zeros }} of shopping.</p>
+      <div class="bal__bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ redeem_from }}" aria-valuenow="{{ have }}" aria-label="Points towards your first reward"><i style="width: {{ pct }}%"></i></div>
+      <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+    {%- endif -%}
+  </div>
+</div>
+
+<section class="app__block" aria-labelledby="{{ sid }}-earn-h">
+  <h2 class="app__h2" id="{{ sid }}-earn-h">How earning works</h2>
+  <ol class="how" role="list">
+    <li><span class="how__n">01 · Earn</span><h3>{{ m[7] }}% back at {{ m[1] }}</h3><p>Every paid order earns points on its subtotal. Spend {{ ex_rs | times: 100 | money_without_trailing_zeros }} and you earn {% render 'snh-num', n: ex_pts %} points.</p></li>
+    <li><span class="how__n">02 · Climb</span><h3>{{ r_b }}% · {{ r_s }}% · {{ r_g }}%</h3><p>Bronze, Silver and Gold. Your spend over the year sets your tier, and a higher tier earns faster.</p></li>
+    <li><span class="how__n">03 · Redeem</span><h3>From {% render 'snh-num', n: redeem_from %} points</h3><p>Trade {% render 'snh-num', n: redeem_from %} points for {{ redeem_rs | times: 100 | money_without_trailing_zeros }} off, right here. The reward arrives by email.</p></li>
+  </ol>
+</section>
+
+<section class="app__block" aria-labelledby="{{ sid }}-tiers-h">
+  <div class="app__bt">
+    <h2 class="app__h2" id="{{ sid }}-tiers-h">Three tiers, <em>one</em> climb</h2>
+    <p class="app__muted">Points are a percentage of your order subtotal. The higher your tier, the faster they stack.</p>
+  </div>
+  {%- render 'snh-app-tiers', m: m -%}
+</section>
+
+<section class="app__block" aria-labelledby="{{ sid }}-faq-h">
+  <h2 class="app__h2" id="{{ sid }}-faq-h">Points, answered</h2>
+  <div class="app__faq">
+    {%- if faqs > 0 -%}
+      {%- for b in blocks -%}{%- if b.type == 'faq' -%}<details class="qa" {{ b.shopify_attributes }}><summary>{{ b.settings.q | escape }}</summary><div class="qa__a">{{ b.settings.a }}</div></details>{%- endif -%}{%- endfor -%}
+    {%- else -%}
+      <details class="qa"><summary>What happens to my points if I return something?</summary><div class="qa__a"><p>Refunds reverse the points that order earned, so your balance always matches what you kept.</p></div></details>
+      <details class="qa"><summary>Why hasn't my tier or balance updated yet?</summary><div class="qa__a"><p>Points and tiers update after a paid order syncs with our loyalty system, usually within a day. Orders that are still pending don't count yet.</p></div></details>
+      <details class="qa"><summary>I bought something but didn't get points</summary><div class="qa__a"><p>Use the same email at checkout as on your account, online and in store, so the order connects to you. If it still doesn't show after a couple of days, message us on WhatsApp.</p></div></details>
+      <details class="qa"><summary>How much is a point worth?</summary><div class="qa__a"><p>One point is worth {{ per_point | times: 100 | money_without_trailing_zeros }}. Trade {% render 'snh-num', n: redeem_from %} points for {{ redeem_rs | times: 100 | money_without_trailing_zeros }} off.</p></div></details>
+    {%- endif -%}
+  </div>
+</section>

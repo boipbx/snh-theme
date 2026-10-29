@@ -1,0 +1,83 @@
+{%- comment -%}
+  SNH Elite tier ladder as V8 lit-metal cards (Round 8, Rewards view). Rates, thresholds and perks from Theme settings →
+  SNH Elite (first 3 perks listed, the rest under "More perks"). m: split snh-elite-calc output (current tier, spend).
+{%- endcomment -%}
+{%- capture d_b -%}500 welcome points when you join
+Redeem as soon as you reach 2,500 points
+Spend tracked automatically from paid orders{%- endcapture -%}
+{%- capture d_s -%}A 10% reward every birthday
+5% off every gift voucher
+Priority access to member-only campaigns{%- endcapture -%}
+{%- capture d_g -%}Free shipping on every order
+A 15% reward every birthday
+10% off gift vouchers and first access to new drops{%- endcapture -%}
+{%- liquid
+  assign silver = settings.snh_silver_threshold | default: 198000
+  assign gold = settings.snh_gold_threshold | default: 300000
+  assign spend = m[5] | plus: 0
+  assign keys = 'bronze,silver,gold' | split: ','
+  case m[0]
+    when 'gold'
+      assign cur = 3
+    when 'silver'
+      assign cur = 2
+    else
+      assign cur = 1
+  endcase
+  assign nxt = cur | plus: 1
+-%}
+<ol class="tladder" role="list">
+  {%- for k in keys -%}
+    {%- liquid
+      case k
+        when 'bronze'
+          assign name = 'Bronze'
+          assign rate = settings.snh_rate_bronze | default: 3
+          assign perks = settings.snh_perks_bronze | default: d_b
+          assign at = 0
+          assign sub = 'Where every member starts'
+        when 'silver'
+          assign name = 'Silver'
+          assign rate = settings.snh_rate_silver | default: 7
+          assign perks = settings.snh_perks_silver | default: d_s
+          assign at = silver
+          assign sub = 'For the regulars'
+        else
+          assign name = 'Gold'
+          assign rate = settings.snh_rate_gold | default: 10
+          assign perks = settings.snh_perks_gold | default: d_g
+          assign at = gold
+          assign sub = 'The top of the house'
+      endcase
+      assign lines = perks | newline_to_br | split: '<br />'
+      assign idx = forloop.index
+      assign more = at | minus: spend | at_least: 0
+    -%}
+    <li class="tmetal{% if idx == cur %} is-current{% elsif idx < cur %} is-past{% endif %}" data-tier="{{ k }}">
+      <i class="metal__sheen" aria-hidden="true"></i>
+      <div class="tmetal__head">
+        <h3 class="tmetal__name">{{ name }}</h3>
+        {%- if idx == cur -%}<span class="tmetal__you">You are here</span>{%- endif -%}
+      </div>
+      <p class="tmetal__sub">{{ sub }}</p>
+      <p class="tmetal__rate"><b>{{ rate }}%</b> back in points</p>
+      <p class="tmetal__th">{% if at == 0 %}Free to join{% else %}From {{ at | times: 100 | money_without_trailing_zeros }} a year{% endif %}</p>
+      <ul class="tmetal__perks" role="list">
+        {%- assign shown = 0 -%}
+        {%- for l in lines -%}{%- assign l = l | strip -%}{%- if l != blank and shown < 3 -%}{%- assign shown = shown | plus: 1 -%}<li>{% render 'snh-v2-icon', name: 'check' %}<span>{{ l | escape }}</span></li>{%- endif -%}{%- endfor -%}
+      </ul>
+      {%- if lines.size > 3 -%}
+        <details class="tmetal__more">
+          <summary>More {{ name }} perks</summary>
+          <ul role="list">{%- for l in lines offset: 3 -%}{%- assign l = l | strip -%}{%- if l != blank -%}<li>{{ l | escape }}</li>{%- endif -%}{%- endfor -%}</ul>
+        </details>
+      {%- endif -%}
+      <p class="tmetal__foot">
+        {%- if idx == cur -%}{% if idx == 3 %}Our highest rate on every order.{% else %}Your current rate.{% endif %}
+        {%- elsif idx < cur -%}Unlocked
+        {%- elsif idx == nxt -%}Spend <b>{{ more | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ name }}.
+        {%- else -%}Spend {{ more | times: 100 | money_without_trailing_zeros }} more in a year.{%- endif -%}
+      </p>
+    </li>
+  {%- endfor -%}
+</ol>

@@ -1,0 +1,33 @@
+{%- comment -%}
+  Edit-profile fields (Round 8, member app Profile): step 1 name + mobile + avatar, step 2 delivery address.
+  f: the customer_address form object (real) or nil (mock) · me · phone · sid · mock.
+{%- endcomment -%}
+{%- assign avatars = 'bolt,barbell,shield,flame,trophy,heart,dumbbell' | split: ',' -%}
+<fieldset class="reg__step" data-edit-step="1">
+  <legend class="v-sr">You</legend>
+  <div class="aform__grid">
+    <label class="fld"><span>First name</span><input type="text" name="address[first_name]" value="{{ f.first_name | default: me[0] | escape }}" autocomplete="given-name" required></label>
+    <label class="fld"><span>Last name</span><input type="text" name="address[last_name]" value="{{ f.last_name | default: customer.last_name | escape }}" autocomplete="family-name"></label>
+    <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="address[phone]" value="{{ f.phone | default: phone | escape }}" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" required data-sl-mobile aria-describedby="{{ sid }}-ph-err {{ sid }}-ph-help"></label>
+    <p class="fld__err fld--full" id="{{ sid }}-ph-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
+    <p class="fld__help fld--full" id="{{ sid }}-ph-help">For delivery updates. Saved as +94XXXXXXXXX.</p>
+    <div class="fld fld--full">
+      <span>Avatar</span>
+      <div class="avp" role="radiogroup" aria-label="Avatar">
+        <button class="avp__b" type="button" role="radio" aria-checked="true" data-avatar="initials" aria-label="Initials"><span>{{ me[5] | escape }}</span></button>
+        {%- for a in avatars -%}<button class="avp__b" type="button" role="radio" aria-checked="false" data-avatar="{{ a }}" aria-label="{{ a | capitalize }}">{% render 'snh-avatar-svg', name: a %}</button>{%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <div class="reg__acts reg__acts--end"><button class="v-btn v-btn--ink" type="button" data-edit-next><span>Continue to delivery</span></button></div>
+</fieldset>
+<fieldset class="reg__step" data-edit-step="2" hidden>
+  <legend class="v-sr">Delivery</legend>
+  <div class="aform__grid">
+    <label class="fld fld--full"><span>Street address</span><input type="text" name="address[address1]" value="{{ f.address1 | escape }}" autocomplete="address-line1" required></label>
+    <label class="fld"><span>City</span><input type="text" name="address[city]" value="{{ f.city | escape }}" autocomplete="address-level2" placeholder="Colombo" required></label>
+    <label class="fld"><span>Postal code <i>(optional)</i></span><input type="text" name="address[zip]" value="{{ f.zip | escape }}" autocomplete="postal-code"></label>
+  </div>
+  <p class="aform__err" data-edit-err hidden role="alert">We couldn't save your details. Check them and try again.</p>
+  <div class="reg__acts"><button class="v-btn v-btn--line" type="button" data-edit-back><span>Back</span></button><button class="v-btn v-btn--accent" type="submit"{% if mock %} disabled{% endif %}><span>Save profile</span></button></div>
+</fieldset>

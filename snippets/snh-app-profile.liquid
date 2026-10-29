@@ -1,0 +1,158 @@
+{%- comment -%}
+  Member app · Profile & addresses (Round 8): profile card with the V8 avatar picker (cosmetic, localStorage
+  snh_vector_avatar), the V8 edit-profile flow (two steps on the native customer_address form for the default address:
+  name + mobile, then street/city/postcode, country Sri Lanka, set as default), all addresses with native add / edit /
+  delete (snippets/snh-address-form), marketing preferences, sign out.
+  Mobile is required here and checked as a Sri Lankan number (normalised to +94XXXXXXXXX) by assets/snh-app.js.
+{%- endcomment -%}
+{%- liquid
+  if mock
+    assign target = nil
+  elsif customer.default_address
+    assign target = customer.default_address
+  else
+    assign target = customer.new_address
+  endif
+-%}
+<header class="app__head">
+  <p class="eyebrow">Profile</p>
+  <h1 class="app__h" id="{{ sid }}-profile-h">Profile &amp; <em>addresses</em></h1>
+</header>
+
+<div class="pro">
+  <section class="app__card pro__id" data-tier="{{ m[0] }}" aria-label="Your profile">
+    <span class="app__av app__av--lg" data-avatar-slot data-initials="{{ me[5] | escape }}" aria-hidden="true"><span>{{ me[5] | escape }}</span></span>
+    <div class="pro__who">
+      <p class="pro__name">{{ me[1] | default: me[2] | escape }}</p>
+      <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member · {{ m[7] }}% back</p>
+    </div>
+    <button class="v-btn v-btn--ink v-btn--sm" type="button" data-edit-open aria-haspopup="dialog">{% render 'snh-v2-icon', name: 'edit' %}<span>Edit profile</span></button>
+  </section>
+
+  <section class="app__card" aria-labelledby="{{ sid }}-det-h">
+    <h2 class="app__h3" id="{{ sid }}-det-h">Your details</h2>
+    <dl class="acc__dl pro__dl">
+      <div><dt>Name</dt><dd>{{ me[1] | default: '—' | escape }}</dd></div>
+      <div><dt>Email</dt><dd>{{ me[2] | escape }}</dd></div>
+      <div><dt>Mobile</dt><dd>{% if phone != blank %}{{ phone | escape }}{% else %}<span class="pill pill--wait">Required</span> <button class="v-link pro__add" type="button" data-edit-open>Add your mobile</button>{% endif %}</dd></div>
+      <div><dt>Birthday</dt><dd data-bday-out>{% if bday != blank %}{{ bday | date: '%d %B' }}{% else %}<a class="v-link" href="#goals" data-go="goals" data-quiz-to="contact">Add for your birthday reward</a>{% endif %}</dd></div>
+    </dl>
+  </section>
+
+  <section class="app__block" aria-labelledby="{{ sid }}-addr-h">
+    <div class="app__bh">
+      <h2 class="app__h2" id="{{ sid }}-addr-h">Addresses{% if me[10] != '0' %} <span class="acc__count">{{ me[10] }}</span>{% endif %}</h2>
+      <button class="v-btn v-btn--line v-btn--sm" type="button" aria-expanded="false" aria-controls="{{ sid }}-addr-new" data-aform-open="new"{% if mock %} disabled{% endif %}>{% render 'snh-v2-icon', name: 'plus' %}<span>Add an address</span></button>
+    </div>
+    {%- unless mock -%}
+      <section class="acc__card addr-new" id="{{ sid }}-addr-new" aria-label="New address" hidden data-aform-box="new">
+        <h3 class="acc__h3">New address</h3>
+        {%- render 'snh-address-form', address: customer.new_address -%}
+      </section>
+    {%- endunless -%}
+    {%- if mock -%}
+      {%- if me[10] == '0' -%}
+        <div class="acc__empty"><p class="acc__empty-h">No saved addresses</p><p>Save an address for faster checkout and same-day Colombo delivery.</p></div>
+      {%- else -%}
+        <ul class="addrs pro__addrs" role="list">
+          <li class="acc__card addr is-default"><div class="addr__view"><div class="addr__head"><h3 class="acc__h3">Default address</h3><span class="pill pill--ok">Default</span></div><address class="acc__addr">{{ mock_address | default: '42 Galle Road<br>Colombo 03<br>Sri Lanka' }}</address><div class="addr__acts"><button class="v-btn v-btn--line v-btn--sm" type="button" disabled><span>Edit</span></button><button class="v-link addr__delbtn" type="button" disabled>Delete</button></div></div></li>
+        </ul>
+      {%- endif -%}
+    {%- elsif customer.addresses_count == 0 -%}
+      <div class="acc__empty"><p class="acc__empty-h">No saved addresses</p><p>Save an address for faster checkout and same-day Colombo delivery.</p></div>
+    {%- else -%}
+      <ul class="addrs pro__addrs" role="list">
+        {%- for address in customer.addresses limit: 20 -%}
+          <li class="acc__card addr{% if address == customer.default_address %} is-default{% endif %}">
+            <div class="addr__view" data-aform-view="{{ address.id }}">
+              <div class="addr__head">
+                <h3 class="acc__h3">{% if address == customer.default_address %}Default address{% else %}Address {{ forloop.index }}{% endif %}</h3>
+                {%- if address == customer.default_address -%}<span class="pill pill--ok">Default</span>{%- endif -%}
+              </div>
+              <address class="acc__addr">{{ address | format_address }}</address>
+              <div class="addr__acts">
+                <button class="v-btn v-btn--line v-btn--sm" type="button" aria-expanded="false" aria-controls="{{ sid }}-addr-{{ address.id }}" data-aform-open="{{ address.id }}"><span>Edit</span></button>
+                <form method="post" action="{{ address.url }}" class="addr__del" data-addr-del>
+                  <input type="hidden" name="_method" value="delete">
+                  <button class="v-link addr__delbtn" type="button" data-del-ask>Delete</button>
+                  <span class="addr__confirm" hidden data-del-confirm>
+                    <span>Delete this address?</span>
+                    <button class="v-btn v-btn--ink v-btn--sm" type="submit"><span>Delete</span></button>
+                    <button class="v-link" type="button" data-del-cancel>Keep</button>
+                  </span>
+                </form>
+              </div>
+            </div>
+            <div id="{{ sid }}-addr-{{ address.id }}" hidden data-aform-box="{{ address.id }}">
+              <h3 class="acc__h3">Edit address</h3>
+              {%- render 'snh-address-form', address: address -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </section>
+
+  <div class="pro__grid">
+    <section class="app__card" aria-labelledby="{{ sid }}-mkt-h">
+      <h2 class="app__h3" id="{{ sid }}-mkt-h">Marketing preferences</h2>
+      <ul class="pref" role="list">
+        <li class="pref__i">
+          <span class="pref__ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'chat' %}</span>
+          <div class="pref__b">
+            <p class="pref__t">Email</p>
+            <p class="app__muted">{% if me[6] == '1' %}You get offers, drops and member news. Unsubscribe from the link in any email.{% else %}Offers, new drops and member-only news. About two emails a week.{% endif %}</p>
+          </div>
+          {%- if me[6] == '1' -%}
+            <span class="pill pill--ok">Subscribed</span>
+          {%- elsif mock -%}
+            <button class="v-btn v-btn--ink v-btn--sm" type="button" disabled><span>Subscribe</span></button>
+          {%- else -%}
+            {%- form 'customer', class: 'pref__form' -%}
+              <input type="hidden" name="contact[email]" value="{{ customer.email | escape }}">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input type="hidden" name="contact[accepts_marketing]" value="true">
+              <button class="v-btn v-btn--ink v-btn--sm" type="submit"><span>Subscribe</span></button>
+            {%- endform -%}
+          {%- endif -%}
+        </li>
+        <li class="pref__i" data-sms{% if s.sms_live %} data-sms-live{% endif %}>
+          <span class="pref__ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'whatsapp' %}</span>
+          <div class="pref__b">
+            <p class="pref__t">SMS</p>
+            <p class="app__muted" data-sms-off{% if s.sms_live %} hidden{% endif %}>Points reminders and order updates by SMS are coming soon.</p>
+            <p class="app__muted" data-sms-on{% unless s.sms_live %} hidden{% endunless %}>Sign up for SMS from the box at checkout or in the sign-up pop-up.</p>
+          </div>
+          <span class="pill" data-sms-pill>{% if s.sms_live %}Available{% else %}Coming soon{% endif %}</span>
+        </li>
+      </ul>
+    </section>
+    <section class="app__card pro__out" aria-labelledby="{{ sid }}-out-h">
+      <h2 class="app__h3" id="{{ sid }}-out-h">Signed in as</h2>
+      <p class="acc__addr">{{ me[2] | escape }}</p>
+      <a class="v-btn v-btn--line" href="{% if mock %}#profile{% else %}{{ routes.account_logout_url }}{% endif %}" data-no-instant>{% render 'snh-v2-icon', name: 'out' %}<span>Sign out</span></a>
+    </section>
+  </div>
+</div>
+
+<dialog class="edit" data-edit aria-labelledby="{{ sid }}-edit-h">
+  <div class="edit__in">
+    <button class="app__x edit__x" type="button" data-edit-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
+    <h2 class="app__h2" id="{{ sid }}-edit-h">Edit profile</h2>
+    <p class="app__muted">Your name, mobile and delivery details. Your rewards stay connected to this account.</p>
+    <ol class="reg__steps" aria-label="Steps">
+      <li class="is-on" data-edit-dot="1"><span>1</span>You</li>
+      <li data-edit-dot="2"><span>2</span>Delivery</li>
+    </ol>
+    {%- if mock -%}
+      <div class="aform edit__form">{%- render 'snh-app-edit-fields', mock: true, me: me, phone: phone, sid: sid -%}</div>
+    {%- else -%}
+      {%- form 'customer_address', target, class: 'aform edit__form' -%}
+        <input type="hidden" name="address[default]" value="1">
+        <input type="hidden" name="address[country]" value="Sri Lanka">
+        {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+        {%- render 'snh-app-edit-fields', f: form, me: me, phone: phone, sid: sid -%}
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</dialog>

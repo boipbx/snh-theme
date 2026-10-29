@@ -1,0 +1,95 @@
+{%- comment -%}
+  Member app · Orders (Round 8, the V8 order list upgraded): first item image, items, date, financial + fulfilment
+  pills, total, est. points, Details dropdown (line items), Re-order, View order. Search (order no. or product) and
+  status filter work on the current page, as in V8; 16 per page.
+  page_orders: snh-app-order-data records · pagination_html · page_no
+{%- endcomment -%}
+{%- assign rate = m[7] | plus: 0 -%}
+<header class="app__head app__head--row">
+  <div>
+    <p class="eyebrow">Purchase history</p>
+    <h1 class="app__h" id="{{ sid }}-orders-h">Your <em>orders</em></h1>
+  </div>
+  {%- if me[9] != '0' -%}<span class="app__count">{{ me[9] }} order{% if me[9] != '1' %}s{% endif %}</span>{%- endif -%}
+</header>
+
+{%- if page_orders.size == 0 or page_orders[0] == blank -%}
+  <div class="acc__empty">
+    <p class="acc__empty-h">No orders yet</p>
+    <p>Shop while signed in and every paid order earns {{ m[7] }}% back in points.</p>
+    <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Start shopping</span></a>
+  </div>
+{%- else -%}
+  <div class="ofilter" role="search">
+    <label class="fld ofilter__q"><span class="v-sr">Search orders</span>{% render 'snh-v2-icon', name: 'search' %}<input type="search" placeholder="Search by order number or product" data-order-q autocomplete="off"></label>
+    <label class="fld ofilter__s"><span class="v-sr">Status</span><select data-order-s>
+      <option value="all">All statuses</option>
+      <option value="paid">Paid</option>
+      <option value="pending">Pending</option>
+      <option value="refunded">Refunded</option>
+      <option value="unfulfilled">Not shipped yet</option>
+      <option value="cancelled">Cancelled</option>
+    </select></label>
+  </div>
+  <p class="app__muted ofilter__none" data-order-none hidden>No orders on this page match. Clear the search or try another status.</p>
+
+  <ul class="olist" role="list">
+    {%- for r in page_orders -%}
+      {%- liquid
+        assign o = r | split: '|'
+        assign lis = o[14] | split: ';;'
+        assign first = lis[0] | split: '~'
+        assign earn = o[7] | divided_by: 100 | times: rate | divided_by: 100
+        assign titles = ''
+        for li in lis
+          assign it = li | split: '~'
+          assign titles = titles | append: ' ' | append: it[1]
+        endfor
+        assign st = o[3] | append: ' ' | append: o[5]
+        if o[11] == '1'
+          assign st = st | append: ' cancelled'
+          assign pill = 'off'
+        elsif o[3] contains 'paid'
+          assign pill = 'ok'
+        elsif o[3] contains 'refund' or o[3] contains 'void'
+          assign pill = 'off'
+        else
+          assign pill = 'wait'
+        endif
+        assign did = sid | append: '-od-' | append: forloop.index
+      -%}
+      <li class="ocard" data-order data-status="{{ st | escape }}" data-q="{{ o[0] | append: titles | downcase | escape }}">
+        <div class="ocard__row">
+          <span class="ocard__img">{% if first[5] != blank %}<img src="{{ first[5] }}" alt="" width="80" height="80" loading="lazy">{% else %}<i>SNH</i>{% endif %}</span>
+          <div class="ocard__b">
+            <p class="ocard__t">{{ first[1] | truncate: 56 }}{% if lis.size > 1 %} <span class="ocard__more">+ {{ lis.size | minus: 1 }} more</span>{% endif %}</p>
+            <p class="ocard__m"><a href="{{ o[1] }}">{{ o[0] }}</a> · <time datetime="{{ o[2] | date: '%Y-%m-%d' }}">{{ o[2] | date: '%d %b %Y' }}</time> · {{ o[10] }} item{% if o[10] != '1' %}s{% endif %}</p>
+            <p class="ocard__pills">{% if o[11] == '1' %}<span class="pill pill--off">Cancelled</span>{% else %}<span class="pill pill--{{ pill }}">{{ o[4] }}</span>{% endif %}<span class="pill{% if o[5] == 'fulfilled' %} pill--ok{% endif %}">{{ o[6] }}</span></p>
+          </div>
+          <div class="ocard__end">
+            <p class="ocard__total">{{ o[8] | money_without_trailing_zeros }}</p>
+            {%- if o[3] contains 'paid' or o[3] == 'partially_refunded' -%}{%- if o[11] != '1' -%}<p class="ocard__pts">+{% render 'snh-num', n: earn %} pts est.</p>{%- endif -%}{%- endif -%}
+          </div>
+        </div>
+        <div class="ocard__acts">
+          <button class="v-btn v-btn--line v-btn--sm ocard__det" type="button" aria-expanded="false" aria-controls="{{ did }}" data-order-toggle><span>Details</span>{% render 'snh-v2-icon', name: 'chev' %}</button>
+          <button class="v-btn v-btn--ink v-btn--sm" type="button" data-app-reorder="{{ o[13] }}"{% if mock or o[13] == blank %} disabled{% endif %}><span>Re-order</span></button>
+          <a class="v-link ocard__view" href="{{ o[1] }}">View order</a>
+        </div>
+        <ul class="ocard__items" id="{{ did }}" role="list" hidden>
+          {%- for li in lis -%}
+            {%- assign it = li | split: '~' -%}
+            <li>
+              <span class="ocard__mini">{% if it[5] != blank %}<img src="{{ it[5] }}" alt="" width="48" height="48" loading="lazy">{% endif %}</span>
+              <span class="ocard__it"><a href="{{ it[6] }}">{{ it[1] }}</a>{% if it[2] != blank %}<i>{{ it[2] }}</i>{% endif %}</span>
+              <span class="ocard__iq">× {{ it[3] }}</span>
+              <span class="ocard__ip">{{ it[4] | money_without_trailing_zeros }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </li>
+    {%- endfor -%}
+  </ul>
+  {{ pagination_html }}
+  <p class="app__note">Paid orders earn points at your {{ m[1] }} rate ({{ m[7] }}%). "Est." figures settle once the order syncs; refunds reverse them.</p>
+{%- endif -%}
