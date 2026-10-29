@@ -1,0 +1,89 @@
+{%- comment -%}
+  SNH contact (Round 11, v2): Shopify's contact form (name, email, phone, message + Field blocks) beside a support
+  card (WhatsApp, hours, stores). A normal Liquid form POST, so Shopify's hCaptcha runs; the "Form" value tells
+  emails from different pages apart. Replaces Impact's contact section.
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign hid = 'cf-' | append: section.id
+  assign wa = settings.snh_whatsapp | remove: '+' | remove: ' '
+  assign fid = 'snh-contact-' | append: section.id
+-%}
+<section class="v2 v-section cf{% if s.cream %} v-section--cream{% endif %}" id="{{ s.anchor | default: 'contact' }}" aria-labelledby="{{ hid }}">
+  <div class="v-wrap cf__in">
+    <div class="cf__side">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
+      {%- if s.lead != blank -%}<div class="v-prose">{{ s.lead }}</div>{%- endif -%}
+      <ul class="cf__facts" role="list">
+        {%- if wa != blank -%}<li>{% render 'snh-v2-icon', name: 'whatsapp' %}<a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">WhatsApp +{{ wa | slice: 0, 2 }} {{ wa | slice: 2, 2 }} {{ wa | slice: 4, 3 }} {{ wa | slice: 7, 6 }}</a></li>{%- endif -%}
+        {%- if s.hours != blank -%}<li>{% render 'snh-v2-icon', name: 'clock' %}<span>{{ s.hours | escape }}</span></li>{%- endif -%}
+        {%- if s.stores != blank -%}<li>{% render 'snh-v2-icon', name: 'pin' %}<span>{{ s.stores | escape }}</span></li>{%- endif -%}
+      </ul>
+    </div>
+    <div class="cf__card">
+      {%- form 'contact', id: fid, class: 'aform cf__form', data-shopify-captcha: 'true' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="cf__ok" role="status">{% render 'snh-v2-icon', name: 'check' %}{{ s.success | default: "Thanks! We'll get back to you within a working day." | escape }}</p>
+        {%- else -%}
+          {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+          {%- if s.form_title != blank -%}<p class="cf__t">{{ s.form_title | escape }}</p>{%- endif -%}
+          <input type="hidden" name="contact[Form]" value="{{ s.form_name | default: page.title | escape }}">
+          <div class="aform__grid">
+            <label class="fld"><span>Name</span><input type="text" name="contact[name]" autocomplete="name" required value="{{ form.name | default: customer.name | escape }}"></label>
+            <label class="fld"><span>Phone</span><input type="tel" name="contact[phone]" autocomplete="tel" inputmode="tel" {% if s.phone_required %}required{% endif %} value="{{ form.phone | escape }}"></label>
+            <label class="fld fld--full"><span>Email</span><input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email | default: customer.email | escape }}"></label>
+            {%- for b in section.blocks -%}
+              {%- assign fname = 'contact[' | append: b.settings.label | append: ']' -%}
+              <label class="fld{% if b.settings.wide %} fld--full{% endif %}" {{ b.shopify_attributes }}><span>{{ b.settings.label | escape }}</span>
+                {%- if b.settings.kind == 'select' -%}
+                  <select name="{{ fname | escape }}"{% if b.settings.required %} required{% endif %}><option value="">Choose</option>{%- assign ops = b.settings.options | split: ',' -%}{%- for o in ops -%}<option>{{ o | strip | escape }}</option>{%- endfor -%}</select>
+                {%- else -%}
+                  <input type="{{ b.settings.kind }}" name="{{ fname | escape }}"{% if b.settings.required %} required{% endif %}>
+                {%- endif -%}
+              </label>
+            {%- endfor -%}
+            <label class="fld fld--full"><span>{{ s.message_label | default: 'Message' | escape }}</span><textarea name="contact[body]" rows="5"{% if s.message_required %} required{% endif %}>{{ form.body | escape }}</textarea></label>
+          </div>
+          <button class="v-btn v-btn--accent cf__go" type="submit"><span>{{ s.button | default: 'Send' | escape }}</span></button>
+          {%- if s.note != blank -%}<p class="app__note">{{ s.note | escape }}</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH contact form",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "contact" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Contact" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Talk to *SNH*" },
+    { "type": "richtext", "id": "lead", "label": "Text", "default": "<p>Questions about an order, a product or your plan? Send us a message or WhatsApp the team.</p>" },
+    { "type": "text", "id": "hours", "label": "Hours", "default": "Every day, 10am–7pm" },
+    { "type": "text", "id": "stores", "label": "Stores", "default": "Dehiwala · Wattala · Nugegoda" },
+    { "type": "text", "id": "form_title", "label": "Form title" },
+    { "type": "text", "id": "form_name", "label": "Form name (in the email)", "info": "Empty = the page title." },
+    { "type": "checkbox", "id": "phone_required", "label": "Phone required", "default": true },
+    { "type": "text", "id": "message_label", "label": "Message label", "default": "Message" },
+    { "type": "checkbox", "id": "message_required", "label": "Message required", "default": true },
+    { "type": "text", "id": "button", "label": "Button", "default": "Send message" },
+    { "type": "text", "id": "note", "label": "Note under the button", "default": "We reply within a working day." },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thanks! We'll get back to you within a working day." },
+    { "type": "checkbox", "id": "cream", "label": "Cream background", "default": false }
+  ],
+  "blocks": [
+    { "type": "field", "name": "Field", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Preferred city" },
+      { "type": "select", "id": "kind", "label": "Type", "options": [{ "value": "text", "label": "Text" }, { "value": "tel", "label": "Phone" }, { "value": "number", "label": "Number" }, { "value": "select", "label": "Choice" }], "default": "text" },
+      { "type": "text", "id": "options", "label": "Choices (comma separated)" },
+      { "type": "checkbox", "id": "required", "label": "Required", "default": false },
+      { "type": "checkbox", "id": "wide", "label": "Full width", "default": false }
+    ] }
+  ],
+  "presets": [{ "name": "SNH contact form" }]
+}
+{% endschema %}

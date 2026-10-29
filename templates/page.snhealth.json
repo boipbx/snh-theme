@@ -9,412 +9,119 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
-    "slideshow_BUqMHG": {
-      "type": "slideshow",
-      "blocks": {
-        "video_cDPMe4": {
-          "type": "video",
-          "settings": {
-            "video": "shopify://files/videos/STAY TUNED LEGENDS.mp4",
-            "mobile_video": "shopify://files/videos/STAY TUNED LEGENDS (1).mp4",
-            "content_max_width": 780,
-            "mobile_text_position": "place-self-center text-center",
-            "desktop_text_position": "sm:place-self-center sm:text-center",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "",
-            "button_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0,
-            "background": "",
-            "background_gradient": ""
-          }
-        }
-      },
-      "block_order": [
-        "video_cDPMe4"
-      ],
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": true,
-        "show_initial_transition": false,
-        "image_size": "auto",
-        "controls_type": "dots",
-        "transition_type": "fade_with_text",
-        "autoplay": false,
-        "cycle_speed": 6,
-        "background": "#f2f2f2",
-        "background_gradient": ""
-      }
-    },
-    "scrolling_text_9R8hGB": {
-      "type": "scrolling-text",
-      "settings": {
-        "full_width": true,
-        "text": "YOUR WELL-BEING STARTS HERE",
-        "text_size": "small",
-        "text_style": "fill",
-        "scrolling_mode": "auto",
-        "scrolling_speed": 10,
-        "background": "#803cee",
-        "background_gradient": "linear-gradient(0deg, rgba(137, 239, 202, 1), rgba(120, 196, 245, 1) 100%)",
-        "text_color": "#f2f2f2",
-        "text_gradient": ""
-      }
-    },
-    "collection_list_Tbj7Hf": {
-      "type": "collection-list",
-      "settings": {
-        "full_width": true,
-        "stack_collections": false,
-        "collections_per_row_mobile": "2",
-        "collections_per_row": 3,
-        "show_progress_bar": false,
-        "subheading": "",
-        "title": "FOR YOU",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
-    },
     "image_link_blocks_Xbny3x": {
-      "type": "image-link-blocks",
+      "type": "snh-collection-tiles",
       "blocks": {
-        "item_9WdJpJ": {
-          "type": "item",
+        "tile_0": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/re_1.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/vitabiotics",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": "shopify://collections/vitabiotics"
           }
         },
-        "item_mf8d6t": {
-          "type": "item",
+        "tile_1": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/3_08a313af-3b09-4100-8226-f91f6e6cc7ba.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/perfectil",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": "shopify://collections/perfectil"
           }
         },
-        "item_LeyQi9": {
-          "type": "item",
+        "tile_2": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/1_e0ae58de-b539-40e7-9eb1-c80d2fd87abf.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": ""
           }
         },
-        "item_TckchD": {
-          "type": "item",
+        "tile_3": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/2_23914be4-be7d-4b98-b0d3-e401ac2479db.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "shopify://collections/wellwoman",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": "shopify://collections/wellwoman"
           }
         },
-        "item_hNgQGF": {
-          "type": "item",
+        "tile_4": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/4_5fbd08be-51d7-46a6-b58b-33db44f5b696.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": ""
           }
         },
-        "item_L7BRgR": {
-          "type": "item",
+        "tile_5": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/5_23903a1d-7645-4d91-9eb0-9509226edd72.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": ""
           }
         },
-        "item_izUbCd": {
-          "type": "item",
+        "tile_6": {
+          "type": "tile",
           "settings": {
             "image": "shopify://shop_images/7_a5407831-4829-4a81-8198-10ba0445bfee.png",
-            "stretch_image": true,
-            "link_text": "",
-            "link_url": "",
-            "background": "",
-            "text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
+            "link": ""
           }
         }
       },
       "block_order": [
-        "item_9WdJpJ",
-        "item_mf8d6t",
-        "item_LeyQi9",
-        "item_TckchD",
-        "item_hNgQGF",
-        "item_L7BRgR",
-        "item_izUbCd"
+        "tile_0",
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4",
+        "tile_5",
+        "tile_6"
       ],
       "settings": {
-        "full_width": false,
-        "block_size": "medium",
-        "subheading": "",
-        "title": "OUR BRANDS",
-        "content": "",
-        "link_url": "",
-        "link_text": "",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
+        "heading": "Our brands",
+        "style": "logos",
+        "cols": 6
       }
     },
-    "media_with_text_4NxQ9g": {
-      "type": "media-with-text",
-      "blocks": {
-        "image_Vz6EtY": {
-          "type": "image",
-          "settings": {
-            "media_width": 50,
-            "media_position": "start",
-            "text_position": "place-self-center text-center",
-            "icon": "none",
-            "icon_width": 48,
-            "subheading": "",
-            "title": "SNHEALTH",
-            "content": "<p>SPEAK ABOUT SNHEALTH</p>",
-            "link_text": "",
-            "link_url": "",
-            "background": "#000000",
-            "background_gradient": "",
-            "text_color": "#ffffff",
-            "text_gradient": "",
-            "button_background": "",
-            "button_text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "image_Vz6EtY"
-      ],
+    "media_with_text_4NxQ9g_0": {
+      "type": "snh-feature",
       "settings": {
-        "full_width": true,
-        "spacing": "small"
-      }
-    },
-    "collection_list_jRCY4i": {
-      "type": "collection-list",
-      "settings": {
-        "full_width": true,
-        "stack_collections": false,
-        "collections_per_row_mobile": "1",
-        "collections_per_row": 3,
-        "show_progress_bar": true,
-        "subheading": "",
-        "title": "FOR YOU",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
-    },
-    "featured_collection_7VXrdf": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "",
-        "products": [],
-        "full_width": true,
-        "stack_products": true,
-        "show_progress_bar": true,
-        "products_count": 6,
-        "products_per_row_mobile": "2",
-        "products_per_row_desktop": 3,
-        "subheading": "",
-        "title": "OUR BEST SELLERS",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": "",
-        "product_card_background": "",
-        "product_card_text_color": ""
+        "layout": "left",
+        "image": "",
+        "eyebrow": "",
+        "heading": "Snhealth",
+        "text": "<p>SPEAK ABOUT SNHEALTH</p>",
+        "cta": "",
+        "link": ""
       }
     },
     "image_with_text_overlay_afH7Er": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading_wCztct": {
-          "type": "subheading",
-          "settings": {
-            "text": "BOOK AN APPOINTMENT WITH OUR EXPERT NUTRITIONIST"
-          }
-        },
-        "heading_PrhURa": {
-          "type": "heading",
-          "settings": {
-            "text": "Image with text overlay",
-            "heading_tag": "h1"
-          }
-        },
-        "richtext_rGjBDk": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>SOURCING THE BEST FROM AROUND THE GLOBE</p>"
-          }
-        }
-      },
-      "block_order": [
-        "subheading_wCztct",
-        "heading_PrhURa",
-        "richtext_rGjBDk"
-      ],
+      "type": "snh-feature",
       "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "auto",
-        "mobile_text_position": "place-self-center text-center",
-        "desktop_text_position": "sm:place-self-center sm:text-center",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 30
+        "layout": "statement",
+        "tone": "dark",
+        "image": "",
+        "eyebrow": "Book an appointment with our expert nutritionist",
+        "heading": "Image with text overlay",
+        "text": "<p>SOURCING THE BEST FROM AROUND THE GLOBE</p>"
       }
     },
     "impact_text_pgibTV": {
-      "type": "impact-text",
-      "blocks": {
-        "item_bJ3HpP": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "WELLNESS SOLUTION YOU CAN TRUST",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_GXGU7T": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "PREMIUM IMPORTS FOR A HEALTHIER YOU",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_89kctd": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "GLOBAL WELLNESS DELIVERED TO YOU",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        }
-      },
-      "block_order": [
-        "item_bJ3HpP",
-        "item_GXGU7T",
-        "item_89kctd"
-      ],
+      "type": "snh-feature",
       "settings": {
-        "full_width": true,
-        "stack_mobile": false,
-        "text_alignment": "center",
-        "impact_text_style": "fill",
-        "text_divider": "none",
-        "impact_text_size_ratio": 1,
-        "background": "",
-        "background_gradient": "linear-gradient(90deg, rgba(17, 189, 251, 1) 15%, rgba(33, 249, 150, 1) 85%)",
-        "heading_text_color": "#ffffff",
-        "heading_gradient": "",
-        "text_color": "#f2f2f2",
-        "button_background": "",
-        "button_text_color": ""
+        "layout": "statement",
+        "tone": "cream",
+        "heading": "Wellness solution you can trust",
+        "text": "<p>Premium imports for a healthier you</p><p>Global wellness delivered to you</p>"
       }
     },
     "video_rLpdeE": {
-      "type": "video",
+      "type": "snh-feature",
       "settings": {
-        "full_width": true,
-        "allow_transparent_header": true,
-        "autoplay": true,
-        "video_size": "auto",
+        "layout": "overlay",
+        "tone": "dark",
         "video": "shopify://files/videos/STAY TUNED LEGENDS.mp4",
-        "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
+        "heading": ""
       }
     }
   },
   "order": [
-    "main",
-    "slideshow_BUqMHG",
-    "scrolling_text_9R8hGB",
-    "collection_list_Tbj7Hf",
     "image_link_blocks_Xbny3x",
-    "media_with_text_4NxQ9g",
-    "collection_list_jRCY4i",
-    "featured_collection_7VXrdf",
+    "media_with_text_4NxQ9g_0",
     "image_with_text_overlay_afH7Er",
     "impact_text_pgibTV",
     "video_rLpdeE"

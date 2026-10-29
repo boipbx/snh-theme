@@ -10,11 +10,20 @@
 {
   "sections": {
     "main": {
-      "type": "main-page",
-      "settings": {}
+      "type": "snh-page",
+      "settings": {
+        "hide_on_elite": false
+      }
+    },
+    "faq": {
+      "type": "snh-faq",
+      "settings": {
+        "style": "light"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "faq"
   ]
 }

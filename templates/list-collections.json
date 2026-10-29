@@ -9,29 +9,6 @@
  */
 {
   "sections": {
-    "rich_text_trKGy3": {
-      "type": "rich-text",
-      "blocks": {
-        "richtext_gDJmCt": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "richtext_gDJmCt"
-      ],
-      "name": "Rich text",
-      "settings": {
-        "full_width": true,
-        "content_width": "small",
-        "text_position": "center",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
-    },
     "main": {
       "type": "main-list-collections",
       "settings": {
@@ -45,7 +22,6 @@
     }
   },
   "order": [
-    "rich_text_trKGy3",
     "main"
   ]
 }

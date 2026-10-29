@@ -113,35 +113,96 @@
         "sticky_atc": true
       }
     },
-    "tiktok_profile_p3CFRN": {
-      "type": "tiktok-profile",
-      "name": "TikTok Profile",
-      "settings": {
-        "eyebrow": "SNH on TikTok",
-        "heading": "FOLLOW US ON TIKTOK",
-        "subtext": "Watch new drops, product picks and store updates straight from Sports Nutrition Hub.",
-        "handle": "sportsnutritionhub.lk",
-        "height": 560
-      },
-      "disabled": true
+    "product_stats": {
+      "type": "snh-product-stats",
+      "settings": {}
     },
-    "scrolling_text_yeJznJ": {
-      "type": "scrolling-text",
-      "settings": {
-        "full_width": true,
-        "label": "Sports Nutrition Hub",
-        "text": "LEADING HEALTH & FITNESS STORE",
-        "text_size": "small",
-        "text_style": "fill",
-        "scrolling_mode": "auto",
-        "scrolling_speed": 10,
-        "background_gradient": "linear-gradient(133deg, rgba(250, 220, 54, 1) 11%, rgba(252, 146, 13, 1) 32.374%, rgba(252, 98, 0, 1) 49%, rgba(252, 98, 0, 1) 67.986%, rgba(250, 220, 54, 1) 87%)",
-        "dark_color": "#130b08",
-        "accent_color": "#e0521c",
-        "text_color": "#ffffff",
-        "text_gradient": ""
+    "product_details": {
+      "type": "snh-product-details",
+      "blocks": {
+        "collapsible_text_PWcrNi": {
+          "type": "tab",
+          "settings": {
+            "title": "Key Benefits",
+            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_text_zEQder": {
+          "type": "tab",
+          "settings": {
+            "title": "About the brand",
+            "content": "<h2><strong>Buy Seven Seas Supplements in Sri Lanka – Official Distributor under SNH Health (PVT) Ltd for Wellbeing Brands</strong></h2><p><strong>Seven Seas</strong> is a renowned UK-based brand with over 85 years of expertise in developing high-quality supplements that support whole-body health. Specializing in <strong>Omega-3 fatty acids</strong>, <strong>multivitamins</strong>, and <strong>joint care solutions</strong>, Seven Seas offers a range of products designed to promote <strong>heart health</strong>, <strong>brain function</strong>, <strong>vision</strong>, <strong>immune support</strong>, and <strong>overall vitality</strong>.</p><h3><strong>About SNH Health (PVT) Ltd</strong></h3><p><strong>Seven Seas</strong> is distributed in Sri Lanka through <strong>SNH Health</strong>, the wellness division of <strong>Sports Nutrition Hub (PVT) Ltd</strong>. SNH Health focuses on bringing premium <strong>wellbeing brands</strong> and <strong>natural health supplements</strong> to Sri Lanka, ensuring access to clinically-backed products that support <strong>overall wellness</strong>.</p><h3><strong>Popular Seven Seas Products Available in Sri Lanka</strong></h3><ul><li><strong>Seven Seas Omega-3 Max Strength Capsules</strong> – Contain over 1000 mg of Omega-3 nutrients and vitamin D in just one capsule, essential for heart, brain, and blood pressure health.</li><li><strong>Seven Seas JointCare Essential</strong> – Formulated with Omega-3, Glucosamine, and Chondroitin, plus Vitamins C and D, Zinc, and Manganese to support bones, muscles, cartilage, and connective tissue.</li><li><strong>Seven Seas Cod Liver Oil Plus Multivitamins</strong> – Combines Omega-3 fatty acids with Vitamin D to support bones and the immune system, plus Niacin to support energy.</li><li><strong>Seven Seas Omega-3 & Multivitamins Woman</strong> – Specially formulated for women, adding Biotin for energy release and Iron for tiredness and fatigue, with a capsule containing Omega-3 to support heart, brain, and vision health.</li><li><strong>Seven Seas Omega-3 & Multivitamins Man</strong> – Formulated for men, adding B Vitamins for energy release and Magnesium for muscles, with a capsule containing Omega-3 to support heart, brain, and vision health.</li><li><strong>Seven Seas Omega-3 & Immunity</strong> – Developed to support the immune system with Vitamin C, Vitamin D, Zinc, Selenium, and Copper, plus Ginger and Turmeric root extracts.</li><li><strong>Seven Seas Omega-3 & Turmeric Capsules</strong> – Maintain whole-body health with Omega-3 supporting heart, brain, and eyes, plus Vitamin D.</li></ul><h3><strong>Exclusive Seven Seas Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p><strong>Sports Nutrition Hub (PVT) Ltd</strong> is the <strong>official distributor</strong> of <strong>Seven Seas</strong> in Sri Lanka, under the <strong>SNH Health arm</strong>, ensuring <strong>100% authenticity</strong> and <strong>premium quality</strong>. We provide a comprehensive range of Seven Seas products to support your <strong>daily nutritional needs</strong>, from <strong>Omega-3 supplements</strong> to <strong>multivitamins</strong>, delivering them directly to your door with fast and reliable shipping.</p><h4><strong>Why Buy Seven Seas from Sports Nutrition Hub?</strong></h4><ul><li><strong>Exclusive distributor</strong> of Seven Seas in Sri Lanka</li><li>100% authentic products, imported directly from the UK</li><li>Verified batch tracking for all products</li><li>Trusted brand with a reputation for <strong>scientifically-backed formulations</strong></li><li>Nationwide delivery and excellent customer support</li></ul><h3><strong>Shop Seven Seas Supplements Online in Sri Lanka</strong></h3><p>If you’re searching for ,</p><ul><li><em>“Buy Seven Seas Omega-3 Max Strength Capsules in Sri Lanka”</em></li><li><em>“Seven Seas JointCare Essential price Sri Lanka”</em></li><li><em>“Original Seven Seas Cod Liver Oil Plus Multivitamins”</em></li><li><em>“Seven Seas Omega-3 & Multivitamins Woman Sri Lanka”</em></li></ul><p>Look no further! </p><p>At <strong>Sports Nutrition Hub</strong>, we bring you the full range of <strong>Seven Seas</strong> products through our <strong>SNH Health arm</strong>, ensuring fresh stock, guaranteed authenticity, and fast delivery.</p>",
+            "page": ""
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "collapsible_text_PWcrNi",
+        "collapsible_text_zEQder"
+      ],
+      "settings": {
+        "eyebrow": "The details",
+        "heading": "Everything *inside*",
+        "cream": false
+      }
+    },
+    "reviews": {
+      "type": "snh-app-band",
+      "blocks": {
+        "judge_me_reviews_review_widget_qYFmbi": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_qYFmbi"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "What customers *say*",
+        "anchor": "reviews",
+        "cream": true
+      }
+    },
+    "bought_together": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "complementary",
+        "limit": 4,
+        "eyebrow": "Pairs well with",
+        "heading": "Frequently bought *together*",
+        "cream": false
+      }
+    },
+    "related": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "related",
+        "limit": 4,
+        "eyebrow": "",
+        "heading": "You may also *like*",
+        "cream": false
+      }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "tone": "cream"
+      }
     },
     "snh_articles": {
       "type": "snh-related-articles",
@@ -153,6 +214,14 @@
         "heading": "Know what you're *taking*",
         "link_label": "All guides",
         "link_url": "/blogs/news"
+      }
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {
+        "limit": 4,
+        "heading": "Recently *viewed*",
+        "cream": false
       }
     },
     "snh_why": {
@@ -246,165 +315,8 @@
         "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
         "style": "light"
       },
-      "blocks": {
-        "question_1": {
-          "type": "question",
-          "settings": {
-            "question": "How long will it take to get my orders?",
-            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
-          }
-        },
-        "question_2": {
-          "type": "question",
-          "settings": {
-            "question": "Where can I come visit physically?",
-            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
-          }
-        },
-        "question_3": {
-          "type": "question",
-          "settings": {
-            "question": "I want to know more",
-            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
-          }
-        },
-        "question_4": {
-          "type": "question",
-          "settings": {
-            "question": "Are your supplements genuine?",
-            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
-          }
-        },
-        "question_5": {
-          "type": "question",
-          "settings": {
-            "question": "How do I know which supplement is right for me?",
-            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
-          }
-        },
-        "question_6": {
-          "type": "question",
-          "settings": {
-            "question": "What payment methods do you accept?",
-            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
-          }
-        },
-        "question_7": {
-          "type": "question",
-          "settings": {
-            "question": "Can I return or exchange a product?",
-            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question_1",
-        "question_2",
-        "question_3",
-        "question_4",
-        "question_5",
-        "question_6",
-        "question_7"
-      ]
-    },
-    "product_stats": {
-      "type": "snh-product-stats",
-      "settings": {}
-    },
-    "product_details": {
-      "type": "snh-product-details",
-      "blocks": {
-        "collapsible_text_PWcrNi": {
-          "type": "tab",
-          "settings": {
-            "title": "Key Benefits",
-            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
-            "page": ""
-          }
-        },
-        "collapsible_text_zEQder": {
-          "type": "tab",
-          "settings": {
-            "title": "About the brand",
-            "content": "<h2><strong>Buy Seven Seas Supplements in Sri Lanka – Official Distributor under SNH Health (PVT) Ltd for Wellbeing Brands</strong></h2><p><strong>Seven Seas</strong> is a renowned UK-based brand with over 85 years of expertise in developing high-quality supplements that support whole-body health. Specializing in <strong>Omega-3 fatty acids</strong>, <strong>multivitamins</strong>, and <strong>joint care solutions</strong>, Seven Seas offers a range of products designed to promote <strong>heart health</strong>, <strong>brain function</strong>, <strong>vision</strong>, <strong>immune support</strong>, and <strong>overall vitality</strong>.</p><h3><strong>About SNH Health (PVT) Ltd</strong></h3><p><strong>Seven Seas</strong> is distributed in Sri Lanka through <strong>SNH Health</strong>, the wellness division of <strong>Sports Nutrition Hub (PVT) Ltd</strong>. SNH Health focuses on bringing premium <strong>wellbeing brands</strong> and <strong>natural health supplements</strong> to Sri Lanka, ensuring access to clinically-backed products that support <strong>overall wellness</strong>.</p><h3><strong>Popular Seven Seas Products Available in Sri Lanka</strong></h3><ul><li><strong>Seven Seas Omega-3 Max Strength Capsules</strong> – Contain over 1000 mg of Omega-3 nutrients and vitamin D in just one capsule, essential for heart, brain, and blood pressure health.</li><li><strong>Seven Seas JointCare Essential</strong> – Formulated with Omega-3, Glucosamine, and Chondroitin, plus Vitamins C and D, Zinc, and Manganese to support bones, muscles, cartilage, and connective tissue.</li><li><strong>Seven Seas Cod Liver Oil Plus Multivitamins</strong> – Combines Omega-3 fatty acids with Vitamin D to support bones and the immune system, plus Niacin to support energy.</li><li><strong>Seven Seas Omega-3 & Multivitamins Woman</strong> – Specially formulated for women, adding Biotin for energy release and Iron for tiredness and fatigue, with a capsule containing Omega-3 to support heart, brain, and vision health.</li><li><strong>Seven Seas Omega-3 & Multivitamins Man</strong> – Formulated for men, adding B Vitamins for energy release and Magnesium for muscles, with a capsule containing Omega-3 to support heart, brain, and vision health.</li><li><strong>Seven Seas Omega-3 & Immunity</strong> – Developed to support the immune system with Vitamin C, Vitamin D, Zinc, Selenium, and Copper, plus Ginger and Turmeric root extracts.</li><li><strong>Seven Seas Omega-3 & Turmeric Capsules</strong> – Maintain whole-body health with Omega-3 supporting heart, brain, and eyes, plus Vitamin D.</li></ul><h3><strong>Exclusive Seven Seas Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p><strong>Sports Nutrition Hub (PVT) Ltd</strong> is the <strong>official distributor</strong> of <strong>Seven Seas</strong> in Sri Lanka, under the <strong>SNH Health arm</strong>, ensuring <strong>100% authenticity</strong> and <strong>premium quality</strong>. We provide a comprehensive range of Seven Seas products to support your <strong>daily nutritional needs</strong>, from <strong>Omega-3 supplements</strong> to <strong>multivitamins</strong>, delivering them directly to your door with fast and reliable shipping.</p><h4><strong>Why Buy Seven Seas from Sports Nutrition Hub?</strong></h4><ul><li><strong>Exclusive distributor</strong> of Seven Seas in Sri Lanka</li><li>100% authentic products, imported directly from the UK</li><li>Verified batch tracking for all products</li><li>Trusted brand with a reputation for <strong>scientifically-backed formulations</strong></li><li>Nationwide delivery and excellent customer support</li></ul><h3><strong>Shop Seven Seas Supplements Online in Sri Lanka</strong></h3><p>If you’re searching for ,</p><ul><li><em>“Buy Seven Seas Omega-3 Max Strength Capsules in Sri Lanka”</em></li><li><em>“Seven Seas JointCare Essential price Sri Lanka”</em></li><li><em>“Original Seven Seas Cod Liver Oil Plus Multivitamins”</em></li><li><em>“Seven Seas Omega-3 & Multivitamins Woman Sri Lanka”</em></li></ul><p>Look no further! </p><p>At <strong>Sports Nutrition Hub</strong>, we bring you the full range of <strong>Seven Seas</strong> products through our <strong>SNH Health arm</strong>, ensuring fresh stock, guaranteed authenticity, and fast delivery.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "collapsible_text_PWcrNi",
-        "collapsible_text_zEQder"
-      ],
-      "settings": {
-        "eyebrow": "The details",
-        "heading": "Everything *inside*",
-        "cream": false
-      }
-    },
-    "reviews": {
-      "type": "snh-app-band",
-      "blocks": {
-        "judge_me_reviews_review_widget_qYFmbi": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_qYFmbi"
-      ],
-      "settings": {
-        "eyebrow": "Reviews",
-        "heading": "What customers *say*",
-        "anchor": "reviews",
-        "cream": true
-      }
-    },
-    "bought_together": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "complementary",
-        "limit": 4,
-        "eyebrow": "Pairs well with",
-        "heading": "Frequently bought *together*",
-        "cream": false
-      }
-    },
-    "related": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "related",
-        "limit": 4,
-        "eyebrow": "",
-        "heading": "You may also *like*",
-        "cream": false
-      }
-    },
-    "recent": {
-      "type": "snh-recently-viewed",
-      "settings": {
-        "limit": 4,
-        "heading": "Recently *viewed*",
-        "cream": false
-      }
-    },
-    "snh_tiktok": {
-      "type": "snh-tiktok",
-      "settings": {
-        "handle": "sportsnutritionhub.lk",
-        "heading": "Seen on *TikTok*",
-        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
-        "follow_label": "Follow on TikTok",
-        "side_heading": "New videos every week",
-        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
-        "videos_heading": "Featured *videos*",
-        "height": 640,
-        "tone": "cream"
-      }
+      "blocks": {},
+      "block_order": []
     }
   },
   "order": [
@@ -418,8 +330,6 @@
     "snh_articles",
     "recent",
     "snh_why",
-    "tiktok_profile_p3CFRN",
-    "snh_faq",
-    "scrolling_text_yeJznJ"
+    "snh_faq"
   ]
 }

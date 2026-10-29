@@ -9,25 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
-    "snh_performance_quiz_E8rHtG": {
-      "type": "snh-performance-quiz",
-      "disabled": true,
-      "name": "SNH Performance Quiz",
-      "settings": {
-        "kicker": "SNH Product Finder",
-        "heading": "Find the right products for your performance.",
-        "subheading": "A quick QR-friendly quiz that guides customers to the right SNH product range based on their activity, goals, and needs.",
-        "logo_url": "",
-        "whatsapp_number": "94764863359"
-      }
-    },
     "wholesale_wAiVNP": {
       "type": "wholesale",
       "name": "SNH Wholesale Hub",
@@ -42,8 +23,6 @@
     }
   },
   "order": [
-    "main",
-    "snh_performance_quiz_E8rHtG",
     "wholesale_wAiVNP"
   ]
 }

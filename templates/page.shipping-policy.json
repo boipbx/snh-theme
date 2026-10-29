@@ -9,48 +9,15 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
     "rich_text_UBXJyU": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_crGEef": {
-          "type": "heading",
-          "settings": {
-            "text": "SHIPPING POLICY",
-            "heading_tag": "h1",
-            "text_color": "",
-            "gradient": ""
-          }
-        },
-        "richtext_C4AUip": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Here at Sports Nutrition Hub we take pride in making sure that each and every customer has a positive experience. Customers can order with confidence and peace-of-mind knowing that your money will never be wasted on a product that is sub-par.</p><p><strong>SHIPPING POLICY</strong></p><p>All orders are processed to ship Monday through Friday. They are shipped via our courier services. </p><p>We strive to uphold the highest levels of quality customer service. It is our ultimate goal at Sports Nutrition Hub to create life-long customers and we will do everything in our power to ensure that your experience with us is one that makes you want to shop with us again and again.</p><p><strong>ORDER PROCESSING</strong></p><p>Our standard processing time is 1-3 business day for all items that are in stock. Processing times are not calculated into the estimated delivery times. Depending on the amount of orders that we receive over the weekend will also possibly delay your processing time.</p><p>Orders are not processed on weekends or Public Holidays. Extra time maybe required for larger orders, orders requiring additional customer information, or out of stock items.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading_crGEef",
-        "richtext_C4AUip"
-      ],
+      "type": "snh-page",
       "settings": {
-        "full_width": true,
-        "content_width": "small",
-        "text_position": "center",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
+        "content": "<p>Here at Sports Nutrition Hub we take pride in making sure that each and every customer has a positive experience. Customers can order with confidence and peace-of-mind knowing that your money will never be wasted on a product that is sub-par.</p><p><strong>SHIPPING POLICY</strong></p><p>All orders are processed to ship Monday through Friday. They are shipped via our courier services. </p><p>We strive to uphold the highest levels of quality customer service. It is our ultimate goal at Sports Nutrition Hub to create life-long customers and we will do everything in our power to ensure that your experience with us is one that makes you want to shop with us again and again.</p><p><strong>ORDER PROCESSING</strong></p><p>Our standard processing time is 1-3 business day for all items that are in stock. Processing times are not calculated into the estimated delivery times. Depending on the amount of orders that we receive over the weekend will also possibly delay your processing time.</p><p>Orders are not processed on weekends or Public Holidays. Extra time maybe required for larger orders, orders requiring additional customer information, or out of stock items.</p>",
+        "hide_on_elite": false
       }
     }
   },
   "order": [
-    "main",
     "rich_text_UBXJyU"
   ]
 }

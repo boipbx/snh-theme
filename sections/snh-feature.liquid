@@ -1,0 +1,68 @@
+{%- comment -%}
+  SNH feature (Round 11, v2): one band of media + text. Replaces Impact's media-with-text, image-with-text-overlay,
+  impact-text and video sections. Layouts: media left / media right (split), overlay (full-bleed image or video with
+  an ink gradient), statement (text only, big). Video: a Shopify video (muted, looping, lazy) or the image alone.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign hid = 'ft-' | append: section.id
+  assign tone = s.tone
+  if s.layout == 'overlay'
+    assign tone = 'dark'
+  endif
+-%}
+<section class="v2 v-section ft ft--{{ s.layout }}{% if tone == 'cream' %} v-section--cream{% elsif tone == 'dark' %} v-section--dark{% endif %}" aria-labelledby="{{ hid }}">
+  <div class="v-wrap ft__in">
+    {%- if s.layout != 'statement' -%}
+      <div class="ft__media">
+        {%- if s.video != blank -%}
+          {{ s.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '1600x', class: 'ft__vid' }}
+        {%- elsif s.image != blank -%}
+          {%- if s.image_mobile != blank -%}
+            <picture>
+              <source media="(max-width: 767px)" srcset="{{ s.image_mobile | image_url: width: 800 }} 800w, {{ s.image_mobile | image_url: width: 1200 }} 1200w">
+              {{ s.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,900,1200,1600', sizes: '(max-width: 767px) 100vw, 50vw', alt: s.image.alt | default: s.heading }}
+            </picture>
+          {%- else -%}
+            {{ s.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,900,1200,1600', sizes: '(max-width: 767px) 100vw, 50vw', alt: s.image.alt | default: s.heading }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'ft__ph' }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="ft__text">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      {%- if s.heading != blank -%}<h2 class="v-h1{% if s.layout == 'statement' %} ft__big{% endif %}" id="{{ hid }}">{% render 'snh-v2-heading', text: s.heading %}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="v-prose ft__body">{{ s.text }}</div>{%- endif -%}
+      {%- if s.cta != blank or s.cta2 != blank -%}
+        <div class="ft__ctas">
+          {%- if s.cta != blank -%}<a class="v-btn v-btn--accent" href="{{ s.link | default: '#' }}"><span>{{ s.cta | escape }}</span></a>{%- endif -%}
+          {%- if s.cta2 != blank -%}<a class="v-btn {% if tone == 'dark' %}v-btn--white{% else %}v-btn--line{% endif %}" href="{{ s.link2 | default: '#' }}"><span>{{ s.cta2 | escape }}</span></a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH feature",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "left", "label": "Media left" }, { "value": "right", "label": "Media right" }, { "value": "overlay", "label": "Text over media" }, { "value": "statement", "label": "Statement (text only)" }], "default": "left" },
+    { "type": "select", "id": "tone", "label": "Background", "options": [{ "value": "light", "label": "White" }, { "value": "cream", "label": "Cream" }, { "value": "dark", "label": "Ink" }], "default": "light" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image on phones" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Plays muted and looping; the image is the poster on slow connections." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Wrap a word in *asterisks* for the serif." },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "cta", "label": "Button" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    { "type": "text", "id": "cta2", "label": "Second button" },
+    { "type": "url", "id": "link2", "label": "Second button link" }
+  ],
+  "presets": [{ "name": "SNH feature" }]
+}
+{% endschema %}

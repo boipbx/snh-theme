@@ -125,7 +125,7 @@ def process(path, liquid):
         open(path, 'w').write(s2)
     return total
 
-files = [('assets/snh-v2.css', False), ('assets/snh-design-system.css', False), ('sections/faq.liquid', True)]
+files = [('assets/snh-v2.css', False), ('assets/snh-design-system.css', False), ('sections/faq.liquid', True), ('sections/franchisesection.liquid', True), ('sections/wholesale.liquid', True), ('sections/Shobybrand.liquid', True)]
 files += [(f, True) for f in sorted(glob.glob(os.path.join(ROOT, 'sections', 'snh-*.liquid')) + glob.glob(os.path.join(ROOT, 'snippets', 'snh-*.liquid')))]
 for f, liq in files:
     p = f if os.path.isabs(f) else os.path.join(ROOT, f)

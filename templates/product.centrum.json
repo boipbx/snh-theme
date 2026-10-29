@@ -113,35 +113,96 @@
         "sticky_atc": true
       }
     },
-    "tiktok_profile_C8xEi3": {
-      "type": "tiktok-profile",
-      "name": "TikTok Profile",
-      "settings": {
-        "eyebrow": "SNH on TikTok",
-        "heading": "FOLLOW US ON TIKTOK",
-        "subtext": "Watch new drops, product picks and store updates straight from Sports Nutrition Hub.",
-        "handle": "sportsnutritionhub.lk",
-        "height": 560
-      },
-      "disabled": true
+    "product_stats": {
+      "type": "snh-product-stats",
+      "settings": {}
     },
-    "scrolling_text_yeJznJ": {
-      "type": "scrolling-text",
-      "settings": {
-        "full_width": true,
-        "label": "Sports Nutrition Hub",
-        "text": "LEADING HEALTH & FITNESS STORE",
-        "text_size": "small",
-        "text_style": "fill",
-        "scrolling_mode": "auto",
-        "scrolling_speed": 10,
-        "background_gradient": "linear-gradient(133deg, rgba(250, 220, 54, 1) 11%, rgba(252, 146, 13, 1) 32.374%, rgba(252, 98, 0, 1) 49%, rgba(252, 98, 0, 1) 67.986%, rgba(250, 220, 54, 1) 87%)",
-        "dark_color": "#130b08",
-        "accent_color": "#e0521c",
-        "text_color": "#ffffff",
-        "text_gradient": ""
+    "product_details": {
+      "type": "snh-product-details",
+      "blocks": {
+        "collapsible_text_PWcrNi": {
+          "type": "tab",
+          "settings": {
+            "title": "Key Benefits",
+            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_text_zEQder": {
+          "type": "tab",
+          "settings": {
+            "title": "About the brand",
+            "content": "<h2><strong>Buy Centrum Multivitamins in Sri Lanka – Official Distributor under SNH Health for Wellbeing Brands</strong></h2><p><strong>Centrum</strong> is a globally recognized and trusted brand, offering a range of <strong>multivitamins</strong> and <strong>dietary supplements</strong>designed to support overall health, wellness, and vitality. With a legacy of delivering premium, <strong>science-backed products</strong>, Centrum is known for providing comprehensive <strong>nutritional support</strong> for individuals at all stages of life.</p><p>From <strong>immune health</strong> to <strong>heart health</strong> and <strong>bone strength</strong>, Centrum provides carefully crafted multivitamin formulas to meet the specific needs of <strong>active individuals</strong>, <strong>seniors</strong>, and those looking to fill dietary gaps. Whether you’re an athlete, professional, or someone striving for better health, Centrum offers the essential nutrients your body needs.</p><h3><strong>About SNH Health (PVT) Ltd</strong></h3><p>Centrum is proudly distributed in Sri Lanka through <strong>SNH Health</strong>, a specialized division of <strong>Sports Nutrition Hub (PVT) Ltd</strong> focusing on premium wellness and wellbeing brands. <strong>SNH Health</strong> is dedicated to bringing the best <strong>multivitamin solutions</strong> and <strong>health supplements</strong> to Sri Lanka, ensuring that you have access to trusted products for <strong>overall vitality</strong> and <strong>optimal health</strong>.</p><h3><strong>Popular Centrum Products Available in Sri Lanka ,</strong></h3><ul><li><strong>Centrum Adult Multivitamin</strong> – A comprehensive multivitamin supplement designed to support overall health and wellness, including heart, eye, and immune health.</li><li><strong>Centrum Silver</strong> – Specifically formulated for adults over 50, providing essential nutrients to support heart health, brain function, and energy levels.</li><li><strong>Centrum Women</strong> – A multivitamin tailored to meet the unique health needs of women, including bone health, energy, and immune system support.</li><li><strong>Centrum Men</strong> – A multivitamin formulated to support men’s health, focusing on energy, muscle function, and overall vitality.</li><li><strong>Centrum Immune Support</strong> – A specialized formula with key nutrients like vitamin C, vitamin D, and zinc to support a healthy immune system.</li><li><strong>Centrum Kids</strong> – A delicious chewable multivitamin designed for children to support their growing bodies and ensure they receive essential vitamins and minerals.</li><li><strong>Centrum ProNutrients Omega-3</strong> – A supplement formulated with high-quality omega-3 fatty acids to support heart, brain, and eye health.</li></ul><h3><strong>Exclusive Centrum Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p><strong>Sports Nutrition Hub (PVT) Ltd</strong> is the <strong>official distributor</strong> of <strong>Centrum</strong> in Sri Lanka, under the <strong>SNH Health arm</strong>, ensuring <strong>100% authenticity</strong> and <strong>premium quality</strong>. We provide a wide range of Centrum products to support your <strong>daily nutritional needs</strong>, from <strong>multivitamins</strong> to <strong>omega-3 supplements</strong>, delivering them directly to your door with fast and reliable shipping.</p><p><br/></p><p></p><h4><strong>Why Buy Centrum from Sports Nutrition Hub?</strong></h4><ul><li><strong>Exclusive distributor</strong> of Centrum in Sri Lanka</li><li>100% authentic products, imported directly from the USA</li><li>Verified batch tracking for all products</li><li>Trusted brand with a reputation for <strong>scientifically-backed formulations</strong></li><li>Nationwide delivery and excellent customer support</li></ul><h3><strong>Shop Centrum Products Online in Sri Lanka</strong></h3><p>If you’re searching for </p><ul><li><em>“Buy Centrum Adult Multivitamin in Sri Lanka”</em></li><li><em>“Centrum Silver 50+ price Sri Lanka”</em></li><li><em>“Original Centrum Women multivitamins”</em></li><li><em>“Centrum Immune Support supplement Sri Lanka”</em></li></ul><p>Look no further! </p><p>At <strong>Sports Nutrition Hub</strong>, we bring you the full range of <strong>Centrum</strong> products through our <strong>SNH Health arm</strong>, ensuring fresh stock, guaranteed authenticity, and fast delivery.</p>",
+            "page": ""
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "collapsible_text_PWcrNi",
+        "collapsible_text_zEQder"
+      ],
+      "settings": {
+        "eyebrow": "The details",
+        "heading": "Everything *inside*",
+        "cream": false
+      }
+    },
+    "reviews": {
+      "type": "snh-app-band",
+      "blocks": {
+        "judge_me_reviews_review_widget_qYFmbi": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_qYFmbi"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "What customers *say*",
+        "anchor": "reviews",
+        "cream": true
+      }
+    },
+    "bought_together": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "complementary",
+        "limit": 4,
+        "eyebrow": "Pairs well with",
+        "heading": "Frequently bought *together*",
+        "cream": false
+      }
+    },
+    "related": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "related",
+        "limit": 4,
+        "eyebrow": "",
+        "heading": "You may also *like*",
+        "cream": false
+      }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "tone": "cream"
+      }
     },
     "snh_articles": {
       "type": "snh-related-articles",
@@ -153,6 +214,14 @@
         "heading": "Know what you're *taking*",
         "link_label": "All guides",
         "link_url": "/blogs/news"
+      }
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {
+        "limit": 4,
+        "heading": "Recently *viewed*",
+        "cream": false
       }
     },
     "snh_why": {
@@ -246,165 +315,8 @@
         "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
         "style": "light"
       },
-      "blocks": {
-        "question_1": {
-          "type": "question",
-          "settings": {
-            "question": "How long will it take to get my orders?",
-            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
-          }
-        },
-        "question_2": {
-          "type": "question",
-          "settings": {
-            "question": "Where can I come visit physically?",
-            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
-          }
-        },
-        "question_3": {
-          "type": "question",
-          "settings": {
-            "question": "I want to know more",
-            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
-          }
-        },
-        "question_4": {
-          "type": "question",
-          "settings": {
-            "question": "Are your supplements genuine?",
-            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
-          }
-        },
-        "question_5": {
-          "type": "question",
-          "settings": {
-            "question": "How do I know which supplement is right for me?",
-            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
-          }
-        },
-        "question_6": {
-          "type": "question",
-          "settings": {
-            "question": "What payment methods do you accept?",
-            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
-          }
-        },
-        "question_7": {
-          "type": "question",
-          "settings": {
-            "question": "Can I return or exchange a product?",
-            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question_1",
-        "question_2",
-        "question_3",
-        "question_4",
-        "question_5",
-        "question_6",
-        "question_7"
-      ]
-    },
-    "product_stats": {
-      "type": "snh-product-stats",
-      "settings": {}
-    },
-    "product_details": {
-      "type": "snh-product-details",
-      "blocks": {
-        "collapsible_text_PWcrNi": {
-          "type": "tab",
-          "settings": {
-            "title": "Key Benefits",
-            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
-            "page": ""
-          }
-        },
-        "collapsible_text_zEQder": {
-          "type": "tab",
-          "settings": {
-            "title": "About the brand",
-            "content": "<h2><strong>Buy Centrum Multivitamins in Sri Lanka – Official Distributor under SNH Health for Wellbeing Brands</strong></h2><p><strong>Centrum</strong> is a globally recognized and trusted brand, offering a range of <strong>multivitamins</strong> and <strong>dietary supplements</strong>designed to support overall health, wellness, and vitality. With a legacy of delivering premium, <strong>science-backed products</strong>, Centrum is known for providing comprehensive <strong>nutritional support</strong> for individuals at all stages of life.</p><p>From <strong>immune health</strong> to <strong>heart health</strong> and <strong>bone strength</strong>, Centrum provides carefully crafted multivitamin formulas to meet the specific needs of <strong>active individuals</strong>, <strong>seniors</strong>, and those looking to fill dietary gaps. Whether you’re an athlete, professional, or someone striving for better health, Centrum offers the essential nutrients your body needs.</p><h3><strong>About SNH Health (PVT) Ltd</strong></h3><p>Centrum is proudly distributed in Sri Lanka through <strong>SNH Health</strong>, a specialized division of <strong>Sports Nutrition Hub (PVT) Ltd</strong> focusing on premium wellness and wellbeing brands. <strong>SNH Health</strong> is dedicated to bringing the best <strong>multivitamin solutions</strong> and <strong>health supplements</strong> to Sri Lanka, ensuring that you have access to trusted products for <strong>overall vitality</strong> and <strong>optimal health</strong>.</p><h3><strong>Popular Centrum Products Available in Sri Lanka ,</strong></h3><ul><li><strong>Centrum Adult Multivitamin</strong> – A comprehensive multivitamin supplement designed to support overall health and wellness, including heart, eye, and immune health.</li><li><strong>Centrum Silver</strong> – Specifically formulated for adults over 50, providing essential nutrients to support heart health, brain function, and energy levels.</li><li><strong>Centrum Women</strong> – A multivitamin tailored to meet the unique health needs of women, including bone health, energy, and immune system support.</li><li><strong>Centrum Men</strong> – A multivitamin formulated to support men’s health, focusing on energy, muscle function, and overall vitality.</li><li><strong>Centrum Immune Support</strong> – A specialized formula with key nutrients like vitamin C, vitamin D, and zinc to support a healthy immune system.</li><li><strong>Centrum Kids</strong> – A delicious chewable multivitamin designed for children to support their growing bodies and ensure they receive essential vitamins and minerals.</li><li><strong>Centrum ProNutrients Omega-3</strong> – A supplement formulated with high-quality omega-3 fatty acids to support heart, brain, and eye health.</li></ul><h3><strong>Exclusive Centrum Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p><strong>Sports Nutrition Hub (PVT) Ltd</strong> is the <strong>official distributor</strong> of <strong>Centrum</strong> in Sri Lanka, under the <strong>SNH Health arm</strong>, ensuring <strong>100% authenticity</strong> and <strong>premium quality</strong>. We provide a wide range of Centrum products to support your <strong>daily nutritional needs</strong>, from <strong>multivitamins</strong> to <strong>omega-3 supplements</strong>, delivering them directly to your door with fast and reliable shipping.</p><p><br/></p><p></p><h4><strong>Why Buy Centrum from Sports Nutrition Hub?</strong></h4><ul><li><strong>Exclusive distributor</strong> of Centrum in Sri Lanka</li><li>100% authentic products, imported directly from the USA</li><li>Verified batch tracking for all products</li><li>Trusted brand with a reputation for <strong>scientifically-backed formulations</strong></li><li>Nationwide delivery and excellent customer support</li></ul><h3><strong>Shop Centrum Products Online in Sri Lanka</strong></h3><p>If you’re searching for </p><ul><li><em>“Buy Centrum Adult Multivitamin in Sri Lanka”</em></li><li><em>“Centrum Silver 50+ price Sri Lanka”</em></li><li><em>“Original Centrum Women multivitamins”</em></li><li><em>“Centrum Immune Support supplement Sri Lanka”</em></li></ul><p>Look no further! </p><p>At <strong>Sports Nutrition Hub</strong>, we bring you the full range of <strong>Centrum</strong> products through our <strong>SNH Health arm</strong>, ensuring fresh stock, guaranteed authenticity, and fast delivery.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "collapsible_text_PWcrNi",
-        "collapsible_text_zEQder"
-      ],
-      "settings": {
-        "eyebrow": "The details",
-        "heading": "Everything *inside*",
-        "cream": false
-      }
-    },
-    "reviews": {
-      "type": "snh-app-band",
-      "blocks": {
-        "judge_me_reviews_review_widget_qYFmbi": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_qYFmbi"
-      ],
-      "settings": {
-        "eyebrow": "Reviews",
-        "heading": "What customers *say*",
-        "anchor": "reviews",
-        "cream": true
-      }
-    },
-    "bought_together": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "complementary",
-        "limit": 4,
-        "eyebrow": "Pairs well with",
-        "heading": "Frequently bought *together*",
-        "cream": false
-      }
-    },
-    "related": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "related",
-        "limit": 4,
-        "eyebrow": "",
-        "heading": "You may also *like*",
-        "cream": false
-      }
-    },
-    "recent": {
-      "type": "snh-recently-viewed",
-      "settings": {
-        "limit": 4,
-        "heading": "Recently *viewed*",
-        "cream": false
-      }
-    },
-    "snh_tiktok": {
-      "type": "snh-tiktok",
-      "settings": {
-        "handle": "sportsnutritionhub.lk",
-        "heading": "Seen on *TikTok*",
-        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
-        "follow_label": "Follow on TikTok",
-        "side_heading": "New videos every week",
-        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
-        "videos_heading": "Featured *videos*",
-        "height": 640,
-        "tone": "cream"
-      }
+      "blocks": {},
+      "block_order": []
     }
   },
   "order": [
@@ -418,8 +330,6 @@
     "snh_articles",
     "recent",
     "snh_why",
-    "tiktok_profile_C8xEi3",
-    "snh_faq",
-    "scrolling_text_yeJznJ"
+    "snh_faq"
   ]
 }

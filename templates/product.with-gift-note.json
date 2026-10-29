@@ -120,24 +120,52 @@
         "sticky_atc": true
       }
     },
-    "collection_list_9byzdx": {
-      "type": "collection-list",
+    "product_stats": {
+      "type": "snh-product-stats",
+      "settings": {}
+    },
+    "product_details": {
+      "type": "snh-product-details",
+      "blocks": {},
+      "block_order": [],
       "settings": {
-        "full_width": true,
-        "stack_collections": false,
-        "collections_per_row_mobile": "1",
-        "collections_per_row": 3,
-        "show_progress_bar": true,
-        "subheading": "",
-        "title": "More Collections For You",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
+        "eyebrow": "The details",
+        "heading": "Everything *inside*",
+        "cream": false
+      }
+    },
+    "bought_together": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "complementary",
+        "limit": 4,
+        "eyebrow": "Pairs well with",
+        "heading": "Frequently bought *together*",
+        "cream": false
+      }
+    },
+    "related": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "related",
+        "limit": 4,
+        "eyebrow": "",
+        "heading": "You may also *like*",
+        "cream": false
+      }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "tone": "cream"
       }
     },
     "snh_articles": {
@@ -150,6 +178,14 @@
         "heading": "Know what you're *taking*",
         "link_label": "All guides",
         "link_url": "/blogs/news"
+      }
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {
+        "limit": 4,
+        "heading": "Recently *viewed*",
+        "cream": false
       }
     },
     "snh_why": {
@@ -243,122 +279,8 @@
         "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
         "style": "light"
       },
-      "blocks": {
-        "question_1": {
-          "type": "question",
-          "settings": {
-            "question": "How long will it take to get my orders?",
-            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
-          }
-        },
-        "question_2": {
-          "type": "question",
-          "settings": {
-            "question": "Where can I come visit physically?",
-            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
-          }
-        },
-        "question_3": {
-          "type": "question",
-          "settings": {
-            "question": "I want to know more",
-            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
-          }
-        },
-        "question_4": {
-          "type": "question",
-          "settings": {
-            "question": "Are your supplements genuine?",
-            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
-          }
-        },
-        "question_5": {
-          "type": "question",
-          "settings": {
-            "question": "How do I know which supplement is right for me?",
-            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
-          }
-        },
-        "question_6": {
-          "type": "question",
-          "settings": {
-            "question": "What payment methods do you accept?",
-            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
-          }
-        },
-        "question_7": {
-          "type": "question",
-          "settings": {
-            "question": "Can I return or exchange a product?",
-            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question_1",
-        "question_2",
-        "question_3",
-        "question_4",
-        "question_5",
-        "question_6",
-        "question_7"
-      ]
-    },
-    "product_stats": {
-      "type": "snh-product-stats",
-      "settings": {}
-    },
-    "product_details": {
-      "type": "snh-product-details",
       "blocks": {},
-      "block_order": [],
-      "settings": {
-        "eyebrow": "The details",
-        "heading": "Everything *inside*",
-        "cream": false
-      }
-    },
-    "bought_together": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "complementary",
-        "limit": 4,
-        "eyebrow": "Pairs well with",
-        "heading": "Frequently bought *together*",
-        "cream": false
-      }
-    },
-    "related": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "related",
-        "limit": 4,
-        "eyebrow": "",
-        "heading": "You may also *like*",
-        "cream": false
-      }
-    },
-    "recent": {
-      "type": "snh-recently-viewed",
-      "settings": {
-        "limit": 4,
-        "heading": "Recently *viewed*",
-        "cream": false
-      }
-    },
-    "snh_tiktok": {
-      "type": "snh-tiktok",
-      "settings": {
-        "handle": "sportsnutritionhub.lk",
-        "heading": "Seen on *TikTok*",
-        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
-        "follow_label": "Follow on TikTok",
-        "side_heading": "New videos every week",
-        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
-        "videos_heading": "Featured *videos*",
-        "height": 640,
-        "tone": "cream"
-      }
+      "block_order": []
     }
   },
   "order": [
@@ -370,7 +292,6 @@
     "snh_tiktok",
     "snh_articles",
     "recent",
-    "collection_list_9byzdx",
     "snh_why",
     "snh_faq"
   ]

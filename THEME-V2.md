@@ -322,3 +322,128 @@ Everything data-related is in **`ELITE-ROADMAP.md`** (writes, CAPTCHA, tracking,
 New account-page settings: *Orders → Show an order as delivered after* (4 days), *Bundle collections*, *Plan quiz →
 stack categories*, *Referral rewards are live*, *Show "Upload a photo"*. New blocks: *Member promotion*, *Apps*.
 Class names to avoid in the app (taken elsewhere): `.promo`, `.mpromo`, `.mcard`, `.tcard`, `.goal`, `.tiers`.
+
+
+## Round 11: conversion round
+
+Your old components are documented in **`OLD-COMPONENTS.md`** (card, filter bar, Shop the Look, cart drawer,
+Instagram feed), with live screenshots in `prototype/shots/r11/old/`. Audits + screenshots per phase:
+`prototype/tools/r11-audit.js <phase>` → `prototype/shots/r11/<phase>/`.
+
+### Phase 1: routing + old sections removed
+- **`/pages/snh-elite`**: `templates/page.json` now renders `snh-page` (title + page content, no contact form) and
+  the Elite landing (`snh-elite-page`, setting *Only on the page with the handle snh-elite*), so that page needs no
+  template assignment. `page.contact` is the only contact page (`snh-contact`).
+- **Universal FAQ** (`snh-faq`): page blocks → product `custom.faqs` metafield → *Theme settings → SNH contact and
+  reviews → Global FAQ* (seeded: delivery, stores, payments + Koko + COD, authenticity, Elite points, returns, which
+  supplement). "Still stuck? WhatsApp us" button, FAQPage structured data. On home, all collections, all products,
+  the FAQ and contact pages; Elite has its own; cart in phase 7.
+- New v2 sections for landing pages: `snh-page`, `snh-feature`, `snh-collection-tiles`, `snh-steps`,
+  `snh-contact`. Franchise, wholesale and Shop by brand (custom pre-v2 sections) are restyled onto v2 type, scale and
+  container; a full v2 rebuild of their layouts is an open item.
+
+**Removed / converted (291 changes):**
+- all 64 collection templates: removed slideshow banner (slideshow_ygzHAA)
+- all 65 collection templates: removed disabled collection-banner (banner)
+- all 64 collection templates: Impact faq → snh-faq (global questions)
+- all 1 collection templates: collection.json: removed slideshow banner (slideshow_ygzHAA)
+- all 2 collection templates: collection.json: removed disabled collection-banner (banner)
+- all 2 collection templates: collection.json: Impact faq → snh-faq (global questions)
+- all 1 collection templates: removed scrolling-text "YOUR WELL-BEING STARTS HERE"
+- all 1 collection templates: removed logo-list without logos
+- all 1 collection templates: removed empty image-link-blocks
+- all 1 collection templates: removed empty collection-list "SNH HEALTH CATEGORIES"
+- all 1 collection templates: removed empty featured-collection "BEST SELLERS"
+- list-collections.json: removed empty rich-text
+- page.about-us.json: removed disabled main-page (main)
+- page.about-us.json: timeline → snh-steps (timeline, 5)
+- page.accessories-page.json: removed disabled main-page (main)
+- page.accessories-page.json: removed slideshow without images (slideshow_LTcK48)
+- page.accessories-page.json: slideshow → snh-hero-slider (3 slides)
+- page.accessories-page.json: removed scrolling-text "BUILT FOR PERFORMANCE, DESIGNED FOR STYLE"
+- page.accessories-page.json: removed empty collection-list "Collection list"
+- page.accessories-page.json: removed placeholder media-with-text "SURGE"
+- page.accessories-page.json: removed hot-spots without products
+- page.accessories-page.json: removed shop-the-look without products
+- page.contact.json: removed disabled main-page (main)
+- page.contact.json: custom-html careers banner → snh-feature statement
+- page.contact.json: contact → snh-contact
+- page.endurance-athletes-page.json: removed disabled main-page (main)
+- page.endurance-athletes-page.json: slideshow → snh-hero-slider (3 slides)
+- page.endurance-athletes-page.json: removed scrolling-text "FUELING YOUR PEAK PERFORMANCE"
+- page.endurance-athletes-page.json: removed empty collection-list "SHOP BY SPORT"
+- page.endurance-athletes-page.json: media-with-text → snh-feature ×1
+- page.endurance-athletes-page.json: removed empty collection-list "INFORMED SPORTS COLLECTION"
+- page.faq.json: main-page → snh-page
+- page.franchise.json: removed disabled main-page (main)
+- page.franchise.json: removed disabled contact (contact_K6hwLe)
+- page.informed-sports.json: removed disabled main-page (main)
+- page.informed-sports.json: slideshow → snh-hero-slider (4 slides)
+- page.informed-sports.json: removed scrolling-text "FUELING YOUR PEAK PERFORMANCE"
+- page.informed-sports.json: removed empty collection-list "SHOP BY SPORT"
+- page.informed-sports.json: removed empty collection-list "INFORMED SPORTS COLLECTION"
+- page.informed-sports.json: removed disabled rich-text (rich_text_p7jfjL)
+- page.locations-info.json: removed disabled main-page (main)
+- page.locations-info.json: images-with-text-scrolling → snh-stores (copied from the homepage stores)
+- page.locations-info.json: contact → snh-contact
+- page.privacy-policy.json: removed disabled main-page (main)
+- page.privacy-policy.json: rich-text → snh-page
+- page.return-policy.json: removed disabled main-page (main)
+- page.return-policy.json: rich-text → snh-page
+- page.shipping-policy.json: removed disabled main-page (main)
+- page.shipping-policy.json: rich-text → snh-page
+- page.shop-by-brand.json: removed disabled main-page (main)
+- page.snhealth.json: removed disabled main-page (main)
+- page.snhealth.json: removed slideshow without images (slideshow_BUqMHG)
+- page.snhealth.json: removed scrolling-text "YOUR WELL-BEING STARTS HERE"
+- page.snhealth.json: removed empty collection-list "FOR YOU"
+- page.snhealth.json: image-link-blocks → snh-collection-tiles (logos, 7)
+- page.snhealth.json: media-with-text → snh-feature ×1
+- page.snhealth.json: removed empty collection-list "FOR YOU"
+- page.snhealth.json: removed empty featured-collection "OUR BEST SELLERS"
+- page.snhealth.json: image-with-text-overlay → snh-feature overlay
+- page.snhealth.json: impact-text → snh-feature statement
+- page.snhealth.json: video → snh-feature overlay video
+- page.term-of-service.json: removed disabled main-page (main)
+- page.term-of-service.json: rich-text → snh-page
+- page.wholesale.json: removed disabled main-page (main)
+- page.wholesale.json: removed disabled snh-performance-quiz (snh_performance_quiz_E8rHtG)
+- page.work-with-us.json: removed disabled main-page (main)
+- page.work-with-us.json: removed slideshow without images (slideshow_NFYKjR)
+- page.work-with-us.json: removed scrolling-text ""
+- page.work-with-us.json: removed empty collection-list "SPORTS WE LOOK AFTER"
+- page.work-with-us.json: removed video without a Shopify video (external https://www.youtube.com/watch?v=_9VUPq3SxOc)
+- page.work-with-us.json: media-with-text → snh-feature ×1
+- product.applied-nutrition.json: removed disabled tiktok-profile (tiktok_profile_PpbDGD)
+- product.applied-nutrition.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.centrum.json: removed disabled tiktok-profile (tiktok_profile_C8xEi3)
+- product.centrum.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.dymatize.json: removed disabled tiktok-profile (tiktok_profile_f7Ciiw)
+- product.dymatize.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.ehp-labs.json: removed disabled tiktok-profile (tiktok_profile_WFfrGP)
+- product.ehp-labs.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.healthspan-elite.json: removed disabled tiktok-profile (tiktok_profile_QjwPQt)
+- product.healthspan-elite.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.json: removed disabled tiktok-profile (tiktok_profile_Engw4N)
+- product.muscletech.json: removed disabled tiktok-profile (tiktok_profile_XPnqz3)
+- product.muscletech.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.myprotein.json: removed disabled tiktok-profile (tiktok_profile_4q7DNn)
+- product.raw-nutrition.json: removed disabled tiktok-profile (tiktok_profile_9qBJkY)
+- product.raw-nutrition.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.ryse.json: removed disabled tiktok-profile (tiktok_profile_xqEmKx)
+- product.ryse.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.science-in-sport.json: removed disabled tiktok-profile (tiktok_profile_hVRPrG)
+- product.science-in-sport.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.seven-seas.json: removed disabled tiktok-profile (tiktok_profile_p3CFRN)
+- product.seven-seas.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.trace.json: removed disabled tiktok-profile (tiktok_profile_mTAMNR)
+- product.trace.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.vitabiotics.json: removed disabled tiktok-profile (tiktok_profile_KLgYpT)
+- product.vitabiotics.json: removed disabled scrolling-text (scrolling_text_yeJznJ)
+- product.with-gift-note.json: removed empty collection-list "More Collections For You"
+- header-group.json: removed disabled announcement-bar (announcement-bar)
+- header-group.json: removed disabled header (header)
+- header-group.json: removed disabled ss-header-13 (ss_header_13_tJN7zP)
+- footer-group.json: removed disabled footer (footer)
+- page.faq.json: added snh-faq (global questions)
+- page.contact.json: added snh-faq (global questions)

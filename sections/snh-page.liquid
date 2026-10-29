@@ -1,0 +1,44 @@
+{%- comment -%}
+  SNH page (Round 11, v2): the page title and its content from admin, in the v2 reading column. Used by page.json and
+  the policy/FAQ/list pages. On the default page template the page with the handle "snh-elite" shows the Elite
+  landing instead (sections/snh-elite-page in the same template renders only there), so that page needs no template
+  assignment and never shows a contact form.
+{%- endcomment -%}
+{%- liquid
+  assign skip = false
+  if section.settings.hide_on_elite and page.handle == 'snh-elite'
+    assign skip = true
+  endif
+  assign hid = 'pg-' | append: section.id
+  assign title = section.settings.heading | default: page.title
+-%}
+{%- unless skip -%}
+  <section class="v2 v-section spage{% if section.settings.cream %} v-section--cream{% endif %}" aria-labelledby="{{ hid }}">
+    <div class="v-wrap spage__in">
+      <header class="spage__head">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h1 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: title %}</h1>
+        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+      </header>
+      {%- assign body = section.settings.content | default: page.content -%}
+      {%- if body != blank -%}<div class="v-prose spage__body">{{ body }}</div>{%- endif -%}
+    </div>
+  </section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "SNH page",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "paragraph", "content": "Shows the page title and the content written in Online Store → Pages." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Empty = the page title. Wrap a word in *asterisks* for the serif." },
+    { "type": "text", "id": "lead", "label": "Lead" },
+    { "type": "richtext", "id": "content", "label": "Content", "info": "Empty = the page's own content." },
+    { "type": "checkbox", "id": "cream", "label": "Cream background", "default": false },
+    { "type": "checkbox", "id": "hide_on_elite", "label": "Hide on the SNH Elite page (handle snh-elite)", "default": true }
+  ],
+  "presets": [{ "name": "SNH page" }]
+}
+{% endschema %}

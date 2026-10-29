@@ -9,69 +9,6 @@
  */
 {
   "sections": {
-    "slideshow_ygzHAA": {
-      "type": "slideshow",
-      "blocks": {
-        "image_GzQVYL": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Untitled_1000_x_1500_px_1200_x_1600_px_.zip_-_4_f860b16d-c753-4611-98ea-8481fa114926.png",
-            "mobile_image": "shopify://shop_images/Untitled_1000_x_1500_px_1200_x_1600_px_.zip_-_4.png",
-            "content_max_width": 780,
-            "mobile_text_position": "place-self-center text-center",
-            "desktop_text_position": "sm:place-self-center sm:text-center",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "",
-            "button_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
-          }
-        }
-      },
-      "block_order": [
-        "image_GzQVYL"
-      ],
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": true,
-        "show_initial_transition": false,
-        "image_size": "auto",
-        "controls_type": "dots",
-        "transition_type": "fade_with_text",
-        "autoplay": false,
-        "cycle_speed": 6,
-        "background": "#f2f2f2",
-        "background_gradient": ""
-      }
-    },
-    "banner": {
-      "type": "collection-banner",
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": true,
-        "show_collection_title": true,
-        "show_collection_description": true,
-        "show_collection_image": true,
-        "collection_title_size": "h2",
-        "image_size": "auto",
-        "mobile_text_position": "place-self-center text-center",
-        "desktop_text_position": "sm:place-self-center sm:text-center",
-        "featured_product": "",
-        "featured_product_heading": "Featured product",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 30
-      }
-    },
     "main": {
       "type": "main-collection",
       "settings": {
@@ -87,61 +24,13 @@
       }
     },
     "faq_bygKrK": {
-      "type": "faq",
-      "blocks": {
-        "item_qetdrc": {
-          "type": "item",
-          "settings": {
-            "title": "How long will it take to get my order",
-            "content": "<p>It depends on your delivery address.</p><p>Colombo orders: Same Day<br/>Out of Colombo orders: 2-3 Working Days</p>"
-          }
-        },
-        "item_NbTKQG": {
-          "type": "item",
-          "settings": {
-            "title": "Where can I come visit physically?",
-            "content": "<p>We have two stores:<br/>DEHIWALA & WATTALA<br/><br/>Simply type 'Sports Nutrition Hub' on Google Maps and the options will appear.</p>"
-          }
-        },
-        "item_phEjV9": {
-          "type": "item",
-          "settings": {
-            "title": "I want to know more",
-            "content": "<p>The fastest way to get an answer would be to call us or WhatsApp us on +94 77 977 3359.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "item_qetdrc",
-        "item_NbTKQG",
-        "item_phEjV9"
-      ],
+      "type": "snh-faq",
       "settings": {
-        "full_width": true,
-        "subheading": "",
-        "title": "FAQ‘S",
-        "content": "",
-        "team_avatar_width": 160,
-        "support_hours": "Our customer support is available Everyday: 10am-7:00pm.",
-        "answer_time": "Average answer time: INSTANT",
-        "button_text": "CONTACT US FOR MORE",
-        "button_url": "shopify://pages/delivery-and-shipping",
-        "text_position": "center",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": "",
-        "button_background": "#e0521c",
-        "button_text_color": "",
-        "accordion_background": "",
-        "accordion_text_color": ""
+        "style": "light"
       }
     }
   },
   "order": [
-    "slideshow_ygzHAA",
-    "banner",
     "main",
     "faq_bygKrK"
   ]

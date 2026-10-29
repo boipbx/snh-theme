@@ -9,85 +9,70 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
     "timeline_63yMmW": {
-      "type": "timeline",
+      "type": "snh-steps",
       "blocks": {
-        "slide_ArUagk": {
-          "type": "slide",
+        "step_0": {
+          "type": "step",
           "settings": {
-            "image": "shopify://shop_images/IMG_2486.png",
-            "navigation_label": "2020",
-            "subheading": "",
-            "title": "INCEPTION OF SNH",
-            "content": "<p>In October 2020, Sports Nutrition Hub launched its website, starting humbly with stock held in the co-founder’s bedroom. Driven by a clear vision, we set out to offer the highest quality products and an extensive range for the fitness community. Above all, our goal has always been to provide a trusted and reliable source for health supplements and vitamins, ensuring our customers have the best place to shop for their health needs.</p>"
+            "label": "2020",
+            "title": "Inception of snh",
+            "text": "<p>In October 2020, Sports Nutrition Hub launched its website, starting humbly with stock held in the co-founder’s bedroom. Driven by a clear vision, we set out to offer the highest quality products and an extensive range for the fitness community. Above all, our goal has always been to provide a trusted and reliable source for health supplements and vitamins, ensuring our customers have the best place to shop for their health needs.</p>",
+            "image": "shopify://shop_images/IMG_2486.png"
           }
         },
-        "slide_r4xBNR": {
-          "type": "slide",
+        "step_1": {
+          "type": "step",
           "settings": {
-            "image": "shopify://shop_images/IMG_2485.png",
-            "navigation_label": "2022",
-            "subheading": "",
-            "title": "MOVES TO A BIGGER SPACE",
-            "content": "<p>By early 2022, Sports Nutrition Hub was growing steadily. Recognizing the need for more space, we expanded from a bedroom setup to a larger room in the founder’s house to accommodate our growing stock and operations.</p>"
+            "label": "2022",
+            "title": "Moves to a bigger space",
+            "text": "<p>By early 2022, Sports Nutrition Hub was growing steadily. Recognizing the need for more space, we expanded from a bedroom setup to a larger room in the founder’s house to accommodate our growing stock and operations.</p>",
+            "image": "shopify://shop_images/IMG_2485.png"
           }
         },
-        "slide_eKXm8a": {
-          "type": "slide",
+        "step_2": {
+          "type": "step",
           "settings": {
-            "image": "shopify://shop_images/IMG_2488.png",
-            "navigation_label": "2023",
-            "subheading": "",
-            "title": "FIRST STORE OPENS!",
-            "content": "<p>In March 2023, after careful planning and saving, we proudly opened our very first physical outlet in Dehiwala! This milestone allowed us to reach more customers, giving them the opportunity to see and feel our products in person while experiencing our exceptional customer service firsthand.</p>"
+            "label": "2023",
+            "title": "First store opens!",
+            "text": "<p>In March 2023, after careful planning and saving, we proudly opened our very first physical outlet in Dehiwala! This milestone allowed us to reach more customers, giving them the opportunity to see and feel our products in person while experiencing our exceptional customer service firsthand.</p>",
+            "image": "shopify://shop_images/IMG_2488.png"
           }
         },
-        "slide_h3wNgU": {
-          "type": "slide",
+        "step_3": {
+          "type": "step",
           "settings": {
-            "image": "shopify://shop_images/IMG_2487.png",
-            "navigation_label": "2024",
-            "subheading": "",
-            "title": "SECOND STORE OPENS!",
-            "content": "<p>In January 2024, following the success of our first outlet, we opened our second location in Wattala. This move marked an exciting step for us as we expanded beyond Colombo and pushed ourselves out of our comfort zones. Our goal was to delegate more responsibilities, grow our team, and ultimately reach even more customers.</p>"
+            "label": "2024",
+            "title": "Second store opens!",
+            "text": "<p>In January 2024, following the success of our first outlet, we opened our second location in Wattala. This move marked an exciting step for us as we expanded beyond Colombo and pushed ourselves out of our comfort zones. Our goal was to delegate more responsibilities, grow our team, and ultimately reach even more customers.</p>",
+            "image": "shopify://shop_images/IMG_2487.png"
           }
         },
-        "slide_qqpC96": {
-          "type": "slide",
+        "step_4": {
+          "type": "step",
           "settings": {
-            "image": "shopify://shop_images/IMG_3570.jpg",
-            "navigation_label": "2025",
-            "subheading": "",
-            "title": "THIRD STORE OPENS!",
-            "content": "<p>In September 2025, we proudly opened our third location in Nugegoda.<strong> </strong>This milestone represents more than just another outlet—it’s proof of the momentum we’ve built since our humble beginnings. Following the success of Dehiwala and Wattala, expanding into Nugegoda allows us to bring Sports Nutrition Hub even closer to our growing community.</p><p>With this move, we’ve challenged ourselves once again: to scale operations, strengthen our systems, and create a seamless experience across all three stores. Our goal remains the same—to fuel more athletes, fitness enthusiasts, and everyday individuals with the very best in supplements, vitamins, and wellness.</p>"
+            "label": "2025",
+            "title": "Third store opens!",
+            "text": "<p>In September 2025, we proudly opened our third location in Nugegoda.<strong> </strong>This milestone represents more than just another outlet—it’s proof of the momentum we’ve built since our humble beginnings. Following the success of Dehiwala and Wattala, expanding into Nugegoda allows us to bring Sports Nutrition Hub even closer to our growing community.</p><p>With this move, we’ve challenged ourselves once again: to scale operations, strengthen our systems, and create a seamless experience across all three stores. Our goal remains the same—to fuel more athletes, fitness enthusiasts, and everyday individuals with the very best in supplements, vitamins, and wellness.</p>",
+            "image": "shopify://shop_images/IMG_3570.jpg"
           }
         }
       },
       "block_order": [
-        "slide_ArUagk",
-        "slide_r4xBNR",
-        "slide_eKXm8a",
-        "slide_h3wNgU",
-        "slide_qqpC96"
+        "step_0",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
       ],
-      "custom_css": [],
       "settings": {
-        "full_width": false,
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
+        "eyebrow": "Our story",
+        "heading": "How *SNH* grew",
+        "layout": "timeline"
       }
     }
   },
   "order": [
-    "main",
     "timeline_63yMmW"
   ]
 }

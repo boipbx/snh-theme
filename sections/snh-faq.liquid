@@ -1,4 +1,12 @@
-{%- comment -%}SNH FAQ on ink (prototype "Questions, answered"): heading + support line left, accordion right. One block per question.{%- endcomment -%}
+{%- comment -%}
+  SNH FAQ (Round 11: the universal FAQ). Heading + support line left, accordion right, then "Still stuck? WhatsApp us".
+  Questions, first match wins:
+  1. this section's Question blocks (per-page override)
+  2. on a product: the product's custom.faqs metafield (a list of metaobjects with question/answer fields, JSON
+     [{"question","answer"}] / [{"q","a"}], or text with one "Question :: Answer" per line)
+  3. Theme settings → SNH FAQ → Global FAQ (one "Question :: Answer" per line)
+  Used on home, collections, products, cart and the Elite page. Outputs FAQPage structured data.
+{%- endcomment -%}
 {%- liquid
   assign hid = 'faq-' | append: section.id
   assign light = false
@@ -17,20 +25,86 @@
     echo wa | slice: 7, 6
   endcapture
   assign lead = section.settings.lead | escape | replace: '[whatsapp]', wa_fmt
+
+  # questions as "q :: a" records joined by @@ (answers keep their HTML)
+  assign qs = ''
+  assign qblocks = section.blocks | where: 'type', 'question'
+  if qblocks.size > 0
+    assign src = 'blocks'
+  else
+    assign src = ''
+    assign mf = product.metafields.custom.faqs
+    if product and mf != blank
+      assign v = mf.value
+      if mf.type contains 'metaobject'
+        for o in v
+          assign oq = o.question.value | default: o.title.value
+          assign oa = o.answer.value | default: o.text.value | default: o.content.value
+          if oa.type == 'root'
+            assign oa = o.answer | metafield_tag
+          endif
+          if oq != blank
+            assign qs = qs | append: oq | append: ' :: ' | append: oa | append: '@@'
+          endif
+        endfor
+      elsif mf.type == 'json'
+        for o in v
+          assign oq = o.question | default: o.q
+          assign oa = o.answer | default: o.a
+          if oq != blank
+            assign qs = qs | append: oq | append: ' :: ' | append: oa | append: '@@'
+          endif
+        endfor
+      else
+        assign qs = v | append: '' | newline_to_br | replace: '<br />', '@@'
+      endif
+      if qs != ''
+        assign src = 'product'
+      endif
+    endif
+    if qs == ''
+      assign qs = settings.snh_faq_global | newline_to_br | replace: '<br />', '@@'
+      assign src = 'global'
+    endif
+  endif
+  assign recs = qs | split: '@@'
 -%}
-<section class="v2 v-section{% unless light %} v-section--dark{% endunless %}" aria-labelledby="{{ hid }}">
+<section class="v2 v-section{% unless light %} v-section--dark{% endunless %}" aria-labelledby="{{ hid }}" data-faq-src="{{ src }}">
   <div class="v-wrap split">
     <div class="head__text">
       {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
       <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
       {%- if lead != blank -%}<p class="lead">{{ lead }}</p>{%- endif -%}
+      {%- if wa != blank and section.settings.show_cta -%}
+        <a class="v-btn v-btn--{% if light %}ink{% else %}accent{% endif %} faq__wa" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>{{ section.settings.cta | default: 'Still stuck? WhatsApp us' | escape }}</span></a>
+      {%- endif -%}
     </div>
     <div class="acc{% unless light %} acc--dark{% endunless %}">
-      {%- for b in section.blocks -%}
-        <details {{ b.shopify_attributes }}><summary>{{ b.settings.question | escape }}</summary><div class="acc__body v-prose">{{ b.settings.answer | replace: '[whatsapp]', wa_fmt }}</div></details>
-      {%- endfor -%}
+      {%- capture ld -%}
+        {%- if src == 'blocks' -%}
+          {%- for b in qblocks -%}<details {{ b.shopify_attributes }}><summary>{{ b.settings.question | escape }}</summary><div class="acc__body v-prose">{{ b.settings.answer | replace: '[whatsapp]', wa_fmt }}</div></details>{%- endfor -%}
+        {%- else -%}
+          {%- for r in recs -%}
+            {%- assign pr = r | split: '::' -%}
+            {%- assign q = pr[0] | strip_html | strip -%}
+            {%- if q == blank or pr.size < 2 -%}{%- continue -%}{%- endif -%}
+            {%- assign a = r | remove_first: pr[0] | remove_first: '::' | strip | replace: '[whatsapp]', wa_fmt -%}
+            <details><summary>{{ q | escape }}</summary><div class="acc__body v-prose">{% if a contains '<p' %}{{ a }}{% else %}<p>{{ a }}</p>{% endif %}</div></details>
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endcapture -%}
+      {{ ld }}
     </div>
   </div>
+  <script type="application/ld+json" data-faq-ld="{{ section.id }}"></script>
+  <script>
+    (function (s) {
+      var sec = s.closest('section'), items = [].slice.call(sec.querySelectorAll('.acc details')).map(function (d) {
+        return { '@type': 'Question', name: d.querySelector('summary').textContent.trim(), acceptedAnswer: { '@type': 'Answer', text: d.querySelector('.acc__body').textContent.trim() } };
+      });
+      if (items.length) s.previousElementSibling.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items });
+    })(document.currentScript);
+  </script>
 </section>
 
 {% schema %}
@@ -39,17 +113,81 @@
   "class": "snh-sec",
   "max_blocks": 20,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Support · every day, 10am–7pm" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions, *answered*" },
-    { "type": "textarea", "id": "lead", "label": "Lead", "default": "Call or WhatsApp [whatsapp] for anything not covered here.", "info": "[whatsapp] shows the number from Theme settings → SNH contact and reviews." },
-    { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "dark", "label": "Ink" }, { "value": "light", "label": "White" }], "default": "dark" }
+    {
+      "type": "paragraph",
+      "content": "Add Question blocks to override. Without blocks a product shows its custom.faqs metafield, everything else the Global FAQ from Theme settings → SNH FAQ."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Support · every day, 10am–7pm"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Questions, *answered*"
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Lead",
+      "default": "Call or WhatsApp [whatsapp] for anything not covered here.",
+      "info": "[whatsapp] shows the number from Theme settings → SNH contact and reviews."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show the WhatsApp button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta",
+      "label": "WhatsApp button",
+      "default": "Still stuck? WhatsApp us"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "dark",
+          "label": "Ink"
+        },
+        {
+          "value": "light",
+          "label": "White"
+        }
+      ],
+      "default": "dark"
+    }
   ],
   "blocks": [
-    { "type": "question", "name": "Question", "settings": [
-      { "type": "text", "id": "question", "label": "Question", "default": "How long will it take to get my order?" },
-      { "type": "richtext", "id": "answer", "label": "Answer" }
-    ] }
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long will it take to get my order?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
   ],
-  "presets": [{ "name": "SNH FAQ", "blocks": [{ "type": "question" }, { "type": "question" }] }]
+  "presets": [
+    {
+      "name": "SNH FAQ"
+    }
+  ]
 }
 {% endschema %}

@@ -9,246 +9,68 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
     "slideshow_Qa4rBr": {
-      "type": "slideshow",
+      "type": "snh-hero-slider",
       "blocks": {
-        "image_gBPHLh": {
-          "type": "image",
+        "slide_0": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ehp_labs_landing_page_2.jpg",
-            "mobile_image": "shopify://shop_images/padel_mobile_landing_page_1.jpg",
-            "content_max_width": 780,
-            "mobile_text_position": "place-self-end-center text-center",
-            "desktop_text_position": "sm:place-self-center-end sm:text-end",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "SHOP PADEL",
-            "button_link": "shopify://collections/padel",
-            "text_color": "#1a1a1a",
-            "button_background": "#9dff00",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "banner",
+            "image_desktop": "shopify://shop_images/ehp_labs_landing_page_2.jpg",
+            "image_mobile": "shopify://shop_images/padel_mobile_landing_page_1.jpg",
+            "eyebrow": "",
+            "heading": "",
+            "cta": "SHOP PADEL",
+            "link": "shopify://collections/padel"
           }
         },
-        "image_9RyxFj": {
-          "type": "image",
+        "slide_1": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/IMG_3154.jpg",
-            "mobile_image": "shopify://shop_images/Untitled_design_ceb63023-1851-42ba-80e2-bcfb417ea06d.png",
-            "content_max_width": 780,
-            "mobile_text_position": "place-self-center text-center",
-            "desktop_text_position": "sm:place-self-end-center sm:text-center",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "",
-            "button_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "banner",
+            "image_desktop": "shopify://shop_images/IMG_3154.jpg",
+            "image_mobile": "shopify://shop_images/Untitled_design_ceb63023-1851-42ba-80e2-bcfb417ea06d.png",
+            "eyebrow": "",
+            "heading": "",
+            "cta": "",
+            "link": ""
           }
         },
-        "image_npmmHN": {
-          "type": "image",
+        "slide_2": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/3020822f-af0f-469f-928b-eb220c28cda5.jpg",
-            "mobile_image": "shopify://shop_images/Social_-_BF_Month_-_The_Benefits___2.jpg",
-            "content_max_width": 780,
-            "mobile_text_position": "place-self-center text-center",
-            "desktop_text_position": "sm:place-self-center sm:text-center",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "",
-            "button_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30,
-            "background": "",
-            "background_gradient": ""
+            "kind": "banner",
+            "image_desktop": "shopify://shop_images/3020822f-af0f-469f-928b-eb220c28cda5.jpg",
+            "image_mobile": "shopify://shop_images/Social_-_BF_Month_-_The_Benefits___2.jpg",
+            "eyebrow": "",
+            "heading": "",
+            "cta": "",
+            "link": ""
           }
         },
-        "image_txAazh": {
-          "type": "image",
+        "slide_3": {
+          "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/May_-_SiS_Banner.webp",
-            "mobile_image": "shopify://shop_images/Social_-_Caffeine_-_Instagram_-_Grid.jpg",
-            "content_max_width": 780,
-            "mobile_text_position": "place-self-center text-center",
-            "desktop_text_position": "sm:place-self-center sm:text-center",
-            "subheading": "",
-            "title": "",
-            "heading_tag": "h0",
-            "button_text": "",
-            "button_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 10,
-            "background": "",
-            "background_gradient": ""
+            "kind": "banner",
+            "image_desktop": "shopify://shop_images/May_-_SiS_Banner.webp",
+            "image_mobile": "shopify://shop_images/Social_-_Caffeine_-_Instagram_-_Grid.jpg",
+            "eyebrow": "",
+            "heading": "",
+            "cta": "",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "image_gBPHLh",
-        "image_9RyxFj",
-        "image_npmmHN",
-        "image_txAazh"
+        "slide_0",
+        "slide_1",
+        "slide_2",
+        "slide_3"
       ],
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": true,
-        "show_initial_transition": false,
-        "image_size": "auto",
-        "controls_type": "dots",
-        "transition_type": "fade_with_text",
-        "autoplay": true,
-        "cycle_speed": 4,
-        "background": "#f2f2f2",
-        "background_gradient": ""
-      }
-    },
-    "scrolling_text_TD8zFt": {
-      "type": "scrolling-text",
-      "settings": {
-        "full_width": true,
-        "text": "FUELING YOUR PEAK PERFORMANCE",
-        "text_size": "small",
-        "text_style": "fill",
-        "scrolling_mode": "auto",
-        "scrolling_speed": 16,
-        "background": "",
-        "background_gradient": "linear-gradient(225deg, rgba(57, 255, 20, 1) 15%, rgba(15, 114, 201, 1) 85%)",
-        "text_color": "#ffffff",
-        "text_gradient": ""
-      }
-    },
-    "collection_list_mdrh9z": {
-      "type": "collection-list",
-      "settings": {
-        "full_width": true,
-        "stack_collections": false,
-        "collections_per_row_mobile": "1",
-        "collections_per_row": 3,
-        "show_progress_bar": false,
-        "subheading": "",
-        "title": "SHOP BY SPORT",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
-    },
-    "collection_list_VLmTUR": {
-      "type": "collection-list",
-      "settings": {
-        "full_width": true,
-        "stack_collections": false,
-        "collections_per_row_mobile": "1",
-        "collections_per_row": 3,
-        "show_progress_bar": false,
-        "subheading": "",
-        "title": "INFORMED SPORTS COLLECTION",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
-    },
-    "rich_text_p7jfjL": {
-      "type": "rich-text",
-      "blocks": {
-        "image_d4ymRz": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/IMG_8379.jpg",
-            "width_mode": "custom",
-            "max_width": 600,
-            "mobile_max_width": 400
-          }
-        },
-        "divider_nDy6LC": {
-          "type": "divider",
-          "settings": {}
-        },
-        "heading_aHbT8X": {
-          "type": "heading",
-          "settings": {
-            "text": "LOOKING FOR GUIDANCE ON BECOMING AN ENDURANCE ATHLETE?",
-            "heading_tag": "h4",
-            "text_color": "",
-            "gradient": ""
-          }
-        },
-        "richtext_p4p3Gq": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Meet Mithun Liyanage, co founder of Endurance labs with x numbers of years coaching adn championship etc. click the link below to start your journey at endurance albs</p>"
-          }
-        },
-        "button_ck3qAJ": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "CONTACT MITHUN",
-            "url": "",
-            "background": "#fc6200",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "image_d4ymRz",
-        "divider_nDy6LC",
-        "heading_aHbT8X",
-        "richtext_p4p3Gq",
-        "button_ck3qAJ"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "content_width": "small",
-        "text_position": "center",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
+      "settings": {}
     }
   },
   "order": [
-    "main",
-    "slideshow_Qa4rBr",
-    "scrolling_text_TD8zFt",
-    "collection_list_mdrh9z",
-    "collection_list_VLmTUR",
-    "rich_text_p7jfjL"
+    "slideshow_Qa4rBr"
   ]
 }

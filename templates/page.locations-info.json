@@ -9,88 +9,70 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
     "images_with_text_scrolling_LxkVjb": {
-      "type": "images-with-text-scrolling",
+      "type": "snh-stores",
+      "settings": {
+        "anchor": "stores",
+        "eyebrow": "Visit us",
+        "heading": "Three stores, open every *day*",
+        "link_label": "All locations",
+        "link_url": "/pages/location",
+        "link_style": "link"
+      },
       "blocks": {
-        "item_TJxBKR": {
-          "type": "item",
+        "store_1": {
+          "type": "store",
           "settings": {
             "image": "shopify://shop_images/IMG_2488.png",
-            "icon": "none",
-            "icon_width": 48,
-            "title": "DEHIWALA",
-            "content": "<p>Our very first store located in <br/>133A Kawdana Road, Dehiwala. <br/>+94 77 977 3359<br/>Open everyday! </p><p>Come visit us 🧡</p><p><a href=\"https://maps.app.goo.gl/yv7NfU8qodJD58uV9\" title=\"Exact Location\">Exact Location</a></p>"
+            "image_alt": "SNH Dehiwala store",
+            "name": "Dehiwala",
+            "address": "133A Kawdana Road, Dehiwala",
+            "phone": "+94 77 977 3359",
+            "hours": "Open every day",
+            "map": "https://maps.app.goo.gl/yv7NfU8qodJD58uV9"
           }
         },
-        "item_haj8QD": {
-          "type": "item",
+        "store_2": {
+          "type": "store",
           "settings": {
             "image": "shopify://shop_images/IMG_2487.png",
-            "icon": "none",
-            "icon_width": 48,
-            "title": "WATTALA",
-            "content": "<p>Our beautiful second store located in <br/>880 Negombo Road, Wattala.<br/>+94 76 846 3359<br/>Open everyday! </p><p>Come visit us 🧡</p><p><a href=\"https://maps.app.goo.gl/HE2zcgj85Dxr9cux7\" title=\"Exact Location\">Exact Location</a></p>"
+            "image_alt": "SNH Wattala store",
+            "name": "Wattala",
+            "address": "880 Negombo Road, Wattala",
+            "phone": "+94 76 846 3359",
+            "hours": "Open every day",
+            "map": "https://maps.app.goo.gl/HE2zcgj85Dxr9cux7"
           }
         },
-        "item_dXUReM": {
-          "type": "item",
+        "store_3": {
+          "type": "store",
           "settings": {
             "image": "shopify://shop_images/Untitled_design_8e096a2a-793c-4c65-aeb5-672d6da38e8e.png",
-            "icon": "none",
-            "icon_width": 48,
-            "title": "NUGEGODA",
-            "content": "<p>Our third outlet located in a strategic location. <br/>555 High Level Rd, Nugegoda<br/>+94 76 486 3359<br/>Open Everyday </p><p>Come visit us 🧡<br/><a href=\"https://maps.app.goo.gl/EpBtzAunKUbUkb3q9?g_st=ic\" target=\"_blank\" title=\"Exact Location\">Exact Location</a></p>"
+            "image_alt": "SNH Nugegoda store",
+            "name": "Nugegoda",
+            "address": "555 High Level Road, Nugegoda",
+            "phone": "+94 76 486 3359",
+            "hours": "Open every day",
+            "map": "https://maps.app.goo.gl/EpBtzAunKUbUkb3q9?g_st=ic"
           }
         }
       },
       "block_order": [
-        "item_TJxBKR",
-        "item_haj8QD",
-        "item_dXUReM"
-      ],
-      "settings": {
-        "full_width": true,
-        "stack_on_mobile": false,
-        "show_counter": true,
-        "desktop_image_effect": "reveal",
-        "image_position": "end",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": ""
-      }
+        "store_1",
+        "store_2",
+        "store_3"
+      ]
     },
     "contact_XJaKKg": {
-      "type": "contact",
+      "type": "snh-contact",
       "settings": {
-        "full_width": false,
-        "subheading": "",
-        "title": "Do you have any questions?",
-        "content": "<p>CALL US ON +94 76 486 3359 FOR URGENT ENQUIRIES</p>",
-        "text_position": "start",
-        "contact_form_size": "large",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": "",
-        "contact_background": "",
-        "contact_text_color": "",
-        "button_background": "#e0521c",
-        "button_text_color": ""
+        "heading": "Do you have any questions?",
+        "eyebrow": "Contact",
+        "lead": "<p>CALL US ON +94 76 486 3359 FOR URGENT ENQUIRIES</p>"
       }
     }
   },
   "order": [
-    "main",
     "images_with_text_scrolling_LxkVjb",
     "contact_XJaKKg"
   ]

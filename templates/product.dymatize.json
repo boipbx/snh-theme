@@ -113,35 +113,96 @@
         "sticky_atc": true
       }
     },
-    "tiktok_profile_f7Ciiw": {
-      "type": "tiktok-profile",
-      "name": "TikTok Profile",
-      "settings": {
-        "eyebrow": "SNH on TikTok",
-        "heading": "FOLLOW US ON TIKTOK",
-        "subtext": "Watch new drops, product picks and store updates straight from Sports Nutrition Hub.",
-        "handle": "sportsnutritionhub.lk",
-        "height": 560
-      },
-      "disabled": true
+    "product_stats": {
+      "type": "snh-product-stats",
+      "settings": {}
     },
-    "scrolling_text_yeJznJ": {
-      "type": "scrolling-text",
-      "settings": {
-        "full_width": true,
-        "label": "Sports Nutrition Hub",
-        "text": "LEADING HEALTH & FITNESS STORE",
-        "text_size": "small",
-        "text_style": "fill",
-        "scrolling_mode": "auto",
-        "scrolling_speed": 10,
-        "background_gradient": "linear-gradient(133deg, rgba(250, 220, 54, 1) 11%, rgba(252, 146, 13, 1) 32.374%, rgba(252, 98, 0, 1) 49%, rgba(252, 98, 0, 1) 67.986%, rgba(250, 220, 54, 1) 87%)",
-        "dark_color": "#130b08",
-        "accent_color": "#e0521c",
-        "text_color": "#ffffff",
-        "text_gradient": ""
+    "product_details": {
+      "type": "snh-product-details",
+      "blocks": {
+        "collapsible_text_PWcrNi": {
+          "type": "tab",
+          "settings": {
+            "title": "Key Benefits",
+            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_text_zEQder": {
+          "type": "tab",
+          "settings": {
+            "title": "About the brand",
+            "content": "<h2><strong>Buy Dymatize Supplements in Sri Lanka – Official Distributor of Authentic USA Imports</strong></h2><p><strong>Dymatize Nutrition</strong> is one of the most respected sports nutrition brands in the world, recognized for its <strong>scientifically developed formulas</strong>, <strong>high-quality ingredients</strong>, and <strong>award-winning protein supplements</strong>. Founded in the USA over 25 years ago, Dymatize has become a trusted name among elite athletes, professional bodybuilders, and fitness enthusiasts across the globe.</p><p>Dymatize is best known for its top-selling supplements, including:</p><ul><li><strong>Dymatize ISO100 Hydrolyzed Whey Isolate</strong> – one of the purest and fastest-absorbing proteins available</li><li><strong>Elite Whey Protein</strong> – a great-tasting blend of whey protein concentrate and isolate</li><li><strong>Super Mass Gainer</strong> – designed for hard gainers needing serious calorie support</li><li><strong>Amino Pro and Micronized Creatine</strong> – supporting recovery, endurance, and performance</li></ul><h3><strong>Official Dymatize Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p>If you’re looking to <strong>buy Dymatize supplements in Sri Lanka</strong>, trust <strong>Sports Nutrition Hub (PVT) Ltd</strong>, the <strong>exclusive authorized distributor</strong> for Dymatize in the country. We directly import genuine Dymatize products from the USA, ensuring the highest standards of authenticity, freshness, and compliance.</p><p>Our products come with <strong>verified batch tracking</strong>, <strong>clear labeling</strong>, and <strong>proper storage conditions</strong>, so you always get the safest and most effective supplements.</p><h4><strong>Why Choose Sports Nutrition Hub?</strong></h4><ul><li>Official and exclusive distributor of Dymatize in Sri Lanka</li><li>100% authentic products, directly imported from the USA</li><li>Transparent pricing and fresh inventory</li><li>Nationwide delivery with excellent customer support</li><li>No counterfeits, no third-party sourcing</li></ul><h3><strong>Dymatize Supplements Available in Sri Lanka</strong></h3><p>We stock the full range of Dymatize products, including -</p><ul><li><strong>Whey Protein (ISO100, Elite Whey)</strong></li><li><strong>Mass Gainers (Super Mass Gainer)</strong></li><li><strong>Recovery & Performance (Creatine, Amino Pro)</strong></li></ul><p>Whether you’re searching for -</p><ul><li><em>“Dymatize ISO100 price in Sri Lanka”</em></li><li><em>“Where to buy Dymatize Elite Whey in Sri Lanka”</em></li><li><em>“Original Dymatize supplements online”</em></li></ul><p>…you’re in the right place. </p><p>Sports Nutrition Hub is your trusted source for premium <strong>sports and bodybuilding supplements in Sri Lanka</strong>.</p>",
+            "page": ""
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "collapsible_text_PWcrNi",
+        "collapsible_text_zEQder"
+      ],
+      "settings": {
+        "eyebrow": "The details",
+        "heading": "Everything *inside*",
+        "cream": false
+      }
+    },
+    "reviews": {
+      "type": "snh-app-band",
+      "blocks": {
+        "judge_me_reviews_review_widget_qYFmbi": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_qYFmbi"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "What customers *say*",
+        "anchor": "reviews",
+        "cream": true
+      }
+    },
+    "bought_together": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "complementary",
+        "limit": 4,
+        "eyebrow": "Pairs well with",
+        "heading": "Frequently bought *together*",
+        "cream": false
+      }
+    },
+    "related": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "related",
+        "limit": 4,
+        "eyebrow": "",
+        "heading": "You may also *like*",
+        "cream": false
+      }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "tone": "cream"
+      }
     },
     "snh_articles": {
       "type": "snh-related-articles",
@@ -153,6 +214,14 @@
         "heading": "Know what you're *taking*",
         "link_label": "All guides",
         "link_url": "/blogs/news"
+      }
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {
+        "limit": 4,
+        "heading": "Recently *viewed*",
+        "cream": false
       }
     },
     "snh_why": {
@@ -246,165 +315,8 @@
         "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
         "style": "light"
       },
-      "blocks": {
-        "question_1": {
-          "type": "question",
-          "settings": {
-            "question": "How long will it take to get my orders?",
-            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
-          }
-        },
-        "question_2": {
-          "type": "question",
-          "settings": {
-            "question": "Where can I come visit physically?",
-            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
-          }
-        },
-        "question_3": {
-          "type": "question",
-          "settings": {
-            "question": "I want to know more",
-            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
-          }
-        },
-        "question_4": {
-          "type": "question",
-          "settings": {
-            "question": "Are your supplements genuine?",
-            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
-          }
-        },
-        "question_5": {
-          "type": "question",
-          "settings": {
-            "question": "How do I know which supplement is right for me?",
-            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
-          }
-        },
-        "question_6": {
-          "type": "question",
-          "settings": {
-            "question": "What payment methods do you accept?",
-            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
-          }
-        },
-        "question_7": {
-          "type": "question",
-          "settings": {
-            "question": "Can I return or exchange a product?",
-            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question_1",
-        "question_2",
-        "question_3",
-        "question_4",
-        "question_5",
-        "question_6",
-        "question_7"
-      ]
-    },
-    "product_stats": {
-      "type": "snh-product-stats",
-      "settings": {}
-    },
-    "product_details": {
-      "type": "snh-product-details",
-      "blocks": {
-        "collapsible_text_PWcrNi": {
-          "type": "tab",
-          "settings": {
-            "title": "Key Benefits",
-            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
-            "page": ""
-          }
-        },
-        "collapsible_text_zEQder": {
-          "type": "tab",
-          "settings": {
-            "title": "About the brand",
-            "content": "<h2><strong>Buy Dymatize Supplements in Sri Lanka – Official Distributor of Authentic USA Imports</strong></h2><p><strong>Dymatize Nutrition</strong> is one of the most respected sports nutrition brands in the world, recognized for its <strong>scientifically developed formulas</strong>, <strong>high-quality ingredients</strong>, and <strong>award-winning protein supplements</strong>. Founded in the USA over 25 years ago, Dymatize has become a trusted name among elite athletes, professional bodybuilders, and fitness enthusiasts across the globe.</p><p>Dymatize is best known for its top-selling supplements, including:</p><ul><li><strong>Dymatize ISO100 Hydrolyzed Whey Isolate</strong> – one of the purest and fastest-absorbing proteins available</li><li><strong>Elite Whey Protein</strong> – a great-tasting blend of whey protein concentrate and isolate</li><li><strong>Super Mass Gainer</strong> – designed for hard gainers needing serious calorie support</li><li><strong>Amino Pro and Micronized Creatine</strong> – supporting recovery, endurance, and performance</li></ul><h3><strong>Official Dymatize Distributor in Sri Lanka – Sports Nutrition Hub</strong></h3><p>If you’re looking to <strong>buy Dymatize supplements in Sri Lanka</strong>, trust <strong>Sports Nutrition Hub (PVT) Ltd</strong>, the <strong>exclusive authorized distributor</strong> for Dymatize in the country. We directly import genuine Dymatize products from the USA, ensuring the highest standards of authenticity, freshness, and compliance.</p><p>Our products come with <strong>verified batch tracking</strong>, <strong>clear labeling</strong>, and <strong>proper storage conditions</strong>, so you always get the safest and most effective supplements.</p><h4><strong>Why Choose Sports Nutrition Hub?</strong></h4><ul><li>Official and exclusive distributor of Dymatize in Sri Lanka</li><li>100% authentic products, directly imported from the USA</li><li>Transparent pricing and fresh inventory</li><li>Nationwide delivery with excellent customer support</li><li>No counterfeits, no third-party sourcing</li></ul><h3><strong>Dymatize Supplements Available in Sri Lanka</strong></h3><p>We stock the full range of Dymatize products, including -</p><ul><li><strong>Whey Protein (ISO100, Elite Whey)</strong></li><li><strong>Mass Gainers (Super Mass Gainer)</strong></li><li><strong>Recovery & Performance (Creatine, Amino Pro)</strong></li></ul><p>Whether you’re searching for -</p><ul><li><em>“Dymatize ISO100 price in Sri Lanka”</em></li><li><em>“Where to buy Dymatize Elite Whey in Sri Lanka”</em></li><li><em>“Original Dymatize supplements online”</em></li></ul><p>…you’re in the right place. </p><p>Sports Nutrition Hub is your trusted source for premium <strong>sports and bodybuilding supplements in Sri Lanka</strong>.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "collapsible_text_PWcrNi",
-        "collapsible_text_zEQder"
-      ],
-      "settings": {
-        "eyebrow": "The details",
-        "heading": "Everything *inside*",
-        "cream": false
-      }
-    },
-    "reviews": {
-      "type": "snh-app-band",
-      "blocks": {
-        "judge_me_reviews_review_widget_qYFmbi": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_qYFmbi"
-      ],
-      "settings": {
-        "eyebrow": "Reviews",
-        "heading": "What customers *say*",
-        "anchor": "reviews",
-        "cream": true
-      }
-    },
-    "bought_together": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "complementary",
-        "limit": 4,
-        "eyebrow": "Pairs well with",
-        "heading": "Frequently bought *together*",
-        "cream": false
-      }
-    },
-    "related": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "related",
-        "limit": 4,
-        "eyebrow": "",
-        "heading": "You may also *like*",
-        "cream": false
-      }
-    },
-    "recent": {
-      "type": "snh-recently-viewed",
-      "settings": {
-        "limit": 4,
-        "heading": "Recently *viewed*",
-        "cream": false
-      }
-    },
-    "snh_tiktok": {
-      "type": "snh-tiktok",
-      "settings": {
-        "handle": "sportsnutritionhub.lk",
-        "heading": "Seen on *TikTok*",
-        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
-        "follow_label": "Follow on TikTok",
-        "side_heading": "New videos every week",
-        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
-        "videos_heading": "Featured *videos*",
-        "height": 640,
-        "tone": "cream"
-      }
+      "blocks": {},
+      "block_order": []
     }
   },
   "order": [
@@ -418,8 +330,6 @@
     "snh_articles",
     "recent",
     "snh_why",
-    "tiktok_profile_f7Ciiw",
-    "snh_faq",
-    "scrolling_text_yeJznJ"
+    "snh_faq"
   ]
 }

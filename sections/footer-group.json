@@ -11,60 +11,6 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
-    "footer": {
-      "type": "footer",
-      "blocks": {
-        "newsletter": {
-          "type": "newsletter",
-          "settings": {
-            "image_width": 150,
-            "heading_size": "h4",
-            "title": "SUBSCRIBE!        NO SPAM. ONLY DISCOUNT CODES & PRODUCT INFO!",
-            "content": ""
-          }
-        },
-        "links_T6QGea": {
-          "type": "links",
-          "settings": {
-            "menu": "footer",
-            "show_menu_title": true,
-            "menu_title": "SUPPORT"
-          }
-        },
-        "links_FGUr7Q": {
-          "type": "links",
-          "settings": {
-            "menu": "",
-            "show_menu_title": true,
-            "menu_title": "SHOP SUPPLEMENTS"
-          }
-        },
-        "links_aJ8ndL": {
-          "type": "links",
-          "settings": {
-            "menu": "shop-accessories",
-            "show_menu_title": true,
-            "menu_title": ""
-          }
-        }
-      },
-      "block_order": [
-        "newsletter",
-        "links_T6QGea",
-        "links_FGUr7Q",
-        "links_aJ8ndL"
-      ],
-      "disabled": true,
-      "settings": {
-        "show_social_media": true,
-        "show_payment_icons": true,
-        "show_policy_links": false,
-        "show_country_selector": true,
-        "show_country_flag": true,
-        "show_country_name": true,
-        "show_locale_selector": true
-      }
-    },
     "snh_footer": {
       "type": "snh-footer",
       "blocks": {
@@ -142,7 +88,6 @@
     }
   },
   "order": [
-    "snh_footer",
-    "footer"
+    "snh_footer"
   ]
 }

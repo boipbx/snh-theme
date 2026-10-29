@@ -930,457 +930,458 @@
         "info": "180 x 180px .png recommended"
       }
     ]
-  },{
-  "name": "SNH bundle offers",
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Global bundle offers — set once here, they apply on EVERY product template. Each offer only shows on the pages of the products it contains. The discount itself comes from your Shopify discounts. Need more offers? Use the next empty slot."
-    },
-    {
-      "type": "header",
-      "content": "Offer 1"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_1_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_1_title",
-      "label": "Offer name",
-      "default": "Flavoured creatine twin pack"
-    },
-    {
-      "type": "text",
-      "id": "bundle_1_save",
-      "label": "Saving label",
-      "default": "2 for Rs 15,000"
-    },
-    {
-      "type": "header",
-      "content": "Offer 2"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_2_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_2_title",
-      "label": "Offer name",
-      "default": "Unflavoured creatine twin pack"
-    },
-    {
-      "type": "text",
-      "id": "bundle_2_save",
-      "label": "Saving label",
-      "default": "2 for Rs 15,000"
-    },
-    {
-      "type": "header",
-      "content": "Offer 3"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_3_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_3_title",
-      "label": "Offer name",
-      "default": "ISO-XP + creatine stack"
-    },
-    {
-      "type": "text",
-      "id": "bundle_3_save",
-      "label": "Saving label",
-      "default": "Save Rs 2,000"
-    },
-    {
-      "type": "header",
-      "content": "Offer 4"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_4_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_4_title",
-      "label": "Offer name",
-      "default": "Creatine + ABE stack"
-    },
-    {
-      "type": "text",
-      "id": "bundle_4_save",
-      "label": "Saving label",
-      "default": "Save Rs 1,500"
-    },
-    {
-      "type": "header",
-      "content": "Offer 5"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_5_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_5_title",
-      "label": "Offer name",
-      "default": "Daily wellness trio"
-    },
-    {
-      "type": "text",
-      "id": "bundle_5_save",
-      "label": "Saving label",
-      "default": "Save Rs 2,000"
-    },
-    {
-      "type": "header",
-      "content": "Offer 6"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_6_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_6_title",
-      "label": "Offer name",
-      "default": "ZMA + multivitamin"
-    },
-    {
-      "type": "text",
-      "id": "bundle_6_save",
-      "label": "Saving label",
-      "default": "Save Rs 1,500"
-    },
-    {
-      "type": "header",
-      "content": "Offer 7"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_7_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_7_title",
-      "label": "Offer name",
-      "default": "Ashwagandha + multivitamin"
-    },
-    {
-      "type": "text",
-      "id": "bundle_7_save",
-      "label": "Saving label",
-      "default": "Save Rs 1,500"
-    },
-    {
-      "type": "header",
-      "content": "Offer 8"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_8_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_8_title",
-      "label": "Offer name",
-      "default": "Collagen + creatine"
-    },
-    {
-      "type": "text",
-      "id": "bundle_8_save",
-      "label": "Saving label",
-      "default": "Save Rs 1,500"
-    },
-    {
-      "type": "header",
-      "content": "Offer 9"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_9_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_9_title",
-      "label": "Offer name",
-      "default": "Multi + omega-3 + D3/K2"
-    },
-    {
-      "type": "text",
-      "id": "bundle_9_save",
-      "label": "Saving label",
-      "default": "Save Rs 2,000"
-    },
-    {
-      "type": "header",
-      "content": "Offer 10"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_10_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_10_title",
-      "label": "Offer name",
-      "default": "Hydro tablet twin pack"
-    },
-    {
-      "type": "text",
-      "id": "bundle_10_save",
-      "label": "Saving label",
-      "default": "Save Rs 500"
-    },
-    {
-      "type": "header",
-      "content": "Offer 11"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_11_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_11_title",
-      "label": "Offer name",
-      "default": "Hydro tablets + isotonic gels"
-    },
-    {
-      "type": "text",
-      "id": "bundle_11_save",
-      "label": "Saving label",
-      "default": "Save Rs 500"
-    },
-    {
-      "type": "header",
-      "content": "Offer 12"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_12_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_12_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_12_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 13"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_13_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_13_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_13_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 14"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_14_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_14_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_14_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 15"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_15_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_15_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_15_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 16"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_16_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_16_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_16_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 17"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_17_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_17_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_17_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 18"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_18_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_18_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_18_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 19"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_19_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_19_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_19_save",
-      "label": "Saving label"
-    },
-    {
-      "type": "header",
-      "content": "Offer 20"
-    },
-    {
-      "type": "product_list",
-      "id": "bundle_20_products",
-      "label": "Products in this bundle",
-      "limit": 4,
-      "info": "Offer shows on each of these product pages. One product = twin pack."
-    },
-    {
-      "type": "text",
-      "id": "bundle_20_title",
-      "label": "Offer name"
-    },
-    {
-      "type": "text",
-      "id": "bundle_20_save",
-      "label": "Saving label"
-    }
-  ]
-},
+  },
+  {
+    "name": "SNH bundle offers",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Global bundle offers — set once here, they apply on EVERY product template. Each offer only shows on the pages of the products it contains. The discount itself comes from your Shopify discounts. Need more offers? Use the next empty slot."
+      },
+      {
+        "type": "header",
+        "content": "Offer 1"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_1_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_1_title",
+        "label": "Offer name",
+        "default": "Flavoured creatine twin pack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_1_save",
+        "label": "Saving label",
+        "default": "2 for Rs 15,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 2"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_2_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_2_title",
+        "label": "Offer name",
+        "default": "Unflavoured creatine twin pack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_2_save",
+        "label": "Saving label",
+        "default": "2 for Rs 15,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 3"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_3_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_3_title",
+        "label": "Offer name",
+        "default": "ISO-XP + creatine stack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_3_save",
+        "label": "Saving label",
+        "default": "Save Rs 2,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 4"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_4_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_4_title",
+        "label": "Offer name",
+        "default": "Creatine + ABE stack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_4_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 5"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_5_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_5_title",
+        "label": "Offer name",
+        "default": "Daily wellness trio"
+      },
+      {
+        "type": "text",
+        "id": "bundle_5_save",
+        "label": "Saving label",
+        "default": "Save Rs 2,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 6"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_6_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_6_title",
+        "label": "Offer name",
+        "default": "ZMA + multivitamin"
+      },
+      {
+        "type": "text",
+        "id": "bundle_6_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 7"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_7_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_7_title",
+        "label": "Offer name",
+        "default": "Ashwagandha + multivitamin"
+      },
+      {
+        "type": "text",
+        "id": "bundle_7_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 8"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_8_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_8_title",
+        "label": "Offer name",
+        "default": "Collagen + creatine"
+      },
+      {
+        "type": "text",
+        "id": "bundle_8_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 9"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_9_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_9_title",
+        "label": "Offer name",
+        "default": "Multi + omega-3 + D3/K2"
+      },
+      {
+        "type": "text",
+        "id": "bundle_9_save",
+        "label": "Saving label",
+        "default": "Save Rs 2,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 10"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_10_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_10_title",
+        "label": "Offer name",
+        "default": "Hydro tablet twin pack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_10_save",
+        "label": "Saving label",
+        "default": "Save Rs 500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 11"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_11_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_11_title",
+        "label": "Offer name",
+        "default": "Hydro tablets + isotonic gels"
+      },
+      {
+        "type": "text",
+        "id": "bundle_11_save",
+        "label": "Saving label",
+        "default": "Save Rs 500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 12"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_12_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_12_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_12_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 13"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_13_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_13_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_13_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 14"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_14_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_14_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_14_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 15"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_15_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_15_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_15_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 16"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_16_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_16_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_16_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 17"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_17_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_17_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_17_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 18"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_18_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_18_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_18_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 19"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_19_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_19_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_19_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 20"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_20_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_20_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_20_save",
+        "label": "Saving label"
+      }
+    ]
+  },
   {
     "name": "SNH Elite",
     "settings": [
@@ -1518,6 +1519,17 @@
         "id": "snh_rating_source",
         "label": "Source",
         "default": "Google reviews"
+      },
+      {
+        "type": "header",
+        "content": "SNH FAQ"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_faq_global",
+        "label": "Global FAQ",
+        "default": "How fast is delivery? :: Colombo orders arrive the same day. Outside Colombo, 2–3 working days. Delivery is free over Rs 17,000.\nWhere are your stores? :: Three stores: Dehiwala (133A Kawdana Road), Wattala (880 Negombo Road) and Nugegoda (555 High Level Road). Search “Sports Nutrition Hub” on Google Maps.\nHow can I pay? :: Card, bank transfer, cash on delivery, or Koko: split your order into 3 interest-free payments at checkout.\nAre your supplements genuine? :: Yes. We stock only genuine products sourced directly from authorised distributors and the brands themselves.\nHow do SNH Elite points work? :: Every paid order earns points: 3% back at Bronze, 7% at Silver and 10% at Gold. Trade them for cash off from your account. Joining is free.\nCan I return or exchange a product? :: Unopened, unused products in their original sealed condition can be returned or exchanged under our return policy. If an order arrives damaged or wrong, contact us within 24 hours and we'll fix it.\nWhich supplement is right for me? :: Tell us your goal, diet and training, or build your plan in your account. Call or WhatsApp [whatsapp] and our team will recommend only what you need.",
+        "info": "One per line: Question :: Answer. Used by every SNH FAQ section without its own questions (product pages first use the product's custom.faqs metafield). [whatsapp] = the number above."
       }
     ]
   },

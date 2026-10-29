@@ -3,6 +3,8 @@
   (the member's own when signed in, a sample otherwise), join → earn → redeem, tier ladder, FAQ, closing CTA.
   Rates, thresholds and perks: Theme settings → SNH Elite. Styles: assets/snh-account.css (.ep).
 {%- endcomment -%}
+{%- comment -%} Round 11: with "Only on the snh-elite page" on (page.json), it renders only for that handle. {%- endcomment -%}
+{%- unless section.settings.only_elite and page.handle != 'snh-elite' -%}
 {{ 'snh-account.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign welcome = settings.snh_welcome_points | default: 500
@@ -116,27 +118,96 @@
   </section>
 </div>
 
+{%- endunless -%}
+
 {% schema %}
 {
   "name": "SNH Elite page",
   "class": "shopify-section--snh-elite-page",
   "settings": [
-    { "type": "paragraph", "content": "Rates, thresholds, welcome points and tier perks: Theme settings → SNH Elite. Wrap a word in *asterisks* for the serif." },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SNH Elite · free to join" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Every order *pays* you back" },
-    { "type": "text", "id": "lead", "label": "Lead", "info": "[bronze], [silver] and [gold] print the earn rates.", "default": "Sri Lanka's premium supplement rewards club. Earn [bronze] to [gold] back in points on everything you buy, and climb to Silver and Gold as you go." },
-    { "type": "text", "id": "sample_name", "label": "Name on the sample card", "default": "Your name here" },
-    { "type": "text", "id": "how_heading", "label": "How it works heading", "default": "Join, earn, redeem" },
-    { "type": "text", "id": "tiers_heading", "label": "Tiers heading", "default": "Three tiers, one climb" },
-    { "type": "text", "id": "faq_heading", "label": "FAQ heading", "default": "Questions, answered" },
-    { "type": "text", "id": "cta_heading", "label": "Closing heading", "default": "Start earning on your *next* order" }
+    {
+      "type": "checkbox",
+      "id": "only_elite",
+      "label": "Only on the page with the handle snh-elite",
+      "default": false,
+      "info": "On for the default page template, so other pages don't show it."
+    },
+    {
+      "type": "paragraph",
+      "content": "Rates, thresholds, welcome points and tier perks: Theme settings → SNH Elite. Wrap a word in *asterisks* for the serif."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "SNH Elite · free to join"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Every order *pays* you back"
+    },
+    {
+      "type": "text",
+      "id": "lead",
+      "label": "Lead",
+      "info": "[bronze], [silver] and [gold] print the earn rates.",
+      "default": "Sri Lanka's premium supplement rewards club. Earn [bronze] to [gold] back in points on everything you buy, and climb to Silver and Gold as you go."
+    },
+    {
+      "type": "text",
+      "id": "sample_name",
+      "label": "Name on the sample card",
+      "default": "Your name here"
+    },
+    {
+      "type": "text",
+      "id": "how_heading",
+      "label": "How it works heading",
+      "default": "Join, earn, redeem"
+    },
+    {
+      "type": "text",
+      "id": "tiers_heading",
+      "label": "Tiers heading",
+      "default": "Three tiers, one climb"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "FAQ heading",
+      "default": "Questions, answered"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "Closing heading",
+      "default": "Start earning on your *next* order"
+    }
   ],
   "blocks": [
-    { "type": "faq", "name": "Question", "settings": [
-      { "type": "text", "id": "q", "label": "Question" },
-      { "type": "richtext", "id": "a", "label": "Answer" }
-    ] }
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "q",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "a",
+          "label": "Answer"
+        }
+      ]
+    }
   ],
-  "presets": [{ "name": "SNH Elite page" }]
+  "presets": [
+    {
+      "name": "SNH Elite page"
+    }
+  ]
 }
 {% endschema %}

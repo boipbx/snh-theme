@@ -113,35 +113,96 @@
         "sticky_atc": true
       }
     },
-    "tiktok_profile_PpbDGD": {
-      "type": "tiktok-profile",
-      "name": "TikTok Profile",
-      "settings": {
-        "eyebrow": "SNH on TikTok",
-        "heading": "FOLLOW US ON TIKTOK",
-        "subtext": "Watch new drops, product picks and store updates straight from Sports Nutrition Hub.",
-        "handle": "sportsnutritionhub.lk",
-        "height": 560
-      },
-      "disabled": true
+    "product_stats": {
+      "type": "snh-product-stats",
+      "settings": {}
     },
-    "scrolling_text_yeJznJ": {
-      "type": "scrolling-text",
-      "settings": {
-        "full_width": true,
-        "label": "Sports Nutrition Hub",
-        "text": "LEADING HEALTH & FITNESS STORE",
-        "text_size": "small",
-        "text_style": "fill",
-        "scrolling_mode": "auto",
-        "scrolling_speed": 10,
-        "background_gradient": "linear-gradient(133deg, rgba(250, 220, 54, 1) 11%, rgba(252, 146, 13, 1) 32.374%, rgba(252, 98, 0, 1) 49%, rgba(252, 98, 0, 1) 67.986%, rgba(250, 220, 54, 1) 87%)",
-        "dark_color": "#130b08",
-        "accent_color": "#e0521c",
-        "text_color": "#ffffff",
-        "text_gradient": ""
+    "product_details": {
+      "type": "snh-product-details",
+      "blocks": {
+        "collapsible_text_PWcrNi": {
+          "type": "tab",
+          "settings": {
+            "title": "Key Benefits",
+            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_text_zEQder": {
+          "type": "tab",
+          "settings": {
+            "title": "About the brand",
+            "content": "<p><strong>Applied Nutrition</strong> is one of the fastest-growing and most trusted <strong>sports supplement brands in the world</strong>, known for its scientifically formulated, high-performance products. Manufactured in the <strong>UK</strong> and tested for banned substances under the <strong>Informed-Sport</strong> program, Applied Nutrition has become the go-to choice for serious athletes, bodybuilders, and gym-goers worldwide.</p><p>Their top-selling supplements like:</p><ul><li><strong>ABE Pre-Workout (All Black Everything)</strong></li><li><strong>Critical Whey Protein</strong></li><li><strong>ISO-XP Whey Isolate</strong></li><li><strong>Critical Mass Gainer</strong>are now <strong>officially available in Sri Lanka</strong>, exclusively through <strong>Sports Nutrition Hub (PVT) Ltd</strong>.</li></ul><h3><strong>Official Applied Nutrition Distributor in Sri Lanka</strong></h3><p>Looking for <strong>original Applied Nutrition supplements in Sri Lanka</strong>? Sports Nutrition Hub is the <strong>exclusive distributor</strong>of the full Applied Nutrition product range. Every product is <strong>directly imported from the UK</strong>, ensuring <strong>authenticity, proper storage, and maximum potency</strong>.</p><h4><strong>Why buy Applied Nutrition from Sports Nutrition Hub?</strong></h4><ul><li><strong>100% Authentic Products – Verified Imports</strong></li><li><strong>Fresh stock with batch tracking</strong></li><li><strong>Best Prices & Nationwide Delivery</strong></li><li><strong>Informed-Sport Certified (Safe for Athletes)</strong></li></ul><p>Whether you’re searching for:</p><ul><li><strong>“Applied Nutrition ISO XP price in Sri Lanka”</strong></li><li><strong>“ABE Pre Workout buy online”</strong></li><li><strong>“Critical Whey original supplement”</strong></li></ul><p>…you’ll find it here — <strong>authentic, affordable, and fast-delivered</strong>.</p><h3><strong>Shop Applied Nutrition Products Online in Sri Lanka</strong></h3><p>Explore our full range of <strong>Applied Nutrition supplements</strong> including <strong>whey protein, mass gainers, amino acids, and pre-workouts</strong>.</p><p><a href=\"/collections/applied-nutrition\" title=\"APPLIED NUTRITION\">Click here</a></p><p></p>",
+            "page": ""
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "collapsible_text_PWcrNi",
+        "collapsible_text_zEQder"
+      ],
+      "settings": {
+        "eyebrow": "The details",
+        "heading": "Everything *inside*",
+        "cream": false
+      }
+    },
+    "reviews": {
+      "type": "snh-app-band",
+      "blocks": {
+        "judge_me_reviews_review_widget_qYFmbi": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_qYFmbi"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "What customers *say*",
+        "anchor": "reviews",
+        "cream": true
+      }
+    },
+    "bought_together": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "complementary",
+        "limit": 4,
+        "eyebrow": "Pairs well with",
+        "heading": "Frequently bought *together*",
+        "cream": false
+      }
+    },
+    "related": {
+      "type": "snh-product-recs",
+      "settings": {
+        "intent": "related",
+        "limit": 4,
+        "eyebrow": "",
+        "heading": "You may also *like*",
+        "cream": false
+      }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "tone": "cream"
+      }
     },
     "snh_articles": {
       "type": "snh-related-articles",
@@ -153,6 +214,14 @@
         "heading": "Know what you're *taking*",
         "link_label": "All guides",
         "link_url": "/blogs/news"
+      }
+    },
+    "recent": {
+      "type": "snh-recently-viewed",
+      "settings": {
+        "limit": 4,
+        "heading": "Recently *viewed*",
+        "cream": false
       }
     },
     "snh_why": {
@@ -246,165 +315,8 @@
         "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
         "style": "light"
       },
-      "blocks": {
-        "question_1": {
-          "type": "question",
-          "settings": {
-            "question": "How long will it take to get my orders?",
-            "answer": "<p>It depends on your delivery address. Colombo Orders: Same Day Out of Colombo Orders: 2-3 Working Days</p>"
-          }
-        },
-        "question_2": {
-          "type": "question",
-          "settings": {
-            "question": "Where can I come visit physically?",
-            "answer": "<p>We have three stores: DEHIWALA, WATTALA, NUGEGODA Simply type ‘Sports Nutrition Hub’ on Google Maps and the options will appear.</p>"
-          }
-        },
-        "question_3": {
-          "type": "question",
-          "settings": {
-            "question": "I want to know more",
-            "answer": "<p>The fastest way to get an answer would be to call us or WhatsApp us on [whatsapp]</p>"
-          }
-        },
-        "question_4": {
-          "type": "question",
-          "settings": {
-            "question": "Are your supplements genuine?",
-            "answer": "<p>Yes. We stock only genuine products sourced directly from authorized distributors and trusted international brands. Your health and safety are our highest priority.</p>"
-          }
-        },
-        "question_5": {
-          "type": "question",
-          "settings": {
-            "question": "How do I know which supplement is right for me?",
-            "answer": "<p>Tell us about your fitness goals, diet, training experience, and any medical conditions or dietary restrictions. Our team will recommend products that best suit your needs—without pushing unnecessary supplements.</p>"
-          }
-        },
-        "question_6": {
-          "type": "question",
-          "settings": {
-            "question": "What payment methods do you accept?",
-            "answer": "<p>We accept card payments, bank transfers, cash on delivery, &amp; Koko.</p>"
-          }
-        },
-        "question_7": {
-          "type": "question",
-          "settings": {
-            "question": "Can I return or exchange a product?",
-            "answer": "<p>Returns and exchanges are accepted only for products that are unopened, unused, and in their original sealed condition, subject to our return policy. If your order arrives damaged or incorrect, contact us within 24 hours and we’ll resolve it promptly.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question_1",
-        "question_2",
-        "question_3",
-        "question_4",
-        "question_5",
-        "question_6",
-        "question_7"
-      ]
-    },
-    "product_stats": {
-      "type": "snh-product-stats",
-      "settings": {}
-    },
-    "product_details": {
-      "type": "snh-product-details",
-      "blocks": {
-        "collapsible_text_PWcrNi": {
-          "type": "tab",
-          "settings": {
-            "title": "Key Benefits",
-            "content": "<p>{{ product.metafields.custom.key_benefits | metafield_tag }}.</p>",
-            "page": ""
-          }
-        },
-        "collapsible_text_zEQder": {
-          "type": "tab",
-          "settings": {
-            "title": "About the brand",
-            "content": "<p><strong>Applied Nutrition</strong> is one of the fastest-growing and most trusted <strong>sports supplement brands in the world</strong>, known for its scientifically formulated, high-performance products. Manufactured in the <strong>UK</strong> and tested for banned substances under the <strong>Informed-Sport</strong> program, Applied Nutrition has become the go-to choice for serious athletes, bodybuilders, and gym-goers worldwide.</p><p>Their top-selling supplements like:</p><ul><li><strong>ABE Pre-Workout (All Black Everything)</strong></li><li><strong>Critical Whey Protein</strong></li><li><strong>ISO-XP Whey Isolate</strong></li><li><strong>Critical Mass Gainer</strong>are now <strong>officially available in Sri Lanka</strong>, exclusively through <strong>Sports Nutrition Hub (PVT) Ltd</strong>.</li></ul><h3><strong>Official Applied Nutrition Distributor in Sri Lanka</strong></h3><p>Looking for <strong>original Applied Nutrition supplements in Sri Lanka</strong>? Sports Nutrition Hub is the <strong>exclusive distributor</strong>of the full Applied Nutrition product range. Every product is <strong>directly imported from the UK</strong>, ensuring <strong>authenticity, proper storage, and maximum potency</strong>.</p><h4><strong>Why buy Applied Nutrition from Sports Nutrition Hub?</strong></h4><ul><li><strong>100% Authentic Products – Verified Imports</strong></li><li><strong>Fresh stock with batch tracking</strong></li><li><strong>Best Prices & Nationwide Delivery</strong></li><li><strong>Informed-Sport Certified (Safe for Athletes)</strong></li></ul><p>Whether you’re searching for:</p><ul><li><strong>“Applied Nutrition ISO XP price in Sri Lanka”</strong></li><li><strong>“ABE Pre Workout buy online”</strong></li><li><strong>“Critical Whey original supplement”</strong></li></ul><p>…you’ll find it here — <strong>authentic, affordable, and fast-delivered</strong>.</p><h3><strong>Shop Applied Nutrition Products Online in Sri Lanka</strong></h3><p>Explore our full range of <strong>Applied Nutrition supplements</strong> including <strong>whey protein, mass gainers, amino acids, and pre-workouts</strong>.</p><p><a href=\"/collections/applied-nutrition\" title=\"APPLIED NUTRITION\">Click here</a></p><p></p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "collapsible_text_PWcrNi",
-        "collapsible_text_zEQder"
-      ],
-      "settings": {
-        "eyebrow": "The details",
-        "heading": "Everything *inside*",
-        "cream": false
-      }
-    },
-    "reviews": {
-      "type": "snh-app-band",
-      "blocks": {
-        "judge_me_reviews_review_widget_qYFmbi": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_qYFmbi"
-      ],
-      "settings": {
-        "eyebrow": "Reviews",
-        "heading": "What customers *say*",
-        "anchor": "reviews",
-        "cream": true
-      }
-    },
-    "bought_together": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "complementary",
-        "limit": 4,
-        "eyebrow": "Pairs well with",
-        "heading": "Frequently bought *together*",
-        "cream": false
-      }
-    },
-    "related": {
-      "type": "snh-product-recs",
-      "settings": {
-        "intent": "related",
-        "limit": 4,
-        "eyebrow": "",
-        "heading": "You may also *like*",
-        "cream": false
-      }
-    },
-    "recent": {
-      "type": "snh-recently-viewed",
-      "settings": {
-        "limit": 4,
-        "heading": "Recently *viewed*",
-        "cream": false
-      }
-    },
-    "snh_tiktok": {
-      "type": "snh-tiktok",
-      "settings": {
-        "handle": "sportsnutritionhub.lk",
-        "heading": "Seen on *TikTok*",
-        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
-        "follow_label": "Follow on TikTok",
-        "side_heading": "New videos every week",
-        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
-        "videos_heading": "Featured *videos*",
-        "height": 640,
-        "tone": "cream"
-      }
+      "blocks": {},
+      "block_order": []
     }
   },
   "order": [
@@ -418,8 +330,6 @@
     "snh_articles",
     "recent",
     "snh_why",
-    "tiktok_profile_PpbDGD",
-    "snh_faq",
-    "scrolling_text_yeJznJ"
+    "snh_faq"
   ]
 }
