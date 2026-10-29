@@ -1,0 +1,86 @@
+{%- comment -%}
+  DEV ONLY (Round 7 QA): renders the signed-in account UI with mock data, because a real customer can't be signed in
+  for screenshots. Template page.elite-mock, opened with ?view=elite-mock on any page; not linked anywhere.
+  Each State block: header icon + account panel + the full dashboard (the same snippets the live pages use).
+  Nothing here reads or writes customer data; the redeem and re-order buttons are inert.
+{%- endcomment -%}
+{{ 'snh-account.css' | asset_url | stylesheet_tag }}
+<div class="v2 mock">
+  <p class="mock__flag" role="note">Dev only · mock customer data · not linked anywhere</p>
+  {%- for b in section.blocks -%}
+    {%- if b.type == 'out' -%}
+      <section class="mock__state" id="state-{{ b.settings.key }}" data-state="{{ b.settings.key }}" {{ b.shopify_attributes }}>
+        <div class="v-wrap mock__bar"><span class="mock__label">{{ b.settings.label }}</span>{% render 'snh-acct-button' %}</div>
+        <div class="v-wrap mock__panel">{%- render 'snh-acct-panel', id: 'acp-mock-out', mock: true, signed_out: true, note: 'Join free and earn [bronze]–[gold] back in points on every order.' -%}</div>
+      </section>
+    {%- else -%}
+      {%- liquid
+        capture m
+          render 'snh-elite-calc', mock: true, tier: b.settings.tier, points: b.settings.points, spend: b.settings.spend
+        endcapture
+        assign m = m | strip | split: '|'
+        assign lines = b.settings.orders | newline_to_br | split: '<br />'
+        assign n = 0
+        capture rows
+          for l in lines
+            assign f = l | strip | split: '|'
+            if f.size > 7
+              assign n = n | plus: 1
+              assign it = f[6] | plus: 0
+              render 'snh-order-row', mock: true, name: f[0], date: f[1], pay: f[2], pay_label: f[3], ful_label: f[4], total: f[5], items: it, title: f[7]
+            endif
+          endfor
+        endcapture
+        assign full = b.settings.first_name | append: ' ' | append: b.settings.last_name
+      -%}
+      <section class="mock__state" id="state-{{ b.settings.key }}" data-state="{{ b.settings.key }}" {{ b.shopify_attributes }}>
+        <div class="v-wrap mock__bar"><span class="mock__label">{{ b.settings.label }}</span>{% render 'snh-acct-button', mock: true, first_name: b.settings.first_name, tier: b.settings.tier, points: b.settings.points, spend: b.settings.spend %}</div>
+        <div class="v-wrap mock__panel">{%- assign pid = 'acp-mock-' | append: b.settings.key -%}{%- render 'snh-acct-panel', id: pid, mock: true, first_name: b.settings.first_name, tier: b.settings.tier, points: b.settings.points, spend: b.settings.spend -%}</div>
+        <div class="acc-page mock__dash">
+          {%- render 'snh-account-dashboard',
+            m: m, mock: true,
+            first_name: b.settings.first_name, name: full, email: b.settings.email, phone: b.settings.phone, no: 427,
+            address: b.settings.address, addresses_count: b.settings.addresses,
+            orders_html: rows, orders_count: n, pagination_html: '',
+            refer_text: 'Give Rs 500, get Rs 500', refer_link: '#'
+          -%}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+<style>
+  .mock__flag { position: sticky; top: 0; z-index: 30; padding: 8px var(--gutter); background: #FFE08A; color: var(--ink); font: 600 13px/1.5 var(--sans); text-align: center; }
+  .mock__state { padding-block: 32px 0; border-top: 8px solid var(--cream); }
+  .mock__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .mock__label { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2); }
+  .mock__panel { padding-block: 24px; }
+  .mock__panel .acp { width: min(420px, 100%); }
+</style>
+
+{% schema %}
+{
+  "name": "DEV · SNH Elite mock",
+  "settings": [{ "type": "paragraph", "content": "Dev only. Mock data for QA screenshots. Do not add to a live page." }],
+  "blocks": [
+    { "type": "out", "name": "Signed-out state", "settings": [
+      { "type": "text", "id": "key", "label": "Key", "default": "out" },
+      { "type": "text", "id": "label", "label": "Label", "default": "Signed out" }
+    ] },
+    { "type": "member", "name": "Member state", "settings": [
+      { "type": "text", "id": "key", "label": "Key" },
+      { "type": "text", "id": "label", "label": "Label" },
+      { "type": "text", "id": "first_name", "label": "First name" },
+      { "type": "text", "id": "last_name", "label": "Last name" },
+      { "type": "text", "id": "email", "label": "Email" },
+      { "type": "text", "id": "phone", "label": "Phone" },
+      { "type": "text", "id": "tier", "label": "loyalty_tier (empty = none)" },
+      { "type": "text", "id": "points", "label": "loyalty_points (empty = none)" },
+      { "type": "text", "id": "spend", "label": "annual_spend (empty = none)" },
+      { "type": "html", "id": "address", "label": "Default address (HTML)" },
+      { "type": "number", "id": "addresses", "label": "Address count", "default": 0 },
+      { "type": "textarea", "id": "orders", "label": "Orders", "info": "One per line: no|date|pay|pay label|fulfilment label|total Rs|items|first item" }
+    ] }
+  ]
+}
+{% endschema %}

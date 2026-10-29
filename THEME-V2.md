@@ -215,3 +215,29 @@ is still in the repo, on no template). Fresh markup; CSS in `assets/snh-product.
 - Collection templates set to Impact's *sidebar* filters (the brand collections) now show the SNH filter bar full
   width above a 4-column grid, like the others.
 - Audit: `prototype/tools/r6-site-audit.js [label]` → `prototype/shots/r6/audit-<label>.md`.
+
+## Round 7: SNH Elite accounts (classic customer accounts)
+
+Inventory and metafields: `ELITE-INVENTORY.md`. The store uses **classic** accounts (`/account/login` is
+theme-rendered), so every `templates/customers/*.json` now uses a v2 section. The old `main-customers-*` sections
+are still in the repo, on no template.
+
+| Piece | Where |
+|---|---|
+| Loyalty figures (one place) | `snippets/snh-elite-calc` reads `customer.metafields.custom.loyalty_tier` / `loyalty_points` / `annual_spend`. Display only. Empty tier/spend → estimate from `customer.total_spent`, labelled; empty points → "—". |
+| Header account icon + panel | `snippets/snh-acct-button`, `snh-acct-panel` (in `snh-header`), JS in `snh-v2.js` (header init). Phones: the icon sits next to the menu button; the panel is full screen. |
+| Dashboard | `sections/snh-account` → `snippets/snh-account-dashboard` (card `snh-elite-card`, rewards `snh-elite-reward`, tiers `snh-elite-tiers`, rows `snh-order-row`, nav `snh-account-nav`) |
+| Order, addresses, sign in, register, activate/reset | `snh-account-order`, `snh-account-addresses` (+ `snh-address-form`), `snh-account-login`, `snh-account-register`, `snh-account-password` (+ `snh-auth-aside`) |
+| SNH Elite page | `sections/snh-elite-page`, `templates/page.snh-elite.json` |
+| Styles / JS | `assets/snh-account.css`, `assets/snh-account.js` |
+| Mock QA page (dev only) | `templates/page.elite-mock.json` + `sections/snh-elite-mock`; open any page with `?view=elite-mock`. Not linked. Remove it before publishing if you prefer. |
+| QA | `prototype/tools/r7-qa.js` → `prototype/shots/r7/qa.md` + screenshots; `r7-panel-shot.js` |
+
+New theme settings (**SNH Elite**): welcome points (500), redeem from (2,500), Rs value of one point (1, confirm),
+Bronze/Silver/Gold perks (one per line).
+
+- **Redeem**: at the redeem threshold the dashboard shows *Trade 2,500 points*, the old theme's request (customer
+  form, tag `Trigger_Redeem_2500`). The store's Flow on that tag issues the reward; the theme never changes a balance.
+- **Elite links**: anything pointing at `#elite` (nav link) and the Elite links in the account UI go to
+  `/pages/snh-elite` as soon as a page with that handle exists, otherwise to the homepage band.
+- Register keeps the old step-2 fields (`customer[note][Phone|Address|City|Birthday]`).

@@ -1,0 +1,77 @@
+{
+  "sections": {
+    "main": {
+      "type": "snh-elite-mock",
+      "blocks": {
+        "out": {
+          "type": "out",
+          "settings": {
+            "key": "out",
+            "label": "Signed out"
+          }
+        },
+        "bronze": {
+          "type": "member",
+          "settings": {
+            "key": "bronze",
+            "label": "Bronze · new member, metafields empty",
+            "first_name": "Kasun",
+            "last_name": "Silva",
+            "email": "kasun@example.com",
+            "phone": "",
+            "tier": "",
+            "points": "",
+            "spend": "",
+            "address": "",
+            "addresses": 0,
+            "orders": ""
+          }
+        },
+        "silver": {
+          "type": "member",
+          "settings": {
+            "key": "silver",
+            "label": "Silver · mid-progress to Gold",
+            "first_name": "Nimal",
+            "last_name": "Perera",
+            "email": "nimal@example.com",
+            "phone": "+94 77 123 4567",
+            "tier": "Silver",
+            "points": "1840",
+            "spend": "241500",
+            "address": "Nimal Perera<br>42 Galle Road<br>Colombo 03<br>Sri Lanka<br>+94 77 123 4567",
+            "addresses": 2,
+            "orders": "#18452|21 Oct 2026|paid|Paid|Fulfilled|28400|3|Applied Nutrition Critical Whey 2kg\n#18311|02 Oct 2026|paid|Paid|Fulfilled|12950|1|Optimum Nutrition Micronised Creatine 300g\n#18190|14 Sep 2026|pending|Pending|Unfulfilled|9800|2|SiS GO Hydro Tablets\n#17902|20 Aug 2026|refunded|Refunded|Fulfilled|6500|1|Vitabiotics Wellman Original"
+          }
+        },
+        "gold": {
+          "type": "member",
+          "settings": {
+            "key": "gold",
+            "label": "Gold · top tier, reward ready",
+            "first_name": "Dilani",
+            "last_name": "Fernando",
+            "email": "dilani@example.com",
+            "phone": "+94 76 486 0000",
+            "tier": "Gold",
+            "points": "12480",
+            "spend": "326000",
+            "address": "Dilani Fernando<br>18 Ward Place<br>Colombo 07<br>Sri Lanka",
+            "addresses": 1,
+            "orders": "#18460|24 Oct 2026|paid|Paid|Fulfilled|45200|4|RAW Nutrition Sulek Stack\n#18377|11 Oct 2026|paid|Paid|Fulfilled|18600|2|RYSE Loaded Pre-workout"
+          }
+        }
+      },
+      "block_order": [
+        "out",
+        "bronze",
+        "silver",
+        "gold"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

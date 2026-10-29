@@ -1,6 +1,6 @@
 /* SNH account pages + SNH Elite UI (Round 7). Loaded by the snh-account* sections, snh-elite-page and snh-elite-mock.
    Round 6 scale only: type 12 13 14 15 16 18 20 24 28 36 44 56 72 96 · sections 48 / 64 · container 1280 (v-wrap).
-   Tier colours ([data-tier] → --tier / --tier-c) and .tbadge live in snh-v2.css with the header panel. */
+   Tier colours ([data-tier] → --tier / --tier-c) and .tierb live in snh-v2.css with the header panel. */
 
 .acc-page { padding-block: var(--section); background: var(--white); }
 .acc { display: grid; gap: 40px; }

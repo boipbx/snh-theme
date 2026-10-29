@@ -51,7 +51,8 @@
           <span class="acp__av" data-tier="{{ m[0] }}">{{ who | slice: 0 | upcase }}</span>
           <div class="acp__id">
             <p class="acp__name" id="{{ id }}-t">Hi, {{ who | escape }}</p>
-            <span class="tbadge tbadge--{{ m[0] }}">{{ m[1] }} member{% if m[2] == '1' %} · estimated{% endif %}</span>
+            <span class="tierb tierb--{{ m[0] }}">{{ m[1] }} member</span>
+            {%- if m[2] == '1' -%}<span class="acp__est">Tier estimated from your orders</span>{%- endif -%}
           </div>
         </div>
 
