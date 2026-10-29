@@ -555,3 +555,17 @@ guests: **Join SNH Elite** benefits + "Build your SNH plan in 2 minutes". Empty 
 plan + bestsellers. Then recently viewed and the FAQ. Hand-picked **Bestsellers** setting on the drawer and the page
 (seeded with the homepage bestsellers' "All" tab), since the store has no bestsellers collection.
 The old `main-cart` section stays in the repo, on no template.
+
+### Phase 8: email capture (the slow video popup is gone)
+`newsletter-popup` was removed from the overlay group (the section file stays). One form for every format,
+`snippets/snh-email-form` (Shopify customer form + marketing consent + tags → Klaviyo through its Shopify sync, as
+before; normal POST with hCaptcha). `sections/snh-email-capture` (overlay group) + `assets/snh-capture.js/.css`:
+1. **Modal**: desktop on exit intent; phones after 45s or 60 % scroll; at most once every 14 days; static image
+   (optional video, loaded only when it opens); after the POST it re-opens with the thank-you and the code (SNH10).
+2. **Slide-in** bottom-left on product and blog pages after 50 % scroll; dismissal remembered 30 days; one prompt per
+   page view (the modal waits); sits above the sticky add-to-cart bar on phones.
+3. **Inline**: the homepage newsletter band and a new newsletter row at the top of the footer (setting).
+Never on cart / checkout / account / password pages, never for signed-in customers or anyone who subscribed on this
+device. Settings: offer copy, code, image, video, timings, per-format on/off. Fixed overlays only (no layout shift).
+QA: `prototype/tools/r11-capture-qa.js` → `prototype/shots/r11/p8/capture-qa.md` (exit intent, 14-day cap, 15 days
+later, known subscriber, cart exclusion, phone scroll trigger, slide-in + remembered dismissal; nothing submitted).

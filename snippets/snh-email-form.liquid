@@ -1,0 +1,22 @@
+{%- comment -%}
+  SNH email capture form (Round 11), shared by the inline newsletter band, the footer, the modal and the slide-in.
+  Shopify's customer form (POST /contact, form_type=customer) with marketing consent + tags, so Klaviyo picks the
+  subscriber up through its Shopify sync, the same wiring as the old popup (PRESERVE.md 3.9). A normal page POST with
+  data-shopify-captcha, so Shopify's hCaptcha runs. On submit assets/snh-capture.js remembers the visitor as
+  subscribed (localStorage snh_sub), so no popup asks again.
+  id (unique) · tags · placeholder · button · success · code: shown after subscribing · dark: true on ink
+{%- endcomment -%}
+{%- form 'customer', id: id, class: 'ecf', data-shopify-captcha: 'true', data-ecf: '' -%}
+  <input type="hidden" name="contact[tags]" value="{{ tags | default: 'newsletter' | escape }}">
+  <input type="hidden" name="contact[accepts_marketing]" value="true">
+  {%- if form.posted_successfully? -%}
+    <p class="ecf__ok" role="status" data-ecf-ok>{% render 'snh-v2-icon', name: 'check' %}<span>{{ success | default: "Thanks, you're on the list." | escape }}{% if code != blank %} Your code: <b>{{ code | escape }}</b>{% endif %}</span></p>
+  {%- else -%}
+    <label for="{{ id }}-email" class="v-sr">Email</label>
+    <div class="ecf__row">
+      <input class="ecf__in" id="{{ id }}-email" type="email" name="contact[email]" placeholder="{{ placeholder | default: 'Email address' | escape }}" autocomplete="email" required>
+      <button class="v-btn v-btn--accent ecf__go" type="submit"><span>{{ button | default: 'Subscribe' | escape }}</span></button>
+    </div>
+    {%- if form.errors -%}<p class="ecf__err" role="alert">{{ form.errors.translated_fields.email | default: 'Email' }} {{ form.errors.messages.email | default: form.errors.messages.form }}</p>{%- endif -%}
+  {%- endif -%}
+{%- endform -%}

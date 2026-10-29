@@ -1,0 +1,63 @@
+// Round 11 email capture QA: modal triggers + 14-day capping, slide-in, exclusions, no layout shift. Nothing is
+// submitted (the form submit is only intercepted to check the "subscribed" memory). PW=<playwright> node …
+const { chromium } = require(process.env.PW || 'playwright');
+const fs = require('fs'), path = require('path');
+const DEV = process.env.DEV || 'http://127.0.0.1:9292';
+const OUT = path.join(__dirname, '..', 'shots', 'r11', 'p8');
+(async () => {
+  fs.mkdirSync(OUT, { recursive: true });
+  const b = await chromium.launch();
+  const out = [];
+  const block = (p) => Promise.all([p.route(/monorail|analytics|trekkie|web-pixels/, (r) => r.abort()), p.route(/\/contact/, (r) => (r.request().method() === 'POST' ? r.abort() : r.continue()))]);
+  const isOpen = (p) => p.evaluate(() => !!document.querySelector('[data-ecm]') && document.querySelector('[data-ecm]').open);
+  // 1. desktop exit intent, then capped on the next visit
+  let ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+  let p = await ctx.newPage(); await block(p);
+  await p.addInitScript(() => { window.__cls = 0; new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cls += e.value; }).observe({ type: 'layout-shift', buffered: true }); });
+  await p.goto(DEV + '/', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(2500);
+  const before = await isOpen(p);
+  const clsBefore = await p.evaluate(() => window.__cls);
+  await p.mouse.move(700, 400); await p.mouse.move(700, 5); await p.evaluate(() => document.dispatchEvent(new MouseEvent('mouseout', { clientY: -1, relatedTarget: null, bubbles: true })));
+  await p.waitForTimeout(700);
+  const after = await isOpen(p);
+  await p.screenshot({ path: path.join(OUT, 'modal-1440.png') });
+  const clsAfter = await p.evaluate(() => window.__cls);
+  out.push(`desktop: open before exit intent ${before}, after ${after}; CLS from opening ${(clsAfter - clsBefore).toFixed(4)}`);
+  await p.goto(DEV + '/', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(2000);
+  await p.evaluate(() => document.dispatchEvent(new MouseEvent('mouseout', { clientY: -1, relatedTarget: null, bubbles: true }))); await p.waitForTimeout(600);
+  out.push(`desktop, second visit within 14 days: open ${await isOpen(p)} (want false)`);
+  await p.evaluate(() => localStorage.setItem('snh_ecm_t', String(Date.now() - 15 * 864e5)));
+  await p.goto(DEV + '/', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(2000);
+  await p.evaluate(() => document.dispatchEvent(new MouseEvent('mouseout', { clientY: -1, relatedTarget: null, bubbles: true }))); await p.waitForTimeout(600);
+  out.push(`desktop, 15 days later: open ${await isOpen(p)} (want true)`);
+  await p.evaluate(() => { localStorage.setItem('snh_sub', '1'); localStorage.removeItem('snh_ecm_t'); });
+  await p.goto(DEV + '/', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(2000);
+  await p.evaluate(() => document.dispatchEvent(new MouseEvent('mouseout', { clientY: -1, relatedTarget: null, bubbles: true }))); await p.waitForTimeout(600);
+  out.push(`desktop, known subscriber: open ${await isOpen(p)} (want false)`);
+  await p.goto(DEV + '/cart', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(1500);
+  out.push(`cart page: capture markup present ${await p.evaluate(() => !!document.querySelector('[data-email-capture]'))} (want false)`);
+  await ctx.close();
+  // 2. phone: after 60 % scroll (home), slide-in on a product page
+  ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  p = await ctx.newPage(); await block(p);
+  await p.goto(DEV + '/', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(2000);
+  out.push(`phone home, no scroll yet: open ${await isOpen(p)}`);
+  await p.evaluate(() => scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * 0.62)); await p.waitForTimeout(800);
+  out.push(`phone home after 62 % scroll: open ${await isOpen(p)} (want true)`);
+  await p.screenshot({ path: path.join(OUT, 'modal-390.png') });
+  await p.evaluate(() => localStorage.setItem('snh_ecm_t', String(Date.now())));
+  await p.goto(DEV + '/products/sis-go-hydro-tablets', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(2000);
+  await p.evaluate(() => scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * 0.55)); await p.waitForTimeout(900);
+  const t = await p.evaluate(() => { const e = document.querySelector('[data-ect]'); return e ? !e.hidden : 'none'; });
+  out.push(`phone product page after 55 % scroll: slide-in shown ${t} (want true)`);
+  await p.screenshot({ path: path.join(OUT, 'slidein-390.png') });
+  await p.click('[data-ect-close]').catch(() => {}); await p.waitForTimeout(500);
+  await p.reload({ waitUntil: 'domcontentloaded' }); await p.waitForTimeout(1500);
+  await p.evaluate(() => scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * 0.6)); await p.waitForTimeout(900);
+  out.push(`after dismissing, next product view: slide-in shown ${await p.evaluate(() => !document.querySelector('[data-ect]').hidden)} (want false)`);
+  await ctx.close();
+  await b.close();
+  const md = ['# Round 11 email capture QA', '', ...out.map((x) => '- ' + x)];
+  fs.writeFileSync(path.join(OUT, 'capture-qa.md'), md.join('\n') + '\n');
+  console.log(md.join('\n'));
+})();

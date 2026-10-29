@@ -1,7 +1,9 @@
 {%- comment -%}
   SNH newsletter (prototype "First to know"). Shopify customer form with marketing consent + tags; Klaviyo picks the
   subscriber up through its Shopify integration (same route as the live newsletter popup).
+  Round 11: the form is snippets/snh-email-form (shared with the footer, the modal and the slide-in).
 {%- endcomment -%}
+{{ 'snh-capture.css' | asset_url | stylesheet_tag }}
 {%- assign hid = 'news-' | append: section.id -%}
 {%- assign fid = 'news-form-' | append: section.id -%}
 <section class="v2 v-section v-section--cream" aria-labelledby="{{ hid }}">
@@ -10,18 +12,7 @@
       <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
       {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
     </div>
-    {%- form 'customer', id: fid, class: 'news__form' -%}
-      <input type="hidden" name="contact[tags]" value="{{ section.settings.tags | escape }}">
-      <input type="hidden" name="contact[accepts_marketing]" value="true">
-      {%- if form.posted_successfully? -%}
-        <p class="news__msg" role="status">{{ section.settings.success | escape }}</p>
-      {%- else -%}
-        <label for="{{ fid }}-email" hidden>Email</label>
-        <input class="v-input" id="{{ fid }}-email" type="email" name="contact[email]" placeholder="{{ section.settings.placeholder | escape }}" autocomplete="email" required>
-        <button class="v-btn v-btn--accent" type="submit"><span>{{ section.settings.button | escape }}</span></button>
-        {%- if form.errors -%}<p class="news__msg news__msg--err" role="alert">{{ form.errors.translated_fields.email | default: 'Email' }} {{ form.errors.messages.email | default: form.errors.messages.form }}</p>{%- endif -%}
-      {%- endif -%}
-    {%- endform -%}
+    <div class="news__form">{%- render 'snh-email-form', id: fid, tags: section.settings.tags, placeholder: section.settings.placeholder, button: section.settings.button, success: section.settings.success -%}</div>
   </div>
 </section>
 

@@ -1,0 +1,89 @@
+{%- comment -%}
+  SNH email capture (Round 11; replaces the old video newsletter popup, which stays in the repo, off). Two light
+  formats sharing snippets/snh-email-form (Shopify customer form → Klaviyo via its Shopify sync):
+  1. Modal: desktop on exit intent; phones after 45s or 60 % scroll. Static image (optional video, loaded only when
+     the modal opens). At most once every 14 days.
+  2. Slide-in teaser, bottom-left, on product and blog pages after 50 % scroll; dismissible and remembered.
+  Never on cart, checkout, account or password pages, never for signed-in customers or known subscribers (subscribed
+  on this device, or ?customer_posted). Both are fixed overlays built hidden, so nothing moves the page (no CLS).
+  Behaviour: assets/snh-capture.js. Settings: offer copy, images, per-format on/off.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign pt = request.page_type
+  assign skip = false
+  if customer or pt == 'cart' or pt == 'password' or pt == 'captcha' or pt contains 'customers' or request.path contains '/checkout' or request.path contains '/account'
+    assign skip = true
+  endif
+  assign teaser_ok = false
+  if pt == 'product' or pt == 'article' or pt == 'blog'
+    assign teaser_ok = true
+  endif
+-%}
+{%- unless skip -%}
+  {{ 'snh-capture.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'snh-capture.js' | asset_url }}" defer></script>
+  <div data-email-capture data-modal="{{ s.modal_on }}" data-teaser="{% if s.teaser_on and teaser_ok %}true{% else %}false{% endif %}" data-days="{{ s.days }}" data-delay="{{ s.mobile_delay }}" data-scroll="{{ s.mobile_scroll }}">
+    {%- if s.modal_on -%}
+      <dialog class="ecm" data-ecm aria-labelledby="ecm-h-{{ section.id }}">
+        <div class="ecm__in">
+          <button class="ecm__x" type="button" data-ecm-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
+          <div class="ecm__copy">
+            {%- if s.kicker != blank -%}<p class="eyebrow">{{ s.kicker | escape }}</p>{%- endif -%}
+            <h2 class="ecm__h" id="ecm-h-{{ section.id }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
+            {%- if s.text != blank -%}<p class="ecm__p">{{ s.text | escape }}</p>{%- endif -%}
+            {%- assign mfid = 'ecm-form-' | append: section.id -%}
+            {%- render 'snh-email-form', id: mfid, tags: s.tags, button: s.button, success: s.success, code: s.code -%}
+            {%- if s.fine != blank -%}<p class="ecm__fine">{{ s.fine | escape }}</p>{%- endif -%}
+          </div>
+          <div class="ecm__media" aria-hidden="true">
+            {%- if s.image != blank -%}{{ s.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '500,700,900', sizes: '(max-width: 767px) 0px, 420px', alt: '', class: 'ecm__img' }}{%- endif -%}
+            {%- if s.video != blank -%}<template data-ecm-video>{{ s.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', class: 'ecm__vid' }}</template>{%- endif -%}
+            {%- if s.caption != blank -%}<p class="ecm__cap">{{ s.caption | escape }}</p>{%- endif -%}
+          </div>
+        </div>
+      </dialog>
+    {%- endif -%}
+    {%- if s.teaser_on and teaser_ok -%}
+      <aside class="ect" data-ect hidden aria-labelledby="ect-h-{{ section.id }}">
+        <button class="ect__x" type="button" data-ect-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
+        <p class="ect__h" id="ect-h-{{ section.id }}">{{ s.teaser_heading | escape }}</p>
+        {%- if s.teaser_text != blank -%}<p class="ect__p">{{ s.teaser_text | escape }}</p>{%- endif -%}
+        {%- assign tfid = 'ect-form-' | append: section.id -%}
+        {%- render 'snh-email-form', id: tfid, tags: s.teaser_tags, button: 'Get it', success: s.success, code: s.code -%}
+      </aside>
+    {%- endif -%}
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "SNH email capture",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "paragraph", "content": "Never shown on cart, checkout, account or password pages, to signed-in customers, or to anyone who has subscribed on this device." },
+    { "type": "header", "content": "Offer" },
+    { "type": "text", "id": "kicker", "label": "Eyebrow", "default": "Welcome to SNH" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get *10% off* your first order" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Plus new drops, restocks and member offers. No spam." },
+    { "type": "text", "id": "button", "label": "Button", "default": "Get my code" },
+    { "type": "text", "id": "code", "label": "Discount code (shown after subscribing)", "default": "SNH10" },
+    { "type": "text", "id": "success", "label": "Thank-you message", "default": "You're in." },
+    { "type": "text", "id": "fine", "label": "Fine print", "default": "One use per customer. Unsubscribe any time." },
+    { "type": "text", "id": "tags", "label": "Customer tags (modal)", "default": "newsletter,welcome-offer", "info": "Klaviyo receives these through its Shopify sync." },
+    { "type": "header", "content": "Modal" },
+    { "type": "checkbox", "id": "modal_on", "label": "Show the modal", "default": true, "info": "Desktop: when the pointer leaves the page. Phones: after the delay or the scroll depth below." },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "video", "id": "video", "label": "Video (optional)", "info": "Loaded only when the modal opens." },
+    { "type": "text", "id": "caption", "label": "Image caption", "default": "Fuelling athletes." },
+    { "type": "range", "id": "days", "label": "Show again after", "min": 1, "max": 60, "step": 1, "unit": "d", "default": 14 },
+    { "type": "range", "id": "mobile_delay", "label": "Phones: after", "min": 10, "max": 120, "step": 5, "unit": "s", "default": 45 },
+    { "type": "range", "id": "mobile_scroll", "label": "Phones: or after scrolling", "min": 20, "max": 90, "step": 5, "unit": "%", "default": 60 },
+    { "type": "header", "content": "Slide-in (product and blog pages)" },
+    { "type": "checkbox", "id": "teaser_on", "label": "Show the slide-in", "default": true, "info": "Bottom-left after half the page; dismissing it is remembered." },
+    { "type": "text", "id": "teaser_heading", "label": "Heading", "default": "10% off your first order" },
+    { "type": "text", "id": "teaser_text", "label": "Text", "default": "Join the list for drops and member offers." },
+    { "type": "text", "id": "teaser_tags", "label": "Customer tags (slide-in)", "default": "newsletter,slide-in" }
+  ]
+}
+{% endschema %}

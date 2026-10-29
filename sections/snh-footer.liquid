@@ -2,8 +2,17 @@
   SNH footer v2: stores + menu columns, payments line, socials, legal, and the full-width SNH logo that bleeds off the
   bottom edge under a black gradient, with a wipe reveal and the orange dot pop (assets/snh-v2.js data-v2="reveal").
 {%- endcomment -%}
+{{ 'snh-capture.css' | asset_url | stylesheet_tag }}
 <footer class="v2 ftr footer">
   <div class="v-wrap">
+    {%- if section.settings.news_show -%}
+      {%- comment -%} Round 11: the inline newsletter (snippets/snh-email-form, same form as the homepage band) {%- endcomment -%}
+      <div class="ftr__news">
+        <div class="ftr__news-t"><p class="ftr__news-h">{% render 'snh-v2-heading', text: section.settings.news_heading %}</p>{%- if section.settings.news_text != blank -%}<p class="ftr__news-p">{{ section.settings.news_text | escape }}</p>{%- endif -%}</div>
+        {%- assign nfid = 'ftr-news-' | append: section.id -%}
+        {%- render 'snh-email-form', id: nfid, tags: 'newsletter,footer', button: 'Subscribe' -%}
+      </div>
+    {%- endif -%}
     <div class="ftr__cols">
       {%- assign stores = section.blocks | where: 'type', 'store' -%}
       {%- if stores.size > 0 -%}
@@ -51,37 +60,146 @@
   "name": "SNH footer",
   "class": "snh-ftr-sec shopify-section--footer",
   "settings": [
-    { "type": "text", "id": "stores_heading", "label": "Stores heading", "default": "Visit or call" },
-    { "type": "text", "id": "hours", "label": "Hours line", "default": "Open every day · Support 10am–7pm" },
-    { "type": "text", "id": "payments", "label": "Payments line", "default": "Pay by card, bank transfer, cash on delivery or Koko · pay in 3" },
-    { "type": "paragraph", "content": "WhatsApp comes from Theme settings → SNH contact and reviews; Instagram, TikTok and Facebook from Theme settings → Social media." },
-    { "type": "text", "id": "legal", "label": "Legal line", "default": "Sports Nutrition Hub (Pvt) Ltd." },
-    { "type": "checkbox", "id": "policy_links", "label": "Show store policy links", "default": false },
-    { "type": "header", "content": "Bleeding logo" },
-    { "type": "image_picker", "id": "mark", "label": "Logo", "info": "Spans the full width, cropped by the bottom edge under a black gradient. Shown white." },
-    { "type": "checkbox", "id": "dot", "label": "Orange dot", "default": true }
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "news_show",
+      "label": "Show the newsletter row",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "news_heading",
+      "label": "Heading",
+      "default": "First to *know*"
+    },
+    {
+      "type": "text",
+      "id": "news_text",
+      "label": "Text",
+      "default": "New drops, restocks and member offers. No spam."
+    },
+    {
+      "type": "text",
+      "id": "stores_heading",
+      "label": "Stores heading",
+      "default": "Visit or call"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Hours line",
+      "default": "Open every day · Support 10am–7pm"
+    },
+    {
+      "type": "text",
+      "id": "payments",
+      "label": "Payments line",
+      "default": "Pay by card, bank transfer, cash on delivery or Koko · pay in 3"
+    },
+    {
+      "type": "paragraph",
+      "content": "WhatsApp comes from Theme settings → SNH contact and reviews; Instagram, TikTok and Facebook from Theme settings → Social media."
+    },
+    {
+      "type": "text",
+      "id": "legal",
+      "label": "Legal line",
+      "default": "Sports Nutrition Hub (Pvt) Ltd."
+    },
+    {
+      "type": "checkbox",
+      "id": "policy_links",
+      "label": "Show store policy links",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Bleeding logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "mark",
+      "label": "Logo",
+      "info": "Spans the full width, cropped by the bottom edge under a black gradient. Shown white."
+    },
+    {
+      "type": "checkbox",
+      "id": "dot",
+      "label": "Orange dot",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "store",
       "name": "Store",
       "settings": [
-        { "type": "text", "id": "name", "label": "Name", "default": "Dehiwala" },
-        { "type": "text", "id": "address", "label": "Address", "default": "133A Kawdana Road" },
-        { "type": "text", "id": "phone", "label": "Phone", "default": "+94 77 977 3359" }
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Dehiwala"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Address",
+          "default": "133A Kawdana Road"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone",
+          "default": "+94 77 977 3359"
+        }
       ]
     },
     {
       "type": "menu",
       "name": "Menu column",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Info" },
-        { "type": "link_list", "id": "menu", "label": "Menu", "info": "Pick a Navigation menu. When none is picked the lines below are used." },
-        { "type": "textarea", "id": "links", "label": "Fallback links", "info": "One per line: Label | /pages/handle" }
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Info"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Pick a Navigation menu. When none is picked the lines below are used."
+        },
+        {
+          "type": "textarea",
+          "id": "links",
+          "label": "Fallback links",
+          "info": "One per line: Label | /pages/handle"
+        }
       ]
     }
   ],
-  "enabled_on": { "groups": ["footer"] },
-  "presets": [{ "name": "SNH footer", "blocks": [{ "type": "store" }, { "type": "menu" }] }]
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
+  "presets": [
+    {
+      "name": "SNH footer",
+      "blocks": [
+        {
+          "type": "store"
+        },
+        {
+          "type": "menu"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
