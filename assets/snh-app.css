@@ -354,7 +354,7 @@
 
 /* tier journey (Round 10): track + next-tier card + rows */
 .tj { display: grid; gap: 24px; }
-.tj__track { position: relative; height: 112px; margin: 0 8px; }
+.tj__track { position: relative; height: 112px; margin: 0 16px; }
 .tj__bar { position: absolute; left: 0; right: 0; top: 52px; height: 8px; border-radius: 4px; background: var(--cream); overflow: hidden; }
 .tj__fill { display: block; width: var(--you); height: 100%; border-radius: inherit; background: linear-gradient(90deg, #C47B45, #E3AB3D); transform-origin: left; animation: app-grow 1.4s cubic-bezier(.2, .8, .2, 1) 200ms both; }
 .tj__stop { position: absolute; top: 72px; left: var(--at); display: grid; gap: 0; transform: translateX(-50%); text-align: center; white-space: nowrap; }

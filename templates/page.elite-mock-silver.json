@@ -12,7 +12,7 @@
     "main": {
       "type": "snh-app-mock",
       "settings": {
-        "label": "Silver · mid-progress, redeemable points, running low",
+        "label": "Silver · near reward (320 points to go), running low, unfulfilled order",
         "first_name": "Nimal",
         "last_name": "Perera",
         "email": "nimal@example.com",
@@ -20,9 +20,9 @@
         "bday": "1991-06-14",
         "joined": "2025-01-18",
         "tier": "Silver",
-        "points": "3120",
+        "points": "2180",
         "spend": "241500",
-        "tags": "",
+        "tags": "goal:endurance, goal2:hydration-recovery, freq:4x, sport:running, diet:none, challenge:recovery",
         "marketing": true,
         "address": "Nimal Perera<br>42 Galle Road<br>Colombo 03<br>Sri Lanka<br>+94 77 123 4567",
         "addresses": 2,

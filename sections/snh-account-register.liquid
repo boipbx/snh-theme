@@ -46,7 +46,7 @@
         <fieldset class="reg__step" data-reg-step="2" hidden>
           <legend class="v-sr">Delivery and birthday</legend>
           <div class="aform__grid">
-            <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="customer[note][Phone]" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" pattern="[+0-9 ()\-]{9,17}" required data-sl-mobile aria-describedby="reg-mob-err reg-mob-help"></label>
+            <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="customer[note][Phone]" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" pattern="\+?[0-9 ]{9,16}" required data-sl-mobile aria-describedby="reg-mob-err reg-mob-help"></label>
             <p class="fld__err fld--full" id="reg-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
             <p class="fld__help fld--full" id="reg-mob-help">For delivery updates and your points. Saved as +94XXXXXXXXX.</p>
             <label class="fld"><span>Street address</span><input type="text" name="customer[note][Address]" autocomplete="address-line1" required></label>

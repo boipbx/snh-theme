@@ -300,3 +300,25 @@ JS `assets/snh-app.js`. Data, writes, backend to-dos and the data dictionary: **
   Meta developer app or regenerate it. The v2 theme stores no token.
 
 QA: `prototype/tools/r9-qa.js` → `prototype/shots/r9/qa.md` + screenshots (390 / 768 / 1440).
+
+## Round 10: SNH Elite app, fixes and personalisation
+
+Everything data-related is in **`ELITE-ROADMAP.md`** (writes, CAPTCHA, tracking, tag dictionary, app spec, Klaviyo).
+
+| Change | Where |
+|---|---|
+| **CAPTCHA fix**: every tag-writing form (redeem, plan quiz, birthday, newsletter, referral notify-me) is a Liquid `{% form 'customer' %}` with `data-shopify-captcha="true"` and `return_to=/account?snh_posted=<kind>#<view>`, posted as a normal page POST (no fetch, no `form.submit()`); green banner on return. Sign-up answers go in `customer[tags]` on `create_customer`. | `snh-app-rewards`, `snh-onboarding-quiz`, `snh-app-profile`, `snh-app-overview`, `snh-account-register`, `assets/snh-app.js` (`protectForms`, `flash`) |
+| Impact's account banner (grey Orders · Addresses · Logout strip) no longer rendered | `layout/theme.liquid` |
+| Names wrap (2 lines / one step smaller, full name in `title`); order search (every word, any case) + status filter on real states; sign-out confirm sheet | `snh-app`, `snh-app-tiercard`, `snh-app-orders` |
+| Orders: one human status (Processing · Packed · Shipped · Delivered · Refunded · Cancelled), timeline + Track parcel, Active order pinned, "Now in a bundle", re-order preview sheet | `snh-app-order-data` (fields 15–20), `snh-app-order-card`, `snh-app-timeline`, `snh-app-active`, `snh-app-bundles`, `snh-app-bundle-card`, `snh-app-reorder` |
+| Rewards: earnings calculator, Earn → Climb → Redeem, tier journey track + next-tier card + tier rows | `snh-app-rewards`, `snh-app-tierjourney` (`snh-app-tiers` is unused, kept) |
+| "Build your SNH plan": 13 branching questions, XP + level up, shaker game, stack + bundle + tip + PNG plan card | `snh-onboarding-quiz`, `snh-quiz-stackdata`, `assets/snh-app.js` |
+| Personalised promos (metaobject `member_promotion`, else *Member promotion* blocks); picks/running-low weighted by diet, second goal, budget | `snh-app-promos`, `snh-app-picks` |
+| Profile header + avatar studio (V8 icons, 8 sporty presets, 6 colours), birthday add flow, photo upload placeholder (setting, off), honest referral card + app block slot | `snh-app-profile`, `snh-app-overview`, `snh-v2-icon` (sporty icon set) |
+| Klaviyo HTML drafts (files only) | `klaviyo-templates/` |
+| Mock personas: new, bronze (shipped order + bundle), silver (near reward), gold (redeem pending), vegan (vegan plan, reward ready), quiz | `templates/page.elite-mock-*.json` |
+| QA | `prototype/tools/r10-qa.js` → `prototype/shots/r10/qa.md` |
+
+New account-page settings: *Orders → Show an order as delivered after* (4 days), *Bundle collections*, *Plan quiz →
+stack categories*, *Referral rewards are live*, *Show "Upload a photo"*. New blocks: *Member promotion*, *Apps*.
+Class names to avoid in the app (taken elsewhere): `.promo`, `.mpromo`, `.mcard`, `.tcard`, `.goal`, `.tiers`.
