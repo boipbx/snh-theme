@@ -241,3 +241,30 @@ Bronze/Silver/Gold perks (one per line).
 - **Elite links**: anything pointing at `#elite` (nav link) and the Elite links in the account UI go to
   `/pages/snh-elite` as soon as a page with that handle exists, otherwise to the homepage band.
 - Register keeps the old step-2 fields (`customer[note][Phone|Address|City|Birthday]`).
+
+## Round 8: SNH Elite member app
+
+`customers/account` is now an app: `sections/snh-account-app` → `snippets/snh-app` (shell) with views
+`snh-app-overview`, `-rewards`, `-orders`, `-goals`, `-profile`. Desktop: sidebar (member mini-card + nav). Phones and
+tablets (< 1024px): bottom tab bar with safe-area padding; the page is padded so the bar never covers content.
+Hash routes `#overview #rewards #orders #goals #profile`; the last view is remembered. Styles `assets/snh-app.css`,
+JS `assets/snh-app.js`. Data, writes, backend to-dos and the data dictionary: **`ELITE-ROADMAP.md`**.
+
+| Piece | Where |
+|---|---|
+| Order data (one format for real orders and the mock) | `snippets/snh-app-order-data` (+ `snh-servings`) |
+| V8 metal card / reward card / tier ladder | `snh-app-tiercard`, `snh-app-reward`, `snh-app-tiers` |
+| Picked for you | `snh-app-picks`; rules in the section setting *Order history → complementary collections* |
+| Onboarding quiz (Goals, register step 3, mock) | `snippets/snh-onboarding-quiz`; questions in *Quiz question* blocks (account and register sections), else defaults |
+| Goal tips, products, guides | *Goal* blocks on the account section, else defaults in `snh-app-goals` |
+| Points FAQ | *Points FAQ* blocks (seeded in `templates/customers/account.json`) |
+| Mock personas (dev only) | `sections/snh-app-mock`, templates `page.elite-mock-new / -bronze / -silver / -gold / -quiz` (`?view=elite-mock-silver`) |
+| QA | `prototype/tools/r8-qa.js` → `prototype/shots/r8/` |
+
+- V8 kept: tier/rate/next-tier/progress (from Theme settings), redeem form (+ a confirm step), re-order with error
+  handling, order search + status filter + pagination, details dropdown, edit profile (2 steps, customer_address with
+  phone), avatar picker, count-up numbers, athlete rotation, sheen. **Removed:** the V8 auto cart-clear after 3 days,
+  the header-unsticking JS, Archivo font, `!important` overrides.
+- Register: mobile required (Sri Lankan, saved +94XXXXXXXXX in the note), step 3 "Personalise your SNH" (optional).
+- Sign in: *Mobile sign-in* placeholder slot (setting, off; disabled button, no fake functionality).
+- CSS class names in the app avoid the homepage Elite band's `.mcard`/`.tcard`/`.goal`/`.tiers` (they collided).
