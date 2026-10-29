@@ -33,7 +33,7 @@ const HIDE = '.shopify-section--popup,#preview-bar-iframe,privacy-bar,#shopify-p
       await p.screenshot({ path: path.join(OUT, `${slug}-${w}.png`), fullPage: true }).catch(() => {});
       const r = await p.evaluate(() => {
         const FS = [12, 13, 14, 15, 16, 18, 20, 24, 28, 36, 44, 56, 72, 96];
-        const LS = [0, -0.02, 0.12];                                  // em
+        const LS = [0, -0.02, 0.12, 0.06];                                  // em
         const vis = (el) => { const s = getComputedStyle(el), r = el.getBoundingClientRect(); return s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.05 && r.width > 0 && r.height > 0; };
         const desk = innerWidth >= 1024;
         const gut = desk ? 40 : 20;

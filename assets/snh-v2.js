@@ -530,6 +530,18 @@
       });
       $$('[data-acp-close]', wrap).forEach(function (b) { b.addEventListener('click', closeAcp); });
       acp.addEventListener('keydown', function (e) { trapTab(acp, e); });
+      // membership card: a subtle 3D tilt that follows the pointer (fine pointers only, never with reduced motion)
+      var cc = acp.querySelector('[data-ccard] .ccard__face');
+      if (cc && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        cc.addEventListener('pointermove', function (e) {
+          var r = cc.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          cc.style.setProperty('--ry', ((x - .5) * 12).toFixed(2) + 'deg');
+          cc.style.setProperty('--rx', ((.5 - y) * 10).toFixed(2) + 'deg');
+          cc.style.setProperty('--gx', Math.round(x * 100) + '%');
+          cc.style.setProperty('--gy', Math.round(y * 100) + '%');
+        });
+        cc.addEventListener('pointerleave', function () { ['--rx', '--ry', '--gx', '--gy'].forEach(function (k) { cc.style.removeProperty(k); }); });
+      }
     }
 
     document.addEventListener('keydown', function (e) {

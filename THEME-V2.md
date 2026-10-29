@@ -447,3 +447,14 @@ Instagram feed), with live screenshots in `prototype/shots/r11/old/`. Audits + s
 - footer-group.json: removed disabled footer (footer)
 - page.faq.json: added snh-faq (global questions)
 - page.contact.json: added snh-faq (global questions)
+
+### Phase 2: header
+- Mega menus size to their content (no fixed 420–600px panel, 24/28px padding), columns sit at content width with
+  40px gutters. Column headings use the main nav type (15px, 500, normal case, ink); links are uppercase 13px / 600 /
+  .06em with 10px between rows. Applies to every dropdown (`assets/snh-v2.css`, `.mega`, `.mz`).
+- Mobile menu: logo dead centre (3-column top row), close on the right gutter, search / tabs / lists on the 20px
+  gutter, 52px rows everywhere, chevrons on one right edge. Checked at 360 / 390 / 430.
+- Account panel: the points block is a membership credit card (`.ccard`, 1.586:1): tier metal (bronze / silver /
+  gold, the dashboard's metals), SNH *Elite* wordmark, EMV chip, member no. (customer id, as on the dashboard), name,
+  points + Rs value, progress rail to the next tier, sheen on hover, pointer tilt (fine pointers only, off with
+  reduced motion; `assets/snh-v2.js`). Nav list: 52px rows with chevrons.

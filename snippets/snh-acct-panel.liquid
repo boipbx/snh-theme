@@ -56,24 +56,44 @@
           </div>
         </div>
 
-        <div class="acp__card" data-tier="{{ m[0] }}">
-          <span class="acp__lbl">Points balance</span>
-          {%- if m[3] == 'x' -%}
-            <strong class="acp__pts">—</strong>
-            <span class="acp__val">Your balance appears after your first paid order syncs.</span>
-          {%- else -%}
-            <strong class="acp__pts">{% render 'snh-num', n: m[3] %}</strong>
-            <span class="acp__val">Worth {{ m[4] | times: 100 | money_without_trailing_zeros }}{% if m[14] == '1' %} · ready to redeem{% else %} · {% render 'snh-num', n: m[15] %} to your first reward{% endif %}</span>
-          {%- endif -%}
-          <div class="acp__prog">
-            <div class="acp__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="Progress to {{ m[8] | default: 'the top tier' }}"><i style="width: {{ m[11] }}%"></i></div>
-            <p class="acp__next">
-              {%- if m[12] == '1' -%}Top tier · {{ m[7] }}% back on every order
-              {%- elsif m[10] == '0' -%}{{ m[8] }} unlocks when your tier updates
-              {%- else -%}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ m[8] }}{%- endif -%}
-            </p>
-            {%- if m[6] == '1' -%}<p class="acp__est">Estimated from your orders. Your Elite balance updates after each paid order.</p>{%- endif -%}
+        {%- liquid
+          if mock
+            assign card_name = who
+            assign card_no = 427
+          else
+            assign card_name = customer.name | default: who
+            assign card_no = customer.id | modulo: 900 | plus: 100
+          endif
+        -%}
+        {%- comment -%} Round 11: the points block is a membership credit card (1.586:1), tier metal as on the dashboard {%- endcomment -%}
+        <div class="ccard" data-tier="{{ m[0] }}" data-ccard>
+          <div class="ccard__face">
+            <i class="ccard__sheen" aria-hidden="true"></i>
+            <div class="ccard__top">
+              <span class="ccard__brand">SNH <em>Elite</em></span>
+              <span class="ccard__tier">{{ m[1] | upcase }}</span>
+            </div>
+            <svg class="ccard__chip" viewBox="0 0 48 36" aria-hidden="true"><rect x=".75" y=".75" width="46.5" height="34.5" rx="6"/><path d="M16 .75v10M32 .75v10M16 25.25v10M32 25.25v10M.75 12h15.25a8 8 0 0 1 16 0h15.25M.75 24h15.25a8 8 0 0 0 16 0h15.25M16 12v12M32 12v12"/></svg>
+            <p class="ccard__no">No. {{ card_no | prepend: '0000 ' }}</p>
+            <div class="ccard__foot">
+              <div class="ccard__who">
+                <span class="ccard__lbl">Member</span>
+                <span class="ccard__name" title="{{ card_name | escape }}">{{ card_name | escape }}</span>
+              </div>
+              <div class="ccard__pts">
+                <span class="ccard__lbl">Points</span>
+                {%- if m[3] == 'x' -%}<strong>—</strong>{%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong><span class="ccard__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
+              </div>
+            </div>
+            <div class="ccard__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="Progress to {{ m[8] | default: 'the top tier' }}"><i style="width: {{ m[11] }}%"></i></div>
           </div>
+        </div>
+        <div class="acp__prog">
+          <p class="acp__next">
+            {%- if m[3] == 'x' -%}Your balance appears after your first paid order syncs.{% elsif m[14] == '1' %}Your reward is ready to redeem.{% else %}{% render 'snh-num', n: m[15] %} points to your first reward.{% endif %}
+            {% if m[12] == '1' %}Top tier · {{ m[7] }}% back on every order.{%- elsif m[10] == '0' -%}{{ m[8] }} unlocks when your tier updates.{%- else -%}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ m[8] }}.{%- endif -%}
+          </p>
+          {%- if m[6] == '1' -%}<p class="acp__est">Estimated from your orders. Your Elite balance updates after each paid order.</p>{%- endif -%}
         </div>
 
         <nav class="acp__links" aria-label="Account">
