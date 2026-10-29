@@ -1,0 +1,135 @@
+{%- comment -%}
+  Member app · Rewards tiers (Round 10, replaces the three big cards in snh-app-tiers):
+  1. a horizontal journey track Bronze → Silver → Gold, the member's marker at their real annual spend, threshold
+     labels, "Rs X to Silver" at the marker, fill animated on load
+  2. one featured metal card for the NEXT tier: its rate, its perks, what the member's last 12 months would have
+     earned at that rate ("Rs X more"), Shop to unlock. At Gold: the Gold card, "you're at the top".
+  3. every tier as a compact metal row that opens on tap to show its perks.
+  Rates, thresholds, point value and perks from Theme settings → SNH Elite. m: split snh-elite-calc output · sid
+{%- endcomment -%}
+{%- capture d_b -%}500 welcome points when you join
+Redeem as soon as you reach 2,500 points
+Spend tracked automatically from paid orders{%- endcapture -%}
+{%- capture d_s -%}A 10% reward every birthday
+5% off every gift voucher
+Priority access to member-only campaigns{%- endcapture -%}
+{%- capture d_g -%}Free shipping on every order
+A 15% reward every birthday
+10% off gift vouchers and first access to new drops{%- endcapture -%}
+{%- liquid
+  assign silver = settings.snh_silver_threshold | default: 198000 | at_least: 1
+  assign gold = settings.snh_gold_threshold | default: 300000 | at_least: silver
+  assign per_point = settings.snh_point_value | default: 1
+  assign r_b = settings.snh_rate_bronze | default: 3
+  assign r_s = settings.snh_rate_silver | default: 7
+  assign r_g = settings.snh_rate_gold | default: 10
+  assign spend = m[5] | plus: 0
+  assign rate = m[7] | plus: 0
+  case m[0]
+    when 'gold'
+      assign cur = 3
+    when 'silver'
+      assign cur = 2
+    else
+      assign cur = 1
+  endcase
+  # track: Bronze at 0, Silver at its threshold, Gold at 100%; the end of the track is Gold + 20% so Gold isn't the edge
+  assign span = gold | times: 6 | divided_by: 5
+  assign s_pos = silver | times: 1000 | divided_by: span | divided_by: 10.0
+  assign g_pos = gold | times: 1000 | divided_by: span | divided_by: 10.0
+  assign you = spend | at_most: span | times: 1000 | divided_by: span | divided_by: 10.0
+  if cur == 1
+    assign nk = 'silver'
+    assign nn = 'Silver'
+    assign nr = r_s
+    assign nat = silver
+    assign nperks = settings.snh_perks_silver | default: d_s
+  elsif cur == 2
+    assign nk = 'gold'
+    assign nn = 'Gold'
+    assign nr = r_g
+    assign nat = gold
+    assign nperks = settings.snh_perks_gold | default: d_g
+  else
+    assign nk = 'gold'
+    assign nn = 'Gold'
+    assign nr = r_g
+    assign nat = gold
+    assign nperks = settings.snh_perks_gold | default: d_g
+  endif
+  assign gap = nat | minus: spend | at_least: 0
+  # the last 12 months' spend at the next tier's rate, minus what it earns now, in rupees
+  assign extra = nr | minus: rate | times: spend | divided_by: 100 | times: per_point | round
+-%}
+<div class="tj" data-tj>
+  <div class="tj__track{% if you > 55 %} tj__track--r{% endif %}" style="--you: {{ you }}%; --s: {{ s_pos }}%; --g: {{ g_pos }}%" role="img" aria-label="Your spend this year: {{ spend | times: 100 | money_without_trailing_zeros }}. Silver from {{ silver | times: 100 | money_without_trailing_zeros }}, Gold from {{ gold | times: 100 | money_without_trailing_zeros }}.">
+    <div class="tj__bar"><i class="tj__fill"></i></div>
+    <span class="tj__stop tj__stop--b{% if cur >= 1 %} is-on{% endif %}" style="--at: 0%"><b>Bronze</b><i>Free</i></span>
+    <span class="tj__stop tj__stop--s{% if cur >= 2 %} is-on{% endif %}" style="--at: var(--s)"><b>Silver</b><i>{{ silver | times: 100 | money_without_trailing_zeros }}</i></span>
+    <span class="tj__stop tj__stop--g{% if cur >= 3 %} is-on{% endif %}" style="--at: var(--g)"><b>Gold</b><i>{{ gold | times: 100 | money_without_trailing_zeros }}</i></span>
+    <span class="tj__you" data-tier="{{ m[0] }}">
+      <span class="tj__tip">{% if cur == 3 %}Gold · {{ spend | times: 100 | money_without_trailing_zeros }}{% else %}{{ gap | times: 100 | money_without_trailing_zeros }} to {{ nn }}{% endif %}</span>
+    </span>
+  </div>
+  <p class="app__note">Your spend this year{% if m[6] == '1' %} (estimated from your orders){% endif %}: <b>{{ spend | times: 100 | money_without_trailing_zeros }}</b>. Tiers follow what you spend over a year.</p>
+
+  <article class="tnext" data-tier="{{ nk }}">
+    <i class="metal__sheen" aria-hidden="true"></i>
+    <p class="tnext__eb">{% if cur == 3 %}Your tier{% else %}Your next tier{% endif %}</p>
+    <h3 class="tnext__name">{{ nn }}</h3>
+    <p class="tnext__rate"><b>{{ nr }}%</b> back in points on every order</p>
+    <ul class="tnext__perks" role="list">
+      {%- assign lines = nperks | newline_to_br | split: '<br />' -%}
+      {%- for l in lines -%}{%- assign l = l | strip -%}{%- if l != blank -%}<li>{% render 'snh-v2-icon', name: 'check' %}<span>{{ l | escape }}</span></li>{%- endif -%}{%- endfor -%}
+    </ul>
+    <div class="tnext__foot">
+      {%- if cur == 3 -%}
+        <p>You're at the top: our highest rate on everything you buy.</p>
+      {%- else -%}
+        <p>{% if extra > 0 %}Your last 12 months at {{ nn }}'s rate would have earned <b>{{ extra | times: 100 | money_without_trailing_zeros }} more</b> in points. {% endif %}Spend {{ gap | times: 100 | money_without_trailing_zeros }} more this year to unlock it.</p>
+        <a class="v-btn tnext__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to unlock</span></a>
+      {%- endif -%}
+    </div>
+  </article>
+
+  <ul class="trows" role="list">
+    {%- assign keys = 'bronze,silver,gold' | split: ',' -%}
+    {%- for k in keys -%}
+      {%- liquid
+        case k
+          when 'bronze'
+            assign name = 'Bronze'
+            assign r = r_b
+            assign perks = settings.snh_perks_bronze | default: d_b
+            assign at = 0
+          when 'silver'
+            assign name = 'Silver'
+            assign r = r_s
+            assign perks = settings.snh_perks_silver | default: d_s
+            assign at = silver
+          else
+            assign name = 'Gold'
+            assign r = r_g
+            assign perks = settings.snh_perks_gold | default: d_g
+            assign at = gold
+        endcase
+        assign idx = forloop.index
+        assign lines = perks | newline_to_br | split: '<br />'
+      -%}
+      <li>
+        <details class="trow{% if idx == cur %} is-current{% endif %}" data-tier="{{ k }}"{% if idx == cur %} open{% endif %}>
+          <summary>
+            <span class="trow__chip" aria-hidden="true"></span>
+            <span class="trow__n"><b>{{ name }}</b><i>{% if at == 0 %}Free to join{% else %}From {{ at | times: 100 | money_without_trailing_zeros }} a year{% endif %}</i></span>
+            <span class="trow__r">{{ r }}%</span>
+            {%- if idx == cur -%}<span class="trow__you">Your tier</span>{%- elsif idx < cur -%}<span class="trow__done">Unlocked</span>{%- endif -%}
+            <span class="trow__x" aria-hidden="true">{% render 'snh-v2-icon', name: 'chev' %}</span>
+          </summary>
+          <ul class="trow__perks" role="list">
+            {%- for l in lines -%}{%- assign l = l | strip -%}{%- if l != blank -%}<li>{% render 'snh-v2-icon', name: 'check' %}<span>{{ l | escape }}</span></li>{%- endif -%}{%- endfor -%}
+          </ul>
+        </details>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>

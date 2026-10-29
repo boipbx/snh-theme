@@ -341,6 +341,25 @@
       });
     });
 
+    /* earnings calculator (Rewards): Rs a month → points at the member's rate, their Rs value, months to the next reward */
+    $$('[data-calc]', app).forEach(function (c) {
+      var inp = c.querySelector('[data-calc-in]'), d = c.dataset;
+      var rate = +d.rate || 0, per = +d.per || 1, from = +d.from || 0, have = +d.have || 0, silver = +d.silver, gold = +d.gold;
+      function rs(n) { return 'Rs ' + Math.round(n).toLocaleString('en-US'); }
+      function upd() {
+        var v = +inp.value, pts = Math.floor(v * rate / 100), need = Math.max(from - have, 0), yr = v * 12;
+        var months = pts > 0 ? Math.ceil(need / pts) : 0;
+        inp.style.setProperty('--p', ((v - inp.min) / (inp.max - inp.min) * 100) + '%');
+        c.querySelector('[data-calc-spend]').textContent = rs(v);
+        c.querySelector('[data-calc-pts]').textContent = pts.toLocaleString('en-US');
+        c.querySelector('[data-calc-val]').textContent = rs(pts * per);
+        c.querySelector('[data-calc-when]').textContent = need === 0 ? 'Ready now' : 'In about ' + months + ' month' + (months === 1 ? '' : 's');
+        c.querySelector('[data-calc-tier]').textContent = rs(yr) + ' a year' + (yr >= gold ? ' would put you in Gold.' : yr >= silver ? ' would put you in Silver.' : '. Silver starts at ' + rs(silver) + '.');
+      }
+      inp.addEventListener('input', upd);
+      upd();
+    });
+
     /* re-order preview: what goes in the basket, per-item stock and price, then "Add N items" */
     var rdlg = app.querySelector('[data-reorder-dlg]');
     function openReorder(id) {

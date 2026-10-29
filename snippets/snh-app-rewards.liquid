@@ -1,6 +1,7 @@
 {%- comment -%}
-  Member app · Rewards (Round 8): balance + Rs value, the redeem request with a confirm step, how earning works,
-  the V8 tier ladder, points FAQ (faq blocks, else the defaults below).
+  Member app · Rewards (Round 8; Round 10 redesign): balance + Rs value, the redeem request with a confirm step,
+  how earning works (an earnings calculator + Earn → Climb → Redeem), the tier journey (snh-app-tierjourney), points
+  FAQ (faq blocks, else the defaults below). Every number comes from Theme settings → SNH Elite.
   Redeem = the old theme's request, unchanged: customer form → /contact, contact[email], contact[tags]=Trigger_Redeem_2500.
   The store's Flow on that tag issues the reward; the theme never changes a balance. While the tag is on the customer
   the button shows "pending" (a second request would add the same tag, which Flow wouldn't see as new).
@@ -13,8 +14,6 @@
   assign r_b = settings.snh_rate_bronze | default: 3
   assign r_s = settings.snh_rate_silver | default: 7
   assign r_g = settings.snh_rate_gold | default: 10
-  assign ex_rs = 10000
-  assign ex_pts = ex_rs | times: m[7] | divided_by: 100
   if m[3] != 'x'
     assign have = m[3] | plus: 0
     assign pct = have | times: 100 | divided_by: redeem_from | at_most: 100
@@ -77,21 +76,53 @@
   </div>
 </div>
 
+{%- liquid
+  # earnings calculator: starts at the member's average month (spend this year ÷ 12), rounded to the slider step
+  assign c_step = 2500
+  assign c_val = m[5] | plus: 0 | divided_by: 12 | divided_by: c_step | times: c_step | at_least: 10000 | at_most: 100000
+  assign c_pts = c_val | times: m[7] | divided_by: 100
+  assign c_have = 0
+  if m[3] != 'x'
+    assign c_have = m[3] | plus: 0
+  endif
+  assign c_need = redeem_from | minus: c_have | at_least: 0
+  assign c_months = 0
+  if c_pts > 0
+    assign c_months = c_need | plus: c_pts | minus: 1 | divided_by: c_pts
+  endif
+  assign silver = settings.snh_silver_threshold | default: 198000
+  assign gold = settings.snh_gold_threshold | default: 300000
+-%}
 <section class="app__block" aria-labelledby="{{ sid }}-earn-h">
-  <h2 class="app__h2" id="{{ sid }}-earn-h">How earning works</h2>
+  <div class="app__bt">
+    <h2 class="app__h2" id="{{ sid }}-earn-h">How earning <em>works</em></h2>
+    <p class="app__muted">Move the slider to see what your shopping earns at your {{ m[1] }} rate.</p>
+  </div>
+  <div class="calc" data-calc data-rate="{{ m[7] }}" data-per="{{ per_point }}" data-from="{{ redeem_from }}" data-have="{{ c_have }}" data-silver="{{ silver }}" data-gold="{{ gold }}">
+    <label class="calc__q" for="{{ sid }}-calc">If you spend <output data-calc-spend for="{{ sid }}-calc">{{ c_val | times: 100 | money_without_trailing_zeros }}</output> a month</label>
+    <input class="calc__in" id="{{ sid }}-calc" type="range" min="5000" max="100000" step="{{ c_step }}" value="{{ c_val }}" data-calc-in style="--p: {{ c_val | minus: 5000 | times: 100 | divided_by: 95000 }}%">
+    <div class="calc__ends" aria-hidden="true"><span>Rs 5,000</span><span>Rs 100,000</span></div>
+    <dl class="calc__out">
+      <div><dt>Points a month</dt><dd data-calc-pts>{% render 'snh-num', n: c_pts %}</dd></div>
+      <div><dt>Worth</dt><dd data-calc-val>{{ c_pts | times: per_point | times: 100 | money_without_trailing_zeros }}</dd></div>
+      <div><dt>{% if c_have > 0 %}Next reward{% else %}First reward{% endif %}</dt><dd data-calc-when>{% if c_need == 0 %}Ready now{% elsif c_months == 1 %}In about 1 month{% else %}In about {{ c_months }} months{% endif %}</dd></div>
+    </dl>
+    <p class="calc__tier" data-calc-tier aria-live="polite"></p>
+    <p class="app__note">At {{ m[7] }}% back. {% if c_have > 0 %}Counts from your {% render 'snh-num', n: c_have %} points. {% endif %}Real points are credited when each paid order syncs.</p>
+  </div>
   <ol class="how" role="list">
-    <li><span class="how__n">01 · Earn</span><h3>{{ m[7] }}% back at {{ m[1] }}</h3><p>Every paid order earns points on its subtotal. Spend {{ ex_rs | times: 100 | money_without_trailing_zeros }} and you earn {% render 'snh-num', n: ex_pts %} points.</p></li>
-    <li><span class="how__n">02 · Climb</span><h3>{{ r_b }}% · {{ r_s }}% · {{ r_g }}%</h3><p>Bronze, Silver and Gold. Your spend over the year sets your tier, and a higher tier earns faster.</p></li>
-    <li><span class="how__n">03 · Redeem</span><h3>From {% render 'snh-num', n: redeem_from %} points</h3><p>Trade {% render 'snh-num', n: redeem_from %} points for {{ redeem_rs | times: 100 | money_without_trailing_zeros }} off, right here. The reward arrives by email.</p></li>
+    <li><span class="how__ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'bag' %}</span><div><h3>Earn</h3><p>Paid orders earn {{ m[7] }}% of their subtotal in points. 1 point = {{ per_point | times: 100 | money_without_trailing_zeros }}.</p></div></li>
+    <li><span class="how__ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'badge' %}</span><div><h3>Climb</h3><p>Spend {{ silver | times: 100 | money_without_trailing_zeros }} in a year for Silver ({{ r_s }}%), {{ gold | times: 100 | money_without_trailing_zeros }} for Gold ({{ r_g }}%).</p></div></li>
+    <li><span class="how__ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'gift' %}</span><div><h3>Redeem</h3><p>Trade {% render 'snh-num', n: redeem_from %} points for {{ redeem_rs | times: 100 | money_without_trailing_zeros }} off, right here. It arrives by email.</p></div></li>
   </ol>
 </section>
 
 <section class="app__block" aria-labelledby="{{ sid }}-tiers-h">
   <div class="app__bt">
-    <h2 class="app__h2" id="{{ sid }}-tiers-h">Three tiers, <em>one</em> climb</h2>
-    <p class="app__muted">Points are a percentage of your order subtotal. The higher your tier, the faster they stack.</p>
+    <h2 class="app__h2" id="{{ sid }}-tiers-h">Your tier <em>journey</em></h2>
+    <p class="app__muted">The higher your tier, the faster your points stack.</p>
   </div>
-  {%- render 'snh-app-tiers', m: m -%}
+  {%- render 'snh-app-tierjourney', m: m, sid: sid -%}
 </section>
 
 <section class="app__block" aria-labelledby="{{ sid }}-faq-h">
