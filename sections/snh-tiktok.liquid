@@ -1,0 +1,96 @@
+{%- comment -%}
+  SNH "Seen on TikTok" (Round 9; replaces the old tiktok-profile section, which stays in the repo, switched off).
+  Creator profile embed for the handle (TikTok's own embed, no token) + an optional row of up to 6 video embeds
+  (Video blocks: paste the TikTok video URL). Nothing loads from TikTok until the section is within ~600px of the
+  viewport (assets/snh-social.js); every embed sits in a box with a fixed height, so nothing moves when it arrives.
+  If embed.js is blocked or the embed doesn't render within 10s, the box shows the fallback card instead
+  ("Watch us on TikTok" + Follow). Styles: assets/snh-social.css.
+{%- endcomment -%}
+{{ 'snh-social.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-social.js' | asset_url }}" defer></script>
+{%- liquid
+  assign handle = section.settings.handle | default: 'sportsnutritionhub.lk' | remove: '@' | strip
+  assign profile = 'https://www.tiktok.com/@' | append: handle
+  assign hid = 'ttk-' | append: section.id
+  assign videos = section.blocks | where: 'type', 'video'
+-%}
+<section class="v2 v-section{% if section.settings.tone == 'cream' %} v-section--cream{% elsif section.settings.tone == 'dark' %} v-section--dark{% endif %} ttk" data-ttk style="--ttk-h: {{ section.settings.height }}px" aria-labelledby="{{ hid }}">
+  <script>document.currentScript.parentNode.classList.add('is-js');</script>
+  <div class="v-wrap">
+    <div class="head">
+      <div class="head__text">
+        <p class="eyebrow">@{{ handle }}</p>
+        <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
+        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+      </div>
+      <a class="v-btn v-btn--ink ttk__follow" href="{{ profile }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'tiktok' %}<span>{{ section.settings.follow_label | escape }}</span></a>
+    </div>
+
+    <div class="ttk__row">
+      <div class="ttk__box ttk__box--profile" data-ttk-box>
+        <div class="ttk__embed" data-ttk-embed>
+          <blockquote class="tiktok-embed" cite="{{ profile }}" data-unique-id="{{ handle }}" data-embed-type="creator" style="max-width: 780px; min-width: 288px;">
+            <section><a target="_blank" rel="noopener" href="{{ profile }}?refer=creator_embed">@{{ handle }}</a></section>
+          </blockquote>
+        </div>
+        <span class="ttk__skel" aria-hidden="true"><i></i><i></i><i></i></span>
+        {%- render 'snh-tiktok-fallback', handle: handle, profile: profile, label: section.settings.follow_label -%}
+      </div>
+      <aside class="ttk__side" aria-label="TikTok">
+        <span class="ttk__logo" aria-hidden="true">{% render 'snh-v2-icon', name: 'tiktok' %}</span>
+        <p class="ttk__side-h">{{ section.settings.side_heading | escape }}</p>
+        <p class="ttk__side-p">{{ section.settings.side_text | escape }}</p>
+        <a class="v-btn v-btn--accent" href="{{ profile }}" target="_blank" rel="noopener"><span>Follow @{{ handle }}</span></a>
+      </aside>
+    </div>
+
+    {%- if videos.size > 0 -%}
+      <div class="ttk__vids-head"><h3 class="v-h2">{% render 'snh-v2-heading', text: section.settings.videos_heading %}</h3></div>
+      <ul class="ttk__vids" role="list">
+        {%- for b in videos limit: 6 -%}
+          {%- liquid
+            assign url = b.settings.url | strip | split: '?' | first
+            assign vid = url | split: '/video/' | last | split: '/' | first
+          -%}
+          {%- if url contains '/video/' -%}
+            <li class="ttk__box ttk__box--video" data-ttk-box {{ b.shopify_attributes }}>
+              <div class="ttk__embed" data-ttk-embed>
+                <blockquote class="tiktok-embed" cite="{{ url }}" data-video-id="{{ vid }}" style="max-width: 325px; min-width: 288px;">
+                  <section><a target="_blank" rel="noopener" href="{{ url }}">{{ b.settings.caption | default: 'Watch on TikTok' | escape }}</a></section>
+                </blockquote>
+              </div>
+              <span class="ttk__skel" aria-hidden="true"><i></i><i></i><i></i></span>
+              <a class="ttk__vfb" href="{{ url }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'tiktok' %}<span>{{ b.settings.caption | default: 'Watch this video on TikTok' | escape }}</span></a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SNH Seen on TikTok",
+  "class": "snh-sec snh-sec--ttk",
+  "settings": [
+    { "type": "paragraph", "content": "TikTok's own embeds, no token. They load only when a shopper scrolls near this section." },
+    { "type": "text", "id": "handle", "label": "TikTok handle", "default": "sportsnutritionhub.lk" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Seen on *TikTok*", "info": "Wrap a word in *asterisks* for the serif." },
+    { "type": "text", "id": "lead", "label": "Text", "default": "Unboxings, training tips and what's new in store, straight from our feed." },
+    { "type": "text", "id": "follow_label", "label": "Follow button", "default": "Follow on TikTok" },
+    { "type": "text", "id": "side_heading", "label": "Side card heading", "default": "New videos every week" },
+    { "type": "text", "id": "side_text", "label": "Side card text", "default": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop." },
+    { "type": "text", "id": "videos_heading", "label": "Video row heading", "default": "Featured *videos*" },
+    { "type": "range", "id": "height", "label": "Profile embed height", "min": 480, "max": 800, "step": 20, "unit": "px", "default": 640, "info": "Reserved before the embed loads, so the page never jumps." },
+    { "type": "select", "id": "tone", "label": "Background", "options": [{ "value": "light", "label": "White" }, { "value": "cream", "label": "Cream" }, { "value": "dark", "label": "Ink" }], "default": "cream" }
+  ],
+  "blocks": [
+    { "type": "video", "name": "TikTok video", "limit": 6, "settings": [
+      { "type": "text", "id": "url", "label": "TikTok video URL", "info": "e.g. https://www.tiktok.com/@sportsnutritionhub.lk/video/7312345678901234567" },
+      { "type": "text", "id": "caption", "label": "Caption (fallback link text)" }
+    ] }
+  ],
+  "presets": [{ "name": "SNH Seen on TikTok" }]
+}
+{% endschema %}

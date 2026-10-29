@@ -373,6 +373,20 @@
         "heading": "Recently *viewed*",
         "cream": false
       }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "tone": "cream"
+      }
     }
   },
   "order": [
@@ -382,6 +396,7 @@
     "reviews",
     "bought_together",
     "related",
+    "snh_tiktok",
     "snh_articles",
     "recent",
     "snh_why",
@@ -389,4 +404,3 @@
     "snh_faq"
   ]
 }
-

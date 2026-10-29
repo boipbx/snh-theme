@@ -1,0 +1,7 @@
+{%- comment -%} TikTok fallback card (Round 9): shown in the embed box when TikTok's embed is blocked or doesn't render. handle, profile, label. {%- endcomment -%}
+<div class="ttk__fb" data-ttk-fb>
+  <span class="ttk__logo" aria-hidden="true">{% render 'snh-v2-icon', name: 'tiktok' %}</span>
+  <p class="ttk__fb-h">Watch us on <em>TikTok</em></p>
+  <p class="ttk__fb-p">@{{ handle }}</p>
+  <a class="v-btn v-btn--accent" href="{{ profile }}" target="_blank" rel="noopener"><span>{{ label | default: 'Follow on TikTok' | escape }}</span></a>
+</div>
