@@ -316,10 +316,12 @@
 
     /* orders: search + status (current page, as V8), details */
     var oq = app.querySelector('[data-order-q]'), os = app.querySelector('[data-order-s]'), none = app.querySelector('[data-order-none]');
+    // every word must match (order number with or without #, product, flavour/size, brand); status = one exact token
     function filter() {
-      var q = (oq.value || '').trim().toLowerCase(), s = os.value, shown = 0;
+      var words = (oq.value || '').toLowerCase().replace(/#/g, ' ').split(/\s+/).filter(Boolean), s = os.value, shown = 0;
       $$('[data-order]', app).forEach(function (o) {
-        var ok = (!q || o.getAttribute('data-q').indexOf(q) > -1) && (s === 'all' || o.getAttribute('data-status').indexOf(s) > -1);
+        var hay = o.getAttribute('data-q') || '', st = (o.getAttribute('data-status') || '').split(' ');
+        var ok = words.every(function (w) { return hay.indexOf(w) > -1; }) && (s === 'all' || st.indexOf(s) > -1);
         o.hidden = !ok;
         if (ok) shown++;
       });
@@ -333,6 +335,16 @@
         box.hidden = !on;
       });
     });
+
+    /* sign out: confirm sheet ("Stay signed in" is the default) */
+    var out = app.querySelector('[data-signout]');
+    if (out && out.showModal) {
+      $$('[data-signout-open]', app).forEach(function (a) {
+        a.addEventListener('click', function (e) { e.preventDefault(); out.showModal(); out.querySelector('[data-signout-close]').focus(); });
+      });
+      $$('[data-signout-close]', out).forEach(function (b) { b.addEventListener('click', function (e) { if (b.tagName === 'A') e.preventDefault(); out.close(); }); });
+      out.addEventListener('click', function (e) { if (e.target === out) out.close(); });
+    }
 
     /* avatar (V8 set) */
     var picks = $$('.avp__b', app);

@@ -21,14 +21,17 @@
   </div>
 {%- else -%}
   <div class="ofilter" role="search">
-    <label class="fld ofilter__q"><span class="v-sr">Search orders</span>{% render 'snh-v2-icon', name: 'search' %}<input type="search" placeholder="Search by order number or product" data-order-q autocomplete="off"></label>
+    <label class="fld ofilter__q"><span class="v-sr">Search orders</span><span class="ofilter__ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'search' %}</span><input type="search" placeholder="Order number or product" data-order-q autocomplete="off" enterkeyhint="search"></label>
     <label class="fld ofilter__s"><span class="v-sr">Status</span><select data-order-s>
       <option value="all">All statuses</option>
-      <option value="paid">Paid</option>
-      <option value="pending">Pending</option>
+      <option value="processing">Processing</option>
+      <option value="packed">Packed</option>
+      <option value="shipped">Shipped</option>
+      <option value="delivered">Delivered</option>
       <option value="refunded">Refunded</option>
-      <option value="unfulfilled">Not shipped yet</option>
+      <option value="partially_refunded">Partly refunded</option>
       <option value="cancelled">Cancelled</option>
+      <option value="pending">Payment pending</option>
     </select></label>
   </div>
   <p class="app__muted ofilter__none" data-order-none hidden>No orders on this page match. Clear the search or try another status.</p>
@@ -40,14 +43,13 @@
         assign lis = o[14] | split: ';;'
         assign first = lis[0] | split: '~'
         assign earn = o[7] | divided_by: 100 | times: rate | divided_by: 100
-        assign titles = ''
+        assign titles = o[0] | remove: '#'
         for li in lis
           assign it = li | split: '~'
-          assign titles = titles | append: ' ' | append: it[1]
+          assign titles = titles | append: ' ' | append: it[1] | append: ' ' | append: it[2] | append: ' ' | append: it[10]
         endfor
-        assign st = o[3] | append: ' ' | append: o[5]
+        assign st = o[15] | append: ' ' | append: o[3]
         if o[11] == '1'
-          assign st = st | append: ' cancelled'
           assign pill = 'off'
         elsif o[3] contains 'paid'
           assign pill = 'ok'
@@ -58,7 +60,7 @@
         endif
         assign did = sid | append: '-od-' | append: forloop.index
       -%}
-      <li class="ocard" data-order data-status="{{ st | escape }}" data-q="{{ o[0] | append: titles | downcase | escape }}">
+      <li class="ocard" data-order data-status="{{ st | escape }}" data-q="{{ o[0] | append: ' ' | append: titles | downcase | escape }}">
         <div class="ocard__row">
           <span class="ocard__img">{% if first[5] != blank %}<img src="{{ first[5] }}" alt="" width="80" height="80" loading="lazy">{% else %}<i>SNH</i>{% endif %}</span>
           <div class="ocard__b">

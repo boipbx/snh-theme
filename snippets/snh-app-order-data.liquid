@@ -1,12 +1,18 @@
 {%- comment -%}
   One order as a flat record for the member app (Round 8). The real account and the QA mock both go through this, so
   every widget (feed, orders, running low, picks, quick actions) reads one format.
-  Real: order. Mock: mock: true, line "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url"
-  (products come from all_products, so the mock shows real packs; the re-order ids are blanked).
+  Real: order. Mock: mock: true, line "name|days ago|financial|fulfilment|refunded Rs|handle:qty,handle:qty|tracking url
+  |dispatched days ago|courier|tracking number|cancelled 1" (products come from all_products, so the mock shows real
+  packs; the re-order ids are blanked). deliver_days: days after dispatch an order counts as delivered (section setting).
   Prints fields joined by "|": 0 name · 1 url · 2 created (unix) · 3 financial key · 4 financial label · 5 fulfilment key
   · 6 fulfilment label · 7 subtotal (cents) · 8 total (cents) · 9 refunded (cents) · 10 item count · 11 cancelled 1/0 ·
   12 tracking url · 13 re-order "variant:qty,…" · 14 items, joined by ";;", each "~"-separated: product id · title ·
   variant title · qty · line price (cents) · image url · url · servings (0 = unknown) · variant id · type · vendor · handle
+  Round 10 adds, after the items: 15 status key · 16 status label · 17 dispatched (unix, '' = not yet) · 18 courier ·
+  19 tracking number · 20 delivered by (unix, estimate).
+  One human status from Shopify's financial + fulfilment states (Liquid has no delivery confirmation):
+  cancelled → Cancelled · refunded / voided → Refunded · unfulfilled → Processing · fulfilled or partly fulfilled
+  without tracking → Packed · with a tracking number or link → Shipped · dispatched deliver_days+ ago → Delivered.
 {%- endcomment -%}
 {%- liquid
   if mock
@@ -20,7 +26,18 @@
     assign ful = f[3] | strip | default: 'fulfilled'
     assign o_refunded = f[4] | plus: 0 | times: 100
     assign o_track = f[6] | strip
-    assign o_cancel = 0
+    assign o_cancel = f[10] | strip | default: 0
+    assign o_fl_at = ''
+    assign fl_ago = f[7] | strip
+    if fl_ago == blank and ful != 'unfulfilled'
+      assign fl_ago = f[1] | plus: 0 | minus: 1 | at_least: 0
+    endif
+    if fl_ago != blank
+      assign o_fl_at = fl_ago | plus: 0 | times: 86400
+      assign o_fl_at = now | minus: o_fl_at
+    endif
+    assign o_courier = f[8] | strip
+    assign o_tno = f[9] | strip
     assign sub = 0
     assign n = 0
     assign items = ''
@@ -96,6 +113,12 @@
     endif
     assign fl = order.line_items | where: 'fulfillment' | map: 'fulfillment' | sort: 'created_at' | last
     assign o_track = fl.tracking_url
+    assign o_fl_at = ''
+    if fl.created_at
+      assign o_fl_at = fl.created_at | date: '%s'
+    endif
+    assign o_courier = fl.tracking_company
+    assign o_tno = fl.tracking_number
     assign items = ''
     assign o_ids = ''
     for li in order.line_items
@@ -127,5 +150,32 @@
     endfor
     assign o_ids = o_ids | remove_last: ','
   endif
+  assign dd = deliver_days | default: 4 | plus: 0 | times: 86400
+  assign now = 'now' | date: '%s' | plus: 0
+  assign o_by = ''
+  if o_fl_at != ''
+    assign o_by = o_fl_at | plus: dd
+  endif
+  if o_cancel == 1 or o_cancel == '1'
+    assign sk = 'cancelled'
+    assign sl = 'Cancelled'
+  elsif fin == 'refunded' or fin == 'voided'
+    assign sk = 'refunded'
+    assign sl = 'Refunded'
+  elsif ful == 'fulfilled' or ful == 'partial'
+    if o_by != '' and now >= o_by and ful == 'fulfilled'
+      assign sk = 'delivered'
+      assign sl = 'Delivered'
+    elsif o_track != blank or o_tno != blank
+      assign sk = 'shipped'
+      assign sl = 'Shipped'
+    else
+      assign sk = 'packed'
+      assign sl = 'Packed'
+    endif
+  else
+    assign sk = 'processing'
+    assign sl = 'Processing'
+  endif
 -%}
-{{- o_name | remove: '|' }}|{{ o_url }}|{{ o_at }}|{{ fin }}|{{ fin_l }}|{{ ful }}|{{ ful_l }}|{{ o_sub }}|{{ o_total }}|{{ o_refunded }}|{{ o_count }}|{{ o_cancel }}|{{ o_track | remove: '|' }}|{{ o_ids }}|{{ items | remove: '|' | remove: '@@' | strip_newlines -}}
+{{- o_name | remove: '|' }}|{{ o_url }}|{{ o_at }}|{{ fin }}|{{ fin_l }}|{{ ful }}|{{ ful_l }}|{{ o_sub }}|{{ o_total }}|{{ o_refunded }}|{{ o_count }}|{{ o_cancel }}|{{ o_track | remove: '|' }}|{{ o_ids }}|{{ items | remove: '|' | remove: '@@' | strip_newlines }}|{{ sk }}|{{ sl }}|{{ o_fl_at }}|{{ o_courier | remove: '|' }}|{{ o_tno | remove: '|' }}|{{ o_by -}}

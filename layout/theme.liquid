@@ -94,9 +94,10 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
       {%- endif -%}
     {%- endif -%}
 
-    {%- if request.page_type == 'customers/account' or request.page_type == 'customers/order' or request.page_type == 'customers/addresses' -%}
-      {%- section 'account-banner' -%}
-    {%- endif -%}
+    {%- comment -%}
+      Round 10: Impact's account banner (grey "Orders · Addresses · Logout" strip) is no longer rendered above the
+      customer pages; the SNH Elite app shell has its own navigation. sections/account-banner.liquid stays in the repo.
+    {%- endcomment -%}
 
     <main role="main" id="main" class="anchor">
       {{ content_for_layout }}

@@ -14,7 +14,7 @@
     <span class="metal__no">{{ m[1] | upcase }} · No. {{ no }}</span>
   </div>
   <div class="metal__who">
-    <{{ tag }} class="metal__name">{{ name | escape }}</{{ tag }}>
+    <{{ tag }} class="metal__name{% if name.size > 16 %} metal__name--long{% endif %}" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
     <p class="metal__tier">{{ m[1] }} member{% if m[2] == '1' %} <span class="metal__est">· estimated from your orders</span>{% endif %}</p>
   </div>
   <dl class="metal__stats">

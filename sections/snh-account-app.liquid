@@ -40,7 +40,7 @@
 
   capture recent
     for order in customer.orders limit: 16
-      render 'snh-app-order-data', order: order
+      render 'snh-app-order-data', order: order, deliver_days: section.settings.deliver_days
       unless forloop.last
         echo '@@'
       endunless
@@ -49,7 +49,7 @@
 -%}
 {%- paginate customer.orders by 16 -%}
   {%- capture page_orders -%}
-    {%- for order in customer.orders -%}{% render 'snh-app-order-data', order: order %}{% unless forloop.last %}@@{% endunless %}{%- endfor -%}
+    {%- for order in customer.orders -%}{% render 'snh-app-order-data', order: order, deliver_days: section.settings.deliver_days %}{% unless forloop.last %}@@{% endunless %}{%- endfor -%}
   {%- endcapture -%}
   {%- capture pages -%}{% render 'pagination', paginate: paginate, hash: 'orders' %}{%- endcapture -%}
   {%- assign page_no = paginate.current_page -%}
@@ -79,6 +79,8 @@
     { "type": "header", "content": "Picked for you" },
     { "type": "collection", "id": "best_collection", "label": "Bestsellers (fallback)", "info": "Shown when a member has no goal and no order history. Empty = the Everything collection." },
     { "type": "textarea", "id": "pick_map", "label": "Order history → complementary collections", "info": "One rule per line: words found in a product's type or title => collection handles. Example: whey, isolate => creatine, accessories-1", "default": "whey, isolate, protein powder, mass gainer => creatine, accessories-1\npre-workout, pre workout, pump => creatine, hydration-recovery\ncreatine => whey-protein, pre-workout-1\ngel, carb, beta fuel => hydration-recovery, energy-and-endurance\nelectrolyte, hydro, hydration => energy-gels, magnesium\nmagnesium, sleep => vitamins-minerals, probiotics\nvitamin, omega, fish oil, multi => magnesium, probiotics\ncollagen => joint-and-mobility, vitamins-minerals\nfat burner, carnitine, weight => fat-loss, clear-protein" },
+    { "type": "header", "content": "Orders" },
+    { "type": "range", "id": "deliver_days", "label": "Show an order as delivered after", "min": 1, "max": 14, "step": 1, "unit": "d", "default": 4, "info": "Days after it's dispatched. Shopify doesn't tell the theme when a parcel is delivered, so the status timeline assumes it." },
     { "type": "header", "content": "Referral" },
     { "type": "text", "id": "refer_text", "label": "Referral card heading", "default": "Give Rs 500, *get* Rs 500", "info": "Leave empty to hide. Wrap a word in *asterisks* for the serif." },
     { "type": "text", "id": "refer_body", "label": "Referral card text", "default": "Share SNH Elite with a friend. When they shop, you both win." },

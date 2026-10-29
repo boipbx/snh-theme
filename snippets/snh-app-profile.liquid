@@ -23,7 +23,7 @@
   <section class="app__card pro__id" data-tier="{{ m[0] }}" aria-label="Your profile">
     <span class="app__av app__av--lg" data-avatar-slot data-initials="{{ me[5] | escape }}" aria-hidden="true"><span>{{ me[5] | escape }}</span></span>
     <div class="pro__who">
-      <p class="pro__name">{{ me[1] | default: me[2] | escape }}</p>
+      <p class="pro__name" title="{{ me[1] | default: me[2] | escape }}">{{ me[1] | default: me[2] | escape }}</p>
       <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member · {{ m[7] }}% back</p>
     </div>
     <button class="v-btn v-btn--ink v-btn--sm" type="button" data-edit-open aria-haspopup="dialog">{% render 'snh-v2-icon', name: 'edit' %}<span>Edit profile</span></button>
@@ -130,7 +130,7 @@
     <section class="app__card pro__out" aria-labelledby="{{ sid }}-out-h">
       <h2 class="app__h3" id="{{ sid }}-out-h">Signed in as</h2>
       <p class="acc__addr">{{ me[2] | escape }}</p>
-      <a class="v-btn v-btn--line" href="{% if mock %}#profile{% else %}{{ routes.account_logout_url }}{% endif %}" data-no-instant>{% render 'snh-v2-icon', name: 'out' %}<span>Sign out</span></a>
+      <a class="v-btn v-btn--line" href="{% if mock %}#profile{% else %}{{ routes.account_logout_url }}{% endif %}" data-no-instant data-signout-open aria-haspopup="dialog">{% render 'snh-v2-icon', name: 'out' %}<span>Sign out</span></a>
     </section>
   </div>
 </div>
