@@ -749,3 +749,34 @@ to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --o
     Shopify's channels, Shopify's checkout prefetch (~380 KB), Appstle (91 KB on every page), the Reputon embed, and
     jQuery + DOMPurify + Mustache that an app injects from public CDNs. Remove apps you don't use (Nosto, Tagembed,
     the CloudFront `w.js`, Hextom) and the duplicate Klaviyo ScriptTag (`VVMVg5`).
+
+### Phase 10: QA gate
+- **Announcement bar colour bug** (right on the cart page, back to orange on home / product): the bar took the colour
+  of whichever item was showing, and the header's rotation timer started when the header script ran. On the heavier
+  pages that was seconds before the campaign items arrived, so the first tick came ~1–2s after a campaign appeared
+  and flipped the bar to the next (orange) header block. Now the bar keeps the top live item's colour (the
+  highest-priority campaign, else the first live header block) for the whole rotation, and the timer restarts on
+  every campaign sync (`assets/snh-v2.js`, `assets/snh-campaigns.js`). Check: `prototype/tools/r12-announce-check.js`
+  (mock ink campaign; `LOCAL=1` serves this checkout's JS).
+- **Theme check** (`shopify theme check`, lint only): 0 errors. Fixed in snh files: img width/height
+  (`snh-performance-quiz`, `snh-envelope-popup`), unclosed `<header>` in the unused `snh-header-standalone`.
+  Warnings left: orphaned snippets, unused assigns, remote assets (the Koko logo / the quiz logo).
+- **Running QA on the public preview**: `REAL_PW=playwright PW=$PWD/prototype/tools/pw-preview.js THEME=189832462590
+  HOST=https://sports-nutrition-hub.myshopify.com DEV=$HOST [LOCAL_ASSETS=1] node prototype/tools/<script>.js`.
+  `LOCAL_ASSETS=1` answers the theme's static .js/.css from the checkout (Liquid still comes from the preview).
+- Screenshots (`r12-qa-shots.js` → `shots/r12/qa/`): home, whey collection, SiS Hydro PDP, cart, Elite, login at
+  390 / 768 / 1440, no horizontal scroll.
+- Cart logic (mocked /cart.js, drawer at 390/768/1440 + cart page at 390/1440): 2,500 → add-ons (cap Rs 375, nothing
+  in the pool under it, so no suggestion until *Cart add-ons* is filled); 8,499 → add-ons ≤ Rs 1,275; 14,000 → close
+  the gap Rs 3,000–4,500; 16,200 → close the gap Rs 800–2,300; 18,000 → add-ons unlocked ≤ Rs 2,000. Footer in view, no
+  errors.
+- Popup: A and B via `?popup=a|b`, reduced motion, `?popup=test` on the cart and while subscribed, the Shopify return
+  path. Game reveals a code, **Copy** puts it on the clipboard ("Copied"), Apply = `/discount/<code>?redirect=`.
+  Every POST mocked. Codes are still the TEST-* placeholders.
+- Campaigns (past / active / future mocks): ended / future never shown, live shown, member-only hidden for guests,
+  page targeting and frequency cap OK. Console errors on the PDP are the Amose Bundle app.
+- Elite contrast: 21/21 ≥ 4.5:1, silver lowest 4.94:1. (The QA tool measured the silver perk pill at 1.28:1 because
+  it un-hid all three panes at once and they stack; it now measures each pane alone: 5.32–5.81:1.)
+- Sticky filter bar: stays under the header at 390 / 768 / 1440 until the footer.
+- Audit (`r11-audit.js`, ROUND=r12, `shots/r12/qa-audit/`): type 0, alignment 0, padding 3 = the full-bleed login
+  split (`main` 0/0 by design).
