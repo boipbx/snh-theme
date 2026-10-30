@@ -9,6 +9,8 @@
   vertical card with its thumbnail + caption from TikTok's oEmbed endpoint (fetched lazily in the browser), opening
   TikTok's player in a lightbox. The profile embed shows only when there are no video blocks (setting); no videos and
   a failed profile = the follow card.
+  Round 13: an @app block slot. Add a TikTok feed app's block here and it is shown instead of the manual videos
+  (manual video blocks stay as the fallback when the app block is removed).
 {%- endcomment -%}
 <link rel="stylesheet" href="{{ 'snh-social.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-social.css' | asset_url | stylesheet_tag }}</noscript>
 <script src="{{ 'snh-social.js' | asset_url }}" defer></script>
@@ -17,6 +19,11 @@
   assign profile = 'https://www.tiktok.com/@' | append: handle
   assign hid = 'ttk-' | append: section.id
   assign videos = section.blocks | where: 'type', 'video'
+  # Round 13: an installed TikTok feed app's block (Customize → this section → Add block → Apps) replaces the manual row
+  assign apps = section.blocks | where: 'type', '@app'
+  if apps.size > 0
+    assign videos = apps | where: 'type', 'none'
+  endif
   assign show_profile = true
   if section.settings.profile == 'never' or section.settings.profile == 'auto' and videos.size > 0
     assign show_profile = false
@@ -34,7 +41,9 @@
       <a class="v-btn v-btn--ink ttk__follow" href="{{ profile }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'tiktok' %}<span>{{ section.settings.follow_label | escape }}</span></a>
     </div>
 
-    {%- if show_profile -%}
+    {%- if apps.size > 0 -%}
+      <div class="ttk__app">{%- for b in apps -%}{% render b %}{%- endfor -%}</div>
+    {%- elsif show_profile -%}
     <div class="ttk__row">
       <div class="ttk__box ttk__box--profile" data-ttk-box>
         <div class="ttk__embed" data-ttk-embed>
@@ -195,6 +204,9 @@
     }
   ],
   "blocks": [
+    {
+      "type": "@app"
+    },
     {
       "type": "video",
       "name": "TikTok video",
