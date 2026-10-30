@@ -231,3 +231,5 @@
 .sft__koko { gap: 6px; }
 .sft__koko img { width: 44px; }
 .spay { flex-wrap: wrap; row-gap: 4px; }
+.sbm__t b { font-weight: 600; }
+.sbm__t small { font-size: 12px; color: var(--grey-1); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }

@@ -51,7 +51,7 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
     await p.route(/\/cart\.js(\?|$)/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(cart) }));
     await p.route(/\/cart\/(change|add|update)(\.js)?/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(cart) }));
     const bi = (x) => ({ pid: x.id, vid: x.variants[0].id, title: x.title, price: x.variants[0].price, available: true, image: x.featured_image });
-    if (opt.member || opt.bundle) await p.route((u) => u.pathname === '/', async (r) => {
+    if (opt.member || opt.bundle) await p.route((u) => u.pathname === (process.env.PAGE ? '/cart' : '/'), async (r) => {
       const res = await r.fetch(); let t = await res.text();
       t = t.replace(/(<script type="application\/json" data-cart-cfg>)([\s\S]*?)(<\/script>)/, (m, a, j, c) => {
         if (opt.member) j = j.replace('"member": false', '"member": true').replace('"tier": "Bronze"', '"tier": "Silver"');
@@ -61,19 +61,19 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
       r.fulfill({ response: res, body: t });
     });
     for (let i = 0; i < 3; i++) {   // the preview is sometimes slow: retry until the cart script is up
-      await p.goto(HOST + '/' + Q, { waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => {});
+      await p.goto(HOST + (process.env.PAGE ? '/cart' : '/') + Q, { waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => {});
       if (await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 45000 }).then(() => true, () => false)) break;
     }
     await p.addStyleTag({ content: '[data-email-capture],dialog.ecm,.cmp-pop,#preview-bar-iframe,#PBarNextFrameWrapper,privacy-bar{display:none!important}' }).catch(() => {});
     await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 30000 }).catch(() => {});
-    await p.evaluate(() => window.SNHCart.open());
-    await p.waitForFunction(() => { const r = document.querySelector('#cart-drawer [data-cart-root]'); return r && r.hasAttribute('data-cart-decision'); }, null, { timeout: 30000 }).catch(() => {});
+    if (!process.env.PAGE) await p.evaluate(() => window.SNHCart.open()); else await p.evaluate(() => window.SNHCart.refresh(false));
+    await p.waitForFunction(() => { const r = document.querySelector(location.pathname === '/cart' ? '[data-cart-root][data-mode="page"]' : '#cart-drawer [data-cart-root]'); return r && r.hasAttribute('data-cart-decision'); }, null, { timeout: 30000 }).catch(() => {});
     await p.waitForTimeout(1500);
     const m = await p.evaluate(() => {
-      const r = document.querySelector('#cart-drawer [data-cart-root]'), box = r.querySelector('[data-cart-sugg]'), t = (e, s) => { const x = e.querySelector(s); return x ? x.textContent.replace(/\s+/g, ' ').trim() : ''; };
+      const r = document.querySelector(location.pathname === '/cart' ? '[data-cart-root][data-mode="page"]' : '#cart-drawer [data-cart-root]'), box = r.querySelector('[data-cart-sugg]'), t = (e, s) => { const x = e.querySelector(s); return x ? x.textContent.replace(/\s+/g, ' ').trim() : ''; };
       return { d: JSON.parse(r.getAttribute('data-cart-decision') || '{}'), head: box && !box.hidden ? t(box, '.scd__bh') : '(none)', cards: box && !box.hidden ? [...box.querySelectorAll('.ssug')].map((e) => t(e, '.ssug__t') + ' · ' + t(e, '.ssug__p')) : [], bundle: !r.querySelector('[data-cart-bundle]').hidden };
     });
-    await p.screenshot({ path: path.join(OUT, `reco-${name.replace(/\W+/g, '-')}-${w}.png`) });
+    await p.screenshot({ path: path.join(OUT, `${process.env.PAGE ? 'page' : 'reco'}-${name.replace(/\W+/g, '-')}-${w}.png`) });
     rows.push({ name, w, sub: cart.total_price / 100, ...m, errs });
     console.log(w, name, '→', m.head, '|', m.cards.join(' ; '), errs.length ? '| ERR ' + errs.join(';') : '');
     await ctx.close();
