@@ -64,9 +64,9 @@
 
         <div class="snh-ev__letter">
           {%- if creative != blank -%}
-            <img src="{{ creative | image_url: width: 900 }}" alt="" loading="eager" decoding="async">
+            <img src="{{ creative | image_url: width: 900 }}" alt="" width="900" height="{{ 900 | divided_by: creative.aspect_ratio | round }}" loading="eager" decoding="async">
           {%- elsif creative_url != blank -%}
-            <img src="{{ creative_url }}" alt="" loading="eager" decoding="async">
+            <img src="{{ creative_url }}" alt="" width="900" height="600" loading="eager" decoding="async">
           {%- else -%}
             <span class="snh-ev__placeholder">Upload your creative in the section settings</span>
           {%- endif -%}
