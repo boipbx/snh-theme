@@ -1,19 +1,36 @@
 {%- comment -%}
-  SNH Elite landing page (Round 7, templates/page.snh-elite.json): hero on the Elite mesh with a membership card
-  (the member's own when signed in, a sample otherwise), join → earn → redeem, tier ladder, FAQ, closing CTA.
-  Rates, thresholds and perks: Theme settings → SNH Elite. Styles: assets/snh-account.css (.ep).
+  SNH Elite "How it works" page (Round 7, rebuilt in Round 12; templates/page.snh-elite.json).
+  hero (photo or video + the member's card) → how it works (3 steps, photos) → tiers (metal cards) → calculator
+  (monthly spend → points a month, months to the first reward, tier after 12 months, with the tier track) → perks
+  (tier switcher) → FAQ → CTA. Every number comes from Theme settings → SNH Elite; headings, lead and FAQ answers
+  take [bronze] [silver] [gold] (rates), [welcome] [redeem] (points), [reward] (Rs value of [redeem] points),
+  [silver_from] [gold_from] (Rs thresholds). Styles: assets/snh-elite-page.css · JS: assets/snh-elite-page.js.
+  Round 11: with "Only on the snh-elite page" on (page.json), it renders only for that handle.
 {%- endcomment -%}
-{%- comment -%} Round 11: with "Only on the snh-elite page" on (page.json), it renders only for that handle. {%- endcomment -%}
 {%- unless section.settings.only_elite and page.handle != 'snh-elite' -%}
 {{ 'snh-account.css' | asset_url | stylesheet_tag }}
+{{ 'snh-elite-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-elite-page.js' | asset_url }}" defer></script>
 {%- liquid
+  assign s = section.settings
   assign welcome = settings.snh_welcome_points | default: 500
   assign redeem_from = settings.snh_redeem_from | default: 2500
+  assign pv = settings.snh_point_value | default: 1
+  assign reward = redeem_from | times: pv
   assign r_b = settings.snh_rate_bronze | default: 3
+  assign r_s = settings.snh_rate_silver | default: 7
   assign r_g = settings.snh_rate_gold | default: 10
-  assign r_b_pc = r_b | append: '%'
-  assign r_s_pc = settings.snh_rate_silver | default: 7 | append: '%'
-  assign r_g_pc = r_g | append: '%'
+  assign silver = settings.snh_silver_threshold | default: 198000
+  assign gold = settings.snh_gold_threshold | default: 300000
+  capture welcome_s
+    render 'snh-num', n: welcome
+  endcapture
+  capture redeem_s
+    render 'snh-num', n: redeem_from
+  endcapture
+  assign reward_s = reward | times: 100 | money_without_trailing_zeros
+  assign silver_s = silver | times: 100 | money_without_trailing_zeros
+  assign gold_s = gold | times: 100 | money_without_trailing_zeros
   if customer
     capture m
       render 'snh-elite-calc', customer: customer
@@ -24,32 +41,43 @@
     capture m
       render 'snh-elite-calc', mock: true, tier: 'Gold', points: 12480, spend: 320000
     endcapture
-    assign card_name = section.settings.sample_name
+    assign card_name = s.sample_name
     assign card_no = 100
   endif
   assign m = m | strip | split: '|'
-  assign parts = section.settings.heading | split: '*'
-  assign cta_parts = section.settings.cta_heading | split: '*'
+  assign hero_img = s.hero_image | default: images['cricket.jpg']
 -%}
-<div class="v2 ep">
-  <section class="ep__hero" aria-labelledby="ep-h-{{ section.id }}">
-    <div class="auth__mesh" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="v-wrap ep__hero-in">
+{%- capture vars -%}{{ r_b }}%|{{ r_s }}%|{{ r_g }}%|{{ welcome_s | strip }}|{{ redeem_s | strip }}|{{ reward_s }}|{{ silver_s }}|{{ gold_s }}{%- endcapture -%}
+{%- assign v = vars | split: '|' -%}
+{%- capture heading -%}{%- assign parts = s.heading | split: '*' -%}{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}{%- endcapture -%}
+
+<div class="v2 ep ep2" data-ep data-rates="{{ r_b }},{{ r_s }},{{ r_g }}" data-thresholds="{{ silver }},{{ gold }}" data-welcome="{{ welcome }}" data-redeem="{{ redeem_from }}" data-pv="{{ pv }}">
+
+  {%- comment -%} ── hero: photo or video, the card ── {%- endcomment -%}
+  <section class="ep2__hero" aria-labelledby="ep-h-{{ section.id }}">
+    <div class="ep2__media" aria-hidden="true">
+      {%- if s.hero_video != blank -%}
+        {{ s.hero_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, preload: 'none', poster: hero_img, class: 'ep2__video' }}
+      {%- elsif hero_img != blank -%}
+        {{ hero_img | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600,2000', sizes: '100vw', alt: '' }}
+      {%- endif -%}
+    </div>
+    <div class="v-wrap ep2__hero-in">
       <div class="ep__copy">
-        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        <h1 class="ep__h" id="ep-h-{{ section.id }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h1>
-        <p class="ep__lead">{{ section.settings.lead | escape | replace: '[bronze]', r_b_pc | replace: '[silver]', r_s_pc | replace: '[gold]', r_g_pc }}</p>
-        <ul class="auth__perks" role="list">
-          <li><b>{% render 'snh-num', n: welcome %}</b><span>welcome points</span></li>
+        <p class="eyebrow">{{ s.eyebrow | escape }}</p>
+        <h1 class="ep__h" id="ep-h-{{ section.id }}">{{ heading }}</h1>
+        <p class="ep__lead">{{ s.lead | escape | replace: '[bronze]', v[0] | replace: '[silver]', v[1] | replace: '[gold]', v[2] | replace: '[welcome]', v[3] }}</p>
+        <ul class="ep2__stats" role="list">
+          <li><b>{{ v[3] }}</b><span>points when you join</span></li>
           <li><b>{{ r_b }}–{{ r_g }}%</b><span>back on every order</span></li>
-          <li><b>{% render 'snh-num', n: redeem_from %}</b><span>points to redeem</span></li>
+          <li><b>{{ v[5] }}</b><span>off at {{ v[4] }} points</span></li>
         </ul>
         <div class="ep__ctas">
           {%- if customer -%}
-            <a class="v-btn v-btn--ink" href="{{ routes.account_url }}#rewards"><span>See my points</span></a>
-            <a class="v-btn v-btn--line v-btn--on-dark" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
+            <a class="v-btn v-btn--accent" href="{{ routes.account_url }}#rewards"><span>See my points</span></a>
+            <a class="v-btn v-btn--line v-btn--on-dark" href="#ep-calc-{{ section.id }}"><span>Work out my points</span></a>
           {%- else -%}
-            <a class="v-btn v-btn--ink" href="{{ routes.account_register_url }}"><span>Join free</span></a>
+            <a class="v-btn v-btn--accent" href="{{ routes.account_register_url }}"><span>Join free</span></a>
             <a class="v-btn v-btn--line v-btn--on-dark" href="{{ routes.account_login_url }}"><span>Sign in</span></a>
           {%- endif -%}
         </div>
@@ -61,28 +89,175 @@
     </div>
   </section>
 
+  {%- comment -%} ── how it works ── {%- endcomment -%}
   <section class="v-section" aria-labelledby="ep-how-{{ section.id }}">
     <div class="v-wrap ep__block">
       <div class="ep__bh">
         <p class="eyebrow">How it works</p>
-        <h2 class="ep__h2" id="ep-how-{{ section.id }}">{{ section.settings.how_heading | escape }}</h2>
+        <h2 class="ep__h2" id="ep-how-{{ section.id }}">{{ s.how_heading | escape }}</h2>
       </div>
-      <ol class="how ep__steps" role="list">
-        <li><span class="how__n">01 · Join</span><h3>Create a free account</h3><p>Sign up in 30 seconds and {% render 'snh-num', n: welcome %} welcome points land in your balance. You start at Bronze.</p></li>
-        <li><span class="how__n">02 · Earn</span><h3>{{ r_b }}–{{ r_g }}% back on every order</h3><p>Shop signed in, online or in store. Every paid order earns points at your tier's rate, and your spend over the year moves you up.</p></li>
-        <li><span class="how__n">03 · Redeem</span><h3>Cash off from {% render 'snh-num', n: redeem_from %} points</h3><p>Once you reach {% render 'snh-num', n: redeem_from %} points, trade them for a cash-off reward from your account dashboard.</p></li>
+      <ol class="ep2__steps" role="list">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            assign ik = 'step_' | append: i | append: '_image'
+            case i
+              when 1
+                assign img = s[ik] | default: images['IMG_2488.png']
+                assign n = '01 · Join'
+                capture t
+                  echo 'Create a free account'
+                endcapture
+                capture d
+                  echo 'Sign up in 30 seconds, online or at the counter. ' | append: v[3] | append: ' points go into your balance and you start at Bronze.'
+                endcapture
+              when 2
+                assign img = s[ik] | default: images['running.jpg']
+                assign n = '02 · Earn'
+                capture t
+                  echo r_b | append: '–' | append: r_g | append: '% back on every order'
+                endcapture
+                capture d
+                  echo 'Shop signed in, on the site or in store. Every paid order adds points at your tier’s rate.'
+                endcapture
+              else
+                assign img = s[ik] | default: images['cricket.jpg']
+                assign n = '03 · Redeem'
+                capture t
+                  echo v[5] | append: ' off at ' | append: v[4] | append: ' points'
+                endcapture
+                capture d
+                  echo 'Swap ' | append: v[4] | append: ' points for ' | append: v[5] | append: ' off from your account. Points stay while you keep shopping.'
+                endcapture
+            endcase
+          -%}
+          <li class="ep2__step">
+            <div class="ep2__step-img">{%- if img != blank -%}{{ img | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400,600,800', sizes: '(min-width: 1024px) 400px, 100vw', alt: '' }}{%- endif -%}</div>
+            <div class="ep2__step-b"><span class="how__n">{{ n }}</span><h3>{{ t | strip }}</h3><p>{{ d | strip }}</p></div>
+          </li>
+        {%- endfor -%}
       </ol>
     </div>
   </section>
 
+  {%- comment -%} ── tiers: metal cards ── {%- endcomment -%}
   <section class="v-section v-section--cream" aria-labelledby="ep-tiers-{{ section.id }}">
     <div class="v-wrap ep__block">
       <div class="ep__bh">
         <p class="eyebrow">Tiers</p>
-        <h2 class="ep__h2" id="ep-tiers-{{ section.id }}">{{ section.settings.tiers_heading | escape }}</h2>
-        <p class="ep__sub">Your tier is set by what you spend in a year. The higher it is, the faster your points stack.</p>
+        <h2 class="ep__h2" id="ep-tiers-{{ section.id }}">{{ s.tiers_heading | escape }}</h2>
+        <p class="ep__sub">Your tier comes from what you spend with us in a year. Higher tier, more points per rupee.</p>
       </div>
-      {%- if customer -%}{%- render 'snh-elite-tiers', current: m[0] -%}{%- else -%}{%- render 'snh-elite-tiers' -%}{%- endif -%}
+      <ul class="ep2__tiers" role="list">
+        {%- assign keys = 'bronze,silver,gold' | split: ',' -%}
+        {%- for k in keys -%}
+          {%- liquid
+            case k
+              when 'bronze'
+                assign nm = 'Bronze'
+                assign rt = r_b
+                assign th = 'Free to join'
+              when 'silver'
+                assign nm = 'Silver'
+                assign rt = r_s
+                assign th = 'From ' | append: v[6] | append: ' a year'
+              else
+                assign nm = 'Gold'
+                assign rt = r_g
+                assign th = 'From ' | append: v[7] | append: ' a year'
+            endcase
+          -%}
+          <li class="ep2__tier{% if m[0] == k and customer %} is-current{% endif %}" data-tier="{{ k }}" data-metal>
+            <div class="ep2__tier-top"><span class="ep2__tier-n">{{ nm }}</span>{%- if m[0] == k and customer -%}<span class="ep2__tier-you">Your tier</span>{%- endif -%}</div>
+            <p class="ep2__tier-rate"><b>{{ rt }}%</b> back in points</p>
+            <p class="ep2__tier-th">{{ th }}</p>
+            {%- assign eg = rt | times: 100 -%}<p class="ep2__tier-eg">Rs 10,000 order = {% render 'snh-num', n: eg %} points</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── calculator + tier track ── {%- endcomment -%}
+  <section class="v-section" id="ep-calc-{{ section.id }}" aria-labelledby="ep-calc-h-{{ section.id }}">
+    <div class="v-wrap ep2__calc">
+      <div class="ep__bh">
+        <p class="eyebrow">Work it out</p>
+        <h2 class="ep__h2" id="ep-calc-h-{{ section.id }}">What would you <em>earn</em>?</h2>
+        <p class="ep__sub">Move the slider to what you spend with us in a normal month.</p>
+      </div>
+      <div class="ep2__calc-box" data-calc>
+        <label class="ep2__calc-l" for="ep-spend-{{ section.id }}">I spend about <output data-calc-spend>Rs {{ s.calc_default | default: 15000 | times: 100 | money_without_currency | remove: '.00' }}</output> a month</label>
+        <input class="ep2__range" type="range" id="ep-spend-{{ section.id }}" min="{{ s.calc_min | default: 2500 }}" max="{{ s.calc_max | default: 60000 }}" step="500" value="{{ s.calc_default | default: 15000 }}" data-calc-in aria-describedby="ep-calc-out-{{ section.id }}">
+        <div class="ep2__range-ends" aria-hidden="true"><span>Rs {{ s.calc_min | default: 2500 }}</span><span>Rs {{ s.calc_max | default: 60000 }}</span></div>
+        <dl class="ep2__out" id="ep-calc-out-{{ section.id }}" aria-live="polite">
+          <div><dt>Points a month</dt><dd data-calc-pm>–</dd><span data-calc-pm-note></span></div>
+          <div><dt>First {{ v[5] }} reward</dt><dd data-calc-first>–</dd><span>{{ v[3] }} welcome points included</span></div>
+          <div><dt>Tier after 12 months</dt><dd data-calc-tier>–</dd><span data-calc-tier-note></span></div>
+        </dl>
+        <div class="ep2__track" aria-hidden="true">
+          <div class="ep2__track-bar"><i data-calc-fill></i><b data-calc-you></b></div>
+          <div class="ep2__track-marks">
+            <span style="--at: 0%">Bronze</span>
+            <span data-mark="silver">Silver<small>{{ v[6] }}</small></span>
+            <span data-mark="gold">Gold<small>{{ v[7] }}</small></span>
+          </div>
+        </div>
+        <p class="ep2__calc-fine">An estimate from today’s rates. Your real points follow your paid orders.</p>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ── perks: tier switcher ── {%- endcomment -%}
+  {%- capture d_b -%}{{ v[3] }} welcome points when you join
+Redeem once you reach {{ v[4] }} points
+Spend tracked automatically from paid orders{%- endcapture -%}
+  {%- capture d_s -%}A 10% reward every birthday
+5% off every gift voucher
+Early access to member-only offers{%- endcapture -%}
+  {%- capture d_g -%}Free delivery on every order
+A 15% reward every birthday
+10% off gift vouchers and first access to new drops{%- endcapture -%}
+  <section class="v-section v-section--cream" aria-labelledby="ep-perks-{{ section.id }}">
+    <div class="v-wrap ep__block">
+      <div class="ep__bh">
+        <p class="eyebrow">Perks</p>
+        <h2 class="ep__h2" id="ep-perks-{{ section.id }}">What each tier <em>gets</em></h2>
+      </div>
+      <div class="ep2__perks" data-perks>
+        <div class="ep2__tabs" role="tablist" aria-label="Tiers">
+          {%- for k in keys -%}
+            <button type="button" role="tab" class="ep2__tab" id="ep-tab-{{ k }}-{{ section.id }}" aria-controls="ep-pane-{{ k }}-{{ section.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" data-tier="{{ k }}">{{ k | capitalize }}</button>
+          {%- endfor -%}
+        </div>
+        {%- for k in keys -%}
+          {%- liquid
+            case k
+              when 'bronze'
+                assign perks = settings.snh_perks_bronze | default: d_b
+                assign rt = r_b
+                assign pimg = s.perks_image_bronze | default: images['IMG_2487.png']
+              when 'silver'
+                assign perks = settings.snh_perks_silver | default: d_s
+                assign rt = r_s
+                assign pimg = s.perks_image_silver | default: images['running.jpg']
+              else
+                assign perks = settings.snh_perks_gold | default: d_g
+                assign rt = r_g
+                assign pimg = s.perks_image_gold | default: images['cricket.jpg']
+            endcase
+          -%}
+          <div class="ep2__pane" role="tabpanel" id="ep-pane-{{ k }}-{{ section.id }}" aria-labelledby="ep-tab-{{ k }}-{{ section.id }}" data-tier="{{ k }}" tabindex="0"{% unless forloop.first %} hidden{% endunless %}>
+            <div class="ep2__pane-b">
+              <p class="ep2__pane-rate" data-metal data-tier="{{ k }}"><b>{{ rt }}%</b> back in points</p>
+              <ul class="ep2__plist" role="list">
+                {%- assign lines = perks | newline_to_br | split: '<br />' -%}
+                {%- for l in lines -%}{%- assign l = l | strip -%}{%- if l != blank -%}<li>{% render 'snh-v2-icon', name: 'check' %}<span>{{ l | escape }}</span></li>{%- endif -%}{%- endfor -%}
+              </ul>
+            </div>
+            <div class="ep2__pane-img">{%- if pimg != blank -%}{{ pimg | image_url: width: 900 | image_tag: loading: 'lazy', widths: '450,700,900', sizes: '(min-width: 1024px) 480px, 100vw', alt: '' }}{%- endif -%}</div>
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
   </section>
 
@@ -91,11 +266,11 @@
       <div class="v-wrap ep__faq">
         <div class="ep__bh">
           <p class="eyebrow">Good to know</p>
-          <h2 class="ep__h2" id="ep-faq-{{ section.id }}">{{ section.settings.faq_heading | escape }}</h2>
+          <h2 class="ep__h2" id="ep-faq-{{ section.id }}">{{ s.faq_heading | escape }}</h2>
         </div>
         <div>
           {%- for b in section.blocks -%}
-            <details class="qa" {{ b.shopify_attributes }}><summary>{{ b.settings.q | escape }}</summary><div class="qa__a">{{ b.settings.a }}</div></details>
+            <details class="qa" {{ b.shopify_attributes }}><summary>{{ b.settings.q | escape }}</summary><div class="qa__a">{{ b.settings.a | replace: '[bronze]', v[0] | replace: '[silver]', v[1] | replace: '[gold]', v[2] | replace: '[welcome]', v[3] | replace: '[redeem]', v[4] | replace: '[reward]', v[5] | replace: '[silver_from]', v[6] | replace: '[gold_from]', v[7] }}</div></details>
           {%- endfor -%}
         </div>
       </div>
@@ -105,109 +280,71 @@
   <section class="ep__end" aria-labelledby="ep-end-{{ section.id }}">
     <div class="auth__mesh" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="v-wrap ep__end-in">
-      <h2 class="ep__h2" id="ep-end-{{ section.id }}">{%- for p in cta_parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+      <h2 class="ep__h2" id="ep-end-{{ section.id }}">{%- assign cta_parts = s.cta_heading | split: '*' -%}{%- for p in cta_parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
       <div class="ep__ctas">
         {%- if customer -%}
-          <a class="v-btn v-btn--ink" href="{{ routes.account_url }}#overview"><span>Go to my dashboard</span></a>
+          <a class="v-btn v-btn--accent" href="{{ routes.account_url }}#overview"><span>Go to my dashboard</span></a>
         {%- else -%}
-          <a class="v-btn v-btn--ink" href="{{ routes.account_register_url }}"><span>Join free</span></a>
+          <a class="v-btn v-btn--accent" href="{{ routes.account_register_url }}"><span>Join free</span></a>
           <a class="v-btn v-btn--line v-btn--on-dark" href="{{ routes.account_login_url }}"><span>Sign in</span></a>
         {%- endif -%}
       </div>
     </div>
   </section>
 </div>
-
 {%- endunless -%}
 
 {% schema %}
 {
   "name": "SNH Elite page",
-  "class": "shopify-section--snh-elite-page",
+  "class": "snh-sec snh-sec--elite-page",
   "settings": [
     {
       "type": "checkbox",
       "id": "only_elite",
-      "label": "Only on the page with the handle snh-elite",
+      "label": "Only on the snh-elite page",
       "default": false,
-      "info": "On for the default page template, so other pages don't show it."
+      "info": "For the shared page.json template."
     },
     {
       "type": "paragraph",
-      "content": "Rates, thresholds, welcome points and tier perks: Theme settings → SNH Elite. Wrap a word in *asterisks* for the serif."
+      "content": "Rates, thresholds, points and perks: Theme settings → SNH Elite. In the lead and FAQ answers: [bronze] [silver] [gold] [welcome] [redeem] [reward] [silver_from] [gold_from]."
     },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "SNH Elite · free to join"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Every order *pays* you back"
-    },
-    {
-      "type": "text",
-      "id": "lead",
-      "label": "Lead",
-      "info": "[bronze], [silver] and [gold] print the earn rates.",
-      "default": "Sri Lanka's premium supplement rewards club. Earn [bronze] to [gold] back in points on everything you buy, and climb to Silver and Gold as you go."
-    },
-    {
-      "type": "text",
-      "id": "sample_name",
-      "label": "Name on the sample card",
-      "default": "Your name here"
-    },
-    {
-      "type": "text",
-      "id": "how_heading",
-      "label": "How it works heading",
-      "default": "Join, earn, redeem"
-    },
-    {
-      "type": "text",
-      "id": "tiers_heading",
-      "label": "Tiers heading",
-      "default": "Three tiers, one climb"
-    },
-    {
-      "type": "text",
-      "id": "faq_heading",
-      "label": "FAQ heading",
-      "default": "Questions, answered"
-    },
-    {
-      "type": "text",
-      "id": "cta_heading",
-      "label": "Closing heading",
-      "default": "Start earning on your *next* order"
-    }
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero photo", "info": "Empty = cricket.jpg from Files. Landscape, 2400px wide." },
+    { "type": "video", "id": "hero_video", "label": "Hero video (optional)", "info": "Muted loop; loads only when the page opens (preload none). The photo is its poster." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SNH Elite · free to join" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every order *pays* you back" },
+    { "type": "text", "id": "lead", "label": "Lead", "default": "Earn [bronze] back in points on every order, online or in store. Spend more in a year and it goes up to [silver], then [gold]." },
+    { "type": "text", "id": "sample_name", "label": "Sample card name", "default": "Your name here" },
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "how_heading", "label": "Heading", "default": "Join, earn, redeem" },
+    { "type": "image_picker", "id": "step_1_image", "label": "Step 1 photo", "info": "Empty = the store photo (IMG_2488.png)." },
+    { "type": "image_picker", "id": "step_2_image", "label": "Step 2 photo", "info": "Empty = running.jpg." },
+    { "type": "image_picker", "id": "step_3_image", "label": "Step 3 photo", "info": "Empty = cricket.jpg." },
+    { "type": "header", "content": "Tiers and calculator" },
+    { "type": "text", "id": "tiers_heading", "label": "Tiers heading", "default": "Three tiers. Your spend sets the level." },
+    { "type": "number", "id": "calc_min", "label": "Calculator: lowest monthly spend (Rs)", "default": 2500 },
+    { "type": "number", "id": "calc_max", "label": "Calculator: highest monthly spend (Rs)", "default": 60000 },
+    { "type": "number", "id": "calc_default", "label": "Calculator: starting value (Rs)", "default": 15000 },
+    { "type": "header", "content": "Perks" },
+    { "type": "image_picker", "id": "perks_image_bronze", "label": "Bronze photo", "info": "Empty = the store photo (IMG_2487.png)." },
+    { "type": "image_picker", "id": "perks_image_silver", "label": "Silver photo", "info": "Empty = running.jpg." },
+    { "type": "image_picker", "id": "perks_image_gold", "label": "Gold photo", "info": "Empty = cricket.jpg." },
+    { "type": "header", "content": "FAQ and closing" },
+    { "type": "text", "id": "faq_heading", "label": "FAQ heading", "default": "Questions, answered" },
+    { "type": "text", "id": "cta_heading", "label": "Closing heading", "default": "Start earning on your *next* order" }
   ],
   "blocks": [
     {
       "type": "faq",
       "name": "Question",
       "settings": [
-        {
-          "type": "text",
-          "id": "q",
-          "label": "Question"
-        },
-        {
-          "type": "richtext",
-          "id": "a",
-          "label": "Answer"
-        }
+        { "type": "text", "id": "q", "label": "Question" },
+        { "type": "richtext", "id": "a", "label": "Answer", "info": "[bronze] [silver] [gold] [welcome] [redeem] [reward] [silver_from] [gold_from] print the current figures." }
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "SNH Elite page"
-    }
-  ]
+  "presets": [{ "name": "SNH Elite page" }]
 }
 {% endschema %}

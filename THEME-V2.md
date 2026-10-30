@@ -664,3 +664,17 @@ needs it visible), so the IDs came from TikTok's creator embed for the same acco
 Cards show TikTok's player frame as the picture; new optional **Cover image** per block replaces it (faster).
 Captions are empty (TikTok exposes none publicly; add them in the blocks). QA on the preview, not localhost:
 `prototype/tools/r12-tiktok-qa.js` → `shots/r12/p5/tiktok.md`.
+
+### Phase 6: SNH Elite page (`sections/snh-elite-page`, `assets/snh-elite-page.css/.js`)
+hero (photo, or a muted video with `preload="none"`; default cricket.jpg) → how it works (3 photo cards: store,
+running, cricket) → tiers (metal cards) → calculator (monthly spend slider → points a month, month of the first
+reward incl. welcome points, tier after 12 months simulated month by month, and the tier track with Silver/Gold
+marks that fills as you slide) → perks (Bronze/Silver/Gold tab switcher, arrow keys, a photo per tier) → FAQ →
+CTA. The old perks-chip row and repeated tier explanation are gone. Every figure comes from Theme settings → SNH
+Elite; lead and FAQ answers take `[bronze] [silver] [gold] [welcome] [redeem] [reward] [silver_from] [gold_from]`
+(the seeded FAQ now uses them; both page.json and page.snh-elite.json). Copy rewritten short and local (no em
+dashes, no "elevate/unlock/journey/premium").
+**Metals + contrast (measured from pixels, `prototype/tools/r12-elite-qa.js` → `shots/r12/p6/contrast.md`)**: the
+suggested #8E9AAB → #4A5566 silver only reaches 2.85:1 with white at its light end, so silver is #646F7F → #3A4350
+(lowest 4.94:1), bronze #9A5A2B → #5A3214 (5.25:1), gold #F2CF72 → #D49E35 with ink text (7.96:1). All text ≥ 4.5:1.
+No gym photo exists in the theme's files; add one in *Step / Perks photo* if you have it.
