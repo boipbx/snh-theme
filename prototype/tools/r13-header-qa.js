@@ -15,7 +15,7 @@ const OUT = path.join(__dirname, '..', 'shots', 'r13', '3'); fs.mkdirSync(OUT, {
     await p.waitForTimeout(1500);
     const st = () => p.evaluate(() => {
       const r = (e) => { if (!e) return null; const b = e.getBoundingClientRect(), cs = getComputedStyle(e); return { top: Math.round(b.top), bot: Math.round(b.bottom), vis: b.bottom > 0 && b.top < innerHeight && cs.visibility !== 'hidden' && +cs.opacity > 0.1 }; };
-      const hdr = document.querySelector('.hdr'), fb = document.querySelector('[data-fbar], .fbar, .snh-fbar, .cfb');
+      const hdr = document.querySelector('.hdr'), fb = document.querySelector('.snh-bar-form');
       const btns = [...document.querySelectorAll('button, a')].filter((x) => /filter/i.test(x.textContent + (x.getAttribute('aria-label') || '')) && x.offsetParent && x.getBoundingClientRect().width > 0).map((x) => x.className.split(' ')[0] + ':' + x.textContent.trim().replace(/\s+/g, ' ').slice(0, 20));
       return { y: Math.round(scrollY), hdr: r(hdr), hdrCls: hdr && hdr.className, fbar: r(fb), fbarSel: fb && fb.className.split(' ')[0], hh: getComputedStyle(document.documentElement).getPropertyValue('--header-height'), btns };
     });

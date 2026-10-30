@@ -2093,3 +2093,5 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .snh-hdr-sec.is-pinned .hdr { position: fixed; top: 0; left: 0; right: 0; }
 .colhero__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; padding-top: 20px; }
 .colhero__head .colhero__count { order: 0; margin: 0; }
+.colhero__head .colhero__title { color: var(--ink); text-shadow: none; }
+.colhero__head .colhero__count { color: var(--grey-2, #6b6b6b); }
