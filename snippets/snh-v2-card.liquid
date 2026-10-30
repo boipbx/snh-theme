@@ -2,9 +2,10 @@
   SNH product card (Round 11: your old card's structure, OLD-COMPONENTS.md §1, in v2 type and spacing). The one card
   used everywhere (home, collections, search, related, recently viewed, cart suggestions, account; the theme's
   product-card snippet renders this too).
-  Bordered card → inset image tile (badges: one saving/note pill top-left, status stack top-right, flavour count
-  bottom-left, quick view bottom-right) → brand · rating → name (2 lines) → options / per serving → price pill +
-  Add / Choose pill → Koko 3× → SNH Elite "earn Rs X back". Every text row has a fixed height, so rows line up.
+  Round 13 (compact): bordered card → image tile (one saving/note pill top-left, status top-right, flavour count
+  bottom-left, a round "+" quick add bottom-right) → brand · ★ rating (count) → name (2 lines) → "13 flavours ·
+  Rs 525/serving" → price (bold) + compare-at, "or 3 × Rs X with Koko" under it → points line on desktop hover only.
+  Every text row has a fixed height, so rows line up.
   Tile: one cream backdrop, the pack contained with even padding. Packshots with SNH's baked-in orange frame
   (file name contains "SportsNutritionHub" or "snh-frame") are cropped inside the frame; assets/snh-v2.js
   (data-v2-lift) lifts grey studio backgrounds to white so every pack blends into the tile (mix-blend multiply).
@@ -207,9 +208,14 @@
       <ul class="pc__status" role="list">{%- for b in status_list limit: 2 -%}<li class="pc__st pc__st--{{ b | handleize }}">{{ b | escape }}</li>{%- endfor -%}</ul>
     {%- endif -%}
     {%- if chip != blank -%}<span class="pc__chip">{{ chip }}</span>{%- endif -%}
+    {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
     {%- if product.available -%}
-      {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-      <button class="pc__peek" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Quick view {{ title_full }}">{% render 'snh-v2-icon', name: 'search' %}</button>
+      {%- comment -%} Round 13: one round "+" on the image: single variant adds in one tap, several open quick buy {%- endcomment -%}
+      {%- if multi -%}
+        <button class="pc__plus" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ title_full }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
+      {%- else -%}
+        <button class="pc__plus" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ title_full }} to basket">{% render 'snh-v2-icon', name: 'plus' %}</button>
+      {%- endif -%}
       <quick-buy-drawer id="{{ qb }}" header-bordered open-from="bottom" handle="{{ product.handle }}?variant={{ v.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
     {%- endif -%}
   </div>
@@ -222,25 +228,23 @@
     </div>
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
     <h3 class="pc__name"><a href="{{ product.url }}" title="{{ title_full }}">{{ short | strip }}</a></h3>
-    <p class="pc__sub">{{ sub | escape }}{% if per > 0 %} · {{ per | money_without_trailing_zeros }} / serving{% endif %}</p>
+    <p class="pc__sub">{{ sub | escape }}{% if per > 0 %}<span class="pc__per"> · {{ per | money_without_trailing_zeros | remove: ' ' }}/serving</span>{% endif %}</p>
     <div class="pc__foot">
       <p class="pc__price{% if saving > 0 %} pc__price--sale{% endif %}">
         <span class="pc__now">{% if product.price_varies %}<span class="pc__from">From </span>{% endif %}{{ product.price | money_without_trailing_zeros }}</span>
         {%- if saving > 0 -%}<s class="pc__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}
       </p>
-      {%- if product.available == false -%}
-        <span class="pc__sold">Sold out</span>
-      {%- elsif multi -%}
-        <button class="pc__add" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ title_full }}"><span>Choose</span><i class="pc__dot" aria-hidden="true"></i></button>
+      {%- if product.available -%}
+        <p class="pc__koko">or 3 × {{ third | money_without_trailing_zeros }} with <span class="pc__kk">Koko</span></p>
       {%- else -%}
-        <button class="pc__add" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ title_full }} to basket"><span>Add</span><i class="pc__dot" aria-hidden="true"></i></button>
+        <p class="pc__koko pc__koko--out">Sold out</p>
       {%- endif -%}
     </div>
-    <p class="pc__koko">or 3 × {{ third | money_without_trailing_zeros }} with <span class="pc__kk">KOKO</span></p>
+    {%- comment -%} points: desktop hover only (hidden on touch / phones) {%- endcomment -%}
     {%- if customer -%}
       <p class="pc__earn">Earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back in points</p>
     {%- else -%}
-      <a class="pc__earn" href="{{ routes.account_login_url }}">Sign in to earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back</a>
+      <a class="pc__earn" href="{{ routes.account_login_url }}" tabindex="-1">Sign in to earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back</a>
     {%- endif -%}
   </div>
 </product-card>
