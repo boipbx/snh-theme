@@ -600,3 +600,24 @@ Open: `running.jpg` (homepage) is only 1,200px wide at the source; upload a 2,40
 | Media | SiS video plays (Chrome desktop + iPhone emulation), TikTok 6s fallback, Instagram live / expired / no-token paths, capture capping: verified in phases 5 and 8 |
 | 404 | Impact's 404 (outlined "404", 320px padding) replaced by a v2 page: search + range shortcuts (blocks) |
 | Removed | `templates/page.tiktok-qa.json` (dev-only) |
+
+## Round 12
+
+### Phase 1: smart cart logic (`assets/snh-cart.js` → `decide()`, Theme settings → **SNH cart suggestions**)
+gap = free-delivery threshold − subtotal. Gap ≤ max(Rs 3,000, 25 % of subtotal) → **Close the gap**: products priced
+gap … gap + Rs 1,500, cheapest first. Bigger gap (or already free) → **Add-ons** under min(Rs 2,000, 15 % of
+subtotal), from *Cart drawer → Cart add-ons* (empty today), else Shopify recommendations, bars/snacks/gels/shakers
+first. Always one **complementary** item under 20 % of subtotal: the *Complementary pairs* rules (`creatine => shaker,
+bottle`), else Shopify's complementary pick. Never in-cart, sold out or priced ≥ the subtotal; max 3 in the drawer
+(setting). Recalculated on every render. The decision is in `data-cart-decision` (JSON) on `[data-cart-root]`;
+`SNHCart.decide(cart, pool, cfg, mode)` is the pure function. QA: `prototype/tools/r12-cart-qa.js` →
+`prototype/shots/r12/cart/qa.md`.
+
+### Phase 2: drawer decluttered
+Compact free-delivery line + 4px bar fixed under the header; lines → one horizontal suggestion carousel (image,
+name, price, +) → a collapsed **Bundle offer** row. One fixed footer (drawer and cart page): savings (if any), total,
+one points line (guests: *Sign in* opens the account panel), Secure checkout, Koko 3× with the logo, payment logos
+(Shopify's Visa / Mastercard / Amex SVGs, Koko's logo, COD). The mid-scroll breakdown, trust row and the page's
+*Ways to pay* card are gone. Cart page: the footer is the sticky right column on desktop and fixed to the bottom on
+phones. Impact's shadow `::part(body)` padding/scrolling is turned off for the drawer so the footer can't be pushed
+off screen. The rating line shows only when *Cart drawer → Rating line* is filled.

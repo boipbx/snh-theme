@@ -1,5 +1,7 @@
 {%- comment -%}
   SNH cart drawer (Round 11): your cart drawer (OLD-COMPONENTS.md §4) rebuilt in v2 with the conversion upgrades.
+  Round 12: compact free-delivery bar under the header, lines → one suggestion carousel (max 3) → a collapsed bundle
+  row; one fixed footer (savings, total, points, Secure checkout, Koko, payment logos).
   Kept: free-delivery card (with the Rs 100 tolerance), qty steppers, smart gap picks, "goes with your basket" picks,
   SNH Elite points line, subtotal + tax note, View basket + Checkout (Koko intercepts it), empty state, the basket
   toast after closing. Added: unlocked state, auto-discount banner, brand / variant / subscription / saving tags per
@@ -13,11 +15,13 @@
 <script src="{{ 'snh-cart.js' | asset_url }}" defer></script>
 <x-drawer class="cart-drawer drawer snh-cd" id="cart-drawer" open-from="right" aria-label="Your basket" data-snh-elite>
   <div class="scd" data-cart-root data-mode="drawer">
-    {%- render 'snh-cart-cfg', threshold: section.settings.free_shipping_threshold, tolerance: section.settings.free_delivery_tolerance, addons: section.settings.addons.handle, bestsellers: section.settings.bestsellers.handle, rating: section.settings.rating, picks_products: section.settings.picks_products -%}
+    {%- render 'snh-cart-cfg', threshold: section.settings.free_shipping_threshold, tolerance: section.settings.free_delivery_tolerance, addons: section.settings.addons.handle, bestsellers: section.settings.bestsellers.handle, rating: section.settings.rating, picks_products: section.settings.picks_products, show_sugg: section.settings.show_gap_picks -%}
     <header class="scd__head">
       <h2 class="scd__title">Your basket <span class="scd__count" data-cart-count>{{ cart.item_count }}</span></h2>
+      <a class="scd__view" href="{{ routes.cart_url }}">View basket</a>
       <button type="button" is="close-button" class="scd__x" aria-label="Close basket">{% render 'snh-v2-icon', name: 'close' %}</button>
     </header>
+    <div class="scd__bar" data-cart-bar></div>
     <div class="scd__body" data-cart-body>
       {%- if cart.item_count == 0 -%}
         <div class="scd__empty"><p class="scd__empty-h">Your basket is empty</p><p>Add your favourites and they'll appear here instantly.</p><a class="v-btn v-btn--accent" href="{{ section.settings.empty_cart_link | default: routes.all_products_collection_url }}"><span>Start shopping</span></a></div>
@@ -73,13 +77,14 @@
     {
       "type": "text",
       "id": "rating",
-      "label": "Trust row rating",
-      "info": "e.g. 4.9 on Google · 1,200+ reviews. Empty = \"Real customer reviews\"."
+      "label": "Rating line",
+      "info": "Your real rating, e.g. 4.9 on Google · 1,200+ reviews. Shown under the payment logos only when filled."
     },
     {
       "type": "checkbox",
       "id": "show_gap_picks",
-      "label": "Show free-delivery gap-filler",
+      "label": "Show suggestions",
+      "info": "Rules: Theme settings → SNH cart suggestions.",
       "default": true
     },
     {

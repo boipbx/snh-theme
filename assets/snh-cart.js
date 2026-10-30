@@ -5,12 +5,14 @@
    - auto-discount banner (cart-level and line discounts by title)
    - lines: pack shot, brand, name, variant, subscription label, saving tags (Bundle saving / Member price / the
      discount), qty stepper, remove, line price + compare-at (from /products/<handle>.js, cached)
-   - smart gap-filler under the threshold: gap ≤ price ≤ gap + Rs 2,500, cheapest closer first with low-ticket items
-     (bars, snacks, gels, shakers) favoured, from the "Cart add-ons" collection, else Shopify recommendations;
-     never in-cart or sold-out
-   - bundle upsell when an in-cart product is in a bundle_N offer · picks (goal collection for members, bestsellers)
-   - summary: subtotal, savings, points (members) / "Sign in to earn X points", Koko 3×, Secure checkout
-     (button[name=checkout], so the Koko router still intercepts it), trust row
+   - suggestions (Round 12, Theme settings → SNH cart suggestions), decided on every render:
+       gap ≤ max(Rs 3,000, 25% of subtotal) → "Close the gap": priced gap … gap + Rs 1,500, cheapest first;
+       bigger gap (or unlocked) → add-ons under min(Rs 2,000, 15% of subtotal), "Cart add-ons" collection first,
+       else recommendations; plus one complementary item (pair rules) under 20% of subtotal. Never in-cart, sold
+       out or priced ≥ the subtotal; at most 3 in the drawer. The decision path is in data-cart-decision (JSON).
+   - bundle offer (an in-cart product is in a bundle_N offer) as one collapsed row · picks only in the empty basket
+   - one footer (drawer + page): savings, total, points (one line), Secure checkout (button[name=checkout], so the
+     Koko router still intercepts it), Koko 3× with the logo, payment logos (Visa, Mastercard, Amex, Koko, COD)
    Page mode adds what sections/main-cart asks for (offers, tier progress, empty-state plan CTA).
    Never adds anything by itself; every add is a shopper's tap. */
 (function () {
@@ -70,6 +72,8 @@
         '<div class="scd__empty-cta"><a class="v-btn v-btn--accent" href="' + esc(c.shop) + '"><span>Start shopping</span></a><a class="v-btn v-btn--line" href="' + esc(c.plan) + '"><span>Build your plan</span></a></div></div>' +
         '<section class="scd__block" data-cart-picks></section>';
       this.foot.hidden = true;
+      var eb = $('[data-cart-bar]', this.el); if (eb) eb.innerHTML = '';
+      this.el.removeAttribute('data-cart-decision');
       if (this.mode === 'page') this.pageExtras(cart);
       this.picks(cart);
       this.emit('render', cart);
@@ -79,7 +83,7 @@
     var gap = c.threshold - cart.total_price, waived = gap > 0 && gap <= c.tolerance, unlocked = gap <= 0 || waived;
     var pct = Math.max(4, Math.min(100, Math.round(cart.total_price / c.threshold * 100)));
     var bar = '<div class="sfree' + (unlocked ? ' is-on' : '') + '" role="status">' +
-      '<p class="sfree__t">' + (unlocked ? icons.check + '<b>Free delivery unlocked</b>' : icons.truck + '<span>Add <b>' + rsUp(gap) + '</b> more for free delivery</span>') + '<span class="sfree__th">' + rs(c.threshold) + '</span></p>' +
+      '<p class="sfree__t">' + (unlocked ? icons.check + '<b>Free delivery unlocked</b>' : icons.truck + '<span><b>' + rsUp(gap) + '</b> to free delivery</span>') + '<span class="sfree__th">' + rs(c.threshold) + '</span></p>' +
       '<div class="sfree__bar"><i style="width:' + (unlocked ? 100 : pct) + '%"></i></div></div>';
     // discounts: cart-level applications + line discounts, by title
     var disc = {};
@@ -88,14 +92,13 @@
     var dkeys = Object.keys(disc).filter(function (k) { return disc[k] > 0; });
     var banner = dkeys.length ? '<div class="sdisc" role="status">' + icons.tag + '<p><b>' + esc(dkeys.join(' + ')) + '</b> applied automatically · you save ' + rs(dkeys.reduce(function (s, k) { return s + disc[k]; }, 0)) + '</p></div>' : '';
     var lines = '<ul class="slines" role="list">' + cart.items.map(function (it, i) { return self.line(it, i + 1); }).join('') + '</ul>';
-    this.body.innerHTML = (this.mode === 'drawer' ? bar + banner : banner) + lines +
-      '<section class="scd__block" data-cart-gap hidden></section><section class="scd__block" data-cart-bundle hidden></section>' + (this.mode === 'drawer' ? '<section class="scd__block" data-cart-picks></section>' : '');
-    if (this.mode === 'page') { var pb = $('[data-cart-bar]', this.el); if (pb) pb.innerHTML = bar; }
+    this.body.innerHTML = banner + lines + '<section class="scd__block" data-cart-sugg hidden></section><details class="sbd" data-cart-bundle hidden></details>';
+    var pb = $('[data-cart-bar]', this.el); if (pb) pb.innerHTML = bar;
     this.summary(cart, disc);
     this.enrich(cart);
-    if (!unlocked) this.gap(cart, gap); else if (this.mode === 'page') { var gp = $('[data-cart-gap]', this.el); if (gp) gp.hidden = true; }
+    this.suggest(cart);
     this.bundle(cart);
-    if (this.mode === 'page') this.pageExtras(cart); else this.picks(cart);
+    if (this.mode === 'page') this.pageExtras(cart);
     this.emit('render', cart);
   };
 
@@ -108,7 +111,6 @@
   Cart.prototype.pageExtras = function (cart) {
     var self = this, d = this.pageData(), empty = !cart.item_count, inCart = {};
     (cart.items || []).forEach(function (it) { inCart[it.product_id] = 1; });
-    var bar = $('[data-cart-bar]', this.el); if (bar && empty) bar.innerHTML = '';
     ['stack', 'swap', 'try'].forEach(function (k) { var b = $('[data-cart-' + k + ']', self.el); if (b && empty) { b.hidden = true; b.innerHTML = ''; } });
     // delivery estimate: Colombo same day; elsewhere 2–3 working days (Mon–Sat)
     var eta = $('[data-cart-eta] span', this.el.closest('section') || document);
@@ -209,6 +211,7 @@
     return productCache[handle];
   };
 
+  // one footer for the drawer and the page: savings, total, points (one line), Secure checkout, Koko, payment logos
   Cart.prototype.summary = function (cart) {
     var c = this.cfg;
     var lineSave = 0;
@@ -220,85 +223,133 @@
     var tier = '';
     if (this.mode === 'page' && c.member) {
       var after = c.spend + cart.total_price / 100, next = c.spend < c.silver ? ['Silver', c.silver] : c.spend < c.gold ? ['Gold', c.gold] : null;
-      if (next) tier = '<p class="ssum__tier">' + icons.bolt + '<span>' + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>.' : 'This order gets you <b>' + rs(cart.total_price) + '</b> closer to ' + next[0] + ' (' + rs((next[1] - after) * 100) + ' to go).') + '</span></p>';
+      if (next) tier = '<p class="sft__line">' + icons.bolt + '<span>' + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>' : rs((next[1] - after) * 100) + ' more to <b>' + next[0] + '</b> after this order') + '</span></p>';
     }
-    var rows =
-      '<dl class="ssum">' +
-        '<div><dt>Subtotal</dt><dd>' + rs(cart.items_subtotal_price || cart.total_price) + '</dd></div>' +
-        (cartSave ? '<div class="ssum__save"><dt>Discounts</dt><dd>−' + rs(cartSave) + '</dd></div>' : '') +
-        '<div><dt>Delivery</dt><dd>' + (free ? '<b class="ssum__free">Free</b>' : 'Calculated at checkout') + '</dd></div>' +
-        (save ? '<div class="ssum__save"><dt>You save</dt><dd>' + rs(save) + '</dd></div>' : '') +
-        '<div class="ssum__tot"><dt>Total</dt><dd>' + rs(cart.total_price) + '</dd></div>' +
-      '</dl>';
-    var points = '<p class="ssum__pts">' + icons.bolt + (c.member ? '<span>You\'ll earn <b>' + pts.toLocaleString('en-US') + ' points</b> on this order as a ' + esc(c.tier) + ' member (' + c.rate + '% back).</span>' : '<span><a href="' + esc(c.login) + '">Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b> on this order, or <a href="' + esc(c.register) + '">join SNH Elite</a> free.</span>') + '</p>';
-    var koko = '<p class="ssum__koko">or 3 interest-free payments of <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b> with <span class="kk">KOKO</span></p>';
-    var go = '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout · ' + rs(cart.total_price) + '</span></button></form>';
-    var trust = '<ul class="strust" role="list">' +
-        '<li>' + icons.star + '<span>' + esc(c.rating || 'Real customer reviews') + '</span></li>' +
-        '<li>' + icons.truck + '<span>Same-day Colombo</span></li>' +
-        '<li>' + icons.shield + '<span>100% authentic</span></li>' +
-        '<li class="strust__pay"><span class="pay">Card</span><span class="pay pay--kk">Koko</span><span class="pay">COD</span></li>' +
-      '</ul>';
-    if (this.mode === 'page') {
-      this.foot.innerHTML = rows + points + tier + koko + go + trust;
-    } else {
-      // drawer: a compact sticky footer; the breakdown, points and trust row sit at the end of the scroll area
-      this.foot.innerHTML = '<div class="ssum__mini">' + (save ? '<span class="ssum__save">You save ' + rs(save) + '</span>' : '<span>' + (free ? '<b class="ssum__free">Free delivery</b>' : 'Delivery at checkout') + '</span>') + '<span class="ssum__mt">Total <b>' + rs(cart.total_price) + '</b></span></div>' + go + koko.replace('ssum__koko', 'ssum__koko ssum__koko--c') + '<a class="ssum__view" href="' + esc(c.cartUrl) + '">View basket</a>';
-      var tail = $('[data-cart-sum]', this.el);
-      if (!tail) { tail = document.createElement('section'); tail.className = 'scd__block scd__sum'; tail.setAttribute('data-cart-sum', ''); this.body.appendChild(tail); }
-      tail.innerHTML = rows + points + trust + '<p class="ssum__note">Taxes included. Delivery is calculated at checkout.</p>';
-    }
+    var points = '<p class="sft__line">' + icons.bolt + (c.member ? '<span>Earn <b>' + pts.toLocaleString('en-US') + ' points</b> · ' + esc(c.tier) + ' ' + c.rate + '%</span>' : '<span><a href="' + esc(c.login) + '" data-account-open>Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b></span>') + '</p>';
+    this.foot.innerHTML =
+      (save ? '<p class="sft__save">' + icons.tag + '<span>You save <b>' + rs(save) + '</b></span></p>' : '') +
+      '<div class="sft__tot"><span>Total<small>' + (free ? 'Free delivery' : 'Delivery at checkout') + ' · taxes included</small></span><b>' + rs(cart.total_price) + '</b></div>' +
+      points + tier +
+      '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout</span></button></form>' +
+      '<p class="sft__koko">or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b> interest-free with <img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="Koko" width="40" height="13" loading="lazy"></p>' +
+      this.payRow() +
+      (c.rating ? '<p class="sft__rate">' + icons.star + '<span>' + esc(c.rating) + '</span></p>' : '');
+  };
+  Cart.prototype.payRow = function () {
+    if (this.__pay == null) { var t = $('[data-cart-pay]', this.el); this.__pay = t ? t.innerHTML : ''; }
+    return this.__pay;
   };
 
-  /* ---------- the smart gap-filler ---------- */
-  Cart.prototype.candidates = function (cart) {
-    var c = this.cfg, self = this, inCart = {};
-    cart.items.forEach(function (it) { inCart[it.product_id] = 1; });
-    var key = 'snh_addons_' + c.addons;
-    function fromList(list) {
-      return list.map(function (p) {
-        var vs = (p.variants || []).filter(function (v) { return v.available !== false && cents(v.price) > 0; }).sort(function (a, b) { return cents(a.price) - cents(b.price); });
-        if (!vs.length || inCart[p.id] || p.available === false) return null;
-        var im = (vs[0].featured_image && vs[0].featured_image.src) || (p.images && p.images[0] && (p.images[0].src || p.images[0])) || p.featured_image || '';
-        return { id: p.id, vid: vs[0].id, handle: p.handle, title: p.title, vendor: p.vendor, type: p.product_type || p.type || '', price: cents(vs[0].price), image: im, url: '/products/' + p.handle, multi: (p.variants || []).length > 1 };
-      }).filter(Boolean);
-    }
-    var addons = listCache[key] || (listCache[key] = json(root + 'collections/' + encodeURIComponent(c.addons) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }));
-    return addons.then(function (list) {
-      var a = fromList(list);
-      if (a.length >= 2) return a;
-      // no add-ons collection yet: Shopify's recommendations for the basket's products
-      var ids = cart.items.slice(0, 3).map(function (it) { return it.product_id; });
-      return Promise.all(ids.map(function (id) {
-        var k = 'rec_' + id;
-        if (!listCache[k]) listCache[k] = Promise.all(['complementary', 'related'].map(function (intent) {
-          return json(root + 'recommendations/products.json?product_id=' + id + '&limit=10&intent=' + intent).then(function (j) { return j.products || []; }).catch(function () { return []; });
-        })).then(function (two) { return two[0].concat(two[1]); });
-        return listCache[k];
-      }).concat([self.picksList()])).then(function (sets) {
-        // recommendations first, then the picks collection (bestsellers / the member's goal) to widen the pool
-        var seen = {}, all = [];
-        a.forEach(function (p) { seen[p.id] = 1; });
-        sets.forEach(function (s) { s.forEach(function (p) { if (!seen[p.id]) { seen[p.id] = 1; all.push(p); } }); });
-        return a.concat(fromList(all));
-      });
+  /* ---------- suggestions: the pool (add-ons collection, recommendations, picks), then one decision ---------- */
+  function norm(p, src) {
+    var vs = (p.variants || []).filter(function (v) { return v.available !== false && cents(v.price) > 0; }).sort(function (a, b) { return cents(a.price) - cents(b.price); });
+    var v = vs[0] || (p.variants || [])[0] || {};
+    var im = (v.featured_image && v.featured_image.src) || (p.images && p.images[0] && (p.images[0].src || p.images[0])) || p.featured_image || '';
+    return { id: p.id, vid: v.id, handle: p.handle, title: p.title, vendor: p.vendor, type: p.product_type || p.type || '', tags: [].concat(p.tags || []).join(' '), price: cents(v.price), soldOut: !vs.length || p.available === false, image: im, url: '/products/' + p.handle, multi: (p.variants || []).length > 1, src: src };
+  }
+  function recs(id, intent) {
+    var k = 'rec_' + intent + '_' + id;
+    return listCache[k] || (listCache[k] = json(root + 'recommendations/products.json?product_id=' + id + '&limit=10&intent=' + intent).then(function (j) { return j.products || []; }).catch(function () { return []; }));
+  }
+  Cart.prototype.pool = function (cart) {
+    var c = this.cfg, key = 'snh_addons_' + c.addons, ids = cart.items.slice(0, 3).map(function (it) { return it.product_id; });
+    var addons = c.addons ? (listCache[key] || (listCache[key] = json(root + 'collections/' + encodeURIComponent(c.addons) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }))) : Promise.resolve([]);
+    return Promise.all([
+      addons,
+      Promise.all(ids.map(function (id) { return recs(id, 'complementary'); })),
+      Promise.all(ids.map(function (id) { return recs(id, 'related'); })),
+      this.picksList()
+    ]).then(function (r) {
+      var flat = function (a) { return [].concat.apply([], a); };
+      return { addons: r[0].map(function (p) { return norm(p, 'addons'); }), comp: flat(r[1]).map(function (p) { return norm(p, 'complementary'); }), related: flat(r[2]).map(function (p) { return norm(p, 'related'); }), picks: r[3].map(function (p) { return norm(p, 'picks'); }) };
     });
   };
-  Cart.prototype.gap = function (cart, gap) {
-    var self = this, box = $('[data-cart-gap]', this.el);
-    if (!box) return;
-    var run = this.gapRun = (this.gapRun || 0) + 1;
-    this.candidates(cart).then(function (list) {
-      if (run !== self.gapRun) return;
-      var max = gap + 250000;
-      var fit = list.filter(function (p) { return p.price >= gap && p.price <= max; });
-      // cheapest gap-closer first, low-ticket items (bars, snacks, gels, shakers) favoured
-      fit.sort(function (a, b) { return (a.price * (LOW.test(a.title + ' ' + a.type) ? .8 : 1)) - (b.price * (LOW.test(b.title + ' ' + b.type) ? .8 : 1)); });
-      fit = fit.slice(0, 4);
-      if (!fit.length) { box.hidden = true; box.innerHTML = ''; return; }
-      box.innerHTML = '<p class="scd__bh">' + icons.truck + '<span>Add one of these to unlock <b>free delivery</b></span></p><ul class="sminis" role="list">' + fit.map(function (p) { return self.mini(p, 'Unlocks free delivery'); }).join('') + '</ul>';
-      box.hidden = false;
+  // pure: cart + pool → { rule, items, comp, log }. Exported as SNHCart.decide for QA.
+  function decide(cart, pool, c, mode) {
+    var s = c.sugg || {}, sub = cart.total_price, gap = c.threshold - sub, unlocked = gap <= 0 || gap <= c.tolerance;
+    var inCart = {}, ex = { inCart: 0, soldOut: 0, overSubtotal: 0 };
+    cart.items.forEach(function (it) { inCart[it.product_id] = 1; });
+    function clean(list) {
+      var seen = {};
+      return list.filter(function (p) {
+        if (seen[p.id]) return false; seen[p.id] = 1;
+        if (inCart[p.id]) { ex.inCart++; return false; }
+        if (p.soldOut || !p.vid) { ex.soldOut++; return false; }
+        if (p.price >= sub) { ex.overSubtotal++; return false; }
+        return true;
+      });
+    }
+    var all = clean(pool.addons.concat(pool.comp, pool.related, pool.picks));
+    var max = mode === 'drawer' ? (s.max || 3) : Math.max(4, s.max || 3);
+    var closeLimit = Math.max((s.closeMin || 3000) * 100, sub * (s.closePct || 25) / 100);
+    var log = { subtotal: sub / 100, threshold: c.threshold / 100, gap: Math.max(0, gap) / 100, closeLimit: Math.round(closeLimit) / 100, pool: all.length, excluded: ex };
+    var rule, list;
+    if (!unlocked && gap <= closeLimit) {
+      var lo = gap, hi = gap + (s.band || 1500) * 100;
+      rule = 'close';
+      log.window = [lo / 100, hi / 100];
+      list = all.filter(function (p) { return p.price >= lo && p.price <= hi; }).sort(function (a, b) { return a.price - b.price; });
+    } else {
+      rule = unlocked ? 'addons-unlocked' : 'addons';
+      var cap = Math.min((s.addonMax || 2000) * 100, sub * (s.addonPct || 15) / 100);
+      log.cap = Math.floor(cap) / 100;
+      var under = function (p) { return p.price <= cap; };
+      var low = function (p) { return LOW.test(p.title + ' ' + p.type) ? 0 : 1; };
+      var fromAddons = all.filter(function (p) { return p.src === 'addons' && under(p); });
+      log.source = fromAddons.length ? 'addons collection' : 'recommendations';
+      list = (fromAddons.length ? fromAddons : all.filter(under)).sort(function (a, b) { return low(a) - low(b) || a.price - b.price; });
+    }
+    // one complementary item: a pair rule (creatine → shaker) first, else Shopify's complementary pick, under the cap
+    var compCap = sub * (s.compPct || 20) / 100, comp = null, why = '';
+    log.compCap = Math.floor(compCap) / 100;
+    var rules = String(s.pairs || '').split(/\r?\n|\\n/).map(function (l) { var a = l.split('=>'); return a.length === 2 ? { from: a[0].split(',').map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean), to: a[1].split(',').map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean) } : null; }).filter(Boolean);
+    var hay = function (p) { return (p.title + ' ' + p.type + ' ' + p.tags).toLowerCase(); };
+    var has = function (text, w) { return new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 's?\\b').test(text); };
+    var okComp = function (p) { return p.price <= compCap; };
+    cart.items.some(function (it) {
+      var t = (it.product_title + ' ' + (it.product_type || '')).toLowerCase();
+      return rules.some(function (r) {
+        var f = r.from.filter(function (w) { return has(t, w); })[0];
+        if (!f) return false;
+        var m = all.filter(function (p) { return okComp(p) && r.to.some(function (w) { return has(hay(p), w); }); }).sort(function (a, b) { return a.price - b.price; })[0];
+        if (m) { comp = m; why = 'Goes with your ' + f; log.comp = { rule: r.from.join('/') + ' => ' + r.to.join('/'), matched: f }; }
+        return !!m;
+      });
     });
+    if (!comp) {
+      comp = all.filter(function (p) { return p.src === 'complementary' && okComp(p); })[0] || null;
+      if (comp) { why = 'Pairs with your order'; log.comp = { rule: 'shopify complementary' }; }
+      else log.comp = { rule: 'none under cap' };
+    }
+    var items = list.filter(function (p) { return !comp || p.id !== comp.id; }).slice(0, comp ? max - 1 : max);
+    log.rule = rule;
+    log.picked = items.map(function (p) { return p.title + ' @' + p.price / 100; });
+    if (comp) log.comp.picked = comp.title + ' @' + comp.price / 100;
+    return { rule: rule, items: items, comp: comp, why: why, cap: log.cap, gap: gap, log: log };
+  }
+  Cart.prototype.suggest = function (cart) {
+    var self = this, box = $('[data-cart-sugg]', this.el);
+    if (!box || this.cfg.showSugg === false) return;
+    var run = this.suggRun = (this.suggRun || 0) + 1;
+    this.pool(cart).then(function (pool) {
+      if (run !== self.suggRun) return;
+      var d = decide(cart, pool, self.cfg, self.mode);
+      self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
+      var cards = d.items.map(function (p) { return self.card(p, d.rule === 'close' ? 'Unlocks free delivery' : ''); });
+      if (d.comp) cards.push(self.card(d.comp, d.why));
+      if (!cards.length) { box.hidden = true; box.innerHTML = ''; return; }
+      var head = d.rule === 'close' ? 'Close the gap' : d.items.length ? 'Add-ons under ' + rs(d.cap * 100) : 'Goes with your order';
+      box.innerHTML = '<p class="scd__bh">' + (d.rule === 'close' ? icons.truck : icons.plus) + '<span>' + head + '</span></p><ul class="ssugs" role="list">' + cards.join('') + '</ul>';
+      box.hidden = false;
+      self.emit('suggest', d);
+    });
+  };
+  // compact carousel card: image, name, price, +
+  Cart.prototype.card = function (p, why) {
+    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1">' + (p.image ? '<img src="' + esc(img(p.image, 200)) + '" alt="" width="96" height="96" loading="lazy">' : '') + '</a>' +
+      '<a class="ssug__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a>' +
+      '<span class="ssug__f"><span class="ssug__p">' + rs(p.price) + (why ? '<i>' + esc(why) + '</i>' : '') + '</span>' +
+      (p.multi ? '<a class="ssug__add" href="' + esc(p.url) + '" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</a>' : '<button type="button" class="ssug__add" data-add="' + p.vid + '" aria-label="Add ' + esc(p.title) + ' to basket, ' + rs(p.price) + '">' + icons.plus + '</button>') + '</span></li>';
   };
   Cart.prototype.mini = function (p, helper) {
     return '<li class="smini"><a class="smini__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1">' + (p.image ? '<img src="' + esc(img(p.image, 160)) + '" alt="" width="64" height="64" loading="lazy">' : '') + '</a>' +
@@ -322,8 +373,10 @@
     if (!hit) { box.hidden = true; box.innerHTML = ''; return; }
     var add = hit.b.items.length === 1 ? hit.b.items[0].vid + ':1' : hit.miss.map(function (x) { return x.vid + ':1'; }).join(',');
     var price = hit.miss.reduce(function (s, x) { return s + x.price; }, 0);
-    box.innerHTML = '<div class="sbundle">' + (hit.b.items[0].image ? '<img src="' + esc(hit.b.items[0].image) + '" alt="" width="64" height="64" loading="lazy">' : '') +
-      '<div><p class="sbundle__eb">Bundle offer</p><p class="sbundle__t">' + esc((function () { var li = cart.items.filter(function (it) { return it.product_id === hit.have[0].pid; })[0]; return li ? shortTitle(li.product_title, li.vendor) : hit.have[0].title; })()) + ' is in the <b>' + esc(hit.b.title) + '</b>' + (hit.b.save ? ' · ' + esc(hit.b.save) : '') + '.</p></div>' +
+    var name = (function () { var li = cart.items.filter(function (it) { return it.product_id === hit.have[0].pid; })[0]; return li ? shortTitle(li.product_title, li.vendor) : hit.have[0].title; })();
+    box.innerHTML = '<summary>' + icons.tag + '<span><b>Bundle offer</b>' + (hit.b.save ? ' · ' + esc(hit.b.save) : '') + '</span></summary>' +
+      '<div class="sbundle">' + (hit.b.items[0].image ? '<img src="' + esc(hit.b.items[0].image) + '" alt="" width="64" height="64" loading="lazy">' : '') +
+      '<p class="sbundle__t">' + esc(name) + ' is in the <b>' + esc(hit.b.title) + '</b>.</p>' +
       '<button type="button" class="v-btn v-btn--accent v-btn--sm" data-add="' + add + '"><span>' + (hit.b.items.length === 1 ? 'Make it a pair' : 'Complete the bundle' + (price ? ' · ' + rs(price) : '')) + '</span></button></div>';
     box.hidden = false;
   };
@@ -360,7 +413,8 @@
 
   /* ---------- actions ---------- */
   Cart.prototype.click = function (e) {
-    var q = e.target.closest('[data-qty]'), a = e.target.closest('[data-add]');
+    var q = e.target.closest('[data-qty]'), a = e.target.closest('[data-add]'), acc = e.target.closest('[data-account-open]');
+    if (acc && document.querySelector('.acp')) { e.preventDefault(); var d = drawerEl(); if (d && d.open && typeof d.hide === 'function') d.hide(); document.dispatchEvent(new CustomEvent('snh:account-open', { detail: { from: acc } })); return; }
     if (q) { e.preventDefault(); this.change(q.closest('[data-key]').getAttribute('data-key'), +q.getAttribute('data-qty'), q); }
     else if (a) { e.preventDefault(); this.add(a.getAttribute('data-add'), a); }
   };
@@ -422,7 +476,7 @@
       d.addEventListener('dialog:after-hide', function () { var c = d.querySelector('[data-cart-root]'); if (c && c.__cart) showToast(c.__cart.cart); });
     }
   }
-  window.SNHCart = { refresh: refreshAll, open: openDrawer, carts: carts };
+  window.SNHCart = { refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, norm: norm };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   document.addEventListener('shopify:section:load', init);
 })();

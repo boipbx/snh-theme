@@ -1383,6 +1383,79 @@
     ]
   },
   {
+    "name": "SNH cart suggestions",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "How the cart drawer and cart page pick suggestions. gap = free-delivery threshold − subtotal. A small gap (up to the larger of the two limits below) gets \"Close the gap\" products priced from the gap to the gap + the band. A bigger gap gets low-ticket add-ons only (the lower of the two caps). One complementary item is always added. In-cart, sold-out and items priced at or above the subtotal are never shown."
+      },
+      {
+        "type": "number",
+        "id": "snh_cart_close_min",
+        "label": "Close the gap: up to (Rs)",
+        "default": 3000
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_close_pct",
+        "label": "…or up to this % of the subtotal",
+        "min": 5,
+        "max": 60,
+        "step": 5,
+        "unit": "%",
+        "default": 25
+      },
+      {
+        "type": "number",
+        "id": "snh_cart_close_band",
+        "label": "Close the gap: price band above the gap (Rs)",
+        "default": 1500
+      },
+      {
+        "type": "number",
+        "id": "snh_cart_addon_max",
+        "label": "Add-ons: at most (Rs)",
+        "default": 2000
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_addon_pct",
+        "label": "…and at most this % of the subtotal",
+        "min": 5,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_comp_pct",
+        "label": "Complementary item: at most this % of the subtotal",
+        "min": 5,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_max",
+        "label": "Suggestions in the drawer",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "textarea",
+        "id": "snh_cart_pairs",
+        "label": "Complementary pairs",
+        "default": "creatine => shaker, bottle\nwhey, protein, isolate => bar, snack, cookie\npre-workout, pre workout => shaker, bottle\nelectrolyte, hydration, isotonic => gel, chew, bar\ngel => electrolyte, hydro, tablet\nmass, gainer => shaker, creatine",
+        "info": "One per line: words in a basket product => words in the item to suggest. Searches the Cart add-ons collection and Shopify's complementary products."
+      }
+    ]
+  },
+  {
     "name": "SNH Elite",
     "settings": [
       {

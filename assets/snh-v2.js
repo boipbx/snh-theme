@@ -519,6 +519,8 @@
       document.body.style.overflow = '';
       if (acpOpener && acpOpener.focus && acpOpener.offsetParent !== null) acpOpener.focus();
     }
+    // the cart footer and the pre-checkout modal ask for it ("Sign in to earn X points")
+    document.addEventListener('snh:account-open', function (e) { if (acp) openAcp(e.detail && e.detail.from); else location.href = (window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'account/login'; });
     if (acp) {
       $$('[data-acp-open]', wrap).forEach(function (b) {
         b.setAttribute('aria-expanded', 'false');

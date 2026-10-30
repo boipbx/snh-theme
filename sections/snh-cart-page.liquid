@@ -65,7 +65,7 @@
     {%- if promos != blank -%}<div class="scp__offers">{{ promos }}</div>{%- endif -%}
 
     <div class="scp__grid" data-cart-root data-mode="page">
-      {%- render 'snh-cart-cfg', threshold: s.free_shipping_threshold, tolerance: s.free_delivery_tolerance, addons: s.addons.handle, bestsellers: s.bestsellers.handle, rating: s.rating, page: true, picks_products: s.picks_products -%}
+      {%- render 'snh-cart-cfg', threshold: s.free_shipping_threshold, tolerance: s.free_delivery_tolerance, addons: s.addons.handle, bestsellers: s.bestsellers.handle, rating: s.rating, page: true, picks_products: s.picks_products, show_sugg: s.show_gap_picks -%}
       <div class="scp__main">
         <div data-cart-bar></div>
         <div class="scp__body" data-cart-body>
@@ -78,15 +78,6 @@
       <aside class="scp__side" aria-label="Order summary">
         <div class="scp__sticky">
           <div class="scp__card" data-cart-foot{% if cart.item_count == 0 %} hidden{% endif %}></div>
-          <div class="scp__card scp__pay">
-            <p class="scp__h">Ways to pay</p>
-            <ul class="scp__ways" role="list">
-              <li><span class="pay">Card</span>Visa, Mastercard, Amex</li>
-              <li><span class="pay pay--kk">Koko</span>3 interest-free payments</li>
-              <li><span class="pay">COD</span>Cash on delivery</li>
-              <li><span class="pay">Bank</span>Bank transfer</li>
-            </ul>
-          </div>
           {%- if customer -%}
             <div class="scp__card scp__elite">
               <p class="scp__h">SNH Elite</p>

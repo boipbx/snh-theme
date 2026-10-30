@@ -2,7 +2,8 @@
   SNH cart (Round 11): the settings + store data assets/snh-cart.js needs, as JSON, shared by the cart drawer and the
   cart page. threshold/tolerance in cents · member tier and rate (Theme settings → SNH Elite, tier from
   custom.loyalty_tier) · gap-filler collection ("Cart add-ons") · picks collection (the member's goal collection, else
-  bestsellers) · bundle offers bundle_1…12 (Theme settings → SNH bundle offers) · trust rating text.
+  bestsellers) · bundle offers bundle_1…12 (Theme settings → SNH bundle offers) · trust rating text (shown only when filled) ·
+  suggestion rules (Theme settings → SNH cart suggestions) · the payment logo row.
   threshold, tolerance (rupees), addons, bestsellers: collection handles · picks_products: hand-picked bestsellers
   (used before the bestsellers collection for guests and members without a goal) · rating · page: true on the cart page
 {%- endcomment -%}
@@ -67,6 +68,17 @@
   "picks": {{ picks | json }},
   "picksLabel": {{ picks_label | json }},
   "rating": {{ rating | default: '' | json }},
+  "showSugg": {% if show_sugg == false %}false{% else %}true{% endif %},
+  "sugg": {
+    "closeMin": {{ settings.snh_cart_close_min | default: 3000 }},
+    "closePct": {{ settings.snh_cart_close_pct | default: 25 }},
+    "band": {{ settings.snh_cart_close_band | default: 1500 }},
+    "addonMax": {{ settings.snh_cart_addon_max | default: 2000 }},
+    "addonPct": {{ settings.snh_cart_addon_pct | default: 15 }},
+    "compPct": {{ settings.snh_cart_comp_pct | default: 20 }},
+    "max": {{ settings.snh_cart_max | default: 3 }},
+    "pairs": {{ settings.snh_cart_pairs | default: "creatine => shaker, bottle\nwhey, protein, isolate => bar, snack, cookie\npre-workout, pre workout => shaker, bottle\nelectrolyte, hydration, isotonic => gel, chew, bar\ngel => electrolyte, hydro, tablet\nmass, gainer => shaker, creatine" | json }}
+  },
   "login": {{ routes.account_login_url | json }},
   "register": {{ routes.account_register_url | json }},
   "account": {{ routes.account_url | json }},
@@ -97,3 +109,6 @@
   ]
 }</script>
 <script type="application/json" data-cart-initial>{{ cart | json }}</script>
+{%- comment -%} the footer's payment row: Shopify's own card logos, Koko's logo (as in the Koko modal), cash on delivery {%- endcomment -%}
+{%- assign pay_types = 'visa,master,american_express' | split: ',' -%}
+<template data-cart-pay><ul class="spay" role="list" aria-label="Ways to pay">{%- for t in pay_types -%}<li>{{ t | payment_type_svg_tag: class: 'spay__card' }}</li>{%- endfor -%}<li class="spay__kk"><img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="Koko" width="44" height="14" loading="lazy"></li><li class="spay__cod"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M6 9.5v5M18 9.5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Cash on delivery</span></li></ul></template>

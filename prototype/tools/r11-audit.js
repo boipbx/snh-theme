@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const DEV = process.env.DEV || 'http://127.0.0.1:9292';
 const LABEL = process.argv[2] || 'phase';
-const OUT = path.join(__dirname, '..', 'shots', 'r11', LABEL);
+const OUT = path.join(__dirname, '..', 'shots', process.env.ROUND || 'r11', LABEL);
 fs.mkdirSync(OUT, { recursive: true });
 const PAGES = (process.env.PAGES || '/,/collections/vitamins-minerals,/collections/sis,/collections/hydration-recovery,/cart,/search?q=whey,/pages/about-us,/pages/location,/products/applied-nutrition-critical-whey-2kg,/products/sis-go-hydro-tablets').split(',');
 const WIDTHS = [390, 768, 1440];
