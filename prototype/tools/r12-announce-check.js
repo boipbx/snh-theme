@@ -11,6 +11,8 @@ const mock = { id: 'qa-ann', src: 'block', name: 'QA', type: 'announcement', hea
     await pg.route(u => u.pathname === new URL(BASE + p).pathname, async r => { const res = await r.fetch(); let t = await res.text();
       t = t.replace(/(<script type="application\/json" data-campaigns>)([\s\S]*?)(<\/script>)/, (m, a, j, c) => { const d = JSON.parse(j); d.list.unshift(mock); return a + JSON.stringify(d) + c; });
       r.fulfill({ response: res, body: t }); });
+    // LOCAL=1: serve this checkout's JS instead of the deployed copies (verify before the push lands)
+    if (process.env.LOCAL) for (const f of ['snh-v2.js', 'snh-campaigns.js']) await pg.route(u => u.pathname.endsWith('/' + f), r => r.fulfill({ contentType: 'application/javascript', body: require('fs').readFileSync('assets/' + f, 'utf8') }));
     const log = [];
     await pg.exposeFunction('_log', s => log.push(s));
     await pg.addInitScript(() => { const T = () => Math.round(performance.now()); new MutationObserver(ms => ms.forEach(m => {
