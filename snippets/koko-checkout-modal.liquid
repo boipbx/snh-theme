@@ -11,495 +11,89 @@
   Add to Cart is intentionally left untouched.
 
   v2.1 — UI refresh only. The <script> block below is byte-identical to v2:
+  Round 12: v2 restyle + the order summary / points / last add-on / delivery layer (assets/snh-precheckout.js).
+  The script block is still byte-identical:
   no worker URL, payload, interception, focus-trap or redirect logic was touched.
 {% endcomment %}
 
 <style>
-  #snh-pay-router {
-    --snh-pay-ink: #1a1512;
-    --snh-pay-ink-soft: #5c5350;
-    --snh-pay-warm: #fffaf7;
-    --snh-pay-surface: #ffffff;
-    --snh-pay-line: #e7ded7;
-    --snh-pay-line-strong: #d8cdc6;
-    --snh-pay-orange: #e0521c;
-    --snh-pay-orange-deep: #b23c11;
-    --snh-pay-orange-tint: #fdf2ec;
-    --koko-rose: #ffbcd9;
-    --koko-rose-soft: #fff4f9;
-    --koko-cyan: #00dad6;
-    --koko-blue: #021fa3;
-    --koko-blue-soft: #26317a;
-    --snh-pay-display: Archivo, var(--heading-font-family, var(--font-heading-family, sans-serif));
-    --snh-pay-sans: Inter, var(--text-font-family, var(--font-body-family, sans-serif));
-  }
-
-  html.snh-pay-lock,
-  html.snh-pay-lock body {
-    overflow: hidden !important;
-  }
-
-  #snh-pay-router[hidden] {
-    display: none !important;
-  }
-
-  #snh-pay-router {
-    position: fixed;
-    inset: 0;
-    z-index: 2147483646;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    background: rgba(26, 19, 15, 0.58);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-  }
-
-  .snh-pay-dialog {
-    position: relative;
-    width: min(740px, 100%);
-    max-height: calc(100dvh - 48px);
-    overflow: auto;
-    background: var(--snh-pay-warm);
-    color: var(--snh-pay-ink);
-    border: 1px solid rgba(26, 21, 18, 0.14);
-    border-radius: 10px;
-    box-shadow: 0 18px 44px rgba(28, 18, 12, 0.20);
-    font-family: var(--snh-pay-sans);
-  }
-
-  .snh-pay-dialog *,
-  .snh-pay-dialog *::before,
-  .snh-pay-dialog *::after {
-    box-sizing: border-box;
-  }
-
-  /* Thin SNH rail — the modal reads as SNH, Koko lives inside its own card */
-  .snh-pay-brand-rail {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    height: 4px;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    overflow: hidden;
-    border-radius: 9px 9px 0 0;
-  }
-
-  .snh-pay-brand-rail span:nth-child(1) { background: var(--snh-pay-orange); }
-  .snh-pay-brand-rail span:nth-child(2) { background: var(--snh-pay-orange-deep); }
-
-  .snh-pay-dialog button,
-  .snh-pay-dialog h2 {
-    font-family: inherit;
-  }
-
-  .snh-pay-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 26px 28px 20px;
-    border-bottom: 1px solid var(--snh-pay-line);
-  }
-
-  .snh-pay-title {
-    margin: 0;
-    max-width: 15ch;
-    color: var(--snh-pay-ink);
-    font-family: var(--snh-pay-display);
-    font-size: clamp(24px, 3vw, 31px);
-    font-weight: 800;
-    line-height: 1.06;
-    letter-spacing: -0.03em;
-    text-wrap: balance;
-  }
-
-  .snh-pay-close {
-    flex: 0 0 36px;
-    width: 36px;
-    height: 36px;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border: 1px solid var(--snh-pay-line-strong);
-    border-radius: 8px;
-    background: var(--snh-pay-surface);
-    color: var(--snh-pay-ink-soft);
-    cursor: pointer;
-    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
-  }
-
-  .snh-pay-close:hover {
-    border-color: var(--snh-pay-orange);
-    background: var(--snh-pay-orange-tint);
-    color: var(--snh-pay-orange-deep);
-  }
-
-  .snh-pay-close:focus-visible {
-    outline: 2px solid var(--snh-pay-orange);
-    outline-offset: 2px;
-  }
-
-  .snh-pay-close svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .snh-pay-content {
-    padding: 22px 28px 12px;
-  }
-
-  .snh-pay-options {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-    gap: 14px;
-  }
-
-  /* Rows are shared so both cards align line-for-line */
-  .snh-pay-option {
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    grid-template-rows: auto auto 1fr auto auto;
-    row-gap: 10px;
-    min-height: 244px;
-    width: 100%;
-    overflow: hidden;
-    padding: 19px 19px 17px;
-    border: 1px solid var(--snh-pay-line-strong);
-    border-radius: 9px;
-    background: var(--snh-pay-surface);
-    color: var(--snh-pay-ink);
-    text-align: left;
-    font: inherit;
-    cursor: pointer;
-    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-  }
-
-  .snh-pay-option::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 3px;
-    background: var(--snh-pay-orange);
-  }
-
-  .snh-pay-option:hover {
-    border-color: var(--snh-pay-orange);
-    box-shadow: 0 8px 20px rgba(35, 22, 16, 0.10);
-    transform: translateY(-2px);
-  }
-
-  .snh-pay-option:focus-visible {
-    outline: 2px solid var(--snh-pay-orange);
-    outline-offset: 2px;
-  }
-
-  .snh-pay-option--koko {
-    border-color: rgba(2, 31, 163, 0.28);
-    background: var(--koko-rose-soft);
-    color: var(--koko-blue);
-  }
-
-  .snh-pay-option--koko::before {
-    background: var(--koko-blue);
-  }
-
-  .snh-pay-option--koko:hover {
-    border-color: var(--koko-blue);
-    box-shadow: 0 8px 20px rgba(2, 31, 163, 0.12);
-  }
-
-  .snh-pay-option--koko:focus-visible {
-    outline-color: var(--koko-blue);
-  }
-
-  .snh-pay-option:disabled {
-    opacity: 0.55;
-    cursor: wait;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .snh-pay-mark {
-    min-height: 44px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .snh-pay-card-icon {
-    flex: 0 0 auto;
-    width: 52px;
-    height: 38px;
-    display: grid;
-    place-items: center;
-    border: 1px solid #e6d9d2;
-    border-radius: 7px;
-    background: #fff8f4;
-    color: var(--snh-pay-orange-deep);
-  }
-
-  .snh-pay-card-icon svg {
-    width: 29px;
-    height: 22px;
-  }
-
-  .snh-koko-logo {
-    display: block;
-    width: 100px;
-    height: auto;
-    max-height: 44px;
-    object-fit: contain;
-    object-position: left center;
-  }
-
-  .snh-pay-koko-pill {
-    flex: 0 0 auto;
-    justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    min-height: 24px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-family: var(--snh-pay-display);
-    font-size: 10px;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .snh-pay-koko-pill {
-    border: 1px solid var(--koko-blue);
-    background: var(--koko-cyan);
-    color: var(--koko-blue);
-  }
-
-  .snh-pay-option-title {
-    display: block;
-    margin: 0;
-    font-family: var(--snh-pay-display);
-    font-size: 19px;
-    font-weight: 800;
-    line-height: 1.18;
-    letter-spacing: -0.015em;
-    text-wrap: pretty;
-  }
-
-  .snh-pay-option-copy {
-    display: block;
-    margin: 0;
-    align-self: start;
-    color: var(--snh-pay-ink-soft);
-    font-size: 13.5px;
-    font-weight: 400;
-    line-height: 1.5;
-    text-wrap: pretty;
-  }
-
-  .snh-pay-option--koko .snh-pay-option-copy {
-    color: var(--koko-blue-soft);
-  }
-
-  .snh-pay-option-action {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    width: 100%;
-    padding-top: 13px;
-    border-top: 1px solid #ece2dc;
-    color: var(--snh-pay-orange-deep);
-    font-family: var(--snh-pay-display);
-    font-size: 11.5px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .snh-pay-option--koko .snh-pay-option-action {
-    border-top-color: rgba(2, 31, 163, 0.16);
-    color: var(--koko-blue);
-  }
-
-  .snh-pay-option-action svg {
-    flex: 0 0 auto;
-    width: 15px;
-    height: 15px;
-    transition: transform 160ms ease;
-  }
-
-  .snh-pay-option:hover .snh-pay-option-action svg {
-    transform: translateX(3px);
-  }
-
-  /* Space is reserved up front so status/error never resize the dialog */
-  .snh-pay-feedback {
-    display: grid;
-    align-content: start;
-    min-height: 56px;
-    padding-top: 14px;
-  }
-
-  .snh-pay-status,
-  .snh-pay-error {
-    margin: 0;
-    padding: 11px 13px;
-    border-radius: 7px;
-    font-size: 13.5px;
-    font-weight: 500;
-    line-height: 1.4;
-  }
-
-  .snh-pay-status {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid rgba(2, 31, 163, 0.16);
-    background: var(--koko-rose-soft);
-    color: var(--koko-blue);
-  }
-
-  .snh-pay-status[data-active="true"] {
-    display: flex;
-  }
-
-  .snh-pay-spinner {
-    width: 15px;
-    height: 15px;
-    flex: 0 0 15px;
-    border: 2px solid var(--koko-rose);
-    border-top-color: var(--koko-blue);
-    border-radius: 50%;
-    animation: snh-pay-spin 700ms linear infinite;
-  }
-
-  .snh-pay-error {
-    display: none;
-    border: 1px solid #e0aabc;
-    background: #fff2f6;
-    color: #8a1f45;
-  }
-
-  .snh-pay-error:not(:empty) {
-    display: block;
-  }
-
-  @keyframes snh-pay-spin {
-    to { transform: rotate(360deg); }
-  }
-
+  /* Round 12: v2 restyle (Inter, the 12–96 scale, 4px grid, 12/16/20 radii). Phones: a bottom sheet. */
+  #snh-pay-router { --pr-ink: #0C0C0D; --pr-grey: #55524E; --pr-grey2: #6B6762; --pr-line: #E6E1D8; --pr-cream: #F6F3EE; --pr-accent: #E0521C; --pr-green: #1E7A43; --pr-koko: #021FA3; --pr-sans: var(--sans, Inter, system-ui, sans-serif); }
+  html.snh-pay-lock, html.snh-pay-lock body { overflow: hidden !important; }
+  #snh-pay-router[hidden] { display: none !important; }
+  #snh-pay-router { position: fixed; inset: 0; z-index: 2147483646; display: grid; place-items: center; padding: 24px; background: rgba(12, 12, 13, .56); }
+  .snh-pay-dialog { position: relative; display: grid; gap: 16px; width: min(600px, 100%); max-height: calc(100dvh - 48px); overflow: auto; padding: 24px; border-radius: 20px; background: #fff; color: var(--pr-ink); box-shadow: 0 24px 64px rgba(12, 12, 13, .28); font: 400 15px/1.5 var(--pr-sans); }
+  .snh-pay-dialog *, .snh-pay-dialog *::before, .snh-pay-dialog *::after { box-sizing: border-box; }
+  .snh-pay-brand-rail { display: none; }
+  .snh-pay-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .snh-pay-title { margin: 0; font: 600 24px/1.1 var(--pr-sans); letter-spacing: -.02em; color: var(--pr-ink); }
+  .snh-pay-close { display: grid; place-items: center; width: 44px; height: 44px; margin: -10px -10px -10px 0; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--pr-ink); cursor: pointer; }
+  .snh-pay-close:hover { background: var(--pr-cream); }
+  .snh-pay-close:focus-visible, .snh-pay-option:focus-visible, .spc button:focus-visible, .spc a:focus-visible { outline: 2px solid var(--pr-accent); outline-offset: 2px; }
+  .snh-pay-close svg { width: 22px; height: 22px; }
+  .snh-pay-content { display: grid; gap: 16px; }
+  /* the summary: items, total, savings, points, delivery, one last add-on */
+  .spc { display: grid; gap: 12px; }
+  .spc[hidden] { display: none; }
+  .spc__card { display: grid; gap: 4px; padding: 16px; border-radius: 12px; background: var(--pr-cream); }
+  .spc__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--pr-grey); }
+  .spc__row b { font: 600 20px/1.1 var(--pr-sans); letter-spacing: -.02em; color: var(--pr-ink); font-variant-numeric: tabular-nums; }
+  .spc__save { font: 600 13px/1.5 var(--pr-sans); color: var(--pr-green); }
+  .spc__line { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; color: var(--pr-grey); }
+  .spc__line svg { width: 16px; height: 16px; flex: none; color: var(--pr-accent); }
+  .spc__line b { color: var(--pr-ink); font-weight: 600; }
+  .spc__line button { padding: 0; border: 0; background: none; font: 600 13px/1.5 var(--pr-sans); color: var(--pr-ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .spc__add { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 8px 8px 8px; border: 1px solid var(--pr-line); border-radius: 12px; }
+  .spc__add[hidden] { display: none; }
+  .spc__add img { width: 48px; height: 48px; border-radius: 8px; background: var(--pr-cream); object-fit: contain; mix-blend-mode: multiply; }
+  .spc__add p { margin: 0; min-width: 0; font-size: 13px; color: var(--pr-grey); }
+  .spc__add p b { display: block; overflow: hidden; font-weight: 500; color: var(--pr-ink); white-space: nowrap; text-overflow: ellipsis; }
+  .spc__add button { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--pr-ink); color: #fff; font: 600 13px/1.1 var(--pr-sans); cursor: pointer; }
+  .spc__add button:hover { background: var(--pr-accent); }
+  .spc__add button[aria-busy="true"] { opacity: .5; }
+  .spc__add.is-added { border-color: rgba(30, 122, 67, .4); background: #EEF8F1; }
+  /* the two payment cards */
+  .snh-pay-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .snh-pay-option { display: grid; grid-template-rows: auto auto 1fr auto; align-content: start; gap: 4px; width: 100%; min-height: 200px; padding: 16px; border: 1px solid var(--pr-line); border-radius: 16px; background: #fff; color: var(--pr-ink); text-align: left; font: inherit; cursor: pointer; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+  .snh-pay-option:hover { border-color: var(--pr-ink); box-shadow: 0 12px 32px -16px rgba(12, 12, 13, .3); transform: translateY(-2px); }
+  .snh-pay-option--koko { border-color: rgba(2, 31, 163, .25); background: #F5F7FF; }
+  .snh-pay-option--koko:hover { border-color: var(--pr-koko); }
+  .snh-pay-option:disabled { opacity: .55; cursor: progress; transform: none; }
+  .snh-pay-mark { display: flex; align-items: center; gap: 4px; height: 28px; margin-bottom: 8px; }
+  .snh-pay-mark svg, .snh-pay-mark .spc-pay { width: 36px; height: 24px; }
+  .snh-pay-card-icon { display: none; }
+  .snh-koko-logo { width: auto; height: 22px; }
+  .snh-pay-option-title { font: 600 16px/1.5 var(--pr-sans); }
+  .snh-pay-option-copy { font-size: 13px; color: var(--pr-grey); }
+  .snh-pay-koko-pill { justify-self: start; display: inline-flex; align-items: center; height: 28px; margin-top: 8px; padding: 0 12px; border-radius: 999px; background: var(--pr-koko); color: #fff; font: 600 13px/1.1 var(--pr-sans); font-variant-numeric: tabular-nums; }
+  .snh-pay-option-action { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; font: 600 14px/1.5 var(--pr-sans); color: var(--pr-accent); }
+  .snh-pay-option--koko .snh-pay-option-action { color: var(--pr-koko); }
+  .snh-pay-option-action svg { width: 18px; height: 18px; transition: transform 160ms ease; }
+  .snh-pay-option:hover .snh-pay-option-action svg { transform: translateX(4px); }
+  .snh-pay-feedback { display: grid; gap: 8px; }
+  .snh-pay-status { display: none; align-items: center; gap: 8px; font-size: 13px; color: var(--pr-grey); }
+  .snh-pay-status[data-active="true"] { display: flex; }
+  .snh-pay-spinner { width: 16px; height: 16px; border: 2px solid var(--pr-line); border-top-color: var(--pr-koko); border-radius: 50%; animation: snh-pay-spin .8s linear infinite; }
+  .snh-pay-error { display: none; padding: 12px 16px; border-radius: 12px; background: #FDECEA; color: #A3271D; font-size: 13px; }
+  .snh-pay-error:not(:empty) { display: block; }
+  .spc__secure { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 0; font-size: 12px; color: var(--pr-grey2); }
+  .spc__secure svg { width: 14px; height: 14px; }
+  @keyframes snh-pay-spin { to { transform: rotate(360deg); } }
   @media (max-width: 640px) {
-    #snh-pay-router {
-      place-items: end center;
-      padding: 0;
-    }
-
-    .snh-pay-dialog {
-      width: 100%;
-      max-height: 92dvh;
-      border-right: 0;
-      border-bottom: 0;
-      border-left: 0;
-      border-radius: 10px 10px 0 0;
-    }
-
-    .snh-pay-brand-rail {
-      border-radius: 9px 9px 0 0;
-    }
-
-    .snh-pay-header {
-      padding: 21px 18px 16px;
-      align-items: center;
-    }
-
-    .snh-pay-title {
-      max-width: 18ch;
-      font-size: 23px;
-    }
-
-    .snh-pay-content {
-      padding: 16px 18px 4px;
-    }
-
-    .snh-pay-options {
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .snh-pay-option {
-      min-height: 0;
-      grid-template-columns: 106px minmax(0, 1fr);
-      grid-template-rows: auto auto auto;
-      grid-template-areas:
-        "mark title"
-        "mark copy"
-        "mark action";
-      column-gap: 14px;
-      row-gap: 6px;
-      padding: 16px;
-    }
-
-    .snh-pay-mark {
-      grid-area: mark;
-      align-self: start;
-      width: 100%;
-      min-height: 42px;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      gap: 8px;
-    }
-
-    .snh-pay-card-icon {
-      width: 50px;
-    }
-
-    .snh-koko-logo {
-      width: 94px;
-    }
-
-    .snh-pay-koko-pill {
-      display: none;
-    }
-
-    .snh-pay-option-title {
-      grid-area: title;
-      font-size: 17.5px;
-    }
-
-    .snh-pay-option-copy {
-      grid-area: copy;
-      font-size: 13px;
-    }
-
-    .snh-pay-option-action {
-      grid-area: action;
-      margin-top: 4px;
-      padding-top: 10px;
-    }
-
-    .snh-pay-feedback {
-      min-height: 52px;
-      padding-top: 12px;
-      padding-bottom: calc(14px + env(safe-area-inset-bottom));
-    }
+    #snh-pay-router { place-items: end stretch; padding: 0; }
+    .snh-pay-dialog { width: 100%; max-height: 92dvh; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); border-radius: 20px 20px 0 0; }
+    .snh-pay-title { font-size: 20px; }
+    .snh-pay-options { grid-template-columns: 1fr; gap: 8px; }
+    .snh-pay-option { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto auto; gap: 4px 12px; min-height: 0; padding: 12px 16px; align-items: center; }
+    .snh-pay-mark { grid-column: 1; height: 20px; margin: 0 0 4px; }
+    .snh-pay-mark svg { width: 30px; height: 20px; }
+    .snh-koko-logo { height: 16px; }
+    .snh-pay-option-title { grid-column: 1; font-size: 15px; }
+    .snh-pay-option-copy { grid-column: 1; font-size: 12px; }
+    .snh-pay-koko-pill { grid-column: 2; grid-row: 1 / 4; margin: 0; }
+    .snh-pay-option-action { display: none; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .snh-pay-option,
-    .snh-pay-close,
-    .snh-pay-option-action svg { transition: none; }
-    .snh-pay-option:hover { transform: none; }
-    .snh-pay-option:hover .snh-pay-option-action svg { transform: none; }
-    .snh-pay-spinner { animation-duration: 1400ms; }
-  }
+  @media (prefers-reduced-motion: reduce) { .snh-pay-option, .snh-pay-option-action svg { transition: none; } .snh-pay-option:hover { transform: none; } .snh-pay-spinner { animation-duration: 2.4s; } }
 </style>
 
 <div id="snh-pay-router" hidden aria-hidden="true">
@@ -524,9 +118,20 @@
     </header>
 
     <div class="snh-pay-content">
+      {%- comment -%} Round 12: filled by assets/snh-precheckout.js when the router opens (Koko's script below is untouched) {%- endcomment -%}
+      <div class="spc" data-spc hidden>
+        <div class="spc__card">
+          <p class="spc__row"><span data-spc-items></span><b data-spc-total></b></p>
+          <p class="spc__save" data-spc-save hidden></p>
+        </div>
+        <p class="spc__line" data-spc-points hidden></p>
+        <div class="spc__add" data-spc-add hidden></div>
+        <p class="spc__line" data-spc-eta hidden></p>
+      </div>
       <div class="snh-pay-options">
         <button type="button" class="snh-pay-option snh-pay-option--regular" data-snh-pay-regular>
           <span class="snh-pay-mark" aria-hidden="true">
+            {%- assign pr_types = 'visa,master,american_express' | split: ',' -%}{%- for t in pr_types -%}{{ t | payment_type_svg_tag }}{%- endfor -%}
             <span class="snh-pay-card-icon">
               <svg viewBox="0 0 32 24" fill="none">
                 <rect x="1" y="2" width="30" height="20" rx="2.5" fill="currentColor"/>
@@ -535,8 +140,8 @@
               </svg>
             </span>
           </span>
-          <span class="snh-pay-option-title">Card, COD &amp; other methods</span>
-          <span class="snh-pay-option-copy">Credit/debit card, Cash on Delivery, bank deposit and gift voucher.</span>
+          <span class="snh-pay-option-title">Card, COD &amp; more</span>
+          <span class="snh-pay-option-copy">Visa, Mastercard, Amex, cash on delivery, bank transfer or a gift voucher.</span>
           <span class="snh-pay-option-action">
             Continue
             <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -557,8 +162,8 @@
             >
           </span>
           <span class="snh-pay-option-title">Koko - Pay in 3</span>
-          <span class="snh-pay-option-copy">Koko lets you split it. Final fee shown at checkout.</span>
-          <span class="snh-pay-koko-pill">Pay in 3</span>
+          <span class="snh-pay-option-copy">Split it into 3 interest-free payments. Koko's fee is shown at checkout.</span>
+          <span class="snh-pay-koko-pill" data-spc-koko>Pay in 3</span>
           <span class="snh-pay-option-action">
             Continue with Koko
             <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -576,6 +181,7 @@
 
         <div class="snh-pay-error" data-snh-pay-error role="alert"></div>
       </div>
+      <p class="spc__secure"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10.5" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="currentColor" stroke-width="1.8"/></svg>Secure checkout by Shopify</p>
     </div>
   </section>
 </div>
@@ -987,3 +593,4 @@
     });
   })();
 </script>
+<script src="{{ 'snh-precheckout.js' | asset_url }}" defer></script>

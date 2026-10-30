@@ -128,7 +128,7 @@
       {%- if k == 'age' and contact -%}
         <div class="aform__grid qz__contact">
           <label class="fld"><span>Birthday <i class="quiz__opt-l">(optional, for your birthday reward)</i></span><input type="date" data-quiz-bday min="1930-01-01" max="{{ 'now' | date: '%Y-%m-%d' }}" value="{{ bday | escape }}" autocomplete="bday"></label>
-          <label class="fld"><span>Mobile number</span><input type="tel" data-quiz-mobile data-sl-mobile inputmode="tel" value="{{ phone | escape }}" placeholder="07X XXX XXXX" autocomplete="tel" aria-describedby="{{ id }}-mob-err"></label>
+          <label class="fld"><span>Mobile number</span><input type="tel" data-quiz-mobile data-sl-mobile data-tel94 inputmode="tel" value="{{ phone | escape }}" placeholder="77 123 4567" autocomplete="tel" aria-describedby="{{ id }}-mob-err"></label>
           <p class="fld__err fld--full" id="{{ id }}-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
         </div>
       {%- endif -%}
@@ -197,3 +197,4 @@
     {%- endform -%}
   {%- endif -%}
 </div>
+<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>

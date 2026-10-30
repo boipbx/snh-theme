@@ -1,6 +1,7 @@
 {%- comment -%}
   Address add/edit form (Round 7, customers/addresses): Shopify's native customer_address form.
   address: customer.new_address or an existing address. Country/province selects: assets/snh-account.js.
+  Phone: +94 prefix, saved as +94XXXXXXXXX with the country set to Sri Lanka (assets/snh-phone.js, Round 12).
 {%- endcomment -%}
 {%- liquid
   assign fid = address.id | default: 'new'
@@ -22,7 +23,7 @@
     <label class="fld"><span>Postal code <i>(optional)</i></span><input type="text" name="address[zip]" value="{{ form.zip | escape }}" autocomplete="postal-code"></label>
     <label class="fld"><span>Country</span><select name="address[country]" data-country data-default="{{ form.country | default: country | escape }}" autocomplete="country">{{ all_country_option_tags }}</select></label>
     <label class="fld" data-province-wrap hidden><span>Province</span><select name="address[province]" data-province data-default="{{ form.province | escape }}" autocomplete="address-level1"></select></label>
-    <label class="fld fld--full"><span>Phone</span><input type="tel" name="address[phone]" value="{{ form.phone | escape }}" autocomplete="tel" placeholder="+94 77 123 4567"></label>
+    <label class="fld fld--full"><span>Phone</span><input type="tel" name="address[phone]" value="{{ form.phone | escape }}" inputmode="tel" autocomplete="tel" placeholder="77 123 4567" data-tel94></label>
     <label class="chk fld--full"><input type="checkbox" name="address[default]" value="1"{% if form.set_as_default_checkbox contains 'checked' or address == customer.default_address %} checked{% endif %}><span>Use as my default address</span></label>
   </div>
   <div class="aform__acts">

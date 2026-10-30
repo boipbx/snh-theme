@@ -621,3 +621,15 @@ one points line (guests: *Sign in* opens the account panel), Secure checkout, Ko
 *Ways to pay* card are gone. Cart page: the footer is the sticky right column on desktop and fixed to the bottom on
 phones. Impact's shadow `::part(body)` padding/scrolling is turned off for the drawer so the footer can't be pushed
 off screen. The rating line shows only when *Cart drawer → Rating line* is filled.
+
+### Phase 3: checkout routine
+- **Pre-checkout modal** (`snippets/koko-checkout-modal`): Koko's `<script>` is byte-identical (sha checked); the
+  style block is v2 (bottom sheet on phones). `assets/snh-precheckout.js` fills the new summary when the router
+  opens: items + total + savings, points (members: earned at their rate; guests: *Sign in* closes the modal and opens
+  the account panel via `snh:account-open`), one last add-on (cheapest relevant ≤ the add-on cap, variant named, one
+  tap adds it and the total and Koko instalment update), delivery estimate, then Card/COD/bank/voucher (real card
+  logos) vs Koko with "3 × Rs X". QA: `prototype/tools/r12-precheckout-qa.js` → `shots/r12/checkout/qa.md`.
+- **CHECKOUT-PLAN.md**: branding spec, plan capabilities, apps, the phone clean-up.
+- **Phones**: `assets/snh-phone.js` on `input[data-tel94]` (register, edit profile, address forms, plan quiz): a
+  fixed +94 prefix, cleaned local number (also the bad "+1 0…" values), saved as +94XXXXXXXXX with
+  `address[country]` = Sri Lanka (edit profile gets a hidden country field).

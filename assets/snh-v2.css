@@ -2032,3 +2032,8 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 @media (min-width: 1024px) { .eband__in { padding-block: 96px; } }
 @media (max-width: 599px) { .eband__lead { font-size: 16px; } .eband__cta .v-btn { flex: 1 1 auto; justify-content: center; } }
 @media (max-width: 599px) { .eband__tiers { flex-wrap: nowrap; gap: 6px; } .eband__chip { height: 36px; padding: 0 10px 0 8px; gap: 6px; font-size: 13px; } .eband__chip i { width: 12px; height: 12px; } }
+
+/* Round 12: +94 phone fields (assets/snh-phone.js) */
+.tel94 { position: relative; display: block; }
+.tel94__cc { position: absolute; left: 1px; top: 1px; bottom: 1px; display: flex; align-items: center; padding: 0 12px 0 16px; border-right: 1px solid rgba(12, 12, 13, .12); border-radius: 12px 0 0 12px; background: var(--cream, #F6F3EE); font: 500 16px/1.5 var(--sans); color: var(--ink); pointer-events: none; }
+.tel94 input { padding-left: 76px !important; }

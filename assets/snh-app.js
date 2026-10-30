@@ -39,7 +39,7 @@
       input.setCustomValidity(ok ? '' : 'Enter a Sri Lankan mobile number, like 077 123 4567.');
       input.setAttribute('aria-invalid', String(!ok));
       if (err) err.hidden = ok;
-      if (fix && n) input.value = n;
+      if (fix && n && !input.hasAttribute('data-tel94')) input.value = n;   // +94 fields: assets/snh-phone.js formats and writes E.164 on submit
       return ok;
     }
     input.addEventListener('blur', function () { check(true); });

@@ -245,7 +245,7 @@
     var vs = (p.variants || []).filter(function (v) { return v.available !== false && cents(v.price) > 0; }).sort(function (a, b) { return cents(a.price) - cents(b.price); });
     var v = vs[0] || (p.variants || [])[0] || {};
     var im = (v.featured_image && v.featured_image.src) || (p.images && p.images[0] && (p.images[0].src || p.images[0])) || p.featured_image || '';
-    return { id: p.id, vid: v.id, handle: p.handle, title: p.title, vendor: p.vendor, type: p.product_type || p.type || '', tags: [].concat(p.tags || []).join(' '), price: cents(v.price), soldOut: !vs.length || p.available === false, image: im, url: '/products/' + p.handle, multi: (p.variants || []).length > 1, src: src };
+    return { id: p.id, vid: v.id, vtitle: v.title && v.title !== 'Default Title' ? v.title : '', handle: p.handle, title: p.title, vendor: p.vendor, type: p.product_type || p.type || '', tags: [].concat(p.tags || []).join(' '), price: cents(v.price), soldOut: !vs.length || p.available === false, image: im, url: '/products/' + p.handle, multi: (p.variants || []).length > 1, src: src };
   }
   function recs(id, intent) {
     var k = 'rec_' + intent + '_' + id;

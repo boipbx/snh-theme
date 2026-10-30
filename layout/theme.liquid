@@ -78,6 +78,7 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {{- 'instrument-serif-italic-latin.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' -}}
     <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
     <script src="{{ 'snh-v2.js' | asset_url }}" defer></script>
+    {%- if template contains 'customers' -%}<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>{%- endif -%}
   </head>
 
   <body class="{% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">

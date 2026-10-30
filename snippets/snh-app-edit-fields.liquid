@@ -6,9 +6,10 @@
 <fieldset class="reg__step" data-edit-step="1">
   <legend class="v-sr">You</legend>
   <div class="aform__grid">
+    <input type="hidden" name="address[country]" value="Sri Lanka">
     <label class="fld"><span>First name</span><input type="text" name="address[first_name]" value="{{ f.first_name | default: me[0] | escape }}" autocomplete="given-name" required></label>
     <label class="fld"><span>Last name</span><input type="text" name="address[last_name]" value="{{ f.last_name | default: customer.last_name | escape }}" autocomplete="family-name"></label>
-    <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="address[phone]" value="{{ f.phone | default: phone | escape }}" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" required data-sl-mobile aria-describedby="{{ sid }}-ph-err {{ sid }}-ph-help"></label>
+    <label class="fld fld--full"><span>Mobile number</span><input type="tel" name="address[phone]" value="{{ f.phone | default: phone | escape }}" inputmode="tel" autocomplete="tel" placeholder="77 123 4567" required data-sl-mobile data-tel94 aria-describedby="{{ sid }}-ph-err {{ sid }}-ph-help"></label>
     <p class="fld__err fld--full" id="{{ sid }}-ph-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
     <p class="fld__help fld--full" id="{{ sid }}-ph-help">For delivery updates. Saved as +94XXXXXXXXX.</p>
   </div>
