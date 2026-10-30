@@ -2137,3 +2137,12 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 /* names / brands are word-clamped by assets/snh-v2.js (fitCard); the CSS clamp stays as the no-JS fallback */
 .pc--tight .pc__count { display: none; }
 .pc__brand { text-overflow: clip; }
+/* Round 13 audit: the compact card on the type scale (sizes 12+, letter-spacing 0 / .06 / .12em, line-height 1.1 / 1.5) */
+.pc__brand { letter-spacing: .06em; }
+.pc__now { line-height: 1.1; }
+@media (max-width: 767px) {
+  .pc__brand { font-size: 12px; letter-spacing: 0; }
+  .pc__rating { font-size: 12px; }
+  .pc__koko { font-size: 12px; height: 18px; }
+  .pc__koko .pc__with { display: none; }
+}

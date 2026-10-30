@@ -239,7 +239,7 @@
         {%- if saving > 0 -%}<s class="pc__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}
       </p>
       {%- if product.available -%}
-        <p class="pc__koko">or 3 × {{ third | money_without_trailing_zeros }} with <span class="pc__kk">Koko</span></p>
+        <p class="pc__koko">or 3 × {{ third | money_without_trailing_zeros }} <span class="pc__with">with </span><span class="pc__kk">Koko</span></p>
       {%- else -%}
         <p class="pc__koko pc__koko--out">Sold out</p>
       {%- endif -%}
