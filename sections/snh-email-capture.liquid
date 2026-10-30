@@ -33,7 +33,7 @@
   endif
 -%}
 {%- unless skip -%}
-  {{ 'snh-capture.css' | asset_url | stylesheet_tag }}
+  <link rel="stylesheet" href="{{ 'snh-capture.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-capture.css' | asset_url | stylesheet_tag }}</noscript>
   <script src="{{ 'snh-capture.js' | asset_url }}" defer></script>
 {%- else -%}
   <script>if (/[?&]popup=/.test(location.search)) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = {{ 'snh-capture.css' | asset_url | json }}; document.head.appendChild(l); var j = document.createElement('script'); j.src = {{ 'snh-capture.js' | asset_url | json }}; j.defer = true; document.head.appendChild(j); }</script>

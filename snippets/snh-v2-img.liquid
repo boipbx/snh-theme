@@ -8,6 +8,12 @@
   if url != blank
     unless url contains '/'
       assign src = url | asset_url
+      # Round 12: jpg/png/webp theme assets come resized (they were served full size)
+      assign ext = url | split: '.' | last | downcase
+      if ext == 'jpg' or ext == 'jpeg' or ext == 'png' or ext == 'webp'
+        assign aw = width | default: 800 | append: 'x'
+        assign src = url | asset_img_url: aw
+      endif
     endunless
   endif
 -%}

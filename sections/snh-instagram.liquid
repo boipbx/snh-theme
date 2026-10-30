@@ -11,7 +11,7 @@
   If an Instagram feed app is installed later (e.g. Instafeed), add its app block to this section: the app's feed
   then replaces the curated grid inside the same heading and follow button. Styles: assets/snh-social.css.
 {%- endcomment -%}
-{{ 'snh-social.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'snh-social.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-social.css' | asset_url | stylesheet_tag }}</noscript>
 {%- if settings.snh_instagram_token != blank -%}<script src="{{ 'snh-social.js' | asset_url }}" defer></script>{%- endif -%}
 {%- liquid
   assign handle = section.settings.handle | default: 'sportsnutritionhub.lk' | remove: '@' | strip

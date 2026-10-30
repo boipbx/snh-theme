@@ -3,7 +3,7 @@
   subscriber up through its Shopify integration (same route as the live newsletter popup).
   Round 11: the form is snippets/snh-email-form (shared with the footer, the modal and the slide-in).
 {%- endcomment -%}
-{{ 'snh-capture.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'snh-capture.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-capture.css' | asset_url | stylesheet_tag }}</noscript>
 {%- assign hid = 'news-' | append: section.id -%}
 {%- assign fid = 'news-form-' | append: section.id -%}
 <section class="v2 v-section v-section--cream" aria-labelledby="{{ hid }}">

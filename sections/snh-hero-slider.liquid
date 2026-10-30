@@ -15,9 +15,12 @@
       -%}
       {%- capture pic -%}
         <picture class="hero__pic">
-          {%- if m != blank -%}<source media="(max-width: 767px)" srcset="{{ m | image_url: width: 800 }} 800w, {{ m | image_url: width: 1200 }} 1200w" sizes="100vw" width="{{ m.width }}" height="{{ m.height }}">{%- endif -%}
+          {%- comment -%} Round 12: slides after the first carry data-src / data-srcset; assets/snh-v2.js attaches them just before the
+            slide shows. Stacked on screen, loading="lazy" didn't hold them back (~270 KB at page load on phones). {%- endcomment -%}
+          {%- if on -%}{%- assign sa = 'srcset' -%}{%- assign ia = 'src' -%}{%- else -%}{%- assign sa = 'data-srcset' -%}{%- assign ia = 'data-src' -%}{%- endif -%}
+          {%- if m != blank -%}<source media="(max-width: 767px)" {{ sa }}="{{ m | image_url: width: 800 }} 800w, {{ m | image_url: width: 1200 }} 1200w" sizes="100vw" width="{{ m.width }}" height="{{ m.height }}">{%- endif -%}
           {%- if d != blank -%}
-            <img src="{{ d | image_url: width: 1800 }}" srcset="{{ d | image_url: width: 1200 }} 1200w, {{ d | image_url: width: 1800 }} 1800w, {{ d | image_url: width: 2800 }} 2800w" sizes="100vw" width="{{ d.width }}" height="{{ d.height }}" alt="{{ alt | escape }}" style="--pos:{{ b.settings.pos }};--mpos:{{ b.settings.mpos }}" loading="{% if on %}eager{% else %}lazy{% endif %}"{% if on %} fetchpriority="high"{% endif %} decoding="async">
+            <img {{ ia }}="{{ d | image_url: width: 1800 }}" {{ sa }}="{{ d | image_url: width: 1200 }} 1200w, {{ d | image_url: width: 1800 }} 1800w, {{ d | image_url: width: 2800 }} 2800w" sizes="100vw" width="{{ d.width }}" height="{{ d.height }}" alt="{{ alt | escape }}" style="--pos:{{ b.settings.pos }};--mpos:{{ b.settings.mpos }}" loading="{% if on %}eager{% else %}lazy{% endif %}"{% if on %} fetchpriority="high"{% endif %} decoding="async">
           {%- endif -%}
         </picture>
       {%- endcapture -%}

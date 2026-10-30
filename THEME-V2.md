@@ -720,3 +720,32 @@ welcome popup + promo popup never together). The product page's console error co
 
 **Sync note**: the dev server went unauthorized twice (30 Oct); its sync stalled with it. The Phase 8 files were pushed
 to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --only <file>` (one file per call).
+
+### Phase 9: open items + performance
+- **Bundles**: BUNDLES.md (fill Theme settings → SNH bundle offers 1–12, suggested offers + the discounts to create, or
+  the `snh_bundle` metaobject, which the cart now reads first).
+- **Cart rating line**: setting with no default, shown only when filled (phase 2).
+- **running.jpg**: the original in Files is 1500 × 1800 (not 1200 as R11 noted). No larger version is referenced
+  anywhere in the theme and Files can't be listed without the admin: upload a 2400px original if you have one. Never
+  upscaled.
+- **Franchise / wholesale** (`/pages/franchise-partner`, `/pages/wholesale-1`): new `sections/snh-partner` (hero
+  with two store photos, stats, benefits, checklist, store photos, collection tiles, steps, native contact form with a
+  hidden "Form" field, normal POST so Shopify's hCaptcha runs). Wholesale had no form before. **Shop by brand**: new
+  `sections/snh-brands-page` (the 16 featured logos, A–Z of every vendor with counts, letter jumps, filter). The old
+  sections stay in the repo, unused.
+- **Performance** (Lighthouse mobile, `prototype/tools/r12-lighthouse.sh`, reports in `shots/r12/lighthouse/`):
+  - Hero: slides 2+ carry `data-src`/`data-srcset` (stacked on screen, `loading=lazy` didn't hold ~270 KB back), and
+    the slider waits for the first interaction, so a later slide no longer paints during load (it was the 31.8s LCP).
+  - App ScriptTags (`asyncLoad`: Reputon, Hextom, Nosto, Tagembed, Klaviyo's ScriptTag copy, an unidentified
+    CloudFront `w.js`) start on the first interaction or 6s after load. `content_for_header` is printed untouched
+    (Shopify rejects filters on it); only the `load` listener named `asyncLoad` is rerouted. Judge.me, Klaviyo onsite,
+    Clarity and Appstle are app embeds and load as before.
+  - Card pack-shot pixel work runs in idle slices (it delayed the collection banner's render on a 4× CPU).
+  - SiS video `preload="none"`, source attached when the slide plays; theme-asset images (SiS tiles) served resized
+    (`asset_img_url`); Koko logos lazy; cart / capture / social CSS non-blocking; only the body font is preloaded;
+    the serif italic is `font-display: swap` (it was `optional`, i.e. often never shown on a first visit).
+  - Collection banner: 400/600w mobile sources and real `sizes`.
+  - Not theme-controllable (biggest remaining weight): Google tags ×4 (~670 KB) and the Facebook pixel (~220 KB) via
+    Shopify's channels, Shopify's checkout prefetch (~380 KB), Appstle (91 KB on every page), the Reputon embed, and
+    jQuery + DOMPurify + Mustache that an app injects from public CDNs. Remove apps you don't use (Nosto, Tagembed,
+    the CloudFront `w.js`, Hextom) and the duplicate Klaviyo ScriptTag (`VVMVg5`).

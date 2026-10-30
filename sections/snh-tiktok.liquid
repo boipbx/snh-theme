@@ -10,7 +10,7 @@
   TikTok's player in a lightbox. The profile embed shows only when there are no video blocks (setting); no videos and
   a failed profile = the follow card.
 {%- endcomment -%}
-{{ 'snh-social.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'snh-social.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-social.css' | asset_url | stylesheet_tag }}</noscript>
 <script src="{{ 'snh-social.js' | asset_url }}" defer></script>
 {%- liquid
   assign handle = section.settings.handle | default: 'sportsnutritionhub.lk' | remove: '@' | strip

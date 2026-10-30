@@ -2,7 +2,7 @@
   SNH footer v2: stores + menu columns, payments line, socials, legal, and the full-width SNH logo that bleeds off the
   bottom edge under a black gradient, with a wipe reveal and the orange dot pop (assets/snh-v2.js data-v2="reveal").
 {%- endcomment -%}
-{{ 'snh-capture.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'snh-capture.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-capture.css' | asset_url | stylesheet_tag }}</noscript>
 <footer class="v2 ftr footer">
   <div class="v-wrap">
     {%- if section.settings.news_show -%}

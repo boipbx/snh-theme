@@ -1182,7 +1182,7 @@
 /* =====================================================================================================
    THEME LAYER (round 5): what the Shopify build needs on top of the ported prototype styles
    ===================================================================================================== */
-@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: optional; src: url("instrument-serif-italic-latin.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("instrument-serif-italic-latin.woff2") format("woff2"); }
 :root { --sans: var(--text-font-family, "Inter"), system-ui, -apple-system, "Segoe UI", sans-serif; }
 
 /* header: the section wrapper is the sticky element; the ticker + announcement scroll away (negative top) */

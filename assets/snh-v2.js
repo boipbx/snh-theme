@@ -177,9 +177,13 @@
     img.classList.add('is-ready');
   }
   root.classList.add('v-lift');
-  document.addEventListener('load', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-v2-lift')) lift(e.target); }, true);
+  // Round 12: the pixel work runs in idle time, a few images per slice, so it no longer competes with the first render
+  // (it was a large part of the collection page's LCP render delay on a 4x slower CPU)
+  var liftQ = [], liftOn = false, ric = window.requestIdleCallback || function (f) { return setTimeout(function () { f({ timeRemaining: function () { return 8; } }); }, 16); };
+  function liftLater(im) { if (liftQ.indexOf(im) < 0) liftQ.push(im); if (liftOn) return; liftOn = true; ric(function run(dl) { while (liftQ.length && dl.timeRemaining() > 4) lift(liftQ.shift()); if (liftQ.length) ric(run, { timeout: 300 }); else liftOn = false; }, { timeout: 300 }); }
+  document.addEventListener('load', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-v2-lift')) liftLater(e.target); }, true);
   document.addEventListener('error', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-v2-lift')) e.target.classList.add('is-ready'); }, true);
-  function liftAll(scope) { (scope || document).querySelectorAll('img[data-v2-lift]').forEach(lift); }
+  function liftAll(scope) { (scope || document).querySelectorAll('img[data-v2-lift]').forEach(liftLater); }
   liftAll();
   document.addEventListener('DOMContentLoaded', function () { liftAll(); });
 
@@ -572,6 +576,11 @@
     if (!slides.length) return;
     var i = 0;
     var autoplay = hero.getAttribute('data-autoplay') !== 'false';
+    // attach a slide's deferred image sources (data-src / data-srcset, see sections/snh-hero-slider)
+    function wake(sl) {
+      $$('[data-srcset]', sl).forEach(function (x) { x.setAttribute('srcset', x.getAttribute('data-srcset')); x.removeAttribute('data-srcset'); });
+      $$('img[data-src]', sl).forEach(function (x) { x.src = x.getAttribute('data-src'); x.removeAttribute('data-src'); x.loading = 'eager'; });
+    }
     function show(n) {
       i = (n + slides.length) % slides.length;
       slides.forEach(function (s, k) {
@@ -579,10 +588,10 @@
         s.classList.toggle('is-on', isOn);
         s.setAttribute('aria-hidden', String(!isOn));
         if (isOn) s.removeAttribute('inert'); else s.setAttribute('inert', '');
-        if (isOn) $$('img[loading="lazy"]', s).forEach(function (im) { im.loading = 'eager'; });
+        if (isOn) wake(s);
       });
       var nx = slides[(i + 1) % slides.length];
-      $$('img[loading="lazy"]', nx).forEach(function (im) { im.loading = 'eager'; });
+      if (!hold.idle) wake(nx);   // Round 12: not before the first interaction
       segs.forEach(function (g, k) {
         g.classList.remove('is-on');
         g.classList.toggle('is-done', k < i);
@@ -597,9 +606,12 @@
       g.querySelector('span').addEventListener('animationend', function () { if (k === i && !reduce && autoplay) show(i + 1); });
     });
     $$('.hero__arrow', hero).forEach(function (a) { a.addEventListener('click', function () { show(i + Number(a.getAttribute('data-dir'))); }); });
-    var hold = { hover: false, focus: false, hidden: false, off: false, editor: false };
+    // Round 12: the slides wait for the shopper's first interaction (scroll, tap, key, pointer), so slide 2 neither
+    // downloads nor paints during page load (it was being counted as the LCP, 31.8s on slow 4G)
+    var hold = { hover: false, focus: false, hidden: false, off: false, editor: false, idle: !window.Shopify || !Shopify.designMode };
+    (function () { var ev = ['pointerdown', 'keydown', 'touchstart', 'scroll', 'mousemove']; function go() { if (!hold.idle) return; hold.idle = false; ev.forEach(function (e) { removeEventListener(e, go); }); wake(slides[(i + 1) % slides.length]); sync(); } ev.forEach(function (e) { addEventListener(e, go, { passive: true }); }); })();
     function sync() {
-      var p = reduce || !autoplay || hold.hover || hold.focus || hold.hidden || hold.off || hold.editor;
+      var p = reduce || !autoplay || hold.hover || hold.focus || hold.hidden || hold.off || hold.editor || hold.idle;
       hero.classList.toggle('is-paused', p);
       var v = hero.querySelector('.hero__slide.is-on video');
       $$('video', hero).forEach(function (x) { if (x !== v || p) x.pause(); });

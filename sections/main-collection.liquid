@@ -115,7 +115,7 @@
 {%- capture hero_crumbs -%}<nav class="colhero__crumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><a href="{{ routes.collections_url }}">Shop</a><span aria-hidden="true">/</span><span aria-current="page">{{ hero_title | escape }}</span></nav>{%- endcapture -%}
 {%- capture hero_pic -%}
   <picture class="colhero__pic">
-    {%- if hm != hd -%}<source media="(max-width: 767px)" srcset="{{ hm | image_url: width: 500 }} 500w, {{ hm | image_url: width: 800 }} 800w, {{ hm | image_url: width: 1100 }} 1100w" sizes="100vw" width="{{ hm.width }}" height="{{ hm.height }}">{%- endif -%}
+    {%- if hm != hd -%}<source media="(max-width: 767px)" srcset="{{ hm | image_url: width: 400 }} 400w, {{ hm | image_url: width: 600 }} 600w, {{ hm | image_url: width: 800 }} 800w, {{ hm | image_url: width: 1100 }} 1100w" sizes="{% if art %}calc(100vw - 40px){% else %}100vw{% endif %}" width="{{ hm.width }}" height="{{ hm.height }}">{%- endif -%}
     {{ hd | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 1360px) 1280px, 100vw', widths: '600,900,1200,1600,2000,2400', alt: '' }}
   </picture>
 {%- endcapture -%}

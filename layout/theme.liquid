@@ -33,9 +33,8 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
 
-    {%- unless settings.heading_font.system? -%}
-      <link rel="preload" href="{{ settings.heading_font | font_url }}" as="font" type="font/woff2" crossorigin>
-    {%- endunless -%}
+    {%- comment -%} Round 12: only the body font is preloaded (Inter 400, Shopify's latin subset); headings and the serif
+      italic arrive with font-display: swap, so they don't compete with the CSS and the hero image {%- endcomment -%}
 
     {%- unless settings.text_font.system? -%}
       <link rel="preload" href="{{ settings.text_font | font_url }}" as="font" type="font/woff2" crossorigin>
@@ -70,12 +69,32 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     <script type="module" src="{{ 'vendor.min.js' | asset_url }}"></script>
     <script type="module" src="{{ 'theme.js' | asset_url }}"></script>
 
+    {%- comment -%}
+      Round 12 performance: Shopify's app ScriptTag loader (asyncLoad: Reputon, Hextom, Nosto, Tagembed, Klaviyo's
+      ScriptTag copy, …) waits for the shopper's first interaction, or 6s after load, instead of firing
+      on window load. content_for_header is output untouched: only a 'load' listener named asyncLoad is rerouted.
+      App embeds (Judge.me, Klaviyo onsite, Clarity, Appstle) are not affected.
+    {%- endcomment -%}
+    <script>
+      (function () {
+        function later(fn) {
+          var done = false, ev = ['pointerdown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+          function go() { if (done) return; done = true; fn(); }
+          ev.forEach(function (e) { addEventListener(e, go, { passive: true, once: true }); });
+          setTimeout(go, 6000);   // no interaction: 6s after load (idle callbacks fired too early, before the LCP)
+        }
+        var add = window.addEventListener;
+        window.addEventListener = function (type, fn, opts) {
+          if (type === 'load' && typeof fn === 'function' && fn.name === 'asyncLoad') return add.call(window, 'load', function () { later(fn); }, opts);
+          return add.call(window, type, fn, opts);
+        };
+      })();
+    </script>
     {{ content_for_header }}
 
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
     {{- 'snh-design-system.css' | asset_url | stylesheet_tag: preload: true -}}
     {{- 'snh-v2.css' | asset_url | stylesheet_tag: preload: true -}}
-    {{- 'instrument-serif-italic-latin.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' -}}
     <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
     <script src="{{ 'snh-v2.js' | asset_url }}" defer></script>
     {%- if template contains 'customers' -%}<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>{%- endif -%}

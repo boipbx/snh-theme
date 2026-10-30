@@ -11,7 +11,8 @@
   assets/snh-cart.js renders its content (from /cart.js), so nothing re-renders it behind our back. Max 440px wide;
   a full-screen sheet on phones. The cart page (sections/snh-cart-page) uses the same renderer and summary.
 {%- endcomment -%}
-{{ 'snh-cart.css' | asset_url | stylesheet_tag }}
+{%- comment -%} Round 12: not render-blocking (the drawer is closed at load) {%- endcomment -%}
+<link rel="stylesheet" href="{{ 'snh-cart.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-cart.css' | asset_url | stylesheet_tag }}</noscript>
 <script src="{{ 'snh-cart.js' | asset_url }}" defer></script>
 <x-drawer class="cart-drawer drawer snh-cd" id="cart-drawer" open-from="right" aria-label="Your basket" data-snh-elite>
   <div class="scd" data-cart-root data-mode="drawer">
