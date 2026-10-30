@@ -117,6 +117,7 @@
     {%- endfor -%}
   ]
 }</script>
+{%- render 'snh-cart-reco', goal: goal -%}
 <script type="application/json" data-cart-initial>{{ cart | json }}</script>
 {%- comment -%} the footer's payment row: Shopify's own card logos, Koko's logo (as in the Koko modal), cash on delivery {%- endcomment -%}
 {%- assign pay_types = 'visa,master,american_express' | split: ',' -%}

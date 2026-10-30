@@ -1452,6 +1452,29 @@
         "label": "Complementary pairs",
         "default": "creatine => shaker, bottle\nwhey, protein, isolate => bar, snack, cookie\npre-workout, pre workout => shaker, bottle\nelectrolyte, hydration, isotonic => gel, chew, bar\ngel => electrolyte, hydro, tablet\nmass, gainer => shaker, creatine",
         "info": "One per line: words in a basket product => words in the item to suggest. Searches the Cart add-ons collection and Shopify's complementary products."
+      },
+      {
+        "type": "header",
+        "content": "Smart recommendations (Round 13)"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_reco_complements",
+        "label": "Goes with (complement map)",
+        "default": "creatine => pre-workout, bars-snacks, accessories, whey\nwhey, isolate => creatine, bars-snacks, accessories, oats\npre-workout => creatine, bcaa-eaa, accessories\nmass-gainer => creatine, accessories\nelectrolytes, gels => gels, electrolytes, bars-snacks\nvitamins => omega, magnesium, probiotics\n* => bars-snacks",
+        "info": "One per line: basket category => categories to suggest (* = any basket). Categories: creatine, whey, isolate, mass-gainer, pre-workout, bcaa-eaa, electrolytes, gels, bars-snacks, oats, vitamins, omega, magnesium, probiotics, collagen, accessories."
+      },
+      {
+        "type": "textarea",
+        "id": "snh_reco_collections",
+        "label": "Where each category's products are",
+        "default": "creatine => creatine\nwhey => whey-protein\nisolate => isolate-protein\nmass-gainer => mass-gainer\npre-workout => pre-workout-1\nbcaa-eaa => bcaa-eaa\nelectrolytes => hydration-recovery\ngels => energy-gels\nbars-snacks => protein-bars, protein-snacks\noats => protein-oats\nvitamins => multivitamins\nomega => fish-oil-omega\nmagnesium => magnesium\nprobiotics => probiotics\ncollagen => collagen\naccessories => accessories-1",
+        "info": "One per line: category => collection handle(s). Suggestions are drawn from these collections plus Shopify's recommendations."
+      },
+      {
+        "type": "collection",
+        "id": "snh_reco_bestsellers",
+        "label": "Bestsellers (score +10, 'Popular with members')"
       }
     ]
   },

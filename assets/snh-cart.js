@@ -49,6 +49,7 @@
     this.mode = el.getAttribute('data-mode') || 'drawer';
     try { this.cfg = JSON.parse($('[data-cart-cfg]', el).textContent); } catch (e) { this.cfg = {}; }
     try { this.cart = JSON.parse($('[data-cart-initial]', el).textContent); } catch (e) { this.cart = null; }
+    try { this.reco = JSON.parse($('[data-cart-reco]', el).textContent); } catch (e) { this.reco = {}; }
     this.body = $('[data-cart-body]', el);
     this.foot = $('[data-cart-foot]', el);
     this.busy = false;
@@ -251,8 +252,41 @@
     var k = 'rec_' + intent + '_' + id;
     return listCache[k] || (listCache[k] = json(root + 'recommendations/products.json?product_id=' + id + '&limit=10&intent=' + intent).then(function (j) { return j.products || []; }).catch(function () { return []; }));
   }
+  // Round 13: collection lists are cached for 10 minutes in sessionStorage (one fetch per collection per visit)
+  function listOf(handle, limit) {
+    var k = 'snh_col_' + handle, hit;
+    try { hit = JSON.parse(sessionStorage.getItem(k) || 'null'); } catch (e) { hit = null; }
+    if (hit && Date.now() - hit.t < 6e5) return Promise.resolve(hit.p);
+    return listCache[k] || (listCache[k] = json(root + 'collections/' + encodeURIComponent(handle) + '/products.json?limit=' + (limit || 40)).then(function (j) {
+      var p = (j.products || []).map(function (x) { return { id: x.id, title: x.title, handle: x.handle, vendor: x.vendor, product_type: x.product_type, tags: x.tags, variants: (x.variants || []).map(function (v) { return { id: v.id, title: v.title, price: v.price, available: v.available }; }), images: (x.images || []).slice(0, 1).map(function (i) { return i.src; }) }; });
+      try { sessionStorage.setItem(k, JSON.stringify({ t: Date.now(), p: p })); } catch (e) {}
+      return p;
+    }).catch(function () { return []; }));
+  }
+  function colMap(text) { var m = {}; (window.SNHReco ? SNHReco.parseMap(text) : []).forEach(function (r) { r.from.forEach(function (f) { m[f] = (m[f] || []).concat(r.to); }); }); return m; }
   Cart.prototype.pool = function (cart) {
     var c = this.cfg, key = 'snh_addons_' + c.addons, ids = cart.items.slice(0, 3).map(function (it) { return it.product_id; });
+    var R = window.SNHReco, reco = this.reco || {};
+    if (R) {
+      // the complement targets of the basket's categories → their collections; bars always; bestsellers; recently viewed
+      var cats = {}, cols = colMap(reco.collections), targets = {};
+      cart.items.forEach(function (it) { var k = R.detect({ type: it.product_type, title: it.product_title }); if (k) cats[k] = 1; });
+      R.parseMap(reco.complements).forEach(function (r) { if (r.from.some(function (f) { return f === '*' || cats[f]; })) r.to.forEach(function (t) { targets[t] = 1; }); });
+      delete targets['bars-snacks'];
+      var catLists = Object.keys(targets).slice(0, 5).map(function (t) { return Promise.all((cols[t] || []).map(function (h) { return listOf(h, 30); })).then(function (ls) { return [].concat.apply([], ls).map(function (p) { var n = norm(p, 'category'); n.cat = t; return n; }); }); });
+      var bars = Promise.all((cols['bars-snacks'] || []).map(function (h) { return listOf(h, 40); })).then(function (ls) { return [].concat.apply([], ls).map(function (p) { var n = norm(p, 'bars'); n.cat = 'bars-snacks'; return n; }); });
+      var best = reco.bestsellers ? listOf(reco.bestsellers, 30) : this.picksList();
+      var viewed = Promise.all(R.viewed().slice(0, 4).map(function (h) { return productCache[h] || (productCache[h] = json(root + 'products/' + h + '.js').catch(function () { return null; })); }));
+      return Promise.all([
+        Promise.all(ids.map(function (id) { return recs(id, 'complementary'); })),
+        Promise.all(ids.map(function (id) { return recs(id, 'related'); })),
+        Promise.all(catLists), bars, best, viewed
+      ]).then(function (r) {
+        var flat = function (a) { return [].concat.apply([], a); };
+        return { comp: flat(r[0]).map(function (p) { return norm(p, 'complementary'); }), related: flat(r[1]).map(function (p) { return norm(p, 'related'); }),
+          cat: flat(r[2]), bars: r[3], best: r[4].map(function (p) { return norm(p, 'best'); }), viewed: r[5].filter(Boolean).map(function (p) { return norm(p, 'viewed'); }) };
+      });
+    }
     var addons = c.addons ? (listCache[key] || (listCache[key] = json(root + 'collections/' + encodeURIComponent(c.addons) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }))) : Promise.resolve([]);
     return Promise.all([
       addons,
@@ -333,13 +367,21 @@
     var run = this.suggRun = (this.suggRun || 0) + 1;
     this.pool(cart).then(function (pool) {
       if (run !== self.suggRun) return;
-      var d = decide(cart, pool, self.cfg, self.mode);
-      self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
-      var cards = d.items.map(function (p) { return self.card(p, d.rule === 'close' ? 'Unlocks free delivery' : ''); });
-      if (d.comp) cards.push(self.card(d.comp, d.why));
+      var cards, head;
+      if (window.SNHReco && pool.bars) {
+        var d = SNHReco.decide(cart, pool, self.cfg, self.reco, self.mode);
+        self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
+        cards = d.items.map(function (p) { return self.card(p, p.why); });
+        head = '<span>' + esc(d.head) + '</span>' + (d.cap ? '<small>' + esc(d.cap) + '</small>' : '');
+      } else {
+        var d = decide(cart, pool, self.cfg, self.mode);
+        self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
+        cards = d.items.map(function (p) { return self.card(p, d.rule === 'close' ? 'Unlocks free delivery' : ''); });
+        if (d.comp) cards.push(self.card(d.comp, d.why));
+        head = '<span>' + (d.rule === 'close' ? 'Close the gap' : 'Goes with your order') + '</span>';
+      }
       if (!cards.length) { box.hidden = true; box.innerHTML = ''; return; }
-      var head = d.rule === 'close' ? 'Close the gap' : d.items.length ? 'Add-ons under ' + rs(d.cap * 100) : 'Goes with your order';
-      box.innerHTML = '<p class="scd__bh">' + (d.rule === 'close' ? icons.truck : icons.plus) + '<span>' + head + '</span></p><ul class="ssugs" role="list">' + cards.join('') + '</ul>';
+      box.innerHTML = '<p class="scd__bh">' + (d.rule === 'close' ? icons.truck : icons.plus) + head + '</p><ul class="ssugs" role="list">' + cards.join('') + '</ul>';
       box.hidden = false;
       self.emit('suggest', d);
     });

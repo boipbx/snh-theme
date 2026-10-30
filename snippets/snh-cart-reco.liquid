@@ -1,0 +1,23 @@
+{%- comment -%}
+  SNH cart recommendations (Round 13): data for assets/snh-cart-reco.js, rendered inside snippets/snh-cart-cfg (drawer +
+  cart page). Complement map and category → collection map: Theme settings → SNH cart suggestions. Members: their last
+  10 orders (product id, type, title, tags, date) and goal tag (goal:build-muscle …) for the member signals.
+  goal: passed in by snh-cart-cfg.
+{%- endcomment -%}
+<script type="application/json" data-cart-reco>{
+  "complements": {{ settings.snh_reco_complements | default: "creatine => pre-workout, bars-snacks, accessories, whey\nwhey, isolate => creatine, bars-snacks, accessories, oats\npre-workout => creatine, bcaa-eaa, accessories\nmass-gainer => creatine, accessories\nelectrolytes, gels => gels, electrolytes, bars-snacks\nvitamins => omega, magnesium, probiotics\n* => bars-snacks" | json }},
+  "collections": {{ settings.snh_reco_collections | default: "creatine => creatine\nwhey => whey-protein\nisolate => isolate-protein\nmass-gainer => mass-gainer\npre-workout => pre-workout-1\nbcaa-eaa => bcaa-eaa\nelectrolytes => hydration-recovery\ngels => energy-gels\nbars-snacks => protein-bars, protein-snacks\noats => protein-oats\nvitamins => multivitamins\nomega => fish-oil-omega\nmagnesium => magnesium\nprobiotics => probiotics\ncollagen => collagen\naccessories => accessories-1" | json }},
+  "bestsellers": {{ settings.snh_reco_bestsellers.handle | default: '' | json }},
+  "goal": {{ goal | default: '' | json }},
+  "history": [
+    {%- if customer -%}
+      {%- assign first = true -%}
+      {%- for o in customer.orders limit: 10 -%}
+        {%- for li in o.line_items -%}
+          {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+          {"p": {{ li.product_id | default: 0 }}, "type": {{ li.product.type | default: '' | json }}, "t": {{ li.product.title | default: li.title | json }}, "tags": {{ li.product.tags | join: ' ' | json }}, "d": {{ o.created_at | date: '%Y-%m-%d' | json }}}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endif -%}
+  ]
+}</script>

@@ -25,7 +25,7 @@ const mock = { id: 'qa-ann', src: 'block', name: 'QA', type: 'announcement', hea
     if (process.env.ROT === '0') await pg.evaluate(() => document.querySelector('.announce').dispatchEvent(new Event('mouseenter')));
     const r = await pg.evaluate(() => { const a = document.querySelector('.announce'); if (!a) return 'none:' + document.title; const cs = getComputedStyle(a);
       const rc = a.getBoundingClientRect(), top = document.elementFromPoint(8, rc.top + rc.height / 2); return { hit: top && (top.closest('.announce') ? 'announce' : top.className + '<' + (top.parentElement && top.parentElement.className)), rc: [Math.round(rc.top), Math.round(rc.height)], tone: a.dataset.tone, bg: cs.backgroundColor, n: document.querySelectorAll('.announce').length, items: [...a.querySelectorAll('.announce__item')].map(x => (x.dataset.campaign ? 'C:' : '') + x.dataset.tone + (x.classList.contains('is-on') ? '*' : '')).join(','), live: document.documentElement.getAttribute('data-campaigns-live') }; });
-    if (process.env.SHOT) await pg.screenshot({ path: 'prototype/shots/r12/bug/' + w + (p.replace(/\W+/g, '-') || 'home') + '.png', clip: { x: 0, y: 0, width: w, height: 160 } });
+    if (process.env.SHOT) await pg.screenshot({ path: (process.env.SHOTDIR || 'prototype/shots/r12/bug/') + w + (p.replace(/\W+/g, '-') || 'home') + '.png', clip: { x: 0, y: 0, width: w, height: 160 } });
     console.log(w, p, JSON.stringify(r), '\n   ', log.join(' | ').slice(0, 900));
     await pg.close();
   }

@@ -10,6 +10,7 @@
 {%- endcomment -%}
 {{ 'snh-cart.css' | asset_url | stylesheet_tag }}
 {{ 'snh-app.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-cart-reco.js' | asset_url }}" defer></script>
 <script src="{{ 'snh-cart.js' | asset_url }}" defer></script>
 {%- liquid
   assign s = section.settings
