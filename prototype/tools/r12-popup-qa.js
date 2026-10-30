@@ -35,6 +35,10 @@ const OUT = path.join(__dirname, '..', 'shots', 'r12', 'p7'); fs.mkdirSync(OUT, 
       if (s0.variant === 'b') { const s1 = await st(); flow.push(`spin → claim "${s1.h}" (${spinMs} ms) · focus ${s1.focus}`); await p.screenshot({ path: path.join(OUT, `${name}-${w}-2.png`) }); await p.keyboard.type('qa+' + name + '@example.com'); await kb(['Enter']); await p.waitForTimeout(1200); }
       const s2 = await st(); flow.push(`win "${s2.h}" · code ${s2.code} · apply ${s2.apply}` + (s0.variant === 'a' ? ` (spin ${spinMs} ms)` : ''));
       await p.screenshot({ path: path.join(OUT, `${name}-${w}-3.png`) });
+      // Phase 10: the Copy button (clipboard + "Copied" label); the Apply link is only read, never followed
+      await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: new URL(p.url()).origin }).catch(() => {});
+      const cp = await p.evaluate(async () => { const m = document.querySelector('dialog.ecm'); const b = m && m.querySelector('[data-copy]'); if (!b) return 'no copy button'; b.click(); await new Promise((r) => setTimeout(r, 300)); let clip = '?'; try { clip = await navigator.clipboard.readText(); } catch (e) { clip = 'unreadable'; } return 'label "' + b.textContent.trim() + '" · clipboard ' + clip; });
+      flow.push('copy → ' + cp);
     }
     const ev = await p.evaluate(() => window.__ev.filter((x) => /Welcome wheel|identify/.test(x)));
     rows.push({ name, url, w, flow, posts, ev, errs }); await ctx.close();

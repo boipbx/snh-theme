@@ -32,7 +32,10 @@ const HIDE = '[data-email-capture],dialog.ecm,.shopify-section--popup,#preview-b
       await p.addStyleTag({ content: '.ep2 [data-metal], .ep2 [data-metal] * { color: transparent !important; } .ep2__tiers .ep2__tier { opacity: 1 !important; transform: none !important; transition: none !important; }' });
       await p.evaluate(() => document.querySelectorAll('[role="tabpanel"]').forEach((x) => { x.hidden = false; }));
       for (const it of items) {
-        const el = p.locator(`[data-cx="${it.id}"]`); await el.scrollIntoViewIfNeeded(); const f = path.join(OUT, `cx-${it.id}.png`); await el.screenshot({ path: f }); it.file = f;
+        const el = p.locator(`[data-cx="${it.id}"]`);
+        // the perk panes share one spot: show only this item's pane, or the others paint over it (R12 phase 10 fix)
+        await el.evaluate((e) => { const own = e.closest('[role="tabpanel"]'); if (own) document.querySelectorAll('[role="tabpanel"]').forEach((x) => { x.hidden = x !== own; }); });
+        await el.scrollIntoViewIfNeeded(); const f = path.join(OUT, `cx-${it.id}.png`); await el.screenshot({ path: f }); it.file = f;
       }
       const py = `import sys,json\nfrom PIL import Image\nitems=json.load(sys.stdin)\ndef lum(c):\n  c=[x/255 for x in c[:3]]\n  c=[x/12.92 if x<=0.03928 else ((x+0.055)/1.055)**2.4 for x in c]\n  return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]\nout=[]\nfor it in items:\n  im=Image.open(it['file']).convert('RGB'); W,H=im.size; ix=int(min(H/2,12)) if it['kind']=='ep2__pane-rate' else 2; im=im.crop((ix,2,max(ix+1,W-ix),max(3,H-2))); px=list(im.getdata()); ls=[lum(p) for p in px]\n  import re\n  t=[int(x) for x in re.findall(r'[\\d.]+',it['color'])[:3]]; lt=lum(t)\n  def cr(a,b): a,b=max(a,b),min(a,b); return (a+0.05)/(b+0.05)\n  worst=min(cr(lt,max(ls)),cr(lt,min(ls)))\n  out.append(dict(it,worst=round(worst,2),bgmin=round(min(ls),3),bgmax=round(max(ls),3)))\nprint(json.dumps(out))`;
       const res = JSON.parse(execFileSync('python3', ['-c', py], { input: JSON.stringify(items) }).toString());
