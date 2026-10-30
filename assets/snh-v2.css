@@ -2134,3 +2134,6 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
   .pc__koko { font-size: 11px; height: 17px; }
   .pc__earn { display: none; }
 }
+/* names / brands are word-clamped by assets/snh-v2.js (fitCard); the CSS clamp stays as the no-JS fallback */
+.pc--tight .pc__count { display: none; }
+.pc__brand { text-overflow: clip; }

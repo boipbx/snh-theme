@@ -220,6 +220,31 @@
   }, { rootMargin: '0px 0px -8% 0px' }) : null;
   on('reveal', function (el) { if (io) io.observe(el); else el.classList.add('is-in'); });
 
+  /* ---------- Round 13: product cards never cut a word. Names (2 lines) and brands that overflow lose whole words
+     and end in "…"; a tight brand row first drops the review count. Re-run on resize and when cards arrive. ---------- */
+  function fitCard(c) {
+    var top = c.querySelector('.pc__top'), br = c.querySelector('.pc__brand');
+    c.classList.remove('pc--tight');
+    [c.querySelector('.pc__name a'), br].forEach(function (el) {
+      if (!el) return;
+      if (el.dataset.full == null) el.dataset.full = el.textContent.trim(); else el.textContent = el.dataset.full;
+    });
+    if (br && top && br.scrollWidth > br.clientWidth + 1) c.classList.add('pc--tight');
+    [[c.querySelector('.pc__name a'), c.querySelector('.pc__name')], [br, br]].forEach(function (x) {
+      var el = x[0], box = x[1]; if (!el || !box) return;
+      var over = function () { return box.scrollHeight > box.clientHeight + 2 || box.scrollWidth > box.clientWidth + 1; };
+      if (!over()) return;
+      var words = el.dataset.full.split(/\s+/);
+      while (words.length > 1 && over()) { words.pop(); el.textContent = words.join(' ').replace(/[\s,|–\-:·]+$/, '') + '…'; }
+    });
+  }
+  var fitAll = function () { $$('.pc').forEach(function (c) { if (c.offsetParent) fitCard(c); }); };
+  var fitT;
+  var fitSoon = function () { clearTimeout(fitT); fitT = setTimeout(fitAll, 120); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fitSoon); else fitSoon();
+  window.addEventListener('resize', fitSoon);
+  if ('MutationObserver' in window) new MutationObserver(function (ms) { if (ms.some(function (m) { return [].some.call(m.addedNodes, function (n) { return n.nodeType === 1 && (n.matches('.pc') || n.querySelector && n.querySelector('.pc')); }); })) fitSoon(); }).observe(document.documentElement, { childList: true, subtree: true });
+
   /* ================= header ================= */
   on('header', function (wrap) {
     var hdr = wrap.querySelector('.hdr');
