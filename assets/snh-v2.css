@@ -1673,20 +1673,39 @@ html { scroll-padding-top: 0; }
 
 /* ---------- R5 · collection page: v2 hero, filter bar, grid, pagination ---------- */
 .colhero { background: #fff; padding: 20px 0 8px; }
-.colhero__in { display: grid; gap: 24px; align-items: center; }
+.colhero__in { display: grid; gap: 12px; }
 .colhero__crumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font: 400 13px/1.5 var(--sans); color: var(--grey-2, #6b6b6b); }
 .colhero__crumbs a:hover { color: var(--ink); }
+.colhero__copy { display: grid; justify-items: start; }
 .colhero__title { margin: 0; font: 600 var(--t-h1)/1.1 var(--sans); letter-spacing: -.02em; color: var(--ink); text-transform: none; }
 .colhero__desc { position: relative; max-width: 68ch; margin-top: 12px; }
-.colhero__text { font: 400 15px/1.5 var(--sans); color: var(--grey-1, #4a4a4a); max-height: 4.8em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); }
+.colhero__text { font: 400 15px/1.5 var(--sans); color: var(--grey-1, #4a4a4a); max-height: 4.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); }
 .colhero__text :is(h1, h2, h3, h4) { font-size: 16px !important; margin: 0 0 .4em !important; }
 .colhero__text p { margin: 0 0 .6em; }
 .colhero__desc:not(:has(button)) .colhero__text { -webkit-mask-image: none; mask-image: none; }
 .colhero__desc.is-open .colhero__text { max-height: none; -webkit-mask-image: none; mask-image: none; }
-.colhero__more { margin-top: 4px; padding: 0; border: 0; background: none; font: 600 14px/1.5 var(--sans); color: var(--ink); text-decoration: underline; text-decoration-color: var(--v-accent); text-underline-offset: 3px; cursor: pointer; }
-.colhero__count { margin: 12px 0 0; font: 600 13px/1.1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2, #6b6b6b); }
-.colhero__media img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--v-radius, 14px); }
-@media (min-width: 1024px) { .colhero { padding: 28px 0 12px; } .colhero--img .colhero__in { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; } }
+.colhero__more { margin-top: 4px; padding: 0; border: 0; background: none; font: 600 14px/1.5 var(--sans); color: var(--ink); text-decoration: underline; text-decoration-color: var(--v-accent); text-underline-offset: 4px; cursor: pointer; }
+.colhero__count { order: -1; margin: 0 0 8px; font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2, #6b6b6b); }
+.colhero__pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Round 12 · photo: full width, gradient, our copy over it */
+.colhero--photo { position: relative; display: grid; min-height: 320px; padding: 0; background: var(--ink); color: var(--white); overflow: hidden; }
+.colhero--photo .colhero__pic, .colhero--photo .colhero__shade { position: absolute; inset: 0; }
+.colhero--photo .colhero__shade { background: linear-gradient(0deg, rgba(12, 12, 13, .82) 0%, rgba(12, 12, 13, .45) 50%, rgba(12, 12, 13, .25) 100%); }
+.colhero--photo .colhero__in { position: relative; align-content: space-between; width: 100%; padding-block: 20px 32px; }
+.colhero--photo :is(.colhero__crumbs, .colhero__count, .colhero__text) { color: rgba(255, 255, 255, .82); }
+.colhero--photo .colhero__crumbs a:hover, .colhero--photo .colhero__title, .colhero--photo .colhero__more { color: var(--white); }
+@media (min-width: 1024px) {
+  .colhero { padding: 28px 0 12px; }
+  .colhero--photo { min-height: 400px; padding: 0; }
+  .colhero--photo .colhero__shade { background: linear-gradient(90deg, rgba(12, 12, 13, .82) 0%, rgba(12, 12, 13, .5) 45%, rgba(12, 12, 13, 0) 80%); }
+  .colhero--photo .colhero__in { padding-block: 28px 48px; }
+  .colhero--photo .colhero__copy { max-width: 600px; }
+}
+/* Round 12 · artwork (a banner with its own text): shown whole, our title row under it */
+.colhero__banner { overflow: hidden; border-radius: 16px; background: var(--cream); }
+.colhero__banner img { height: auto; max-height: 360px; object-fit: cover; object-position: var(--hero-focal-m, 50% 75%); }
+@media (min-width: 768px) { .colhero__banner img { max-height: 400px; object-position: var(--hero-focal, 50% 50%); } }
+.colhero__copy--below { margin-top: 24px; }
 /* the merchant's artwork banner (slideshow) above the hero stays; Impact's own collection banner stays off */
 
 /* filter bar: styled in snippets/facets-vertical (Round 11) */
@@ -1711,6 +1730,14 @@ form.snh-bar-form .snh-drop__pill > span::first-letter { text-transform: upperca
 .shopify-section--main-collection { --background: 255 255 255; }
 form.snh-bar-form.is-condensed :is(.snh-find, .snh-goals, .snh-brands, .snh-nomatch, .snh-recs) { display: none !important; }
 form.snh-bar-form.is-condensed { box-shadow: 0 10px 24px -18px rgba(12, 12, 13, .35); }
+/* Round 12: stuck under the header; phones keep a "Filter & sort" pill row + the active chips on one swipeable line */
+form.snh-bar-form.is-condensed { border-bottom: 1px solid var(--line); }
+@media (max-width: 999px) {
+  form.snh-bar-form.is-condensed .snh-active { flex-wrap: nowrap; overflow-x: auto; padding-block-end: 8px; scrollbar-width: none; }
+  form.snh-bar-form.is-condensed .snh-active::-webkit-scrollbar { display: none; }
+  form.snh-bar-form.is-condensed .snh-active__chips { flex-wrap: nowrap; }
+  form.snh-bar-form.is-condensed .snh-chip, form.snh-bar-form.is-condensed .snh-active__clear { flex: none; white-space: nowrap; }
+}
 .shopify-section--main-collection > .container { padding-inline: 0; }   /* Impact's .container margins already sit on the grid (Round 6 tokens) */
 
 /* cart drawer: assets/snh-cart.css (Round 11) */
@@ -2037,3 +2064,5 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .tel94 { position: relative; display: block; }
 .tel94__cc { position: absolute; left: 1px; top: 1px; bottom: 1px; display: flex; align-items: center; padding: 0 12px 0 16px; border-right: 1px solid rgba(12, 12, 13, .12); border-radius: 12px 0 0 12px; background: var(--cream, #F6F3EE); font: 500 16px/1.5 var(--sans); color: var(--ink); pointer-events: none; }
 .tel94 input { padding-left: 76px !important; }
+.colhero--art .colhero__title { font-size: var(--t-h2); }
+.colhero--photo { margin-bottom: 24px; }

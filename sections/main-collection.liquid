@@ -60,35 +60,80 @@
   }
 </style>
 
-{%- comment -%} R5 · v2 collection hero: crumbs, title, description (clamped, read more), count, banner image when set {%- endcomment -%}
+{%- comment -%}
+  R5 · v2 collection hero. Round 12: a full-width image hero. Image, in order: this template's Hero image (desktop /
+  mobile) → the "Hero images by collection" line for this handle (images from Files, by file name) → the collection
+  image (when "Show the collection image" is on) → a clean text hero. Two looks: Photo (gradient + our breadcrumb,
+  title, count and description over it) or Artwork (a banner with its own text: shown whole, our title row under it).
+{%- endcomment -%}
 {%- liquid
   assign hero_desc = collection.description | strip_html | strip
-  assign hero_img = nil
-  if section.settings.v2_hero_image
-    assign hero_img = collection.image
-  endif
-  # titles stored in capitals read as "Whey protein"
   assign hero_title = collection.title
   assign up = collection.title | upcase
   if up == collection.title
     assign hero_title = collection.title | downcase | capitalize
   endif
+  assign hd = section.settings.hero_desktop
+  assign hm = section.settings.hero_mobile
+  assign art = section.settings.hero_artwork
+  if hd == blank
+    assign lines = section.settings.hero_map | newline_to_br | split: '<br />'
+    for l in lines
+      assign parts = l | split: '|'
+      assign k = parts[0] | strip
+      if k == collection.handle
+        assign f1 = parts[1] | strip
+        assign f2 = parts[2] | strip
+        assign f3 = parts[3] | strip | downcase
+        assign hd = images[f1]
+        if f2 != blank
+          assign hm = images[f2]
+        endif
+        assign art = false
+        if f3 == 'artwork'
+          assign art = true
+        endif
+        break
+      endif
+    endfor
+  endif
+  if hd == blank and section.settings.v2_hero_image and collection.image
+    assign hd = collection.image
+    assign art = false
+  endif
+  if hm == blank
+    assign hm = hd
+  endif
 -%}
-<section class="v2 colhero{% if hero_img != blank %} colhero--img{% endif %}" aria-labelledby="colhero-{{ section.id }}">
-  <div class="v-wrap colhero__in">
-    <div class="colhero__copy">
-      <nav class="colhero__crumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ hero_title | escape }}</span></nav>
-      <h1 class="colhero__title" id="colhero-{{ section.id }}">{{ hero_title | escape }}</h1>
-      {%- if hero_desc != blank -%}
-        <div class="colhero__desc" data-v2="clamp"><div class="colhero__text v-prose">{{ collection.description }}</div>{%- if hero_desc.size > 220 -%}<button type="button" class="colhero__more" aria-expanded="false">Read more</button>{%- endif -%}</div>
-      {%- endif -%}
-      <p class="colhero__count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
-    </div>
-    {%- if hero_img != blank -%}
-      <div class="colhero__media">{{ hero_img | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(max-width: 1023px) 100vw, 40vw', widths: '600,900,1200', alt: hero_img.alt | default: '' }}</div>
-    {%- endif -%}
-  </div>
-</section>
+{%- capture hero_copy -%}
+  <h1 class="colhero__title" id="colhero-{{ section.id }}">{{ hero_title | escape }}</h1>
+  <p class="colhero__count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
+  {%- if hero_desc != blank -%}
+    <div class="colhero__desc" data-v2="clamp"><div class="colhero__text v-prose">{{ collection.description }}</div>{%- if hero_desc.size > 220 -%}<button type="button" class="colhero__more" aria-expanded="false">Read more</button>{%- endif -%}</div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture hero_crumbs -%}<nav class="colhero__crumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><a href="{{ routes.collections_url }}">Shop</a><span aria-hidden="true">/</span><span aria-current="page">{{ hero_title | escape }}</span></nav>{%- endcapture -%}
+{%- capture hero_pic -%}
+  <picture class="colhero__pic">
+    {%- if hm != hd -%}<source media="(max-width: 767px)" srcset="{{ hm | image_url: width: 500 }} 500w, {{ hm | image_url: width: 800 }} 800w, {{ hm | image_url: width: 1100 }} 1100w" sizes="100vw" width="{{ hm.width }}" height="{{ hm.height }}">{%- endif -%}
+    {{ hd | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 1360px) 1280px, 100vw', widths: '600,900,1200,1600,2000,2400', alt: '' }}
+  </picture>
+{%- endcapture -%}
+{%- if hd != blank and art -%}
+  <section class="v2 colhero colhero--art" data-template="{{ template.suffix | default: 'default' }}" aria-labelledby="colhero-{{ section.id }}">
+    <div class="v-wrap">{{ hero_crumbs }}<div class="colhero__banner">{{ hero_pic }}</div><div class="colhero__copy colhero__copy--below">{{ hero_copy }}</div></div>
+  </section>
+{%- elsif hd != blank -%}
+  <section class="v2 colhero colhero--photo" data-template="{{ template.suffix | default: 'default' }}" aria-labelledby="colhero-{{ section.id }}">
+    {{ hero_pic }}
+    <div class="colhero__shade" aria-hidden="true"></div>
+    <div class="v-wrap colhero__in">{{ hero_crumbs }}<div class="colhero__copy">{{ hero_copy }}</div></div>
+  </section>
+{%- else -%}
+  <section class="v2 colhero" data-template="{{ template.suffix | default: 'default' }}" aria-labelledby="colhero-{{ section.id }}">
+    <div class="v-wrap colhero__in">{{ hero_crumbs }}<div class="colhero__copy">{{ hero_copy }}</div></div>
+  </section>
+{%- endif -%}
 
 <div class="container">
   {%- if collection.all_products_count == 0 -%}
@@ -748,9 +793,38 @@
     {
       "type": "checkbox",
       "id": "v2_hero_image",
-      "label": "Show the collection image in the title band",
+      "label": "Use the collection image when there's no hero image",
       "default": false,
-      "info": "Off when the template already has an artwork banner above."
+      "info": "Shown as a photo with the title over it."
+    },
+    {
+      "type": "header",
+      "content": "Hero image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_desktop",
+      "label": "Desktop image",
+      "info": "2400 × 800 px or wider. Shown full width with a dark gradient and the title over it."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_mobile",
+      "label": "Mobile image",
+      "info": "Portrait or 4:5. Empty = the desktop image."
+    },
+    {
+      "type": "checkbox",
+      "id": "hero_artwork",
+      "label": "The image has its own text",
+      "default": false,
+      "info": "On for designed banners (title or logo in the artwork): the banner shows whole and the title sits under it. Off for photos."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_map",
+      "label": "Hero images by collection",
+      "info": "For collections on this template without their own template. One per line: handle | desktop file name | mobile file name | photo or artwork. File names from Content → Files."
     },
     {
       "type": "range",

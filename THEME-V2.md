@@ -633,3 +633,18 @@ off screen. The rating line shows only when *Cart drawer → Rating line* is fil
 - **Phones**: `assets/snh-phone.js` on `input[data-tel94]` (register, edit profile, address forms, plan quiz): a
   fixed +94 prefix, cleaned local number (also the bad "+1 0…" values), saved as +94XXXXXXXXX with
   `address[country]` = Sri Lanka (edit profile gets a hidden country field).
+
+### Phase 4: collection filters + heroes
+- **Sticky filter bar**: it was sticky at `top: 0`, i.e. underneath the sticky SNH header (73px, z-index 40), so
+  it looked like it vanished. Its offset now measures `.hdr` (fallback `--v-hdr`). Condensed state keeps the shadow +
+  hairline; on phones the "Filter & sort" pill row and the active chips (one swipeable line) stay under the header.
+  QA: `prototype/tools/r12-sticky-qa.js` → `shots/r12/p4/sticky.md` (whey-protein, an active brand filter, scrolled
+  to the end of the grid at 390/768/1440; the bar leaves only with the collection section at the footer).
+- **Hero** (`main-collection`): image from the template's *Hero image* (desktop / mobile), else the default
+  template's *Hero images by collection* line (`handle | desktop file | mobile file | photo|artwork`, Files by name),
+  else the collection image (setting), else the text hero. *Photo*: full width, gradient, breadcrumb + count + title +
+  description over it. *Artwork* (banners with their own text, i.e. all of SNH's current ones): breadcrumb, the
+  banner (max 400px desktop / 360px phones, cover-cropped), title row under it. Eager + `fetchpriority=high`.
+  Seeded 62 templates from `main`'s slideshow banners (`prototype/theme_tools/r12_collection_heroes.py`);
+  applied-nutrition (default template) gets the Applied Nutrition banner via the map. `collection.json`'s old RAW
+  campaign banner was not carried. QA: `prototype/tools/r12-hero-shots.js` → `shots/r12/p4/heroes.md`.

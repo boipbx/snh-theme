@@ -346,7 +346,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
      Same bands and behaviour. Phones: the controls row becomes a full-screen "Filter & sort" sheet. */
   .snh-bar-form { --snh-o: var(--v-accent, #E0521C); --snh-ink: var(--ink, #0C0C0D); --snh-line: var(--line, rgba(12, 12, 13, .1)); --snh-ease: var(--ease, cubic-bezier(.22, 1, .36, 1)); font-family: var(--sans); }
   [is="facet-drawer-opener"], [class*="facets-drawer"], [class*="filter-and-sort"], [class*="mobile-filter"], [class*="filters-toggle"], facets-horizontal, .facets-horizontal, .facets-vertical { display: none !important; }
-  .snh-bar-form { position: sticky; top: var(--snh-bar-top, 0px); z-index: 12; background: var(--white, #fff); }
+  .snh-bar-form { position: sticky; top: var(--snh-bar-top, var(--v-hdr, 0px)); z-index: 12; background: var(--white, #fff); }
   .snh-bar { display: grid; margin-block-end: 24px; background: var(--white, #fff); }
   .snh-bar > * { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
   .snh-brands { padding-inline: 0; }
@@ -844,11 +844,13 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
       }
       var host = bar.closest('form') || bar;
       function offset() {
-        var head = document.querySelector('[id*="header" i] .header, header.header, #shopify-section-header, sticky-header, .header-wrapper');
+        // Round 12: the SNH header (.hdr, sticky) first; pinning at 0 hid the bar under it
+        var head = document.querySelector('.hdr, [id*="header" i] .header, header.header, #shopify-section-header, sticky-header, .header-wrapper');
         var h = 0;
         if (head) {
           var pos = getComputedStyle(head).position;
-          if (pos === 'sticky' || pos === 'fixed') h = head.offsetHeight || 0;
+          // the SNH header's sticky wrapper is its section (negative top), so .hdr itself reads "relative"
+          if (pos === 'sticky' || pos === 'fixed' || head.matches('.hdr')) h = head.offsetHeight || 0;
         }
         host.style.setProperty('--snh-bar-top', h + 'px');
       }

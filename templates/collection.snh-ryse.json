@@ -20,7 +20,10 @@
         "show_filters": true,
         "show_filter_group_name": false,
         "show_filter_values_count": true,
-        "open_first_filter_group": false
+        "open_first_filter_group": false,
+        "hero_desktop": "shopify://shop_images/Untitled_1000_x_1500_px_1200_x_1600_px_.zip_-_1.png",
+        "hero_mobile": "shopify://shop_images/Untitled_1000_x_1500_px_1200_x_1600_px_.zip_-_1_6fb1623e-9f7a-4f8e-bde4-3f46542c45bd.png",
+        "hero_artwork": true
       }
     },
     "faq_bygKrK": {
