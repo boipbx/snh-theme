@@ -53,3 +53,25 @@
 .ftr__news .ecf__in { border-color: transparent; }
 /* phones: sit above the product page's sticky add-to-cart bar */
 @media (max-width: 767px) { .template-product .ect, body:has(.sp-sticky) .ect { bottom: calc(88px + env(safe-area-inset-bottom)); } }
+
+/* Round 12: "Spin the shaker" (sections/snh-email-capture, assets/snh-capture.js) */
+.ecm__step[hidden] { display: none; }
+.egame { display: grid; justify-items: center; gap: 16px; }
+.egame__wheel { position: relative; width: min(260px, 70vw); aspect-ratio: 1; }
+.egame__svg { display: block; width: 100%; height: 100%; transition: transform 3.2s cubic-bezier(.17, .67, .12, 1); }
+.egame__svg text { font: 600 16px/1 var(--sans); letter-spacing: -.02em; }
+.egame__hub { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 64px; height: 64px; border: 4px solid var(--ink); border-radius: 50%; background: var(--white); color: var(--v-accent); transform: translate(-50%, -50%); box-shadow: 0 4px 16px rgba(12, 12, 13, .25); }
+.egame__hub svg { width: 28px; height: 28px; }
+.egame__pin { position: absolute; left: 50%; top: -8px; width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 22px solid var(--ink); transform: translateX(-50%); filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .25)); }
+.egame__go { min-width: 220px; justify-content: center; }
+.egame__go:disabled { opacity: .6; cursor: progress; }
+.egame__odds { font: 400 12px/1.5 var(--sans); color: var(--grey-2); text-align: center; }
+.ewin { display: grid; gap: 12px; }
+.ewin__prize { font: 500 16px/1.5 var(--sans); color: var(--grey-1); }
+.ewin__code { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 20px; border: 2px dashed var(--v-accent); border-radius: 16px; background: #FFF4EE; }
+.ewin__code code { flex: 1; font: 600 24px/1.1 var(--sans); letter-spacing: .06em; color: var(--ink); }
+.ewin__apply { justify-content: center; }
+.ewin__note { font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
+.ecm--game .ecm__copy { align-content: start; }
+@media (max-width: 767px) { .egame__wheel { width: min(220px, 60vw); } .ecm--game .ecm__copy { gap: 8px; } }
+@media (prefers-reduced-motion: reduce) { .egame__svg { transition: none; } }

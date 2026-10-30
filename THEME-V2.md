@@ -678,3 +678,29 @@ dashes, no "elevate/unlock/journey/premium").
 suggested #8E9AAB → #4A5566 silver only reaches 2.85:1 with white at its light end, so silver is #646F7F → #3A4350
 (lowest 4.94:1), bronze #9A5A2B → #5A3214 (5.25:1), gold #F2CF72 → #D49E35 with ink text (7.96:1). All text ≥ 4.5:1.
 No gym photo exists in the theme's files; add one in *Step / Perks photo* if you have it.
+
+### Phase 7: welcome popup, gamified (`sections/snh-email-capture`, `assets/snh-capture.js/.css`)
+**Why it "didn't show"**: (1) the Liquid skips every signed-in customer, so the team never sees it while logged in;
+(2) desktop opened only on exit intent (pointer leaving through the top), no timer; (3) phones wait 45s or 60 %
+scroll; (4) the 14-day cap starts when it opens, even if just closed; (5) any footer/inline newsletter submit marks
+the device subscribed; plus cart/checkout/account/password pages. Now: desktop also opens after 25s (setting);
+**`?popup=test`** opens it at once and ignores every rule (`?popup=a` / `?popup=b` force a variant), even on the cart
+page or when signed in (markup is printed there; CSS/JS load only with `?popup=`).
+**Game**: "Spin the shaker" wheel. Chosen over a scratch card: one tap or Enter, no drag gestures fighting page scroll
+on phones, works with a keyboard and a screen reader (result announced), and reduced motion = instant result.
+Prizes: 3 (label, weight 60/30/10, code) in the section settings; **a prize with no code is never drawn; no codes =
+the plain form** (in `?popup=test` they show as TEST-5/7/10). After the win: code, Copy, Apply to my cart
+(`/discount/CODE?redirect=<page>`), saved in localStorage.
+**Variants** 50/50, sticky (`snh_pop_var`): A email → spin → code; B spin → "You won X" → email → code. Events:
+`klaviyo.push(['track','Welcome wheel',{step,variant,prize}])`, `identify` with variant/prize, Clarity
+`set snh_popup_variant` + `event popup_*`.
+**Email**: Klaviyo client subscribe (company `Usyrp8`, the embed's public ID; **List ID setting is empty, fill it**)
+with `custom_source` and profile properties source / variant / prize. Without a list ID the Shopify customer form
+posts normally (tags `welcome-wheel, variant-x, prize-n`; hCaptcha intact) and the game resumes on the way back
+(`?customer_posted=true#form`). One popup per page view (`window.SNHPopups.claim`).
+QA (all POSTs mocked): `prototype/tools/r12-popup-qa.js` → `shots/r12/p7/popup.md`, run against the preview.
+
+**Dev server note (30 Oct 2026)**: 127.0.0.1:9292 started answering `{"error":"unauthorized"}` (its storefront
+session expired) while file sync kept working. QA from here on runs against the preview with
+`REAL_PW=<playwright> PW=prototype/tools/pw-preview.js DEV=https://www.sportsnutritionhub.lk` (every context gets the
+SNH Dev preview cookie; all mutations stay mocked). Restart `shopify theme dev` when convenient.

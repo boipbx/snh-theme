@@ -8,6 +8,18 @@
   on this device, or ?customer_posted). Both are fixed overlays built hidden, so nothing moves the page (no CLS).
   Behaviour: assets/snh-capture.js. Settings: offer copy, images, per-format on/off.
 {%- endcomment -%}
+{%- comment -%}
+  Round 12: the modal is a game. "Spin the shaker" wheel with weighted prizes (each prize = an existing discount code
+  from the settings below; a prize without a code is never drawn; no codes at all = the plain form). Two variants,
+  50/50, sticky per visitor (localStorage snh_pop_var), sent to Klaviyo and Clarity:
+    A "Email first": email → spin → code · B "Play first": spin → win → email to claim → code.
+  The email goes to Klaviyo's client subscribe API (public company ID + list ID) with source, variant and prize; without
+  a list ID it falls back to Shopify's customer form (tags carry the variant and prize; Klaviyo syncs it).
+  After the win: the code, Copy, and Apply to my cart (/discount/CODE?redirect=this page).
+  Suppression: signed-in customers, cart/checkout/account/password pages (Liquid), subscribed on this device, the
+  N-day cap, another popup already shown this page view. ?popup=test ignores every one of them (and ?popup=a / b
+  forces a variant); in that mode the markup is still printed for skipped pages, but CSS/JS load only on ?popup=.
+{%- endcomment -%}
 {%- liquid
   assign s = section.settings
   assign pt = request.page_type
@@ -23,45 +35,75 @@
 {%- unless skip -%}
   {{ 'snh-capture.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'snh-capture.js' | asset_url }}" defer></script>
-  <div data-email-capture data-modal="{{ s.modal_on }}" data-teaser="{% if s.teaser_on and teaser_ok %}true{% else %}false{% endif %}" data-days="{{ s.days }}" data-delay="{{ s.mobile_delay }}" data-scroll="{{ s.mobile_scroll }}">
-    {%- if s.modal_on -%}
-      <dialog class="ecm" data-ecm aria-labelledby="ecm-h-{{ section.id }}">
-        <div class="ecm__in">
-          <button class="ecm__x" type="button" data-ecm-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
-          <div class="ecm__copy">
-            {%- if s.kicker != blank -%}<p class="eyebrow">{{ s.kicker | escape }}</p>{%- endif -%}
-            <h2 class="ecm__h" id="ecm-h-{{ section.id }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
-            {%- if s.text != blank -%}<p class="ecm__p">{{ s.text | escape }}</p>{%- endif -%}
+{%- else -%}
+  <script>if (/[?&]popup=/.test(location.search)) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = {{ 'snh-capture.css' | asset_url | json }}; document.head.appendChild(l); var j = document.createElement('script'); j.src = {{ 'snh-capture.js' | asset_url | json }}; j.defer = true; document.head.appendChild(j); }</script>
+{%- endunless -%}
+<div data-email-capture{% if skip %} data-skip{% endif %} data-modal="{{ s.modal_on }}" data-teaser="{% if s.teaser_on and teaser_ok and skip == false %}true{% else %}false{% endif %}" data-days="{{ s.days }}" data-delay="{{ s.mobile_delay }}" data-desk-delay="{{ s.desktop_delay }}" data-scroll="{{ s.mobile_scroll }}" data-variants="{{ s.variants }}" data-kl-company="{{ s.klaviyo_company | escape }}" data-kl-list="{{ s.klaviyo_list | escape }}" data-tags="{{ s.tags | escape }}">
+  {%- if s.modal_on -%}
+    <dialog class="ecm{% if s.game_on %} ecm--game{% endif %}" data-ecm aria-labelledby="ecm-h-{{ section.id }}">
+      <div class="ecm__in">
+        <button class="ecm__x" type="button" data-ecm-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
+        <div class="ecm__copy">
+          {%- if s.kicker != blank -%}<p class="eyebrow">{{ s.kicker | escape }}</p>{%- endif -%}
+          <h2 class="ecm__h" id="ecm-h-{{ section.id }}" data-ecm-h data-h-a="{{ s.heading_a | escape }}" data-h-b="{{ s.heading_b | escape }}" data-h-claim="{{ s.heading_claim | escape }}" data-h-win="{{ s.heading_win | escape }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
+          <p class="ecm__p" data-ecm-p data-p-a="{{ s.text_a | escape }}" data-p-b="{{ s.text_b | escape }}" data-p-claim="{{ s.text_claim | escape }}">{{ s.text | escape }}</p>
+          <div class="ecm__step" data-step="email">
             {%- assign mfid = 'ecm-form-' | append: section.id -%}
             {%- render 'snh-email-form', id: mfid, tags: s.tags, button: s.button, success: s.success, code: s.code -%}
-            {%- if s.fine != blank -%}<p class="ecm__fine">{{ s.fine | escape }}</p>{%- endif -%}
           </div>
-          <div class="ecm__media" aria-hidden="true">
-            {%- if s.image != blank -%}{{ s.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '500,700,900', sizes: '(max-width: 767px) 0px, 420px', alt: '', class: 'ecm__img' }}{%- endif -%}
-            {%- if s.video != blank -%}<template data-ecm-video>{{ s.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', class: 'ecm__vid' }}</template>{%- endif -%}
-            {%- if s.caption != blank -%}<p class="ecm__cap">{{ s.caption | escape }}</p>{%- endif -%}
-          </div>
+          {%- if s.game_on -%}
+            <div class="ecm__step egame" data-step="game" hidden>
+              <div class="egame__wheel" data-wheel aria-hidden="true">
+                <svg class="egame__svg" viewBox="-110 -110 220 220" data-wheel-svg></svg>
+                <span class="egame__hub"><svg viewBox="0 0 24 24" fill="none"><path d="M7 7h10l-1.2 13a1 1 0 0 1-1 .9H9.2a1 1 0 0 1-1-.9L7 7Z" stroke="currentColor" stroke-width="1.6"/><path d="M6 4.5h12V7H6z" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 11h7" stroke="currentColor" stroke-width="1.6"/></svg></span>
+                <span class="egame__pin"></span>
+              </div>
+              <button class="v-btn v-btn--accent egame__go" type="button" data-spin><span>{{ s.spin_label | escape }}</span></button>
+              <p class="egame__odds" data-odds></p>
+            </div>
+            <div class="ecm__step ewin" data-step="win" hidden>
+              <p class="ewin__prize" data-win-prize></p>
+              <div class="ewin__code"><code data-win-code></code><button type="button" class="v-btn v-btn--line v-btn--sm" data-copy><span>Copy</span></button></div>
+              <a class="v-btn v-btn--accent ewin__apply" href="#" data-apply><span>Apply to my cart</span></a>
+              <p class="ewin__note" data-win-note>Saved to this browser. One use per customer.</p>
+            </div>
+            <p class="ecm__live v-sr" aria-live="polite" data-live></p>
+          {%- endif -%}
+          {%- if s.fine != blank -%}<p class="ecm__fine">{{ s.fine | escape }}</p>{%- endif -%}
         </div>
-      </dialog>
-    {%- endif -%}
-    {%- if s.teaser_on and teaser_ok -%}
-      <aside class="ect" data-ect hidden aria-labelledby="ect-h-{{ section.id }}">
-        <button class="ect__x" type="button" data-ect-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
-        <p class="ect__h" id="ect-h-{{ section.id }}">{{ s.teaser_heading | escape }}</p>
-        {%- if s.teaser_text != blank -%}<p class="ect__p">{{ s.teaser_text | escape }}</p>{%- endif -%}
-        {%- assign tfid = 'ect-form-' | append: section.id -%}
-        {%- render 'snh-email-form', id: tfid, tags: s.teaser_tags, button: 'Get it', success: s.success, code: s.code -%}
-      </aside>
-    {%- endif -%}
-  </div>
-{%- endunless -%}
+        <div class="ecm__media" aria-hidden="true">
+          {%- if s.image != blank -%}{{ s.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '500,700,900', sizes: '(max-width: 767px) 0px, 420px', alt: '', class: 'ecm__img' }}{%- endif -%}
+          {%- if s.video != blank -%}<template data-ecm-video>{{ s.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', class: 'ecm__vid' }}</template>{%- endif -%}
+          {%- if s.caption != blank -%}<p class="ecm__cap">{{ s.caption | escape }}</p>{%- endif -%}
+        </div>
+      </div>
+      {%- if s.game_on -%}
+        <script type="application/json" data-prizes>[
+          {%- for i in (1..3) -%}
+            {%- assign lk = 'prize_' | append: i | append: '_label' -%}{%- assign wk = 'prize_' | append: i | append: '_weight' -%}{%- assign ck = 'prize_' | append: i | append: '_code' -%}
+            {"label": {{ s[lk] | json }}, "weight": {{ s[wk] | default: 0 }}, "code": {{ s[ck] | strip | json }}}{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]</script>
+      {%- endif -%}
+    </dialog>
+  {%- endif -%}
+  {%- if s.teaser_on and teaser_ok and skip == false -%}
+    <aside class="ect" data-ect hidden aria-labelledby="ect-h-{{ section.id }}">
+      <button class="ect__x" type="button" data-ect-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
+      <p class="ect__h" id="ect-h-{{ section.id }}">{{ s.teaser_heading | escape }}</p>
+      {%- if s.teaser_text != blank -%}<p class="ect__p">{{ s.teaser_text | escape }}</p>{%- endif -%}
+      {%- assign tfid = 'ect-form-' | append: section.id -%}
+      {%- render 'snh-email-form', id: tfid, tags: s.teaser_tags, button: 'Get it', success: s.success, code: s.code -%}
+    </aside>
+  {%- endif -%}
+</div>
 
 {% schema %}
 {
   "name": "SNH email capture",
   "class": "snh-sec",
   "settings": [
-    { "type": "paragraph", "content": "Never shown on cart, checkout, account or password pages, to signed-in customers, or to anyone who has subscribed on this device." },
+    { "type": "paragraph", "content": "Never shown on cart, checkout, account or password pages, to signed-in customers, or to anyone who has subscribed on this device. Add ?popup=test to any URL to preview it anyway." },
     { "type": "header", "content": "Offer" },
     { "type": "text", "id": "kicker", "label": "Eyebrow", "default": "Welcome to SNH" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Get *10% off* your first order" },
@@ -77,8 +119,33 @@
     { "type": "video", "id": "video", "label": "Video (optional)", "info": "Loaded only when the modal opens." },
     { "type": "text", "id": "caption", "label": "Image caption", "default": "Fuelling athletes." },
     { "type": "range", "id": "days", "label": "Show again after", "min": 1, "max": 60, "step": 1, "unit": "d", "default": 14 },
+    { "type": "range", "id": "desktop_delay", "label": "Desktop: also after", "min": 5, "max": 120, "step": 5, "unit": "s", "default": 25, "info": "Exit intent opens it sooner." },
     { "type": "range", "id": "mobile_delay", "label": "Phones: after", "min": 10, "max": 120, "step": 5, "unit": "s", "default": 45 },
     { "type": "range", "id": "mobile_scroll", "label": "Phones: or after scrolling", "min": 20, "max": 90, "step": 5, "unit": "%", "default": 60 },
+    { "type": "header", "content": "Spin the shaker (the modal's game)" },
+    { "type": "checkbox", "id": "game_on", "label": "Turn the modal into the wheel game", "default": true, "info": "Needs at least one prize with a code. Preview with ?popup=test (ignores every rule), ?popup=a or ?popup=b." },
+    { "type": "select", "id": "variants", "label": "Variants", "default": "ab", "options": [ { "value": "ab", "label": "A/B test, 50/50" }, { "value": "a", "label": "A only: email first" }, { "value": "b", "label": "B only: play first" } ] },
+    { "type": "text", "id": "spin_label", "label": "Spin button", "default": "Spin the shaker" },
+    { "type": "text", "id": "heading_a", "label": "Heading, A (email first)", "default": "Spin for up to *10% off*" },
+    { "type": "text", "id": "text_a", "label": "Text, A", "default": "Pop your email in, then spin. Every spin wins a code for your first order." },
+    { "type": "text", "id": "heading_b", "label": "Heading, B (play first)", "default": "Spin the *shaker*" },
+    { "type": "text", "id": "text_b", "label": "Text, B", "default": "One spin, every spin wins. Up to 10% off your first order." },
+    { "type": "text", "id": "heading_claim", "label": "Heading, B after the spin", "default": "You won *[prize]*" },
+    { "type": "text", "id": "text_claim", "label": "Text, B after the spin", "default": "Where should we send it? Enter your email to claim the code." },
+    { "type": "text", "id": "heading_win", "label": "Heading, the code", "default": "*[prize]* is yours" },
+    { "type": "paragraph", "content": "Prizes: use codes that already exist in Discounts. A prize with no code is never drawn. Weights are relative (60 / 30 / 10 = 60 %, 30 %, 10 %)." },
+    { "type": "text", "id": "prize_1_label", "label": "Prize 1", "default": "5% off" },
+    { "type": "number", "id": "prize_1_weight", "label": "Prize 1 weight", "default": 60 },
+    { "type": "text", "id": "prize_1_code", "label": "Prize 1 code" },
+    { "type": "text", "id": "prize_2_label", "label": "Prize 2", "default": "7% off" },
+    { "type": "number", "id": "prize_2_weight", "label": "Prize 2 weight", "default": 30 },
+    { "type": "text", "id": "prize_2_code", "label": "Prize 2 code" },
+    { "type": "text", "id": "prize_3_label", "label": "Prize 3", "default": "10% off" },
+    { "type": "number", "id": "prize_3_weight", "label": "Prize 3 weight", "default": 10 },
+    { "type": "text", "id": "prize_3_code", "label": "Prize 3 code" },
+    { "type": "header", "content": "Klaviyo" },
+    { "type": "text", "id": "klaviyo_company", "label": "Public company ID (site ID)", "default": "Usyrp8", "info": "The one Klaviyo's app embed loads. Public, not the private API key." },
+    { "type": "text", "id": "klaviyo_list", "label": "List ID", "info": "Klaviyo → Lists → your welcome list → the ID in its settings. Empty = Shopify's customer form (tags carry variant + prize; Klaviyo picks it up through its Shopify sync)." },
     { "type": "header", "content": "Slide-in (product and blog pages)" },
     { "type": "checkbox", "id": "teaser_on", "label": "Show the slide-in", "default": true, "info": "Bottom-left after half the page; dismissing it is remembered." },
     { "type": "text", "id": "teaser_heading", "label": "Heading", "default": "10% off your first order" },
