@@ -18,7 +18,7 @@
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant
-  assign img_sizes = sizes | default: '(max-width: 767px) 50vw, (max-width: 1199px) 33vw, 25vw'
+  assign img_sizes = sizes | default: '(max-width: 767px) 60vw, (max-width: 1199px) 33vw, 25vw'
   assign title_full = product.title | escape
   # Choose (quick buy) only when there is a real choice; a single named variant adds in one tap
   assign multi = false

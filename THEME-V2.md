@@ -569,3 +569,23 @@ Never on cart / checkout / account / password pages, never for signed-in custome
 device. Settings: offer copy, code, image, video, timings, per-format on/off. Fixed overlays only (no layout shift).
 QA: `prototype/tools/r11-capture-qa.js` → `prototype/shots/r11/p8/capture-qa.md` (exit intent, 14-day cap, 15 days
 later, known subscriber, cart exclusion, phone scroll trigger, slide-in + remembered dismissal; nothing submitted).
+
+### Phase 9: conversion clarity pass (`prototype/tools/r11-clarity.js` → `prototype/shots/r11/p9/clarity-*.md`)
+Checked home, a collection, search, three products and the cart (drawer + page in phases 6–7) at 390 and 1440.
+Lighthouse isn't installed here, so performance was measured the Lighthouse way in Chrome itself (412×823, 4× CPU,
+slow 4G: LCP, CLS, blocking time, bytes).
+
+| Found | Fixed |
+|---|---|
+| hCaptcha (~320 KB) loaded on every page because the new newsletter forms were bound at page load | capture forms bind on focus (Shopify's default); load-time binding stays only on the hidden account forms |
+| SiS video poster (~140 KB) downloaded on every homepage view | poster set only when the section is within 800px |
+| Product cards in rails asked for 50vw images but render wider on phones (soft) | card `sizes` 60vw on phones |
+| Instagram tiles asked for 16vw images but render at a third of the row | `sizes` 33vw, 800px source |
+| Product pages: the buy button sits 1,050–1,600px down, the sticky bar only appeared after scrolling past it | the sticky add-to-cart bar shows whenever the main button is off screen (above **or below**), at every width |
+| Payment info (Koko / COD / card), delivery info, Koko on every card, per-serving where servings are known | already present everywhere ✓ |
+
+Result (homepage, mobile, throttled): blocking time 1,513 → 556 ms, transfer 4.6 → 4.1 MB; product page blocking
+time 1,378 → 284 ms. CLS ≤ 0.016. **Still slow on slow 4G** (homepage LCP ≈ 22s, product ≈ 10s): the page is ~4 MB,
+mostly Impact's `theme.css`/`theme.js` (~450 KB), app scripts (Hextom, Appstle, Shopify's own trekkie / perf-kit,
+~400 KB) and 17 homepage sections' images. Next steps for you: drop apps you don't use, and fewer homepage sections.
+Open: `running.jpg` (homepage) is only 1,200px wide at the source; upload a 2,400px version for sharp desktops.

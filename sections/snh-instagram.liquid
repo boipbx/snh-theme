@@ -39,7 +39,7 @@
           <li class="igr__item" {{ b.shopify_attributes }}>
             <a class="igr__tile" href="{{ b.settings.link | default: profile }}" target="_blank" rel="noopener" aria-label="{{ b.settings.alt | default: 'Instagram post' | escape }} (opens Instagram)">
               {%- if b.settings.image != blank -%}
-                {{ b.settings.image | image_url: width: 600, height: 600, crop: 'center' | image_tag: width: 600, height: 600, loading: 'lazy', alt: b.settings.alt, sizes: '(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 16vw', widths: '300,450,600' }}
+                {{ b.settings.image | image_url: width: 800, height: 800, crop: 'center' | image_tag: width: 600, height: 600, loading: 'lazy', alt: b.settings.alt, sizes: '(max-width: 767px) 50vw, 33vw', widths: '300,450,600,800' }}
               {%- else -%}
                 {{ 'image' | placeholder_svg_tag: 'igr__ph' }}
               {%- endif -%}

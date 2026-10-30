@@ -66,7 +66,7 @@
               endif
             -%}
             <div class="hero__slide hero__slide--overlay hero__slide--video{{ on }}" {{ attrs }}>
-              <video class="sisv" muted autoplay loop playsinline preload="metadata"{% if poster != blank %} poster="{{ poster }}"{% endif %}{% if poster_m != blank %} data-poster-m="{{ poster_m }}"{% endif %} aria-hidden="true">{%- if vsrc != blank -%}<source src="{{ vsrc }}" type="video/mp4">{%- endif -%}</video>
+              <video class="sisv" muted autoplay loop playsinline preload="metadata"{% if poster != blank %} data-poster="{{ poster }}"{% endif %}{% if poster_m != blank %} data-poster-m="{{ poster_m }}"{% endif %} aria-hidden="true">{%- if vsrc != blank -%}<source src="{{ vsrc }}" type="video/mp4">{%- endif -%}</video>
               <div class="hero__shade"></div>
               <div class="hero__copy v-wrap">
                 {{ trust }}

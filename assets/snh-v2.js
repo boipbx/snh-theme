@@ -613,9 +613,14 @@
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) { hold.off = en[0].intersectionRatio < 0.3; sync(); }, { threshold: [0, 0.3, 0.6, 1] }).observe(hero);
     }
+    // posters are set only when the section is near (Round 11: the SiS poster was ~140 KB on every page load)
+    var posterIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (!e.isIntersecting) return; $$('video[data-poster]', hero).forEach(function (v) { var m = v.getAttribute('data-poster-m'); v.poster = m && window.matchMedia('(max-width: 767px)').matches ? m : v.getAttribute('data-poster'); }); posterIO.disconnect(); });
+    }, { rootMargin: '800px 0px' }) : null;
+    if (posterIO) posterIO.observe(hero); else $$('video[data-poster]', hero).forEach(function (v) { v.poster = v.getAttribute('data-poster'); });
     // reduced motion: the poster only (cancel the autoplay attribute and drop any started playback)
     if (reduce) $$('video', hero).forEach(function (v) { v.autoplay = false; v.removeAttribute('autoplay'); v.pause(); v.preload = 'none'; try { v.load(); } catch (e) {} });
-    $$('video[data-poster-m]', hero).forEach(function (v) { if (window.matchMedia('(max-width: 767px)').matches && v.getAttribute('data-poster-m')) v.poster = v.getAttribute('data-poster-m'); });
+    
     hero.addEventListener('keydown', function (e) {
       if (e.target.closest('input, textarea')) return;
       if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1); }

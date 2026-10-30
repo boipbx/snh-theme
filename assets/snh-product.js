@@ -178,7 +178,9 @@
       var ticking = false, last;
       var sync = function () {
         ticking = false;
-        var on = main.getBoundingClientRect().bottom < 0 && !(foot && foot.getBoundingClientRect().top < window.innerHeight);
+        // Round 11: also while the main button is still below the first screen, so a buy button is always in view
+        var r = main.getBoundingClientRect();
+        var on = (r.bottom < 0 || r.top > window.innerHeight) && !(foot && foot.getBoundingClientRect().top < window.innerHeight);
         if (on === last) return;
         last = on;
         sticky.classList.toggle('is-on', on);
