@@ -58,7 +58,8 @@
         a.innerHTML = (c.tag ? '<b>' + esc(c.tag) + '</b>' : '') + esc(c.message || c.heading || c.name) + (c.code ? ' · <span class="announce__code">' + esc(c.code) + '</span>' : '') + '<span aria-hidden="true">→</span>';
         if ((c.priority || 0) > 0) wrap.insertBefore(a, wrap.firstChild); else wrap.appendChild(a);
       });
-      // show the first live item and take its colour here, whatever order the header script ran in
+      // show the first live item and take its colour here (the bar keeps it while the items rotate), whatever order
+      // the header script ran in
       var shown = [].filter.call(wrap.querySelectorAll('.announce__item'), function (x) { return !x.hidden; });
       box.hidden = !shown.length;
       [].forEach.call(wrap.querySelectorAll('.announce__item'), function (x) { var on0 = x === shown[0]; x.classList.toggle('is-on', on0); if (on0) x.removeAttribute('tabindex'); else x.tabIndex = -1; });

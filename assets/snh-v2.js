@@ -248,7 +248,9 @@
     window.addEventListener('scroll', solid, { passive: true });
 
     /* announcement slot: rotate, pause on hover. Round 12: the items are re-read every tick (assets/snh-campaigns.js
-       hides out-of-schedule ones and adds campaign items); the bar takes the shown item's colour (data-tone) */
+       hides out-of-schedule ones and adds campaign items). The bar keeps the colour of the top live item (a campaign when
+       one is live) for the whole rotation, and the timer restarts on each sync, so the campaign gets a full slot even on
+       pages where the header script ran seconds before the campaigns (home, product) */
     var box = wrap.querySelector('.announce');
     if (box) {
       var hold = false, every = Number(box.getAttribute('data-interval') || 4) * 1000;
@@ -257,15 +259,21 @@
       box.addEventListener('mouseleave', function () { hold = false; });
       box.addEventListener('focusin', function () { hold = true; });
       box.addEventListener('focusout', function () { hold = false; });
-      var showAnn = function (it) { $$('.announce__item', box).forEach(function (x) { var on = x === it; x.classList.toggle('is-on', on); if (on) x.removeAttribute('tabindex'); else x.setAttribute('tabindex', '-1'); }); if (it) box.setAttribute('data-tone', it.getAttribute('data-tone') || 'orange'); };
-      var syncAnn = function () { var l = live(); box.hidden = !l.length; showAnn(l[0]); };   // highest-priority live item first
-      document.addEventListener('snh:announce', syncAnn);
-      if (document.documentElement.hasAttribute('data-campaigns-live')) syncAnn();   // campaigns ran before this
-      if (!reduce) setInterval(function () {
+      var showAnn = function (it) { $$('.announce__item', box).forEach(function (x) { var on = x === it; x.classList.toggle('is-on', on); if (on) x.removeAttribute('tabindex'); else x.setAttribute('tabindex', '-1'); }); };
+      var timer = null;
+      var tick = function () {
         var l = live(); if (hold || document.hidden || l.length < 2) return;
         var i = l.indexOf(l.filter(function (x) { return x.classList.contains('is-on'); })[0]);
         showAnn(l[(i + 1) % l.length]);
-      }, every);
+      };
+      var syncAnn = function () {   // highest-priority live item first; its colour is the bar's
+        var l = live(); box.hidden = !l.length; showAnn(l[0]);
+        if (l[0]) box.setAttribute('data-tone', l[0].getAttribute('data-tone') || 'orange');
+        if (timer) clearInterval(timer);
+        if (!reduce) timer = setInterval(tick, every);
+      };
+      document.addEventListener('snh:announce', syncAnn);
+      syncAnn();
     }
 
     /* ---- mega menu: 150ms hover intent, Esc, arrows, focus trap ---- */

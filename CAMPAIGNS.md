@@ -5,7 +5,7 @@ One campaign layer drives four placements. Each campaign switches itself **on at
 
 | Type | Where it shows | Notes |
 |---|---|---|
-| **Announcement bar** | The orange bar above the header, rotating with the other messages | Its own colour (orange / black / cream / green), tag, link, optional code shown after the text |
+| **Announcement bar** | The orange bar above the header, rotating with the other messages | Colour (orange / black / cream / green): the bar takes the colour of the top live item (highest-priority campaign, else the first live header block) and keeps it while the messages rotate. Tag, link, optional code shown after the text |
 | **Promo popup** | A centred card (bottom sheet on phones) after a few seconds | Frequency: once per visitor / once a day / once per visit / every page view. Never on the same page view as the welcome (email) popup |
 | **Homepage banner** | Under the homepage hero | Top-priority live one only |
 | **Cart banner** | Top of the cart drawer and the cart page | Top-priority live one only |
