@@ -1,0 +1,122 @@
+{%- comment -%}
+  SNH shop by brand (Round 12, templates/page.shop-by-brand.json; replaces sections/Shobybrand, kept in the repo).
+  Featured brand tiles (Brand blocks: collection + logo; the 16 the old page had) and an A–Z directory of every brand
+  the store sells (shop.vendors), each linking to its brand collection when one exists (handle = the vendor name,
+  handleized), else to the vendor's products. Letter jumps + a filter box (assets inline, ~1 KB).
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign letters = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,#' | split: ','
+  assign vendors = shop.vendors | sort_natural
+-%}
+<div class="v2 brp">
+  <section class="v-section brp__hero" aria-labelledby="brp-h-{{ section.id }}">
+    <div class="v-wrap">
+      <nav class="colhero__crumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ s.title | escape }}</span></nav>
+      <h1 class="brp__h" id="brp-h-{{ section.id }}">{{ s.title | escape }}</h1>
+      <p class="brp__lead">{{ s.lead | escape }} <b>{{ vendors.size }} brands</b>.</p>
+      {%- if section.blocks.size > 0 -%}
+        <ul class="brp__feat" role="list">
+          {%- for b in section.blocks -%}
+            {%- assign c = b.settings.collection -%}
+            {%- if c == blank or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+            <li {{ b.shopify_attributes }}><a class="brp__tile" href="{{ c.url | default: '#' }}">
+              <span class="brp__logo">{%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,400', sizes: '200px', alt: b.settings.name | default: c.title }}{%- else -%}<b>{{ b.settings.name | default: c.title | escape }}</b>{%- endif -%}</span>
+              <span class="brp__meta"><b>{{ b.settings.name | default: c.title | escape }}</b><span>{{ c.products_count }} products</span></span>
+            </a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </section>
+  <section class="v-section v-section--cream" aria-labelledby="brp-az-{{ section.id }}" data-brp>
+    <div class="v-wrap brp__az">
+      <div class="brp__az-head">
+        <h2 class="brp__h2" id="brp-az-{{ section.id }}">All brands, A–Z</h2>
+        <label class="brp__find"><span class="v-sr">Find a brand</span>{% render 'snh-v2-icon', name: 'search' %}<input type="search" placeholder="Find a brand" data-brp-find autocomplete="off"></label>
+      </div>
+      <nav class="brp__letters" aria-label="Jump to letter">
+        {%- for l in letters -%}
+          {%- assign has = false -%}
+          {%- for v in vendors -%}{%- assign f = v | slice: 0 | upcase -%}{%- if f == l or l == '#' and '0123456789' contains f -%}{%- assign has = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+          {%- if has -%}<a href="#brp-{{ section.id }}-{{ forloop.index }}">{{ l }}</a>{%- else -%}<span aria-hidden="true">{{ l }}</span>{%- endif -%}
+        {%- endfor -%}
+      </nav>
+      <div class="brp__groups">
+        {%- for l in letters -%}
+          {%- capture items -%}{%- for v in vendors -%}{%- assign f = v | slice: 0 | upcase -%}{%- if f == l or l == '#' and '0123456789' contains f -%}{%- assign h = v | handleize -%}{%- assign bc = collections[h] -%}{%- assign bn = bc.products_count | default: 0 | plus: 0 -%}<li data-name="{{ v | downcase | escape }}"><a href="{% if bn > 0 %}{{ bc.url }}{% else %}{{ v | url_for_vendor }}{% endif %}">{{ v | escape }}{%- if bn > 0 -%}<span>{{ bn }}</span>{%- endif -%}</a></li>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+          {%- if items != blank -%}<div class="brp__group" id="brp-{{ section.id }}-{{ forloop.index }}"><h3>{{ l }}</h3><ul role="list">{{ items }}</ul></div>{%- endif -%}
+        {%- endfor -%}
+      </div>
+      <p class="brp__none" data-brp-none hidden>No brand matches that. <a href="{{ routes.search_url }}">Search all products</a></p>
+    </div>
+  </section>
+</div>
+<style>
+  .brp__h { margin-top: 12px; font: 600 var(--t-h1)/1.1 var(--sans); letter-spacing: -.02em; }
+  .brp__lead { margin-top: 12px; max-width: 640px; font: 400 16px/1.5 var(--sans); color: var(--grey-1); }
+  .brp__feat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 32px 0 0; padding: 0; list-style: none; }
+  @media (min-width: 768px) { .brp__feat { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; } }
+  @media (min-width: 1024px) { .brp__feat { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+  .brp__tile { display: grid; gap: 8px; height: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 16px; transition: border-color var(--t) var(--ease), transform var(--t) var(--ease); }
+  .brp__tile:hover { border-color: var(--ink); transform: translateY(-2px); }
+  .brp__logo { display: grid; place-items: center; aspect-ratio: 3 / 2; border-radius: 12px; background: var(--cream); overflow: hidden; }
+  .brp__logo img { width: 80%; height: 70%; object-fit: contain; mix-blend-mode: multiply; }
+  .brp__logo b { font: 600 16px/1.1 var(--sans); text-align: center; padding: 8px; }
+  .brp__meta { display: grid; font: 400 13px/1.5 var(--sans); color: var(--grey-2); }
+  .brp__meta b { font: 600 14px/1.5 var(--sans); color: var(--ink); }
+  .brp__az { display: grid; gap: 24px; }
+  .brp__az-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  .brp__h2 { font: 600 var(--t-h2)/1.1 var(--sans); letter-spacing: -.02em; }
+  .brp__find { position: relative; display: block; width: min(320px, 100%); }
+  .brp .brp__find svg { z-index: 1; pointer-events: none; }
+  .brp__find svg { position: absolute; left: 16px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--grey-2); }
+  .brp .brp__find input { width: 100%; height: 48px; padding: 0 16px 0 44px; border: 1px solid rgba(12, 12, 13, .2); border-radius: var(--pill); background: var(--white); font: 400 16px/1.5 var(--sans); }
+  .brp__letters { position: sticky; top: var(--v-hdr, 64px); z-index: 5; display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 0; background: var(--cream); }
+  .brp__letters a, .brp__letters span { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; font: 600 13px/1 var(--sans); }
+  .brp__letters a:hover { background: var(--ink); color: var(--white); }
+  .brp__letters span { color: var(--grey-3); }
+  .brp__groups { display: grid; gap: 24px; }
+  @media (min-width: 768px) { .brp__groups { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .brp__groups { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; } }
+  .brp__group { scroll-margin-top: calc(var(--v-hdr, 64px) + 64px); }
+  .brp__group h3 { padding-bottom: 8px; border-bottom: 1px solid var(--line); font: 600 var(--t-h4)/1.1 var(--sans); color: var(--v-accent); }
+  .brp__group ul { display: grid; margin: 8px 0 0; padding: 0; list-style: none; }
+  .brp__group a { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; font: 500 15px/1.5 var(--sans); }
+  .brp__group a:hover { color: var(--v-accent); }
+  .brp__group a span { font: 400 13px/1.5 var(--sans); color: var(--grey-2); }
+  .brp__none { font: 400 15px/1.5 var(--sans); }
+  .brp__none a { text-decoration: underline; text-underline-offset: 4px; }
+</style>
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling.previousElementSibling.querySelector('[data-brp]');
+    if (!root) return;
+    var input = root.querySelector('[data-brp-find]'), none = root.querySelector('[data-brp-none]');
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase(), any = false;
+      root.querySelectorAll('.brp__group').forEach(function (g) {
+        var hit = 0;
+        g.querySelectorAll('li').forEach(function (li) { var on = !q || li.getAttribute('data-name').indexOf(q) > -1; li.hidden = !on; if (on) hit++; });
+        g.hidden = !hit; if (hit) any = true;
+      });
+      none.hidden = any;
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SNH shop by brand",
+  "class": "snh-sec snh-sec--brands",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Shop by brand" },
+    { "type": "text", "id": "lead", "label": "Lead", "default": "Every brand we stock, from the ones we distribute ourselves to the specialists." }
+  ],
+  "blocks": [
+    { "type": "brand", "name": "Featured brand", "settings": [ { "type": "collection", "id": "collection", "label": "Brand collection" }, { "type": "text", "id": "name", "label": "Name", "info": "Empty = the collection title." }, { "type": "image_picker", "id": "image", "label": "Logo" } ] }
+  ],
+  "presets": [{ "name": "SNH shop by brand" }]
+}
+{% endschema %}
+

@@ -9,8 +9,12 @@
  */
 {
   "sections": {
-    "shobybrand_BVir7M": {
-      "type": "Shobybrand",
+    "main": {
+      "type": "snh-brands-page",
+      "settings": {
+        "title": "Shop by brand",
+        "lead": "Every brand we stock, from the ones we distribute ourselves to the specialists."
+      },
       "blocks": {
         "brand_rU8iUW": {
           "type": "brand",
@@ -158,16 +162,11 @@
         "brand_HNyEFE",
         "brand_Y6bdrj",
         "brand_dejwC3"
-      ],
-      "name": "Shop by brand",
-      "settings": {
-        "title": "Shop by brand",
-        "blog": "news",
-        "journal_after": 4
-      }
+      ]
     }
   },
   "order": [
-    "shobybrand_BVir7M"
+    "main"
   ]
 }
+

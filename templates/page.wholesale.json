@@ -9,20 +9,215 @@
  */
 {
   "sections": {
-    "wholesale_wAiVNP": {
-      "type": "wholesale",
-      "name": "SNH Wholesale Hub",
+    "main": {
+      "type": "snh-partner",
       "settings": {
-        "kicker": "",
-        "heading": "Stock the strongest shelf.",
-        "subheading": "Buy directly from the official distributor of 12+ global sports nutrition brands. Genuine, batch-coded stock at real trade margins — supplied island-wide to gyms, pharmacies, retailers and online sellers.",
-        "accent": "#e0521c",
-        "whatsapp": "94764863359",
+        "form_type": "wholesale",
+        "eyebrow": "Wholesale",
+        "heading": "Stock the *brands* your customers ask for",
+        "lead": "Buy direct from the official distributor of 12+ sports nutrition brands. Genuine stock at trade prices, for gyms, pharmacies, retailers and online sellers.",
+        "cta": "Request trade prices",
+        "image_1": "shopify://shop_images/instore.webp",
+        "image_2": "shopify://shop_images/khizerinsid.webp",
+        "cards_heading": "Why buy direct",
+        "photos_heading": "",
+        "tiles_heading": "What you can stock",
+        "steps_heading": "How ordering works",
+        "form_heading": "Request wholesale access",
+        "form_text": "Approved accounts get the full price sheet. We reply within 2 working days.",
+        "submit": "Send enquiry",
         "email": "info@sportsnutritionhub.lk"
-      }
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "12+",
+            "label": "Brands we distribute"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "300+",
+            "label": "Products ready to ship"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "48h",
+            "label": "Dispatch island-wide"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "value": "1",
+            "label": "Account manager for you"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "title": "Trade pricing",
+            "text": "Tiered wholesale prices with room for your retail margin."
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "title": "100% genuine",
+            "text": "Batch-coded, date-checked stock from the official distributor."
+          }
+        },
+        "card_7": {
+          "type": "card",
+          "settings": {
+            "title": "Fast restocks",
+            "text": "Dispatched from Colombo within 48 hours, anywhere in Sri Lanka."
+          }
+        },
+        "card_8": {
+          "type": "card",
+          "settings": {
+            "title": "One person to call",
+            "text": "Your account manager handles orders, advice and new launches."
+          }
+        },
+        "tile_9": {
+          "type": "tile",
+          "settings": {
+            "collection": "whey-protein",
+            "title": "Protein",
+            "note": "MOQ 6 units"
+          }
+        },
+        "tile_10": {
+          "type": "tile",
+          "settings": {
+            "collection": "creatine",
+            "title": "Creatine",
+            "note": "MOQ 6 units"
+          }
+        },
+        "tile_11": {
+          "type": "tile",
+          "settings": {
+            "collection": "pre-workout",
+            "title": "Pre-workout",
+            "note": "MOQ 6 units"
+          }
+        },
+        "tile_12": {
+          "type": "tile",
+          "settings": {
+            "collection": "hydration-recovery",
+            "title": "Hydration and recovery",
+            "note": "MOQ 12 units"
+          }
+        },
+        "tile_13": {
+          "type": "tile",
+          "settings": {
+            "collection": "vitamins-minerals",
+            "title": "Vitamins and minerals",
+            "note": "MOQ 12 units"
+          }
+        },
+        "tile_14": {
+          "type": "tile",
+          "settings": {
+            "collection": "sis",
+            "title": "Science in Sport",
+            "note": "MOQ 12 units"
+          }
+        },
+        "photo_15": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/instore.webp",
+            "caption": "Stock on the shelf"
+          }
+        },
+        "photo_16": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/khizerinsid.webp",
+            "caption": ""
+          }
+        },
+        "photo_17": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/glfg.webp",
+            "caption": ""
+          }
+        },
+        "photo_18": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snh_dehiwala.webp",
+            "caption": "Dehiwala"
+          }
+        },
+        "step_19": {
+          "type": "step",
+          "settings": {
+            "title": "Pick your range",
+            "text": "Choose the brands and products your customers ask for."
+          }
+        },
+        "step_20": {
+          "type": "step",
+          "settings": {
+            "title": "Send the form",
+            "text": "Tell us about your gym, pharmacy, store or online shop."
+          }
+        },
+        "step_21": {
+          "type": "step",
+          "settings": {
+            "title": "Get your prices",
+            "text": "Approved accounts receive the full wholesale price sheet."
+          }
+        },
+        "step_22": {
+          "type": "step",
+          "settings": {
+            "title": "Order and restock",
+            "text": "Order by WhatsApp or phone; it ships within 48 hours."
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4",
+        "card_5",
+        "card_6",
+        "card_7",
+        "card_8",
+        "tile_9",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "photo_15",
+        "photo_16",
+        "photo_17",
+        "photo_18",
+        "step_19",
+        "step_20",
+        "step_21",
+        "step_22"
+      ]
     }
   },
   "order": [
-    "wholesale_wAiVNP"
+    "main"
   ]
 }
+

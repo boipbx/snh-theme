@@ -1,0 +1,186 @@
+{%- comment -%}
+  SNH partner page (Round 12): the franchise and wholesale pages in v2 (replaces sections/franchisesection and
+  sections/wholesale, which stay in the repo, unused). hero (two photos) → stats → benefit cards → checklist (optional)
+  → photo strip → collection tiles (optional, e.g. the wholesale range) → steps → form.
+  The form is Shopify's native contact form (normal POST, so Shopify's hCaptcha runs; nothing intercepts it), with a
+  hidden "Form" field naming the page so the inbox can route it. Fields depend on "Form type".
+  Blocks: Stat · Benefit · Checklist item · Photo · Collection tile · Step. Styles: assets/snh-partner.css.
+{%- endcomment -%}
+{{ 'snh-partner.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign kind = s.form_type
+  assign stats = section.blocks | where: 'type', 'stat'
+  assign cards = section.blocks | where: 'type', 'card'
+  assign checks = section.blocks | where: 'type', 'check'
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign tiles = section.blocks | where: 'type', 'tile'
+  assign steps = section.blocks | where: 'type', 'step'
+  assign wa = s.whatsapp | default: settings.snh_whatsapp | default: '94764863359' | remove: '+' | remove: ' '
+  assign fid = 'partner-form-' | append: section.id
+-%}
+{%- capture heading -%}{%- assign parts = s.heading | split: '*' -%}{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}{%- endcapture -%}
+
+<div class="v2 ptn">
+  <section class="ptn__hero" aria-labelledby="ptn-h-{{ section.id }}">
+    <div class="v-wrap ptn__hero-in">
+      <div class="ptn__copy">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        <h1 class="ptn__h" id="ptn-h-{{ section.id }}">{{ heading }}</h1>
+        <p class="ptn__lead">{{ s.lead | escape }}</p>
+        <div class="ptn__ctas">
+          <a class="v-btn v-btn--accent" href="#{{ fid }}"><span>{{ s.cta | escape }}</span></a>
+          <a class="v-btn v-btn--line v-btn--on-dark" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener"><span>WhatsApp the team</span></a>
+        </div>
+      </div>
+      <div class="ptn__pics" aria-hidden="true">
+        {%- if s.image_1 != blank -%}<div class="ptn__pic ptn__pic--a">{{ s.image_1 | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '500,800,1200', sizes: '(min-width: 1024px) 34vw, 70vw', alt: '' }}</div>{%- endif -%}
+        {%- if s.image_2 != blank -%}<div class="ptn__pic ptn__pic--b">{{ s.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350,700', sizes: '(min-width: 1024px) 18vw, 40vw', alt: '' }}</div>{%- endif -%}
+      </div>
+    </div>
+    {%- if stats.size > 0 -%}
+      <div class="v-wrap"><ul class="ptn__stats" role="list">{%- for b in stats -%}<li {{ b.shopify_attributes }}><b>{{ b.settings.value | escape }}</b><span>{{ b.settings.label | escape }}</span></li>{%- endfor -%}</ul></div>
+    {%- endif -%}
+  </section>
+
+  {%- if cards.size > 0 -%}
+    <section class="v-section" aria-labelledby="ptn-why-{{ section.id }}">
+      <div class="v-wrap ptn__block">
+        <h2 class="ptn__h2" id="ptn-why-{{ section.id }}">{{ s.cards_heading | escape }}</h2>
+        <ul class="ptn__cards" role="list">
+          {%- for b in cards -%}<li class="ptn__card" {{ b.shopify_attributes }}><h3>{{ b.settings.title | escape }}</h3><p>{{ b.settings.text | escape }}</p></li>{%- endfor -%}
+        </ul>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if checks.size > 0 -%}
+    <section class="v-section v-section--cream" aria-labelledby="ptn-who-{{ section.id }}">
+      <div class="v-wrap ptn__split">
+        <div><h2 class="ptn__h2" id="ptn-who-{{ section.id }}">{{ s.checks_heading | escape }}</h2>{%- if s.checks_text != blank -%}<p class="ptn__sub">{{ s.checks_text | escape }}</p>{%- endif -%}</div>
+        <ul class="ptn__checks" role="list">{%- for b in checks -%}<li {{ b.shopify_attributes }}>{% render 'snh-v2-icon', name: 'check' %}<span><b>{{ b.settings.title | escape }}</b>{% if b.settings.text != blank %} {{ b.settings.text | escape }}{% endif %}</span></li>{%- endfor -%}</ul>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if photos.size > 0 -%}
+    <section class="v-section ptn__photos-sec" aria-label="{{ s.photos_heading | escape }}">
+      <div class="v-wrap ptn__block">
+        {%- if s.photos_heading != blank -%}<h2 class="ptn__h2">{{ s.photos_heading | escape }}</h2>{%- endif -%}
+        <ul class="ptn__photos" role="list">
+          {%- for b in photos -%}<li {{ b.shopify_attributes }}>{%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400,600,800', sizes: '(min-width: 1024px) 25vw, 70vw', alt: b.settings.caption | default: '' }}{%- endif -%}{%- if b.settings.caption != blank -%}<span>{{ b.settings.caption | escape }}</span>{%- endif -%}</li>{%- endfor -%}
+        </ul>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if tiles.size > 0 -%}
+    <section class="v-section" aria-labelledby="ptn-range-{{ section.id }}">
+      <div class="v-wrap ptn__block">
+        <h2 class="ptn__h2" id="ptn-range-{{ section.id }}">{{ s.tiles_heading | escape }}</h2>
+        <ul class="ptn__tiles" role="list">
+          {%- for b in tiles -%}
+            {%- assign c = b.settings.collection -%}{%- if c == blank -%}{%- continue -%}{%- endif -%}
+            {%- assign im = c.image | default: c.products.first.featured_image -%}
+            <li {{ b.shopify_attributes }}><a class="ptn__tile" href="{{ c.url }}">{%- if im -%}<span class="ptn__tile-img">{{ im | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,400', sizes: '200px', alt: '' }}</span>{%- endif -%}<span class="ptn__tile-b"><b>{{ b.settings.title | default: c.title | escape }}</b><span>{{ c.products_count }} products{% if b.settings.note != blank %} · {{ b.settings.note | escape }}{% endif %}</span></span></a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if steps.size > 0 -%}
+    <section class="v-section v-section--cream" aria-labelledby="ptn-steps-{{ section.id }}">
+      <div class="v-wrap ptn__block">
+        <h2 class="ptn__h2" id="ptn-steps-{{ section.id }}">{{ s.steps_heading | escape }}</h2>
+        <ol class="ptn__steps" role="list">{%- for b in steps -%}<li {{ b.shopify_attributes }}><span class="how__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><h3>{{ b.settings.title | escape }}</h3><p>{{ b.settings.text | escape }}</p></li>{%- endfor -%}</ol>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="v-section ptn__form-sec" id="{{ fid }}" aria-labelledby="ptn-form-h-{{ section.id }}">
+    <div class="v-wrap ptn__form-grid">
+      <div class="ptn__form-side">
+        <h2 class="ptn__h2" id="ptn-form-h-{{ section.id }}">{{ s.form_heading | escape }}</h2>
+        <p class="ptn__sub">{{ s.form_text | escape }}</p>
+        <ul class="ptn__contact" role="list">
+          <li><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>WhatsApp +{{ wa | slice: 0, 2 }} {{ wa | slice: 2, 2 }} {{ wa | slice: 4, 3 }} {{ wa | slice: 7, 4 }}</span></a></li>
+          {%- if s.email != blank -%}<li><a href="mailto:{{ s.email }}">{% render 'snh-v2-icon', name: 'chat' %}<span>{{ s.email }}</span></a></li>{%- endif -%}
+        </ul>
+      </div>
+      <div class="ptn__form-card">
+        {%- assign form_id = 'contact-' | append: fid -%}
+        {%- form 'contact', id: form_id, class: 'ptn__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="ptn__ok" role="status">{% render 'snh-v2-icon', name: 'check' %}<span>{{ s.success | escape }}</span></p>
+          {%- else -%}
+            {%- if form.errors -%}<p class="ptn__err" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+            <input type="hidden" name="contact[Form]" value="{% if kind == 'wholesale' %}Wholesale enquiry{% else %}Franchise application{% endif %}">
+            <div class="ptn__fields">
+              {%- if kind == 'wholesale' -%}
+                <label class="fld"><span>Business name</span><input type="text" name="contact[Business]" autocomplete="organization" required></label>
+                <label class="fld"><span>Your name</span><input type="text" name="contact[name]" autocomplete="name" required></label>
+              {%- else -%}
+                <label class="fld fld--full"><span>Your name</span><input type="text" name="contact[name]" autocomplete="name" required></label>
+              {%- endif -%}
+              <label class="fld"><span>Email</span><input type="email" name="contact[email]" autocomplete="email" required></label>
+              <label class="fld"><span>Phone</span><input type="tel" name="contact[phone]" inputmode="tel" autocomplete="tel" placeholder="+94 77 123 4567" required></label>
+              {%- if kind == 'wholesale' -%}
+                <label class="fld"><span>Business type</span><select name="contact[Business type]" required><option value="">Choose one</option><option>Gym or studio</option><option>Pharmacy</option><option>Retail store</option><option>Online seller</option><option>Other</option></select></label>
+                <label class="fld"><span>City</span><input type="text" name="contact[City]" autocomplete="address-level2" required></label>
+                <label class="fld fld--full"><span>Expected monthly order</span><select name="contact[Monthly order]"><option value="">Not sure yet</option><option>Under Rs 100,000</option><option>Rs 100,000 – 300,000</option><option>Rs 300,000 – 1,000,000</option><option>Over Rs 1,000,000</option></select></label>
+              {%- else -%}
+                <label class="fld"><span>City you'd open in</span><input type="text" name="contact[Preferred city]" autocomplete="address-level2" required></label>
+                <label class="fld"><span>Investment ready</span><select name="contact[Investment]"><option value="">Prefer to discuss</option><option>Under Rs 10M</option><option>Rs 10M – 20M</option><option>Rs 20M – 40M</option><option>Over Rs 40M</option></select></label>
+              {%- endif -%}
+              <label class="fld fld--full"><span>{% if kind == 'wholesale' %}Brands or products you want{% else %}About you{% endif %}</span><textarea name="contact[body]" rows="4" required placeholder="{% if kind == 'wholesale' %}e.g. Applied Nutrition whey, SiS gels, 12 units each{% else %}Your background, timeline and why SNH{% endif %}"></textarea></label>
+            </div>
+            <button type="submit" class="v-btn v-btn--accent ptn__send"><span>{{ s.submit | escape }}</span></button>
+            <p class="ptn__fine">We reply within 2 working days. This form is protected by hCaptcha.</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SNH partner page",
+  "class": "snh-sec snh-sec--partner",
+  "settings": [
+    { "type": "select", "id": "form_type", "label": "Form type", "default": "franchise", "options": [ { "value": "franchise", "label": "Franchise application" }, { "value": "wholesale", "label": "Wholesale enquiry" } ] },
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Own the next *hub*" },
+    { "type": "textarea", "id": "lead", "label": "Lead" },
+    { "type": "text", "id": "cta", "label": "Button", "default": "Apply now" },
+    { "type": "image_picker", "id": "image_1", "label": "Photo 1 (large)" },
+    { "type": "image_picker", "id": "image_2", "label": "Photo 2 (small)" },
+    { "type": "header", "content": "Headings" },
+    { "type": "text", "id": "cards_heading", "label": "Benefits", "default": "Why partner with SNH" },
+    { "type": "text", "id": "checks_heading", "label": "Checklist", "default": "Who we're looking for" },
+    { "type": "text", "id": "checks_text", "label": "Checklist text" },
+    { "type": "text", "id": "photos_heading", "label": "Photos", "default": "Inside our stores" },
+    { "type": "text", "id": "tiles_heading", "label": "Collection tiles", "default": "What you can stock" },
+    { "type": "text", "id": "steps_heading", "label": "Steps", "default": "How it works" },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Heading", "default": "Tell us about you" },
+    { "type": "text", "id": "form_text", "label": "Text" },
+    { "type": "text", "id": "submit", "label": "Button", "default": "Send" },
+    { "type": "text", "id": "success", "label": "Thank-you message", "default": "Thanks. We'll be in touch within 2 working days." },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number", "info": "Empty = Theme settings → SNH contact and reviews." },
+    { "type": "text", "id": "email", "label": "Email", "default": "info@sportsnutritionhub.lk" }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Stat", "settings": [ { "type": "text", "id": "value", "label": "Value", "default": "3" }, { "type": "text", "id": "label", "label": "Label", "default": "Stores" } ] },
+    { "type": "card", "name": "Benefit", "settings": [ { "type": "text", "id": "title", "label": "Title" }, { "type": "textarea", "id": "text", "label": "Text" } ] },
+    { "type": "check", "name": "Checklist item", "settings": [ { "type": "text", "id": "title", "label": "Title" }, { "type": "text", "id": "text", "label": "Text" } ] },
+    { "type": "photo", "name": "Photo", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "caption", "label": "Caption" } ] },
+    { "type": "tile", "name": "Collection tile", "settings": [ { "type": "collection", "id": "collection", "label": "Collection" }, { "type": "text", "id": "title", "label": "Title" }, { "type": "text", "id": "note", "label": "Note", "info": "e.g. MOQ 6 units" } ] },
+    { "type": "step", "name": "Step", "settings": [ { "type": "text", "id": "title", "label": "Title" }, { "type": "text", "id": "text", "label": "Text" } ] }
+  ],
+  "presets": [{ "name": "SNH partner page" }]
+}
+{% endschema %}
+

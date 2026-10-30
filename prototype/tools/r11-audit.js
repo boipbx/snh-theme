@@ -16,7 +16,7 @@ const OUT = path.join(__dirname, '..', 'shots', process.env.ROUND || 'r11', LABE
 fs.mkdirSync(OUT, { recursive: true });
 const PAGES = (process.env.PAGES || '/,/collections/vitamins-minerals,/collections/sis,/collections/hydration-recovery,/cart,/search?q=whey,/pages/about-us,/pages/location,/products/applied-nutrition-critical-whey-2kg,/products/sis-go-hydro-tablets').split(',');
 const WIDTHS = [390, 768, 1440];
-const HIDE = '.shopify-section--popup,#preview-bar-iframe,privacy-bar,#shopify-pc__banner{display:none!important}';
+const HIDE = '.shopify-section--popup,#preview-bar-iframe,privacy-bar,#shopify-pc__banner,dialog.ecm,dialog.cmp-pop{display:none!important}';
 
 (async () => {
   const b = await chromium.launch();

@@ -9,19 +9,194 @@
  */
 {
   "sections": {
-    "franchisesection_FxfaYc": {
-      "type": "franchisesection",
-      "name": "SNH Franchise Partner",
+    "main": {
+      "type": "snh-partner",
       "settings": {
-        "kicker": "",
-        "heading": "Own the next hub.",
-        "subheading": "Sports Nutrition Hub is Sri Lanka's #1 sports nutrition and wellness retailer — three thriving outlets, a nationwide online store and exclusive rights to 12+ global brands. Now we're expanding, and we're looking for partners to build the next one.",
-        "accent": "#e0521c",
-        "whatsapp": "94764863359"
-      }
+        "form_type": "franchise",
+        "eyebrow": "Franchise",
+        "heading": "Own the next *SNH* store",
+        "lead": "Sri Lanka's #1 sports nutrition retailer is opening new stores with partners. Three stores, 12+ brands we distribute, and a model that works.",
+        "cta": "Apply to partner",
+        "image_1": "shopify://shop_images/snhnuge.webp",
+        "image_2": "shopify://shop_images/snh_dehiwala.webp",
+        "cards_heading": "Why partner with SNH",
+        "checks_heading": "Who we're looking for",
+        "checks_text": "You bring the drive and the location. We bring the brand, the stock and the playbook.",
+        "photos_heading": "Inside our stores",
+        "steps_heading": "From application to opening day",
+        "form_heading": "Apply to partner",
+        "form_text": "Tell us a little about you and where you would open. We reply within 2 working days.",
+        "submit": "Send application",
+        "email": "info@sportsnutritionhub.lk"
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "3",
+            "label": "Stores: Dehiwala, Wattala, Nugegoda"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "12+",
+            "label": "Brands we distribute"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "#1",
+            "label": "Sports nutrition retailer in Sri Lanka"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "value": "100%",
+            "label": "Genuine, batch-coded stock"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "title": "A name people trust",
+            "text": "Shoppers already know SNH for authentic supplements, vitamins and sports nutrition."
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "title": "12+ brands, direct",
+            "text": "Applied Nutrition, RYSE, SiS, MuscleTech, Healthspan Elite and more, distributed by us."
+          }
+        },
+        "card_7": {
+          "type": "card",
+          "settings": {
+            "title": "Set-up and training",
+            "text": "Store design, fit-out, opening stock, staff training, POS and inventory."
+          }
+        },
+        "card_8": {
+          "type": "card",
+          "settings": {
+            "title": "Marketing done for you",
+            "text": "Campaigns, creatives and athlete partnerships that bring people through your door."
+          }
+        },
+        "check_9": {
+          "type": "check",
+          "settings": {
+            "title": "You care about health and fitness",
+            "text": "and want to run a store around it."
+          }
+        },
+        "check_10": {
+          "type": "check",
+          "settings": {
+            "title": "You can invest in a full store",
+            "text": "fit-out, stock and staff."
+          }
+        },
+        "check_11": {
+          "type": "check",
+          "settings": {
+            "title": "You put customers first",
+            "text": "advice, not just sales."
+          }
+        },
+        "check_12": {
+          "type": "check",
+          "settings": {
+            "title": "You want to grow with us",
+            "text": "more cities, more stores."
+          }
+        },
+        "photo_13": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snhnuge.webp",
+            "caption": "Nugegoda"
+          }
+        },
+        "photo_14": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snh_dehiwala.webp",
+            "caption": "Dehiwala"
+          }
+        },
+        "photo_15": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snhwttla.webp",
+            "caption": "Wattala"
+          }
+        },
+        "photo_16": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/instore.webp",
+            "caption": "In store"
+          }
+        },
+        "step_17": {
+          "type": "step",
+          "settings": {
+            "title": "Apply",
+            "text": "Send the form below with your city and background."
+          }
+        },
+        "step_18": {
+          "type": "step",
+          "settings": {
+            "title": "Meet",
+            "text": "We walk you through the model, the numbers and the area."
+          }
+        },
+        "step_19": {
+          "type": "step",
+          "settings": {
+            "title": "Build",
+            "text": "Design, fit-out, opening stock and staff training."
+          }
+        },
+        "step_20": {
+          "type": "step",
+          "settings": {
+            "title": "Open",
+            "text": "Launch with our marketing and operations team behind you."
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4",
+        "card_5",
+        "card_6",
+        "card_7",
+        "card_8",
+        "check_9",
+        "check_10",
+        "check_11",
+        "check_12",
+        "photo_13",
+        "photo_14",
+        "photo_15",
+        "photo_16",
+        "step_17",
+        "step_18",
+        "step_19",
+        "step_20"
+      ]
     }
   },
   "order": [
-    "franchisesection_FxfaYc"
+    "main"
   ]
 }
+
