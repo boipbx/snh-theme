@@ -126,12 +126,17 @@
     <div class="v-wrap">{{ hero_crumbs }}</div>
     <div class="colhero__media" style="--ar: {{ hd.aspect_ratio | default: 2 }}; --ar-m: {{ hm.aspect_ratio | default: hd.aspect_ratio | default: 1 }};">
       {{ hero_pic }}
-      <div class="colhero__shade" aria-hidden="true"></div>
-      <div class="v-wrap colhero__over">
+      {%- capture hero_head -%}
         <h1 class="colhero__title" id="colhero-{{ section.id }}">{{ hero_title | escape }}</h1>
         <p class="colhero__count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
-      </div>
+      {%- endcapture -%}
+      {%- unless art -%}
+        <div class="colhero__shade" aria-hidden="true"></div>
+        <div class="v-wrap colhero__over">{{ hero_head }}</div>
+      {%- endunless -%}
     </div>
+    {%- comment -%} artwork banners carry their own lettering: our title sits under them instead of on top {%- endcomment -%}
+    {%- if art -%}<div class="v-wrap colhero__head">{{ hero_head }}</div>{%- endif -%}
     {%- if hero_desc != blank -%}
       <div class="v-wrap colhero__below"><div class="colhero__desc" data-v2="clamp"><div class="colhero__text v-prose">{{ collection.description }}</div>{%- if hero_desc.size > 220 -%}<button type="button" class="colhero__more" aria-expanded="false">Read more</button>{%- endif -%}</div></div>
     {%- endif -%}

@@ -349,6 +349,8 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
   .snh-bar-form { position: sticky; top: var(--header-height, var(--v-hdr, 0px)); z-index: 12; background: var(--white, #fff); }
   /* Round 13: pinned directly under the SNH header by its live height (assets/snh-v2.js keeps --header-height current) */
   facet-floating-filter, .facets__floating-filter { display: none !important; }
+  /* Round 13: Impact's grid kept a 48px top margin + a 32px row for its hidden toolbar under our bar: the bar's own 24px is the only gap */
+  .collection { margin-top: 0 !important; row-gap: 0 !important; }
   .snh-bar { display: grid; margin-block-end: 24px; background: var(--white, #fff); }
   .snh-bar > * { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
   .snh-brands { padding-inline: 0; }

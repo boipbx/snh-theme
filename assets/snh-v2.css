@@ -2091,3 +2091,5 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 @media (min-width: 768px) { .colhero__over { padding-block-end: 32px; } .colhero--bleed { padding-top: 24px; } }
 .snh-hdr-sec.is-pinned { padding-bottom: var(--v-hdr, 64px); }
 .snh-hdr-sec.is-pinned .hdr { position: fixed; top: 0; left: 0; right: 0; }
+.colhero__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; padding-top: 20px; }
+.colhero__head .colhero__count { order: 0; margin: 0; }
