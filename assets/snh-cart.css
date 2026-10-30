@@ -214,3 +214,20 @@
 /* explicit rows: the free-delivery bar and the campaign slot may be hidden, the body and footer must keep their rows */
 .snh-cd .scd__head { grid-row: 1; } .snh-cd .scd__bar { grid-row: 2; } .snh-cd [data-campaign-slot] { grid-row: 3; }
 .snh-cd .scd__body { grid-row: 4; } .snh-cd .scd__foot { grid-row: 5; }
+
+/* Round 13: suggestion heading cap, bundle mini-card, payment row text chips */
+.scd__bh small { margin-left: auto; font: 500 12px/1.5 var(--sans); color: var(--grey-1); white-space: nowrap; }
+.sbd { border: 0; background: none; }
+.sbm { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 12px; border: 1px solid rgba(224, 82, 28, .25); border-radius: 12px; background: #FFF4EE; }
+.sbm__img { display: flex; }
+.sbm__img img { width: 48px; height: 48px; border-radius: 8px; object-fit: contain; background: var(--white); }
+.sbm__img img + img { margin-left: -16px; box-shadow: 0 0 0 2px #FFF4EE; }
+.sbm__t { display: grid; font: 400 13px/1.4 var(--sans); }
+.sbm__eb { display: inline-flex; align-items: center; gap: 4px; font: 600 12px/1.5 var(--sans); color: var(--v-accent); }
+.sbm__eb svg { width: 14px; height: 14px; }
+.sbm__go { min-height: 36px; padding: 0 14px; border: 0; border-radius: var(--pill); background: var(--ink); color: var(--white); font: 600 13px/1 var(--sans); white-space: nowrap; cursor: pointer; transition: background-color var(--t) var(--ease); }
+.sbm__go:hover { background: var(--v-accent); }
+.sbm__go[aria-busy="true"] { opacity: .5; }
+.sft__koko { gap: 6px; }
+.sft__koko img { width: 44px; }
+.spay { flex-wrap: wrap; row-gap: 4px; }

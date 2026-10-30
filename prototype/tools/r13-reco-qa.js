@@ -37,11 +37,12 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
     ['Rs 16,200 mixed', () => cartOf([line(P.whey, 1, 1270000), line(P.hydro, 1, 350000)])],
     ['Rs 18,000+', () => cartOf([line(P.whey, 1, 1400000), line(P.crea, 1, 400000)])],
     ['guest, creatine, viewed a shaker', () => cartOf([line(P.crea, 1)]), { viewed: [H.shaker] }],
+    ['creatine + bundle offer (mock bundle)', () => cartOf([line(P.crea, 1)]), { bundle: true }],
     ['member, whey, history + goal', () => cartOf([line(P.whey, 1)]), { member: true, goal: 'build-muscle', history: [
       { p: P.whey.id, type: P.whey.type, t: P.whey.title, tags: '', d: day(40) }, { p: P.crea.id, type: P.crea.type, t: P.crea.title, tags: '', d: day(60) }, { p: P.shaker.id, type: P.shaker.type, t: P.shaker.title, tags: '', d: day(10) }] }],
   ];
   const rows = [];
-  for (const [name, mk, opt = {}] of SCEN) for (const w of W) {
+  for (const [name, mk, opt = {}] of SCEN.filter((x) => !process.env.ONLY || process.env.ONLY.split('|').includes(x[0]))) for (const w of W) {
     const ctx = await b.newContext({ viewport: { width: w, height: w < 800 ? 844 : 900 }, isMobile: w < 800, hasTouch: w < 800 });
     await ctx.addInitScript((o) => { try { localStorage.setItem('snh_ecm_until', String(Date.now() + 864e6)); localStorage.setItem('snh_rv', JSON.stringify(o.viewed || [])); sessionStorage.clear(); } catch (e) {} }, opt);
     const p = await ctx.newPage(), errs = [], cart = mk();
@@ -49,9 +50,13 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
     if (process.env.LOCAL) await p.route(/\/cdn\/shop\/t\/\d+\/assets\/[^/?]+\.(js|css)(\?|$)/, (r) => { const f = path.join(__dirname, '..', '..', 'assets', new URL(r.request().url()).pathname.split('/').pop()); return fs.existsSync(f) ? r.fulfill({ contentType: f.endsWith('.css') ? 'text/css' : 'application/javascript', body: fs.readFileSync(f, 'utf8') }) : r.continue(); });
     await p.route(/\/cart\.js(\?|$)/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(cart) }));
     await p.route(/\/cart\/(change|add|update)(\.js)?/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(cart) }));
-    if (opt.member) await p.route((u) => u.pathname === '/', async (r) => {
+    const bi = (x) => ({ pid: x.id, vid: x.variants[0].id, title: x.title, price: x.variants[0].price, available: true, image: x.featured_image });
+    if (opt.member || opt.bundle) await p.route((u) => u.pathname === '/', async (r) => {
       const res = await r.fetch(); let t = await res.text();
-      t = t.replace(/(<script type="application\/json" data-cart-cfg>)([\s\S]*?)(<\/script>)/, (m, a, j, c) => a + j.replace('"member": false', '"member": true').replace('"tier": "Bronze"', '"tier": "Silver"') + c)
+      t = t.replace(/(<script type="application\/json" data-cart-cfg>)([\s\S]*?)(<\/script>)/, (m, a, j, c) => {
+        if (opt.member) j = j.replace('"member": false', '"member": true').replace('"tier": "Bronze"', '"tier": "Silver"');
+        if (opt.bundle) j = j.replace(/"bundles": \[[\s\S]*?\]\s*\}\s*$/, '"bundles": ' + JSON.stringify([{ title: 'Creatine + Shaker Stack', save: 'Save 10%', items: [bi(P.crea), bi(P.shaker)] }]) + '}');
+        return a + j + c; })
         .replace(/(<script type="application\/json" data-cart-reco>)([\s\S]*?)(<\/script>)/, (m, a, j, c) => { const d = JSON.parse(j); d.history = opt.history; d.goal = opt.goal; return a + JSON.stringify(d) + c; });
       r.fulfill({ response: res, body: t });
     });
@@ -59,7 +64,7 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
       await p.goto(HOST + '/' + Q, { waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => {});
       if (await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 45000 }).then(() => true, () => false)) break;
     }
-    await p.addStyleTag({ content: '[data-email-capture],dialog.ecm,.cmp-pop,#preview-bar-iframe,privacy-bar{display:none!important}' }).catch(() => {});
+    await p.addStyleTag({ content: '[data-email-capture],dialog.ecm,.cmp-pop,#preview-bar-iframe,#PBarNextFrameWrapper,privacy-bar{display:none!important}' }).catch(() => {});
     await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 30000 }).catch(() => {});
     await p.evaluate(() => window.SNHCart.open());
     await p.waitForFunction(() => { const r = document.querySelector('#cart-drawer [data-cart-root]'); return r && r.hasAttribute('data-cart-decision'); }, null, { timeout: 30000 }).catch(() => {});

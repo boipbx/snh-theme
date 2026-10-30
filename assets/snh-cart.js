@@ -93,7 +93,7 @@
     var dkeys = Object.keys(disc).filter(function (k) { return disc[k] > 0; });
     var banner = dkeys.length ? '<div class="sdisc" role="status">' + icons.tag + '<p><b>' + esc(dkeys.join(' + ')) + '</b> applied automatically · you save ' + rs(dkeys.reduce(function (s, k) { return s + disc[k]; }, 0)) + '</p></div>' : '';
     var lines = '<ul class="slines" role="list">' + cart.items.map(function (it, i) { return self.line(it, i + 1); }).join('') + '</ul>';
-    this.body.innerHTML = banner + lines + '<section class="scd__block" data-cart-sugg hidden></section><details class="sbd" data-cart-bundle hidden></details>';
+    this.body.innerHTML = banner + lines + '<section class="scd__block" data-cart-sugg hidden></section><div class="sbd" data-cart-bundle hidden></div>';
     var pb = $('[data-cart-bar]', this.el); if (pb) pb.innerHTML = bar;
     this.summary(cart, disc);
     this.enrich(cart);
@@ -232,7 +232,7 @@
       '<div class="sft__tot"><span>Total<small>' + (free ? 'Free delivery' : 'Delivery at checkout') + ' · taxes included</small></span><b>' + rs(cart.total_price) + '</b></div>' +
       points + tier +
       '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout</span></button></form>' +
-      '<p class="sft__koko">or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b> interest-free with <img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="Koko" width="40" height="13" loading="lazy"></p>' +
+      '<p class="sft__koko"><img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="Koko" width="40" height="13" loading="lazy"><span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b>, interest-free</span></p>' +
       this.payRow() +
       (c.rating ? '<p class="sft__rate">' + icons.star + '<span>' + esc(c.rating) + '</span></p>' : '');
   };
@@ -416,10 +416,11 @@
     var add = hit.b.items.length === 1 ? hit.b.items[0].vid + ':1' : hit.miss.map(function (x) { return x.vid + ':1'; }).join(',');
     var price = hit.miss.reduce(function (s, x) { return s + x.price; }, 0);
     var name = (function () { var li = cart.items.filter(function (it) { return it.product_id === hit.have[0].pid; })[0]; return li ? shortTitle(li.product_title, li.vendor) : hit.have[0].title; })();
-    box.innerHTML = '<summary>' + icons.tag + '<span><b>Bundle offer</b>' + (hit.b.save ? ' · ' + esc(hit.b.save) : '') + '</span></summary>' +
-      '<div class="sbundle">' + (hit.b.items[0].image ? '<img src="' + esc(hit.b.items[0].image) + '" alt="" width="64" height="64" loading="lazy">' : '') +
-      '<p class="sbundle__t">' + esc(name) + ' is in the <b>' + esc(hit.b.title) + '</b>.</p>' +
-      '<button type="button" class="v-btn v-btn--accent v-btn--sm" data-add="' + add + '"><span>' + (hit.b.items.length === 1 ? 'Make it a pair' : 'Complete the bundle' + (price ? ' · ' + rs(price) : '')) + '</span></button></div>';
+    // Round 13: one compact mini-card (pack shots of what's missing, the offer, one button), not a collapsed row
+    var pics = (hit.miss.length ? hit.miss : hit.b.items).slice(0, 2).filter(function (x) { return x.image; });
+    box.innerHTML = '<div class="sbm">' + (pics.length ? '<span class="sbm__img">' + pics.map(function (x) { return '<img src="' + esc(x.image) + '" alt="" width="48" height="48" loading="lazy">'; }).join('') + '</span>' : '') +
+      '<p class="sbm__t"><span class="sbm__eb">' + icons.tag + 'Bundle' + (hit.b.save ? ' · ' + esc(hit.b.save) : '') + '</span>' + esc(name) + ' is in the <b>' + esc(hit.b.title) + '</b></p>' +
+      '<button type="button" class="sbm__go" data-add="' + add + '" aria-label="' + esc((hit.b.items.length === 1 ? 'Make it a pair' : 'Complete the ' + hit.b.title) + (price ? ', ' + rs(price) : '')) + '">' + (hit.b.items.length === 1 ? 'Make it a pair' : 'Add' + (price ? ' · ' + rs(price) : '')) + '</button></div>';
     box.hidden = false;
   };
 
