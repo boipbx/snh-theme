@@ -2066,3 +2066,11 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .tel94 input { padding-left: 76px !important; }
 .colhero--art .colhero__title { font-size: var(--t-h2); }
 .colhero--photo { margin-bottom: 24px; }
+/* Round 12: announcement colours (Announcement blocks + campaigns, assets/snh-campaigns.js) */
+.announce[hidden] { display: none; }
+.announce[data-tone="ink"] { background: var(--ink); }
+.announce[data-tone="cream"] { background: var(--cream); color: var(--ink); }
+.announce[data-tone="cream"] .announce__item b { background: rgba(12, 12, 13, .08); }
+.announce[data-tone="green"] { background: #14532D; }
+.announce { transition: background-color 400ms var(--ease); }
+.announce__code { font-weight: 600; letter-spacing: .06em; }

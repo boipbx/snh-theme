@@ -243,22 +243,24 @@
     solid();
     window.addEventListener('scroll', solid, { passive: true });
 
-    /* announcement slot: rotate, pause on hover */
-    var ann = $$('.announce__item', wrap);
-    if (ann.length > 1 && !reduce) {
-      var ai = 0, hold = false, box = wrap.querySelector('.announce');
-      var every = Number(box.getAttribute('data-interval') || 4) * 1000;
+    /* announcement slot: rotate, pause on hover. Round 12: the items are re-read every tick (assets/snh-campaigns.js
+       hides out-of-schedule ones and adds campaign items); the bar takes the shown item's colour (data-tone) */
+    var box = wrap.querySelector('.announce');
+    if (box) {
+      var hold = false, every = Number(box.getAttribute('data-interval') || 4) * 1000;
+      var live = function () { return $$('.announce__item:not([hidden])', box); };
       box.addEventListener('mouseenter', function () { hold = true; });
       box.addEventListener('mouseleave', function () { hold = false; });
       box.addEventListener('focusin', function () { hold = true; });
       box.addEventListener('focusout', function () { hold = false; });
-      setInterval(function () {
-        if (hold || document.hidden) return;
-        ann[ai].classList.remove('is-on');
-        ann[ai].setAttribute('tabindex', '-1');
-        ai = (ai + 1) % ann.length;
-        ann[ai].classList.add('is-on');
-        ann[ai].removeAttribute('tabindex');
+      var showAnn = function (it) { $$('.announce__item', box).forEach(function (x) { var on = x === it; x.classList.toggle('is-on', on); if (on) x.removeAttribute('tabindex'); else x.setAttribute('tabindex', '-1'); }); if (it) box.setAttribute('data-tone', it.getAttribute('data-tone') || 'orange'); };
+      var syncAnn = function () { var l = live(); box.hidden = !l.length; showAnn(l[0]); };   // highest-priority live item first
+      document.addEventListener('snh:announce', syncAnn);
+      if (document.documentElement.hasAttribute('data-campaigns-live')) syncAnn();   // campaigns ran before this
+      if (!reduce) setInterval(function () {
+        var l = live(); if (hold || document.hidden || l.length < 2) return;
+        var i = l.indexOf(l.filter(function (x) { return x.classList.contains('is-on'); })[0]);
+        showAnn(l[(i + 1) % l.length]);
       }, every);
     }
 

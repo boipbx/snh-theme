@@ -145,17 +145,17 @@
   {%- endif -%}
 
   {%- assign announcements = section.blocks | where: 'type', 'announcement' -%}
-  {%- if announcements.size > 0 -%}
-    <div class="announce" data-chrome-bar data-interval="{{ section.settings.announce_interval }}" aria-live="polite">
+  {%- comment -%} Round 12: each Announcement has a schedule, colour and audience (assets/snh-campaigns.js applies them and adds
+    scheduled campaign announcements); the bar is always printed so campaigns can fill it {%- endcomment -%}
+    <div class="announce"{% if announcements.size == 0 %} hidden{% endif %} data-chrome-bar data-interval="{{ section.settings.announce_interval }}" data-tone="{{ announcements.first.settings.tone | default: 'orange' }}" aria-live="polite">
       <div class="v-wrap announce__in">
         {%- for b in announcements -%}
-          <a class="announce__item{% if forloop.first %} is-on{% endif %}" href="{{ b.settings.link | default: '#' }}"{% unless forloop.first %} tabindex="-1"{% endunless %} {{ b.shopify_attributes }}>
+          <a class="announce__item{% if forloop.first %} is-on{% endif %}" href="{{ b.settings.link | default: '#' }}"{% unless forloop.first %} tabindex="-1"{% endunless %} data-tone="{{ b.settings.tone | default: 'orange' }}" data-aud="{{ b.settings.audience | default: 'all' }}"{% if b.settings.start != blank %} data-start="{{ b.settings.start | date: '%Y-%m-%dT%H:%M:%S%z' }}"{% endif %}{% if b.settings.end != blank %} data-end="{{ b.settings.end | date: '%Y-%m-%dT%H:%M:%S%z' }}"{% endif %} {{ b.shopify_attributes }}>
             {%- if b.settings.tag != blank -%}<b>{{ b.settings.tag | escape }}</b>{%- endif -%}{{ b.settings.text | escape }}<span aria-hidden="true">→</span>
           </a>
         {%- endfor -%}
       </div>
     </div>
-  {%- endif -%}
 
   <header class="hdr{% if overlay %} hdr--overlay is-overlay{% endif %}">
     <div class="v-wrap hdr__in">
@@ -438,7 +438,11 @@
       "settings": [
         { "type": "text", "id": "tag", "label": "Tag", "default": "New" },
         { "type": "text", "id": "text", "label": "Text", "default": "The all-new RYSE range has landed" },
-        { "type": "url", "id": "link", "label": "Link" }
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "start", "label": "Starts", "placeholder": "2026-11-01 08:00", "info": "Shop time. Empty = now." },
+        { "type": "text", "id": "end", "label": "Ends", "placeholder": "2026-11-03 23:59", "info": "Empty = no end." },
+        { "type": "select", "id": "tone", "label": "Colour", "default": "orange", "options": [ { "value": "orange", "label": "Orange" }, { "value": "ink", "label": "Black" }, { "value": "cream", "label": "Cream" }, { "value": "green", "label": "Green" } ] },
+        { "type": "select", "id": "audience", "label": "Audience", "default": "all", "options": [ { "value": "all", "label": "Everyone" }, { "value": "guests", "label": "Guests" }, { "value": "members", "label": "Members" } ] }
       ]
     },
     {

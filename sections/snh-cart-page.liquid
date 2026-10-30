@@ -64,6 +64,7 @@
     {%- capture promos -%}{%- render 'snh-app-promos', blocks: section.blocks, tier: tier, goal: goal, goal2: goal2, sport: sport, diet: diet, recent: '', sid: section.id -%}{%- endcapture -%}
     {%- if promos != blank -%}<div class="scp__offers">{{ promos }}</div>{%- endif -%}
 
+    <div data-campaign-slot="cart" hidden></div>
     <div class="scp__grid" data-cart-root data-mode="page">
       {%- render 'snh-cart-cfg', threshold: s.free_shipping_threshold, tolerance: s.free_delivery_tolerance, addons: s.addons.handle, bestsellers: s.bestsellers.handle, rating: s.rating, page: true, picks_products: s.picks_products, show_sugg: s.show_gap_picks -%}
       <div class="scp__main">

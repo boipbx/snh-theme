@@ -22,6 +22,7 @@
       <button type="button" is="close-button" class="scd__x" aria-label="Close basket">{% render 'snh-v2-icon', name: 'close' %}</button>
     </header>
     <div class="scd__bar" data-cart-bar></div>
+    <div data-campaign-slot="cart" hidden></div>
     <div class="scd__body" data-cart-body>
       {%- if cart.item_count == 0 -%}
         <div class="scd__empty"><p class="scd__empty-h">Your basket is empty</p><p>Add your favourites and they'll appear here instantly.</p><a class="v-btn v-btn--accent" href="{{ section.settings.empty_cart_link | default: routes.all_products_collection_url }}"><span>Start shopping</span></a></div>

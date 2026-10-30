@@ -1,0 +1,18 @@
+{
+  "type": "custom.campaigns",
+  "name": "Campaigns",
+  "sections": {
+    "campaigns": {
+      "type": "snh-campaigns",
+      "settings": {
+        "metaobject_type": "site_campaign",
+        "popup_delay": 6
+      },
+      "blocks": {},
+      "block_order": []
+    }
+  },
+  "order": [
+    "campaigns"
+  ]
+}

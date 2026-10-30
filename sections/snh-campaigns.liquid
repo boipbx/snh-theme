@@ -1,0 +1,99 @@
+{%- comment -%}
+  SNH campaigns (Round 12): one campaign layer the team runs without code. Sources, merged:
+  1. "Site campaign" metaobject entries (type handle in the setting below, default site_campaign; CAMPAIGNS.md),
+  2. this section's Campaign blocks (Customize → Campaigns), the same fields.
+  Printed as JSON; assets/snh-campaigns.js keeps the ones live right now (start/end, checked in the browser, so cached
+  pages still switch on time), on this page type, for this visitor (all / guests / members / a tier), highest priority
+  first, and renders: announcement bar items (into the header's orange bar, with their colour), a promo popup
+  (frequency-capped, never on the same page view as the email popup), a homepage banner and a cart banner.
+  Dates: "2026-11-01 08:00" (shop time, Sri Lanka). Empty start = live now; empty end = no end.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign mo = s.metaobject_type | default: 'site_campaign' | strip
+  assign t = customer.metafields.custom.loyalty_tier.value | downcase
+  assign tier = ''
+  if customer
+    assign tier = 'bronze'
+    if t == 'silver'
+      assign tier = 'silver'
+    elsif t == 'gold' or t == 'maxed out'
+      assign tier = 'gold'
+    endif
+  endif
+  assign entries = shop.metaobjects[mo].values
+-%}
+<script type="application/json" data-campaigns>{
+  "ctx": {"page": {{ request.page_type | json }}, "member": {% if customer %}true{% else %}false{% endif %}, "tier": {{ tier | json }}, "path": {{ request.path | json }}},
+  "delay": {{ s.popup_delay | default: 6 }},
+  "list": [
+    {%- assign first = true -%}
+    {%- for e in entries -%}
+      {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+      {"id": {{ 'mo-' | append: e.system.handle | json }}, "src": "metaobject", "name": {{ e.name.value | json }}, "type": {{ e.type.value | default: 'announcement' | downcase | json }},
+       "heading": {{ e.heading.value | json }}, "message": {{ e.message.value | json }}, "tag": {{ e.tag.value | json }},
+       "img": {% if e.image_desktop.value %}{{ e.image_desktop.value | image_url: width: 1600 | json }}{% else %}""{% endif %}, "imgM": {% if e.image_mobile.value %}{{ e.image_mobile.value | image_url: width: 800 | json }}{% else %}""{% endif %},
+       "cta": {{ e.cta_text.value | json }}, "link": {{ e.cta_link.value | default: '' | json }}, "code": {{ e.discount_code.value | strip | json }},
+       "start": {% if e.start_at.value %}{{ e.start_at.value | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %}, "end": {% if e.end_at.value %}{{ e.end_at.value | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %},
+       "pages": {{ e.target_pages.value | default: 'all' | downcase | json }}, "audience": {{ e.audience.value | default: 'all' | downcase | json }}, "priority": {{ e.priority.value | default: 0 }},
+       "tone": {{ e.tone.value | default: 'orange' | downcase | json }}, "freq": {{ e.frequency.value | default: 'day' | downcase | json }}}
+    {%- endfor -%}
+    {%- for b in section.blocks -%}
+      {%- assign bs = b.settings -%}
+      {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+      {"id": {{ 'blk-' | append: b.id | json }}, "src": "block", "name": {{ bs.name | json }}, "type": {{ bs.type | json }},
+       "heading": {{ bs.heading | json }}, "message": {{ bs.message | json }}, "tag": {{ bs.tag | json }},
+       "img": {% if bs.image %}{{ bs.image | image_url: width: 1600 | json }}{% else %}""{% endif %}, "imgM": {% if bs.image_mobile %}{{ bs.image_mobile | image_url: width: 800 | json }}{% else %}""{% endif %},
+       "cta": {{ bs.cta | json }}, "link": {{ bs.link | default: '' | json }}, "code": {{ bs.code | strip | json }},
+       "start": {% if bs.start != blank %}{{ bs.start | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %}, "end": {% if bs.end != blank %}{{ bs.end | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %},
+       "pages": {{ bs.pages | json }}, "audience": {{ bs.audience | json }}, "priority": {{ bs.priority | default: 0 }}, "tone": {{ bs.tone | json }}, "freq": {{ bs.freq | json }}}
+    {%- endfor -%}
+  ]
+}</script>
+{%- comment -%} always loaded (small): it also schedules the header's own Announcement blocks {%- endcomment -%}
+<script src="{{ 'snh-campaigns.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "SNH campaigns",
+  "class": "snh-sec snh-sec--campaigns",
+  "settings": [
+    { "type": "paragraph", "content": "Scheduled announcements, promo popups, homepage and cart banners. Each one appears at its start and disappears at its end by itself. How to run an offer end to end: CAMPAIGNS.md in the theme repo." },
+    { "type": "text", "id": "metaobject_type", "label": "Metaobject type", "default": "site_campaign", "info": "Entries of this metaobject are read too (Content → Metaobjects → Site campaign)." },
+    { "type": "range", "id": "popup_delay", "label": "Promo popup after", "min": 0, "max": 30, "step": 1, "unit": "s", "default": 6 }
+  ],
+  "blocks": [
+    {
+      "type": "campaign",
+      "name": "Campaign",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name (internal)", "default": "New campaign" },
+        { "type": "select", "id": "type", "label": "Type", "default": "announcement", "options": [
+          { "value": "announcement", "label": "Announcement bar" }, { "value": "popup", "label": "Promo popup" },
+          { "value": "home_banner", "label": "Homepage banner" }, { "value": "cart_banner", "label": "Cart banner" } ] },
+        { "type": "text", "id": "tag", "label": "Tag (announcement)", "info": "e.g. New, Sale, Ends Sunday" },
+        { "type": "text", "id": "heading", "label": "Heading (popup / banner)" },
+        { "type": "text", "id": "message", "label": "Message" },
+        { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)" },
+        { "type": "text", "id": "cta", "label": "Button text" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "code", "label": "Discount code (optional)", "info": "Must already exist in Discounts. Shown with Copy and Apply." },
+        { "type": "text", "id": "start", "label": "Starts", "placeholder": "2026-11-01 08:00", "info": "Shop time. Empty = now." },
+        { "type": "text", "id": "end", "label": "Ends", "placeholder": "2026-11-03 23:59", "info": "Empty = no end." },
+        { "type": "select", "id": "pages", "label": "Pages", "default": "all", "options": [
+          { "value": "all", "label": "All pages" }, { "value": "home", "label": "Homepage" }, { "value": "collections", "label": "Collections" },
+          { "value": "products", "label": "Products" }, { "value": "cart", "label": "Cart" } ] },
+        { "type": "select", "id": "audience", "label": "Audience", "default": "all", "options": [
+          { "value": "all", "label": "Everyone" }, { "value": "guests", "label": "Guests" }, { "value": "members", "label": "Members" },
+          { "value": "bronze", "label": "Bronze members" }, { "value": "silver", "label": "Silver members" }, { "value": "gold", "label": "Gold members" } ] },
+        { "type": "number", "id": "priority", "label": "Priority", "default": 0, "info": "Higher shows first. Popups and banners show the top one only." },
+        { "type": "select", "id": "tone", "label": "Colour", "default": "orange", "options": [
+          { "value": "orange", "label": "Orange" }, { "value": "ink", "label": "Black" }, { "value": "cream", "label": "Cream" }, { "value": "green", "label": "Green" } ] },
+        { "type": "select", "id": "freq", "label": "Popup frequency", "default": "day", "options": [
+          { "value": "once", "label": "Once per visitor" }, { "value": "day", "label": "Once a day" }, { "value": "session", "label": "Once per visit" }, { "value": "always", "label": "Every page view" } ] }
+      ]
+    }
+  ]
+}
+{% endschema %}

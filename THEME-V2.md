@@ -704,3 +704,19 @@ QA (all POSTs mocked): `prototype/tools/r12-popup-qa.js` → `shots/r12/p7/popup
 session expired) while file sync kept working. QA from here on runs against the preview with
 `REAL_PW=<playwright> PW=prototype/tools/pw-preview.js DEV=https://www.sportsnutritionhub.lk` (every context gets the
 SNH Dev preview cookie; all mutations stay mocked). Restart `shopify theme dev` when convenient.
+
+### Phase 8: campaign system (CAMPAIGNS.md)
+New section group **Campaigns** (`sections/campaigns-group.json`, `{% sections 'campaigns-group' %}` in the layout)
+with `snh-campaigns`: Campaign blocks + `site_campaign` metaobject entries (definition in CAMPAIGNS.md) merged into one
+JSON list; `assets/snh-campaigns.js` keeps what is live now (in the browser, so cached pages switch on time), on this
+page type, for this visitor (guests / members / tier), by priority, and renders: announcement items in the header bar
+(own colour, tag, code), a promo popup (frequency once / day / session / always; never on the same page view as the
+welcome popup, `window.SNHPopups`), a homepage banner (under the hero) and a cart banner (`[data-campaign-slot="cart"]`
+in the drawer and cart page). Header **Announcement** blocks gained start / end / colour / audience; the bar hides when
+nothing is live and takes the shown item's colour. QA: `prototype/tools/r12-campaigns-qa.js` →
+`shots/r12/p8/campaigns.md` (past / active / future, member vs guest, page targeting, frequency cap after reload,
+welcome popup + promo popup never together). The product page's console error comes from the Amose Bundle app
+(`amose.js initializeAmoseBundle`), not the theme.
+
+**Sync note**: the dev server went unauthorized twice (30 Oct); its sync stalled with it. The Phase 8 files were pushed
+to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --only <file>` (one file per call).
