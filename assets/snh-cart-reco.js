@@ -33,6 +33,7 @@
   var NAME = { accessories: 'shaker', 'bars-snacks': 'protein snack', oats: 'oats', gels: 'gels', electrolytes: 'electrolytes', creatine: 'creatine', 'mass-gainer': 'mass gainer', 'pre-workout': 'pre-workout', 'bcaa-eaa': 'aminos', collagen: 'collagen', omega: 'omega-3', magnesium: 'magnesium', probiotics: 'probiotics', isolate: 'isolate', whey: 'whey', vitamins: 'vitamins' };
   var GOALS = { 'build-muscle': ['whey', 'isolate', 'creatine', 'mass-gainer', 'bars-snacks'], 'lose-fat': ['isolate', 'bars-snacks', 'bcaa-eaa'], endurance: ['gels', 'electrolytes', 'bars-snacks'], 'hydration-recovery': ['electrolytes', 'bcaa-eaa'], 'daily-health': ['vitamins', 'omega', 'magnesium', 'probiotics', 'collagen'], 'sport-specific': ['creatine', 'electrolytes', 'pre-workout'] };
   var DAY = 864e5;
+  var LABEL = ['close', 'restock', 'viewed', 'history', 'goal', 'complement', 'bestseller'];
 
   function detect(p) {
     var a = ((p.type || '') + ' ' + (p.title || '')).toLowerCase(), b = String(p.tags || '').toLowerCase();
@@ -102,7 +103,7 @@
       if (!fits && !bar) return ex.overCap++;
       var sc = 0, why = [];
       var add = function (n, label, key) { sc += n; why.push({ n: n, label: label, key: key }); };
-      if (comp[cat]) add(50, comp[cat] === '*' || !cartCats[comp[cat]] ? (cat === 'bars-snacks' ? 'Try a protein bar' : 'Goes with your order') : 'Goes with your ' + NAME[comp[cat]], 'complement');
+      if (comp[cat]) add(50, cat === 'bars-snacks' ? 'Try a protein bar' : comp[cat] === '*' || !cartCats[comp[cat]] ? 'Goes with your order' : 'Goes with your ' + NAME[comp[cat]], 'complement');
       if (histCat[cat] != null) add(30, 'From your usual stack', 'history');
       if (bought[p.id] != null && bought[p.id] >= 25 && bought[p.id] <= 75 && cat !== 'accessories') add(20, 'Time to restock', 'restock');
       if (goalCats.indexOf(cat) > -1) add(20, 'For your goal', 'goal');
@@ -110,12 +111,13 @@
       if (best[p.id]) add(10, cfg.member ? 'Popular with members' : 'Bestseller', 'bestseller');
       if (p.price <= 2000 * 100) add(15, '', 'low');
       if (close && fits) add(25, 'Unlocks free delivery', 'close');
-      var top = why.filter(function (w) { return w.label; }).sort(function (a, b) { return b.n - a.n; })[0];
+      // the label shoppers see: the most personal / useful reason, not the biggest score
+      var top = LABEL.map(function (k) { return why.filter(function (w) { return w.key === k; })[0]; }).filter(Boolean)[0];
       scored.push({ p: p, cat: cat, score: sc, label: top ? top.label : '', fits: fits, why: why.map(function (w) { return w.key + '+' + w.n; }).join(' ') });
     });
     scored.sort(function (a, b) { return b.score - a.score || a.p.price - b.p.price; });
     var picked = [], used = {};
-    scored.forEach(function (x) { if (picked.length >= max || used[x.cat] || !x.fits || x.score < 15) return; used[x.cat] = 1; picked.push(x); });
+    scored.forEach(function (x) { if (picked.length >= max || used[x.cat] || !x.fits || x.score < 30) return; used[x.cat] = 1; picked.push(x); });
     // always one bar / snack ≤ Rs 1,500 when one is in stock
     if (!used['bars-snacks']) {
       var b = scored.filter(function (x) { return x.cat === 'bars-snacks' && x.p.price <= 1500 * 100; })[0];

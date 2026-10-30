@@ -51,7 +51,7 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
       r.fulfill({ response: res, body: t });
     });
     await p.goto(HOST + '/' + Q, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await p.addStyleTag({ content: '[data-email-capture],dialog.ecm,.cmp-pop,#preview-bar-iframe,privacy-bar{display:none!important}' });
+    await p.addStyleTag({ content: '[data-email-capture],dialog.ecm,.cmp-pop,#preview-bar-iframe,privacy-bar{display:none!important}' }).catch(() => {});
     await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 30000 }).catch(() => {});
     await p.evaluate(() => window.SNHCart.open());
     await p.waitForFunction(() => { const r = document.querySelector('#cart-drawer [data-cart-root]'); return r && r.hasAttribute('data-cart-decision'); }, null, { timeout: 30000 }).catch(() => {});
