@@ -589,3 +589,14 @@ time 1,378 → 284 ms. CLS ≤ 0.016. **Still slow on slow 4G** (homepage LCP �
 mostly Impact's `theme.css`/`theme.js` (~450 KB), app scripts (Hextom, Appstle, Shopify's own trekkie / perf-kit,
 ~400 KB) and 17 homepage sections' images. Next steps for you: drop apps you don't use, and fewer homepage sections.
 Open: `running.jpg` (homepage) is only 1,200px wide at the source; upload a 2,400px version for sharp desktops.
+
+### Round 11, phase 10: QA + review gate
+
+| check | result |
+|---|---|
+| Side-by-sides OLD vs NEW | `prototype/shots/r11/sbs/`: card, filters, Shop the Look and cart drawer at 390 and 1440 (`prototype/tools/r11-sbs.js`) |
+| Audit | home, collection, search, PDP, cart, 404, contact-us, snh-elite at 390/768/1440: type 0 · padding 0 · alignment 0 (`shots/r11/p10`, `p10-pages`) |
+| Cart (mocked) | drawer `shots/r11/p6`, page `shots/r11/p7`: gap Rs 1,500 / Rs 3,000 / unlocked, member vs guest |
+| Media | SiS video plays (Chrome desktop + iPhone emulation), TikTok 6s fallback, Instagram live / expired / no-token paths, capture capping: verified in phases 5 and 8 |
+| 404 | Impact's 404 (outlined "404", 320px padding) replaced by a v2 page: search + range shortcuts (blocks) |
+| Removed | `templates/page.tiktok-qa.json` (dev-only) |
