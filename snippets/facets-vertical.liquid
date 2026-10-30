@@ -351,7 +351,9 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
   facet-floating-filter, .facets__floating-filter { display: none !important; }
   /* Round 13: Impact's grid kept a 48px top margin + a 32px row for its hidden toolbar under our bar: the bar's own 24px is the only gap */
   .collection { margin-top: 0 !important; row-gap: 0 !important; }
-  .snh-bar { display: grid; margin-block-end: 24px; background: var(--white, #fff); }
+  .snh-bar { display: grid; margin-block-end: 0; background: var(--white, #fff); }
+  /* Round 13: the 24px under the bar sits outside the sticky form, so the pinned bar has no white band */
+  .snh-bar-form { margin-block-end: 24px; }
   .snh-bar > * { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }
   .snh-brands { padding-inline: 0; }
   .snh-brands__rail { padding-inline: var(--snh-pad-l, 0px) var(--snh-pad-r, 0px); }

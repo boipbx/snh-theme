@@ -154,6 +154,10 @@
   endif
   if sub == blank
     assign sub = product.type
+    assign up_t = sub | upcase
+    if up_t == sub
+      assign sub = sub | downcase | capitalize
+    endif
   endif
   capture txt
     echo product.title | append: ' ' | append: v.title
@@ -228,7 +232,7 @@
     </div>
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
     <h3 class="pc__name"><a href="{{ product.url }}" title="{{ title_full }}">{{ short | strip }}</a></h3>
-    <p class="pc__sub">{{ sub | escape }}{% if per > 0 %}<span class="pc__per"> · {{ per | money_without_trailing_zeros | remove: ' ' }}/serving</span>{% endif %}</p>
+    <p class="pc__sub">{{ sub | escape }}{% if per > 0 %} · <span class="pc__per">{{ per | money_without_trailing_zeros }}/serving</span>{% endif %}</p>
     <div class="pc__foot">
       <p class="pc__price{% if saving > 0 %} pc__price--sale{% endif %}">
         <span class="pc__now">{% if product.price_varies %}<span class="pc__from">From </span>{% endif %}{{ product.price | money_without_trailing_zeros }}</span>

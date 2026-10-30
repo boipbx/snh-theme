@@ -2108,10 +2108,10 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .pc__top { height: 18px; }
 .pc__brand { letter-spacing: .08em; }
 .pc__name { height: 48px; margin-top: 6px; }
-.pc__sub { height: 20px; margin-top: 2px; white-space: normal; text-overflow: clip; display: flex; flex-wrap: wrap; column-gap: 0; overflow: hidden; }
+.pc__sub { height: 20px; margin-top: 2px; white-space: normal; text-overflow: clip; overflow: hidden; }
 .pc__per { white-space: nowrap; }
-.pc__foot { display: grid; justify-content: stretch; gap: 2px; margin-top: auto; padding-top: 12px; }
-.pc__price { flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 0 8px; min-height: 0; padding: 0; border-radius: 0; background: none; }
+.pc__foot { display: grid; justify-items: start; text-align: left; gap: 2px; margin-top: auto; padding-top: 12px; }
+.pc__price { flex-direction: row; justify-content: flex-start; align-items: baseline; flex-wrap: wrap; gap: 0 8px; min-height: 0; padding: 0; border-radius: 0; background: none; }
 .pc__price--sale { background: none; }
 .pc__now { font: 700 18px/1.3 var(--sans); }
 .pc__koko { height: 18px; margin: 0; overflow: hidden; font: 400 12px/1.5 var(--sans); white-space: nowrap; text-overflow: clip; color: var(--grey-2); }
