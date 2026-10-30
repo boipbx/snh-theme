@@ -80,9 +80,9 @@
     max-width: 880px;
     margin: 0;
     color: var(--snh-ink);
-    font-size: clamp(2.45rem, 5.9vw, 5.65rem);
-    line-height: 0.96;
-    letter-spacing: -0.052em;
+    font-size: var(--t-h1, 36px);   /* Round 13: on the v2 type scale */
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     font-weight: 850;
     text-wrap: balance;
     animation: snhFadeUp 0.8s 0.08s cubic-bezier(.2,.8,.2,1) both;
@@ -91,8 +91,8 @@
   #shopify-section-{{ section.id }} .snh-journal-copy {
     max-width: 545px;
     color: var(--snh-muted);
-    font-size: clamp(1rem, 1.18vw, 1.14rem);
-    line-height: 1.74;
+    font-size: 16px;
+    line-height: 1.5;
     font-weight: 560;
     animation: snhFadeUp 0.8s 0.16s cubic-bezier(.2,.8,.2,1) both;
   }
@@ -327,9 +327,9 @@
   #shopify-section-{{ section.id }} .snh-article-title {
     margin: 0;
     color: var(--snh-ink);
-    font-size: clamp(1.32rem, 1.55vw, 1.75rem);
-    line-height: 1.12;
-    letter-spacing: -0.032em;
+    font-size: var(--t-h4, 20px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     font-weight: 820;
     text-wrap: balance;
   }
@@ -340,7 +340,7 @@
     overflow: hidden;
     color: var(--snh-muted);
     font-size: 15px;
-    line-height: 1.64;
+    line-height: 1.5;
     font-weight: 480;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -374,9 +374,9 @@
   }
 
   #shopify-section-{{ section.id }} .snh-article--featured .snh-article-title {
-    font-size: clamp(2.05rem, 3.65vw, 3.85rem);
-    line-height: 1;
-    letter-spacing: -0.048em;
+    font-size: var(--t-h2, 28px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     font-weight: 840;
   }
 
@@ -384,7 +384,7 @@
     max-width: 590px;
     margin-top: 18px;
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.5;
     -webkit-line-clamp: 4;
   }
 
