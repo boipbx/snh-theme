@@ -780,3 +780,26 @@ to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --o
 - Sticky filter bar: stays under the header at 390 / 768 / 1440 until the footer.
 - Audit (`r11-audit.js`, ROUND=r12, `shots/r12/qa-audit/`): type 0, alignment 0, padding 3 = the full-bleed login
   split (`main` 0/0 by design).
+
+## Round 13: launch-ready
+
+1. **Cart recommendations** (`assets/snh-cart-reco.js`, `snippets/snh-cart-reco.liquid`, Theme settings → SNH cart
+   suggestions → Smart recommendations). Categories from type / title / tags (creatine, whey, isolate, mass-gainer,
+   pre-workout, bcaa-eaa, electrolytes, gels, bars-snacks, oats, vitamins, omega, magnesium, probiotics, collagen,
+   accessories). Candidates: the complement categories' collections (editable map), the bars collections, Shopify
+   recommendations, bestsellers, recently viewed (`snh_rv`). Score: complement +50, bundle +40 (shown as the bundle
+   card instead), category bought before +30, restock due +20, goal +20, viewed +20, bestseller +10, ≤ Rs 2,000 +15;
+   min 30 to show; one per category; max 3; always one bar/snack ≤ Rs 1,500. Small gap → gap closers (gap … gap +
+   Rs 1,500); otherwise round caps Rs 1,500 / 2,000 / 3,000. Members: last 10 orders + goal tag printed in the cart
+   JSON. QA: `prototype/tools/r13-reco-qa.js` → `shots/r13/1/reco.md`.
+2. **Drawer / cart footer**: Koko line with the logo, Visa / Mastercard / Amex + Cash on delivery + Bank transfer (Koko
+   no longer repeated in the logo row), bundle mini-card (not a collapsed row), "under Rs X" cap label.
+3. **Collections**: full-bleed hero at the image's own ratio (mobile image + ratio), title + count over a gradient
+   (artwork banners: under the image); filter bar on the live `--header-height`; header falls back to fixed if
+   sticky fails; Impact's floating "Filter and sort" removed; no 80px gap above the grid.
+4. **Product card** (compact): round "+" on the image, brand · rating, 2-line name, "N flavours · Rs X/serving",
+   price + compare-at, Koko under it, points on desktop hover. Names/brands are word-clamped (never cut mid-word).
+   QA: `r13-card-qa.js`.
+5. **TikTok**: `@app` block slot (an installed feed app replaces the manual row); 6 seeded videos render.
+6. **Sweep**: SEO (titles, descriptions, structured data once), accessibility (accent #BF4512 for AA, zoom allowed,
+   labels), brand logos from Files (no 404s), SiS video deferred, type on the scale. LAUNCH.md has the checklist.
