@@ -7,7 +7,7 @@ const URL0 = 'https://sports-nutrition-hub.myshopify.com' + PATH + (PATH.include
   while (Date.now() - t0 < MIN * 60000) {
     try {
       const res = await p.request.get(URL0); let body = await res.text(), hit;
-      if (NEEDLE.startsWith('asset:')) { const [, f, ...rest] = NEEDLE.split(':'); const m = body.match(new RegExp('[^"\']*/assets/' + f.replace('.', '\\.') + '\\?v=[^"\']*')); hit = m && (await (await p.request.get(m[0].startsWith('//') ? 'https:' + m[0] : m[0])).text()).includes(rest.join(':')); }
+      if (NEEDLE.startsWith('asset:')) { const [, f, ...rest] = NEEDLE.split(':'); const m = body.match(new RegExp('[^"\'\\s]*/assets/' + f.replace(/\./g, '\\.') + '[^"\'\\s]*')); hit = m && (await (await p.request.get(m[0].startsWith('//') ? 'https:' + m[0] : m[0])).text()).includes(rest.join(':')); }
       else hit = body.includes(NEEDLE);
       if (hit) { console.log('live after', Math.round((Date.now() - t0) / 1000) + 's'); await b.close(); return; }
     } catch (e) {}

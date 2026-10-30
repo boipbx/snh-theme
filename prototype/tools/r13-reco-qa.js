@@ -21,7 +21,12 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
 (async () => {
   const b = await chromium.launch();
   const c0 = await b.newContext(), p0 = await c0.newPage(), P = {};
-  for (const [k, h] of Object.entries(H)) P[k] = await (await p0.request.get(`${HOST}/products/${h}.js`)).json();
+  const FIX = path.join(OUT, 'fixtures.json');   // cached: the store rate-limits bursts of JSON requests
+  if (fs.existsSync(FIX)) Object.assign(P, JSON.parse(fs.readFileSync(FIX, 'utf8')));
+  for (const [k, h] of Object.entries(H)) for (let i = 0; !P[k] && i < 6; i++) {
+    try { P[k] = await (await p0.request.get(`${HOST}/products/${h}.js`)).json(); } catch (e) { await new Promise((r) => setTimeout(r, 10000 * (i + 1))); }
+  }
+  fs.writeFileSync(FIX, JSON.stringify(P));
   await c0.close();
   const SCEN = [
     ['creatine only', () => cartOf([line(P.crea, 1)])],
@@ -50,7 +55,10 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
         .replace(/(<script type="application\/json" data-cart-reco>)([\s\S]*?)(<\/script>)/, (m, a, j, c) => { const d = JSON.parse(j); d.history = opt.history; d.goal = opt.goal; return a + JSON.stringify(d) + c; });
       r.fulfill({ response: res, body: t });
     });
-    await p.goto(HOST + '/' + Q, { waitUntil: 'domcontentloaded', timeout: 90000 });
+    for (let i = 0; i < 3; i++) {   // the preview is sometimes slow: retry until the cart script is up
+      await p.goto(HOST + '/' + Q, { waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => {});
+      if (await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 45000 }).then(() => true, () => false)) break;
+    }
     await p.addStyleTag({ content: '[data-email-capture],dialog.ecm,.cmp-pop,#preview-bar-iframe,privacy-bar{display:none!important}' }).catch(() => {});
     await p.waitForFunction(() => window.SNHCart && window.SNHCart.carts.length, null, { timeout: 30000 }).catch(() => {});
     await p.evaluate(() => window.SNHCart.open());
@@ -64,6 +72,7 @@ function cartOf(items) { const sub = items.reduce((s, i) => s + i.final_line_pri
     rows.push({ name, w, sub: cart.total_price / 100, ...m, errs });
     console.log(w, name, '→', m.head, '|', m.cards.join(' ; '), errs.length ? '| ERR ' + errs.join(';') : '');
     await ctx.close();
+    await new Promise((r) => setTimeout(r, +(process.env.PAUSE || 4000)));
   }
   const md = ['# Round 13 cart recommendations (mocked carts, drawer)', '', '| basket | width | subtotal | rule | heading | suggestions (name · price · reason) | why (engine) |', '|---|---|---|---|---|---|---|'];
   rows.forEach((r) => md.push(`| ${r.name} | ${r.w} | Rs ${r.sub.toLocaleString('en-US')} | ${r.d.rule || ''} | ${r.head} | ${r.cards.join('<br>')} | ${(r.d.picked || []).map((x) => x.replace(/\|/g, '/')).join('<br>')} |`));
