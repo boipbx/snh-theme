@@ -78,7 +78,7 @@
             -%}
             <li class="hs__item hpc" data-spot="{{ forloop.index0 }}" data-earn="{{ pts_i | money_without_trailing_zeros }}">
               <span class="hs__n">{{ forloop.index }}</span>
-              <a class="hs__img" href="{{ p.url }}" tabindex="-1"><span class="card__img">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: width: 150, height: 150, loading: 'lazy', alt: '', data-v2-lift: '' }}{%- endif -%}</span></a>
+              <a class="hs__img" href="{{ p.url }}" tabindex="-1" aria-label="{{ p.title | escape }}"><span class="card__img">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: width: 150, height: 150, loading: 'lazy', alt: '', data-v2-lift: '' }}{%- endif -%}</span></a>
               <span class="hs__info">
                 <span class="hpc__brand">{{ p.vendor | escape }}</span>
                 <a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a>

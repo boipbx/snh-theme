@@ -10,7 +10,9 @@
   <div class="v-wrap">
     <div class="head"><div class="head__text">
       {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
-      <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
+      {%- comment -%} Round 13: the page's h1 when this is the first section (e.g. Our story) {%- endcomment -%}
+      {%- if section.index == 1 -%}{%- assign htag = 'h1' -%}{%- else -%}{%- assign htag = 'h2' -%}{%- endif -%}
+      <{{ htag }} class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: s.heading %}</{{ htag }}>
       {%- if s.lead != blank -%}<p class="lead">{{ s.lead | escape }}</p>{%- endif -%}
     </div></div>
     <ol class="stp__list{% if s.layout == 'timeline' %} stp__list--tl{% endif %}" role="list">

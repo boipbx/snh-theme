@@ -182,32 +182,30 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
               {%- if fv.count == 0 and fv.active == false -%}{%- continue -%}{%- endif -%}
               {%- liquid
                 assign bh = fv.label | handleize
-                assign cdn = 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/'
+                # Round 13: the logo is looked up in Files on the server (no guessed URLs, so no 404s in the console):
+                # <brand>-logo.webp, else .png, else the brand collection's image, else the name as text
                 assign webp = bh | append: '-logo.webp'
                 assign png = bh | append: '-logo.png'
-                assign logo_src = cdn | append: webp
-                assign fallbacks = cdn | append: png
-                assign alt_webp = webp | file_url
-                assign alt_png = png | file_url
-                if alt_webp != blank
-                  assign fallbacks = fallbacks | append: '|' | append: alt_webp
-                endif
-                if alt_png != blank
-                  assign fallbacks = fallbacks | append: '|' | append: alt_png
-                endif
-                assign bcol = collections[bh]
-                if bcol.image != blank
-                  assign col_img = bcol.image | image_url: width: 320
-                  assign fallbacks = fallbacks | append: '|' | append: col_img
+                assign logo_src = ''
+                if images[webp] != blank
+                  assign logo_src = images[webp] | image_url: width: 240
+                elsif images[png] != blank
+                  assign logo_src = images[png] | image_url: width: 240
+                else
+                  assign bcol = collections[bh]
+                  if bcol.image != blank
+                    assign logo_src = bcol.image | image_url: width: 320
+                  endif
                 endif
               -%}
               <label class="snh-brand{% if fv.active %} is-on{% endif %}" data-snh-tag data-snh-label="{{ fv.label | downcase | escape }}">
                 <input class="snh-brand__input" type="checkbox" name="{{ fv.param_name }}" value="{{ fv.value }}" {% if fv.active %}checked{% endif %}>
                 <span class="snh-brand__face">
-                  <span class="snh-brand__plate">
-                    <img src="{{ logo_src }}" alt="{{ fv.label | escape }}" loading="lazy" decoding="async"
-                         data-snh-alts="{{ fallbacks | escape }}"
+                  <span class="snh-brand__plate{% if logo_src == blank %} is-text{% endif %}">
+                    {%- if logo_src != blank -%}
+                    <img src="{{ logo_src }}" alt="{{ fv.label | escape }}" loading="lazy" decoding="async" width="120" height="40"
                          onerror="window.__snhLogoFallback &amp;&amp; window.__snhLogoFallback(this)">
+                    {%- endif -%}
                     <em>{{ fv.label }}</em>
                   </span>
                 </span>

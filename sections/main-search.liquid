@@ -31,7 +31,7 @@
     <div class="v-stack gap-6 sm:gap-12">
       <div class="search-input">
         <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.general.search_placeholder' | t }}" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="{{ 'search.general.title' | t | escape }}">
-        <button type="submit">{%- render 'icon' with 'search' -%}</button>
+        <button type="submit" aria-label="{{ 'search.general.title' | t | default: 'Search' }}">{%- render 'icon' with 'search' -%}</button>
       </div>
 
       {%- unless search.results_count > 0 -%}

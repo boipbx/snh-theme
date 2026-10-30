@@ -388,13 +388,13 @@
   };
   // compact carousel card: image, name, price, +
   Cart.prototype.card = function (p, why) {
-    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1">' + (p.image ? '<img src="' + esc(img(p.image, 200)) + '" alt="" width="96" height="96" loading="lazy">' : '') + '</a>' +
+    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 200)) + '" alt="" width="96" height="96" loading="lazy">' : '') + '</a>' +
       '<a class="ssug__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a>' +
       '<span class="ssug__f"><span class="ssug__p">' + rs(p.price) + (why ? '<i>' + esc(why) + '</i>' : '') + '</span>' +
       (p.multi ? '<a class="ssug__add" href="' + esc(p.url) + '" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</a>' : '<button type="button" class="ssug__add" data-add="' + p.vid + '" aria-label="Add ' + esc(p.title) + ' to basket, ' + rs(p.price) + '">' + icons.plus + '</button>') + '</span></li>';
   };
   Cart.prototype.mini = function (p, helper) {
-    return '<li class="smini"><a class="smini__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1">' + (p.image ? '<img src="' + esc(img(p.image, 160)) + '" alt="" width="64" height="64" loading="lazy">' : '') + '</a>' +
+    return '<li class="smini"><a class="smini__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 160)) + '" alt="" width="64" height="64" loading="lazy">' : '') + '</a>' +
       '<span class="smini__b"><a class="smini__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a><span class="smini__p">' + rs(p.price) + (helper ? ' · <i>' + esc(helper) + '</i>' : '') + '</span></span>' +
       (p.multi ? '<a class="smini__add" href="' + esc(p.url) + '" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</a>' : '<button type="button" class="smini__add" data-add="' + p.vid + '" aria-label="Add ' + esc(p.title) + ' to basket">' + icons.plus + '</button>') + '</li>';
   };
