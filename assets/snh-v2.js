@@ -646,7 +646,9 @@
     $$('.hero__arrow', hero).forEach(function (a) { a.addEventListener('click', function () { show(i + Number(a.getAttribute('data-dir'))); }); });
     // Round 12: the slides wait for the shopper's first interaction (scroll, tap, key, pointer), so slide 2 neither
     // downloads nor paints during page load (it was being counted as the LCP, 31.8s on slow 4G)
-    var hold = { hover: false, focus: false, hidden: false, off: false, editor: false, idle: !window.Shopify || !Shopify.designMode };
+    // Round 13: 'off' until the observer has seen the section, so a video slide far down the page (SiS, 3 MB) doesn't
+    // attach its source during page load
+    var hold = { hover: false, focus: false, hidden: false, off: 'IntersectionObserver' in window, editor: false, idle: !window.Shopify || !Shopify.designMode };
     (function () { var ev = ['pointerdown', 'keydown', 'touchstart', 'scroll', 'mousemove']; function go() { if (!hold.idle) return; hold.idle = false; ev.forEach(function (e) { removeEventListener(e, go); }); wake(slides[(i + 1) % slides.length]); sync(); } ev.forEach(function (e) { addEventListener(e, go, { passive: true }); }); })();
     function sync() {
       var p = reduce || !autoplay || hold.hover || hold.focus || hold.hidden || hold.off || hold.editor || hold.idle;
