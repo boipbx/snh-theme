@@ -1,5 +1,5 @@
 /* SNH campaigns (Round 12): promo popup + homepage / cart banners, loaded by assets/snh-campaigns.js only when one is live */
-.cmp-tone--orange { --c-bg: #E0521C; --c-ink: #FFFFFF; } .cmp-tone--ink { --c-bg: #0C0C0D; --c-ink: #FFFFFF; }
+.cmp-tone--orange { --c-bg: #BF4512; --c-ink: #FFFFFF; } .cmp-tone--ink { --c-bg: #0C0C0D; --c-ink: #FFFFFF; }
 .cmp-tone--cream { --c-bg: #F5F2EC; --c-ink: #0C0C0D; } .cmp-tone--green { --c-bg: #14532D; --c-ink: #FFFFFF; }
 .cmp__code { display: inline-flex; align-items: center; gap: 8px; padding: 4px 4px 4px 12px; border: 1px dashed currentColor; border-radius: 12px; }
 .cmp__code code { font: 600 16px/1.5 var(--sans); letter-spacing: .06em; }

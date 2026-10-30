@@ -299,7 +299,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
       {%- if show_sort_by -%}
         {%- assign selected_sort_by = results.sort_by | default: results.default_sort_by -%}
         <label class="snh-sort">
-          <select name="sort_by">
+          <select name="sort_by" aria-label="Sort by">
             {%- for option in results.sort_options -%}
               {%- if option.name != blank -%}
                 <option value="{{ option.value }}" {% if option.value == selected_sort_by %}selected{% endif %}>{{ option.name }}</option>

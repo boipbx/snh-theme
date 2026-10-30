@@ -53,8 +53,8 @@
 .ep2__range-ends { display: flex; justify-content: space-between; margin-top: -12px; font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
 .ep2__out { display: grid; gap: 12px; margin: 0; }
 .ep2__out > div { display: grid; gap: 4px; padding: 16px; border-radius: 12px; background: var(--cream); }
-.ep2__out dt { font: 500 13px/1.5 var(--sans); color: var(--grey-1); }
-.ep2__out dd { margin: 0; font: 600 var(--t-h3)/1.1 var(--sans); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.ep2__out .ep2__dt { margin: 0;  font: 500 13px/1.5 var(--sans); color: var(--grey-1); }
+.ep2__out .ep2__dd { margin: 0; font: 600 var(--t-h3)/1.1 var(--sans); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .ep2__out span { font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
 .ep2__track { display: grid; gap: 8px; padding-top: 8px; }
 .ep2__track-bar { position: relative; height: 8px; border-radius: 4px; background: var(--cream); }

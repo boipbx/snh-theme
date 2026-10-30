@@ -227,7 +227,7 @@
     <div class="pc__top">
       <p class="pc__brand">{{ product.vendor | escape }}</p>
       {%- if r_count > 0 -%}
-        <p class="pc__rating" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="pc__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="pc__count">({{ r_count }})</span></span></p>
+        <p class="pc__rating" role="img" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="pc__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="pc__count">({{ r_count }})</span></span></p>
       {%- endif -%}
     </div>
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}

@@ -6,7 +6,7 @@
     --snh-surface: {{ section.settings.card_background | default: '#FFFFFF' }};
     --snh-ink: {{ section.settings.text_color | default: '#111318' }};
     --snh-muted: {{ section.settings.muted_text_color | default: '#626874' }};
-    --snh-orange: {{ section.settings.accent_color | default: '#FF6A00' }};
+    --snh-orange: {{ section.settings.accent_color | default: '#BF4512' }};
     --snh-border: rgba(17, 19, 24, 0.10);
     --snh-border-strong: rgba(17, 19, 24, 0.16);
     --snh-shadow: 0 18px 55px rgba(17, 19, 24, 0.08);
@@ -154,7 +154,7 @@
     background: rgba(255, 106, 0, 0.09);
   }
 
-  #shopify-section-{{ section.id }} .snh-filter li[aria-selected="true"] a,
+  #shopify-section-{{ section.id }} .snh-filter li[aria-current="page"] a,
   #shopify-section-{{ section.id }} .snh-filter a.is-selected {
     border-color: var(--snh-orange);
     background: var(--snh-orange);
@@ -579,15 +579,15 @@
       {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
         <div class="snh-filter-wrap">
           <nav class="snh-filter" aria-label="Blog categories">
-            <ul role="tablist">
-              <li role="tab" aria-selected="{% if current_tags == blank %}true{% else %}false{% endif %}">
+            <ul>
+              <li{% if current_tags == blank %} aria-current="page"{% endif %}>
                 <a href="{{ blog.url }}" class="{% if current_tags == blank %}is-selected{% endif %}">
                   All posts
                 </a>
               </li>
 
               {%- for tag in blog.all_tags -%}
-                <li role="tab" aria-selected="{% if current_tags contains tag %}true{% else %}false{% endif %}">
+                <li{% if current_tags contains tag %} aria-current="page"{% endif %}>
                   {%- if current_tags contains tag -%}
                     {{- tag | link_to_remove_tag: tag -}}
                   {%- else -%}
@@ -784,7 +784,7 @@
       "type": "color",
       "id": "accent_color",
       "label": "SNH orange",
-      "default": "#FF6A00"
+      "default": "#BF4512"
     },
     {
       "type": "color",

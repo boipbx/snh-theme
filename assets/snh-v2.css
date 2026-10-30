@@ -1,7 +1,7 @@
 /* SNH prototype — tokens and components derived from references/FINDINGS.md §6
    Huel structure (container, rhythm, 8px radius, cream tiles, pills, card anatomy)
    + Beast punch (Inter 600 headlines, max contrast, density in commerce, urgency badges)
-   + SNH #E0521C as the single accent. Mobile first. */
+   + SNH orange as the single accent (#BF4512 since Round 13: #E0521C gave white text 3.89:1, under AA). Mobile first. */
 
 /* ---------- tokens ---------- */
 :root {
@@ -13,8 +13,8 @@
   --grey-3: #A5A5A6;
   --line: rgba(12, 12, 13, .1);
   --line-dark: rgba(255, 255, 255, .14);
-  --v-accent: #E0521C;
-  --v-accent-hover: #C94816;
+  --v-accent: #BF4512;
+  --v-accent-hover: #A83A0E;
 
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --serif: "Instrument Serif", Georgia, serif;

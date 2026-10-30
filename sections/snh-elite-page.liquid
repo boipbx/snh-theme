@@ -189,11 +189,11 @@
         <label class="ep2__calc-l" for="ep-spend-{{ section.id }}">I spend about <output data-calc-spend>Rs {{ s.calc_default | default: 15000 | times: 100 | money_without_currency | remove: '.00' }}</output> a month</label>
         <input class="ep2__range" type="range" id="ep-spend-{{ section.id }}" min="{{ s.calc_min | default: 2500 }}" max="{{ s.calc_max | default: 60000 }}" step="500" value="{{ s.calc_default | default: 15000 }}" data-calc-in aria-describedby="ep-calc-out-{{ section.id }}">
         <div class="ep2__range-ends" aria-hidden="true"><span>Rs {{ s.calc_min | default: 2500 }}</span><span>Rs {{ s.calc_max | default: 60000 }}</span></div>
-        <dl class="ep2__out" id="ep-calc-out-{{ section.id }}" aria-live="polite">
-          <div><dt>Points a month</dt><dd data-calc-pm>–</dd><span data-calc-pm-note></span></div>
-          <div><dt>First {{ v[5] }} reward</dt><dd data-calc-first>–</dd><span>{{ v[3] }} welcome points included</span></div>
-          <div><dt>Tier after 12 months</dt><dd data-calc-tier>–</dd><span data-calc-tier-note></span></div>
-        </dl>
+        <div class="ep2__out" role="group" aria-label="Your estimate" id="ep-calc-out-{{ section.id }}" aria-live="polite">
+          <div><p class="ep2__dt">Points a month</p><p class="ep2__dd" data-calc-pm>–</p><span data-calc-pm-note></span></div>
+          <div><p class="ep2__dt">First {{ v[5] }} reward</p><p class="ep2__dd" data-calc-first>–</p><span>{{ v[3] }} welcome points included</span></div>
+          <div><p class="ep2__dt">Tier after 12 months</p><p class="ep2__dd" data-calc-tier>–</p><span data-calc-tier-note></span></div>
+        </div>
         <div class="ep2__track" aria-hidden="true">
           <div class="ep2__track-bar"><i data-calc-fill></i><b data-calc-you></b></div>
           <div class="ep2__track-marks">
