@@ -241,8 +241,13 @@
     if ('ResizeObserver' in window) new ResizeObserver(measure).observe(wrap);
 
     function solid() {
-      var limit = hdr.classList.contains('hdr--overlay') ? 24 : 4;
-      hdr.classList.toggle('is-solid', hdr.getBoundingClientRect().top <= 1 && window.scrollY > limit);
+      var limit = hdr.classList.contains('hdr--overlay') ? 24 : 4, top = hdr.getBoundingClientRect().top;
+      /* Round 13: if sticky ever fails (a clipping ancestor, a browser quirk) and the bar scrolls off, pin it fixed
+         until the page is back at the top, so the menu and search never disappear */
+      var bars = parseFloat(root.style.getPropertyValue('--v-bars')) || 0;
+      if (!section.classList.contains('is-pinned') && top < -1 && window.scrollY > bars) section.classList.add('is-pinned');
+      else if (section.classList.contains('is-pinned') && window.scrollY <= bars) section.classList.remove('is-pinned');
+      hdr.classList.toggle('is-solid', (top <= 1 || section.classList.contains('is-pinned')) && window.scrollY > limit);
     }
     solid();
     window.addEventListener('scroll', solid, { passive: true });

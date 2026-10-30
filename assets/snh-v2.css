@@ -2074,3 +2074,20 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .announce[data-tone="green"] { background: #14532D; }
 .announce { transition: background-color 400ms var(--ease); }
 .announce__code { font-weight: 600; letter-spacing: .06em; }
+
+/* Round 13: full-bleed collection hero (sections/main-collection): 100vw, the image's own ratio, mobile image + ratio,
+   title + count over a bottom gradient */
+.colhero--bleed { padding: 16px 0 0; }
+.colhero--bleed .colhero__crumbs { margin-bottom: 16px; }
+.colhero__media { position: relative; width: 100%; aspect-ratio: var(--ar-m); background: var(--cream); overflow: hidden; }
+@media (min-width: 768px) { .colhero__media { aspect-ratio: var(--ar); } }
+.colhero--bleed .colhero__pic, .colhero--bleed .colhero__pic img { display: block; width: 100%; height: 100%; }
+.colhero--bleed .colhero__pic img { object-fit: contain; max-height: none; }
+.colhero--bleed .colhero__shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(12, 12, 13, .72) 0%, rgba(12, 12, 13, .3) 28%, rgba(12, 12, 13, 0) 50%); pointer-events: none; }
+.colhero__over { position: absolute; inset: auto 0 0; display: grid; justify-items: start; gap: 4px; padding-block: 0 20px; }
+.colhero--bleed .colhero__title { color: var(--white); text-shadow: 0 1px 16px rgba(12, 12, 13, .35); }
+.colhero--bleed .colhero__count { order: 0; margin: 0; color: rgba(255, 255, 255, .88); }
+.colhero__below { padding-top: 16px; }
+@media (min-width: 768px) { .colhero__over { padding-block-end: 32px; } .colhero--bleed { padding-top: 24px; } }
+.snh-hdr-sec.is-pinned { padding-bottom: var(--v-hdr, 64px); }
+.snh-hdr-sec.is-pinned .hdr { position: fixed; top: 0; left: 0; right: 0; }
