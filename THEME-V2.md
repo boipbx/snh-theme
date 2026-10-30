@@ -648,3 +648,19 @@ off screen. The rating line shows only when *Cart drawer → Rating line* is fil
   Seeded 62 templates from `main`'s slideshow banners (`prototype/theme_tools/r12_collection_heroes.py`);
   applied-nutrition (default template) gets the Applied Nutrition banner via the map. `collection.json`'s old RAW
   campaign banner was not carried. QA: `prototype/tools/r12-hero-shots.js` → `shots/r12/p4/heroes.md`.
+
+### Phase 5: TikTok, for real
+**Cause** (preview URL, network + console): nothing was blocked. No CSP on the storefront; embed.js (302 → TikTok's
+CDN), the creator embed iframe and its videos all load (200/206) as soon as the section comes near. But
+`assets/snh-social.js` started its 6s "hard limit" **at page load**: anyone who took more than 6s to scroll down got
+the box marked failed before embed.js was even requested, and the later success was ignored (`done` was already
+true), so the working embed stayed hidden under the fallback card. Console errors seen are TikTok's own telemetry
+(CORS to mon.tiktokv.com) and Shopify's shop.app frame-ancestors, both harmless. Also: TikTok's oEmbed for videos now
+returns only a player iframe (no `thumbnail_url`, no `title`), and the public cover endpoint answers 403.
+**Fix**: the limit (8s) starts when the section comes within 600px; a late answer still replaces the fallback. Video
+blocks: 6 latest posts seeded on the homepage and all 16 product templates (24–29 Oct 2026; pinned posts skipped).
+The profile page wouldn't render its grid in the automation tab after 3 tries (the tab is hidden, TikTok's page
+needs it visible), so the IDs came from TikTok's creator embed for the same account (IDs sorted by their timestamp).
+Cards show TikTok's player frame as the picture; new optional **Cover image** per block replaces it (faster).
+Captions are empty (TikTok exposes none publicly; add them in the blocks). QA on the preview, not localhost:
+`prototype/tools/r12-tiktok-qa.js` → `shots/r12/p5/tiktok.md`.

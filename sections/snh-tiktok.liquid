@@ -65,9 +65,13 @@
             assign vid = url | split: '/video/' | last | split: '/' | first
           -%}
           {%- if url contains '/video/' -%}
-            <li class="ttv" data-ttv="{{ url }}" data-id="{{ vid }}" {{ b.shopify_attributes }}>
-              <span class="ttv__thumb" data-ttv-thumb><img alt="" hidden data-ttv-img width="270" height="480" decoding="async"></span>
-              <button class="ttv__card" type="button" aria-haspopup="dialog" aria-label="Play on this page: {{ b.settings.caption | default: 'TikTok video' | escape }}">
+            <li class="ttv{% if b.settings.cover != blank %} is-loaded is-cover{% endif %}" data-ttv="{{ url }}" data-id="{{ vid }}"{% if b.settings.cover != blank %} data-ttv-cover{% endif %} {{ b.shopify_attributes }}>
+              {%- if b.settings.cover != blank -%}
+                <span class="ttv__thumb">{{ b.settings.cover | image_url: width: 540 | image_tag: loading: 'lazy', widths: '270,540', sizes: '(min-width: 1024px) 200px, 45vw', alt: '' }}</span>
+              {%- else -%}
+                <span class="ttv__thumb" data-ttv-thumb><img alt="" hidden data-ttv-img width="270" height="480" decoding="async"></span>
+              {%- endif -%}
+              <button class="ttv__card" type="button" aria-haspopup="dialog" aria-label="Play on this page: {{ b.settings.caption | default: 'TikTok video ' | append: forloop.index | escape }}">
                 <span class="ttv__shade" aria-hidden="true"></span>
                 <span class="ttv__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg></span>
                 <span class="ttv__cap"><span class="ttv__by">@{{ handle }}</span><span data-ttv-cap>{{ b.settings.caption | escape }}</span></span>
@@ -206,6 +210,12 @@
           "type": "text",
           "id": "caption",
           "label": "Caption (fallback link text)"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover",
+          "label": "Cover image (optional)",
+          "info": "TikTok's oEmbed no longer sends thumbnails, so without a cover the card shows TikTok's own player frame. A 9:16 cover loads faster."
         }
       ]
     }

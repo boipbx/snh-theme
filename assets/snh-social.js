@@ -20,20 +20,24 @@
     var boxes = [].slice.call(sec.querySelectorAll('[data-ttk-box]'));
     boxes.forEach(function (box) {
       var done = false;
-      function ok() { if (done) return; done = true; box.classList.add('is-loaded'); }
+      // a late answer still wins: the embed replaces the fallback card even after the time limit (Round 12)
+      function ok() { if (box.classList.contains('is-loaded')) return; done = true; box.classList.remove('is-failed'); box.classList.add('is-loaded'); update(sec); }
       function fail() { if (done) return; done = true; box.classList.add('is-failed'); update(sec); }
       box.__ttkOk = ok;
       box.__ttkFail = fail;
     });
   }
-  // the hard limit: started at set-up, so even a section that never gets TikTok's script shows its fallback by 6s
+  // the time limit starts when the section comes near (load), not at page load: a limit started at set-up failed
+  // every shopper who took more than 6s to scroll down, before TikTok was ever asked (Round 12 diagnosis)
   function limit(sec) {
+    if (sec.__ttkLimit) return;
+    sec.__ttkLimit = true;
     setTimeout(function () {
       [].forEach.call(sec.querySelectorAll('[data-ttk-box]'), function (box) {
         if (box.classList.contains('is-loaded')) return;
         if (box.__ttkFail) box.__ttkFail(); else { box.classList.add('is-failed'); update(sec); }
       });
-    }, 6000);
+    }, 8000);
   }
 
   /* video cards: oEmbed thumbnail + caption, lightbox player */
@@ -41,6 +45,7 @@
     [].forEach.call(sec.querySelectorAll('[data-ttv]'), function (li) {
       if (li.__ttv) return;
       li.__ttv = true;
+      if (li.hasAttribute('data-ttv-cover')) return;   // the merchant's cover image is the picture
       var url = li.getAttribute('data-ttv'), ctl = window.AbortController ? new AbortController() : null;
       var t = setTimeout(function () { if (ctl) ctl.abort(); li.classList.add('is-failed'); }, 6000);
       fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(url), ctl ? { signal: ctl.signal } : {})
@@ -98,6 +103,7 @@
   function load(sec) {
     waiting.push(sec);
     watch(sec);
+    limit(sec);
     cards(sec);
     if (!sec.querySelector('.tiktok-embed')) return;   // video cards only: no embed.js needed
     if (state === 'loading') return;
@@ -165,7 +171,6 @@
       if (sec.__ttkInit) return;
       sec.__ttkInit = true;
       watch(sec);
-      limit(sec);
       if (!('IntersectionObserver' in window)) { load(sec); return; }
       var io = new IntersectionObserver(function (es) {
         if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); load(sec); }

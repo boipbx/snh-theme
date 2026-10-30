@@ -179,7 +179,59 @@
         "videos_heading": "Featured *videos*",
         "height": 640,
         "tone": "cream"
-      }
+      },
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7702151880029261063",
+            "caption": ""
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7702062300089306386",
+            "caption": ""
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7701932315999554824",
+            "caption": ""
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7701708250663701778",
+            "caption": ""
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7700968579969142034",
+            "caption": ""
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7700514921796160776",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6"
+      ]
     }
   },
   "order": [
