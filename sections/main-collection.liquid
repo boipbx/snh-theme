@@ -216,6 +216,7 @@
               </div>
 
               <reveal-items selector=".product-list > *">
+                <h2 class="v-sr">{{ collection.title | escape }} products</h2>
                 <product-list class="product-list" role="region" aria-live="polite">
                   {%- liquid
                     # R5: on the default / best-selling / manual order, sold-out products go to the end of the page
