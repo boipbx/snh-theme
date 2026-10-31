@@ -10,6 +10,8 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function rs(c) { return 'Rs ' + Math.round(c / 100).toLocaleString('en-US'); }
   function img(u, w) { if (!u) return ''; u = u.indexOf('//') === 0 ? 'https:' + u : u; return u + (u.indexOf('?') > -1 ? '&' : '?') + 'width=' + w; }
+  // the live titles start with the vendor in capitals ("APPLIED NUTRITION Flavored Creatine…"): the brand line shows it
+  function short(t, v) { if (!v) return t; var low = t.toLowerCase(), vl = v.toLowerCase(); var r = low.indexOf(vl) === 0 ? t.slice(v.length).replace(/^\s*(nutrition)?\s+/i, '') : t; return r || t; }
   function get(h) { return cache[h] || (cache[h] = fetch(root + 'products/' + encodeURIComponent(h) + '.js', { headers: { Accept: 'application/json' } }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })); }
 
   function build() {
@@ -46,7 +48,7 @@
     var opts = p.options.length === 1 && p.variants.length === 1 && p.variants[0].title === 'Default Title' ? [] : p.options;
     b.innerHTML =
       '<div class="sqb__head"><span class="sqb__img">' + (pic ? '<img src="' + esc(img(pic, 300)) + '" alt="" width="96" height="96">' : '') + '</span>' +
-      '<div><p class="sqb__brand">' + esc(p.vendor) + '</p><p class="sqb__t" id="sqb-t">' + esc(p.title) + '</p>' +
+      '<div><p class="sqb__brand">' + esc(p.vendor) + '</p><p class="sqb__t" id="sqb-t">' + esc(short(p.title, p.vendor)) + '</p>' +
       '<p class="sqb__price"><b>' + rs(price) + '</b>' + (cmp && cmp > price ? '<s><span class="v-sr">Was </span>' + rs(cmp) + '</s>' : '') + '</p>' +
       '<p class="sqb__koko">or 3 × ' + rs(Math.ceil(price * state.qty / 3)) + ' with Koko · Cash on delivery</p></div></div>' +
       opts.map(function (o, i) {
