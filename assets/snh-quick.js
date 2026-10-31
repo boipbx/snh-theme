@@ -1,4 +1,4 @@
-/* SNH quick buy (Round 14): a variant picker sheet for multi-variant products, opened by any
+/* SNH quick buy (Round 14, v2): a variant picker sheet for multi-variant products, opened by any
    [data-v2-pick="<product handle>"] button (product cards, Shop the Look, cart suggestions). Reads /products/<handle>.js,
    shows option pills (flavour / size; combinations with no stock are struck through), price + compare-at, quantity,
    one-time vs subscribe when the product has selling plans, and adds with V2.add (assets/snh-v2.js), which opens the
