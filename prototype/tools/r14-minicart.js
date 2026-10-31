@@ -30,7 +30,7 @@ const CARTS = [
         r.fulfill({ response: res, body: t });
       });
       await open(p, '/');
-      const items = name === 'near free delivery' ? [{ id: vid('applied-nutrition-creatine-monohydrate').id, quantity: 1 }, { id: vid('sis-go-isotonic-energy-gel').id, quantity: 7 }]   /* Rs 15,492: gap Rs 1,508 */ : handles.map((h) => ({ id: vid(h).id, quantity: 1 }));
+      const items = name === 'near free delivery' ? [{ id: vid('applied-nutrition-creatine-monohydrate').id, quantity: 1 }, { id: vid('snh-shaker-bottle-750ml-orange').id, quantity: 2 }, { id: vid('sis-go-isotonic-energy-gel').id, quantity: 3 }]   /* Rs 15,494: gap Rs 1,506 (gel stock is 4, so spread it) */ : handles.map((h) => ({ id: vid(h).id, quantity: 1 }));
       let added = '';
       for (let i = 0; i < 6 && !/items [1-9]/.test(added); i++) {   // Cloudflare may challenge API bursts: wait it out
         if (i) { await p.waitForTimeout(60000); await open(p, '/'); }
