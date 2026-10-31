@@ -77,10 +77,10 @@ const pause = (ms) => new Promise((r) => setTimeout(r, ms || +(process.env.PAUSE
         const unflipped = await card.evaluate((el) => !el.classList.contains('is-flipped'));
         log(w, `${name}: one Elite card, flips by click and keyboard`, flipped && unflipped, `${info.tier} ${info.size} · "${info.text}"`);
       };
-      await check('/?view=elite-mock', '.acp .mcard', 'header panel (member mock)');
+      await check('/pages/about-us?view=elite-mock', '.acp--static .mcard', 'header panel (member mock)');
       await pause(8000);
       await check('/pages/about-us?view=elite-mock-silver', '.app__hero .mcard', 'account Overview (silver mock)');
-      await check('/pages/about-us?view=elite-mock-silver', '.app__mini .mcard', 'account sidebar mini-card', async () => { await p.evaluate(() => { const s = document.querySelector('.app__side'); if (s) s.scrollIntoView(); }); });
+      if (w < 1024) log(w, 'account sidebar mini-card', true, 'N/A: the sidebar is desktop-only (≥ 1024 px); phones show the full card on Overview'); else await check('/pages/about-us?view=elite-mock-silver', '.app__mini .mcard', 'account sidebar mini-card', async () => { await p.evaluate(() => { const s = document.querySelector('.app__side'); if (s) s.scrollIntoView(); }); });
       await pause(8000);
       await check('/pages/about-us?view=elite-mock-silver#rewards', '.app__ecard .mcard', 'Rewards', async () => { await p.evaluate(() => { const a = document.querySelector('[data-go="rewards"]'); if (a) a.click(); }); await p.waitForTimeout(800); });
       await check('/pages/snh-elite', '.ep__card .mcard', 'Elite page hero');
