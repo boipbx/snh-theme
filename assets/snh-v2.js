@@ -777,7 +777,11 @@
     }
     // Round 14: "Brand" in the condensed bar (desktop) brings the logo rail back
     document.addEventListener('click', function (e) { var tg = e.target.closest('[data-snh-brandtog]'); if (!tg) return; e.preventDefault(); var f = tg.closest('form.snh-bar-form'); var v = f.classList.toggle('show-brands'); tg.setAttribute('aria-expanded', String(v)); var r = f.querySelector('.snh-brands'); if (v) { f.__mb = f.style.marginBottom; f.style.marginBottom = Math.max(0, parseFloat(f.__mb || 0) - (r ? r.getBoundingClientRect().height : 0)) + 'px'; } else if (f.__mb != null) { f.style.marginBottom = f.__mb; } });
-    measure(); addEventListener('resize', measure);
+    // re-measure once images above the bar (full-bleed hero) have their height: measured too early, the bar condensed
+    // while still in flow and left an empty gap above the grid
+    function remeasure() { if (!on) measure(); }
+    measure(); addEventListener('resize', measure); addEventListener('load', remeasure);
+    $$('.colhero img').forEach(function (im) { if (!im.complete) im.addEventListener('load', remeasure, { once: true }); });
     addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(sync); } }, { passive: true });
   })();
 
