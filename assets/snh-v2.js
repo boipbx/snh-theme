@@ -773,8 +773,10 @@
       if (on) {
         var h = 0; $$(parts, bar).forEach(function (el) { if (el.offsetParent) h += el.getBoundingClientRect().height; });
         form.classList.add('is-condensed'); form.style.marginBottom = h + 'px';
-      } else { form.classList.remove('is-condensed'); form.style.marginBottom = ''; }
+      } else { form.classList.remove('is-condensed', 'show-brands'); form.style.marginBottom = ''; var tg = form.querySelector('[data-snh-brandtog]'); if (tg) tg.setAttribute('aria-expanded', 'false'); }
     }
+    // Round 14: "Brand" in the condensed bar (desktop) brings the logo rail back
+    document.addEventListener('click', function (e) { var tg = e.target.closest('[data-snh-brandtog]'); if (!tg) return; e.preventDefault(); var f = tg.closest('form.snh-bar-form'); var v = f.classList.toggle('show-brands'); tg.setAttribute('aria-expanded', String(v)); });
     measure(); addEventListener('resize', measure);
     addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(sync); } }, { passive: true });
   })();

@@ -2273,3 +2273,9 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 form.snh-bar-form [data-snh-sheet].is-open .snh-brands.is-in-sheet { display: grid !important; border-block-end: 1px solid var(--snh-line, #e5e5e5); padding-block: 4px 12px; }
 .snh-brands.is-in-sheet::before { content: "Brand"; display: block; padding: 12px 0 8px; font-weight: 600; font-size: 16px; }
 .snh-brands.is-in-sheet .snh-brands__nudge { display: none; }
+.snh-brandtog { display: none !important; }
+@media (min-width: 1000px) {
+  form.snh-bar-form.is-condensed:has(.snh-brands) .snh-brandtog { display: inline-flex !important; }
+  form.snh-bar-form.is-condensed.show-brands .snh-bar .snh-brands { display: grid !important; }
+  .snh-brandtog[aria-expanded="true"] { background: var(--ink, #0c0c0d); color: #fff; }
+}

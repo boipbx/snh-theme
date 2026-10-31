@@ -236,6 +236,8 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     </div>
     <div class="snh-bar__row" id="snh-sheet-{{ section.id }}" data-snh-sheet role="group" aria-label="Filter and sort">
       <div class="snh-sheet__head"><p class="snh-sheet__t">Filter &amp; sort</p><button type="button" class="snh-sheet__x" data-snh-sheet-close aria-label="Close filters"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+      {%- comment -%} Round 14: desktop, condensed bar: re-show the brand logo rail (hidden to keep the sticky bar slim) {%- endcomment -%}
+      <button type="button" class="snh-drop__pill snh-brandtog" data-snh-brandtog aria-expanded="false">Brand</button>
       {%- if show_filters -%}
         {%- for filter in results.filters -%}
           {%- unless useful_list contains filter.param_name -%}{%- continue -%}{%- endunless -%}

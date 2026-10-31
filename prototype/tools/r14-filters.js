@@ -46,8 +46,14 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     const vend = pg.locator('label.snh-brand:visible:has(input[name="filter.p.vendor"]:not(:checked))');
     const v1 = await vend.nth(0).locator('input').getAttribute('value');
     await vend.nth(0).click(); await pg.waitForTimeout(2500); await pg.waitForLoadState('load').catch(() => {});
-    const v2 = await vend.nth(0).locator('input').getAttribute('value');   // the rail can change after the first pick
-    await vend.nth(0).click(); await pg.waitForTimeout(2500);
+    // phones: the page scrolls to the grid and the condensed bar hides the rail → the second brand comes from the sheet
+    if (w < 1000) { await pg.locator('.snh-mtrig__btn').click(); await pg.waitForTimeout(800); }
+    const inSheet = await pg.locator('[data-snh-sheet].is-open .snh-brands.is-in-sheet').count();
+    if (w < 1000) await pg.screenshot({ path: path.join(OUT, `filters-sheet-brands-${w}.png`) });
+    const v2 = await vend.nth(0).locator('input').getAttribute('value');
+    await vend.nth(0).click(); await pg.waitForTimeout(2500); await pg.waitForLoadState('load').catch(() => {});
+    if (w < 1000) { const go = pg.locator('.snh-sheet__go:visible'); if (await go.count()) { await go.click(); await pg.waitForTimeout(800); } }
+    if (w < 1000) log(w, 'phone sheet shows the brand rail after the first pick', inSheet > 0);
     await pg.waitForLoadState('load').catch(() => {});
     const u1 = new URL(pg.url()); const vs = u1.searchParams.getAll('filter.p.vendor');
     const n1 = await pg.evaluate(() => document.querySelectorAll('product-card').length);
