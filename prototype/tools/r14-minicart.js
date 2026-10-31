@@ -18,8 +18,8 @@ const CARTS = [
   const b = await chromium.launch();
   const P = await products(b, ['applied-nutrition-creatine-monohydrate', 'applied-nutrition-critical-whey-2kg', 'sis-go-isotonic-energy-gel', 'snh-shaker-bottle-750ml-orange']);
   const vid = (h) => (P[h].variants.find((v) => v.available) || P[h].variants[0]);
-  for (const w of [390, 1440]) {
-    for (const [name, handles, bundle] of CARTS) {
+  for (const w of (process.env.W || '390,1440').split(',').map(Number)) {
+    for (const [name, handles, bundle] of CARTS.filter((c) => !process.env.ONLY || process.env.ONLY.split('|').includes(c[0]))) {
       const ctx = await context(b, w), p = await ctx.newPage();
       if (bundle) await p.route((u) => u.pathname === '/', async (r) => {
         const res = await r.fetch(); let t = await res.text();
@@ -30,7 +30,11 @@ const CARTS = [
       });
       await open(p, '/');
       const items = name === 'near free delivery' ? [{ id: vid('applied-nutrition-creatine-monohydrate').id, quantity: Math.max(1, Math.floor(16200 / (vid('applied-nutrition-creatine-monohydrate').price / 100))) }] : handles.map((h) => ({ id: vid(h).id, quantity: 1 }));
-      const added = await p.evaluate(async (items) => { await fetch('/cart/clear.js', { method: 'POST' }); const r = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) }); const c = await (await fetch('/cart.js')).json(); return r.status + ' items ' + c.item_count; }, items);
+      let added = '';
+      for (let i = 0; i < 6 && !/items [1-9]/.test(added); i++) {   // Cloudflare may challenge API bursts: wait it out
+        if (i) { await p.waitForTimeout(60000); await open(p, '/'); }
+        added = await p.evaluate(async (items) => { try { await fetch('/cart/clear.js', { method: 'POST' }); const r = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) }); const c = JSON.parse(await (await fetch('/cart.js')).text()); return r.status + ' items ' + c.item_count; } catch (e) { return 'blocked ' + e.message.slice(0, 40); } }, items);
+      }
       if (!/items [1-9]/.test(added)) console.log('  add failed:', added, JSON.stringify(items));
       await p.evaluate(() => SNHCart.refresh(true));
       await p.waitForFunction(() => { const r = document.querySelector('#cart-drawer [data-cart-root]'); return r && r.hasAttribute('data-cart-decision'); }, null, { timeout: 40000 }).catch(() => {});
@@ -52,9 +56,10 @@ const CARTS = [
       await p.screenshot({ path: path.join(OUT, `drawer-${name.replace(/\W+/g, '-')}-${w}.png`) });
       await p.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
       await ctx.close();
-      await new Promise((r) => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, +(process.env.PAUSE || 45000)));
     }
   }
+  fs.appendFileSync(path.join(OUT, 'minicart-rows.md'), rows.join('\n') + '\n');
   fs.writeFileSync(path.join(OUT, 'minicart.md'), ['# P0.2 mini cart (real carts in the test browser)', '', '| width | cart | rule · heading | suggestions (name · price · reason) | free delivery | footer | bundle card | result |', '|---|---|---|---|---|---|---|---|', ...rows].join('\n') + '\n');
   await b.close();
 })();
