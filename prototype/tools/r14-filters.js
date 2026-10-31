@@ -44,9 +44,10 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     // brands are the logo rail above the bar on every width (outside the phone sheet)
     // two copies of the facets exist (bar + phone sheet): use the visible labels
     const vend = pg.locator('label.snh-brand:visible:has(input[name="filter.p.vendor"]:not(:checked))');
-    const v1 = await vend.nth(0).locator('input').getAttribute('value'), v2 = await vend.nth(1).locator('input').getAttribute('value');
+    const v1 = await vend.nth(0).locator('input').getAttribute('value');
     await vend.nth(0).click(); await pg.waitForTimeout(2500); await pg.waitForLoadState('load').catch(() => {});
-    await pg.locator(`label.snh-brand:visible:has(input[value="${v2}"])`).first().click(); await pg.waitForTimeout(2500);
+    const v2 = await vend.nth(0).locator('input').getAttribute('value');   // the rail can change after the first pick
+    await vend.nth(0).click(); await pg.waitForTimeout(2500);
     await pg.waitForLoadState('load').catch(() => {});
     const u1 = new URL(pg.url()); const vs = u1.searchParams.getAll('filter.p.vendor');
     const n1 = await pg.evaluate(() => document.querySelectorAll('product-card').length);

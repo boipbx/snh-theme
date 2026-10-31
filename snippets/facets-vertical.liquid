@@ -1123,6 +1123,17 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
       if (!s) return;
       s.classList.toggle('is-open', on);
       document.body.classList.toggle('snh-sheet-open', on);
+      // Round 14: the brand logo rail lives above the bar (it hides once the bar condenses on scroll), so on phones it
+      // moves into the sheet while it's open: same inputs, same form, so a second brand is one tap away.
+      var rail = document.querySelector('form.snh-bar-form .snh-brands'), head = s.querySelector('.snh-sheet__head');
+      if (rail && head) {
+        if (on && matchMedia('(max-width: 999px)').matches && rail.parentNode !== s) {
+          if (!rail.__home) { rail.__home = document.createComment('snh-brands'); rail.parentNode.insertBefore(rail.__home, rail); }
+          head.insertAdjacentElement('afterend', rail); rail.classList.add('is-in-sheet');
+        } else if (!on && rail.__home && rail.__home.parentNode) {
+          rail.__home.parentNode.insertBefore(rail, rail.__home); rail.classList.remove('is-in-sheet');
+        }
+      }
       if (b) b.setAttribute('aria-expanded', String(on));
       if (on) { var x = s.querySelector('[data-snh-sheet-close]'); if (x) x.focus({ preventScroll: true }); }
       try { sessionStorage.setItem('snh_sheet_open', on ? '1' : ''); } catch (e) {}

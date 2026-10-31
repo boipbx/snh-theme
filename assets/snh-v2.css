@@ -2268,3 +2268,8 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
   .colhero__head { align-items: center; }
 }
 #facet-form { scroll-margin-top: var(--header-height, 64px); }
+
+/* Round 14: the brand rail inside the phone "Filter & sort" sheet (moved there by facets-vertical while it's open) */
+form.snh-bar-form [data-snh-sheet].is-open .snh-brands.is-in-sheet { display: grid !important; border-block-end: 1px solid var(--snh-line, #e5e5e5); padding-block: 4px 12px; }
+.snh-brands.is-in-sheet::before { content: "Brand"; display: block; padding: 12px 0 8px; font-weight: 600; font-size: 16px; }
+.snh-brands.is-in-sheet .snh-brands__nudge { display: none; }
