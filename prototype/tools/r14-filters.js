@@ -49,7 +49,7 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     // phones: the page scrolls to the grid and the condensed bar hides the rail → the second brand comes from the sheet
     if (w < 1000) { await pg.locator('.snh-mtrig__btn').click(); await pg.waitForTimeout(800); }
     let tog = 0;
-    if (w >= 1000) { const t = pg.locator('.snh-brandtog:visible'); tog = await t.count(); if (tog) { await t.click(); await pg.waitForTimeout(600); await pg.screenshot({ path: path.join(OUT, `filters-brand-toggle-${w}.png`) }); } log(w, 'condensed bar: Brand toggle re-shows the logo rail', tog > 0 && await vend.count() > 0); }
+    if (w >= 1000) { const t = pg.locator('.snh-brandtog:visible'); tog = await t.count(); if (tog) { await t.click(); await pg.waitForTimeout(600); await pg.screenshot({ path: path.join(OUT, `filters-brand-toggle-${w}.png`) }); } log(w, 'second brand reachable after the first pick (rail in view, or Brand toggle in the condensed bar)', await vend.count() > 0, tog ? 'via the Brand toggle' : 'rail still in view (bar not condensed)'); }
     const inSheet = await pg.locator('[data-snh-sheet].is-open .snh-brands.is-in-sheet').count();
     if (w < 1000) await pg.screenshot({ path: path.join(OUT, `filters-sheet-brands-${w}.png`) });
     const v2 = await vend.nth(0).locator('input').getAttribute('value');
