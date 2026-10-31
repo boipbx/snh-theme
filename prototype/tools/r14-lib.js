@@ -17,7 +17,12 @@ async function open(p, pth, opts = {}) {
   let id = null;
   for (let i = 0; i < 6 && id !== THEME; i++) {   // a Cloudflare challenge page has no Shopify object: back off, retry
     if (i) await p.waitForTimeout(30000 * i);
-    const r = await p.goto(url(pth), { waitUntil: opts.wait || 'load', timeout: 90000 }).catch(() => null);
+    // Shopify's preview redirect keeps only the last of repeated query keys (filter.p.vendor=A&filter.p.vendor=B → B):
+    // once the preview cookie is set, go to the primary domain directly so the URL arrives intact.
+    const qs = (pth.split('?')[1] || '').split('&').map((x) => x.split('=')[0]);
+    const rep = qs.length !== new Set(qs).size;
+    if (rep && !/sportsnutritionhub\.lk/.test(p.url())) await p.goto(url('/'), { waitUntil: 'load', timeout: 90000 }).catch(() => null);
+    const r = await p.goto(rep ? 'https://www.sportsnutritionhub.lk' + pth : url(pth), { waitUntil: opts.wait || 'load', timeout: 90000 }).catch(() => null);
     if (r && r.status() === 429) continue;
     id = await p.evaluate(() => window.Shopify && Shopify.theme && Shopify.theme.id).catch(() => null);
   }

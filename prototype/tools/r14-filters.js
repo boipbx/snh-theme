@@ -15,7 +15,7 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
   // 10 combinations (the values exist on the old site's bar)
   const COMBOS = [
     '/collections/whey-protein?filter.p.vendor=Applied+Nutrition',
-    '/collections/whey-protein?filter.p.vendor=Applied+Nutrition&filter.p.vendor=MyProtein',
+    '/collections/whey-protein?filter.p.vendor=Applied+Nutrition&filter.p.vendor=MYPROTEIN',
     '/collections/whey-protein?filter.v.availability=1',
     '/collections/whey-protein?filter.v.price.gte=10000&filter.v.price.lte=20000',
     '/collections/whey-protein?filter.p.vendor=Applied+Nutrition&filter.v.availability=1&sort_by=price-ascending',
