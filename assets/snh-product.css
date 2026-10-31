@@ -174,7 +174,7 @@
 
 /* trust row */
 .sp-trust { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-.sp-trust button { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.5; color: var(--sp-muted); }
+.sp-trust button { display: inline-flex; align-items: center; min-height: 24px; gap: 8px; font-size: 13px; line-height: 1.5; color: var(--sp-muted); }
 .sp-trust button:hover { color: var(--sp-ink); }
 .sp-trust .sp-ico { color: var(--sp-ink); }
 /* phones: the three items share one row, labels wrap under their own icon column */

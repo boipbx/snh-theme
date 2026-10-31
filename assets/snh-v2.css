@@ -2287,3 +2287,5 @@ form.snh-bar-form [data-snh-sheet].is-open .snh-brands.is-in-sheet { display: gr
 .hdr__logo { min-height: 44px; display: inline-flex; align-items: center; }
 .colhero__crumbs a, .sp-crumbs a, .crumbs a, .mqd__link, .sp-eyebrow, .sp-stars, .hs__name { display: inline-flex; align-items: center; min-height: 24px; }
 .sp-line { min-height: 24px; }
+.ftr__social a { display: inline-flex; align-items: center; min-height: 24px; }
+button.seg { height: 24px !important; min-width: 24px; }   /* slider segments: 24 px tap height everywhere (the SiS strip squeezed them to 12) */
