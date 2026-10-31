@@ -30,7 +30,7 @@ const CARTS = [
         r.fulfill({ response: res, body: t });
       });
       await open(p, '/');
-      const items = name === 'near free delivery' ? [{ id: vid('applied-nutrition-creatine-monohydrate').id, quantity: Math.max(1, Math.floor(16200 / (vid('applied-nutrition-creatine-monohydrate').price / 100))) }] : handles.map((h) => ({ id: vid(h).id, quantity: 1 }));
+      const items = name === 'near free delivery' ? [{ id: vid('applied-nutrition-creatine-monohydrate').id, quantity: 1 }, { id: vid('sis-go-isotonic-energy-gel').id, quantity: 7 }]   /* Rs 15,492: gap Rs 1,508 */ : handles.map((h) => ({ id: vid(h).id, quantity: 1 }));
       let added = '';
       for (let i = 0; i < 6 && !/items [1-9]/.test(added); i++) {   // Cloudflare may challenge API bursts: wait it out
         if (i) { await p.waitForTimeout(60000); await open(p, '/'); }
@@ -53,6 +53,7 @@ const CARTS = [
       const okFoot = m.total && m.checkout && m.koko && m.cards3 === 3 && m.cod && m.bank && m.footInView;
       const ok = (bundle ? !!m.bundle : true) && okFoot && (m.cards.length > 0) && (name === 'near free delivery' ? m.d.rule === 'close' : bar);
       rows.push(`| ${w} | ${name} | ${m.d.rule} · ${m.head} | ${m.cards.map((c) => c.t + ' · Rs ' + c.p + ' · ' + c.why).join('<br>')} | ${m.bar} | ${okFoot ? 'all present' : JSON.stringify({ total: m.total, koko: m.koko, cards: m.cards3, cod: m.cod, bank: m.bank, inView: m.footInView })} | ${m.bundle || '—'} | ${ok ? 'PASS' : '**FAIL**'} |`);
+      if (!ok) console.log('DECISION', JSON.stringify(m.d).slice(0, 400));
       console.log(w, name, ok ? 'PASS' : 'FAIL', '|', m.d.rule, '|', m.cards.map((c) => c.t.slice(0, 26) + ' ' + c.p + ' ' + c.why).join(' ; '), '| foot', okFoot, '| bundle', !!m.bundle);
       await p.screenshot({ path: path.join(OUT, `drawer-${name.replace(/\W+/g, '-')}-${w}.png`) });
       await p.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
