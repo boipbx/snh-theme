@@ -132,11 +132,11 @@
       {%- endcapture -%}
       {%- unless art -%}
         <div class="colhero__shade" aria-hidden="true"></div>
-        <div class="v-wrap colhero__over">{{ hero_head }}</div>
+        <div class="v-wrap colhero__over">{{ hero_head }}<a class="colhero__jump colhero__jump--over" href="#facet-form">Shop {{ collection.products_count }} products <span aria-hidden="true">↓</span></a></div>
       {%- endunless -%}
     </div>
     {%- comment -%} artwork banners carry their own lettering: our title sits under them instead of on top {%- endcomment -%}
-    {%- if art -%}<div class="v-wrap colhero__head">{{ hero_head }}</div>{%- endif -%}
+    {%- if art -%}<div class="v-wrap colhero__head">{{ hero_head }}<a class="colhero__jump" href="#facet-form">Shop {{ collection.products_count }} products <span aria-hidden="true">↓</span></a></div>{%- endif -%}
     {%- if hero_desc != blank -%}
       <div class="v-wrap colhero__below"><div class="colhero__desc" data-v2="clamp"><div class="colhero__text v-prose">{{ collection.description }}</div>{%- if hero_desc.size > 220 -%}<button type="button" class="colhero__more" aria-expanded="false">Read more</button>{%- endif -%}</div></div>
     {%- endif -%}

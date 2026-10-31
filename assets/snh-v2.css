@@ -2260,3 +2260,11 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 @media (min-width: 1024px) { .snh-reco--pdp .ssugs, .nf .snh-reco .ssugs, .snh-reco--app .ssugs { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; } }
 /* Round 14 (parity): long mega-menu columns flow into two columns on desktop */
 @media (min-width: 1024px) { .mz__list:has(> li:nth-child(13)) { columns: 2; column-gap: 24px; } .mz__list:has(> li:nth-child(13)) > li { break-inside: avoid; } }
+/* Round 14 (CRO): phones get a "Shop N products ↓" jump in the hero title row, above the fold under tall banners */
+.colhero__jump { display: none; }
+@media (max-width: 767px) {
+  .colhero__jump { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-left: auto; padding: 0 16px; border-radius: var(--pill); background: var(--ink); color: var(--white); font: 600 14px/1.1 var(--sans); }
+  .colhero__jump--over { margin: 8px 0 0; background: var(--white); color: var(--ink); }
+  .colhero__head { align-items: center; }
+}
+#facet-form { scroll-margin-top: var(--header-height, 64px); }
