@@ -51,7 +51,27 @@ Round 14 results per item: QA-LOG.md. Parity: PARITY.md. Recommendations: RECO.m
 - Console: no theme errors. What remains is from apps or Shopify (Amose Bundle on product pages, Shop's sign-in check
   "Provider's accounts list is empty", Cloudflare's challenge script, 429s from test traffic).
 
-## Lighthouse mobile (slow 4G, 4× CPU, median of 3; `prototype/tools/r13-lighthouse.sh`)
+## Lighthouse, Round 14 (mobile + desktop, performance + accessibility; `prototype/tools/r14-lighthouse.sh`)
+Median of the runs by LCP. Mobile = Lighthouse default (slow 4G, 4x CPU); desktop = desktop preset. Runs that hit the Cloudflare challenge are dropped.
+
+| form | page | performance | accessibility | LCP | TBT | CLS | runs kept |
+|---|---|---|---|---|---|---|---|
+| mobile | home | 39 | 100 | 4.9s | 2236ms | 0.000 | 2 |
+| mobile | collection | 41 | 100 | 5.5s | 1574ms | 0.000 | 2 |
+| mobile | product | 38 | 100 | 4.9s | 1897ms | 0.000 | 2 |
+| mobile | cart | 38 | 100 | 6.1s | 1905ms | 0.077 | 2 |
+| desktop | home | 79 | 93 | 1.8s | 198ms | 0.010 | 2 |
+| desktop | collection | 83 | 99 | 1.5s | 172ms | 0.000 | 2 |
+| desktop | product | 86 | 100 | 1.4s | 115ms | 0.005 | 2 |
+| desktop | cart | 81 | 100 | 1.9s | 170ms | 0.026 | 2 |
+
+Targets: accessibility ≥ 90 **met everywhere** (93–100; the home 93 is the Reputon reviews widget plus a mid-fade
+announcement frame); CLS < 0.1 **met everywhere**; mobile performance ≥ 70 **not met** (38–41, same band as Round 13).
+Mobile blocking time is mostly code the theme doesn't load: Shopify's web-pixels manager (`/cdn/wpm`, ~1.4–1.5 s CPU),
+Google tags (AW-11220377599, GT-T5MGH95 and others), the Facebook pixel, app extensions (Amose, Appstle, Judge.me,
+Reputon). The theme's own scripts are 0.24–0.48 s. Admin task 13 (remove unused apps / duplicate tags) is the lever.
+
+## Lighthouse mobile, Round 13 (slow 4G, 4× CPU, median of 3; `prototype/tools/r13-lighthouse.sh`)
 
 | page | before score | after score | LCP before → after | blocking time before → after | weight before → after |
 |---|---|---|---|---|---|
