@@ -16,7 +16,7 @@
 .scd__skel { display: grid; gap: 12px; }
 .scd__skel i { display: block; height: 96px; border-radius: 12px; background: linear-gradient(90deg, var(--cream) 0%, #EDE8DF 50%, var(--cream) 100%); background-size: 200% 100%; animation: scd-shim 1.4s linear infinite; }
 @keyframes scd-shim { to { background-position: -200% 0; } }
-.scd__empty { display: grid; justify-items: center; gap: 8px; padding: 40px 8px 16px; text-align: center; color: var(--grey-1); font-size: 15px; line-height: 1.5; }
+.scd__empty { display: grid; justify-items: center; gap: 8px; padding: 40px 8px 16px; text-align: center; color: var(--grey-1); font-size: 16px; line-height: 1.5; }
 .scd__empty-h { font: 600 var(--t-h4)/1.1 var(--sans); letter-spacing: -.02em; color: var(--ink); }
 .scd__empty-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
 .scd__block[hidden] { display: none; }
@@ -177,7 +177,7 @@
 .scp__head { display: grid; gap: 8px; margin-bottom: 24px; }
 .scp__head .v-h1 { display: flex; align-items: center; gap: 12px; }
 .scp__head .v-h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
-.scp__eta { display: flex; align-items: flex-start; gap: 8px; font-size: 15px; line-height: 1.5; color: var(--grey-1); }
+.scp__eta { display: flex; align-items: flex-start; gap: 8px; font-size: 16px; line-height: 1.5; color: var(--grey-1); }
 .scp__eta svg { width: 20px; height: 20px; flex: none; color: var(--v-accent); }
 .scp__offers { margin-bottom: 24px; }
 .scp__grid { display: grid; gap: 24px; }

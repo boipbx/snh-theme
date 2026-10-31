@@ -110,7 +110,7 @@
 .sp-pillstate--low { background: #FDF0E9; color: #A43C12; }
 .sp-pillstate--out { background: #F0F0F0; color: var(--sp-muted); }
 
-.sp-sub { font-size: 15px; line-height: 1.5; color: var(--sp-muted); }
+.sp-sub { font-size: 16px; line-height: 1.5; color: var(--sp-muted); }
 
 .sp-price { display: grid; gap: 12px; }
 .sp-price__row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
@@ -188,7 +188,7 @@
 
 /* benefits */
 .sp-benefits { display: grid; gap: 8px; }
-.sp-benefits li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.5; }
+.sp-benefits li { display: flex; align-items: flex-start; gap: 8px; font-size: 16px; line-height: 1.5; }
 .sp-benefits .sp-ico { margin-top: 2px; color: #146C3A; }
 
 /* Elite strip */
