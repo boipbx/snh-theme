@@ -2279,3 +2279,10 @@ form.snh-bar-form [data-snh-sheet].is-open .snh-brands.is-in-sheet { display: gr
   form.snh-bar-form.is-condensed.show-brands .snh-bar .snh-brands { display: grid !important; }
   .snh-brandtog[aria-expanded="true"] { background: var(--ink, #0c0c0d); color: #fff; }
 }
+
+/* Round 14 P2 (responsive sweep 360–1920): body sentences ≥ 16 px; small tap targets ≥ 24 px (WCAG 2.5.8).
+   Meta text (eyebrows, badges, per-serving, Koko line, legal) stays small on purpose. */
+.hero__sub, .cmp-ban__p, .benefit__text, .store__body .meta, .sp-sub, .sp-benefits li, .sp-trust li, .scp__eta, .scd__empty p { font-size: 16px; }
+.hdr__logo { min-height: 44px; display: inline-flex; align-items: center; }
+.colhero__crumbs a, .sp-crumbs a, .crumbs a, .mqd__link, .sp-eyebrow, .sp-stars, .hs__name { display: inline-flex; align-items: center; min-height: 24px; }
+.sp-line { min-height: 24px; }
