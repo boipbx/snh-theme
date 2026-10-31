@@ -2258,3 +2258,5 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .snh-reco__h { margin-bottom: 12px; font: 600 var(--t-h4, 20px)/1.1 var(--sans); letter-spacing: -.02em; }
 .snh-reco .ssugs { margin: 0; padding: 0 0 4px; grid-auto-columns: minmax(150px, 180px); }
 @media (min-width: 1024px) { .snh-reco--pdp .ssugs, .nf .snh-reco .ssugs, .snh-reco--app .ssugs { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; } }
+/* Round 14 (parity): long mega-menu columns flow into two columns on desktop */
+@media (min-width: 1024px) { .mz__list:has(> li:nth-child(13)) { columns: 2; column-gap: 24px; } .mz__list:has(> li:nth-child(13)) > li { break-inside: avoid; } }
