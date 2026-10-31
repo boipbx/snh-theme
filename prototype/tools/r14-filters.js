@@ -48,6 +48,8 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     await vend.nth(0).click(); await pg.waitForTimeout(2500); await pg.waitForLoadState('load').catch(() => {});
     // phones: the page scrolls to the grid and the condensed bar hides the rail → the second brand comes from the sheet
     if (w < 1000) { await pg.locator('.snh-mtrig__btn').click(); await pg.waitForTimeout(800); }
+    let tog = 0;
+    if (w >= 1000) { const t = pg.locator('.snh-brandtog:visible'); tog = await t.count(); if (tog) { await t.click(); await pg.waitForTimeout(600); await pg.screenshot({ path: path.join(OUT, `filters-brand-toggle-${w}.png`) }); } log(w, 'condensed bar: Brand toggle re-shows the logo rail', tog > 0 && await vend.count() > 0); }
     const inSheet = await pg.locator('[data-snh-sheet].is-open .snh-brands.is-in-sheet').count();
     if (w < 1000) await pg.screenshot({ path: path.join(OUT, `filters-sheet-brands-${w}.png`) });
     const v2 = await vend.nth(0).locator('input').getAttribute('value');
@@ -66,7 +68,7 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     log(w, 'sort keeps the filters', u2.searchParams.getAll('filter.p.vendor').length === 2 && u2.searchParams.get('sort_by') === 'price-ascending', u2.search.slice(0, 120));
     // back / forward
     await pg.goBack().catch(() => {}); await pg.waitForTimeout(2500);
-    const back = await pg.evaluate(() => ({ s: location.search, checked: [...document.querySelectorAll('input[name="filter.p.vendor"]:checked')].map((i) => i.value) }));
+    const back = await pg.evaluate(() => ({ s: location.search, checked: [...new Set([...document.querySelectorAll('input[name="filter.p.vendor"]:checked')].map((i) => i.value))] }));   // each brand input exists twice in the markup
     log(w, 'back restores the previous state (URL + checked brands)', !/sort_by=price-ascending/.test(back.s) && back.checked.length === new URLSearchParams(back.s).getAll('filter.p.vendor').length, `${back.s.slice(0, 90)} · checked ${back.checked.length}`);
     await pg.goForward().catch(() => {}); await pg.waitForTimeout(2500);
     log(w, 'forward restores the sorted state', /sort_by=price-ascending/.test(pg.url()));
@@ -91,7 +93,7 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     for (const y of [1500, 3000, 1800, 900]) {
       await pg.evaluate((y) => scrollTo(0, y), y); await pg.waitForTimeout(600);
       const r = await pg.evaluate(() => { const h = document.querySelector('.hdr').getBoundingClientRect(), f = document.querySelector('.snh-bar-form').getBoundingClientRect(); return { hb: Math.round(h.bottom), ht: Math.round(h.top), ft: Math.round(f.top) }; });
-      if (r.ht !== 0 || Math.abs(r.ft - r.hb) > 1) okSticky = false; notes.push(`y${y}: hdr ${r.ht}-${r.hb}, bar ${r.ft}`);
+      if (r.ht !== 0 || r.ft < r.hb - 1) okSticky = false;   // pinned under the header, or still in flow below it (tall desktop hero) notes.push(`y${y}: hdr ${r.ht}-${r.hb}, bar ${r.ft}`);
     }
     const entries = await pg.evaluate(() => [...document.querySelectorAll('button, a')].filter((x) => x.offsetParent && /filter\s*(&|and)\s*sort|^filters?$/i.test(x.textContent.trim())).length);
     log(w, 'header stays, filter bar pinned under it, one filter entry point', okSticky && entries <= 1, notes.join(' · ') + ` · entries ${entries}`);

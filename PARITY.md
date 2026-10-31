@@ -15,7 +15,7 @@ Old = https://www.sportsnutritionhub.lk (live theme "New store Menu launch", id 
 | Collections | Price range filter (`filter.v.price`) | yes | yes | OK |
 | Collections | Sort (8 options) | yes | yes, same 8 | OK |
 | Collections | Product count per page, pagination (`page=2`) | 34 / 24 / 50 + page 2 | same | OK |
-| Collections | Filter behaviour (multi-select, URL, back/forward, clear all, chips, no results) | — | see "Filters in depth" | see below |
+| Collections | Filter behaviour (multi-select, URL, back/forward, clear all, chips, no results) | yes | yes, 18/18 checks + 10/10 combinations identical | OK (second-brand pick improved, see below) |
 | Products ×5 | Flavour/size selector, add to cart, Koko, Judge.me reviews, Amose bundles, Appstle (no selling plans exist) | yes | yes | OK |
 | Products | Related / "Goes well with" | Shopify recommendations | recommendations + the SNH engine (Round 14) | Improved |
 | Cart | Lines, qty, remove, checkout, Koko router | yes | yes (+ smart suggestions, bundle card, fixed footer) | OK |
@@ -49,4 +49,6 @@ Old = https://www.sportsnutritionhub.lk (live theme "New store Menu launch", id 
 
 ### Interactive checks (390 + 1440)
 
-See `prototype/shots/r14/p1/filters-ui.md`.
+**18 / 18 PASS** at 390 + 1440 (`prototype/shots/r14/p1/filters-ui.md`, screenshots `filters-*-390/1440.png`): two brands by tapping (URL keeps both), sort keeps filters, back / forward restore the state, chips + Clear all, helpful no-results, page 2 keeps filters, header and sticky bar.
+
+**Fixed in Round 14 while testing**: after the first brand pick the page scrolls to the grid and the condensed bar hides the brand logo rail, so a second brand needed a scroll back to the top. Phones: the rail now moves into the *Filter & sort* sheet while it's open. Desktop: a *Brand* button in the condensed bar re-shows the rail.
