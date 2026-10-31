@@ -220,6 +220,19 @@
   }, { rootMargin: '0px 0px -8% 0px' }) : null;
   on('reveal', function (el) { if (io) io.observe(el); else el.classList.add('is-in'); });
 
+  /* ---------- Round 14: the SNH Elite card flips (click / tap on the card or its flip button; links on the back work) ---------- */
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest && e.target.closest('[data-mcard]');
+    if (!c || (e.target.closest('a') && !e.target.closest('.mcard__flip'))) return;
+    var on = !c.classList.contains('is-flipped'), b = c.querySelector('.mcard__flip');
+    c.classList.toggle('is-flipped', on);
+    var f = c.querySelector('.mcard__front'), k = c.querySelector('.mcard__back'), l = c.querySelector('.mcard__link');
+    if (f) f.setAttribute('aria-hidden', on ? 'true' : 'false');
+    if (k) k.setAttribute('aria-hidden', on ? 'false' : 'true');
+    if (l) l.tabIndex = on ? 0 : -1;
+    if (b) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+
   /* ---------- Round 13: product cards never cut a word. Names (2 lines) and brands that overflow lose whole words
      and end in "…"; a tight brand row first drops the review count. Re-run on resize and when cards arrive. ---------- */
   function fitCard(c) {

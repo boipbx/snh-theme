@@ -104,6 +104,8 @@
           <p class="app__pts">{{ pts_label }}</p>
         </div>
       </div>
+      {%- comment -%} Round 14: the mini SNH Elite card (tier, points and details are on it) {%- endcomment -%}
+      <div class="app__mini">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'compact' -%}</div>
       <nav class="app__nav" aria-label="Account">
         {%- for v in views -%}
           {%- case v -%}
@@ -120,6 +122,8 @@
     </aside>
 
     <div class="app__main">
+      {%- comment -%} Round 14: campaign banner slot (assets/snh-campaigns.js fills it with the top live cart banner) {%- endcomment -%}
+      <div data-campaign-slot="account" hidden></div>
       {%- liquid
         assign per_point = settings.snh_point_value | default: 1
         assign redeem_rs = settings.snh_redeem_from | default: 2500 | times: per_point

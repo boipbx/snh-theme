@@ -22,7 +22,8 @@
 </header>
 
 <div class="app__hero">
-  {%- render 'snh-app-tiercard', m: m, name: me[1], no: me[4] -%}
+  {%- comment -%} Round 14: the one SNH Elite card (was the brown metal block, snippets/snh-app-tiercard) {%- endcomment -%}
+  {%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full' -%}
   {%- render 'snh-app-reward', m: m, pending: pending, id: sid -%}
 </div>
 

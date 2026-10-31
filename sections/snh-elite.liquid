@@ -22,7 +22,21 @@
       {{ bg | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '800,1200,1600,2000', sizes: '100vw', alt: '', class: 'eband__img', style: focal }}
     {%- endif -%}
   </div>
-  <div class="v-wrap eband__in">
+  <div class="v-wrap eband__in{% if section.settings.show_card != false %} eband__in--card{% endif %}">
+    {%- if section.settings.show_card != false -%}
+      {%- comment -%} Round 14: the one SNH Elite card — the member's own, or a sample for guests {%- endcomment -%}
+      <div class="eband__card">
+        {%- if customer -%}
+          {%- capture em -%}{% render 'snh-elite-calc', customer: customer %}{%- endcapture -%}
+          {%- assign em = em | strip | split: '|' -%}
+          {%- assign eno = customer.id | modulo: 900 | plus: 100 -%}
+          {%- render 'snh-elite-card', m: em, name: customer.name, no: eno, size: 'full' -%}
+        {%- else -%}
+          {%- render 'snh-elite-card', sample: true, size: 'full' -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="eband__copy">
     {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
     <h2 class="v-h1 eband__h" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
     {%- if lead != blank -%}<p class="eband__lead">{{ lead }}</p>{%- endif -%}
@@ -40,6 +54,7 @@
         {%- if section.settings.cta2 != blank -%}<a class="v-btn v-btn--white" href="{{ section.settings.cta2_link | default: routes.account_login_url }}"><span>{{ section.settings.cta2 | escape }}</span></a>{%- endif -%}
       {%- endif -%}
     </div>
+    </div>
   </div>
 </section>
 
@@ -49,6 +64,7 @@
   "class": "snh-sec",
   "max_blocks": 4,
   "settings": [
+    { "type": "checkbox", "id": "show_card", "label": "Show the SNH Elite card", "default": true, "info": "Members see their own card, guests a sample." },
     {
       "type": "header",
       "content": "Background"

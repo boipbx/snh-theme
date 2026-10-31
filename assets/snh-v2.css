@@ -2184,3 +2184,76 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
   .sqb { width: 100vw; margin: auto 0 0; border-radius: 20px 20px 0 0; }
   .sqb__in { padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); }
 }
+
+/* Round 14: the one SNH Elite card (snippets/snh-elite-card) — metal surface by tier, every text ≥ 4.5:1 (silver
+   #646F7F → #3A4350 with white, measured on the Elite page), flips to the details (assets/snh-v2.js [data-mcard]) */
+.mcard { --m1: #9A5A2B; --m2: #5A3214; --mi: #FFFFFF; --mh: rgba(255, 224, 190, .5); position: relative; width: 100%; max-width: 420px; perspective: 1200px; color: var(--mi); font-family: var(--sans); }
+.mcard[data-tier="silver"] { --m1: #646F7F; --m2: #3A4350; --mi: #FFFFFF; --mh: rgba(255, 255, 255, .55); }
+.mcard[data-tier="gold"] { --m1: #F2CF72; --m2: #D49E35; --mi: #1A1206; --mh: rgba(255, 248, 220, .7); }
+.mcard__in { position: relative; display: grid; aspect-ratio: 1.586 / 1; transform-style: preserve-3d; transition: transform 700ms var(--ease); }
+.mcard.is-flipped .mcard__in { transform: rotateY(180deg); }
+.mcard__face { grid-area: 1 / 1; position: relative; display: grid; gap: 8px; padding: 20px; border-radius: 16px; overflow: hidden; isolation: isolate; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: linear-gradient(135deg, var(--m1) 0%, var(--m2) 100%); box-shadow: 0 1px 0 var(--mh) inset, 0 18px 40px rgba(12, 12, 13, .22); }
+.mcard__face::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 85% -10%, rgba(255, 255, 255, .22), transparent 55%), repeating-linear-gradient(115deg, rgba(255, 255, 255, .04) 0 2px, transparent 2px 6px); }
+.mcard__front { grid-template-rows: auto auto 1fr auto; }
+.mcard__back { transform: rotateY(180deg); grid-template-rows: auto 1fr auto auto; }
+.mcard__sheen { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .2) 45%, transparent 60%); transform: translateX(-120%); }
+.mcard:hover .mcard__sheen { animation: ccard-sheen 1.2s var(--ease); }
+.mcard__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-right: 36px; }
+.mcard__brand { font: 600 18px/1.1 var(--sans); letter-spacing: -.02em; }
+.mcard__brand em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.mcard__tier { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+.mcard__chip { width: 40px; height: 30px; fill: rgba(255, 236, 190, .55); stroke: rgba(60, 40, 10, .5); stroke-width: 1.2; }
+.mcard__no { align-self: end; margin: 0; font: 600 14px/1.5 var(--sans); letter-spacing: .12em; font-variant-numeric: tabular-nums; }
+.mcard__foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.mcard__who, .mcard__pts { display: grid; gap: 2px; min-width: 0; }
+.mcard__pts { justify-items: end; text-align: right; }
+.mcard__lbl { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+.mcard__name { margin: 0; overflow: hidden; font: 600 15px/1.5 var(--sans); white-space: nowrap; text-overflow: ellipsis; }
+.mcard__pts strong { font: 600 24px/1.1 var(--sans); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.mcard__val { font: 400 13px/1.5 var(--sans); }
+.mcard__rows { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; align-content: center; margin: 0; }
+.mcard__rows div { display: grid; min-width: 0; }
+.mcard__rows dt { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+.mcard__rows dd { margin: 0; font: 600 16px/1.5 var(--sans); font-variant-numeric: tabular-nums; }
+.mcard__rows small { font-size: 12px; font-weight: 400; }
+.mcard__rail { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .28); overflow: hidden; }
+.mcard[data-tier="gold"] .mcard__rail { background: rgba(26, 18, 6, .18); }
+.mcard__rail i { display: block; height: 100%; min-width: 4px; border-radius: inherit; background: var(--mi); }
+.mcard__link { justify-self: start; font: 600 14px/1.5 var(--sans); color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+.mcard__flip { position: absolute; top: 10px; right: 10px; z-index: 3; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .18); color: var(--mi); cursor: pointer; transition: background-color var(--t) var(--ease), transform var(--t) var(--ease); }
+.mcard[data-tier="gold"] .mcard__flip { background: rgba(26, 18, 6, .1); }
+.mcard__flip:hover { transform: rotate(-30deg); }
+.mcard__flip svg { width: 18px; height: 18px; }
+.mcard[data-mcard] .mcard__in { cursor: pointer; }
+.mcard--compact { max-width: 300px; }
+.mcard--compact .mcard__face { padding: 14px; gap: 4px; border-radius: 12px; }
+.mcard--compact .mcard__brand { font-size: 15px; }
+.mcard--compact .mcard__chip { width: 30px; height: 22px; }
+.mcard--compact .mcard__no { font-size: 12px; }
+.mcard--compact .mcard__name { font-size: 13px; }
+.mcard--compact .mcard__pts strong { font-size: 18px; }
+.mcard--compact .mcard__val { font-size: 12px; }
+.mcard--compact .mcard__rows { gap: 4px 12px; }
+.mcard--compact .mcard__rows dd { font-size: 13px; }
+.mcard--compact .mcard__lbl, .mcard--compact .mcard__rows dt { font-size: 12px; letter-spacing: .06em; }
+.mcard--compact .mcard__flip { top: 4px; right: 4px; }
+.mcard--compact .mcard__top { padding-right: 40px; }
+@media (prefers-reduced-motion: reduce) {
+  .mcard__in { transition: none; transform: none !important; }
+  .mcard__face { backface-visibility: visible; transition: opacity 250ms linear; }
+  .mcard__back { transform: none; opacity: 0; pointer-events: none; }
+  .mcard.is-flipped .mcard__back { opacity: 1; pointer-events: auto; }
+  .mcard.is-flipped .mcard__front { opacity: 0; }
+  .mcard:hover .mcard__sheen { animation: none; }
+}
+/* Round 14: where the one card sits */
+.eband__copy { display: grid; gap: 16px; justify-items: start; }
+.eband__in--card { justify-items: stretch; }
+.eband__card { order: 2; justify-self: center; width: 100%; max-width: 420px; }
+@media (min-width: 1024px) { .eband__in--card { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; column-gap: 64px; } .eband__card { justify-self: end; } }
+.app__mini { margin: 16px 0 8px; }
+.app__mini .mcard { max-width: 100%; }
+.app__side .app__tier, .app__side .app__pts { display: none; }
+.app__ecard { margin-bottom: 24px; max-width: 420px; }
+.app__hero .mcard { align-self: start; }
+.acp .mcard { margin: 4px 0 8px; }

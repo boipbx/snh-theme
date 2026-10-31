@@ -1,55 +1,76 @@
 {%- comment -%}
-  SNH Elite membership card (Round 7, account dashboard + mock): dark glass, tier colour accent, member name, tier,
-  points + Rs value, earn rate, annual spend, ladder to Gold with "Spend Rs X more to reach …".
-  m: the split output of snippets/snh-elite-calc. name: member name. no: member number. h: heading level tag (h1/h2).
+  SNH Elite membership card (Round 14: the one card everywhere — header account panel, account Overview, Rewards,
+  account sidebar, /pages/snh-elite hero, homepage Elite band). The design is the header panel's metal credit card
+  (1.586:1): the tier is the surface (bronze / silver / gold, every text ≥ 4.5:1), chip, member no., name, points +
+  Rs value. It flips (click / tap anywhere on the card, or the flip button with the keyboard; reduced motion =
+  crossfade): the back has the earn rate, spend this year, amount to the next tier with progress, the redeem
+  threshold and "View rewards". Behaviour: assets/snh-v2.js ([data-mcard]); styles: assets/snh-v2.css (.mcard).
+  m: split snippets/snh-elite-calc output (optional with sample) · name · no: member number · size: compact | full
+  (default full) · sample: true = a guest's example card (Gold, sample figures, "Sample" label) · h: name tag (p).
+  flip: false = front only.
 {%- endcomment -%}
 {%- liquid
-  assign silver = settings.snh_silver_threshold | default: 198000 | at_least: 1
-  assign gold = settings.snh_gold_threshold | default: 300000 | at_least: silver
-  assign silver_at = silver | times: 100 | divided_by: gold | round
-  assign tag = h | default: 'h2'
+  assign size = size | default: 'full'
+  assign tag = h | default: 'p'
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  if sample
+    capture mm
+      render 'snh-elite-calc', mock: true, tier: 'gold', points: 3240, spend: 312000
+    endcapture
+    assign m = mm | strip | split: '|'
+    assign name = name | default: 'Your name'
+    assign no = no | default: 427
+  endif
+  assign no_s = no | prepend: '0000' | slice: -4, 4
+  assign uid = 'mc-' | append: m[0] | append: '-' | append: no | append: '-' | append: size
+  capture rewards_url
+    if sample
+      render 'snh-elite-url'
+    else
+      echo routes.account_url | append: '#rewards'
+    endif
+  endcapture
 -%}
-<section class="ecard" data-tier="{{ m[0] }}" aria-label="SNH Elite membership card">
-  <div class="ecard__glow" aria-hidden="true"><i></i><i></i></div>
-  <div class="ecard__top">
-    <span class="ecard__brand">SNH <em>Elite</em></span>
-    <span class="ecard__no">{{ m[1] | upcase }} · No. {{ no }}</span>
+<div class="mcard mcard--{{ size }}{% if sample %} mcard--sample{% endif %}" data-tier="{{ m[0] }}"{% unless flip == false %} data-mcard{% endunless %}>
+  <div class="mcard__in">
+    <div class="mcard__face mcard__front" id="{{ uid }}-f">
+      <i class="mcard__sheen" aria-hidden="true"></i>
+      <div class="mcard__top">
+        <span class="mcard__brand">SNH <em>Elite</em></span>
+        <span class="mcard__tier">{% if sample %}Sample · {% endif %}{{ m[1] | upcase }}</span>
+      </div>
+      <svg class="mcard__chip" viewBox="0 0 48 36" aria-hidden="true"><rect x=".75" y=".75" width="46.5" height="34.5" rx="6"/><path d="M16 .75v10M32 .75v10M16 25.25v10M32 25.25v10M.75 12h15.25a8 8 0 0 1 16 0h15.25M.75 24h15.25a8 8 0 0 0 16 0h15.25"/></svg>
+      <p class="mcard__no"><span class="v-sr">Member number </span>0000 {{ no_s }}</p>
+      <div class="mcard__foot">
+        <div class="mcard__who">
+          <span class="mcard__lbl">Member</span>
+          <{{ tag }} class="mcard__name" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
+        </div>
+        <div class="mcard__pts">
+          <span class="mcard__lbl">Points</span>
+          {%- if m[3] == 'x' -%}<strong>—</strong><span class="mcard__val">after your first order</span>
+          {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong><span class="mcard__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
+        </div>
+      </div>
+    </div>
+    {%- unless flip == false -%}
+    <div class="mcard__face mcard__back" id="{{ uid }}-b" aria-hidden="true">
+      <div class="mcard__top">
+        <span class="mcard__brand">SNH <em>Elite</em></span>
+        <span class="mcard__tier">{{ m[1] | upcase }}</span>
+      </div>
+      <dl class="mcard__rows">
+        <div><dt>Earn rate</dt><dd>{{ m[7] }}% back</dd></div>
+        <div><dt>Spend this year</dt><dd>{{ m[5] | times: 100 | money_without_trailing_zeros }}{% if m[6] == '1' %}<small> est.</small>{% endif %}</dd></div>
+        <div><dt>{% if m[12] == '1' %}Status{% else %}To {{ m[8] }}{% endif %}</dt><dd>{% if m[12] == '1' %}Top tier{% elsif m[10] == '0' %}Reached{% else %}{{ m[10] | times: 100 | money_without_trailing_zeros }}{% endif %}</dd></div>
+        <div><dt>Redeem from</dt><dd>{% render 'snh-num', n: redeem_from %} pts</dd></div>
+      </dl>
+      <div class="mcard__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="Progress to {{ m[8] | default: 'the top tier' }}"><i style="width: {{ m[11] }}%"></i></div>
+      <a class="mcard__link" href="{{ rewards_url | strip }}" tabindex="-1">{% if sample %}How SNH Elite works{% else %}View rewards{% endif %} →</a>
+    </div>
+    {%- endunless -%}
   </div>
-  <div class="ecard__who">
-    <{{ tag }} class="ecard__name">{{ name | escape }}</{{ tag }}>
-    <span class="tierb tierb--{{ m[0] }}">{{ m[1] }} member</span>
-    {%- if m[2] == '1' -%}<span class="ecard__est">Tier estimated from your orders</span>{%- endif -%}
-  </div>
-  <dl class="ecard__stats">
-    <div>
-      <dt>Points</dt>
-      {%- if m[3] == 'x' -%}
-        <dd><strong>—</strong><span>Shows after your first paid order</span></dd>
-      {%- else -%}
-        <dd><strong>{% render 'snh-num', n: m[3] %}</strong><span>Worth {{ m[4] | times: 100 | money_without_trailing_zeros }}</span></dd>
-      {%- endif -%}
-    </div>
-    <div>
-      <dt>Earn rate</dt>
-      <dd><strong>{{ m[7] }}%</strong><span>back on every order</span></dd>
-    </div>
-    <div>
-      <dt>Spend this year</dt>
-      <dd><strong>{{ m[5] | times: 100 | money_without_trailing_zeros }}</strong><span>{% if m[6] == '1' %}Estimated from your orders{% else %}Counts towards your tier{% endif %}</span></dd>
-    </div>
-  </dl>
-  <div class="ecard__ladder">
-    <div class="ecard__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[13] }}" aria-label="Spend towards Gold">
-      <i class="ecard__fill" style="width: {{ m[13] }}%"></i>
-      <b style="left: 0%"></b><b style="left: {{ silver_at }}%"></b><b style="left: 100%"></b>
-    </div>
-    <div class="ecard__marks" aria-hidden="true">
-      <span style="left: 0%">Bronze</span><span style="left: {{ silver_at }}%">Silver</span><span style="left: 100%">Gold</span>
-    </div>
-    <p class="ecard__next">
-      {%- if m[12] == '1' -%}You're at the top: <b>{{ m[7] }}% back</b> and every Gold perk.
-      {%- elsif m[10] == '0' -%}You've reached the {{ m[8] }} spend. Your tier updates after your next paid order syncs.
-      {%- else -%}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ m[8] }}.{%- endif -%}
-    </p>
-  </div>
-</section>
+  {%- unless flip == false -%}
+    <button class="mcard__flip" type="button" aria-pressed="false" aria-controls="{{ uid }}-f {{ uid }}-b" aria-label="Flip the card to see your earn rate and progress">{% render 'snh-v2-icon', name: 'refresh' %}</button>
+  {%- endunless -%}
+</div>

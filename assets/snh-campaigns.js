@@ -78,7 +78,7 @@
     }
     // cart banner (drawer + page)
     var cb = top('cart_banner');
-    [].forEach.call(document.querySelectorAll('[data-campaign-slot="cart"]'), function (s) { if (cb) { loadCss(); s.innerHTML = banner(cb, 'cart'); s.hidden = false; } else { s.innerHTML = ''; s.hidden = true; } });
+    [].forEach.call(document.querySelectorAll('[data-campaign-slot="cart"], [data-campaign-slot="account"]'), function (s) { if (cb) { loadCss(); s.innerHTML = banner(cb, 'cart'); s.hidden = false; } else { s.innerHTML = ''; s.hidden = true; } });
 
     // promo popup
     var pc = top('popup');

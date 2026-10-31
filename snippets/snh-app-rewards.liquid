@@ -30,6 +30,8 @@
   <h1 class="app__h" id="{{ sid }}-rewards-h">Your <em>rewards</em></h1>
 </header>
 
+<div class="app__ecard">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full' -%}</div>
+
 <div class="bal" data-tier="{{ m[0] }}">
   <div class="bal__fig">
     <p class="bal__l">Points balance</p>

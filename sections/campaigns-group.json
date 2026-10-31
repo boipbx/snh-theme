@@ -8,8 +8,58 @@
         "metaobject_type": "site_campaign",
         "popup_delay": 6
       },
-      "blocks": {},
-      "block_order": []
+      "blocks": {
+        "default_delivery": {
+          "type": "campaign",
+          "settings": {
+            "name": "Default: free delivery (announcement)",
+            "type": "announcement",
+            "tag": "Free delivery",
+            "message": "On orders over Rs 17,000 \u00b7 same-day in Colombo",
+            "link": "shopify://collections/all",
+            "pages": "all",
+            "audience": "all",
+            "priority": 0,
+            "tone": "ink",
+            "freq": "day"
+          }
+        },
+        "default_koko": {
+          "type": "campaign",
+          "settings": {
+            "name": "Default: pay your way (cart banner)",
+            "type": "cart_banner",
+            "heading": "Pay in 3 with Koko",
+            "message": "Split your basket into 3 interest-free payments, or pay by card, cash on delivery or bank transfer.",
+            "pages": "all",
+            "audience": "all",
+            "priority": 0,
+            "tone": "cream",
+            "freq": "day"
+          }
+        },
+        "default_elite": {
+          "type": "campaign",
+          "settings": {
+            "name": "Default: SNH Elite (home banner)",
+            "type": "home_banner",
+            "heading": "Earn 3\u201310% back on every order",
+            "message": "Join SNH Elite free and start with 500 welcome points.",
+            "cta": "Join SNH Elite",
+            "link": "shopify://pages/snh-elite",
+            "pages": "home",
+            "audience": "guests",
+            "priority": 0,
+            "tone": "ink",
+            "freq": "day"
+          }
+        }
+      },
+      "block_order": [
+        "default_delivery",
+        "default_koko",
+        "default_elite"
+      ]
     }
   },
   "order": [
