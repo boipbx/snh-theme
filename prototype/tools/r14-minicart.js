@@ -19,8 +19,9 @@ const CARTS = [
   const P = await products(b, ['applied-nutrition-creatine-monohydrate', 'applied-nutrition-critical-whey-2kg', 'sis-go-isotonic-energy-gel', 'snh-shaker-bottle-750ml-orange']);
   const vid = (h) => (P[h].variants.find((v) => v.available) || P[h].variants[0]);
   for (const w of (process.env.W || '390,1440').split(',').map(Number)) {
+    const ctx = await context(b, w), p = await ctx.newPage();   // one context per width (Cloudflare keeps its cookies)
     for (const [name, handles, bundle] of CARTS.filter((c) => !process.env.ONLY || process.env.ONLY.split('|').includes(c[0]))) {
-      const ctx = await context(b, w), p = await ctx.newPage();
+      await p.unrouteAll({ behavior: 'ignoreErrors' }).catch(() => {});
       if (bundle) await p.route((u) => u.pathname === '/', async (r) => {
         const res = await r.fetch(); let t = await res.text();
         const ids = P['applied-nutrition-creatine-monohydrate'], sh = P['snh-shaker-bottle-750ml-orange'];
@@ -55,9 +56,9 @@ const CARTS = [
       console.log(w, name, ok ? 'PASS' : 'FAIL', '|', m.d.rule, '|', m.cards.map((c) => c.t.slice(0, 26) + ' ' + c.p + ' ' + c.why).join(' ; '), '| foot', okFoot, '| bundle', !!m.bundle);
       await p.screenshot({ path: path.join(OUT, `drawer-${name.replace(/\W+/g, '-')}-${w}.png`) });
       await p.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
-      await ctx.close();
       await new Promise((r) => setTimeout(r, +(process.env.PAUSE || 45000)));
     }
+    await ctx.close();
   }
   fs.appendFileSync(path.join(OUT, 'minicart-rows.md'), rows.join('\n') + '\n');
   fs.writeFileSync(path.join(OUT, 'minicart.md'), ['# P0.2 mini cart (real carts in the test browser)', '', '| width | cart | rule · heading | suggestions (name · price · reason) | free delivery | footer | bundle card | result |', '|---|---|---|---|---|---|---|---|', ...rows].join('\n') + '\n');
