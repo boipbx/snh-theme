@@ -1,6 +1,6 @@
 {%- comment -%}
   Add button for Shop the Look. Single-variant products add in one tap through the theme cart (data-v2-add);
-  multi-variant products open the theme's quick-buy drawer so the shopper picks a flavour/size.
+  multi-variant products open the SNH quick-buy sheet (assets/snh-quick.js; Round 14, Impact's drawer failed on our product template).
   product, cls, label. The quick-buy drawers are printed once per product at the end of the section.
 {%- endcomment -%}
 {%- assign v = product.selected_or_first_available_variant -%}
@@ -9,6 +9,5 @@
 {%- elsif product.has_only_default_variant -%}
   <button class="{{ cls }}" type="button" data-v2-add="{{ v.id }}" aria-label="{{ label }}: {{ product.title | escape }}"><span>{{ label }}</span><i class="v-tick" aria-hidden="true">{% render 'snh-v2-icon', name: 'check' %}</i></button>
 {%- else -%}
-  {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-  <button class="{{ cls }}" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ product.title | escape }}"><span>{{ label }}</span></button>
+  <button class="{{ cls }}" type="button" data-v2-pick="{{ product.handle }}" aria-haspopup="dialog" aria-label="Choose options for {{ product.title | escape }}"><span>{{ label }}</span></button>
 {%- endif -%}

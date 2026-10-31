@@ -2146,3 +2146,41 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
   .pc__koko { font-size: 12px; height: 18px; }
   .pc__koko .pc__with { display: none; }
 }
+
+/* Round 14: SNH quick-buy sheet (assets/snh-quick.js) — bottom sheet on phones, centred card on desktop */
+.sqb { width: min(480px, 100vw); max-width: 100vw; max-height: 90vh; margin: auto; padding: 0; border: 0; border-radius: 20px; background: var(--white); color: var(--ink); font-family: var(--sans); box-shadow: 0 24px 60px rgba(12, 12, 13, .24); }
+.sqb::backdrop { background: rgba(12, 12, 13, .5); }
+.sqb__in { position: relative; padding: 24px; overflow-y: auto; max-height: 90vh; }
+.sqb__x { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; font: 400 28px/1 var(--sans); color: var(--ink); cursor: pointer; }
+.sqb__x:hover { background: var(--cream); }
+.sqb__head { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; padding-right: 32px; }
+.sqb__img { width: 96px; height: 96px; border-radius: 12px; background: var(--cream); overflow: hidden; }
+.sqb__img img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.sqb__brand { font: 600 12px/1.5 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--grey-2); }
+.sqb__t { margin-top: 4px; font: 600 16px/1.5 var(--sans); }
+.sqb__price { display: flex; align-items: baseline; gap: 8px; margin-top: 4px; }
+.sqb__price b { font: 700 18px/1.5 var(--sans); }
+.sqb__price s { font: 400 14px/1.5 var(--sans); color: var(--grey-2); }
+.sqb__koko { font: 400 13px/1.5 var(--sans); color: var(--grey-1); }
+.sqb__opt { margin: 20px 0 0; padding: 0; border: 0; }
+.sqb__opt legend { padding: 0; margin-bottom: 8px; font: 400 14px/1.5 var(--sans); color: var(--grey-1); }
+.sqb__opt legend b { color: var(--ink); font-weight: 600; }
+.sqb__pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.sqb__pill { min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: var(--pill); background: var(--white); font: 500 14px/1.5 var(--sans); color: var(--ink); cursor: pointer; }
+.sqb__pill:hover { border-color: var(--ink); }
+.sqb__pill.is-on { border-color: var(--ink); background: var(--ink); color: var(--white); }
+.sqb__pill.is-out { color: var(--grey-2); text-decoration: line-through; }
+.sqb__foot { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin-top: 24px; }
+.sqb__qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: var(--pill); }
+.sqb__qty button { width: 44px; height: 48px; border: 0; background: none; font: 500 18px/1 var(--sans); cursor: pointer; }
+.sqb__qty output { min-width: 24px; text-align: center; font: 600 16px/1.5 var(--sans); }
+.sqb__add { min-height: 48px; padding: 0 16px; border: 0; border-radius: var(--pill); background: var(--v-accent); color: var(--white); font: 600 16px/1.1 var(--sans); cursor: pointer; }
+.sqb__add:hover { background: var(--v-accent-hover); }
+.sqb__add:disabled { background: var(--cream); color: var(--grey-1); cursor: default; }
+.sqb__more { display: inline-block; margin-top: 16px; font: 500 14px/1.5 var(--sans); text-decoration: underline; text-underline-offset: 4px; }
+.sqb__low { margin-top: 8px; font: 600 13px/1.5 var(--sans); color: #A3271D; }
+.sqb__wait { padding: 32px 0; text-align: center; color: var(--grey-1); }
+@media (max-width: 767px) {
+  .sqb { width: 100vw; margin: auto 0 0; border-radius: 20px 20px 0 0; }
+  .sqb__in { padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); }
+}

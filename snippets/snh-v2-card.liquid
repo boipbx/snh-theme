@@ -214,13 +214,12 @@
     {%- if chip != blank -%}<span class="pc__chip">{{ chip }}</span>{%- endif -%}
     {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
     {%- if product.available -%}
-      {%- comment -%} Round 13: one round "+" on the image: single variant adds in one tap, several open quick buy {%- endcomment -%}
+      {%- comment -%} Round 13: one round "+" on the image: single variant adds in one tap, several open the SNH quick-buy sheet (assets/snh-quick.js) {%- endcomment -%}
       {%- if multi -%}
-        <button class="pc__plus" type="button" aria-controls="{{ qb }}" aria-expanded="false" aria-label="Choose options for {{ title_full }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
+        <button class="pc__plus" type="button" data-v2-pick="{{ product.handle }}" aria-haspopup="dialog" aria-label="Choose options for {{ title_full }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
       {%- else -%}
         <button class="pc__plus" type="button" data-v2-add="{{ v.id }}" aria-label="Add {{ title_full }} to basket">{% render 'snh-v2-icon', name: 'plus' %}</button>
       {%- endif -%}
-      <quick-buy-drawer id="{{ qb }}" header-bordered open-from="bottom" handle="{{ product.handle }}?variant={{ v.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
     {%- endif -%}
   </div>
   <div class="pc__body">
