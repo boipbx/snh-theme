@@ -6,7 +6,7 @@
 const { chromium, context, open, out } = require('./r14-lib.js');
 const fs = require('fs'), path = require('path');
 const OUT = out('p2'), rows = [], W = (process.env.W || '360,390,430,768,1024,1280,1440,1920').split(',').map(Number);
-const PAGES = [['home', '/'], ['collection', '/collections/whey-protein'], ['product', '/products/applied-nutrition-critical-whey-2kg'], ['cart', '/cart']];
+const PAGES = (process.env.ONLY ? [['home', '/']] : null) || [['home', '/'], ['collection', '/collections/whey-protein'], ['product', '/products/applied-nutrition-critical-whey-2kg'], ['cart', '/cart']];
 (async () => {
   const b = await chromium.launch();
   for (const w of W) {
@@ -24,7 +24,7 @@ const PAGES = [['home', '/'], ['collection', '/collections/whey-protein'], ['pro
         // anything off-screen or clipped away by an ancestor (closed menus, carousels)
         const clipped = (e) => { const r = e.getBoundingClientRect(); if (r.right <= 0 || r.left >= innerWidth) return true; for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) { const cs = getComputedStyle(a); if (/hidden|clip/.test(cs.overflow + cs.overflowX + cs.overflowY)) { const q = a.getBoundingClientRect(); if (q.height < 2 || q.width < 2 || r.bottom <= q.top || r.top >= q.bottom || r.right <= q.left || r.left >= q.right) return true; } } return false; };
         const equiv = (e) => { if (e.tagName !== 'A') return false; const card = e.closest('product-card, .pc, .card, li'); if (!card) return false; return [...card.querySelectorAll('a[href]')].some((x) => x !== e && x.getAttribute('href') === e.getAttribute('href') && x.getBoundingClientRect().height >= 44); };
-        const tg = [...document.querySelectorAll('main a, main button, main input:not([type=hidden]):not([type=range]), main select, main summary, header a, header button')].filter((e) => vis(e) && !e.closest('p, li p') && !(e.tagName === 'INPUT' && e.closest('label')) && !clipped(e) && !equiv(e));
+        const tg = [...document.querySelectorAll('main a, main button, main input:not([type=hidden]):not([type=range]), main select, main summary, header a, header button')].filter((e) => vis(e) && !e.closest('p, li p') && !(e.tagName === 'INPUT' && e.closest('label')) && !clipped(e) && !equiv(e) && !e.closest('[class*="reputon"], .jdgm-widget'));   // third-party widgets (Reputon reviews, Judge.me)
         const t44 = [], t24 = [];
         tg.forEach((e) => { const b = e.getBoundingClientRect(); if (b.width < 44 || b.height < 44) { t44.push(e); if (b.width < 24 || b.height < 24) t24.push((e.getAttribute('aria-label') || e.textContent || e.className).trim().replace(/\s+/g, ' ').slice(0, 24) + ' ' + Math.round(b.width) + '×' + Math.round(b.height)); } });
         const h1 = document.querySelector('main h1'); return { over, small: small.slice(0, 4), nsmall: small.length, targets: tg.length, under44: t44.length, under24: t24.slice(0, 5), nunder24: t24.length, h1: h1 ? parseFloat(getComputedStyle(h1).fontSize) : 0 };
