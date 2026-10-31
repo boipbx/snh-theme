@@ -20,12 +20,13 @@
   --serif: "Instrument Serif", Georgia, serif;
 
   /* type scale (Round 6): 12 13 14 15 16 18 20 24 28 36 44 56 72 96 only, stepped at 768 / 1200 instead of fluid */
-  --t-display: 44px;
-  --t-h1: 36px;
-  --t-h2: 28px;
-  --t-h3: 24px;
-  --t-h4: 20px;
-  --t-h5: 18px;
+  /* Round 14: fluid type — exactly the old scale at 390 and 1440 (and above), smooth in between */
+  --t-display: clamp(44px, 33.6px + 2.667vw, 72px);
+  --t-h1: clamp(36px, 28.57px + 1.905vw, 56px);
+  --t-h2: clamp(28px, 22.06px + 1.524vw, 44px);
+  --t-h3: clamp(24px, 19.54px + 1.143vw, 36px);
+  --t-h4: clamp(20px, 17.03px + .762vw, 28px);
+  --t-h5: clamp(18px, 15.77px + .571vw, 24px);
   --fs-display: var(--t-display);
   --fs-h1: var(--t-h1);
   --fs-h2: var(--t-h4);
@@ -46,17 +47,11 @@
   --t: 200ms;
   --t-reveal: 500ms;
 }
-@media (min-width: 768px) {
-  :root { --t-display: 56px; --t-h1: 44px; --t-h2: 36px; --t-h3: 28px; --t-h4: 24px; --t-h5: 20px; }
-}
 @media (min-width: 900px) {
   :root { --gap: 24px; }
 }
 @media (min-width: 1024px) {
   :root { --section: 64px; --gutter: 40px; --container: 1200px; }
-}
-@media (min-width: 1200px) {
-  :root { --t-display: 72px; --t-h1: 56px; --t-h2: 44px; --t-h3: 36px; --t-h4: 28px; --t-h5: 24px; }
 }
 
 /* ---------- base (scoped: only inside v2 sections, zero specificity) ---------- */
