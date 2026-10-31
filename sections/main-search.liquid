@@ -142,11 +142,14 @@
 
                 <div class="prose">
                   <p class="h5">{{ 'collection.faceting.no_results' | t }}</p>
+                  <p>Try a brand, a goal (muscle, endurance, sleep) or a product type. Or pick from these:</p>
 
                   {%- assign button_content = 'collection.faceting.clear_filters' | t -%}
                   {%- render 'button', href: collection.url, is: 'facet-link', size: 'xl', content: button_content -%}
                 </div>
               </div>
+              {%- comment -%} Round 14: no results → the shared recommendation engine {%- endcomment -%}
+              <div class="snh-reco" data-snh-reco="search" data-limit="4" data-heading="You might be looking for" hidden></div>
             {%- else -%}
               <div class="v-stack gap-6">
                 <div class="v-stack gap-4 md:hidden">

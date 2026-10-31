@@ -332,6 +332,8 @@
   </div>
 
   {%- comment -%} ── Sticky add to cart: shown by assets/snh-product.js once the main button has scrolled away ── {%- endcomment -%}
+  {%- comment -%} Round 14: "Goes well with" from the shared recommendation engine (assets/snh-cart.js widget) {%- endcomment -%}
+  <div class="sp-wrap snh-reco snh-reco--pdp" data-snh-reco="pdp" data-handle="{{ product.handle }}" data-limit="4" hidden></div>
   {%- if section.settings.sticky_atc -%}
     {%- assign thumb = v.featured_media | default: product.featured_media -%}
     <div class="sp-sticky" data-sp-sticky aria-hidden="true">

@@ -135,5 +135,48 @@
   var m = location.pathname.match(/\/products\/([^/?#]+)/);
   if (m) try { var l = viewedHandles().filter(function (h) { return h !== m[1]; }); l.unshift(m[1]); localStorage.setItem('snh_rv', JSON.stringify(l.slice(0, 8))); } catch (e) {}
 
-  window.SNHReco = { decide: decide, detect: detect, parseMap: parseMap, viewed: viewedHandles, NAME: NAME };
+  /* Round 14: the same brain outside the basket (PDP "Goes well with", empty cart, account "Picked for you", search
+     with no results, 404). seeds = the products the shopper is looking at / has in the basket / viewed recently.
+     Same signals and weights as decide() minus the free-delivery logic; nothing priced off the subtotal. */
+  function browse(seeds, pool, cfg, reco, opts) {
+    reco = reco || {}; opts = opts || {};
+    var now = reco.now || Date.now(), limit = opts.limit || 4, ex = {}, seedCats = {};
+    (opts.exclude || []).forEach(function (id) { ex[id] = 1; });
+    seeds.forEach(function (p) { ex[p.id] = 1; var c = p.cat || detect(p); if (c && c !== 'bundle') seedCats[c] = seedCats[c] || p; });
+    var comp = {};
+    parseMap(reco.complements).forEach(function (r) { r.from.forEach(function (f) { if (f !== '*' && !seedCats[f]) return; r.to.forEach(function (t) { if (!comp[t] || f !== '*') comp[t] = comp[t] && comp[t] !== '*' ? comp[t] : f; }); }); });
+    var histCat = {}, bought = {};
+    (reco.history || []).forEach(function (h) { var days = Math.floor((now - Date.parse(h.d)) / DAY); if (isNaN(days)) return; var c = detect({ type: h.type, title: h.t, tags: h.tags }); if (c) histCat[c] = Math.min(histCat[c] == null ? 1e9 : histCat[c], days); if (h.p) bought[h.p] = Math.min(bought[h.p] == null ? 1e9 : bought[h.p], days); });
+    var goalCats = GOALS[reco.goal] || [], best = {}, viewed = {};
+    (pool.best || []).forEach(function (p) { best[p.id] = 1; });
+    (pool.viewed || []).forEach(function (p) { viewed[p.id] = 1; });
+    var seen = {}, scored = [];
+    [].concat(pool.cat || [], pool.bars || [], pool.comp || [], pool.related || [], pool.best || [], pool.viewed || []).forEach(function (p) {
+      if (seen[p.id] || ex[p.id]) return; seen[p.id] = 1;
+      var cat = p.cat || detect(p);
+      if (p.soldOut || !p.vid || cat === 'bundle') return;
+      if (bought[p.id] != null && bought[p.id] <= 30 && cat === 'accessories') return;
+      if (opts.maxPrice && p.price > opts.maxPrice * 100) return;
+      var sc = 0, why = [], add = function (n, key, label) { sc += n; why.push({ n: n, key: key, label: label }); };
+      if (comp[cat]) add(50, 'complement', cat === 'bars-snacks' ? 'Try a protein bar' : comp[cat] === '*' ? 'Goes with your order' : opts.pdp ? 'Goes well with this' : 'Goes with your ' + NAME[comp[cat]]);
+      if (histCat[cat] != null) add(30, 'history', 'From your usual stack');
+      if (bought[p.id] != null && bought[p.id] >= 25 && bought[p.id] <= 75 && cat !== 'accessories') add(20, 'restock', 'Time to restock');
+      if (goalCats.indexOf(cat) > -1) add(20, 'goal', 'For your goal');
+      if (viewed[p.id]) add(20, 'viewed', 'You looked at this');
+      if (best[p.id]) add(10, 'bestseller', cfg.member ? 'Popular with members' : 'Bestseller');
+      if (p.price <= 2000 * 100) add(15, 'low', '');
+      var top = LABEL.map(function (k) { return why.filter(function (w) { return w.key === k; })[0]; }).filter(Boolean)[0];
+      scored.push({ p: p, cat: cat, score: sc, label: top ? top.label : '', why: why.map(function (w) { return w.key + '+' + w.n; }).join(' ') });
+    });
+    scored.sort(function (a, b) { return b.score - a.score || a.p.price - b.p.price; });
+    var picked = [], used = {}, min = opts.min == null ? 10 : opts.min;
+    scored.forEach(function (x) { if (picked.length >= limit || used[x.cat] || x.score < min) return; used[x.cat] = 1; picked.push(x); });
+    if (opts.bar !== false && !used['bars-snacks']) {
+      var b = scored.filter(function (x) { return x.cat === 'bars-snacks' && x.p.price <= 1500 * 100; })[0];
+      if (b) { if (!b.label) b.label = 'Try a protein bar'; if (picked.length >= limit) picked.pop(); picked.push(b); }
+    }
+    return { items: picked.map(function (x) { return Object.assign({ why: x.label, cat: x.cat }, x.p); }), log: { seeds: Object.keys(seedCats), member: !!cfg.member, goal: reco.goal || '', history: Object.keys(histCat), picked: picked.map(function (x) { return x.p.title + ' @' + x.p.price / 100 + ' [' + x.cat + ' ' + x.score + ': ' + x.why + '] "' + x.label + '"'; }) }, targets: Object.keys(comp) };
+  }
+
+  window.SNHReco = { decide: decide, browse: browse, detect: detect, parseMap: parseMap, viewed: viewedHandles, NAME: NAME, GOALS: GOALS };
 })();

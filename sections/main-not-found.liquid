@@ -20,6 +20,8 @@
         <a class="v-btn v-btn--line" href="{{ routes.all_products_collection_url }}"><span>Shop all</span></a>
       {%- endfor -%}
     </div>
+    {%- comment -%} Round 14: the shared recommendation engine (assets/snh-cart.js widget) {%- endcomment -%}
+    <div class="snh-reco" data-snh-reco="404" data-limit="4" data-heading="Popular right now" hidden></div>
   </div>
 </section>
 <style>

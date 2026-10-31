@@ -71,12 +71,16 @@
     if (!cart.item_count) {
       this.body.innerHTML = '<div class="scd__empty"><p class="scd__empty-h">Your basket is empty</p><p>Add your favourites and they\'ll appear here instantly.</p>' +
         '<div class="scd__empty-cta"><a class="v-btn v-btn--accent" href="' + esc(c.shop) + '"><span>Start shopping</span></a><a class="v-btn v-btn--line" href="' + esc(c.plan) + '"><span>Build your plan</span></a></div></div>' +
+        '<section class="scd__block snh-reco" data-snh-reco="empty" data-limit="' + (this.mode === 'page' ? 4 : 3) + '" data-heading="Picked for you" hidden></section>' +
         '<section class="scd__block" data-cart-picks></section>';
       this.foot.hidden = true;
       var eb = $('[data-cart-bar]', this.el); if (eb) eb.innerHTML = '';
       this.el.removeAttribute('data-cart-decision');
       if (this.mode === 'page') this.pageExtras(cart);
       this.picks(cart);
+      // Round 14: the shared engine for the empty basket; the bestseller picks stay as the fallback
+      var rw = $('[data-snh-reco="empty"]', this.el), pk = $('[data-cart-picks]', this.el);
+      if (rw) { rw.addEventListener('snh-reco:render', function () { if (pk) pk.hidden = true; }); widget(rw); }
       this.emit('render', cart);
       return;
     }
@@ -519,7 +523,60 @@
       d.addEventListener('dialog:after-hide', function () { var c = d.querySelector('[data-cart-root]'); if (c && c.__cart) showToast(c.__cart.cart); });
     }
   }
-  window.SNHCart = { refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, norm: norm };
+  /* ---------- Round 14: the recommendation widget, the same engine outside the cart ----------
+     <div data-snh-reco="pdp|empty|account|search|404" data-handle="(PDP product)" data-limit="4" data-heading="…">
+     Seeds: the PDP product, else the basket, else recently viewed; members add their order history + goal (the
+     drawer's cart JSON). Pool: the seeds' complement collections, bars, bestsellers, Shopify's complementary picks for
+     the seeds, recently viewed. Cards add in one tap (single variant) or open the quick-buy sheet. */
+  function wcard(p) {
+    var multi = p.multi || (p.nv > 1);
+    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 300)) + '" alt="" width="150" height="150" loading="lazy">' : '') + '</a>' +
+      '<a class="ssug__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a>' +
+      '<span class="ssug__f"><span class="ssug__p">' + rs(p.price) + (p.why ? '<i>' + esc(p.why) + '</i>' : '') + '</span>' +
+      (multi ? '<button type="button" class="ssug__add" data-v2-pick="' + esc(p.handle) + '" aria-haspopup="dialog" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</button>'
+             : '<button type="button" class="ssug__add" data-v2-add="' + p.vid + '" aria-label="Add ' + esc(p.title) + ' to basket, ' + rs(p.price) + '">' + icons.plus + '</button>') + '</span></li>';
+  }
+  function prod(h) { return productCache[h] || (productCache[h] = json(root + 'products/' + h + '.js').catch(function () { return null; })); }
+  function widget(el) {
+    var R = window.SNHReco, c = carts[0];
+    if (!R || !c || el.__done) return;
+    el.__done = true;
+    var kind = el.getAttribute('data-snh-reco'), limit = +el.getAttribute('data-limit') || 4, h0 = el.getAttribute('data-handle');
+    var reco = c.reco || {}, cfg = c.cfg || {}, cols = colMap(reco.collections), flat = function (a) { return [].concat.apply([], a); };
+    json(root + 'cart.js').catch(function () { return { items: [] }; }).then(function (cart) {
+      var hs = (h0 ? [h0] : []).concat(kind === 'pdp' ? [] : cart.items.map(function (i) { return i.handle; })).concat(kind === 'pdp' ? [] : R.viewed())
+        .filter(function (x, i, a) { return x && a.indexOf(x) === i; }).slice(0, 4);
+      return Promise.all(hs.map(prod)).then(function (ps) {
+        var seeds = ps.filter(Boolean).map(function (p) { var n = norm(p, 'seed'); n.cat = R.detect(n); return n; });
+        var cats = {}, targets = {};
+        seeds.forEach(function (x) { if (x.cat) cats[x.cat] = 1; });
+        R.parseMap(reco.complements).forEach(function (r) { if (r.from.some(function (f) { return f === '*' || cats[f]; })) r.to.forEach(function (t) { targets[t] = 1; }); });
+        if (!seeds.length) (R.GOALS[reco.goal] || []).forEach(function (t) { targets[t] = 1; });
+        delete targets['bars-snacks'];
+        var catLists = Object.keys(targets).slice(0, 5).map(function (t) { return Promise.all((cols[t] || []).map(function (h) { return listOf(h, 30); })).then(function (ls) { return flat(ls).map(function (p) { var n = norm(p, 'category'); n.cat = t; return n; }); }); });
+        var bars = Promise.all((cols['bars-snacks'] || []).map(function (h) { return listOf(h, 40); })).then(function (ls) { return flat(ls).map(function (p) { var n = norm(p, 'bars'); n.cat = 'bars-snacks'; return n; }); });
+        var best = reco.bestsellers ? listOf(reco.bestsellers, 30) : c.picksList();
+        var viewed = kind === 'pdp' ? Promise.resolve([]) : Promise.all(R.viewed().slice(0, 4).map(prod));
+        return Promise.all([Promise.all(seeds.slice(0, 2).map(function (x) { return recs(x.id, 'complementary'); })), Promise.all(catLists), bars, best, viewed]).then(function (r) {
+          var pool = { comp: flat(r[0]).map(function (p) { return norm(p, 'complementary'); }), cat: flat(r[1]), bars: r[2], best: r[3].map(function (p) { return norm(p, 'best'); }), viewed: r[4].filter(Boolean).map(function (p) { return norm(p, 'viewed'); }) };
+          var d = R.browse(seeds, pool, cfg, reco, { limit: limit, pdp: kind === 'pdp', exclude: cart.items.map(function (i) { return i.product_id; }) });
+          el.setAttribute('data-reco-decision', JSON.stringify(d.log));
+          if (!d.items.length) return;
+          var head = el.getAttribute('data-heading') || (kind === 'pdp' ? 'Goes well with' : kind === 'account' ? 'Picked for you' : seeds.length ? 'Goes with what you looked at' : 'Bestsellers right now');
+          el.innerHTML = '<p class="snh-reco__h">' + esc(head) + '</p><ul class="ssugs snh-reco__list" role="list">' + d.items.map(wcard).join('') + '</ul>';
+          el.hidden = false;
+          el.dispatchEvent(new CustomEvent('snh-reco:render', { bubbles: true, detail: d }));
+        });
+      });
+    }).catch(function () {});
+  }
+  function widgets() { $$('[data-snh-reco]').forEach(widget); }
+
+  window.SNHCart = { refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  // the widgets wait for idle time (they fetch a few collection lists)
+  var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 1200); };
+  var startW = function () { idle(widgets); };
+  if (document.readyState === 'complete') startW(); else window.addEventListener('load', startW);
   document.addEventListener('shopify:section:load', init);
 })();

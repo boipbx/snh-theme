@@ -139,6 +139,8 @@
     {%- if n >= 6 -%}{%- break -%}{%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}
+{%- comment -%} Round 14: the shared engine's row (order history + goal + cart + viewed); the diet/budget-aware grid stays below {%- endcomment -%}
+<section class="app__block snh-reco snh-reco--app" data-snh-reco="account" data-limit="4" data-heading="Goes with your orders" hidden></section>
 {%- if n > 0 -%}
   <section class="app__block" aria-labelledby="{{ sid }}-picks-h">
     <div class="app__bh">

@@ -2257,3 +2257,9 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .app__ecard { margin-bottom: 24px; max-width: 420px; }
 .app__hero .mcard { align-self: start; }
 .acp .mcard { margin: 4px 0 8px; }
+/* Round 14: the shared recommendation widget (assets/snh-cart.js) */
+.snh-reco[hidden] { display: none; }
+.snh-reco { margin-block: 32px; }
+.snh-reco__h { margin-bottom: 12px; font: 600 var(--t-h4, 20px)/1.1 var(--sans); letter-spacing: -.02em; }
+.snh-reco .ssugs { margin: 0; padding: 0 0 4px; grid-auto-columns: minmax(150px, 180px); }
+@media (min-width: 1024px) { .snh-reco--pdp .ssugs, .nf .snh-reco .ssugs, .snh-reco--app .ssugs { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; } }
