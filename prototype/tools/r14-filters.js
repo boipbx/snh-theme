@@ -26,7 +26,7 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     '/collections/applied-nutrition?filter.v.price.gte=5000&filter.v.price.lte=15000&sort_by=title-ascending',
   ];
   const ctx = await context(b, 1440), p = await ctx.newPage();
-  for (const q of COMBOS) {
+  for (const q of (process.env.ONLYUI ? [] : COMBOS)) {
     await open(p, q); await p.waitForTimeout(1200);
     const n = await p.evaluate(() => document.querySelectorAll('product-card').length);
     const ui = await p.evaluate(() => { const qs = new URLSearchParams(location.search); const want = [...qs.entries()].filter(([k]) => /^filter\.(p|v\.availability)/.test(k)); const checked = want.filter(([k, v]) => [...document.querySelectorAll(`input[name="${k}"]`)].some((i) => i.value === v && i.checked)).length; const chips = document.querySelectorAll('.snh-chip, [data-snh-chip], .snh-active__chip, [class*="chip"][href*="filter"]').length; return { want: want.length, checked, chips, sort: (document.querySelector('select[name="sort_by"]') || {}).value || '', qsort: qs.get('sort_by') || '' }; });
@@ -42,10 +42,11 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     const n0 = await pg.evaluate(() => document.querySelectorAll('product-card').length);
     // open the controls on phones
     if (w < 800) { await pg.locator('.snh-mtrig__btn').click().catch(() => {}); await pg.waitForTimeout(800); }
-    const vend = pg.locator('input[name="filter.p.vendor"]:not(:checked)');
-    const v1 = await vend.nth(0).getAttribute('value'), v2 = await vend.nth(1).getAttribute('value');
-    await vend.nth(0).check({ force: true }); await pg.waitForTimeout(2500);
-    await pg.locator(`input[name="filter.p.vendor"][value="${v2}"]`).check({ force: true }); await pg.waitForTimeout(2500);
+    // two copies of the facets exist (bar + phone sheet): use the visible labels
+    const vend = pg.locator('label.snh-brand:visible:has(input[name="filter.p.vendor"]:not(:checked))');
+    const v1 = await vend.nth(0).locator('input').getAttribute('value'), v2 = await vend.nth(1).locator('input').getAttribute('value');
+    await vend.nth(0).click(); await pg.waitForTimeout(2500); await pg.waitForLoadState('load').catch(() => {});
+    await pg.locator(`label.snh-brand:visible:has(input[value="${v2}"])`).first().click(); await pg.waitForTimeout(2500);
     if (w < 800) { const apply = pg.locator('.snh-sheet__foot button, .snh-sheet__foot a').last(); if (await apply.isVisible().catch(() => false)) { await apply.click(); await pg.waitForTimeout(2500); } }
     await pg.waitForLoadState('load').catch(() => {});
     const u1 = new URL(pg.url()); const vs = u1.searchParams.getAll('filter.p.vendor');
@@ -91,6 +92,7 @@ const cnt = (html) => (html.match(/<product-card\b/g) || []).length;
     await pg.screenshot({ path: path.join(OUT, `filters-sticky-${w}.png`) });
     await c.close();
   }
+  if (process.env.ONLYUI) { fs.writeFileSync(path.join(OUT, 'filters-ui.md'), rows.join('\n') + '\n'); await b.close(); return; }
   const md = fs.readFileSync(path.join(__dirname, '..', '..', 'PARITY.md'), 'utf8').split('\n## Filters in depth')[0];
   fs.writeFileSync(path.join(__dirname, '..', '..', 'PARITY.md'), md + '\n## Filters in depth\n\n`prototype/tools/r14-filters.js` (browser, target theme asserted, counts compared with the old site for the same URL; screenshots in `prototype/shots/r14/p1/`).\n\n| width | check | result | note |\n|---|---|---|---|\n' + rows.join('\n') + '\n');
   await b.close();
