@@ -820,3 +820,11 @@ to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --o
 - **Type**: fluid clamp() tokens from 360 to 1920 replace the 768 / 1200 steps. Collection hero gets a
   "Shop N products ↓" jump on phones.
 - QA tools: `prototype/tools/r14-*.js` (theme id asserted on every page); results in QA-LOG.md and `prototype/shots/r14/`.
+- **Found and fixed during Round 14 QA**: phones get the brand logo rail inside the *Filter & sort* sheet while it's
+  open (facets-vertical, `.is-in-sheet`); desktop gets a *Brand* button in the condensed filter bar
+  (`[data-snh-brandtog]`, `.show-brands`); the condense point is re-measured after the collection hero loads (the bar
+  condensed too early and left a gap); collection grid gets a visually hidden h2 (heading order).
+- **Responsive**: body sentences 16 px (hero sub, benefits, campaign banners, PDP sub / benefits, cart ETA, empty
+  basket); tap targets ≥ 24 px (crumbs, footer + social links, PDP trust / eyebrow / stars, slider segments; logo 44 px).
+  `snh-campaigns.css` stopped syncing on 31 Oct, so its 16 px rule is repeated in `snh-v2.css`.
+- **Menu**: two dead mega-menu links fixed (`protein-bars`; duplicate "All shakers" removed).
