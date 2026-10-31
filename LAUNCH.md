@@ -1,4 +1,4 @@
-# SNH v2: go-live checklist (Round 13)
+# SNH v2: go-live checklist (Round 13, updated Round 14)
 
 Theme: **snh-theme/feat/theme-v2** (preview `?preview_theme_id=189832462590`). Everything below the line "Admin tasks"
 is for you in Shopify admin; the theme side is done and checked on the preview (see "What was checked").
@@ -7,7 +7,7 @@ is for you in Shopify admin; the theme side is done and checked on the preview (
 
 | # | Task | Where | Why |
 |---|---|---|---|
-| 1 | **Discount codes for the welcome game**: create the real 5 % / 7 % / 10 % codes (one use per customer), then put them in the popup's prize settings | Discounts → Create · Customize → Overlays → SNH email capture | The game still hands out the placeholders TEST-5 / TEST-7 / TEST-10 |
+| 1 | **Discount codes for the welcome game**: create the real 5 % / 7 % / 10 % codes (one use per customer), then put them in the popup's prize settings | Discounts → Create · Customize → Overlays → SNH email capture | Real visitors only see prizes that have a code (prizes without one show only in `?popup=` test mode, as TEST-5 / TEST-7 / TEST-10); with no codes set, the game has nothing to award |
 | 2 | **Bundle offers**: fill the `snh_bundle` metaobject (or Theme settings → SNH bundle offers 1–12) and create the matching automatic discounts | BUNDLES.md | The cart's bundle mini-card only appears when an offer contains a basket item |
 | 3 | **"Cart add-ons" collection** (handle `cart-add-ons`): bars, gels, shakers, sachets ≤ Rs 1,500 | Products → Collections | The recommendation engine works without it, but small baskets get better suggestions with it |
 | 4 | **Bestsellers for the cart engine**: pick a collection | Theme settings → SNH cart suggestions → Bestsellers | Feeds the "Popular with members / Bestseller" signal (+10) |
@@ -23,6 +23,16 @@ is for you in Shopify admin; the theme side is done and checked on the preview (
 | 14 | **Brand colour**: the theme accent is now **#BF4512** (was #E0521C, which gives white text 3.89:1, under AA). If you'd rather keep #E0521C, it can be restricted to large text and decoration; buttons and small text need the darker shade | Theme settings / tell me | Accessibility |
 | 15 | **Store plan question** (CHECKOUT-PLAN.md): checkout extensibility beyond branding needs Shopify Plus | | Decides how far the checkout can be customised |
 | 16 | Publish: duplicate the live theme as a backup, then publish **snh-theme/feat/theme-v2** | Online Store → Themes | |
+
+## Round 14 additions
+
+| # | Task | Where | Why |
+|---|---|---|---|
+| 17 | **Default campaigns**: three are live out of the box (announcement "Free delivery", Koko cart banner, guest home banner to SNH Elite). Edit or switch them off | Customize → Campaigns (header group) | No discount codes are used by them |
+| 18 | **Subscriptions**: no product has a selling plan, so the quick-buy sheet and PDP show one-time only | Appstle | The subscribe toggle appears by itself once plans exist |
+| 19 | **Cloudflare bot check** on www.sportsnutritionhub.lk challenges automated browsers often; only matters for QA tools, not customers | Cloudflare dashboard (optional) | |
+
+Round 14 results per item: QA-LOG.md. Parity: PARITY.md. Recommendations: RECO.md.
 
 ## What was checked on the preview (Round 13)
 

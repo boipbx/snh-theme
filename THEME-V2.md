@@ -803,3 +803,20 @@ to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --o
 5. **TikTok**: `@app` block slot (an installed feed app replaces the manual row); 6 seeded videos render.
 6. **Sweep**: SEO (titles, descriptions, structured data once), accessibility (accent #BF4512 for AA, zoom allowed,
    labels), brand logos from Files (no 404s), SiS video deferred, type on the scale. LAUNCH.md has the checklist.
+
+## Round 14: autonomous finish
+
+- **Add to cart everywhere**: single-variant cards add and open the drawer; multi-variant cards open our own quick-buy
+  sheet (`assets/snh-quick.js`, `[data-v2-pick]`; replaces Impact's quick-buy, which crashed on our product template).
+  Option pills strike through combinations with no stock; subscribe toggle when selling plans exist.
+- **One Elite card** `snippets/snh-elite-card.liquid` (`.mcard`): metal per tier, front/back flip (click, tap,
+  keyboard; reduced motion crossfades), full / compact, guest sample. Used in the header panel, account Overview,
+  Rewards, sidebar (desktop), /pages/snh-elite hero and the home Elite band (`show_card` setting).
+- **Campaigns out of the box**: three default blocks in `sections/campaigns-group.json`; the cart banner also fills the
+  account page slot (`[data-campaign-slot="account"]`).
+- **One recommendation engine**: `SNHReco.browse` added beside `decide`; the `[data-snh-reco]` widget renders it on the
+  PDP ("Goes well with"), empty basket, account, search with no results and 404. See RECO.md.
+- **Parity**: 28 missing mega-menu destinations added (two columns when a list has 13+ links). See PARITY.md.
+- **Type**: fluid clamp() tokens from 360 to 1920 replace the 768 / 1200 steps. Collection hero gets a
+  "Shop N products ↓" jump on phones.
+- QA tools: `prototype/tools/r14-*.js` (theme id asserted on every page); results in QA-LOG.md and `prototype/shots/r14/`.
