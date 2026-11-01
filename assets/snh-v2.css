@@ -2286,3 +2286,14 @@ img.snh-koko { display: inline-block; width: auto; vertical-align: middle; margi
   .app__hero--cards > :not(.app__ec) { grid-column: auto; min-width: 0; }
   .app__ec { align-self: start; }
 }
+/* card text always takes the tier ink (the account app and pages colour p / strong / dd / a) */
+.ecard .ecard__face :is(p, span, strong, em, dt, dd, a, small) { color: inherit; }
+.ecard .ecard__face { color: var(--ei); }
+/* Overview grid wins over snh-app.css's .app__hero columns */
+@media (min-width: 768px) { .app__hero.app__hero--cards { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (min-width: 1200px) { .app__hero.app__hero--cards { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr); } }
+/* small (sidebar): same design, tighter spacing so 12px text fits */
+.ecard--small .ecard__front { gap: 1.2cqw; padding: 4.4cqw 5cqw 4cqw; }
+.ecard--small .ecard__chip { width: 9cqw; min-width: 22px; }
+.ecard--small .ecard__foot { gap: 8px; }
+.ecard--small .ecard__val { display: none; }
