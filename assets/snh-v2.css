@@ -2296,3 +2296,24 @@ img.snh-koko { display: inline-block; width: auto; vertical-align: middle; margi
 .sqb__koko img.snh-koko { height: 14px; }
 .ftr__koko { display: inline-flex; align-items: center; gap: 6px; }
 .ftr__koko img.snh-koko { height: 14px; padding: 2px 4px; border-radius: 4px; background: #fff; box-sizing: content-box; }
+
+/* Round 15: product card contrast. Warm tile edge to edge (pack shot on #F5F2EC), white body under a hairline,
+   bold ink price, compare-at struck grey + the saving in orange, black quick-add. Structure unchanged. */
+.pc { border-color: #E3DCD0; background: #fff; }
+.pc:hover { border-color: #D6CDBE; box-shadow: 0 14px 32px -10px rgba(14, 14, 14, .18); }
+.pc__frame { padding: 0; }
+.pc .card__tile { border-radius: 0; background: #F5F2EC; }
+.pc .card__tile::after { content: ""; position: absolute; inset: auto 0 0; height: 1px; background: #E3DCD0; }
+.pc__badge, .pc__status { top: 12px; }
+.pc__badge { left: 12px; }
+.pc__status { right: 12px; }
+.pc__chip { left: 12px; bottom: 12px; }
+.pc__plus { right: 12px; bottom: 12px; background: #0E0E0E; box-shadow: 0 6px 16px -6px rgba(14, 14, 14, .45); }
+.pc__brand { color: #5C574F; }
+.pc__now, .pc__price--sale .pc__now { font-weight: 700; font-size: 20px; color: #0E0E0E; }
+.pc__was { color: #6B665E; }
+.pc__save { font: 600 12px/1.5 var(--sans); color: #BF4512; white-space: nowrap; }
+@media (max-width: 767px) {
+  .pc__now, .pc__price--sale .pc__now { font-size: 18px; }
+  .pc__plus { right: 10px; bottom: 10px; }
+}
