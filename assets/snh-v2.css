@@ -2289,6 +2289,3 @@ form.snh-bar-form [data-snh-sheet].is-open .snh-brands.is-in-sheet { display: gr
 .sp-line { min-height: 24px; }
 .ftr__social a { display: inline-flex; align-items: center; min-height: 24px; }
 button.seg { height: 24px !important; min-width: 24px; }   /* slider segments: 24 px tap height everywhere (the SiS strip squeezed them to 12) */
-/* campaign banner sentences 16px (also in snh-campaigns.css; repeated here with higher specificity because that file's
-   GitHub sync stalled on 31 Oct and kept serving 15 / 13 px) */
-.cmp-ban .cmp-ban__p, .cmp-ban.cmp-ban--cart .cmp-ban__p { font-size: 16px; }

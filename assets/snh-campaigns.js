@@ -24,7 +24,7 @@
     }).sort(function (a, b) { return (b.priority || 0) - (a.priority || 0); });
   }
   var css = null;
-  function loadCss() { if (css) return; var s = document.currentScript || document.querySelector('script[src*="snh-campaigns.js"]'); css = document.createElement('link'); css.rel = 'stylesheet'; css.href = (s ? s.src : '').replace('snh-campaigns.js', 'snh-campaigns.css'); document.head.appendChild(css); }
+  function loadCss() { if (css) return; var s = document.currentScript || document.querySelector('script[src*="snh-campaigns.js"]'); css = document.createElement('link'); css.rel = 'stylesheet'; css.href = (s && s.getAttribute('data-css')) || (s ? s.src.split('?')[0] : '').replace('snh-campaigns.js', 'snh-campaigns.css');   /* Round 15: the CSS's own asset_url (its own ?v=), so a CSS-only change reaches the CDN */ document.head.appendChild(css); }
   function codeHtml(c) {
     if (!c.code) return '';
     var back = location.pathname;
