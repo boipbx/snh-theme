@@ -15,7 +15,9 @@ const log = (w, step, ok, note) => { rows.push(`| ${w} | ${step} | ${ok ? 'PASS'
     const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 100) + ' @' + ((e.stack || '').match(/https?:\/\/[^\s)]+/) || [''])[0].slice(0, 80)));
     const drawerOpen = () => p.evaluate(() => { const d = document.getElementById('cart-drawer'); return !!(d && (d.open || d.hasAttribute('open'))); });
     const count = () => p.evaluate(() => fetch('/cart.js').then((r) => r.json()).then((c) => c.item_count));
-    const closeDrawer = async () => { await p.keyboard.press('Escape'); await p.waitForTimeout(700); };
+    // close and confirm: Escape can land before the drawer finishes opening, so wait for it, retry, then use the button
+    const isOpen = () => p.evaluate(() => { const d = document.querySelector('x-drawer.cart-drawer, #cart-drawer'); return !!d && (d.hasAttribute('open') || /show-close-cursor|\bis-open\b/.test(d.className)); });
+    const closeDrawer = async () => { await p.waitForTimeout(600); for (let i = 0; i < 3 && await isOpen(); i++) { await p.keyboard.press('Escape'); await p.waitForTimeout(800); } if (await isOpen()) { await p.locator('x-drawer.cart-drawer [is="close-button"], x-drawer.cart-drawer button[aria-label*="Close" i]').first().click().catch(() => {}); await p.waitForTimeout(800); } };
     const shot = (n) => p.screenshot({ path: path.join(OUT, `${n}-${w}.png`) });
     const waitAdd = async (n0) => { for (let i = 0; i < 20 && adds.length <= n0; i++) await p.waitForTimeout(300); await p.waitForTimeout(1800); return adds.length > n0; };
 
