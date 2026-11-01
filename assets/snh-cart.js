@@ -236,7 +236,7 @@
       '<div class="sft__tot"><span>Total<small>' + (free ? 'Free delivery' : 'Delivery at checkout') + ' · taxes included</small></span><b>' + rs(cart.total_price) + '</b></div>' +
       points + tier +
       '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout</span></button></form>' +
-      '<p class="sft__koko"><img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="Koko" width="40" height="13" loading="lazy"><span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b>, interest-free</span></p>' +
+      '<p class="sft__koko">' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(15) : 'Koko') + '<span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b>, interest-free</span></p>' +
       this.payRow() +
       (c.rating ? '<p class="sft__rate">' + icons.star + '<span>' + esc(c.rating) + '</span></p>' : '');
   };

@@ -149,7 +149,7 @@
 .scheck svg { width: 18px; height: 18px; }
 .sft__koko { margin-top: -4px; display: flex; align-items: center; justify-content: center; gap: 4px; font: 400 13px/1.5 var(--sans); color: var(--grey-1); }
 .sft__koko b { color: var(--ink); font-weight: 600; }
-.sft__koko img { width: 40px; height: auto; }
+.sft__koko img { width: auto; height: 15px; }
 .spay { display: flex; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 4px; margin: 0; padding: 0; list-style: none; }
 .spay li { display: inline-flex; align-items: center; flex: none; height: 20px; }
 .spay__card { width: 32px; height: 20px; }
@@ -229,7 +229,7 @@
 .sbm__go:hover { background: var(--v-accent); }
 .sbm__go[aria-busy="true"] { opacity: .5; }
 .sft__koko { gap: 6px; }
-.sft__koko img { width: 44px; }
+.sft__koko img { height: 16px; width: auto; }
 .spay { flex-wrap: wrap; row-gap: 4px; }
 .sbm__t b { font-weight: 600; }
 .sbm__t small { font-size: 12px; color: var(--grey-1); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }

@@ -126,6 +126,7 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {{- 'snh-design-system.css' | asset_url | stylesheet_tag: preload: true -}}
     {{- 'snh-v2.css' | asset_url | stylesheet_tag: preload: true -}}
     <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
+    <script>window.SNH = window.SNH || {}; SNH.koko = {{ 'snh-koko.png' | asset_url | json }}; SNH.kokoImg = function (h) { h = h || 14; return '<img class="snh-koko" src="' + SNH.koko + '" alt="Koko" width="' + Math.round(h * 215 / 98) + '" height="' + h + '" loading="lazy" decoding="async">'; };</script>
     <script src="{{ 'snh-v2.js' | asset_url }}" defer></script>
     <script src="{{ 'snh-quick.js' | asset_url }}" defer></script>
     {%- if template contains 'customers' -%}<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>{%- endif -%}

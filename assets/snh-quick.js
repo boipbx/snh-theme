@@ -50,7 +50,7 @@
       '<div class="sqb__head"><span class="sqb__img">' + (pic ? '<img src="' + esc(img(pic, 300)) + '" alt="" width="96" height="96">' : '') + '</span>' +
       '<div><p class="sqb__brand">' + esc(p.vendor) + '</p><p class="sqb__t" id="sqb-t">' + esc(short(p.title, p.vendor)) + '</p>' +
       '<p class="sqb__price"><b>' + rs(price) + '</b>' + (cmp && cmp > price ? '<s><span class="v-sr">Was </span>' + rs(cmp) + '</s>' : '') + '</p>' +
-      '<p class="sqb__koko">or 3 × ' + rs(Math.ceil(price * state.qty / 3)) + ' with Koko · Cash on delivery</p></div></div>' +
+      '<p class="sqb__koko">or 3 × ' + rs(Math.ceil(price * state.qty / 3)) + ' with ' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(14) : 'Koko') + ' · Cash on delivery</p></div></div>' +
       opts.map(function (o, i) {
         var name = o.name || o;
         return '<fieldset class="sqb__opt"><legend>' + esc(name) + ': <b>' + esc(state.sel[i]) + '</b></legend><div class="sqb__pills">' +

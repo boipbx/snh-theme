@@ -23,6 +23,8 @@
       return Object.assign({ why: why }, c);
     }).sort(function (a, b) { return (b.priority || 0) - (a.priority || 0); });
   }
+  // Round 15: the word Koko in a banner heading shows as the Koko logo (window.SNH.kokoImg, layout/theme.liquid)
+  function kk(t) { return window.SNH && SNH.kokoImg ? t.replace(/\bKoko\b/, SNH.kokoImg(20)) : t; }
   var css = null;
   function loadCss() { if (css) return; var s = document.currentScript || document.querySelector('script[src*="snh-campaigns.js"]'); css = document.createElement('link'); css.rel = 'stylesheet'; css.href = (s && s.getAttribute('data-css')) || (s ? s.src.split('?')[0] : '').replace('snh-campaigns.js', 'snh-campaigns.css');   /* Round 15: the CSS's own asset_url (its own ?v=), so a CSS-only change reaches the CDN */ document.head.appendChild(css); }
   function codeHtml(c) {
@@ -33,7 +35,7 @@
   function pic(c, cls) { return c.img ? '<picture class="' + cls + '">' + (c.imgM ? '<source media="(max-width: 767px)" srcset="' + esc(c.imgM) + '">' : '') + '<img src="' + esc(c.img) + '" alt="" loading="lazy"></picture>' : ''; }
   function banner(c, kind) {
     return '<div class="cmp-ban cmp-ban--' + kind + ' cmp-tone--' + esc(c.tone || 'orange') + '" data-campaign="' + esc(c.id) + '">' + pic(c, 'cmp-ban__pic') +
-      '<div class="cmp-ban__b">' + (c.heading ? '<p class="cmp-ban__h">' + esc(c.heading) + '</p>' : '') + (c.message ? '<p class="cmp-ban__p">' + esc(c.message) + '</p>' : '') + codeHtml(c) + '</div>' +
+      '<div class="cmp-ban__b">' + (c.heading ? '<p class="cmp-ban__h">' + kk(esc(c.heading)) + '</p>' : '') + (c.message ? '<p class="cmp-ban__p">' + esc(c.message) + '</p>' : '') + codeHtml(c) + '</div>' +
       (c.cta && c.link ? '<a class="cmp-ban__go" href="' + esc(c.link) + '">' + esc(c.cta) + '</a>' : '') + '</div>';
   }
 

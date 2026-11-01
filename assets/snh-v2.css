@@ -1949,7 +1949,7 @@ body { line-height: 1.5; }
 .pc__add:hover .pc__dot { transform: translateX(2px); }
 .pc__sold { flex: none; display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: var(--pill); background: #F2EEE7; color: var(--grey-1); font: 600 14px/1.1 var(--sans); }
 .pc__koko { margin-top: 8px; font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
-.pc__kk { font-weight: 600; letter-spacing: .12em; color: #5B4BD5; }
+.pc__kk { display: inline-block; vertical-align: middle; height: 14px; width: auto; margin-top: -2px; }
 .pc__earn { display: block; margin-top: 12px; padding-top: 12px; border-top: 1px solid #ECE6DD; font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
 .pc__earn strong { font-weight: 600; color: var(--v-accent); }
 a.pc__earn:hover strong { text-decoration: underline; text-underline-offset: 4px; }
@@ -2289,3 +2289,10 @@ form.snh-bar-form [data-snh-sheet].is-open .snh-brands.is-in-sheet { display: gr
 .sp-line { min-height: 24px; }
 .ftr__social a { display: inline-flex; align-items: center; min-height: 24px; }
 button.seg { height: 24px !important; min-width: 24px; }   /* slider segments: 24 px tap height everywhere (the SiS strip squeezed them to 12) */
+
+/* Round 15: the Koko logo (snippets/snh-koko-logo, SNH.kokoImg) sits on the text line */
+img.snh-koko { display: inline-block; width: auto; vertical-align: middle; margin-top: -2px; }
+.hpc__koko img.snh-koko { height: 13px; }
+.sqb__koko img.snh-koko { height: 14px; }
+.ftr__koko { display: inline-flex; align-items: center; gap: 6px; }
+.ftr__koko img.snh-koko { height: 14px; padding: 2px 4px; border-radius: 4px; background: #fff; box-sizing: content-box; }

@@ -83,7 +83,7 @@
                 <span class="hpc__brand">{{ p.vendor | escape }}</span>
                 <a class="hs__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p, short: true %}</a>
                 <span class="hs__price">{% if p.price_varies %}From {% endif %}{{ p.price | money_without_trailing_zeros }}{% if retail > p.price %} <s>{{ retail | money_without_trailing_zeros }}</s>{% endif %}</span>
-                <span class="hpc__koko">or 3 × {{ third | money_without_trailing_zeros }} with <b>KOKO</b></span>
+                <span class="hpc__koko">or 3 × {{ third | money_without_trailing_zeros }} with {% render 'snh-koko-logo', h: 13 %}</span>
               </span>
               {%- render 'snh-v2-stl-add', product: p, cls: 'hpc__add', label: '+ Add' -%}
             </li>

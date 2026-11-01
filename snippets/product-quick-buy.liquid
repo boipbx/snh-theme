@@ -96,7 +96,7 @@ product section's blocks) with SNH styling: Satoshi type, hairline pills, ink Ad
       {%- endif -%}
 
       <div class="snh-qb__foot">
-        <span class="snh-qb__koko">OR 3 &times; {{ third | money }} <img src="https://paykoko.com/img/logo1.7ff549c0.png" alt="KOKO" loading="lazy" width="46" height="13"></span>
+        <span class="snh-qb__koko">OR 3 &times; {{ third | money }} <img src="{{ 'snh-koko.png' | asset_url }}" alt="KOKO" loading="lazy" width="46" height="13"></span>
         {%- if customer -%}
           <span class="snh-qb__earn">Earn <strong>{{ points_value | money }}</strong> back</span>
         {%- else -%}

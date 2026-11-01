@@ -1,0 +1,11 @@
+{%- comment -%}
+  Round 15: the official Koko logo (assets/snh-koko.png, 215×98, the image Koko supplies; was hotlinked from
+  paykoko.com). Use it wherever Koko is named as a payment option.
+  h: height in px (default 14) · class: extra classes · eager: true to skip lazy loading
+  JS renders use window.SNH.koko (layout/theme.liquid) with the same markup.
+{%- endcomment -%}
+{%- liquid
+  assign kh = h | default: 14
+  assign kw = kh | times: 215 | divided_by: 98
+-%}
+<img class="snh-koko{% if class != blank %} {{ class }}{% endif %}" src="{{ 'snh-koko.png' | asset_url }}" alt="Koko" width="{{ kw }}" height="{{ kh }}"{% unless eager %} loading="lazy"{% endunless %} decoding="async">

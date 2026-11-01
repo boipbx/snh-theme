@@ -32,8 +32,9 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
+    {%- capture koko_pay -%}<b class="ftr__koko">{% render 'snh-koko-logo', h: 14 %} pay in 3</b>{%- endcapture -%}
     <div class="ftr__pay">
-      <span>{{ section.settings.payments | strip_html | escape | replace: 'Koko · pay in 3', '<b>Koko · pay in 3</b>' }}</span>
+      <span>{{ section.settings.payments | strip_html | escape | replace: 'Koko · pay in 3', koko_pay }}</span>
       <span class="ftr__social">
         {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
         {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
