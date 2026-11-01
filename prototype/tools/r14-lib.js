@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const HOST = 'https://sports-nutrition-hub.myshopify.com', THEME = 189832462590;
-const OUT = path.join(__dirname, '..', 'shots', 'r14');
+const OUT = path.join(__dirname, '..', 'shots', process.env.SHOTS || 'r14');   // Round 15 tools set SHOTS=r15
 const url = (p) => HOST + p + (p.includes('?') ? '&' : '?') + 'preview_theme_id=' + THEME;
 const HIDE = '#PBarNextFrameWrapper,privacy-bar,#shopify-pc__banner{display:none!important}';
 async function context(b, w, opts = {}) {
