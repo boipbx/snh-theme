@@ -349,7 +349,7 @@ td .pill + .pill { margin-left: 4px; }
   .auth__bgimg.is-on { opacity: 1; }
   .auth__bgvid { display: none; }
 }
-.auth--bg .auth__grid { position: relative; display: grid; gap: 24px; padding: 32px var(--gutter) 56px; }
+.auth--bg .auth__grid { position: relative; display: grid; gap: 24px; padding-top: 32px; padding-bottom: 56px; }
 .auth--bg .auth__card { order: 1; max-width: 480px; width: 100%; margin: 0 auto; padding: 28px 22px; border-radius: 20px; background: #fff; color: var(--ink); box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .6); }
 .auth--bg .auth__aside { order: 2; min-height: 0; padding: 0; overflow: visible; background: none; color: var(--white); align-content: start; }
 .auth--bg .auth__aside::before, .auth--bg .auth__aside::after { content: none; }
@@ -369,7 +369,8 @@ td .pill + .pill { margin-left: 4px; }
 }
 @media (min-width: 1024px) {
   .auth--bg { min-height: calc(100svh - var(--hdr-h, 72px)); display: grid; align-items: center; }
-  .auth--bg .auth__grid { grid-template-columns: minmax(0, 480px) minmax(0, 460px); justify-content: space-between; align-items: center; gap: 48px; padding: 64px var(--gutter) 80px; }
+  .auth--bg .auth__grid { grid-template-columns: minmax(0, 480px) minmax(0, 460px); justify-content: space-between; align-items: center; gap: 48px; padding-top: 64px; padding-bottom: 80px; }
+  .auth--bg > .auth__grid { width: 100%; }
   .auth--bg .auth__card { margin: 0; padding: 36px 36px 32px; }
   .auth--bg .auth__pitch { margin: 0; }
 }
