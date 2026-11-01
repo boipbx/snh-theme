@@ -109,3 +109,18 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* Round 15: password show / hide on every password field of the sign-in / register / reset forms */
+(function () {
+  function add(input) {
+    if (input.closest('.pw')) return;
+    var w = document.createElement('span'); w.className = 'pw';
+    input.parentNode.insertBefore(w, input); w.appendChild(input);
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'pw__tog'; b.textContent = 'Show';
+    b.setAttribute('aria-label', 'Show password'); b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () { var on = input.type === 'password'; input.type = on ? 'text' : 'password'; b.textContent = on ? 'Hide' : 'Show'; b.setAttribute('aria-label', on ? 'Hide password' : 'Show password'); b.setAttribute('aria-pressed', String(on)); });
+    w.appendChild(b);
+  }
+  function run() { document.querySelectorAll('.auth input[type="password"]').forEach(add); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+})();

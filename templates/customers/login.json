@@ -12,6 +12,9 @@
     "main": {
       "type": "snh-account-login",
       "settings": {
+        "bg_1": "shopify://shop_images/cricket.jpg",
+        "bg_2": "shopify://shop_images/running.jpg",
+        "bg_3": "shopify://shop_images/2fd50e25-5d19-4f08-9e36-f8992b6e917c.jpg",
         "heading": "Your rewards are *waiting*",
         "lead": "Sign in to see your points, your tier and every order in one place."
       }

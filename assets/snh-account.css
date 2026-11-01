@@ -334,3 +334,49 @@ td .pill + .pill { margin-left: 4px; }
 .auth__otp { display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--line); }
 .auth__otp .v-btn { width: 100%; }
 .auth__otp .v-btn[disabled] { opacity: .6; cursor: not-allowed; }
+
+/* ---------- Round 15: sign in / register / recover / activate / reset on a full-bleed photo background ---------- */
+.auth--bg { position: relative; isolation: isolate; background: #120A06; color: var(--white); overflow: hidden; }
+.auth__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: #120A06; }
+.auth__bgimg, .auth__bgvid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+.auth__bgimg { opacity: 0; }
+.auth__bgimg.is-on { opacity: 1; }
+[data-auth-fade] .auth__bgimg { animation: auth-fade calc(var(--n, 3) * 8s) linear infinite; animation-delay: calc(var(--i, 0) * 8s); }
+@keyframes auth-fade { 0% { opacity: 0; } 5% { opacity: 1; } 33% { opacity: 1; } 40% { opacity: 0; } 100% { opacity: 0; } }
+.auth__bgtint { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(191, 69, 18, .86) 0%, rgba(110, 34, 6, .8) 42%, rgba(14, 10, 7, .94) 100%); }
+@media (prefers-reduced-motion: reduce) {
+  [data-auth-fade] .auth__bgimg { animation: none; }
+  .auth__bgimg.is-on { opacity: 1; }
+  .auth__bgvid { display: none; }
+}
+.auth--bg .auth__grid { position: relative; display: grid; gap: 24px; padding: 32px var(--gutter) 56px; }
+.auth--bg .auth__card { order: 1; max-width: 480px; width: 100%; margin: 0 auto; padding: 28px 22px; border-radius: 20px; background: #fff; color: var(--ink); box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .6); }
+.auth--bg .auth__aside { order: 2; min-height: 0; padding: 0; overflow: visible; background: none; color: var(--white); align-content: start; }
+.auth--bg .auth__aside::before, .auth--bg .auth__aside::after { content: none; }
+.auth--bg .auth__pitch { gap: 18px; padding: 0; border: 0; border-radius: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; max-width: 480px; width: 100%; margin: 0 auto; }
+.auth--bg .auth__h { color: var(--white); }
+.auth--bg .auth__lead { color: rgba(255, 255, 255, .92); }
+.auth__ecard .elc-wrap { max-width: 440px; }
+.auth--bg .auth__perks li { background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .16); }
+.auth--bg .auth__perks span { color: rgba(255, 255, 255, .9); font-size: 13px; }
+.auth__proof { display: flex; align-items: center; gap: 8px; font: 500 15px/1.5 var(--sans); color: rgba(255, 255, 255, .92); }
+.auth__proof span { color: #F2A93B; }
+/* phones: a compact photo header, the form, then the card */
+@media (max-width: 1023px) {
+  .auth__bg { bottom: auto; height: 280px; }
+  .auth__bgtint { background: linear-gradient(180deg, rgba(191, 69, 18, .72) 0%, rgba(80, 25, 5, .82) 60%, #120A06 100%); }
+  .auth--bg .auth__grid { padding-top: 120px; }
+}
+@media (min-width: 1024px) {
+  .auth--bg { min-height: calc(100svh - var(--hdr-h, 72px)); display: grid; align-items: center; }
+  .auth--bg .auth__grid { grid-template-columns: minmax(0, 480px) minmax(0, 460px); justify-content: space-between; align-items: center; gap: 48px; padding: 64px var(--gutter) 80px; }
+  .auth--bg .auth__card { margin: 0; padding: 36px 36px 32px; }
+  .auth--bg .auth__pitch { margin: 0; }
+}
+/* form states */
+.auth--bg .fld input[aria-invalid="true"], .auth--bg .fld input:user-invalid { border-color: #C02A1B; box-shadow: 0 0 0 3px rgba(192, 42, 27, .14); }
+.auth--bg .aform__err { border-radius: 12px; }
+.pw { position: relative; display: block; }
+.pw input { padding-right: 76px !important; width: 100%; }
+.pw__tog { position: absolute; top: 50%; right: 6px; transform: translateY(-50%); min-height: 36px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font: 600 13px/1 var(--sans); cursor: pointer; }
+.pw__tog:hover { background: #F2EEE7; }

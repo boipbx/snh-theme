@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "main": {
       "type": "snh-account-register",
@@ -49,7 +48,10 @@
       ],
       "settings": {
         "heading": "Fuel your goals. *Earn* your rewards.",
-        "lead": "Create your free account, claim your welcome points and earn back on every order."
+        "lead": "Create your free account, claim your welcome points and earn back on every order.",
+        "bg_1": "shopify://shop_images/cricket.jpg",
+        "bg_2": "shopify://shop_images/running.jpg",
+        "bg_3": "shopify://shop_images/2fd50e25-5d19-4f08-9e36-f8992b6e917c.jpg"
       }
     }
   },

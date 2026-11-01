@@ -1,33 +1,25 @@
 {%- comment -%}
-  SNH Elite pitch beside the sign-in / register / password forms (Round 7). Dark glass over the Elite mesh.
-  heading (a *word* goes serif), lead, image (optional section image). Figures from Theme settings → SNH Elite.
+  SNH Elite beside the sign-in / register / password forms (Round 7; Round 15: the sample Elite card + three perks + a
+  social-proof line, on the full-bleed photo background of snippets/snh-auth-bg).
+  heading (a *word* goes serif), lead, proof. Figures from Theme settings → SNH Elite.
 {%- endcomment -%}
 {%- liquid
   assign welcome = settings.snh_welcome_points | default: 500
   assign redeem_from = settings.snh_redeem_from | default: 2500
   assign r_b = settings.snh_rate_bronze | default: 3
-  assign r_s = settings.snh_rate_silver | default: 7
   assign r_g = settings.snh_rate_gold | default: 10
-  assign silver = settings.snh_silver_threshold | default: 198000
-  assign gold = settings.snh_gold_threshold | default: 300000
   assign parts = heading | split: '*'
 -%}
 <aside class="auth__aside" aria-label="SNH Elite">
-  <div class="auth__mesh" aria-hidden="true"><i></i><i></i><i></i></div>
-  {%- if image != blank -%}{{ image | image_url: width: 900 | image_tag: loading: 'eager', alt: '', class: 'auth__img', sizes: '(min-width: 1024px) 40vw, 100vw' }}{%- endif -%}
   <div class="auth__pitch">
-    <span class="auth__brand">SNH <em>Elite</em></span>
     <h2 class="auth__h">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
     {%- if lead != blank -%}<p class="auth__lead">{{ lead | escape }}</p>{%- endif -%}
+    <div class="auth__ecard">{%- render 'snh-elite-card', sample: true, size: 'full', side: 'front' -%}</div>
     <ul class="auth__perks" role="list">
       <li><b>{% render 'snh-num', n: welcome %}</b><span>welcome points</span></li>
       <li><b>{{ r_b }}–{{ r_g }}%</b><span>back on every order</span></li>
       <li><b>{% render 'snh-num', n: redeem_from %}</b><span>points to redeem</span></li>
     </ul>
-    <ol class="auth__ladder" role="list">
-      <li data-tier="bronze"><span>Bronze</span><b>{{ r_b }}%</b><i>Free to join</i></li>
-      <li data-tier="silver"><span>Silver</span><b>{{ r_s }}%</b><i>From {{ silver | times: 100 | money_without_trailing_zeros }}</i></li>
-      <li data-tier="gold"><span>Gold</span><b>{{ r_g }}%</b><i>From {{ gold | times: 100 | money_without_trailing_zeros }}</i></li>
-    </ol>
+    {%- if proof != blank -%}<p class="auth__proof"><span aria-hidden="true">★</span> {{ proof | escape }}</p>{%- endif -%}
   </div>
 </aside>

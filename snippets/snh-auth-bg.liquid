@@ -1,0 +1,31 @@
+{%- comment -%}
+  Round 15: full-bleed background for sign in / register / recover / activate / reset. A slow crossfade of real SNH
+  photos (section settings bg_1–bg_3: athletes and stores, the same images as the hero), an orange → black gradient on
+  top, or a looping video when bg_video is set. Reduced motion: the first image only, no crossfade, no video.
+  s: section.settings
+{%- endcomment -%}
+{%- liquid
+  assign imgs = ''
+  for i in (1..3)
+    assign k = 'bg_' | append: i
+    if s[k] != blank
+      assign imgs = imgs | append: i | append: ','
+    endif
+  endfor
+  assign ids = imgs | split: ','
+-%}
+<div class="auth__bg" aria-hidden="true"{% if ids.size > 1 %} data-auth-fade style="--n: {{ ids.size }}"{% endif %}>
+  {%- for i in ids -%}
+    {%- assign k = 'bg_' | append: i -%}
+    {%- if forloop.first -%}
+      {{- s[k] | image_url: width: 1920 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750,1100,1500,1920', sizes: '100vw', alt: '', class: 'auth__bgimg is-on', style: '--i: 0' -}}
+    {%- else -%}
+      {%- assign st = '--i: ' | append: forloop.index0 -%}
+      {{- s[k] | image_url: width: 1920 | image_tag: loading: 'lazy', widths: '750,1100,1500,1920', sizes: '100vw', alt: '', class: 'auth__bgimg', style: st -}}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if s.bg_video != blank -%}
+    {{- s.bg_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'auth__bgvid', image_size: '1920x' -}}
+  {%- endif -%}
+  <i class="auth__bgtint"></i>
+</div>
