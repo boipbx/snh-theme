@@ -2317,3 +2317,5 @@ img.snh-koko { display: inline-block; width: auto; vertical-align: middle; margi
   .pc__now, .pc__price--sale .pc__now { font-size: 18px; }
   .pc__plus { right: 10px; bottom: 10px; }
 }
+/* on cream sections the tile would match the page: a touch deeper so the card reads as a card */
+.v-section--cream .pc .card__tile { background: #ECE5D9; }
