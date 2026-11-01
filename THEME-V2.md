@@ -828,3 +828,19 @@ to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --o
   basket); tap targets ≥ 24 px (crumbs, footer + social links, PDP trust / eyebrow / stars, slider segments; logo 44 px).
   `snh-campaigns.css` stopped syncing on 31 Oct, so its 16 px rule is repeated in `snh-v2.css`.
 - **Menu**: two dead mega-menu links fixed (`protein-bars`; duplicate "All shakers" removed).
+
+## Round 15: card, auth pages, product cards, Koko
+
+- **One static SNH Elite card** `snippets/snh-elite-card.liquid` (class `elc`; `size: full | compact | small`,
+  `side: both | front | back`, `sample`). Header-panel design: theme logo recoloured per tier (CSS mask of
+  `assets/snh-logo-mark.png`, `--snh-logo` set in layout) + serif "Elite", tier caps, chip, "0000 0934", member, points +
+  Rs, progress line; back = stripe + label / value rows + View rewards. No tilt / rotation / 3D; desktop hover sheen;
+  "Show back" swaps faces with a crossfade. Bronze white text, silver and gold ink text (≥ 4.5:1 on the lightest stop).
+  Overview: front + back side by side (phones: one card + Show back), points panel below.
+- **Auth pages** (`snh-account-login / -register / -password`): `snippets/snh-auth-bg.liquid` full-bleed photo crossfade
+  (section settings Photo 1–3, Background video) under an orange → black tint; form card + `snh-auth-aside` (sample card,
+  3 perks, social-proof line); password Show / Hide in `assets/snh-account.js`.
+- **Product card**: warm tile edge to edge, hairline body, bold ink price, saving in orange, black quick-add.
+- **Koko logo**: `snippets/snh-koko-logo.liquid` and `SNH.kokoImg(h)` (layout), image in `assets/snh-koko.png`.
+- **Campaigns CSS**: loaded by its own `asset_url` (`data-css` on the campaigns script); it used to borrow the JS file's
+  `?v=`, so CSS-only edits stayed cached.

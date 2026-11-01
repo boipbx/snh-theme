@@ -30,8 +30,9 @@ is for you in Shopify admin; the theme side is done and checked on the preview (
 |---|---|---|---|
 | 17 | **Default campaigns**: three are live out of the box (announcement "Free delivery", Koko cart banner, guest home banner to SNH Elite). Edit or switch them off | Customize → Campaigns (header group) | No discount codes are used by them |
 | 18 | **Subscriptions**: no product has a selling plan, so the quick-buy sheet and PDP show one-time only | Appstle | The subscribe toggle appears by itself once plans exist |
-| 20 | **Stalled file sync**: on 31 Oct `assets/snh-campaigns.css` stopped updating on the preview (GitHub sync kept the old version, every other file deployed in seconds). The theme works around it, but if the file still shows `15px/1.5` in Customize → Edit code, re-sync the theme (Themes → … → GitHub → Sync) | Online Store → Themes | Keeps the file in step with the repo |
+| 20 | ~~Stalled file sync~~ **fixed in Round 15**: the campaigns stylesheet borrowed the JS file's version string, so CSS-only edits stayed cached; it now loads by its own URL. Nothing to do | — | — |
 | 21 | **Broken link in a product description**: Critical Whey 2KG links "protein and recovery range" to `/collections/protein-powder` (404) | Products → Applied Nutrition Critical Whey 2KG → Description | Point it at `/collections/whey-protein` or another live collection |
+| 22 | **Sign-in / register background**: three photos are set (cricket, running, hero); swap them or add a background video | Customize → Customer accounts → Sign in / Create account → Background | Photos of your stores or athletes read best |
 | 19 | **Cloudflare bot check** on www.sportsnutritionhub.lk challenges automated browsers often; only matters for QA tools, not customers | Cloudflare dashboard (optional) | |
 
 Round 14 results per item: QA-LOG.md. Parity: PARITY.md. Recommendations: RECO.md.
