@@ -2321,3 +2321,6 @@ img.snh-koko { display: inline-block; width: auto; vertical-align: middle; margi
 /* Round 16: the Koko logo is an inline mark on the text baseline, never a hero (any img rule elsewhere can't grow it) */
 img.snh-koko { max-height: 20px !important; width: auto !important; max-width: none !important; object-fit: contain; vertical-align: -0.2em; margin-top: 0; }
 .pc__koko img.snh-koko, .sft__koko img.snh-koko, .sqb__koko img.snh-koko, .hpc__koko img.snh-koko { max-height: 16px !important; }
+/* the shadow turns with the card (it sat on the non-rotating box and showed as a pale slab mid-flip) */
+.elc { box-shadow: none; }
+.elc__face { box-shadow: 0 18px 40px -18px rgba(14, 14, 14, .55), 0 2px 6px rgba(14, 14, 14, .12); }
