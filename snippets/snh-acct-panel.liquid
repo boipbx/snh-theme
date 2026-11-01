@@ -66,7 +66,7 @@
           endif
         -%}
         {%- comment -%} Round 14: the one SNH Elite card (snippets/snh-elite-card), same as the account and Elite pages {%- endcomment -%}
-        {%- render 'snh-elite-card', m: m, name: card_name, no: card_no, size: 'full' -%}
+        {%- render 'snh-elite-card', m: m, name: card_name, no: card_no, size: 'compact', side: 'front' -%}
         <div class="acp__prog">
           <p class="acp__next">
             {%- if m[3] == 'x' -%}Your balance appears after your first paid order syncs.{% elsif m[14] == '1' %}Your reward is ready to redeem.{% else %}{% render 'snh-num', n: m[15] %} points to your first reward.{% endif %}

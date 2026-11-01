@@ -220,17 +220,20 @@
   }, { rootMargin: '0px 0px -8% 0px' }) : null;
   on('reveal', function (el) { if (io) io.observe(el); else el.classList.add('is-in'); });
 
-  /* ---------- Round 14: the SNH Elite card flips (click / tap on the card or its flip button; links on the back work) ---------- */
+  /* ---------- Round 15: the SNH Elite card is static. Where one card holds both sides, "Show back" swaps the faces
+     (a crossfade in CSS, no rotation); the link on the back becomes focusable only while it shows. ---------- */
   document.addEventListener('click', function (e) {
-    var c = e.target.closest && e.target.closest('[data-mcard]');
-    if (!c || (e.target.closest('a') && !e.target.closest('.mcard__flip'))) return;
-    var on = !c.classList.contains('is-flipped'), b = c.querySelector('.mcard__flip');
-    c.classList.toggle('is-flipped', on);
-    var f = c.querySelector('.mcard__front'), k = c.querySelector('.mcard__back'), l = c.querySelector('.mcard__link');
+    var b = e.target.closest && e.target.closest('[data-ecard-flip]');
+    if (!b) return;
+    var w = b.closest('.ecard-wrap'), c = w && w.querySelector('.ecard'); if (!c) return;
+    var on = !c.classList.contains('is-back');
+    c.classList.toggle('is-back', on);
+    var f = c.querySelector('.ecard__front'), k = c.querySelector('.ecard__back'), l = c.querySelector('.ecard__link');
     if (f) f.setAttribute('aria-hidden', on ? 'true' : 'false');
     if (k) k.setAttribute('aria-hidden', on ? 'false' : 'true');
     if (l) l.tabIndex = on ? 0 : -1;
-    if (b) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.textContent = on ? 'Show front' : 'Show back';
   });
 
   /* ---------- Round 13: product cards never cut a word. Names (2 lines) and brands that overflow lose whole words
@@ -589,18 +592,6 @@
       });
       $$('[data-acp-close]', wrap).forEach(function (b) { b.addEventListener('click', closeAcp); });
       acp.addEventListener('keydown', function (e) { trapTab(acp, e); });
-      // membership card: a subtle 3D tilt that follows the pointer (fine pointers only, never with reduced motion)
-      var cc = acp.querySelector('[data-ccard] .ccard__face');
-      if (cc && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        cc.addEventListener('pointermove', function (e) {
-          var r = cc.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-          cc.style.setProperty('--ry', ((x - .5) * 12).toFixed(2) + 'deg');
-          cc.style.setProperty('--rx', ((.5 - y) * 10).toFixed(2) + 'deg');
-          cc.style.setProperty('--gx', Math.round(x * 100) + '%');
-          cc.style.setProperty('--gy', Math.round(y * 100) + '%');
-        });
-        cc.addEventListener('pointerleave', function () { ['--rx', '--ry', '--gx', '--gy'].forEach(function (k) { cc.style.removeProperty(k); }); });
-      }
     }
 
     document.addEventListener('keydown', function (e) {

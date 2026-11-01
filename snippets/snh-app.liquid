@@ -105,7 +105,7 @@
         </div>
       </div>
       {%- comment -%} Round 14: the mini SNH Elite card (tier, points and details are on it) {%- endcomment -%}
-      <div class="app__mini">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'compact' -%}</div>
+      <div class="app__mini">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'small', side: 'front' -%}</div>
       <nav class="app__nav" aria-label="Account">
         {%- for v in views -%}
           {%- case v -%}
