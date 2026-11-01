@@ -17,7 +17,7 @@ const AUDIT = (el) => {
   const lightest = stops.reduce((a, b) => (L(...a) > L(...b) ? a : b)); const darkest = stops.reduce((a, b) => (L(...a) < L(...b) ? a : b));
   const r = card.getBoundingClientRect(); let small = [], over = [], tf = [], low = [], minC = 99;
   [card, ...card.querySelectorAll('.elc__face')].forEach((e) => { const s = getComputedStyle(e); if (s.transform !== 'none' || s.perspective !== 'none') tf.push(e.className); });
-  card.querySelectorAll('.elc__face').forEach((face) => { if (getComputedStyle(face).visibility === 'hidden') return; face.querySelectorAll('*').forEach((e) => { if (e.closest('.v-sr')) return; if (!e.childNodes.length || ![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return; const s = getComputedStyle(e); const fs = parseFloat(s.fontSize); if (fs < 12) small.push(e.className + ' ' + fs); const b = e.getBoundingClientRect(); if (b.right > r.right + 1 || b.left < r.left - 1 || b.bottom > r.bottom + 1 || b.top < r.top - 1 || e.scrollWidth > e.clientWidth + 1 && s.textOverflow !== 'ellipsis') over.push(e.className || e.tagName); if (e.closest('.elc__stripe')) return; const c = rgb(s.color); const bg = e.closest('.elc__back') && e.closest('.elc__rows, .elc__link') ? [lightest, darkest] : [lightest, darkest]; const cr = Math.min(...bg.map((g) => (Math.max(L(...c), L(...g)) + .05) / (Math.min(L(...c), L(...g)) + .05))); if (cr < 4.5) low.push((e.className || e.tagName) + ' ' + s.color + ' ' + cr.toFixed(2)); minC = Math.min(minC, cr); }); });
+  card.querySelectorAll('.elc__face').forEach((face) => { if (getComputedStyle(face).visibility === 'hidden') return; face.querySelectorAll('*').forEach((e) => { if (e.closest('.v-sr') || !e.getClientRects().length) return; if (!e.childNodes.length || ![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return; const s = getComputedStyle(e); const fs = parseFloat(s.fontSize); if (fs < 12) small.push(e.className + ' ' + fs); const b = e.getBoundingClientRect(); if (b.right > r.right + 1 || b.left < r.left - 1 || b.bottom > r.bottom + 1 || b.top < r.top - 1 || e.scrollWidth > e.clientWidth + 1 && s.textOverflow !== 'ellipsis') over.push(e.className || e.tagName); if (e.closest('.elc__stripe')) return; const c = rgb(s.color); const bg = e.closest('.elc__back') && e.closest('.elc__rows, .elc__link') ? [lightest, darkest] : [lightest, darkest]; const cr = Math.min(...bg.map((g) => (Math.max(L(...c), L(...g)) + .05) / (Math.min(L(...c), L(...g)) + .05))); if (cr < 4.5) low.push((e.className || e.tagName) + ' ' + s.color + ' ' + cr.toFixed(2)); minC = Math.min(minC, cr); }); });
   return { tier: card.dataset.tier, side: card.dataset.side, w: Math.round(r.width), h: Math.round(r.height), ratio: (r.width / r.height).toFixed(3), small, over, tf, minC: +minC.toFixed(2), low: low.slice(0, 3), logo: getComputedStyle(card.querySelector('.elc__logo') || card).maskImage || '' };
 };
 (async () => {
@@ -52,7 +52,7 @@ const AUDIT = (el) => {
   // sidebar (small) + Rewards
   await audit(P, '.app__mini .elc', 'sidebar small', 1440);
   await P.evaluate(() => { const a = document.querySelector('[data-go="rewards"]'); if (a) a.click(); }); await P.waitForTimeout(900);
-  await audit(P, '.app__elc .elc', 'rewards', 1440);
+  await audit(P, '.app__ecard .elc', 'rewards', 1440);
   // header panel mock (compact), Elite page, home band (guest sample)
   for (const [p, w] of [[P, 1440], [Q, 390]]) {
     await open(p, '/pages/about-us?view=elite-mock'); await p.waitForTimeout(1500);
