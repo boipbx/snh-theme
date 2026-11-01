@@ -62,8 +62,9 @@ const log = (w, step, ok, note) => { rows.push(`| ${w} | ${step} | ${ok ? 'PASS'
     await p.evaluate(() => scrollTo(0, 1800)); await p.waitForTimeout(1500);
     const sticky = p.locator('[data-sp-sticky] [data-sp-sync="satc"]');
     await p.waitForTimeout(800);
+    console.log('  sticky state', JSON.stringify(await p.evaluate(() => { const s = document.querySelector('[data-sp-sticky]'), b = s && s.querySelector('[data-sp-sync="satc"]'); const r = b && b.getBoundingClientRect(); const cs = b && getComputedStyle(b); return { y: Math.round(scrollY), cls: s && s.className, vis: cs && cs.visibility, disp: cs && cs.display, op: cs && cs.opacity, r: r && [Math.round(r.x), Math.round(r.y), Math.round(r.width), Math.round(r.height)], dis: b && b.disabled, open: [...document.querySelectorAll('dialog[open], [open].drawer, .is-open')].map((e) => e.tagName + '.' + e.className.slice(0, 30)).slice(0, 4) }; })));
     if (await sticky.isVisible().catch(() => false)) {
-      n0 = adds.length; await sticky.click(); ok = await waitAdd(n0);
+      n0 = adds.length; await sticky.click({ timeout: 10000 }).catch(async (e) => { console.log('  click failed, state', JSON.stringify(await p.evaluate(() => { const s = document.querySelector('[data-sp-sticky]'); return { y: Math.round(scrollY), cls: s.className, vis: getComputedStyle(s).visibility }; }))); throw e; }); ok = await waitAdd(n0);
       log(w, 'PDP: sticky add to cart adds + opens the drawer', ok && await drawerOpen()); await shot('pdp-sticky-drawer'); await closeDrawer();
     } else log(w, 'PDP: sticky add to cart present', false, 'no sticky ATC found at mid-page');
 
