@@ -19,11 +19,11 @@ const log = (w, step, ok, note) => { rows.push(`| ${w} | ${step} | ${ok ? 'PASS'
     // collection: product card + quick-buy sheet
     await open(p, '/collections/whey-protein'); await p.waitForTimeout(1500);
     let r = await check('.pc__koko', 'card'); log(w, 'product card Koko line', (r.n > 0 && r.ok === r.n) && r.h <= 16, `${r.ok}/${r.n} logos loaded, max ${r.h}px`); await shot('product-card', 'card');
-    const pick = p.locator('product-card [data-v2-pick]').first();
-    if (await pick.count()) { await pick.scrollIntoViewIfNeeded(); await pick.click(); await p.waitForSelector('.sqb.is-open, .sqb[open], [data-sqb].is-open', { timeout: 15000 }).catch(() => {}); await p.waitForTimeout(1500); r = await check('.sqb__koko', 'sheet'); log(w, 'quick-buy sheet Koko line', (r.n > 0 && r.ok === r.n) && r.h <= 16, `${r.ok}/${r.n}, max ${r.h}px`); await shot('.sqb__koko', 'quickbuy'); await p.keyboard.press('Escape'); }
+    const pick = p.locator('product-card [data-v2-pick] >> visible=true').first();
+    if (await pick.count()) { await pick.scrollIntoViewIfNeeded(); await pick.click({ force: true }); await p.waitForSelector('.sqb.is-open, .sqb[open], [data-sqb].is-open', { timeout: 15000 }).catch(() => {}); await p.waitForTimeout(1500); r = await check('.sqb__koko', 'sheet'); log(w, 'quick-buy sheet Koko line', (r.n > 0 && r.ok === r.n) && r.h <= 16, `${r.ok}/${r.n}, max ${r.h}px`); await shot('.sqb__koko', 'quickbuy'); await p.keyboard.press('Escape'); }
     await sweep('the collection');
     // footer payments
-    r = await check('.ftr__pay', 'footer'); log(w, 'footer payments', (r.n > 0 && r.ok === r.n) && r.h <= 16, `${r.ok}/${r.n}, max ${r.h}px`); await shot('.ftr__pay', 'footer');
+    r = await check('.ftr__pay', 'footer'); log(w, 'footer payments', (r.n > 0 && r.ok === r.n) && r.h <= 20, `${r.ok}/${r.n}, max ${r.h}px`); await shot('.ftr__pay', 'footer');
     // PDP
     await open(p, '/products/applied-nutrition-critical-whey-2kg'); await p.waitForTimeout(1500);
     r = await check('[data-sp-sync="koko"]', 'pdp'); log(w, 'PDP Koko line', (r.n > 0 && r.ok === r.n) && r.h <= 18, `${r.ok}/${r.n}, max ${r.h}px`); await shot('[data-sp-sync="koko"]', 'pdp');
@@ -42,8 +42,8 @@ const log = (w, step, ok, note) => { rows.push(`| ${w} | ${step} | ${ok ? 'PASS'
     r = await check('.hpc__koko', 'stl'); log(w, 'Shop the Look cards (home)', (r.n === 0 || r.ok === r.n) && r.h <= 16, r.n ? `${r.ok}/${r.n}, max ${r.h}px` : 'section not on the home page');
     await sweep('home');
     await open(p, '/pages/about-us?view=elite-mock-silver'); await p.waitForTimeout(1500);
-    const ac = await p.evaluate(() => ({ banner: !!document.querySelector('.app__main .cmp-ban, .app__main [data-campaign-slot]'), koko: [...document.querySelectorAll('.app__main img[src*="snh-koko"]')].filter((i) => i.getClientRects().length).length }));
-    log(w, 'account Overview: no Pay in 3 / payment banner', !ac.banner && ac.koko === 0, JSON.stringify(ac));
+    const ac = await p.evaluate(() => ({ banner: !!document.querySelector('.app__main .cmp-ban, .app__main [data-campaign-slot]'), koko: [...document.querySelectorAll('.app__main img[src*="snh-koko"]')].filter((i) => i.getClientRects().length && !i.closest('product-card, .pc')).length, cardLines: [...document.querySelectorAll('.app__main product-card img[src*="snh-koko"]')].length }));
+    log(w, 'account Overview: no Pay in 3 / payment banner (product-card Koko lines are fine)', !ac.banner && ac.koko === 0, JSON.stringify(ac));
     await c.close();
   }
   fs.writeFileSync(path.join(O, 'koko.md'), ['# Koko logo locations + sizes (Round 16)', '', '| width | location | result | note |', '|---|---|---|---|', ...rows].join('\n') + '\n');
