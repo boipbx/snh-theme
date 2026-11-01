@@ -2145,7 +2145,7 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 .eband__in--card { justify-items: stretch; }
 .eband__card { order: 2; justify-self: center; width: 100%; max-width: 420px; }
 @media (min-width: 1024px) { .eband__in--card { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; column-gap: 64px; } .eband__card { justify-self: end; } }
-.app__mini { margin: 16px 0 8px; }
+.app__mini { margin: 0 0 8px; }
 .app__side .app__tier, .app__side .app__pts { display: none; }
 .app__ecard { margin-bottom: 24px; max-width: 420px; }
 /* Round 14: the shared recommendation widget (assets/snh-cart.js) */
