@@ -22,11 +22,9 @@
 </header>
 
 <div class="app__hero app__hero--cards">
-  {%- comment -%} Round 15: the one SNH Elite card. Tablet / desktop: front and back side by side; phones: one card with
-  "Show back". The points panel sits beside the cards (desktop) at the card height. {%- endcomment -%}
-  <div class="app__ec app__ec--front">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full', side: 'front' -%}</div>
-  <div class="app__ec app__ec--back">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full', side: 'back' -%}</div>
-  <div class="app__ec app__ec--both">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full', side: 'both' -%}</div>
+  {%- comment -%} Round 16: ONE full-size flip card; the points panel beside it on desktop (same height), below it on
+  smaller screens. {%- endcomment -%}
+  <div class="app__ec">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full', side: 'both' -%}</div>
   {%- render 'snh-app-reward', m: m, pending: pending, id: sid -%}
 </div>
 

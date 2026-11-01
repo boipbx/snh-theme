@@ -95,15 +95,7 @@
   </script>
   <div class="v-wrap app__in">
     <aside class="app__side" aria-label="Your SNH Elite account">
-      <div class="app__me" data-tier="{{ m[0] }}">
-        <span class="app__av" data-avatar-slot data-initials="{{ me[5] | escape }}"{% if avatar_url != blank %} data-photo{% endif %} aria-hidden="true">{% if avatar_url != blank %}<img src="{{ avatar_url }}" alt="" width="56" height="56">{% else %}<span>{{ me[5] | escape }}</span>{% endif %}</span>
-        <div class="app__who">
-          {%- assign full_name = me[1] | default: me[2] -%}
-          <p class="app__name{% if full_name.size > 20 %} app__name--long{% endif %}" title="{{ full_name | escape }}">{{ full_name | escape }}</p>
-          <p class="app__tier"><i class="app__dot" aria-hidden="true"></i>{{ m[1] }} member</p>
-          <p class="app__pts">{{ pts_label }}</p>
-        </div>
-      </div>
+      {%- comment -%} Round 16: the old avatar + name pill is gone; the compact Elite card leads the sidebar {%- endcomment -%}
       {%- comment -%} Round 14: the mini SNH Elite card (tier, points and details are on it) {%- endcomment -%}
       <div class="app__mini">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'small', side: 'front' -%}</div>
       <nav class="app__nav" aria-label="Account">
@@ -122,8 +114,7 @@
     </aside>
 
     <div class="app__main">
-      {%- comment -%} Round 14: campaign banner slot (assets/snh-campaigns.js fills it with the top live cart banner) {%- endcomment -%}
-      <div data-campaign-slot="account" hidden></div>
+      {%- comment -%} Round 16: no payment / campaign banners on the dashboard {%- endcomment -%}
       {%- liquid
         assign per_point = settings.snh_point_value | default: 1
         assign redeem_rs = settings.snh_redeem_from | default: 2500 | times: per_point

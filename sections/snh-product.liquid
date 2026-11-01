@@ -208,7 +208,7 @@
             {%- when 'koko' -%}
               {%- if v.price > 0 -%}
                 <p class="sp-b sp-line" data-g="price" data-sp-sync="koko" {{ block.shopify_attributes }}>
-                  {% render 'snh-koko-logo', h: 16, class: 'sp-koko' %}
+                  {% render 'snh-koko-logo', h: 18, class: 'sp-koko' %}
                   <span>or 3 × <b>{{ v.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</b>, interest-free</span>
                   <button type="button" class="sp-info" data-sp-modal="payment" aria-label="Payment options">i</button>
                 </p>

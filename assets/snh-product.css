@@ -121,7 +121,7 @@
 
 .sp-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; line-height: 1.5; color: var(--sp-muted); text-align: left; }
 .sp-line b { font-weight: 600; color: var(--sp-ink); }
-.sp-koko { width: auto; height: 16px; }
+.sp-koko { width: auto; height: 18px; }
 .sp-info { display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px currentColor; font-size: 12px; font-weight: 600; line-height: 1.1; font-style: normal; }
 .sp-ico { flex: 0 0 16px; width: 16px; height: 16px; }
 .sp-line--btn .sp-ico { color: var(--sp-accent); }

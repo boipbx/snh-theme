@@ -220,20 +220,29 @@
   }, { rootMargin: '0px 0px -8% 0px' }) : null;
   on('reveal', function (el) { if (io) io.observe(el); else el.classList.add('is-in'); });
 
-  /* ---------- Round 15: the SNH Elite card is static. Where one card holds both sides, "Show back" swaps the faces
-     (a crossfade in CSS, no rotation); the link on the back becomes focusable only while it shows. ---------- */
-  document.addEventListener('click', function (e) {
-    var b = e.target.closest && e.target.closest('[data-elc-flip]');
-    if (!b) return;
-    var w = b.closest('.elc-wrap'), c = w && w.querySelector('.elc'); if (!c) return;
-    var on = !c.classList.contains('is-back');
-    c.classList.toggle('is-back', on);
+  /* ---------- Round 16: the SNH Elite flip card ([data-elc-card]): click / tap / Enter / Space turns it over (CSS 3D,
+     a crossfade with reduced motion); the second one turns it back. Links on the back work and don't flip it. ---------- */
+  function elcFlip(c) {
+    var on = !c.classList.contains('is-flipped');
+    c.classList.toggle('is-flipped', on);
+    c.setAttribute('aria-pressed', on ? 'true' : 'false');
     var f = c.querySelector('.elc__front'), k = c.querySelector('.elc__back'), l = c.querySelector('.elc__link');
     if (f) f.setAttribute('aria-hidden', on ? 'true' : 'false');
     if (k) k.setAttribute('aria-hidden', on ? 'false' : 'true');
     if (l) l.tabIndex = on ? 0 : -1;
-    b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    b.textContent = on ? 'Show front' : 'Show back';
+    var w = c.closest('.elc-wrap'), h = w && w.querySelector('[data-elc-hint] span');
+    if (h) h.textContent = on ? 'Tap to flip back' : 'Tap to flip';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest && e.target.closest('[data-elc-card]');
+    if (!c || e.target.closest('a')) return;
+    elcFlip(c);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var c = e.target.closest && e.target.closest('[data-elc-card]');
+    if (!c || e.target !== c) return;
+    e.preventDefault(); elcFlip(c);
   });
 
   /* ---------- Round 13: product cards never cut a word. Names (2 lines) and brands that overflow lose whole words

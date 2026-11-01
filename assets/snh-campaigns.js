@@ -24,7 +24,7 @@
     }).sort(function (a, b) { return (b.priority || 0) - (a.priority || 0); });
   }
   // Round 15: the word Koko in a banner heading shows as the Koko logo (window.SNH.kokoImg, layout/theme.liquid)
-  function kk(t) { return window.SNH && SNH.kokoImg ? t.replace(/\bKoko\b/, SNH.kokoImg(20)) : t; }
+  function kk(t) { return window.SNH && SNH.kokoImg ? t.replace(/\bKoko\b/, SNH.kokoImg(18)) : t; }
   var css = null;
   function loadCss() { if (css) return; var s = document.currentScript || document.querySelector('script[src*="snh-campaigns.js"]'); css = document.createElement('link'); css.rel = 'stylesheet'; css.href = (s && s.getAttribute('data-css')) || (s ? s.src.split('?')[0] : '').replace('snh-campaigns.js', 'snh-campaigns.css');   /* Round 15: the CSS's own asset_url (its own ?v=), so a CSS-only change reaches the CDN */ document.head.appendChild(css); }
   function codeHtml(c) {

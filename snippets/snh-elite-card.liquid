@@ -10,7 +10,8 @@
 
   m: split snippets/snh-elite-calc output (optional with sample) · name · no: member number
   size: full (default) | compact (header panel) | small (account sidebar)
-  side: both (default: front, with a "Show back" button that swaps to the back) | front | back
+  side: both (default: the flip card: click / tap / Enter / Space turns it over in 3D, "Tap to flip" hint; reduced
+  motion = an instant crossfade) | front | back
   sample: true = a guest's example card (Gold, sample figures, "Sample" on the tier) · h: tag for the name (p)
   Styles: assets/snh-v2.css (.elc) · behaviour: assets/snh-v2.js ([data-elc-flip]).
 {%- endcomment -%}
@@ -42,7 +43,8 @@
   endif
 -%}
 <div class="elc-wrap elc-wrap--{{ size }}">
-<div class="elc elc--{{ size }}{% if sample %} elc--sample{% endif %}" data-tier="{{ m[0] }}" data-side="{{ side }}">
+<div class="elc elc--{{ size }}{% if sample %} elc--sample{% endif %}" data-tier="{{ m[0] }}" data-side="{{ side }}"{% if side == 'both' %} data-elc-card tabindex="0" role="button" aria-pressed="false" aria-label="SNH Elite card. Flip to see your earn rate and progress" aria-describedby="{{ uid }}-hint"{% endif %}>
+  <div class="elc__in">
   {%- unless side == 'back' -%}
   <div class="elc__face elc__front" id="{{ uid }}-f">
     <i class="elc__sheen" aria-hidden="true"></i>
@@ -57,11 +59,10 @@
         <span class="elc__lbl">Member</span>
         <{{ tag }} class="elc__name" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
       </div>
-      <div class="elc__pts">
-        <span class="elc__lbl">Points</span>
-        {%- if m[3] == 'x' -%}<strong>—</strong><span class="elc__val">after your first order</span>
-        {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong><span class="elc__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
-      </div>
+      <p class="elc__pts">
+        {%- if m[3] == 'x' -%}<strong>0</strong> <span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">after your first order</span>
+        {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong> <span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
+      </p>
     </div>
     <div class="elc__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="{{ rail_label }}"><i style="width: {{ m[11] }}%"></i></div>
   </div>
@@ -83,8 +84,9 @@
     <a class="elc__link" href="{{ rewards_url | strip }}"{% if side == 'both' %} tabindex="-1"{% endif %}>{% if sample %}How SNH Elite works{% else %}View rewards{% endif %} →</a>
   </div>
   {%- endunless -%}
+  </div>
 </div>
 {%- if side == 'both' -%}
-  <button class="elc-flip" type="button" data-elc-flip aria-pressed="false" aria-controls="{{ uid }}-f {{ uid }}-b">Show back</button>
+  <p class="elc-hint" id="{{ uid }}-hint" data-elc-hint><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.66-5.66L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.66 5.66L4 15.3M4 20v-4.7h4.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tap to flip</span></p>
 {%- endif -%}
 </div>

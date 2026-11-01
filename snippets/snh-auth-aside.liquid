@@ -14,7 +14,7 @@
   <div class="auth__pitch">
     <h2 class="auth__h">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
     {%- if lead != blank -%}<p class="auth__lead">{{ lead | escape }}</p>{%- endif -%}
-    <div class="auth__ecard">{%- render 'snh-elite-card', sample: true, size: 'full', side: 'front' -%}</div>
+    <div class="auth__ecard">{%- render 'snh-elite-card', sample: true, size: 'full', side: 'both' -%}</div>
     <ul class="auth__perks" role="list">
       <li><b>{% render 'snh-num', n: welcome %}</b><span>welcome points</span></li>
       <li><b>{{ r_b }}–{{ r_g }}%</b><span>back on every order</span></li>
