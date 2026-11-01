@@ -223,12 +223,12 @@
   /* ---------- Round 15: the SNH Elite card is static. Where one card holds both sides, "Show back" swaps the faces
      (a crossfade in CSS, no rotation); the link on the back becomes focusable only while it shows. ---------- */
   document.addEventListener('click', function (e) {
-    var b = e.target.closest && e.target.closest('[data-ecard-flip]');
+    var b = e.target.closest && e.target.closest('[data-elc-flip]');
     if (!b) return;
-    var w = b.closest('.ecard-wrap'), c = w && w.querySelector('.ecard'); if (!c) return;
+    var w = b.closest('.elc-wrap'), c = w && w.querySelector('.elc'); if (!c) return;
     var on = !c.classList.contains('is-back');
     c.classList.toggle('is-back', on);
-    var f = c.querySelector('.ecard__front'), k = c.querySelector('.ecard__back'), l = c.querySelector('.ecard__link');
+    var f = c.querySelector('.elc__front'), k = c.querySelector('.elc__back'), l = c.querySelector('.elc__link');
     if (f) f.setAttribute('aria-hidden', on ? 'true' : 'false');
     if (k) k.setAttribute('aria-hidden', on ? 'false' : 'true');
     if (l) l.tabIndex = on ? 0 : -1;

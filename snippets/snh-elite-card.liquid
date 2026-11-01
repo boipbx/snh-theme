@@ -12,7 +12,7 @@
   size: full (default) | compact (header panel) | small (account sidebar)
   side: both (default: front, with a "Show back" button that swaps to the back) | front | back
   sample: true = a guest's example card (Gold, sample figures, "Sample" on the tier) · h: tag for the name (p)
-  Styles: assets/snh-v2.css (.ecard) · behaviour: assets/snh-v2.js ([data-ecard-flip]).
+  Styles: assets/snh-v2.css (.elc) · behaviour: assets/snh-v2.js ([data-elc-flip]).
 {%- endcomment -%}
 {%- liquid
   assign size = size | default: 'full'
@@ -41,50 +41,50 @@
     assign rail_label = 'Top tier reached'
   endif
 -%}
-<div class="ecard-wrap ecard-wrap--{{ size }}">
-<div class="ecard ecard--{{ size }}{% if sample %} ecard--sample{% endif %}" data-tier="{{ m[0] }}" data-side="{{ side }}">
+<div class="elc-wrap elc-wrap--{{ size }}">
+<div class="elc elc--{{ size }}{% if sample %} elc--sample{% endif %}" data-tier="{{ m[0] }}" data-side="{{ side }}">
   {%- unless side == 'back' -%}
-  <div class="ecard__face ecard__front" id="{{ uid }}-f">
-    <i class="ecard__sheen" aria-hidden="true"></i>
-    <div class="ecard__top">
-      <span class="ecard__brand"><i class="ecard__logo" role="img" aria-label="SNH"></i><em>Elite</em></span>
-      <span class="ecard__tier">{% if sample %}Sample · {% endif %}{{ m[1] | upcase }}</span>
+  <div class="elc__face elc__front" id="{{ uid }}-f">
+    <i class="elc__sheen" aria-hidden="true"></i>
+    <div class="elc__top">
+      <span class="elc__brand"><i class="elc__logo" role="img" aria-label="SNH"></i><em>Elite</em></span>
+      <span class="elc__tier">{% if sample %}Sample · {% endif %}{{ m[1] | upcase }}</span>
     </div>
-    <svg class="ecard__chip" viewBox="0 0 48 36" aria-hidden="true"><rect x=".75" y=".75" width="46.5" height="34.5" rx="6"/><path d="M16 .75v10M32 .75v10M16 25.25v10M32 25.25v10M.75 12h15.25a8 8 0 0 1 16 0h15.25M.75 24h15.25a8 8 0 0 0 16 0h15.25"/></svg>
-    <p class="ecard__no"><span class="v-sr">Member number </span>0000 {{ no_s }}</p>
-    <div class="ecard__foot">
-      <div class="ecard__who">
-        <span class="ecard__lbl">Member</span>
-        <{{ tag }} class="ecard__name" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
+    <svg class="elc__chip" viewBox="0 0 48 36" aria-hidden="true"><rect x=".75" y=".75" width="46.5" height="34.5" rx="6"/><path d="M16 .75v10M32 .75v10M16 25.25v10M32 25.25v10M.75 12h15.25a8 8 0 0 1 16 0h15.25M.75 24h15.25a8 8 0 0 0 16 0h15.25"/></svg>
+    <p class="elc__no"><span class="v-sr">Member number </span>0000 {{ no_s }}</p>
+    <div class="elc__foot">
+      <div class="elc__who">
+        <span class="elc__lbl">Member</span>
+        <{{ tag }} class="elc__name" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
       </div>
-      <div class="ecard__pts">
-        <span class="ecard__lbl">Points</span>
-        {%- if m[3] == 'x' -%}<strong>—</strong><span class="ecard__val">after your first order</span>
-        {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong><span class="ecard__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
+      <div class="elc__pts">
+        <span class="elc__lbl">Points</span>
+        {%- if m[3] == 'x' -%}<strong>—</strong><span class="elc__val">after your first order</span>
+        {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong><span class="elc__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
       </div>
     </div>
-    <div class="ecard__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="{{ rail_label }}"><i style="width: {{ m[11] }}%"></i></div>
+    <div class="elc__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ m[11] }}" aria-label="{{ rail_label }}"><i style="width: {{ m[11] }}%"></i></div>
   </div>
   {%- endunless -%}
   {%- unless side == 'front' -%}
-  <div class="ecard__face ecard__back" id="{{ uid }}-b"{% if side == 'both' %} aria-hidden="true"{% endif %}>
-    <i class="ecard__stripe" aria-hidden="true"></i>
-    <dl class="ecard__rows">
+  <div class="elc__face elc__back" id="{{ uid }}-b"{% if side == 'both' %} aria-hidden="true"{% endif %}>
+    <i class="elc__stripe" aria-hidden="true"></i>
+    <dl class="elc__rows">
       <div><dt>Earn rate</dt><dd>{{ m[7] }}% back</dd></div>
       <div><dt>Spend this year</dt><dd>{{ m[5] | times: 100 | money_without_trailing_zeros }}{% if m[6] == '1' %} est.{% endif %}</dd></div>
-      <div class="ecard__next">
+      <div class="elc__next">
         <dt>{% if m[12] == '1' %}Tier{% else %}Next tier · {{ m[8] }}{% endif %}</dt>
         <dd>{% if m[12] == '1' %}Top tier{% elsif m[10] == '0' %}Reached{% else %}{{ m[10] | times: 100 | money_without_trailing_zeros }} to go{% endif %}</dd>
-        <span class="ecard__bar" aria-hidden="true"><i style="width: {{ m[11] }}%"></i></span>
+        <span class="elc__bar" aria-hidden="true"><i style="width: {{ m[11] }}%"></i></span>
       </div>
       <div><dt>Redeem at</dt><dd>{% render 'snh-num', n: redeem_from %} points</dd></div>
       <div><dt>Points value</dt><dd>{% if m[3] == 'x' %}—{% else %}{{ m[4] | times: 100 | money_without_trailing_zeros }}{% endif %}</dd></div>
     </dl>
-    <a class="ecard__link" href="{{ rewards_url | strip }}"{% if side == 'both' %} tabindex="-1"{% endif %}>{% if sample %}How SNH Elite works{% else %}View rewards{% endif %} →</a>
+    <a class="elc__link" href="{{ rewards_url | strip }}"{% if side == 'both' %} tabindex="-1"{% endif %}>{% if sample %}How SNH Elite works{% else %}View rewards{% endif %} →</a>
   </div>
   {%- endunless -%}
 </div>
 {%- if side == 'both' -%}
-  <button class="ecard-flip" type="button" data-ecard-flip aria-pressed="false" aria-controls="{{ uid }}-f {{ uid }}-b">Show back</button>
+  <button class="elc-flip" type="button" data-elc-flip aria-pressed="false" aria-controls="{{ uid }}-f {{ uid }}-b">Show back</button>
 {%- endif -%}
 </div>

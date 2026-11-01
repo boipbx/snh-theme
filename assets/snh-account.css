@@ -305,7 +305,7 @@ td .pill + .pill { margin-left: 4px; }
 .ep__copy .auth__perks { max-width: 560px; }
 .ep__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 .ep__card { display: grid; gap: 12px; }
-.ep__card .ecard { box-shadow: 0 30px 80px rgba(40, 10, 0, .45); }
+.ep__card .elc { box-shadow: 0 30px 80px rgba(40, 10, 0, .45); }
 .ep__sample { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .78); }
 .ep__block { display: grid; gap: 32px; }
 .ep__bh { display: grid; gap: 12px; max-width: 720px; }
