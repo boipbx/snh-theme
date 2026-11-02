@@ -35,6 +35,7 @@ const PAGES = [['wholesale', '/pages/wholesale-1', ['Business name', 'contact[na
       log(w, `${n} form: native POST to /contact, every field, hidden Subject / form / tags, +94 mobile, required fields (not submitted)`, f.method === 'post' && /contact/.test(f.action) && !f.missing.length && f.subj === subj && f.form === kind && f.tags === tags && f.tel94 && f.required >= 4, JSON.stringify(f));
       if (w !== 768) { const fc = p.locator('#biz-form'); await fc.scrollIntoViewIfNeeded(); await fc.screenshot({ path: path.join(FM, `${n}-form-${w}.png`) }); }
       // phone normalising (typed, blurred; not submitted)
+      await p.evaluate(() => document.querySelectorAll('dialog[open]').forEach((d) => d.close()));   // the phone welcome popup opens after scrolling and makes the page inert
       const tel = p.locator('#biz-form input[type=tel]'); await tel.scrollIntoViewIfNeeded(); await p.waitForFunction(() => { const t = document.querySelector('#biz-form input[type=tel]'); return t && t.__tel94; }, null, { timeout: 15000 }).catch(() => {}); await tel.fill('0771234567'); await tel.blur(); await p.waitForTimeout(200);
       const tv = await tel.inputValue(); log(w, `${n} form: mobile 0771234567 cleans to the local part (+94 shown)`, /77 ?123 ?4567/.test(tv), tv);
       // success state (Shopify returns with ?contact_posted=true)
