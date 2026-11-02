@@ -32,9 +32,14 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
-    {%- capture koko_pay -%}<b class="ftr__koko">{% render 'snh-koko-logo', h: 14 %} pay in 3</b>{%- endcapture -%}
+    {%- comment -%} Round 17: payment logos row (cards + Koko, the transparent original on the dark footer, + cash on delivery) {%- endcomment -%}
     <div class="ftr__pay">
-      <span>{{ section.settings.payments | strip_html | escape | replace: 'Koko · pay in 3', koko_pay }}</span>
+      <ul class="ftr__payments" role="list" aria-label="{{ section.settings.payments | strip_html | escape }}">
+        {%- assign card_types = 'visa,master,american_express' | split: ',' -%}
+        {%- for t in card_types -%}<li>{{ t | payment_type_svg_tag: class: 'ftr__card' }}</li>{%- endfor -%}
+        <li class="ftr__kk">{% render 'snh-koko-logo', h: 16 %}<span>Pay in 3</span></li>
+        <li class="ftr__cod"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.6"/></svg><span>Cash on delivery</span></li>
+      </ul>
       <span class="ftr__social">
         {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
         {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}

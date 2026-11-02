@@ -252,7 +252,7 @@
       "type": "snh-brand-marquee",
       "settings": {
         "heading": "Brands we *supply*",
-        "show_count": true,
+        "show_count": false,
         "count": "",
         "link_label": "All brands",
         "link_url": "/pages/shop-by-brand",

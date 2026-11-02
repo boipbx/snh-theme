@@ -2324,3 +2324,26 @@ img.snh-koko { max-height: 20px !important; width: auto !important; max-width: n
 /* the shadow turns with the card (it sat on the non-rotating box and showed as a pale slab mid-flip) */
 .elc { box-shadow: none; }
 .elc__face { box-shadow: 0 18px 40px -18px rgba(14, 14, 14, .55), 0 2px 6px rgba(14, 14, 14, .12); }
+
+/* Round 17: "For business" column in the Offers mega menu (+ the mobile Offers panel) */
+.mega__grid--offers:has(.mz--biz) { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr) minmax(160px, .55fr); }
+.mm__level .mz--biz { margin-top: 22px; }
+
+/* ---------- Round 17: footer polish ---------- */
+@media (min-width: 1024px) { .ftr__cols { grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr)); gap: 32px 24px; } }
+@media (min-width: 768px) and (max-width: 1023px) { .ftr__cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ftr__col { font-size: 15px; line-height: 1.5; }
+.ftr__col h3 { font-size: 12px; line-height: 1.5; }
+.ftr__pay { align-items: center; font-size: 14px; }
+.ftr__payments { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: 0; padding: 0; list-style: none; }
+.ftr__payments li { display: inline-flex; align-items: center; gap: 6px; }
+.ftr__card { display: block; width: 44px; height: 28px; border-radius: 4px; }
+.ftr__kk, .ftr__cod { min-height: 28px; padding: 0 10px; border: 1px solid rgba(255, 255, 255, .22); border-radius: 6px; font: 600 13px/1 var(--sans); color: rgba(255, 255, 255, .86); }
+.ftr__cod svg { width: 18px; height: 18px; }
+/* the Koko logo is transparent: no chip on the dark footer */
+.ftr__pay img.snh-koko, .ftr__koko img.snh-koko { padding: 0 !important; background: none !important; border-radius: 0; }
+/* the big SNH mark: a quick fade + slide (≤ 400 ms, GPU transforms only), static with reduced motion; no decorative dot */
+.ftr__dot { display: none !important; }
+.v-js .ftr__wipe { clip-path: none !important; opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 360ms ease-out, transform 360ms cubic-bezier(.2, .7, .2, 1); will-change: opacity, transform; }
+.v-js .ftr__mark.is-in .ftr__wipe { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .v-js .ftr__wipe { opacity: 1; transform: none; transition: none; } }

@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "type": "footer",
   "name": "Footer group",
   "sections": {
@@ -56,7 +55,7 @@
           "type": "menu",
           "settings": {
             "heading": "Info",
-            "links": "About us | /pages/about-us\nRead our blog | /blogs/news\nWork with us | /pages/careers\nLocations | /pages/location\nFranchise partner | /pages/franchise-partner\nWholesale | /pages/wholesale-1"
+            "links": "About us | /pages/about-us\nRead our blog | /blogs/news\nLocations | /pages/location"
           }
         },
         "menu_4": {
@@ -64,6 +63,13 @@
           "settings": {
             "heading": "Support & policies",
             "links": "Contact us | /pages/delivery-and-shipping\nShipping policy | /pages/shipping-policy\nReturn policy | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms of service | /pages/terms-of-service"
+          }
+        },
+        "menu_5": {
+          "type": "menu",
+          "settings": {
+            "heading": "Business",
+            "links": "Wholesale | /pages/wholesale-1\nFranchise partner | /pages/franchise-partner\nWork with us | /pages/careers"
           }
         }
       },
@@ -74,6 +80,7 @@
         "menu_1",
         "menu_2",
         "menu_3",
+        "menu_5",
         "menu_4"
       ],
       "settings": {
@@ -83,7 +90,7 @@
         "legal": "Sports Nutrition Hub (Pvt) Ltd.",
         "policy_links": false,
         "mark": "shopify://shop_images/sn_o.png",
-        "dot": true
+        "dot": false
       }
     }
   },

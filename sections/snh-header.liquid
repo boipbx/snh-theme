@@ -262,6 +262,7 @@
               <div class="mz"><p class="mz__h">{{ b.settings.deals_title | escape }}</p>
                 {%- render 'snh-v2-minis', collection: b.settings.deals_collection, limit: 4, class: 'minis--list' -%}
                 {%- if b.settings.deals_collection != blank -%}<a class="mz__all" href="{{ b.settings.deals_collection.url }}">View all offers</a>{%- endif -%}</div>
+              {%- if b.settings.biz_links != blank -%}{%- assign biz_l = b.settings.biz_links | newline_to_br | split: '<br />' -%}{%- capture biz_html -%}<div class="mz mz--biz"><p class="mz__h">{{ b.settings.biz_title | default: 'For business' | escape }}</p><ul class="mz__list" role="list">{%- for l in biz_l -%}{%- assign lp = l | strip | split: '|' -%}{%- if lp.size > 1 -%}<li><a href="{{ lp[1] | strip }}">{{ lp[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}</ul></div>{%- endcapture -%}{%- else -%}{%- assign biz_html = '' -%}{%- endif -%}{{ biz_html }}
             </div></div>
           </div>
       {%- endcase -%}
@@ -392,6 +393,7 @@
                 {{ perks }}
                 <p class="mz__h">{{ b.settings.deals_title | escape }}</p>
                 {%- render 'snh-v2-minis', collection: b.settings.deals_collection, limit: 4, class: 'minis--list' -%}
+                {%- if b.settings.biz_links != blank -%}{%- assign biz_l = b.settings.biz_links | newline_to_br | split: '<br />' -%}{%- capture biz_html -%}<div class="mz mz--biz"><p class="mz__h">{{ b.settings.biz_title | default: 'For business' | escape }}</p><ul class="mz__list" role="list">{%- for l in biz_l -%}{%- assign lp = l | strip | split: '|' -%}{%- if lp.size > 1 -%}<li><a href="{{ lp[1] | strip }}">{{ lp[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}</ul></div>{%- endcapture -%}{%- else -%}{%- assign biz_html = '' -%}{%- endif -%}{{ biz_html }}
               </div>
             </div>
         {%- endcase -%}
@@ -491,6 +493,8 @@
       "settings": [
         { "type": "text", "id": "label", "label": "Menu label", "default": "Offers" },
         { "type": "text", "id": "title", "label": "Heading", "default": "Bundles & deals" },
+        { "type": "text", "id": "biz_title", "label": "Business column heading", "default": "For business" },
+        { "type": "textarea", "id": "biz_links", "label": "Business links", "info": "One per line: Label | /link (Round 17: wholesale + franchise).", "default": "Wholesale | /pages/wholesale-1\nFranchise partner | /pages/franchise-partner" },
         { "type": "collection", "id": "collection_1", "label": "Offer 1" },
         { "type": "image_picker", "id": "image_1", "label": "Offer 1 image", "info": "Defaults to the collection image." },
         { "type": "collection", "id": "collection_2", "label": "Offer 2" },

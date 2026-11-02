@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "type": "header",
   "name": "Header group",
   "sections": {
@@ -149,7 +148,9 @@
             "collection_3": "training-strength-bundles",
             "image_3": "shopify://shop_images/rawtrainingstack.jpg",
             "collection_4": "endurance-bundles",
-            "image_4": "shopify://shop_images/racedaypack1.0.jpg"
+            "image_4": "shopify://shop_images/racedaypack1.0.jpg",
+            "biz_title": "For business",
+            "biz_links": "Wholesale | /pages/wholesale-1\nFranchise partner | /pages/franchise-partner"
           }
         },
         "link_elite": {
