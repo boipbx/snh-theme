@@ -1,0 +1,36 @@
+{%- comment -%} Round 17: home "Grow with SNH" band: two compact cards (wholesale, franchise), image + one line + CTA. {%- endcomment -%}
+{{ 'snh-biz.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign parts = s.heading | split: '*'
+-%}
+<section class="v2 grow" aria-labelledby="gw-{{ section.id }}">
+  <div class="v-wrap">
+    <header class="biz-head biz-head--row">
+      <div>
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="biz-h" id="gw-{{ section.id }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+      </div>
+    </header>
+    <div class="grow__grid">
+      {%- for b in section.blocks -%}
+        <a class="grow__card" href="{{ b.settings.link | default: '#' }}" {{ b.shopify_attributes }}>
+          {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(min-width: 768px) 50vw, 100vw', alt: '' }}{%- endif -%}
+          <span class="eyebrow" style="color: #FFD2B8">{{ b.settings.eyebrow | escape }}</span>
+          <span class="grow__t">{{ b.settings.title | escape }}</span>
+          <span class="grow__p">{{ b.settings.text | escape }}</span>
+          <span class="grow__go">{{ b.settings.cta | escape }} {% render 'snh-v2-icon', name: 'arrow' %}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "SNH grow with SNH", "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "For business" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Grow *with SNH*" }
+  ],
+  "blocks": [ { "type": "card", "name": "Card", "limit": 2, "settings": [ { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "eyebrow", "label": "Eyebrow" }, { "type": "text", "id": "title", "label": "Title" }, { "type": "text", "id": "text", "label": "One line" }, { "type": "text", "id": "cta", "label": "Link text" }, { "type": "url", "id": "link", "label": "Link" } ] } ],
+  "presets": [ { "name": "SNH grow with SNH", "blocks": [ { "type": "card" }, { "type": "card" } ] } ] }
+{% endschema %}

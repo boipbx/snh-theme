@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "timeline_63yMmW": {
       "type": "snh-steps",
@@ -70,9 +69,45 @@
         "heading": "How *SNH* grew",
         "layout": "timeline"
       }
+    },
+    "snh_grow": {
+      "type": "snh-grow",
+      "settings": {
+        "eyebrow": "For business",
+        "heading": "Grow *with SNH*"
+      },
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/khizerinsid.webp",
+            "eyebrow": "Wholesale",
+            "title": "Stock SNH in your gym or store",
+            "text": "Trade prices on authentic whey, creatine and SiS for gyms, retailers and coaches.",
+            "cta": "Apply for wholesale",
+            "link": "/pages/wholesale-1"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/snhnuge.webp",
+            "eyebrow": "Franchise",
+            "title": "Open an SNH store in your city",
+            "text": "A proven supplement store, with supply, training and marketing behind you.",
+            "cta": "Explore the franchise",
+            "link": "/pages/franchise-partner"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2"
+      ]
     }
   },
   "order": [
-    "timeline_63yMmW"
+    "timeline_63yMmW",
+    "snh_grow"
   ]
 }

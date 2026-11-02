@@ -30,6 +30,7 @@ const log = (w, step, ok, note) => { rows.push(`| ${w} | ${step} | ${ok ? 'PASS'
     log(w, `[${L}] floating buttons bottom-right have an icon + name; no empty orange dot`, f.floats.every((x) => x.icon && x.name) && !f.dot, JSON.stringify(f.floats) + ` · dot ${f.dot}`);
     log(w, `[${L}] Koko in the footer: transparent, no chip`, f.koko && /transparent|rgba\(0, 0, 0, 0\)/.test(f.koko.bg) && /^0px/.test(f.koko.pad), JSON.stringify(f.koko));
     await p.evaluate(() => scrollTo(0, document.body.scrollHeight)); await p.waitForTimeout(1600);
+    await p.addStyleTag({ content: '.hdr-wrap, .hdr, .announce, dialog, .ecm, .ecm-teaser, [data-ecm], #shopify-section-sections--28196131766526__snh_header { display: none !important; }' }).catch(() => {});
     await p.locator('footer.ftr').screenshot({ path: path.join(O, `footer-${L}-${w}.png`) });
     await p.screenshot({ path: path.join(O, `footer-viewport-${L}-${w}.png`) });
     await c.close();
