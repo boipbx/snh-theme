@@ -21,7 +21,7 @@
     </header>
     <div class="v2 biz-grid">
       {%- for product in col.products limit: s.limit -%}
-        {%- render 'snh-v2-card', product: product, position: forloop.index, request: note -%}
+        {%- render 'snh-v2-card', product: product, position: forloop.index, price_note: note -%}
       {%- endfor -%}
     </div>
   </div>
