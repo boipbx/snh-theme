@@ -1,0 +1,110 @@
+{%- comment -%}
+  Round 17: the wholesale / franchise enquiry form. Its own native Shopify contact form (normal POST, so Shopify's
+  CAPTCHA runs; nothing intercepts it). Fields depend on "Form type". Hidden fields name it for the inbox:
+  contact[Subject] "[Wholesale enquiry]" / "[Franchise enquiry]", contact[form], contact[tags]. Each product of interest
+  is its own field ("Interest – Whey: Yes"), so every choice reaches the email without JavaScript. Mobile: +94 prefix,
+  saved as +94XXXXXXXXX (assets/snh-phone.js). After a successful post Shopify returns with form.posted_successfully?
+  and the section shows the next steps instead of the form.
+{%- endcomment -%}
+{{ 'snh-biz.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>
+{%- liquid
+  assign s = section.settings
+  assign kind = s.kind
+  assign wa = settings.snh_whatsapp | default: '94764863359' | remove: '+' | remove: ' '
+  assign parts = s.heading | split: '*'
+  if kind == 'franchise'
+    assign subject = '[Franchise enquiry]'
+    assign tags = 'franchise-lead'
+  else
+    assign subject = '[Wholesale enquiry]'
+    assign tags = 'wholesale-lead'
+  endif
+-%}
+<section class="v2 biz-sec biz-sec--cream biz-formsec" id="biz-form" aria-labelledby="bf-{{ section.id }}">
+  <div class="v-wrap biz-form__grid">
+    <div class="biz-form__aside">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="biz-h" id="bf-{{ section.id }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+      {%- if s.intro != blank -%}<div class="biz-rte">{{ s.intro }}</div>{%- endif -%}
+      <ul class="biz-form__points" role="list">
+        {%- for i in (1..3) -%}{%- assign k = 'point_' | append: i -%}{%- if s[k] != blank -%}<li>{% render 'snh-v2-icon', name: 'check' %}<span>{{ s[k] | escape }}</span></li>{%- endif -%}{%- endfor -%}
+      </ul>
+      <a class="biz-wa" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>Prefer to talk? WhatsApp us</span></a>
+    </div>
+    <div class="biz-form__card">
+      {%- form 'contact', id: 'biz-contact', class: 'biz-form', data-biz-form: kind -%}
+        {%- if form.posted_successfully? -%}
+          <div class="biz-ok" role="status" tabindex="-1" data-biz-ok>
+            <span class="biz-ok__ic">{% render 'snh-v2-icon', name: 'check' %}</span>
+            <h3 class="biz-ok__h">{{ s.ok_heading | default: 'Thank you, we have your enquiry' }}</h3>
+            <div class="biz-rte">{{ s.ok_text }}</div>
+            <a class="v-btn v-btn--ink" href="{{ s.ok_link | default: routes.all_products_collection_url }}"><span>{{ s.ok_label | default: 'Browse the range' }}</span></a>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}<div class="biz-err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <input type="hidden" name="contact[Subject]" value="{{ subject }}">
+          <input type="hidden" name="contact[form]" value="{{ kind }}">
+          <input type="hidden" name="contact[tags]" value="{{ tags }}">
+          <div class="biz-fields">
+            {%- if kind == 'wholesale' -%}
+              <label class="fld"><span>Business name</span><input type="text" name="contact[Business name]" autocomplete="organization" required></label>
+              <label class="fld"><span>Contact name</span><input type="text" name="contact[name]" autocomplete="name" required></label>
+            {%- else -%}
+              <label class="fld fld--full"><span>Your name</span><input type="text" name="contact[name]" autocomplete="name" required></label>
+            {%- endif -%}
+            <label class="fld"><span>Email</span><input type="email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required></label>
+            <label class="fld"><span>Mobile</span><input type="tel" name="contact[Mobile]" inputmode="tel" autocomplete="tel" placeholder="77 123 4567" required data-tel94 data-sl-mobile></label>
+            {%- if kind == 'wholesale' -%}
+              <label class="fld"><span>Business type</span><select name="contact[Business type]" required><option value="">Choose one</option>{%- assign btypes = 'Gym or fitness studio,Retail store,Pharmacy,Coach or sports team,Corporate wellness,Online store,Other' | split: ',' -%}{%- for o in btypes -%}<option>{{ o }}</option>{%- endfor -%}</select></label>
+              <label class="fld"><span>District / city</span><input type="text" name="contact[District / city]" autocomplete="address-level2" required></label>
+              <fieldset class="fld fld--full biz-checks"><legend>Products of interest</legend>
+                {%- assign prods = 'Whey protein,Whey isolate,Creatine,Pre-workout,Mass gainer,BCAA / EAA,Electrolytes,Vitamins,Protein bars,Accessories,Other' | split: ',' -%}
+                {%- for o in prods -%}
+                  <label class="biz-check"><input type="checkbox" name="contact[Interest – {{ o }}]" value="Yes"><span>{{ o }}</span></label>
+                {%- endfor -%}
+              </fieldset>
+              <label class="fld"><span>Estimated monthly volume</span><select name="contact[Monthly volume]"><option value="">Choose one</option><option>Under Rs 100,000</option><option>Rs 100,000 – 300,000</option><option>Rs 300,000 – 750,000</option><option>Over Rs 750,000</option><option>Not sure yet</option></select></label>
+              <label class="fld"><span>Current suppliers <small>(optional)</small></span><input type="text" name="contact[Current suppliers]"></label>
+            {%- else -%}
+              <label class="fld"><span>City / district of interest</span><input type="text" name="contact[City / district of interest]" required></label>
+              <label class="fld"><span>Property</span><select name="contact[Property]" required><option value="">Choose one</option><option>I own a suitable property</option><option>I lease a suitable property</option><option>I'm looking for a location</option></select></label>
+              <label class="fld"><span>Investment range</span><select name="contact[Investment range]"><option value="">Choose one</option><option>Prefer to discuss on a call</option><option>Under Rs 5 million</option><option>Rs 5 – 10 million</option><option>Rs 10 – 20 million</option><option>Over Rs 20 million</option></select></label>
+              <label class="fld"><span>Timeline</span><select name="contact[Timeline]"><option value="">Choose one</option><option>Within 3 months</option><option>3 – 6 months</option><option>6 – 12 months</option><option>Just exploring</option></select></label>
+              <label class="fld fld--full"><span>Business experience</span><textarea name="contact[Business experience]" rows="3" placeholder="Retail, fitness, franchise or management experience"></textarea></label>
+            {%- endif -%}
+            <label class="fld fld--full"><span>Message</span><textarea name="contact[body]" rows="4" placeholder="{{ s.msg_placeholder | escape }}"></textarea></label>
+          </div>
+          <button class="v-btn v-btn--accent biz-form__go" type="submit"><span>{{ s.submit | default: 'Send enquiry' }}</span></button>
+          <p class="biz-form__fine">{{ s.fine | escape }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+<script>
+  /* return to the success message after Shopify's redirect (#contact_form / ?contact_posted=true) */
+  (function () { var ok = document.querySelector('[data-biz-ok]'); if (ok) { ok.scrollIntoView({ block: 'center' }); ok.focus({ preventScroll: true }); } })();
+</script>
+
+{% schema %}
+{ "name": "SNH business form", "tag": "div",
+  "settings": [
+    { "type": "select", "id": "kind", "label": "Form type", "options": [ { "value": "wholesale", "label": "Wholesale" }, { "value": "franchise", "label": "Franchise" } ], "default": "wholesale" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Apply for a *wholesale* account" },
+    { "type": "richtext", "id": "intro", "label": "Intro" },
+    { "type": "text", "id": "point_1", "label": "Point 1" },
+    { "type": "text", "id": "point_2", "label": "Point 2" },
+    { "type": "text", "id": "point_3", "label": "Point 3" },
+    { "type": "text", "id": "msg_placeholder", "label": "Message placeholder", "default": "Anything else we should know" },
+    { "type": "text", "id": "submit", "label": "Button", "default": "Send enquiry" },
+    { "type": "text", "id": "fine", "label": "Small print", "default": "We reply within one working day. Your details are only used to answer this enquiry." },
+    { "type": "header", "content": "After sending" },
+    { "type": "text", "id": "ok_heading", "label": "Heading", "default": "Thank you, we have your enquiry" },
+    { "type": "richtext", "id": "ok_text", "label": "Next steps" },
+    { "type": "text", "id": "ok_label", "label": "Button", "default": "Browse the range" },
+    { "type": "url", "id": "ok_link", "label": "Button link" }
+  ],
+  "presets": [ { "name": "SNH business form" } ] }
+{% endschema %}

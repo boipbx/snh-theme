@@ -1,223 +1,628 @@
 /*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
+ * Round 17: wholesale page (v2, /pages/wholesale-1). Sections: snh-biz-*.
  */
 {
   "sections": {
-    "main": {
-      "type": "snh-partner",
+    "hero": {
+      "type": "snh-biz-hero",
       "settings": {
-        "form_type": "wholesale",
-        "eyebrow": "Wholesale",
-        "heading": "Stock the *brands* your customers ask for",
-        "lead": "Buy direct from the official distributor of 12+ sports nutrition brands. Genuine stock at trade prices, for gyms, pharmacies, retailers and online sellers.",
-        "cta": "Request trade prices",
-        "image_1": "shopify://shop_images/instore.webp",
-        "image_2": "shopify://shop_images/khizerinsid.webp",
-        "cards_heading": "Why buy direct",
-        "photos_heading": "",
-        "tiles_heading": "What you can stock",
-        "steps_heading": "How ordering works",
-        "form_heading": "Request wholesale access",
-        "form_text": "Approved accounts get the full price sheet. We reply within 2 working days.",
-        "submit": "Send enquiry",
-        "email": "info@sportsnutritionhub.lk"
+        "image": "shopify://shop_images/snh_dehiwala.webp",
+        "image_mobile": "shopify://shop_images/instore.webp",
+        "crumb": "Wholesale",
+        "eyebrow": "SNH wholesale · Sri Lanka",
+        "heading": "Wholesale supplements for *gyms*, retailers and coaches",
+        "sub": "Authentic sports nutrition at trade prices, straight from the official SiS distributor in Sri Lanka. Bulk whey protein, creatine and more, delivered island-wide from our Colombo stores.",
+        "cta_label": "Apply for a wholesale account",
+        "cta_link": "#biz-form",
+        "show_wa": true,
+        "wa_text": "Hi SNH, I'd like to know more about wholesale.",
+        "contact_type": "sales"
+      }
+    },
+    "trust": {
+      "type": "snh-biz-trust",
+      "settings": {
+        "label": "Why buy wholesale from SNH"
       },
       "blocks": {
-        "stat_1": {
-          "type": "stat",
+        "item_1": {
+          "type": "item",
           "settings": {
-            "value": "12+",
-            "label": "Brands we distribute"
+            "icon": "badge",
+            "text": "Official SiS distributor"
           }
         },
-        "stat_2": {
-          "type": "stat",
+        "item_2": {
+          "type": "item",
           "settings": {
-            "value": "300+",
-            "label": "Products ready to ship"
+            "icon": "shield",
+            "text": "100% authentic, sourced direct"
           }
         },
-        "stat_3": {
-          "type": "stat",
+        "item_3": {
+          "type": "item",
           "settings": {
-            "value": "48h",
-            "label": "Dispatch island-wide"
+            "icon": "star",
+            "text": "18+ brands"
           }
         },
-        "stat_4": {
-          "type": "stat",
+        "item_4": {
+          "type": "item",
           "settings": {
-            "value": "1",
-            "label": "Account manager for you"
+            "icon": "home",
+            "text": "3 stores in Colombo"
+          }
+        },
+        "item_5": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "text": "Island-wide delivery"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5"
+      ]
+    },
+    "intro": {
+      "type": "snh-biz-copy",
+      "settings": {
+        "eyebrow": "Trade supply",
+        "heading": "Your wholesale *supplement* partner in Sri Lanka",
+        "body": "<p>Sports Nutrition Hub supplies gyms, supplement stores, pharmacies, coaches and teams across Sri Lanka with the same authentic products we sell in our own stores. Every tub is sourced directly from the brand or its authorised distributor, so you never have to explain a grey-market label or a missing batch code to your customers.</p><p>Whether you need <strong>bulk whey protein</strong> for a gym shop, <strong>creatine wholesale in Colombo</strong> for a busy counter, or a steady supply of electrolytes and gels for an endurance team, one account covers it. You get a single price list, one point of contact and stock that ships from Colombo to every district.</p>",
+        "image": "shopify://shop_images/khizerinsid.webp",
+        "image_alt": "Inside an SNH store with shelves of whey protein and creatine",
+        "style": "white"
+      }
+    },
+    "who": {
+      "type": "snh-biz-cards",
+      "settings": {
+        "eyebrow": "Who it's for",
+        "heading": "Built for the people who *keep Sri Lanka training*",
+        "intro": "<p>Our wholesale accounts are set up around how you actually sell, from a reception shelf to a full retail floor.</p>",
+        "columns": "5",
+        "style": "cream"
+      },
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "icon": "dumbbell",
+            "title": "Gyms and studios",
+            "text": "<p>Stock the protein, creatine and pre-workout your members already ask for, and earn on every sale at the front desk.</p>"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "icon": "bag",
+            "title": "Retailers",
+            "text": "<p>Supplement stores and sports shops get the leading brands with dependable restocks and authentic batch codes.</p>"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "icon": "pill",
+            "title": "Pharmacies",
+            "text": "<p>Vitamins, wellness and clean protein from brands that pharmacists can recommend with confidence.</p>"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "icon": "trophy",
+            "title": "Coaches and teams",
+            "text": "<p>Team orders of hydration, gels, bars and recovery for squads, clubs and academies, delivered before match day.</p>"
           }
         },
         "card_5": {
           "type": "card",
           "settings": {
-            "title": "Trade pricing",
-            "text": "Tiered wholesale prices with room for your retail margin."
+            "icon": "heart",
+            "title": "Corporate wellness",
+            "text": "<p>Healthy snacks, protein bars and vitamins for office wellness programmes and staff gyms.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5"
+      ]
+    },
+    "stock": {
+      "type": "snh-biz-tiles",
+      "settings": {
+        "eyebrow": "The range",
+        "heading": "What you can *stock*",
+        "intro": "<p>Choose from the full SNH catalogue. Each category below links to the live range, so you can see every flavour and size before you ask for prices.</p>",
+        "style": "white"
+      },
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "collection": "whey-protein",
+            "label": "Whey protein",
+            "text": "Concentrate, isolate and blends"
           }
         },
-        "card_6": {
-          "type": "card",
+        "tile_2": {
+          "type": "tile",
           "settings": {
-            "title": "100% genuine",
-            "text": "Batch-coded, date-checked stock from the official distributor."
+            "collection": "creatine",
+            "label": "Creatine",
+            "text": "Monohydrate, gummies, capsules"
           }
         },
-        "card_7": {
-          "type": "card",
+        "tile_3": {
+          "type": "tile",
           "settings": {
-            "title": "Fast restocks",
-            "text": "Dispatched from Colombo within 48 hours, anywhere in Sri Lanka."
+            "collection": "pre-workout-1",
+            "label": "Pre-workout",
+            "text": "Stim and stim-free formulas"
           }
         },
-        "card_8": {
-          "type": "card",
+        "tile_4": {
+          "type": "tile",
           "settings": {
-            "title": "One person to call",
-            "text": "Your account manager handles orders, advice and new launches."
+            "collection": "mass-gainer",
+            "label": "Mass gainers",
+            "text": "High-calorie gainers"
+          }
+        },
+        "tile_5": {
+          "type": "tile",
+          "settings": {
+            "collection": "bcaa-eaa",
+            "label": "BCAAs and EAAs",
+            "text": "Amino acids for recovery"
+          }
+        },
+        "tile_6": {
+          "type": "tile",
+          "settings": {
+            "collection": "sis",
+            "label": "Electrolytes and hydration",
+            "text": "Science in Sport range"
+          }
+        },
+        "tile_7": {
+          "type": "tile",
+          "settings": {
+            "collection": "vitamins-minerals",
+            "label": "Vitamins and wellness",
+            "text": "Daily health and immunity"
+          }
+        },
+        "tile_8": {
+          "type": "tile",
+          "settings": {
+            "collection": "protein-bars",
+            "label": "Protein bars and snacks",
+            "text": "Grab-and-go counter lines"
           }
         },
         "tile_9": {
           "type": "tile",
           "settings": {
-            "collection": "whey-protein",
-            "title": "Protein",
-            "note": "MOQ 6 units"
-          }
-        },
-        "tile_10": {
-          "type": "tile",
-          "settings": {
-            "collection": "creatine",
-            "title": "Creatine",
-            "note": "MOQ 6 units"
-          }
-        },
-        "tile_11": {
-          "type": "tile",
-          "settings": {
-            "collection": "pre-workout",
-            "title": "Pre-workout",
-            "note": "MOQ 6 units"
-          }
-        },
-        "tile_12": {
-          "type": "tile",
-          "settings": {
-            "collection": "hydration-recovery",
-            "title": "Hydration and recovery",
-            "note": "MOQ 12 units"
-          }
-        },
-        "tile_13": {
-          "type": "tile",
-          "settings": {
-            "collection": "vitamins-minerals",
-            "title": "Vitamins and minerals",
-            "note": "MOQ 12 units"
-          }
-        },
-        "tile_14": {
-          "type": "tile",
-          "settings": {
-            "collection": "sis",
-            "title": "Science in Sport",
-            "note": "MOQ 12 units"
-          }
-        },
-        "photo_15": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/instore.webp",
-            "caption": "Stock on the shelf"
-          }
-        },
-        "photo_16": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/khizerinsid.webp",
-            "caption": ""
-          }
-        },
-        "photo_17": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/glfg.webp",
-            "caption": ""
-          }
-        },
-        "photo_18": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/snh_dehiwala.webp",
-            "caption": "Dehiwala"
-          }
-        },
-        "step_19": {
-          "type": "step",
-          "settings": {
-            "title": "Pick your range",
-            "text": "Choose the brands and products your customers ask for."
-          }
-        },
-        "step_20": {
-          "type": "step",
-          "settings": {
-            "title": "Send the form",
-            "text": "Tell us about your gym, pharmacy, store or online shop."
-          }
-        },
-        "step_21": {
-          "type": "step",
-          "settings": {
-            "title": "Get your prices",
-            "text": "Approved accounts receive the full wholesale price sheet."
-          }
-        },
-        "step_22": {
-          "type": "step",
-          "settings": {
-            "title": "Order and restock",
-            "text": "Order by WhatsApp or phone; it ships within 48 hours."
+            "collection": "accessories-1",
+            "label": "Accessories",
+            "text": "Shakers and gym gear"
           }
         }
       },
       "block_order": [
-        "stat_1",
-        "stat_2",
-        "stat_3",
-        "stat_4",
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4",
+        "tile_5",
+        "tile_6",
+        "tile_7",
+        "tile_8",
+        "tile_9"
+      ]
+    },
+    "lines": {
+      "type": "snh-biz-products",
+      "settings": {
+        "eyebrow": "Popular with partners",
+        "heading": "Bestselling *wholesale* lines",
+        "intro": "<p>The products our partners reorder most. Trade pricing is shared with approved accounts, so prices here show on request.</p>",
+        "collection": "whey-protein",
+        "limit": 8,
+        "on_request": true,
+        "note": "Wholesale price on request",
+        "cta_label": "Get the price list",
+        "cta_link": "#biz-form",
+        "style": "cream"
+      }
+    },
+    "brands": {
+      "type": "snh-brand-marquee",
+      "settings": {
+        "heading": "Brands we *supply*",
+        "show_count": true,
+        "count": "",
+        "link_label": "All brands",
+        "link_url": "/pages/shop-by-brand",
+        "speed": 35,
+        "direction": "left",
+        "two_rows": true,
+        "logo_height": 40
+      },
+      "blocks": {
+        "logo_1": {
+          "type": "logo",
+          "settings": {
+            "name": "Applied Nutrition",
+            "image": "shopify://shop_images/Untitled_design.zip_-_1.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/applied-nutrition"
+          }
+        },
+        "logo_2": {
+          "type": "logo",
+          "settings": {
+            "name": "Science in Sport",
+            "image": "shopify://shop_images/Untitled_design.zip_-_5_62bbd74a-3d19-426e-b1a6-f626a977e647.png",
+            "dark": true,
+            "scale": 125,
+            "link": "/collections/sis"
+          }
+        },
+        "logo_3": {
+          "type": "logo",
+          "settings": {
+            "name": "RAW Nutrition",
+            "image": "shopify://shop_images/IMG_0045.jpg",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/raw"
+          }
+        },
+        "logo_4": {
+          "type": "logo",
+          "settings": {
+            "name": "Myprotein",
+            "image": "shopify://shop_images/IMG_0049.png",
+            "dark": true,
+            "scale": 120,
+            "link": "/collections/myprotein"
+          }
+        },
+        "logo_5": {
+          "type": "logo",
+          "settings": {
+            "name": "Revive",
+            "image": "shopify://shop_images/2_90d87d3d-eff4-48a4-9fd4-ffd859764d6d.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/revive"
+          }
+        },
+        "logo_6": {
+          "type": "logo",
+          "settings": {
+            "name": "MuscleTech",
+            "image": "shopify://shop_images/Untitled_design.zip_-_6_0f398417-0fda-4e10-bd17-258678a4e6a9.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/muscletech"
+          }
+        },
+        "logo_7": {
+          "type": "logo",
+          "settings": {
+            "name": "RYSE",
+            "image": "shopify://shop_images/IMG_0046.jpg",
+            "dark": true,
+            "scale": 120,
+            "link": "/collections/ryse"
+          }
+        },
+        "logo_8": {
+          "type": "logo",
+          "settings": {
+            "name": "EHP Labs",
+            "image": "shopify://shop_images/1_d8033eaa-aa49-49b4-a96f-d37b9316f7e1.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/ehplabs"
+          }
+        },
+        "logo_9": {
+          "type": "logo",
+          "settings": {
+            "name": "Surge",
+            "image": "shopify://shop_images/final_surge_logo-01.jpg",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/surge"
+          }
+        },
+        "logo_10": {
+          "type": "logo",
+          "settings": {
+            "name": "Healthspan Elite",
+            "image": "shopify://shop_images/5_bfc4fe07-8297-47ee-a5f3-2c1a53c86387.png",
+            "dark": false,
+            "scale": 110,
+            "link": "/collections/healthspan-elite"
+          }
+        },
+        "logo_11": {
+          "type": "logo",
+          "settings": {
+            "name": "Vitabiotics",
+            "image": "shopify://shop_images/3_e9de3e34-4221-415b-b928-c97558667165.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/everything?filter.p.vendor=VITABIOTICS"
+          }
+        },
+        "logo_12": {
+          "type": "logo",
+          "settings": {
+            "name": "Dymatize",
+            "image": "shopify://shop_images/Untitled_240_x_240_px_fb5a6e2b-3128-4999-969b-033dfa142b0b.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/dymatize"
+          }
+        },
+        "logo_13": {
+          "type": "logo",
+          "settings": {
+            "name": "Redcon1",
+            "image": "shopify://shop_images/Untitled_design.zip_-_4.png",
+            "dark": false,
+            "scale": 100,
+            "link": "/collections/redcon1"
+          }
+        }
+      },
+      "block_order": [
+        "logo_1",
+        "logo_2",
+        "logo_3",
+        "logo_4",
+        "logo_5",
+        "logo_6",
+        "logo_7",
+        "logo_8",
+        "logo_9",
+        "logo_10",
+        "logo_11",
+        "logo_12",
+        "logo_13"
+      ]
+    },
+    "how": {
+      "type": "snh-biz-steps",
+      "settings": {
+        "eyebrow": "How it works",
+        "heading": "From application to *delivery* in four steps",
+        "style": "ink"
+      },
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Apply",
+            "text": "Send the short form below with your business details and the products you want to stock."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Get your price list",
+            "text": "Our wholesale team checks your details and sends a trade price list for the lines you chose."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Order",
+            "text": "Order by email or WhatsApp. We confirm stock, batch dates and the delivery day."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "title": "Delivered",
+            "text": "Same-day in Colombo where stock allows, and island-wide delivery to every district."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ]
+    },
+    "benefits": {
+      "type": "snh-biz-cards",
+      "settings": {
+        "eyebrow": "Partner benefits",
+        "heading": "What a wholesale account *gives you*",
+        "columns": "3",
+        "style": "white",
+        "outro": "<p>Terms depend on your business type and order volume, and we confirm them in writing when your account is approved. Ready to start? <a href=\"#biz-form\">Apply for a wholesale account</a>, or browse <a href=\"/collections/whey-protein\">whey protein</a>, <a href=\"/collections/creatine\">creatine</a> and the <a href=\"/collections/sis\">Science in Sport range</a>.</p>"
+      },
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "icon": "wallet",
+            "title": "Tiered pricing",
+            "text": "<p>Trade prices that improve as your monthly volume grows.</p>"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "icon": "bolt",
+            "title": "Priority stock",
+            "text": "<p>First access to new arrivals and limited flavours, and reserved stock for regular orders.</p>"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Marketing support",
+            "text": "<p>Product photos, shelf talkers and launch content to help the range sell through.</p>"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "icon": "user",
+            "title": "A dedicated account manager",
+            "text": "<p>One person who knows your store, your reorder rhythm and your customers.</p>"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "icon": "card",
+            "title": "Credit terms for approved partners",
+            "text": "<p>Payment terms for established partners with a good order history.</p>"
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "icon": "shield",
+            "title": "Guaranteed authenticity",
+            "text": "<p>Every product comes from the brand or its authorised distributor, with full batch traceability.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
         "card_5",
-        "card_6",
-        "card_7",
-        "card_8",
-        "tile_9",
-        "tile_10",
-        "tile_11",
-        "tile_12",
-        "tile_13",
-        "tile_14",
-        "photo_15",
-        "photo_16",
-        "photo_17",
-        "photo_18",
-        "step_19",
-        "step_20",
-        "step_21",
-        "step_22"
+        "card_6"
+      ]
+    },
+    "why": {
+      "type": "snh-biz-copy",
+      "settings": {
+        "eyebrow": "Why SNH",
+        "heading": "Authentic stock you can *stand behind*",
+        "body": "<p>Counterfeit and parallel-imported supplements are a real problem in Sri Lanka. They damage trust in your business the moment a customer spots a wrong label or a suspicious taste. As the <strong>official Science in Sport distributor</strong> and a direct partner of leading protein and creatine brands, SNH gives you a supply chain you can explain to any customer.</p><p>Our three Colombo stores sell these products every day, so we know what moves, which flavours sell out and what athletes ask for next. That knowledge comes with your account: we will tell you what to stock for a gym in Kandy, a pharmacy in Galle or a team in Jaffna, not just send a catalogue.</p><p>Want to see us first? Visit one of our <a href=\"/pages/locations-info\">SNH stores</a>, or read about <a href=\"/pages/snh-elite\">SNH Elite</a>, the loyalty club your customers may already belong to.</p>",
+        "style": "cream"
+      }
+    },
+    "form": {
+      "type": "snh-biz-form",
+      "settings": {
+        "kind": "wholesale",
+        "eyebrow": "Wholesale application",
+        "heading": "Apply for a *wholesale* account",
+        "intro": "<p>Tell us about your business and what you would like to stock. We reply within one working day with next steps and a price list for approved accounts.</p>",
+        "point_1": "No obligation and no fee to apply",
+        "point_2": "A reply within one working day",
+        "point_3": "Trade prices for approved accounts",
+        "submit": "Send wholesale enquiry",
+        "ok_heading": "Thank you, your wholesale enquiry is in",
+        "ok_text": "<p>Here is what happens next:</p><ul><li>Our wholesale team reviews your details, usually within one working day.</li><li>If we are a good fit, we send your trade price list and confirm your account terms.</li><li>Need it sooner? WhatsApp us and mention your business name.</li></ul>",
+        "ok_label": "Browse the range",
+        "msg_placeholder": "Order frequency, delivery location or anything else we should know"
+      }
+    },
+    "faq": {
+      "type": "snh-faq",
+      "settings": {
+        "eyebrow": "Wholesale FAQ",
+        "heading": "Wholesale *questions*",
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
+        "show_cta": true,
+        "cta": "Talk to the wholesale team",
+        "style": "dark"
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "Is there a minimum order for wholesale?",
+            "answer": "<p>Minimum order quantities depend on the brand and your business type. We confirm the minimums for your account with your price list, and keep them realistic for smaller gyms and new stores.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do you deliver wholesale orders outside Colombo?",
+            "answer": "<p>Yes. We deliver island-wide. Colombo orders can often go out the same day when stock allows, and other districts usually arrive in one to three working days.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "What payment terms do you offer?",
+            "answer": "<p>New accounts pay on order by bank transfer. Credit terms are available for approved partners with an established order history, and we confirm them in writing.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "Are your products authentic?",
+            "answer": "<p>Every product comes directly from the brand or its authorised distributor. SNH is the official Science in Sport distributor in Sri Lanka, and each order can be traced by batch.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "How do I get the wholesale price list?",
+            "answer": "<p>Send the application form on this page. Once your details are checked, we email the trade price list for the categories you chose.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "Can I order mixed brands and flavours?",
+            "answer": "<p>Yes. One account covers every brand we carry, so you can mix whey, creatine, hydration and accessories in a single order.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6"
       ]
     }
   },
   "order": [
-    "main"
+    "hero",
+    "trust",
+    "intro",
+    "who",
+    "stock",
+    "lines",
+    "brands",
+    "how",
+    "benefits",
+    "why",
+    "form",
+    "faq"
   ]
 }
-

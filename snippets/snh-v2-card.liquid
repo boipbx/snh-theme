@@ -213,7 +213,7 @@
     {%- endif -%}
     {%- if chip != blank -%}<span class="pc__chip">{{ chip }}</span>{%- endif -%}
     {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-    {%- if product.available -%}
+    {%- if product.available and request == blank -%}
       {%- comment -%} Round 13: one round "+" on the image: single variant adds in one tap, several open the SNH quick-buy sheet (assets/snh-quick.js) {%- endcomment -%}
       {%- if multi -%}
         <button class="pc__plus" type="button" data-v2-pick="{{ product.handle }}" aria-haspopup="dialog" aria-label="Choose options for {{ title_full }}">{% render 'snh-v2-icon', name: 'plus' %}</button>
@@ -232,6 +232,10 @@
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
     <h3 class="pc__name"><a href="{{ product.url }}" title="{{ title_full }}">{{ short | strip }}</a></h3>
     <p class="pc__sub">{{ sub | escape }}{% if per > 0 %} · <span class="pc__per">{{ per | money_without_trailing_zeros }}/serving</span>{% endif %}</p>
+    {%- if request != blank -%}
+    {%- comment -%} Round 17: wholesale grids show a note instead of the retail price, Koko line, quick-add and earn line {%- endcomment -%}
+    <div class="pc__foot pc__foot--req"><p class="pc__req">{{ request | escape }}</p></div>
+    {%- else -%}
     <div class="pc__foot">
       <p class="pc__price{% if saving > 0 %} pc__price--sale{% endif %}">
         <span class="pc__now">{% if product.price_varies %}<span class="pc__from">From </span>{% endif %}{{ product.price | money_without_trailing_zeros }}</span>
@@ -244,7 +248,8 @@
       {%- endif -%}
     </div>
     {%- comment -%} points: desktop hover only (hidden on touch / phones) {%- endcomment -%}
-    {%- if customer -%}
+    {%- endif -%}
+    {%- if request != blank -%}{%- elsif customer -%}
       <p class="pc__earn">Earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back in points</p>
     {%- else -%}
       <a class="pc__earn" href="{{ routes.account_login_url }}" tabindex="-1">Sign in to earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back</a>

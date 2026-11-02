@@ -1,0 +1,31 @@
+{%- comment -%} Round 17: numbered process (Apply → Price list → Order → Delivered; Enquire → Meet → Site + plan → Agreement → Launch). {%- endcomment -%}
+{{ 'snh-biz.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign parts = s.heading | split: '*'
+-%}
+<section class="v2 biz-sec biz-sec--{{ s.style }}" aria-labelledby="bs-{{ section.id }}">
+  <div class="v-wrap">
+    <header class="biz-head">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="biz-h" id="bs-{{ section.id }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+      {%- if s.intro != blank -%}<div class="biz-rte">{{ s.intro }}</div>{%- endif -%}
+    </header>
+    <ol class="biz-steps" style="--n: {{ section.blocks.size }}">
+      {%- for b in section.blocks -%}
+        <li class="biz-step" {{ b.shopify_attributes }}><span class="biz-step__n" aria-hidden="true">{{ forloop.index }}</span><h3 class="biz-card__h">{{ b.settings.title | escape }}</h3><p>{{ b.settings.text | escape }}</p></li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+{% schema %}
+{ "name": "SNH business steps", "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How it *works*" },
+    { "type": "richtext", "id": "intro", "label": "Intro" },
+    { "type": "select", "id": "style", "label": "Background", "options": [ { "value": "white", "label": "White" }, { "value": "cream", "label": "Cream" }, { "value": "ink", "label": "Ink" } ], "default": "ink" }
+  ],
+  "blocks": [ { "type": "step", "name": "Step", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Step" }, { "type": "textarea", "id": "text", "label": "Text" } ] } ],
+  "presets": [ { "name": "SNH business steps" } ] }
+{% endschema %}

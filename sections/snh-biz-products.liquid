@@ -1,0 +1,44 @@
+{%- comment -%} Round 17: "Bestselling wholesale lines": v2 product cards from a collection; "Wholesale price on request" replaces the retail price when the toggle is on. {%- endcomment -%}
+{{ 'snh-biz.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign parts = s.heading | split: '*'
+  assign col = s.collection | default: collections['bestsellers'] | default: collections['whey-protein']
+  assign note = ''
+  if s.on_request
+    assign note = s.note | default: 'Wholesale price on request'
+  endif
+-%}
+<section class="v2 biz-sec biz-sec--{{ s.style }}" aria-labelledby="bp-{{ section.id }}">
+  <div class="v-wrap">
+    <header class="biz-head biz-head--row">
+      <div>
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="biz-h" id="bp-{{ section.id }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+        {%- if s.intro != blank -%}<div class="biz-rte">{{ s.intro }}</div>{%- endif -%}
+      </div>
+      {%- if s.cta_label != blank -%}<a class="v-btn v-btn--ink" href="{{ s.cta_link | default: '#biz-form' }}"><span>{{ s.cta_label | escape }}</span></a>{%- endif -%}
+    </header>
+    <div class="v2 biz-grid">
+      {%- for product in col.products limit: s.limit -%}
+        {%- render 'snh-v2-card', product: product, position: forloop.index, request: note -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "SNH business products", "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Bestselling *wholesale* lines" },
+    { "type": "richtext", "id": "intro", "label": "Intro" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Defaults to bestsellers, then whey protein." },
+    { "type": "range", "id": "limit", "label": "Products", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "checkbox", "id": "on_request", "label": "Show \"Wholesale price on request\" instead of the retail price", "default": true },
+    { "type": "text", "id": "note", "label": "Price note", "default": "Wholesale price on request" },
+    { "type": "text", "id": "cta_label", "label": "Button", "default": "Get the price list" },
+    { "type": "text", "id": "cta_link", "label": "Button link", "default": "#biz-form" },
+    { "type": "select", "id": "style", "label": "Background", "options": [ { "value": "white", "label": "White" }, { "value": "cream", "label": "Cream" } ], "default": "cream" }
+  ],
+  "presets": [ { "name": "SNH business products" } ] }
+{% endschema %}

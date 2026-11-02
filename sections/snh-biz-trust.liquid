@@ -1,0 +1,13 @@
+{%- comment -%} Round 17: trust strip under the business hero (icon + short claim per block). {%- endcomment -%}
+{{ 'snh-biz.css' | asset_url | stylesheet_tag }}
+<section class="v2 biz-trust" aria-label="{{ section.settings.label | escape }}">
+  <ul class="v-wrap biz-trust__in" role="list">
+    {%- for b in section.blocks -%}<li {{ b.shopify_attributes }}>{% render 'snh-v2-icon', name: b.settings.icon %}<span>{{ b.settings.text | escape }}</span></li>{%- endfor -%}
+  </ul>
+</section>
+{% schema %}
+{ "name": "SNH business trust strip", "tag": "div",
+  "settings": [ { "type": "text", "id": "label", "label": "Accessible label", "default": "Why SNH" } ],
+  "blocks": [ { "type": "item", "name": "Claim", "settings": [ { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "shield", "label": "Shield" }, { "value": "badge", "label": "Badge" }, { "value": "truck", "label": "Truck" }, { "value": "pin", "label": "Pin" }, { "value": "star", "label": "Star" }, { "value": "bolt", "label": "Bolt" }, { "value": "dumbbell", "label": "Dumbbell" }, { "value": "trophy", "label": "Trophy" }, { "value": "heart", "label": "Heart" }, { "value": "pill", "label": "Pill" }, { "value": "user", "label": "Person" }, { "value": "chat", "label": "Chat" }, { "value": "card", "label": "Card" }, { "value": "wallet", "label": "Wallet" }, { "value": "gift", "label": "Gift" }, { "value": "target", "label": "Target" }, { "value": "sparkle", "label": "Sparkle" }, { "value": "home", "label": "Store" }, { "value": "bag", "label": "Bag" }, { "value": "clock", "label": "Clock" }, { "value": "check", "label": "Check" }, { "value": "run", "label": "Run" }, { "value": "leaf", "label": "Leaf" }, { "value": "shaker", "label": "Shaker" } ], "default": "shield" }, { "type": "text", "id": "text", "label": "Text", "default": "100% authentic" } ] } ],
+  "presets": [ { "name": "SNH business trust strip" } ] }
+{% endschema %}

@@ -1,202 +1,464 @@
 /*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
+ * Round 17: franchise page (v2, /pages/franchise-partner). Sections: snh-biz-*.
  */
 {
   "sections": {
-    "main": {
-      "type": "snh-partner",
+    "hero": {
+      "type": "snh-biz-hero",
       "settings": {
-        "form_type": "franchise",
-        "eyebrow": "Franchise",
-        "heading": "Own the next *SNH* store",
-        "lead": "Sri Lanka's #1 sports nutrition retailer is opening new stores with partners. Three stores, 12+ brands we distribute, and a model that works.",
-        "cta": "Apply to partner",
-        "image_1": "shopify://shop_images/snhnuge.webp",
-        "image_2": "shopify://shop_images/snh_dehiwala.webp",
-        "cards_heading": "Why partner with SNH",
-        "checks_heading": "Who we're looking for",
-        "checks_text": "You bring the drive and the location. We bring the brand, the stock and the playbook.",
-        "photos_heading": "Inside our stores",
-        "steps_heading": "From application to opening day",
-        "form_heading": "Apply to partner",
-        "form_text": "Tell us a little about you and where you would open. We reply within 2 working days.",
-        "submit": "Send application",
-        "email": "info@sportsnutritionhub.lk"
+        "image": "shopify://shop_images/snhnuge.webp",
+        "image_mobile": "shopify://shop_images/snh_dehiwala.webp",
+        "crumb": "Franchise partner",
+        "eyebrow": "SNH franchise opportunity · Sri Lanka",
+        "heading": "Open an SNH store in *your city*",
+        "sub": "Bring authentic sports nutrition to your community with a proven supplement store franchise, backed by 18+ brands, the official SiS distributorship and the SNH Elite loyalty club.",
+        "cta_label": "Enquire about a franchise",
+        "cta_link": "#biz-form",
+        "show_wa": true,
+        "wa_text": "Hi SNH, I'm interested in opening an SNH franchise.",
+        "contact_type": "sales"
+      }
+    },
+    "trust": {
+      "type": "snh-biz-trust",
+      "settings": {
+        "label": "Why partner with SNH"
       },
       "blocks": {
-        "stat_1": {
-          "type": "stat",
+        "item_1": {
+          "type": "item",
           "settings": {
-            "value": "3",
-            "label": "Stores: Dehiwala, Wattala, Nugegoda"
+            "icon": "badge",
+            "text": "Official SiS distributor"
           }
         },
-        "stat_2": {
-          "type": "stat",
+        "item_2": {
+          "type": "item",
           "settings": {
-            "value": "12+",
-            "label": "Brands we distribute"
+            "icon": "star",
+            "text": "18+ brands"
           }
         },
-        "stat_3": {
-          "type": "stat",
+        "item_3": {
+          "type": "item",
           "settings": {
-            "value": "#1",
-            "label": "Sports nutrition retailer in Sri Lanka"
+            "icon": "gift",
+            "text": "5,000+ SNH Elite members"
           }
         },
-        "stat_4": {
-          "type": "stat",
+        "item_4": {
+          "type": "item",
           "settings": {
-            "value": "100%",
-            "label": "Genuine, batch-coded stock"
+            "icon": "home",
+            "text": "3 proven stores"
+          }
+        },
+        "item_5": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "text": "Supply, training + marketing"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5"
+      ]
+    },
+    "intro": {
+      "type": "snh-biz-copy",
+      "settings": {
+        "eyebrow": "Franchise opportunity",
+        "heading": "A supplement store franchise built on *trust*",
+        "body": "<p>Sports Nutrition Hub started with one goal: give Sri Lankan athletes authentic supplements and honest advice. Today SNH runs three stores in Dehiwala, Wattala and Nugegoda, supplies gyms and retailers island-wide, and rewards thousands of customers through SNH Elite.</p><p>The <strong>SNH franchise</strong> lets you bring that model to your city. You run the store and know the local community; we bring the brand, the supply chain, the systems and the playbook that already works in our own shops. It is a <strong>franchise opportunity in Sri Lanka</strong> for people who care about fitness and want a retail business with a clear plan behind it.</p>",
+        "image": "shopify://shop_images/instore.webp",
+        "image_alt": "An SNH store counter with protein and supplements on display",
+        "style": "white"
+      }
+    },
+    "why": {
+      "type": "snh-biz-cards",
+      "settings": {
+        "eyebrow": "Why SNH",
+        "heading": "Why partner *with us*",
+        "columns": "3",
+        "style": "cream"
+      },
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Brand reach",
+            "text": "<p>A recognised name with active social channels, a busy online store and word of mouth from athletes across the country.</p>"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "icon": "badge",
+            "title": "Official SiS distributorship",
+            "text": "<p>Exclusive access to the Science in Sport range in Sri Lanka, trusted by endurance athletes and teams.</p>"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "icon": "star",
+            "title": "18+ leading brands",
+            "text": "<p>Whey protein, creatine, pre-workout, vitamins and more from brands customers already ask for by name.</p>"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "icon": "gift",
+            "title": "SNH Elite loyalty",
+            "text": "<p>More than 5,000 members earn points on every order, and your store joins the same programme from day one.</p>"
           }
         },
         "card_5": {
           "type": "card",
           "settings": {
-            "title": "A name people trust",
-            "text": "Shoppers already know SNH for authentic supplements, vitamins and sports nutrition."
+            "icon": "home",
+            "title": "Proven stores",
+            "text": "<p>Our own stores in Dehiwala, Wattala and Nugegoda are the model your store is built on.</p>"
           }
         },
         "card_6": {
           "type": "card",
           "settings": {
-            "title": "12+ brands, direct",
-            "text": "Applied Nutrition, RYSE, SiS, MuscleTech, Healthspan Elite and more, distributed by us."
-          }
-        },
-        "card_7": {
-          "type": "card",
-          "settings": {
-            "title": "Set-up and training",
-            "text": "Store design, fit-out, opening stock, staff training, POS and inventory."
-          }
-        },
-        "card_8": {
-          "type": "card",
-          "settings": {
-            "title": "Marketing done for you",
-            "text": "Campaigns, creatives and athlete partnerships that bring people through your door."
-          }
-        },
-        "check_9": {
-          "type": "check",
-          "settings": {
-            "title": "You care about health and fitness",
-            "text": "and want to run a store around it."
-          }
-        },
-        "check_10": {
-          "type": "check",
-          "settings": {
-            "title": "You can invest in a full store",
-            "text": "fit-out, stock and staff."
-          }
-        },
-        "check_11": {
-          "type": "check",
-          "settings": {
-            "title": "You put customers first",
-            "text": "advice, not just sales."
-          }
-        },
-        "check_12": {
-          "type": "check",
-          "settings": {
-            "title": "You want to grow with us",
-            "text": "more cities, more stores."
-          }
-        },
-        "photo_13": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/snhnuge.webp",
-            "caption": "Nugegoda"
-          }
-        },
-        "photo_14": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/snh_dehiwala.webp",
-            "caption": "Dehiwala"
-          }
-        },
-        "photo_15": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/snhwttla.webp",
-            "caption": "Wattala"
-          }
-        },
-        "photo_16": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/instore.webp",
-            "caption": "In store"
-          }
-        },
-        "step_17": {
-          "type": "step",
-          "settings": {
-            "title": "Apply",
-            "text": "Send the form below with your city and background."
-          }
-        },
-        "step_18": {
-          "type": "step",
-          "settings": {
-            "title": "Meet",
-            "text": "We walk you through the model, the numbers and the area."
-          }
-        },
-        "step_19": {
-          "type": "step",
-          "settings": {
-            "title": "Build",
-            "text": "Design, fit-out, opening stock and staff training."
-          }
-        },
-        "step_20": {
-          "type": "step",
-          "settings": {
-            "title": "Open",
-            "text": "Launch with our marketing and operations team behind you."
+            "icon": "truck",
+            "title": "Supply chain, training, marketing",
+            "text": "<p>Reliable restocks, product and sales training for your team, and launch and ongoing marketing.</p>"
           }
         }
       },
       "block_order": [
-        "stat_1",
-        "stat_2",
-        "stat_3",
-        "stat_4",
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
         "card_5",
-        "card_6",
-        "card_7",
-        "card_8",
-        "check_9",
-        "check_10",
-        "check_11",
-        "check_12",
-        "photo_13",
-        "photo_14",
-        "photo_15",
-        "photo_16",
-        "step_17",
-        "step_18",
-        "step_19",
-        "step_20"
+        "card_6"
+      ]
+    },
+    "stores": {
+      "type": "snh-biz-gallery",
+      "settings": {
+        "eyebrow": "Our stores",
+        "heading": "Proven stores in *Colombo*",
+        "intro": "<p>Every franchise follows the layout, range and service standard of our own stores. Visit one before you apply, or see all <a href=\"/pages/locations-info\">SNH store locations</a>.</p>",
+        "style": "white"
+      },
+      "blocks": {
+        "photo_1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snh_dehiwala.webp",
+            "caption": "SNH Dehiwala",
+            "alt": "The SNH store front in Dehiwala"
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snhwttla.webp",
+            "caption": "SNH Wattala",
+            "alt": "The SNH store in Wattala with supplements on the shelves"
+          }
+        },
+        "photo_3": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/snhnuge.webp",
+            "caption": "SNH Nugegoda",
+            "alt": "Inside the SNH store in Nugegoda"
+          }
+        }
+      },
+      "block_order": [
+        "photo_1",
+        "photo_2",
+        "photo_3"
+      ]
+    },
+    "look": {
+      "type": "snh-biz-cards",
+      "settings": {
+        "eyebrow": "Ideal partner",
+        "heading": "What we *look for*",
+        "columns": "4",
+        "style": "cream"
+      },
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "icon": "heart",
+            "title": "A passion for fitness",
+            "text": "<p>You train, coach or care about health, and you want customers to get the right advice.</p>"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "icon": "pin",
+            "title": "A strong local location",
+            "text": "<p>A busy street or mall unit near gyms, schools or offices, or the drive to find one with us.</p>"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "icon": "wallet",
+            "title": "Investment readiness",
+            "text": "<p>The capital to fit out and stock a store, with a realistic plan for the first year.</p>"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "icon": "user",
+            "title": "Hands-on management",
+            "text": "<p>You or a trusted manager run the store day to day and follow the SNH standard.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4"
+      ]
+    },
+    "get": {
+      "type": "snh-biz-cards",
+      "settings": {
+        "eyebrow": "What you get",
+        "heading": "Everything you need to *open and grow*",
+        "columns": "3",
+        "style": "white"
+      },
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "icon": "home",
+            "title": "Store design",
+            "text": "<p>The SNH layout, signage and fixtures, adapted to your unit.</p>"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "icon": "bag",
+            "title": "Opening stock",
+            "text": "<p>A curated opening range based on what sells in our own stores.</p>"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "icon": "card",
+            "title": "POS and systems",
+            "text": "<p>Point of sale, stock control and SNH Elite points working from day one.</p>"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "icon": "trophy",
+            "title": "Training",
+            "text": "<p>Product knowledge, customer advice and store operations for you and your team.</p>"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "icon": "bolt",
+            "title": "Launch marketing",
+            "text": "<p>Opening campaigns across SNH social channels, the website and the Elite club.</p>"
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "icon": "chat",
+            "title": "Ongoing support",
+            "text": "<p>A franchise manager, regular reviews and help whenever you need it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6"
+      ]
+    },
+    "how": {
+      "type": "snh-biz-steps",
+      "settings": {
+        "eyebrow": "The process",
+        "heading": "From enquiry to *opening day*",
+        "style": "ink"
+      },
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Enquire",
+            "text": "Send the form below. We reply within a few working days."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Meet",
+            "text": "A call or a store visit to get to know each other and your plans."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Site and plan",
+            "text": "We review your location together and build the opening plan."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "title": "Agreement",
+            "text": "The franchise agreement, fit-out schedule and opening stock are confirmed."
+          }
+        },
+        "step_5": {
+          "type": "step",
+          "settings": {
+            "title": "Launch",
+            "text": "Training, launch marketing and an opening day with the SNH team beside you."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5"
+      ]
+    },
+    "invest": {
+      "type": "snh-biz-copy",
+      "settings": {
+        "eyebrow": "Investment",
+        "heading": "Investment *overview*",
+        "body": "<p>Investment details shared after the first call. The total depends on the size of the unit, its location and the opening range, so we walk you through a full breakdown once we understand your plans.</p><p>Until then, explore what customers buy most: <a href=\"/collections/whey-protein\">whey protein</a>, <a href=\"/collections/creatine\">creatine</a>, <a href=\"/collections/sis\">Science in Sport</a> and <a href=\"/pages/snh-elite\">SNH Elite</a> rewards. If you run a gym or store and want to stock SNH products rather than open a franchise, see <a href=\"/pages/wholesale-1\">wholesale</a>.</p>",
+        "cta_label": "Book a first call",
+        "cta_link": "#biz-form",
+        "style": "cream"
+      }
+    },
+    "form": {
+      "type": "snh-biz-form",
+      "settings": {
+        "kind": "franchise",
+        "eyebrow": "Franchise enquiry",
+        "heading": "Start your *SNH franchise* enquiry",
+        "intro": "<p>Tell us where you would like to open and a little about yourself. Every enquiry is read by the SNH founders.</p>",
+        "point_1": "Confidential, no obligation",
+        "point_2": "A reply within a few working days",
+        "point_3": "Investment details on the first call",
+        "submit": "Send franchise enquiry",
+        "ok_heading": "Thank you, your franchise enquiry is in",
+        "ok_text": "<p>Here is what happens next:</p><ul><li>We read every enquiry and reply within a few working days.</li><li>If your plans fit, we book a first call to talk through the location and the investment.</li><li>In the meantime, visit one of our stores to see the SNH standard in person.</li></ul>",
+        "ok_label": "Find a store",
+        "ok_link": "/pages/locations-info",
+        "msg_placeholder": "Your plans, the area you have in mind, any questions"
+      }
+    },
+    "faq": {
+      "type": "snh-faq",
+      "settings": {
+        "eyebrow": "Franchise FAQ",
+        "heading": "Franchise *questions*",
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
+        "show_cta": true,
+        "cta": "Talk to us about a franchise",
+        "style": "dark"
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "How much does an SNH franchise cost?",
+            "answer": "<p>Investment details are shared after the first call, because the total depends on the unit size, location and opening range. We give you a full breakdown before any agreement.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do I need experience in supplements or retail?",
+            "answer": "<p>No. Retail or management experience helps, but a passion for fitness matters most. We train you and your team on products, customer advice and store operations.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "Which cities are you looking at?",
+            "answer": "<p>We are open to strong locations across Sri Lanka outside the areas our own stores already serve. Tell us the city or district you have in mind in the form.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "Do I have to find the location myself?",
+            "answer": "<p>If you already own or lease a suitable unit, great. If not, we help you assess options so the store opens in the right place.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "Will my store be part of SNH Elite?",
+            "answer": "<p>Yes. Your customers earn and redeem SNH Elite points just like in our own stores, which brings you returning customers from day one.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "How long does it take to open?",
+            "answer": "<p>It depends on the location and fit-out, but we plan every step with you and agree a target opening date in the franchise agreement.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6"
       ]
     }
   },
   "order": [
-    "main"
+    "hero",
+    "trust",
+    "intro",
+    "why",
+    "stores",
+    "look",
+    "get",
+    "how",
+    "invest",
+    "form",
+    "faq"
   ]
 }
-

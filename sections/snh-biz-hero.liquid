@@ -1,0 +1,86 @@
+{%- comment -%}
+  Round 17: business page hero (wholesale / franchise). Full-bleed photo with an orange → black overlay, eyebrow, the
+  page's one H1, a subline, a primary CTA (anchors to the form) and WhatsApp. Also prints the page's BreadcrumbList +
+  Organization structured data. Styles: assets/snh-biz.css.
+{%- endcomment -%}
+{{ 'snh-biz.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign wa = s.whatsapp | default: settings.snh_whatsapp | default: '94764863359' | remove: '+' | remove: ' '
+  assign parts = s.heading | split: '*'
+-%}
+<section class="v2 biz-hero" aria-labelledby="bh-{{ section.id }}">
+  <div class="biz-hero__media" aria-hidden="true">
+    {%- if s.image != blank -%}
+      {%- if s.image_mobile != blank -%}
+        <picture>
+          <source media="(max-width: 767px)" srcset="{{ s.image_mobile | image_url: width: 900 }} 900w, {{ s.image_mobile | image_url: width: 1300 }} 1300w" sizes="100vw">
+          {{ s.image | image_url: width: 1920 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '1100,1500,1920,2400', sizes: '100vw', alt: '', class: 'biz-hero__img' }}
+        </picture>
+      {%- else -%}
+        {{ s.image | image_url: width: 1920 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750,1100,1500,1920,2400', sizes: '100vw', alt: '', class: 'biz-hero__img' }}
+      {%- endif -%}
+    {%- endif -%}
+    <i class="biz-hero__tint"></i>
+  </div>
+  <div class="v-wrap biz-hero__in">
+    <nav class="biz-crumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ s.crumb | default: page.title | escape }}</span></nav>
+    {%- if s.eyebrow != blank -%}<p class="eyebrow biz-hero__eye">{{ s.eyebrow | escape }}</p>{%- endif -%}
+    <h1 class="biz-hero__h" id="bh-{{ section.id }}">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h1>
+    {%- if s.sub != blank -%}<p class="biz-hero__sub">{{ s.sub | escape }}</p>{%- endif -%}
+    <div class="biz-hero__cta">
+      {%- if s.cta_label != blank -%}<a class="v-btn v-btn--accent" href="{{ s.cta_link | default: '#biz-form' }}"><span>{{ s.cta_label | escape }}</span></a>{%- endif -%}
+      {%- if s.show_wa -%}<a class="v-btn biz-btn--glass" href="https://wa.me/{{ wa }}?text={{ s.wa_text | url_encode }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>WhatsApp us</span></a>{%- endif -%}
+    </div>
+  </div>
+</section>
+{%- capture org_logo -%}{%- if settings.logo != blank -%}{{ settings.logo | image_url: width: 600 }}{%- else -%}{{ 'snh-logo-mark.png' | asset_url }}{%- endif -%}{%- endcapture -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ shop.url | append: '/' | json }} },
+        { "@type": "ListItem", "position": 2, "name": {{ s.crumb | default: page.title | json }}, "item": {{ shop.url | append: request.path | json }} }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }},
+      "logo": {{ org_logo | strip | prepend: 'https:' | replace: 'https:https:', 'https:' | json }},
+      "contactPoint": { "@type": "ContactPoint", "telephone": {{ '+' | append: wa | json }}, "contactType": {{ s.contact_type | default: 'sales' | json }}, "areaServed": "LK", "availableLanguage": ["en", "si", "ta"] }
+      {%- assign same = '' -%}
+      {%- assign soc_keys = 'social_instagram,social_facebook,social_tiktok,social_youtube' | split: ',' -%}
+      {%- for k in soc_keys -%}{%- if settings[k] != blank -%}{%- assign same = same | append: settings[k] | append: '|' -%}{%- endif -%}{%- endfor -%}
+      {%- assign same = same | split: '|' -%}
+      {%- if same.size > 0 -%},
+      "sameAs": {{ same | json }}{%- endif %}
+    }
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "SNH business hero",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo (desktop)", "info": "A store or warehouse photo; it runs full width under an orange → black tint." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Photo (phones, optional)" },
+    { "type": "text", "id": "crumb", "label": "Breadcrumb name", "info": "Defaults to the page title." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading (the page's H1)", "info": "Wrap a word in *asterisks* for the serif.", "default": "Wholesale supplements for *gyms*, retailers and coaches" },
+    { "type": "textarea", "id": "sub", "label": "Subline" },
+    { "type": "text", "id": "cta_label", "label": "Button", "default": "Apply for a wholesale account" },
+    { "type": "text", "id": "cta_link", "label": "Button link", "default": "#biz-form" },
+    { "type": "checkbox", "id": "show_wa", "label": "Show WhatsApp button", "default": true },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number", "info": "Defaults to Theme settings → SNH contact." },
+    { "type": "text", "id": "wa_text", "label": "WhatsApp message", "default": "Hi SNH, I'd like to know more about wholesale." },
+    { "type": "select", "id": "contact_type", "label": "Structured data contact type", "options": [ { "value": "sales", "label": "Sales" }, { "value": "customer service", "label": "Customer service" } ], "default": "sales" }
+  ],
+  "presets": [ { "name": "SNH business hero" } ]
+}
+{% endschema %}
