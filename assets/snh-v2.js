@@ -949,7 +949,16 @@
   });
 
   /* ================= brand marquee: constant px/s, seamless, hover pause, drag to scrub ================= */
+  // Round 17: start a marquee only when it's within ~600px of the viewport (it forces its logos to load to measure
+  // them; far down a page that would load every logo up front)
   on('marquee', function (mq) {
+    if ('IntersectionObserver' in window && !mq.__near) {
+      var r = mq.getBoundingClientRect();
+      if (r.top > innerHeight + 600) {
+        var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); mq.__near = true; inits.marquee(mq); } }, { rootMargin: '600px 0px' });
+        io.observe(mq); return;
+      }
+    }
     var track = mq.querySelector('.mq__track'), rail = mq.querySelector('.mq__rail');
     var runs = $$('.logos__run', rail);
     // white-mark logos: trim each file to its mark (pixels that differ from the corner colour) and size it so every
