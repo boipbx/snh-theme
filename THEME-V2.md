@@ -844,3 +844,14 @@ to **SNH Dev only** with `shopify theme push --theme 189336944894 --nodelete --o
 - **Koko logo**: `snippets/snh-koko-logo.liquid` and `SNH.kokoImg(h)` (layout), image in `assets/snh-koko.png`.
 - **Campaigns CSS**: loaded by its own `asset_url` (`data-css` on the campaigns script); it used to borrow the JS file's
   `?v=`, so CSS-only edits stayed cached.
+
+## Round 17: business pages, footer
+
+- **Wholesale + franchise** pages are built from `snh-biz-*` sections (hero + Organization schema, trust, cards, tiles,
+  products with `request` note on `snh-v2-card`, copy, steps, gallery, form) and `assets/snh-biz.css`. The forms are
+  native contact forms with hidden `contact[Subject]` / `contact[form]` / `contact[tags]`; success via
+  `form.posted_successfully?`. See SEO.md.
+- **Discoverability**: Offers mega menu "For business" (block settings `biz_title`, `biz_links`), footer Business column,
+  `snh-grow` band (home, locations, about).
+- **Footer**: 360 ms fade / slide for the big mark (no clip-path wipe, no dot), payment logos row, transparent Koko.
+- **Brand marquee** initialises within 600 px of the viewport.

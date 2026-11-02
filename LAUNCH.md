@@ -33,6 +33,8 @@ is for you in Shopify admin; the theme side is done and checked on the preview (
 | 20 | ~~Stalled file sync~~ **fixed in Round 15**: the campaigns stylesheet borrowed the JS file's version string, so CSS-only edits stayed cached; it now loads by its own URL. Nothing to do | — | — |
 | 21 | **Broken link in a product description**: Critical Whey 2KG links "protein and recovery range" to `/collections/protein-powder` (404) | Products → Applied Nutrition Critical Whey 2KG → Description | Point it at `/collections/whey-protein` or another live collection |
 | 22 | **Sign-in / register background**: three photos are set (cricket, running, hero); swap them or add a background video | Customize → Customer accounts → Sign in / Create account → Background | Photos of your stores or athletes read best |
+| 23 | **Business page SEO**: paste the titles + meta descriptions from SEO.md (wholesale, franchise) | Online Store → Pages → Search engine listing | ≤ 60 / ≤ 155 characters, local keywords |
+| 24 | **Business enquiry emails**: the wholesale and franchise forms email the store contact address with the subject prefixes `[Wholesale enquiry]` / `[Franchise enquiry]`; add a mail filter (or Shopify Forms / Klaviyo) to route them | Settings → General / your mail app | See SEO.md → How the form emails are delivered |
 | 19 | **Cloudflare bot check** on www.sportsnutritionhub.lk challenges automated browsers often; only matters for QA tools, not customers | Cloudflare dashboard (optional) | |
 
 Round 14 results per item: QA-LOG.md. Parity: PARITY.md. Recommendations: RECO.md.
