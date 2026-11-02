@@ -15,6 +15,7 @@ const PAGES = [['wholesale', '/pages/wholesale-1', ['Business name', 'contact[na
     await p.addInitScript(() => { window.__cls = 0; try { new PerformanceObserver((l) => l.getEntries().forEach((e) => { if (!e.hadRecentInput) window.__cls += e.value; })).observe({ type: 'layout-shift', buffered: true }); } catch (e) {} });
     for (const [n, pth, fields, subj, kind, tags] of PAGES) {
       await open(p, pth); await p.waitForTimeout(1500);
+      const eagerBefore = await p.evaluate(() => [...document.querySelectorAll('main img')].filter((i) => !i.closest('.biz-hero') && i.loading !== 'lazy' && i.getBoundingClientRect().top > innerHeight * 1.5).length);   // before scrolling: the marquee rightly loads its logos once it's near
       await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 140)); } scrollTo(0, 0); }); await p.waitForTimeout(800);
       const r = await p.evaluate(() => {
         const ld = [...document.querySelectorAll('script[type="application/ld+json"]')].flatMap((s) => { try { const j = JSON.parse(s.textContent); return (j['@graph'] || [j]).map((x) => x['@type']); } catch (e) { return ['bad']; } });
@@ -26,7 +27,7 @@ const PAGES = [['wholesale', '/pages/wholesale-1', ['Business name', 'contact[na
         const links = [...main.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'));
         return { h1: document.querySelectorAll('h1').length, ld: [...new Set(ld)], altMissing: content.filter((i) => !i.alt.trim()).length, content: content.length, words, eagerBelow: lazy, toCollections: links.filter((h) => /\/collections\//.test(h)).length, toElite: links.some((h) => /snh-elite/.test(h)), cross: links.some((h) => /wholesale-1|franchise-partner/.test(h)), over: document.documentElement.scrollWidth - innerWidth, cls: +window.__cls.toFixed(3) };
       });
-      log(w, `${n}: one H1, Organization + BreadcrumbList + FAQPage, alt text, lazy images, internal links, no sideways scroll, CLS < 0.1`, r.h1 === 1 && ['Organization', 'BreadcrumbList', 'FAQPage'].every((t) => r.ld.includes(t)) && r.altMissing === 0 && r.eagerBelow === 0 && r.toCollections >= 5 && r.toElite && r.cross && r.over <= 0 && r.cls < 0.1, JSON.stringify(r));
+      log(w, `${n}: one H1, Organization + BreadcrumbList + FAQPage, alt text, lazy images, internal links, no sideways scroll, CLS < 0.1`, r.h1 === 1 && ['Organization', 'BreadcrumbList', 'FAQPage'].every((t) => r.ld.includes(t)) && r.altMissing === 0 && eagerBefore === 0 && r.toCollections >= 5 && r.toElite && r.cross && r.over <= 0 && r.cls < 0.1, JSON.stringify(Object.assign(r, { eagerBefore })));
       if (w !== 768) await p.screenshot({ path: path.join(PG, `${n}-${w}.png`), fullPage: true });
       else await p.screenshot({ path: path.join(PG, `${n}-${w}.png`) });
       // form: fields + hidden fields + +94; never submitted
@@ -34,7 +35,7 @@ const PAGES = [['wholesale', '/pages/wholesale-1', ['Business name', 'contact[na
       log(w, `${n} form: native POST to /contact, every field, hidden Subject / form / tags, +94 mobile, required fields (not submitted)`, f.method === 'post' && /contact/.test(f.action) && !f.missing.length && f.subj === subj && f.form === kind && f.tags === tags && f.tel94 && f.required >= 4, JSON.stringify(f));
       if (w !== 768) { const fc = p.locator('#biz-form'); await fc.scrollIntoViewIfNeeded(); await fc.screenshot({ path: path.join(FM, `${n}-form-${w}.png`) }); }
       // phone normalising (typed, blurred; not submitted)
-      const tel = p.locator('#biz-form input[type=tel]'); await tel.fill('0771234567'); await tel.blur(); await p.waitForTimeout(200);
+      const tel = p.locator('#biz-form input[type=tel]'); await tel.scrollIntoViewIfNeeded(); await p.waitForFunction(() => { const t = document.querySelector('#biz-form input[type=tel]'); return t && t.__tel94; }, null, { timeout: 15000 }).catch(() => {}); await tel.fill('0771234567'); await tel.blur(); await p.waitForTimeout(200);
       const tv = await tel.inputValue(); log(w, `${n} form: mobile 0771234567 cleans to the local part (+94 shown)`, /77 ?123 ?4567/.test(tv), tv);
       // success state (Shopify returns with ?contact_posted=true)
       await open(p, pth + '?contact_posted=true'); await p.waitForTimeout(1500);
