@@ -104,8 +104,8 @@
 
   /* ---------- product card packshots ----------
      SNH's packshots carry a baked-in orange frame with the logo on its top edge, at different sizes per image. Find
-     the frame from the pixels and crop just inside it; then lift grey studio backdrops to white so every pack blends
-     into the cream tile (the img uses mix-blend multiply). Runs once per image on load. */
+     the frame from the pixels and crop just inside it; the img uses mix-blend multiply so white backdrops melt
+     into the cream tile (R18: no brightness lift / fade mask). Runs once per image on load. */
   var liftCanvas = null;
   function lift(img) {
     if (img.__v2lift || !img.complete || !img.naturalWidth) return;
@@ -140,7 +140,7 @@
       var e = Math.round(N * .02), pts = [[x0 + e, y0 + e], [x0 + e, y1 - e], [x1 - e, y1 - e]], br = 0, bgc = 0, bb = 0, L = 0;
       pts.forEach(function (pt) { var i = (pt[1] * N + pt[0]) * 4; br += d[i] / 3; bgc += d[i + 1] / 3; bb += d[i + 2] / 3; L += lum(pt[0], pt[1]) / 3; });
       var lf = 1;
-      if (L < 252 && L > 150) { lf = Math.min(1.36, 256 / L); img.style.setProperty('--lift', lf.toFixed(3)); }
+      // R18: no brightness lift or edge fade any more (it washed the packs out): images stay crisp and unfiltered
       br = Math.min(255, br * lf); bgc = Math.min(255, bgc * lf); bb = Math.min(255, bb * lf);
       // the pack itself: bounding box of pixels that differ from the backdrop, so every pack sits at the same size
       // count differing pixels per column and row; thin full-width bands (studio floor lines, shadows) fall below
@@ -162,17 +162,7 @@
       img.style.transform = 'scale(' + sc.toFixed(3) + ') translate(' + (50 - cx / N * 100).toFixed(2) + '%, ' + (50 - cy / N * 100).toFixed(2) + '%)';
       // the frame sits outside the crop box: keep it out of view when the scaled image overflows the tile
       var X0 = x0 / N * 100, X1 = x1 / N * 100, Y0 = y0 / N * 100, Y1 = y1 / N * 100;
-      if (lf > 1.02) {
-        // studio backdrop: fade the crop edges so the lifted floor and vignette melt into the tile
-        // the fade stays between the crop edge and the pack, never over the pack
-        var f = 7, P = function (v) { return (v / N * 100); };
-        var fx0 = Math.min(X0 + f, P(bx0)), fx1 = Math.max(X1 - f, P(bx1)), fy0 = Math.min(Y0 + f, P(by0)), fy1 = Math.max(Y1 - f, P(by1));
-        var m = 'linear-gradient(to right, transparent ' + X0.toFixed(1) + '%, #000 ' + fx0.toFixed(1) + '%, #000 ' + fx1.toFixed(1) + '%, transparent ' + X1.toFixed(1) + '%), linear-gradient(to bottom, transparent ' + Y0.toFixed(1) + '%, #000 ' + fy0.toFixed(1) + '%, #000 ' + fy1.toFixed(1) + '%, transparent ' + Y1.toFixed(1) + '%)';
-        img.style.webkitMaskImage = img.style.maskImage = m;
-        img.style.webkitMaskComposite = 'source-in'; img.style.maskComposite = 'intersect';
-      } else {
-        img.style.clipPath = 'inset(' + Y0.toFixed(1) + '% ' + (100 - X1).toFixed(1) + '% ' + (100 - Y1).toFixed(1) + '% ' + X0.toFixed(1) + '%)';
-      }
+      img.style.clipPath = 'inset(' + Y0.toFixed(1) + '% ' + (100 - X1).toFixed(1) + '% ' + (100 - Y1).toFixed(1) + '% ' + X0.toFixed(1) + '%)';
     } catch (err) { /* unreadable image: leave it as is */ }
     img.classList.add('is-ready');
   }

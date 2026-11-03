@@ -17,7 +17,7 @@ const OUT = path.join(__dirname, '..', 'shots', 'r18'); fs.mkdirSync(OUT, { recu
     await p.waitForLoadState('load', { timeout: 30000 }).catch(() => {});
     const id = await p.evaluate(() => window.Shopify && Shopify.theme && Shopify.theme.id);
     if (id !== THEME) { console.log('WRONG THEME', id); process.exitCode = 1; }
-    await p.evaluate(() => { document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; }); document.querySelectorAll('.reveal,[data-reveal]').forEach((e) => e.classList.add('is-in')); });
+    await p.evaluate(() => { document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; }); document.querySelectorAll('.reveal,[data-reveal]').forEach((e) => e.classList.add('is-in')); const s = document.createElement('style'); s.textContent = '#preview-bar-iframe,#PBarNextFrameWrapper{display:none!important}'; document.head.appendChild(s); });
     const el = SEL === 'body' ? null : await p.$(SEL);
     if (SEL !== 'body' && !el) { console.log(w, 'selector not found', SEL); continue; }
     if (el) { await el.scrollIntoViewIfNeeded(); await p.waitForTimeout(1500); }
