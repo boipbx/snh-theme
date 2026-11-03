@@ -93,6 +93,13 @@
       {%- endfor -%}
     {%- endif -%}
   ],
+  "autoBundles": {
+    "on": {% if settings.snh_bundle_cart == false %}false{% else %}true{% endif %},
+    "confetti": {% if settings.snh_bundle_confetti == false %}false{% else %}true{% endif %},
+    "cols": {{ settings.snh_bundle_collections | default: 'training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers' | remove: ' ' | split: ',' | json }},
+    "map": {{ settings.snh_bundle_map | default: '' | json }},
+    "retail": "testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800"
+  },
   "bundles": [
     {%- assign first_b = true -%}
     {%- comment -%} Round 12: "SNH bundle" metaobject entries first (BUNDLES.md), then Theme settings → SNH bundle offers {%- endcomment -%}

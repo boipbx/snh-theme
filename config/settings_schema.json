@@ -935,6 +935,40 @@
     "name": "SNH bundle offers",
     "settings": [
       {
+        "type": "header",
+        "content": "Bundle products (auto, Round 19)"
+      },
+      {
+        "type": "paragraph",
+        "content": "The cart finds your bundle products by itself: every product in the collections below, and what each one contains from its description (a sentence starting with the brand and product name, e.g. \"AN Creatine Monohydrate (50 Servings) …\"). A product in the basket that's in a bundle gets \"Make it a bundle\" under it; a bundle in the basket shows \"Bundle unlocked\". The saving = the bundle's compare-at price (or SNH's price sheet) minus its price."
+      },
+      {
+        "type": "text",
+        "id": "snh_bundle_collections",
+        "label": "Bundle collections",
+        "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_bundle_map",
+        "label": "Bundle contents: overrides",
+        "default": "race-day-pack-1-0 + sis-go-hydro-tablets\neveryday-essentials + applied-nutrition-omega-3",
+        "info": "One bundle per line, by product handle. \"bundle = a, b\" sets its contents, \"bundle + a, b\" adds to what was found, \"bundle - a\" removes one."
+      },
+      {
+        "type": "checkbox",
+        "id": "snh_bundle_cart",
+        "label": "Show bundle offers and Bundle unlocked in the cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "snh_bundle_confetti",
+        "label": "Confetti on Bundle unlocked",
+        "default": true,
+        "info": "Off for visitors who prefer reduced motion."
+      },
+      {
         "type": "paragraph",
         "content": "Global bundle offers — set once here, they apply on EVERY product template. Each offer only shows on the pages of the products it contains. The discount itself comes from your Shopify discounts. Need more offers? Use the next empty slot."
       },

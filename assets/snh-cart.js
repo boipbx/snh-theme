@@ -104,6 +104,7 @@
     this.enrich(cart);
     this.suggest(cart);
     this.bundle(cart);
+    this.__lastCart = cart; this.autoBundles(cart);
     if (this.mode === 'page') this.pageExtras(cart);
     this.emit('render', cart);
   };
@@ -143,6 +144,7 @@
     }
     // bundle swaps: a bundle whose description names an in-cart product's base name ("critical whey protein")
     var swap = $('[data-cart-swap]', this.el);
+    if (swap && this.cfg.autoBundles && this.cfg.autoBundles.on) { swap.hidden = true; swap.innerHTML = ''; swap = null; }
     if (swap) {
       var cards = [];
       cart.items.forEach(function (it) {
@@ -459,12 +461,150 @@
     });
   };
 
+  /* ---------- Round 19 #7: bundle products, found automatically ----------
+     Every product in the bundle collections (Theme settings → SNH bundle offers → Bundle collections) is a bundle;
+     what it contains comes from its description: a sentence that starts with the item's brand (AN, RAW, SiS,
+     REVIVE, SNH …) followed by the item's full base name ("AN Creatine Monohydrate (50 Servings) is …"); a size in
+     brackets must match the item's size. Overrides (Theme settings → Bundle contents): "bundle = a, b" / "+ a" / "- a".
+     The data loads once per session (sessionStorage snh_bmap2). SNHCart.bundleMatch(item, bundle) is pure (QA). */
+  var BRANDS = { 'applied nutrition': ['an', 'applied nutrition'], raw: ['raw'], 'science in sport': ['sis', 'science in sport'], revive: ['revive'], myprotein: ['myprotein', 'mp'], 'trace minerals': ['trace'], 'sports nutrition hub (snh)': ['snh'], 'healthspan elite': ['healthspan'], ehplabs: ['ehp', 'ehplabs'], muscletech: ['muscletech'], phd: ['phd'] };
+  var B_UNIT = /^\(?\d+(\.\d+)?(g|kg|ml|l|lb|lbs|mg|mcg|iu)\)?$/i, B_CNT = /^(servings?|caps(ules)?|tabs|tablets|sachets|softgels|gels|pack|x)\)?$/i;
+  function bNorm(s) { return String(s || '').toLowerCase().replace(/&amp;/g, '&').replace(/[,:;]|\s[-–]\s/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function bToks(vendor) { var v = String(vendor || '').toLowerCase(); return BRANDS[v] || [v.split(' ')[0]]; }
+  function bBase(title, vendor) {
+    var v0 = String(vendor || '').split(' (')[0], t = String(title || '').replace(new RegExp('^' + v0.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '( NUTRITION)?\\s+', 'i'), '') || title;
+    var w = bNorm(t).split(' '), b = [];
+    for (var i = 0; i < w.length; i++) { var x = w[i], nx = w[i + 1] || ''; if (B_UNIT.test(x) || x.charAt(0) === '(' || (/^\d+$/.test(x) && +x >= 10 && B_CNT.test(nx))) break; b.push(x); }
+    bToks(vendor).some(function (t) { var tw = t.split(' '); if (b.slice(0, tw.length).join(' ') === t) { b = b.slice(tw.length); return true; } return false; });
+    return b;
+  }
+  function bSentences(html) {
+    var out = [], txt = String(html || '').replace(/<\/(p|li|h\d)>|<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ' ');
+    var el = document.createElement('textarea'); el.innerHTML = txt; txt = el.value;
+    txt.split('\n').forEach(function (para) { para.split(/(?<=[a-z0-9)])[.!?]\s+(?=[A-Z])/).forEach(function (s) { s = bNorm(s); if (s) out.push(s); }); });
+    return out;
+  }
+  function nums(s) { return String(s).match(/\d+(?:\.\d+)?/g) || []; }
+  function bundleMatch(item, b) {
+    var h = item.handle;
+    if (b.only) return b.only.indexOf(h) > -1;
+    if (b.minus && b.minus.indexOf(h) > -1) return false;
+    if (b.plus && b.plus.indexOf(h) > -1) return true;
+    var bw = bBase(item.title, item.vendor), toks = bToks(item.vendor);
+    if (!bw.length) return false;
+    var name = bw.join(' '), code = bw.length === 1 && bw[0].indexOf('-') > -1 && bw[0].length >= 5;
+    if (bw.length < 2 && name.length < 8 && !code) return false;
+    return (b.sent || []).some(function (s) {
+      var t = toks.filter(function (t) { return s.indexOf(t + ' ') === 0; })[0]; if (!t) return false;
+      var rest = s.slice(t.length + 1).split(' '), k = 0;
+      while (k < bw.length && k < rest.length && (rest[k] === bw[k] || (k === bw.length - 1 && bw[k].length > 3 && rest[k].indexOf(bw[k]) === 0))) k++;
+      if (k < bw.length) return false;
+      var m = rest.slice(k, k + 6).join(' ').match(/^[^()]{0,20}\(([^)]*)\)/), a = m ? nums(m[1]) : [], tn = nums(item.title);
+      return !(a.length && tn.length && !a.some(function (x) { return tn.indexOf(x) > -1; }));
+    });
+  }
+  var bundlePromise = null;
+  function loadBundles(ab) {
+    if (bundlePromise) return bundlePromise;
+    var KEY = 'snh_bmap2', cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
+    var sig = (ab.cols || []).join(',') + '|' + (ab.map || '');
+    var over = {};
+    String(ab.map || '').split(/\n/).forEach(function (l) { var m = l.trim().match(/^([a-z0-9-]+)\s*([=+-])\s*(.+)$/i); if (!m) return; var o = over[m[1]] = over[m[1]] || {}, list = m[3].split(',').map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean); o[m[2] === '=' ? 'only' : m[2] === '+' ? 'plus' : 'minus'] = list; });
+    var retail = {}; String(ab.retail || '').split(',').forEach(function (p) { var kv = p.split('='); if (kv[1]) retail[kv[0]] = +kv[1]; });
+    var apply = function (list) { return list.map(function (b) { var o = over[b.h] || {}; return Object.assign({}, b, { only: o.only || null, plus: o.plus || null, minus: o.minus || null }); }); };
+    if (cached && cached.sig === sig && Date.now() - cached.at < 18e5) return (bundlePromise = Promise.resolve(apply(cached.list)));
+    bundlePromise = Promise.all((ab.cols || []).map(function (c) { return json(root + 'collections/' + encodeURIComponent(c) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }); }))
+      .then(function (sets) {
+        var seen = {}, list = [];
+        sets.forEach(function (s) { s.forEach(function (p) {
+          if (seen[p.id]) return; seen[p.id] = 1;
+          var v = (p.variants || []).filter(function (x) { return x.available; })[0]; if (!v) return;
+          var price = cents(v.price), cmp = cents(v.compare_at_price || 0), was = cmp > price ? cmp : (retail[p.handle] || 0);
+          list.push({ id: p.id, h: p.handle, t: p.title, u: '/products/' + p.handle, i: (p.images && p.images[0] && p.images[0].src) || '', vid: v.id, p: price, r: was, s: Math.max(0, was - price), sent: bSentences(p.body_html) });
+        }); });
+        try { sessionStorage.setItem(KEY, JSON.stringify({ sig: sig, at: Date.now(), list: list })); } catch (e) {}
+        return apply(list);
+      });
+    return bundlePromise;
+  }
+  Cart.prototype.autoBundles = function (cart) {
+    var self = this, ab = this.cfg.autoBundles;
+    if (!ab || !ab.on || !cart.item_count) { var bn = $('[data-bundle-win]', this.el); if (bn) bn.remove(); return; }
+    loadBundles(ab).then(function (bundles) {
+      if (self.__lastCart !== cart) return;   // a newer render took over
+      var byId = {}; bundles.forEach(function (b) { byId[b.id] = b; });
+      var lines = cart.items.map(function (it) { return { it: it, item: { handle: it.handle, title: it.product_title, vendor: it.vendor } }; });
+      // 1. bundle unlocked: bundle products in the basket (their saving × qty), and settings offers that are complete
+      var saving = 0, names = [];
+      lines.forEach(function (l) { var b = byId[l.it.product_id]; if (b || /bundle/i.test(l.it.product_type || '')) { if (b) saving += b.s * l.it.quantity; names.push(shortTitle(l.it.product_title, l.it.vendor)); } });
+      var inCart = {}; cart.items.forEach(function (it) { inCart[it.product_id] = 1; });
+      (self.cfg.bundles || []).forEach(function (o) { if (o.items.length > 1 && o.items.every(function (x) { return inCart[x.pid]; })) names.push(o.title); });
+      self.bundleWin(names, saving, ab);
+      // 2. make it a bundle: under the first basket line a bundle contains (bundle not in the basket yet)
+      var used = {};
+      lines.forEach(function (l, n) {
+        var li = $('.sline[data-line="' + (n + 1) + '"]', self.el); if (!li) return;
+        var old = $('.sbx', li); if (old) old.remove();
+        if (byId[l.it.product_id] || /bundle/i.test(l.it.product_type || '')) return;
+        var best = null;
+        bundles.forEach(function (b) {
+          if (inCart[b.id] || used[b.id] || !bundleMatch(l.item, b)) return;
+          var cover = lines.filter(function (x) { return !byId[x.it.product_id] && bundleMatch(x.item, b); });
+          var sc = cover.length * 1e7 + b.s;
+          if (!best || sc > best.sc) best = { b: b, cover: cover, sc: sc };
+        });
+        if (!best) return;
+        used[best.b.id] = 1;
+        var keys = best.cover.map(function (x) { return x.it.key; }).join(',');
+        var what = best.cover.map(function (x) { return shortTitle(x.it.product_title, x.it.vendor); });
+        var box = document.createElement('div'); box.className = 'sbx';
+        box.innerHTML = (best.b.i ? '<img class="sbx__img" src="' + esc(img(best.b.i, 160)) + '" alt="" width="56" height="56" loading="lazy" data-v2-lift>' : '') +
+          '<div class="sbx__b"><p class="sbx__eb">' + icons.tag + 'Make it a bundle' + (best.b.s ? ' · save ' + rs(best.b.s) : '') + '</p>' +
+          '<a class="sbx__t" href="' + esc(best.b.u) + '">' + esc(best.b.t) + '</a>' +
+          '<p class="sbx__s">Swaps your ' + esc(what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0]) + ' for the bundle · ' + rs(best.b.p) + '</p></div>' +
+          '<button type="button" class="sbx__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Swap</button>';
+        $('.sline__b', li).appendChild(box);
+      });
+    });
+  };
+  Cart.prototype.bundleWin = function (names, saving, ab) {
+    var cur = $('[data-bundle-win]', this.el);
+    if (!names.length) { if (cur) cur.remove(); return; }
+    var key = names.slice().sort().join('|'), html = '<span class="sbw__ic" aria-hidden="true">🎉</span><p><b>Bundle unlocked</b>' + (saving > 0 ? ': you\'re saving ' + rs(saving) : '') + '<small>' + esc(names.slice(0, 2).join(' + ')) + (names.length > 2 ? ' + ' + (names.length - 2) + ' more' : '') + '</small></p>';
+    if (!cur) { cur = document.createElement('div'); cur.className = 'sbw'; cur.setAttribute('role', 'status'); cur.setAttribute('data-bundle-win', ''); this.body.insertBefore(cur, this.body.firstChild); }
+    cur.innerHTML = html;
+    var seen = ''; try { seen = sessionStorage.getItem('snh_bwin') || ''; } catch (e) {}
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (seen !== key && ab.confetti && !reduce) {
+      var c = document.createElement('span'); c.className = 'sbw__fx'; c.setAttribute('aria-hidden', 'true');
+      for (var i = 0; i < 18; i++) { var p = document.createElement('i'); p.style.cssText = '--x:' + Math.round(Math.random() * 100) + '%;--d:' + Math.round(Math.random() * 400) + 'ms;--r:' + Math.round(Math.random() * 360) + 'deg;--c:' + ['#E0521C', '#FFB27A', '#2BAA5E', '#F4C542', '#0E0E0E'][i % 5]; c.appendChild(p); }
+      cur.appendChild(c); cur.classList.add('is-new');
+      setTimeout(function () { if (c.parentNode) c.remove(); cur.classList.remove('is-new'); }, 2200);
+    }
+    try { sessionStorage.setItem('snh_bwin', key); } catch (e) {}
+  };
+  Cart.prototype.swap = function (vid, keys, btn) {
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    var self = this, cart = this.__lastCart || { items: [] }, updates = {};
+    String(keys || '').split(',').filter(Boolean).forEach(function (k) { var it = cart.items.filter(function (x) { return x.key === k; })[0]; if (it) updates[k] = Math.max(0, it.quantity - 1); });
+    btn.setAttribute('aria-busy', 'true');
+    var post = function (u, body) { return fetch(root + u, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) }).then(function (r) { if (!r.ok) throw new Error(r.status); return r; }); };
+    post('cart/add.js', { items: [{ id: +vid, quantity: 1 }] })
+      .then(function () { return Object.keys(updates).length ? post('cart/update.js', { updates: updates }) : null; })
+      .then(function () { return json(root + 'cart.js'); })
+      .then(function (c) { btn.removeAttribute('aria-busy'); broadcast(c, null); })
+      .catch(function () { btn.removeAttribute('aria-busy'); btn.classList.add('is-err'); btn.textContent = 'Try again'; });
+  };
+  window.__snhBundleMatch = bundleMatch; window.__snhBundleBase = bBase; window.__snhBundleSent = bSentences;
+
   /* ---------- actions ---------- */
   Cart.prototype.click = function (e) {
     var q = e.target.closest('[data-qty]'), a = e.target.closest('[data-add]'), acc = e.target.closest('[data-account-open]');
     if (acc && document.querySelector('.acp')) { e.preventDefault(); var d = drawerEl(); if (d && d.open && typeof d.hide === 'function') d.hide(); document.dispatchEvent(new CustomEvent('snh:account-open', { detail: { from: acc } })); return; }
     if (q) { e.preventDefault(); this.change(q.closest('[data-key]').getAttribute('data-key'), +q.getAttribute('data-qty'), q); }
     else if (a) { e.preventDefault(); this.add(a.getAttribute('data-add'), a); }
+    else if (e.target.closest('[data-swap]')) { var sw = e.target.closest('[data-swap]'); e.preventDefault(); this.swap(sw.getAttribute('data-swap'), sw.getAttribute('data-swap-keys'), sw); }
   };
   Cart.prototype.change = function (key, qty, btn) {
     if (this.busy) return;
@@ -573,7 +713,7 @@
   }
   function widgets() { $$('[data-snh-reco]').forEach(widget); }
 
-  window.SNHCart = { refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
+  window.SNHCart = { bundleMatch: bundleMatch, bundleBase: bBase, loadBundles: loadBundles, refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   // the widgets wait for idle time (they fetch a few collection lists)
   var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 1200); };
