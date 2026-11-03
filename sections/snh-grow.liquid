@@ -1,4 +1,4 @@
-{%- comment -%} Round 17: home "Grow with SNH" band: two compact cards (wholesale, franchise), image + one line + CTA. {%- endcomment -%}
+{%- comment -%} Round 17: home "Grow with SNH" band: two compact cards (wholesale, franchise), image + one line + CTA. R18: pill CTA bottom-left (arrow nudges on hover), image zooms 1.03 inside the card, darker gradient. {%- endcomment -%}
 {{ 'snh-biz.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign s = section.settings
@@ -15,11 +15,13 @@
     <div class="grow__grid">
       {%- for b in section.blocks -%}
         <a class="grow__card" href="{{ b.settings.link | default: '#' }}" {{ b.shopify_attributes }}>
-          {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(min-width: 768px) 50vw, 100vw', alt: '' }}{%- endif -%}
-          <span class="eyebrow" style="color: #FFD2B8">{{ b.settings.eyebrow | escape }}</span>
-          <span class="grow__t">{{ b.settings.title | escape }}</span>
-          <span class="grow__p">{{ b.settings.text | escape }}</span>
-          <span class="grow__go">{{ b.settings.cta | escape }} {% render 'snh-v2-icon', name: 'arrow' %}</span>
+          <span class="grow__media" aria-hidden="true">{%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(min-width: 768px) 50vw, 100vw', alt: '' }}{%- endif -%}</span>
+          <span class="grow__body">
+            <span class="eyebrow grow__eb">{{ b.settings.eyebrow | escape }}</span>
+            <span class="grow__t">{{ b.settings.title | escape }}</span>
+            <span class="grow__p">{{ b.settings.text | escape }}</span>
+            <span class="grow__go">{{ b.settings.cta | escape }}<span class="grow__arr" aria-hidden="true">{% render 'snh-v2-icon', name: 'arrow' %}</span></span>
+          </span>
         </a>
       {%- endfor -%}
     </div>
