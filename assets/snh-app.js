@@ -73,7 +73,7 @@
   /* ---------- re-order: every line of the order into the basket, then the cart drawer (as V2.add does) ---------- */
   function cartEvents(added, btn) {
     var de = document.documentElement;
-    return fetch(root + 'cart.js').then(function (r) { return r.json(); }).then(function (cart) {
+    return fetch(root + 'cart.js').then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (cart) {
       cart.sections = added && added.sections;
       (btn || de).dispatchEvent(new CustomEvent('variant:add', { bubbles: true, detail: { items: (added && added.items) || [], cart: cart } }));
       de.dispatchEvent(new CustomEvent('cart:change', { bubbles: true, detail: { baseEvent: 'variant:add', cart: cart } }));

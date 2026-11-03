@@ -74,7 +74,7 @@
       return r.json().then(function (j) { if (!r.ok) throw new Error(j.description || j.message || 'Could not add to basket'); return j; });
     }).then(function (j) {
       added = j;
-      return fetch(shopRoot + 'cart.js').then(function (r) { return r.json(); });
+      return fetch(shopRoot + 'cart.js').then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
     }).then(function (cart) {
       cart.sections = added.sections;
       var detail = { items: added.items || [added], cart: cart };
@@ -424,7 +424,7 @@
         var url = (h && !v) ? shopRoot + 'collections/' + h + '/products.json?limit=2'
           : shopRoot + 'search/suggest.json?q=' + encodeURIComponent(v || name) + '&resources[type]=product&resources[limit]=10&resources[options][fields]=vendor';
         var want = (v || '').toLowerCase();
-        return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+        return fetch(url).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
           var list = j.products || (j.resources && j.resources.results && j.resources.results.products) || [];
           // search is fuzzy: keep only this vendor's products
           if (want) list = list.filter(function (p) { return String(p.vendor || '').toLowerCase() === want; });
@@ -467,7 +467,7 @@
       sCtl = typeof AbortController === 'function' ? new AbortController() : null;
       var url = shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q) +
         '&resources[type]=product,collection,article&resources[limit]=6&resources[options][unavailable_products]=last&resources[options][fields]=title,product_type,variants.title,vendor,tag';
-      fetch(url, sCtl ? { signal: sCtl.signal } : {}).then(function (r) { return r.json(); }).then(function (j) {
+      fetch(url, sCtl ? { signal: sCtl.signal } : {}).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
         var R = (j.resources && j.resources.results) || {};
         var P = R.products || [], C = (R.collections || []).slice(0, 5), A = (R.articles || []).slice(0, 3);
         srch.querySelector('[data-r="p"]').innerHTML = P.length ? P.map(function (p) {
@@ -794,7 +794,7 @@
       panel.hidden = !open; if (results) results.hidden = open;
       if (!open || done) return; done = true;
       var q = nav.getAttribute('data-q') || '';
-      fetch(shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q) + '&resources[type]=collection&resources[limit]=10').then(function (r) { return r.json(); }).then(function (j) {
+      fetch(shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q) + '&resources[type]=collection&resources[limit]=10').then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
         var C = (j.resources && j.resources.results && j.resources.results.collections) || [];
         panel.querySelector('[data-srcol-list]').innerHTML = C.length ? C.map(function (c) {
           var im = c.featured_image && c.featured_image.url;
