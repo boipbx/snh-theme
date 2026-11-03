@@ -12,7 +12,8 @@ async function open(b, w, opts = {}) {
   return { ctx, p };
 }
 async function go(p, PATH) {
-  await p.goto(HOST + PATH + (PATH.includes('?') ? '&' : '?') + 'preview_theme_id=' + THEME + '&_r=' + Date.now(), { waitUntil: 'domcontentloaded', timeout: 90000 });
+  const [P0, H0] = PATH.split('#');
+  await p.goto(HOST + P0 + (P0.includes('?') ? '&' : '?') + 'preview_theme_id=' + THEME + '&_r=' + Date.now() + (H0 ? '#' + H0 : ''), { waitUntil: 'domcontentloaded', timeout: 90000 });
   await p.waitForLoadState('load', { timeout: 30000 }).catch(() => {});
   const id = await p.evaluate(() => window.Shopify && Shopify.theme && Shopify.theme.id);
   if (id !== THEME) throw new Error('WRONG THEME ' + id);
