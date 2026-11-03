@@ -11,7 +11,7 @@ const OUT = path.join(__dirname, '..', 'shots', 'r18'); fs.mkdirSync(OUT, { recu
   for (const w of W.split(',').map(Number)) {
     const m = w < 800;
     const ctx = await b.newContext({ viewport: { width: w, height: m ? 844 : 900 }, isMobile: m, hasTouch: m, deviceScaleFactor: m ? 2 : 1 });
-    const p = await ctx.newPage(); const errs = [];
+    const p = await ctx.newPage(); await p.addInitScript(() => { try { localStorage.setItem('snh_sub', String(Date.now())); } catch (e) {} }); const errs = [];
     p.on('pageerror', (e) => errs.push(e.message.slice(0, 160)));
     await p.goto(HOST + PATH + (PATH.includes('?') ? '&' : '?') + 'preview_theme_id=' + THEME + '&_r=' + Date.now(), { waitUntil: 'domcontentloaded', timeout: 90000 });
     await p.waitForLoadState('load', { timeout: 30000 }).catch(() => {});

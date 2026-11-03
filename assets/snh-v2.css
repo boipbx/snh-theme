@@ -2377,3 +2377,24 @@ img.snh-koko { max-height: 20px !important; width: auto !important; max-width: n
 .sbx.is-armed.is-in .sbx__t { opacity: 1; transform: none; transition: opacity 600ms ease calc(var(--i, 0) * 80ms), transform 700ms cubic-bezier(.22, 1, .36, 1) calc(var(--i, 0) * 80ms), border-color 280ms ease, box-shadow 280ms ease, background-color 280ms ease; }
 @media (hover: hover) { .sbx.is-armed.is-in .sbx__card:hover { transform: translateY(-4px); transition-delay: 0s; } }
 @media (prefers-reduced-motion: reduce) { .sbx__card, .sbx__t { transition: none !important; transform: none !important; opacity: 1 !important; } }
+
+/* ================= R18 · mobile homepage pass ================= */
+@media (max-width: 1023px) {
+  /* Shop the Look rail: each card is its own card (the shared white stack made the next card's number look like part of this one) */
+  .hs__stack { overflow: visible; border: 0; border-radius: 0; background: none; box-shadow: none; }
+  .hs__stack .hs__list { gap: 10px; padding-bottom: 6px; }
+  .hs__stack .hs__item.hpc { flex: 0 0 min(84%, 340px); border: 1px solid rgba(12, 12, 13, .08); border-radius: 12px; overflow: hidden; }
+  .hs__stack .hs__item.is-hot { border-color: var(--v-accent); }
+  .hs__stack .hs__pts { margin-top: 12px; border-radius: 10px; }
+}
+@media (max-width: 767px) {
+  /* Elite band: the copy sits over the photo on phones; darken the top so it reads */
+  .eband__bg::after { background: linear-gradient(180deg, rgba(12, 12, 13, .62) 0%, rgba(12, 12, 13, .74) 45%, rgba(12, 12, 13, .94) 100%), linear-gradient(200deg, rgba(224, 82, 28, .4) 0%, transparent 40%); }
+  /* stores: a swipe rail instead of three full-width cards stacked (~1450px) */
+  .stores { display: flex; gap: 12px; margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 4px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .stores::-webkit-scrollbar { display: none; }
+  .stores > .store { flex: 0 0 min(82%, 320px); scroll-snap-align: start; }
+}
+/* the homepage already ends with the "First to know" band: don't repeat the same signup in the footer right under it */
+body:has(.news__form) .ftr__news { display: none; }
+@media (max-width: 767px) { .ftr__sep { display: none; } .ftr__tel { display: table; margin-top: 2px; } }   /* footer stores: phone on its own line, no dangling "·" */

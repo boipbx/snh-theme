@@ -19,7 +19,7 @@
         <div class="ftr__col ftr__stores"><h3>{{ section.settings.stores_heading | escape }}</h3>
           {%- for b in stores -%}
             {%- assign tel = b.settings.phone | remove: ' ' | remove: '-' -%}
-            <p {{ b.shopify_attributes }}><strong>{{ b.settings.name | escape }}</strong>{{ b.settings.address | escape }}{% if b.settings.phone != blank %} · <a href="tel:{{ tel }}">{{ b.settings.phone | escape }}</a>{% endif %}</p>
+            <p {{ b.shopify_attributes }}><strong>{{ b.settings.name | escape }}</strong>{{ b.settings.address | escape }}{% if b.settings.phone != blank %}<span class="ftr__sep"> · </span><a class="ftr__tel" href="tel:{{ tel }}">{{ b.settings.phone | escape }}</a>{% endif %}</p>
           {%- endfor -%}
           {%- if section.settings.hours != blank -%}<p class="ftr__hours">{{ section.settings.hours | escape }}</p>{%- endif -%}
         </div>
