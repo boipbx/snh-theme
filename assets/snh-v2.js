@@ -140,7 +140,12 @@
       var e = Math.round(N * .02), pts = [[x0 + e, y0 + e], [x0 + e, y1 - e], [x1 - e, y1 - e]], br = 0, bgc = 0, bb = 0, L = 0;
       pts.forEach(function (pt) { var i = (pt[1] * N + pt[0]) * 4; br += d[i] / 3; bgc += d[i + 1] / 3; bb += d[i + 2] / 3; L += lum(pt[0], pt[1]) / 3; });
       var lf = 1;
-      // R18: no brightness lift or edge fade any more (it washed the packs out): images stay crisp and unfiltered
+      // R18: no brightness lift or edge fade any more (it washed the packs out): images stay crisp and unfiltered.
+      // A grey studio backdrop instead tints the tile to the sampled backdrop colour, so the photo's edges disappear.
+      if (L < 246 && L > 120) {
+        var tile = img.closest('.card__img--alt') ? null : img.closest('.card__tile, .hs__img');
+        if (tile) { tile.style.background = 'rgb(' + Math.round(br) + ',' + Math.round(bgc) + ',' + Math.round(bb) + ')'; img.style.mixBlendMode = 'normal'; }
+      }
       br = Math.min(255, br * lf); bgc = Math.min(255, bgc * lf); bb = Math.min(255, bb * lf);
       // the pack itself: bounding box of pixels that differ from the backdrop, so every pack sits at the same size
       // count differing pixels per column and row; thin full-width bands (studio floor lines, shadows) fall below
