@@ -1,0 +1,45 @@
+{%- comment -%}
+  Round 19 #5/#6: the visitor's preferences for personalised areas, as JSON for assets/snh-v2.js (SNH.prefs()).
+  Members: quiz tags (goal: goal2: sport: diet:) + what they bought (vendor and product type of their last 10
+  orders, lower case). Guests: {} here; snh-v2.js adds the answers the quiz saved on this device (localStorage
+  snh_prefs). "has" (in JS) = any of goal / sport / diet / bought. No preferences → quiz card instead of promos.
+{%- endcomment -%}
+{%- liquid
+  assign pg = ''
+  assign pg2 = ''
+  assign ps = ''
+  assign pd = ''
+  assign pb = ''
+  if customer
+    for t in customer.tags
+      assign tl = t | strip | downcase
+      assign k = tl | split: ':' | first
+      assign v = tl | remove_first: k | remove_first: ':' | strip
+      case k
+        when 'goal'
+          if pg == ''
+            assign pg = v
+          endif
+        when 'goal2'
+          if pg2 == ''
+            assign pg2 = v
+          endif
+        when 'sport'
+          if ps == ''
+            assign ps = v
+          endif
+        when 'diet'
+          if pd == ''
+            assign pd = v
+          endif
+      endcase
+    endfor
+    for o in customer.orders limit: 10
+      for li in o.line_items limit: 20
+        assign pb = pb | append: ' ' | append: li.vendor | append: ' ' | append: li.product.type
+      endfor
+    endfor
+    assign pb = pb | downcase | strip_newlines | strip
+  endif
+-%}
+<script type="application/json" id="snh-prefs">{"member":{% if customer %}true{% else %}false{% endif %},"goal":{{ pg | json }},"goal2":{{ pg2 | json }},"sport":{{ ps | json }},"diet":{{ pd | json }},"bought":{{ pb | truncate: 1500, '' | json }}}</script>

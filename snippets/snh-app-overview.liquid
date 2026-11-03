@@ -30,7 +30,7 @@
 
 {%- render 'snh-app-active', orders: recent, sid: sid -%}
 
-{%- render 'snh-app-promos', blocks: blocks, tier: m[0], goal: goal, goal2: goal2, sport: sport, diet: diet, recent: recent, sid: sid, mock: mock -%}
+{%- render 'snh-app-promos', blocks: blocks, tier: m[0], goal: goal, goal2: goal2, sport: sport, diet: diet, recent: recent, sid: sid, mock: mock, quiz_card: false -%}
 
 {%- if goal == blank and s.goal_prompt != false -%}
   <aside class="app__prompt" data-goal-prompt aria-labelledby="{{ sid }}-prompt-h">

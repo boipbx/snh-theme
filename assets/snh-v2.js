@@ -1043,3 +1043,53 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
   document.addEventListener('shopify:section:load', function (e) { run(e.target); });
 })();
+
+/* ---------- Round 19 #5/#6: preferences + relevant promos only ----------
+   SNH.prefs(): member data from <script id="snh-prefs"> (quiz tags + bought vendors/types, snippets/snh-prefs) merged
+   with this device's quiz answers (localStorage snh_prefs, written when any quiz finishes; snh_quiz_pending too).
+   [data-pz-group] holds promos ([data-pz], targeting in data-goals / data-sports / data-diets / data-bought, comma
+   lists). A promo shows only when every targeting field it sets matches AND at least one does (a promo with no
+   targeting of its own matches the brand in its link, e.g. /collections/ryse → bought "ryse"). Top data-pz-max by
+   priority, the first gets data-pz-hero. Nobody with no preference data sees promos: the group's quiz card
+   (<template data-pz-empty>) shows instead. */
+(function () {
+  var S = window.SNH = window.SNH || {};
+  function lsj(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  S.prefs = function () {
+    var d = {}; try { d = JSON.parse((document.getElementById('snh-prefs') || {}).textContent || '{}'); } catch (e) {}
+    var loc = lsj('snh_prefs') || {}, pend = (lsj('snh_quiz_pending') || {}).answers || {};
+    ['goal', 'goal2', 'sport', 'diet'].forEach(function (k) { if (!d[k]) d[k] = loc[k] || pend[k] || ''; });
+    d.bought = String(d.bought || '').toLowerCase();
+    d.has = !!(d.goal || d.sport || (d.diet && d.diet !== 'none') || d.bought);
+    return d;
+  };
+  S.prefsMatch = function (t, p) {
+    p = p || S.prefs();
+    var list = function (s) { return String(s || '').toLowerCase().split(',').map(function (x) { return x.trim(); }).filter(Boolean); };
+    var g = list(t.goals), sp = list(t.sports), di = list(t.diets), bo = list(t.bought), hits = 0, ok = true;
+    if (!g.length && !sp.length && !di.length && !bo.length && t.link) { var m = String(t.link).match(/\/(?:collections|pages|products)\/([a-z0-9-]+)/i); if (m && !/^(all|everything|new|sale|offers?)$/.test(m[1])) bo = [m[1].replace(/-/g, ' ')]; }
+    var chk = function (want, has) { if (!want.length) return; if (want.some(function (w) { return has.indexOf(w) > -1; })) hits++; else ok = false; };
+    chk(g, [p.goal, p.goal2].filter(Boolean)); chk(sp, [p.sport].filter(Boolean)); chk(di, [p.diet || 'none']);
+    if (bo.length) { if (bo.some(function (w) { return p.bought.indexOf(w) > -1; })) hits++; else ok = false; }
+    return ok && hits > 0 ? hits : 0;
+  };
+  function run(root) {
+    var p = S.prefs();
+    document.documentElement.setAttribute('data-prefs', p.has ? 'yes' : 'none');
+    (root || document).querySelectorAll('[data-pz-group]').forEach(function (g) {
+      if (g.__pz) return; g.__pz = true;
+      var max = +g.getAttribute('data-pz-max') || 3, items = [].slice.call(g.querySelectorAll('[data-pz]'));
+      var scored = items.map(function (el, i) { var sc = S.prefsMatch({ goals: el.getAttribute('data-goals'), sports: el.getAttribute('data-sports'), diets: el.getAttribute('data-diets'), bought: el.getAttribute('data-bought'), link: el.getAttribute('href') || el.getAttribute('data-link') }, p); return { el: el, sc: sc, pr: +el.getAttribute('data-prio') || 0, i: i }; })
+        .filter(function (x) { return x.sc > 0; }).sort(function (a, b) { return (b.pr * 10 + b.sc) - (a.pr * 10 + a.sc) || a.i - b.i; }).slice(0, max);
+      items.forEach(function (el) { el.hidden = true; el.removeAttribute('data-pz-hero'); el.classList.remove('elpromo--hero'); });
+      scored.forEach(function (x, n) { x.el.hidden = false; if (!n) { x.el.setAttribute('data-pz-hero', ''); x.el.classList.add('elpromo--hero'); } if (x.el.parentNode) x.el.parentNode.appendChild(x.el); });
+      var tpl = g.querySelector('template[data-pz-empty]');
+      if (!scored.length && !p.has && tpl) g.appendChild(tpl.content.cloneNode(true));
+      g.hidden = !scored.length && !(!p.has && tpl);
+      g.setAttribute('data-pz-shown', scored.length);
+    });
+  }
+  S.pzRun = run;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { run(); }); else run();
+  document.addEventListener('shopify:section:load', function (e) { run(e.target); });
+})();

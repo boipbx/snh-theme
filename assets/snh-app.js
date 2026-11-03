@@ -281,6 +281,8 @@
       stage = 'results';
       game.hidden = true; res.hidden = false;
       buildStack(q, answers(), lab);
+      // R19: the answers become this device's preferences (promos, onboarding prompt; SNH.prefs in snh-v2.js)
+      (function (a) { lsSet('snh_prefs', JSON.stringify({ goal: a.goal || '', goal2: a.goal2 || '', sport: a.sport || '', diet: a.diet || '', lvl: a.lvl || '', freq: a.freq || '', at: Date.now() })); if (window.SNH && SNH.pzRun) document.documentElement.setAttribute('data-prefs', 'yes'); })(answers());
       nav();
       res.focus({ preventScroll: true });
       if (!reduce) res.classList.add('is-in');

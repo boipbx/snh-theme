@@ -9,6 +9,9 @@
   Score = priority × 10 + one point per matched targeting field, so a targeted promo beats a general one at the
   same priority.
   blocks · tier (bronze/silver/gold) · goal · goal2 · sport · diet · recent (order records) · sid · mock
+  R19: only promos that match the visitor's preferences show (goals / sports / diets / bought matched in the browser by
+  assets/snh-v2.js SNH.prefsMatch; a promo with no targeting matches the brand in its link). No preference data at
+  all → the "Personalise your SNH" quiz card instead (quiz_card: false turns it off; quiz_link overrides the link).
 {%- endcomment -%}
 {%- liquid
   assign now = 'now' | date: '%s' | plus: 0
@@ -103,54 +106,15 @@
         assign ok = false
       endif
     endif
-    assign checks = 'tiers,goals,sports,diets' | split: ','
-    for c in checks
-      case c
-        when 'tiers'
-          assign want = f[7]
-          assign have = tier
-        when 'goals'
-          assign want = f[8]
-          assign have = goal | append: ',' | append: goal2
-        when 'sports'
-          assign want = f[9]
-          assign have = sport
-        else
-          assign want = f[10]
-          assign have = diet | default: 'none'
-      endcase
-      assign want = want | downcase | remove: ' '
-      if want == blank
-        continue
-      endif
-      assign hit = false
+    # R19: tiers are checked here; goals / sports / diets / bought go to the browser (data-* on each promo), where
+    # SNH.prefsMatch (assets/snh-v2.js) also knows a guest's quiz answers. Only matching promos show.
+    assign want = f[7] | downcase | remove: ' '
+    if want != blank
       assign ws = want | split: ','
-      assign hs = have | downcase | split: ','
-      for w in ws
-        if hs contains w
-          assign hit = true
-        endif
-      endfor
-      if hit
-        assign sc = sc | plus: 1
-      else
+      assign tl = tier | downcase
+      unless ws contains tl
         assign ok = false
-      endif
-    endfor
-    if f[11] != blank
-      assign hit = false
-      assign ws = f[11] | downcase | split: ','
-      for w in ws
-        assign w = w | strip
-        if w != blank and hay contains w
-          assign hit = true
-        endif
-      endfor
-      if hit
-        assign sc = sc | plus: 1
-      else
-        assign ok = false
-      endif
+      endunless
     endif
     if ok
       assign pad = sc | plus: 10000
@@ -159,21 +123,43 @@
   endfor
   assign top = scored | remove_last: ',' | split: ',' | sort | reverse
 -%}
-{%- if top.size > 0 and top[0] != blank -%}
-  <section class="elpromos" aria-label="For you">
-    {%- for t in top limit: 3 -%}
+{%- liquid
+  if quiz_link == blank
+    if customer
+      assign quiz_link = '/account#goals'
+    else
+      assign quiz_link = '/?snh-quiz=open'
+    endif
+  endif
+-%}
+{%- if top.size > 0 and top[0] != blank or quiz_card != false -%}
+  <section class="elpromos" aria-label="For you" data-pz-group data-pz-max="3"{% if top.size == 0 or top[0] == blank %} hidden{% endif %}>
+    {%- for t in top limit: 12 -%}
       {%- assign idx = t | split: '-' | last | plus: 0 -%}
       {%- assign f = recs[idx] | split: '~' -%}
       {%- assign parts = f[0] | split: '*' -%}
-      <a class="elpromo{% if forloop.first %} elpromo--hero{% endif %}" href="{{ f[3] | default: routes.all_products_collection_url }}">
+      <a class="elpromo" href="{{ f[3] | default: routes.all_products_collection_url }}" data-pz data-goals="{{ f[8] | escape }}" data-sports="{{ f[9] | escape }}" data-diets="{{ f[10] | escape }}" data-bought="{{ f[11] | escape }}" data-prio="{{ f[12] | plus: 0 }}" hidden>
         {%- if f[4] != blank -%}<span class="elpromo__img"><img src="{{ f[4] }}" alt="" loading="lazy" width="600" height="600"></span>{%- endif -%}
         <span class="elpromo__b">
-          <span class="elpromo__eb">{% if forloop.first %}Picked for you{% else %}For you{% endif %}</span>
+          <span class="elpromo__eb"><span class="elpromo__eb-h">Picked for you</span><span class="elpromo__eb-s">For you</span></span>
           <span class="elpromo__t">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</span>
           {%- if f[1] != blank -%}<span class="elpromo__p">{{ f[1] | escape }}</span>{%- endif -%}
           <span class="elpromo__go">{{ f[2] | default: 'Shop now' | escape }} {% render 'snh-v2-icon', name: 'arrow' %}</span>
         </span>
       </a>
     {%- endfor -%}
+    {%- unless quiz_card == false -%}
+      <template data-pz-empty>
+        <a class="elpromo elpromo--quiz" href="{{ quiz_link }}" data-pz-quiz>
+          <span class="elpromo__qic" aria-hidden="true">{% render 'snh-v2-icon', name: 'target' %}</span>
+          <span class="elpromo__b">
+            <span class="elpromo__eb">60 seconds · free</span>
+            <span class="elpromo__t">Personalise your <em>SNH</em></span>
+            <span class="elpromo__p">Tell us your goal, sport and diet. We'll show offers and picks that fit you, plus a free workout plan.</span>
+            <span class="elpromo__go">Find my stack {% render 'snh-v2-icon', name: 'arrow' %}</span>
+          </span>
+        </a>
+      </template>
+    {%- endunless -%}
   </section>
 {%- endif -%}

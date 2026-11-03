@@ -19,7 +19,9 @@
   function live(c, now) { var a = t(c.start), b = t(c.end); return (a === null || a <= now) && (b === null || now < b); }
   function decide(list, ctx, now) {
     return (list || []).map(function (c) {
-      var why = !live(c, now) ? (t(c.start) > now ? 'future' : 'ended') : !pageOk(c.pages, ctx.page) ? 'other page' : !audOk(c.audience, ctx) ? 'other audience' : 'live';
+      // R19: targeted (goals / sports / diets / bought, or "only matching visitors") → shown only when SNH.prefsMatch says so
+      var targeted = !!(c.goals || c.sports || c.diets || c.bought || c.match === true), fit = !targeted || c.type === 'announcement' || !(window.SNH && SNH.prefsMatch) || SNH.prefsMatch(c, ctx.prefs) > 0;
+      var why = !live(c, now) ? (t(c.start) > now ? 'future' : 'ended') : !pageOk(c.pages, ctx.page) ? 'other page' : !audOk(c.audience, ctx) ? 'other audience' : !fit ? 'not relevant' : 'live';
       return Object.assign({ why: why }, c);
     }).sort(function (a, b) { return (b.priority || 0) - (a.priority || 0); });
   }

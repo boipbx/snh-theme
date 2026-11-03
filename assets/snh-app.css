@@ -901,3 +901,18 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 /* Impact's table rule zeroes the first/last cell padding: restore it on the weekly table */
 .wk table.wk__wt :is(th, td):first-child { padding-inline-start: 14px; }
 .wk table.wk__wt :is(th, td):last-child { padding-inline-end: 14px; }
+
+/* Round 19 #5: promos show only when they match (assets/snh-v2.js); the quiz card for visitors with no preferences */
+.elpromos[hidden], .elpromo[hidden] { display: none !important; }
+.elpromo__eb-h { display: none; }
+.elpromo--hero .elpromo__eb-h { display: inline; }
+.elpromo--hero .elpromo__eb-s { display: none; }
+.elpromo--quiz { grid-column: 1 / -1; grid-template-columns: 56px minmax(0, 1fr); align-items: center; gap: 16px; padding: 20px; border: 1px solid rgba(224, 82, 28, .25); background: linear-gradient(135deg, #FFF4EC 0%, #FFFFFF 70%); color: var(--ink); }
+.elpromo__qic { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; background: var(--v-accent); color: #fff; }
+.elpromo__qic svg { width: 28px; height: 28px; }
+.elpromo--quiz .elpromo__t { font-size: clamp(20px, 2.2vw, 24px); }
+.elpromo--quiz .elpromo__p { font-size: 15px; color: var(--grey-1); }
+.elpromo--quiz .elpromo__go { justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 40px; margin-top: 6px; padding: 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px/1 var(--sans); }
+.elpromo--quiz .elpromo__go svg { width: 16px; height: 16px; }
+@media (max-width: 479px) { .elpromo--quiz { grid-template-columns: 1fr; } }
+.scp__offers:has(> [data-pz-group][hidden]) { display: none; }

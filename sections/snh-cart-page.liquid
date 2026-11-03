@@ -62,7 +62,7 @@
       <p class="scp__eta" data-cart-eta>{% render 'snh-v2-icon', name: 'truck' %}<span>Colombo: <b>same-day delivery</b> · Rest of Sri Lanka: <b>2–3 working days</b></span></p>
     </header>
 
-    {%- capture promos -%}{%- render 'snh-app-promos', blocks: section.blocks, tier: tier, goal: goal, goal2: goal2, sport: sport, diet: diet, recent: '', sid: section.id -%}{%- endcapture -%}
+    {%- capture promos -%}{%- render 'snh-app-promos', blocks: section.blocks, tier: tier, goal: goal, goal2: goal2, sport: sport, diet: diet, recent: '', sid: section.id, quiz_card: false -%}{%- endcapture -%}
     {%- if promos != blank -%}<div class="scp__offers">{{ promos }}</div>{%- endif -%}
 
     <div data-campaign-slot="cart" hidden></div>

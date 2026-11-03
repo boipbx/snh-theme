@@ -6,6 +6,9 @@
   pages still switch on time), on this page type, for this visitor (all / guests / members / a tier), highest priority
   first, and renders: announcement bar items (into the header's orange bar, with their colour), a promo popup
   (frequency-capped, never on the same page view as the email popup), a homepage banner and a cart banner.
+  R19: optional targeting (goals / sports / diets / bought, or "only matching visitors") hides a banner or popup from
+  visitors whose preferences don't match (SNH.prefsMatch in assets/snh-v2.js). On the homepage, visitors with no
+  preferences get the quiz band right under the hero instead.
   Dates: "2026-11-01 08:00" (shop time, Sri Lanka). Empty start = live now; empty end = no end.
 {%- endcomment -%}
 {%- liquid
@@ -36,7 +39,8 @@
        "cta": {{ e.cta_text.value | json }}, "link": {{ e.cta_link.value | default: '' | json }}, "code": {{ e.discount_code.value | strip | json }},
        "start": {% if e.start_at.value %}{{ e.start_at.value | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %}, "end": {% if e.end_at.value %}{{ e.end_at.value | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %},
        "pages": {{ e.target_pages.value | default: 'all' | downcase | json }}, "audience": {{ e.audience.value | default: 'all' | downcase | json }}, "priority": {{ e.priority.value | default: 0 }},
-       "tone": {{ e.tone.value | default: 'orange' | downcase | json }}, "freq": {{ e.frequency.value | default: 'day' | downcase | json }}}
+       "tone": {{ e.tone.value | default: 'orange' | downcase | json }}, "freq": {{ e.frequency.value | default: 'day' | downcase | json }},
+       "goals": {{ e.target_goals.value | join: ',' | json }}, "sports": {{ e.target_sports.value | join: ',' | json }}, "diets": {{ e.target_diets.value | join: ',' | json }}, "bought": {{ e.bought_triggers.value | join: ',' | json }}, "match": {{ e.match_only.value | default: false | json }}}
     {%- endfor -%}
     {%- for b in section.blocks -%}
       {%- assign bs = b.settings -%}
@@ -46,7 +50,8 @@
        "img": {% if bs.image %}{{ bs.image | image_url: width: 1600 | json }}{% else %}""{% endif %}, "imgM": {% if bs.image_mobile %}{{ bs.image_mobile | image_url: width: 800 | json }}{% else %}""{% endif %},
        "cta": {{ bs.cta | json }}, "link": {{ bs.link | default: '' | json }}, "code": {{ bs.code | strip | json }},
        "start": {% if bs.start != blank %}{{ bs.start | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %}, "end": {% if bs.end != blank %}{{ bs.end | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %},
-       "pages": {{ bs.pages | json }}, "audience": {{ bs.audience | json }}, "priority": {{ bs.priority | default: 0 }}, "tone": {{ bs.tone | json }}, "freq": {{ bs.freq | json }}}
+       "pages": {{ bs.pages | json }}, "audience": {{ bs.audience | json }}, "priority": {{ bs.priority | default: 0 }}, "tone": {{ bs.tone | json }}, "freq": {{ bs.freq | json }},
+       "goals": {{ bs.goals | json }}, "sports": {{ bs.sports | json }}, "diets": {{ bs.diets | json }}, "bought": {{ bs.bought | json }}, "match": {{ bs.match_only | json }}}
     {%- endfor -%}
   ]
 }</script>
@@ -78,6 +83,13 @@
         { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)" },
         { "type": "text", "id": "cta", "label": "Button text" },
         { "type": "url", "id": "link", "label": "Link" },
+        { "type": "header", "content": "Who it's relevant to (optional)" },
+        { "type": "paragraph", "content": "Set any of these and the banner / popup shows only to visitors whose preferences match (quiz answers, goal tags, brands or categories they bought). Comma lists. Goals: build-muscle, lose-fat, endurance, hydration-recovery, daily-health, sport-specific." },
+        { "type": "text", "id": "goals", "label": "Goals" },
+        { "type": "text", "id": "sports", "label": "Sports", "info": "cricket, padel, running, gym, cycling, swimming, football, rugby" },
+        { "type": "text", "id": "diets", "label": "Diets", "info": "vegan, vegetarian, lactose-free" },
+        { "type": "text", "id": "bought", "label": "Bought (brands / categories)", "info": "Words in the brand, type or title of anything they bought, e.g. ryse, creatine" },
+        { "type": "checkbox", "id": "match_only", "label": "Only show to matching visitors", "default": false, "info": "On: with no targeting above, the brand in the link counts (e.g. /collections/ryse → bought ryse). Product launches should use this." },
         { "type": "text", "id": "code", "label": "Discount code (optional)", "info": "Must already exist in Discounts. Shown with Copy and Apply." },
         { "type": "text", "id": "start", "label": "Starts", "placeholder": "2026-11-01 08:00", "info": "Shop time. Empty = now." },
         { "type": "text", "id": "end", "label": "Ends", "placeholder": "2026-11-03 23:59", "info": "Empty = no end." },
