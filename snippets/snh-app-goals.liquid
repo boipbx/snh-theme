@@ -35,6 +35,7 @@
   <div data-wk-body></div>
 </section>
 {%- render 'snh-workout-plans' -%}
+{%- render 'snh-wk-demos', blocks: blocks -%}
 
 <div class="gview" data-goal-root data-goal="{{ goal | escape }}" data-freq="{{ freq | escape }}" data-sport="{{ sport | escape }}">
   <div class="gview__set" data-goal-set{% if goal == blank %} hidden{% endif %}>

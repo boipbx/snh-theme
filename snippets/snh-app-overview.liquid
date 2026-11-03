@@ -33,6 +33,9 @@
 
 {%- render 'snh-app-active', orders: recent, sid: sid -%}
 
+{%- comment -%} R19 #9: the member's workout plan + this week's progress (assets/snh-app.js wkOverview) {%- endcomment -%}
+<section class="app__card wko" data-wk-overview hidden aria-label="Your workout plan"><div data-wk-ov-body></div></section>
+
 {%- render 'snh-app-promos', blocks: blocks, tier: m[0], goal: goal, goal2: goal2, sport: sport, diet: diet, recent: recent, sid: sid, mock: mock, quiz_card: false -%}
 
 {%- if goal == blank and s.goal_prompt != false -%}

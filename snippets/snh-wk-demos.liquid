@@ -1,0 +1,21 @@
+{%- comment -%}
+  Round 19 #9: exercise demos for the workout plans, as JSON for assets/snh-app.js (wkDemo). Sources: "Exercise demo"
+  blocks on the section (name, image or GIF, video, link) and "SNH exercise" metaobject entries (type snh_exercise:
+  name, image, video, url; WORKOUT-PLANS.md). A demo applies to every plan exercise whose name contains its name
+  ("Bench press" → "Barbell bench press", "Incline dumbbell press" stays separate if it has its own). Without a
+  demo, the plan shows a drawn pictogram of the movement and a YouTube search link.
+  blocks
+{%- endcomment -%}
+<script type="application/json" data-wk-demos>[
+  {%- assign first = true -%}
+  {%- for e in shop.metaobjects.snh_exercise.values -%}
+    {%- if e.name.value == blank -%}{%- continue -%}{%- endif -%}
+    {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+    {"name": {{ e.name.value | json }}, "img": {% if e.image.value %}{{ e.image.value | image_url: width: 240 | json }}{% else %}""{% endif %}, "video": {% if e.video.value %}{{ e.video.value.sources.first.url | json }}{% else %}""{% endif %}, "url": {{ e.url.value | default: '' | json }}}
+  {%- endfor -%}
+  {%- for b in blocks -%}
+    {%- if b.type != 'exercise' or b.settings.name == blank -%}{%- continue -%}{%- endif -%}
+    {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+    {"name": {{ b.settings.name | json }}, "img": {% if b.settings.image %}{{ b.settings.image | image_url: width: 240 | json }}{% else %}""{% endif %}, "video": {% if b.settings.video %}{{ b.settings.video.sources.first.url | json }}{% else %}{{ b.settings.video_url | default: '' | json }}{% endif %}, "url": {{ b.settings.url | default: '' | json }}}
+  {%- endfor -%}
+]</script>

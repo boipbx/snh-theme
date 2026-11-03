@@ -47,6 +47,7 @@
           {%- render 'snh-onboarding-quiz', blocks: section.blocks, id: qid, mode: 'guest', stack: s.stack_map, bundle_handles: s.bundle_handles -%}
         {%- endif -%}
         {%- render 'snh-workout-plans' -%}
+        {%- render 'snh-wk-demos', blocks: section.blocks -%}
       </template>
 
       {%- unless customer -%}
@@ -102,6 +103,14 @@
     { "type": "text", "id": "bundle_handles", "label": "Bundle collections", "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers" }
   ],
   "blocks": [
+    { "type": "exercise", "name": "Exercise demo", "settings": [
+      { "type": "paragraph", "content": "A demo for a workout-plan exercise. It applies to every exercise whose name contains the name below. Without one, the plan shows a drawn pictogram and a YouTube search link." },
+      { "type": "text", "id": "name", "label": "Exercise name", "default": "Bench press", "info": "As in the plan, e.g. Back squat, Romanian deadlift, Lat pulldown." },
+      { "type": "image_picker", "id": "image", "label": "Image or GIF", "info": "Square works best." },
+      { "type": "video", "id": "video", "label": "Video (optional)", "info": "Short, muted loop; plays instead of the image." },
+      { "type": "text", "id": "video_url", "label": "…or a video URL" },
+      { "type": "url", "id": "url", "label": "\"Watch how\" link (optional)", "info": "Default: a YouTube search for the exercise." }
+    ] },
     { "type": "quiz", "name": "Quiz question", "settings": [
       { "type": "select", "id": "step", "label": "Step", "options": [
         { "value": "goal", "label": "Main goal" }, { "value": "goal2", "label": "Second goal" }, { "value": "lvl", "label": "Experience" }, { "value": "freq", "label": "Training days" },

@@ -181,6 +181,14 @@
     }
   ],
   "blocks": [
+    { "type": "exercise", "name": "Exercise demo", "settings": [
+      { "type": "paragraph", "content": "A demo for a workout-plan exercise. It applies to every exercise whose name contains the name below. Without one, the plan shows a drawn pictogram and a YouTube search link." },
+      { "type": "text", "id": "name", "label": "Exercise name", "default": "Bench press", "info": "As in the plan, e.g. Back squat, Romanian deadlift, Lat pulldown." },
+      { "type": "image_picker", "id": "image", "label": "Image or GIF", "info": "Square works best." },
+      { "type": "video", "id": "video", "label": "Video (optional)", "info": "Short, muted loop; plays instead of the image." },
+      { "type": "text", "id": "video_url", "label": "…or a video URL" },
+      { "type": "url", "id": "url", "label": "\"Watch how\" link (optional)", "info": "Default: a YouTube search for the exercise." }
+    ] },
     {
       "type": "promo",
       "name": "Member promotion",

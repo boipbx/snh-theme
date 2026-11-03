@@ -934,7 +934,7 @@
     var ex = function (x, lock) {
       var name = esc(x[0]);
       return wkVisual(x[0]) + '<span class="wk__en">' + (lock ? '<span class="wk__nm">' + name + '</span>' : '<a class="wk__nm" href="' + esc(wkHow(x[0])) + '" target="_blank" rel="noopener">' + name + '<span class="v-sr"> (watch how, opens in a new tab)</span></a>') +
-        '<span class="wk__sr"><b>' + esc(x[1]) + '</b>' + (x[2] && x[2] !== '—' ? '<span>rest ' + esc(x[2]) + '</span>' : '') + '</span></span>';
+        '<span class="wk__sr"><b>' + esc(x[1]) + '</b>' + (x[2] && x[2] !== '—' ? '<span>rest ' + esc(x[2]) + '</span>' : '') + (lock ? '' : '<a class="wk__how" href="' + esc(wkHow(x[0])) + '" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">▶ Watch how</a>') + '</span></span>';
     };
     // desktop: one weekly table (days as columns); phones: stacked day cards. Both in the DOM, CSS picks one.
     var rows = Math.max.apply(null, p.w.map(function (d) { return d.x.length; })), head = '', body = '';
@@ -990,13 +990,33 @@
   window.snhQuizInit = function (q) { return quizInit(q, null); };
 
   /* account: a plan the member saved (tag plan:<id>), and a plan built on the homepage before they signed in */
+  function wkOverview(app, plan) {
+    var card = app.querySelector('[data-wk-overview]'); if (!card) return;
+    if (!plan) { card.hidden = true; return; }
+    var paint = function () {
+      var st = wkStats(plan), next = -1;
+      for (var i = 0; i < plan.w.length; i++) if (st.log.indexOf(i) < 0) { next = i; break; }
+      var nd = next > -1 ? plan.w[next] : null;
+      card.querySelector('[data-wk-ov-body]').innerHTML = '<p class="eyebrow">Your workout plan</p><h2 class="app__h3">' + esc(plan.t) + '</h2>' +
+        '<p class="wko__next">' + (nd ? 'Next up: <b>Day ' + (next + 1) + ' · ' + esc(nd.f) + '</b> (' + nd.x.length + ' exercises)' : '<b>Week done.</b> Every session ticked: see you next week.') + '</p>' +
+        wkTrackerHtml(st) + '<a class="v-btn v-btn--ink v-btn--sm wko__go" href="#goals" data-app-go="goals"><span>' + (nd ? 'Open my plan' : 'See my plan') + '</span></a>';
+      card.hidden = false;
+    };
+    paint();
+    if (!card.__wk) { card.__wk = true; document.addEventListener('snh:wk', paint); }
+    card.addEventListener('click', function (e) { var g = e.target.closest('[data-app-go]'); if (!g) return; var t = app.querySelector('a[href="#goals"]'); if (t) { e.preventDefault(); t.click(); setTimeout(function () { var b = app.querySelector('[data-wk-account]'); if (b) b.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60); } });
+  }
   function wkAccount(app) {
     var box = app.querySelector('[data-wk-account]');
-    if (box && box.getAttribute('data-plan')) {
-      var a = {}; (box.getAttribute('data-a') || '').split(',').forEach(function (t) { var m = t.trim().match(/^(\w+):(.+)$/); if (m && !a[m[1]]) a[m[1]] = m[2]; });
-      renderPlan(box.querySelector('[data-wk-body]'), planById(box.getAttribute('data-plan')), { answers: a });
+    // R19 #9: the saved plan (tag plan:<id>), else the plan the member's quiz answers match (goal: tag); with the
+    // session tracker (ticks, week progress, streak, XP) and an Overview card
+    var a = {}; (box && box.getAttribute('data-a') || '').split(',').forEach(function (t) { var m = t.trim().match(/^(\w+):(.+)$/); if (m && !a[m[1]]) a[m[1]] = m[2]; });
+    var plan = box && (planById(box.getAttribute('data-plan') || '') || (a.goal ? planFor(a) : null));
+    if (box && plan) {
+      renderPlan(box.querySelector('[data-wk-body]'), plan, { answers: a, track: true });
       box.hidden = false;
     }
+    wkOverview(app, plan);
     var pend = lsJson('snh_quiz_pending'), quizEl = app.querySelector('[data-goal-root] [data-quiz]');
     if (!pend || !pend.answers || Date.now() - (pend.at || 0) > 864e5 * 3 || !quizEl) return;
     if (box && box.getAttribute('data-plan') === pend.plan) { lsDel('snh_quiz_pending'); return; }
