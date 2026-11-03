@@ -1126,7 +1126,7 @@
       '<path d="M56 6V2.5C56 1 57 0 58.5 0h9C69 0 70 1 70 2.5V6z" fill="#121212"/><path d="M27 22h46M27 27h46" class="shk__rib"/><rect x="30" y="10" width="8" height="2.2" rx="1.1" fill="#fff" opacity=".35"/>' +
       '</svg>';
   }
-  function setLevel(el, pct) { el.style.setProperty('--fill', Math.max(0, Math.min(100, +pct || 0)) / 100); el.setAttribute('data-pct', Math.round(+pct || 0)); }
+  function setLevel(el, pct) { el.style.setProperty('--fill', Math.max(0, Math.min(100, +pct || 0)) / 100); el.setAttribute('data-level', Math.round(+pct || 0)); }
   S.shakerSet = setLevel;
   S.shaker = function (el) {
     if (el.__shk) return el; el.__shk = true;
@@ -1138,8 +1138,7 @@
     el.innerHTML = svg(id);
     if (reduce || !('IntersectionObserver' in window) || el.hasAttribute('data-now')) { setLevel(el, pct); return el; }
     setLevel(el, 0);
-    new IntersectionObserver(function (es, io) { if (!es[0].isIntersecting) return; io.disconnect(); requestAnimationFrame(function () { setLevel(el, +el.getAttribute('data-target') || pct); }); }, { threshold: .3 }).observe(el);
-    el.setAttribute('data-target', pct);
+    new IntersectionObserver(function (es, io) { if (!es[0].isIntersecting) return; io.disconnect(); requestAnimationFrame(function () { setLevel(el, +el.getAttribute('data-pct') || 0); }); }, { threshold: .3 }).observe(el);
     return el;
   };
   function run(root) { (root || document).querySelectorAll('[data-shaker]').forEach(S.shaker); }
