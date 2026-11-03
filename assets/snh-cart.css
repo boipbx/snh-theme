@@ -296,3 +296,10 @@
 @keyframes sbw-pop { 0% { transform: scale(.4); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .sbw__fx { display: none; } .sbw.is-new .sbw__ic { animation: none; } }
 .scp .sbw { margin-bottom: 16px; }
+/* R19 #7 fixes: the banner never shrinks inside the drawer body (overflow hidden let it collapse to one line);
+   heading + saving on one line, the names under it; the offer's saving in its own pill */
+.sbw { flex: none; min-height: max-content; align-items: flex-start; }
+.sbw p { display: block; }
+.sbw small { display: block; margin-top: 2px; }
+.sbo__eb { flex-wrap: wrap; row-gap: 2px; }
+.sbo__save { display: inline-flex; align-items: center; height: 20px; margin-left: 4px; padding: 0 8px; border-radius: 999px; background: #BF4512; color: #fff; font: 700 12px/1 var(--sans); white-space: nowrap; }

@@ -568,7 +568,7 @@
         var what = best.cover.map(function (x) { return shortTitle(x.it.product_title, x.it.vendor); });
         var box = document.createElement('div'); box.className = 'sbo';
         box.innerHTML = (best.b.i ? '<img class="sbo__img" src="' + esc(img(best.b.i, 160)) + '" alt="" width="56" height="56" loading="lazy" data-v2-lift>' : '') +
-          '<div class="sbo__b"><p class="sbo__eb">' + icons.tag + 'Make it a bundle' + (best.b.s ? ' · save ' + rs(best.b.s) : '') + '</p>' +
+          '<div class="sbo__b"><p class="sbo__eb">' + icons.tag + '<span>Make it a bundle</span>' + (best.b.s ? '<span class="sbo__save">Save ' + rs(best.b.s) + '</span>' : '') + '</p>' +
           '<a class="sbo__t" href="' + esc(best.b.u) + '">' + esc(best.b.t) + '</a>' +
           '<p class="sbo__s">Swaps your ' + esc(what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0]) + ' for the bundle · ' + rs(best.b.p) + '</p></div>' +
           '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Swap</button>';
