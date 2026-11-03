@@ -319,6 +319,7 @@
 .mmenu__top .mmenu__close { grid-column: 3; justify-self: end; margin-right: -10px; }
 .mmenu__search { display: flex; align-items: center; gap: 10px; height: 46px; margin: 0 var(--gutter) 8px; padding: 0 16px; border: 0; border-radius: var(--pill); background: var(--cream); font: 500 15px/1.5 var(--sans); color: var(--grey-2); text-align: left; cursor: pointer; }
 .mmenu__search svg { width: 20px; height: 20px; color: var(--ink); flex: none; }
+.mmenu__search span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }   /* R18: one line at 360 */
 .mmenu__levels { position: relative; flex: 1; overflow: hidden; border-top: 1px solid var(--line); }
 .mm__level { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--white); transform: translateX(100%); visibility: hidden; transition: transform 300ms var(--ease), visibility 0s linear 300ms; }
 .mm__level.is-on { transform: none; visibility: visible; transition: transform 300ms var(--ease); }
@@ -332,9 +333,14 @@
 .mm__head::after { content: ""; width: 72px; }
 .mm__back { display: inline-flex; align-items: center; gap: 2px; width: 72px; height: 44px; padding: 0; margin-left: -6px; border: 0; background: none; font: 500 15px/1.5 var(--sans); color: var(--ink); cursor: pointer; }
 .mm__back svg { width: 22px; height: 22px; }
-.mm__tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 14px 0 6px; padding: 4px; border-radius: var(--pill); background: var(--cream); }
-.mm__tabs button { height: 38px; border: 0; border-radius: var(--pill); background: none; font: 600 14px/1.5 var(--sans); color: var(--grey-1); cursor: pointer; }
-.mm__tabs button[aria-selected="true"] { background: var(--white); color: var(--ink); box-shadow: 0 1px 4px rgba(10, 10, 10, .1); }
+/* R18: segmented toggle: two equal segments, centred labels, a sliding pill inset 4px, flush with the list's left edge */
+.mmenu .mm__tabs { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; box-sizing: border-box; width: 100%; margin: 16px 0 8px; padding: 4px; border-radius: var(--pill); background: var(--cream); }
+.mmenu .mm__tabs::before { content: ""; position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: var(--pill); background: var(--white); box-shadow: 0 1px 4px rgba(10, 10, 10, .12); transition: transform 260ms cubic-bezier(.22, 1, .36, 1); }
+.mmenu .mm__tabs:has(> [data-tab="1"][aria-selected="true"])::before { transform: translateX(100%); }
+.mmenu .mm__tabs > button { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 100%; min-width: 0; height: 40px; margin: 0; padding: 0 10px; border: 0; border-radius: var(--pill); background: none; box-shadow: none; font: 600 14px/1.2 var(--sans); color: var(--grey-1); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: color 200ms var(--ease); }
+.mmenu .mm__tabs > button[aria-selected="true"] { color: var(--ink); background: none; box-shadow: none; }
+.mmenu .mm__tabs > button:focus-visible { outline: 2px solid var(--v-accent); outline-offset: -2px; }
+@media (prefers-reduced-motion: reduce) { .mmenu .mm__tabs::before { transition: none; } }
 .mm__list { margin: 0 0 20px; padding: 0; list-style: none; }
 .mm__list a { display: flex; align-items: center; min-height: 52px; border-bottom: 1px solid var(--line); font-size: 16px; font-weight: 500; }
 .mm__list a.mm__all { border-bottom: 0; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
