@@ -1078,14 +1078,17 @@
     document.documentElement.setAttribute('data-prefs', p.has ? 'yes' : 'none');
     (root || document).querySelectorAll('[data-pz-group]').forEach(function (g) {
       if (g.__pz) return; g.__pz = true;
+      // server-known preferences on the group (member tags, or a QA persona) win over the device's
+      var gp = Object.assign({}, p); ['goal', 'goal2', 'sport', 'diet', 'bought'].forEach(function (k) { var v = g.getAttribute('data-p-' + k); if (v) gp[k] = v.toLowerCase(); });
+      gp.has = !!(gp.goal || gp.sport || (gp.diet && gp.diet !== 'none') || gp.bought);
       var max = +g.getAttribute('data-pz-max') || 3, items = [].slice.call(g.querySelectorAll('[data-pz]'));
-      var scored = items.map(function (el, i) { var sc = S.prefsMatch({ goals: el.getAttribute('data-goals'), sports: el.getAttribute('data-sports'), diets: el.getAttribute('data-diets'), bought: el.getAttribute('data-bought'), link: el.getAttribute('href') || el.getAttribute('data-link') }, p); return { el: el, sc: sc, pr: +el.getAttribute('data-prio') || 0, i: i }; })
+      var scored = items.map(function (el, i) { var sc = S.prefsMatch({ goals: el.getAttribute('data-goals'), sports: el.getAttribute('data-sports'), diets: el.getAttribute('data-diets'), bought: el.getAttribute('data-bought'), link: el.getAttribute('href') || el.getAttribute('data-link') }, gp); return { el: el, sc: sc, pr: +el.getAttribute('data-prio') || 0, i: i }; })
         .filter(function (x) { return x.sc > 0; }).sort(function (a, b) { return (b.pr * 10 + b.sc) - (a.pr * 10 + a.sc) || a.i - b.i; }).slice(0, max);
       items.forEach(function (el) { el.hidden = true; el.removeAttribute('data-pz-hero'); el.classList.remove('elpromo--hero'); });
       scored.forEach(function (x, n) { x.el.hidden = false; if (!n) { x.el.setAttribute('data-pz-hero', ''); x.el.classList.add('elpromo--hero'); } if (x.el.parentNode) x.el.parentNode.appendChild(x.el); });
       var tpl = g.querySelector('template[data-pz-empty]');
-      if (!scored.length && !p.has && tpl) g.appendChild(tpl.content.cloneNode(true));
-      g.hidden = !scored.length && !(!p.has && tpl);
+      if (!scored.length && !gp.has && tpl) g.appendChild(tpl.content.cloneNode(true));
+      g.hidden = !scored.length && !(!gp.has && tpl);
       g.setAttribute('data-pz-shown', scored.length);
     });
   }

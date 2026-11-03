@@ -52,6 +52,12 @@
       if (opener && opener.focus) opener.focus({ preventScroll: true });
     }
     sec.querySelectorAll('[data-qzb-open]').forEach(function (b) { b.addEventListener('click', open); });
+    // R19: the onboarding prompt (and any link to /?snh-quiz=open or #find-my-stack) opens the quiz here
+    if (!window.SNHQuiz) window.SNHQuiz = { open: function () { return open({ currentTarget: sec.querySelector('[data-qzb-open]') }); } };
+    if (/[?&]snh-quiz=open/.test(location.search) || location.hash === '#find-my-stack') {
+      try { history.replaceState(null, '', location.pathname + location.search.replace(/([?&])snh-quiz=open&?/, '$1').replace(/[?&]$/, '')); } catch (x) {}
+      setTimeout(function () { open({ currentTarget: sec.querySelector('[data-qzb-open]') }); }, 50);
+    }
     sec.querySelector('[data-qzb-close]').addEventListener('click', close);
     ov.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 

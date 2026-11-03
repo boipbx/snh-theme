@@ -1,0 +1,99 @@
+{%- comment -%}
+  Round 19 #6: everyone gets onboarded. A friendly, dismissible slide-in for visitors with no preferences yet
+  (guests: no quiz answers on this device; members: no goal: tag), pointing at the "Find my stack" quiz.
+  Rules (assets/snh-onboard.js): after the delay or 30 % scroll · once per N days (localStorage snh_onb_t) · never on
+  the cart, checkout, account or password pages · never on the same page view as the email popup or a campaign popup
+  (window.SNHPopups.claim) and never over an open drawer/dialog · Escape or × closes (counts as seen).
+  The button opens the homepage quiz band in place when it's on the page, else goes to /?snh-quiz=open.
+  Everything here is editable in Customize → Overlay group → SNH onboarding prompt.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign skip = false
+  if template.name == 'cart' or template.name == 'password' or template.name == 'gift_card' or template contains 'customers/'
+    assign skip = true
+  endif
+  if request.design_mode and s.preview
+    assign skip = false
+  endif
+  assign goal = ''
+  for t in customer.tags
+    assign tl = t | downcase | strip
+    if tl contains 'goal:'
+      assign goal = tl
+      break
+    endif
+  endfor
+  if goal != ''
+    assign skip = true
+  endif
+-%}
+{%- if s.enabled and skip == false -%}
+<aside class="snh-onb" id="snh-onb-{{ section.id }}" role="dialog" aria-modal="false" aria-labelledby="snh-onb-{{ section.id }}-h" hidden
+  data-snh-onb data-days="{{ s.days }}" data-delay="{{ s.delay }}" data-test="{% if request.design_mode and s.preview %}1{% endif %}">
+  <button class="snh-onb__x" type="button" data-onb-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
+  {%- if s.image != blank -%}
+    <span class="snh-onb__img">{{ s.image | image_url: width: 240 | image_tag: width: 120, height: 120, alt: '', loading: 'lazy' }}</span>
+  {%- else -%}
+    <span class="snh-onb__img snh-onb__img--ic" aria-hidden="true">{% render 'snh-v2-icon', name: 'target' %}</span>
+  {%- endif -%}
+  <div class="snh-onb__b">
+    {%- if s.eyebrow != blank -%}<p class="snh-onb__eb">{{ s.eyebrow | escape }}</p>{%- endif -%}
+    <p class="snh-onb__h" id="snh-onb-{{ section.id }}-h">{{ s.heading | escape | replace: '*', '' }}</p>
+    {%- if s.text != blank -%}<p class="snh-onb__p">{{ s.text | escape }}</p>{%- endif -%}
+    <div class="snh-onb__act">
+      <a class="snh-onb__go" href="{{ s.link | default: '/?snh-quiz=open' }}" data-onb-go>{{ s.cta | escape }}</a>
+      <button class="snh-onb__later" type="button" data-onb-close>{{ s.later | escape }}</button>
+    </div>
+  </div>
+</aside>
+<style>
+  .snh-onb { position: fixed; z-index: 120; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; width: min(400px, calc(100vw - 32px)); padding: 18px 18px 16px; border: 1px solid rgba(224, 82, 28, .22); border-radius: 18px; background: #fff; color: #0E0E0E; box-shadow: 0 24px 60px -18px rgba(14, 14, 14, .35); font-family: var(--sans, inherit); transform: translateY(calc(100% + 40px)); opacity: 0; transition: transform 420ms cubic-bezier(.2, .8, .2, 1), opacity 300ms ease; }
+  .snh-onb[hidden] { display: none; }
+  .snh-onb.is-on { transform: none; opacity: 1; }
+  .snh-onb__x { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: none; color: #5C574F; cursor: pointer; }
+  .snh-onb__x:hover { background: #F4F4F4; color: #0E0E0E; }
+  .snh-onb__x svg { width: 18px; height: 18px; }
+  .snh-onb__img { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 16px; overflow: hidden; background: #FFF4EC; }
+  .snh-onb__img img { width: 100%; height: 100%; object-fit: cover; }
+  .snh-onb__img--ic { background: var(--v-accent, #E0521C); color: #fff; }
+  .snh-onb__img--ic svg { width: 30px; height: 30px; }
+  .snh-onb__b { display: grid; gap: 4px; min-width: 0; padding-right: 22px; }
+  .snh-onb__eb { margin: 0; font: 600 12px/1.4 var(--sans, inherit); letter-spacing: .04em; text-transform: uppercase; color: #BF4512; }
+  .snh-onb__h { margin: 0; font: 600 19px/1.25 var(--sans, inherit); letter-spacing: -.01em; }
+  .snh-onb__p { margin: 0; font-size: 15px; line-height: 1.45; color: #4A4640; }
+  .snh-onb__act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 8px; }
+  .snh-onb__go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #0E0E0E; color: #fff; font: 600 15px/1 var(--sans, inherit); text-decoration: none; }
+  .snh-onb__go:hover { background: var(--v-accent, #E0521C); }
+  .snh-onb__later { min-height: 44px; padding: 0 4px; border: 0; background: none; font: 500 14px/1 var(--sans, inherit); color: #5C574F; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  @media (max-width: 599px) {
+    .snh-onb { left: 8px; right: 8px; width: auto; bottom: calc(8px + env(safe-area-inset-bottom)); grid-template-columns: 52px minmax(0, 1fr); padding: 16px; }
+    .snh-onb__img { width: 52px; height: 52px; border-radius: 14px; }
+    .snh-onb__h { font-size: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .snh-onb { transition: none; transform: none; } }
+</style>
+<script src="{{ 'snh-onboard.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SNH onboarding prompt",
+  "class": "snh-sec snh-sec--onb",
+  "settings": [
+    { "type": "paragraph", "content": "A dismissible slide-in for visitors who haven't told us their goal yet (guests without quiz answers, members without a goal tag). Once per N days, never on cart / checkout / account pages, never on the same page view as the email popup." },
+    { "type": "checkbox", "id": "enabled", "label": "Show the prompt", "default": true },
+    { "type": "checkbox", "id": "preview", "label": "Preview it in the editor now", "default": false, "info": "Editor only: ignores the rules so you can style it." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Welcome to SNH" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Not sure what to buy?" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Answer a few quick questions and get your stack plus a free workout plan. About 60 seconds." },
+    { "type": "image_picker", "id": "image", "label": "Image (optional)", "info": "Square. Without one, a target icon shows." },
+    { "type": "text", "id": "cta", "label": "Button", "default": "Find my stack" },
+    { "type": "url", "id": "link", "label": "Button link (optional)", "info": "Default: opens the homepage quiz (/?snh-quiz=open)." },
+    { "type": "text", "id": "later", "label": "Dismiss link", "default": "Maybe later" },
+    { "type": "range", "id": "delay", "label": "Show after", "min": 2, "max": 60, "step": 1, "unit": "s", "default": 10 },
+    { "type": "range", "id": "days", "label": "Show again after", "min": 1, "max": 30, "step": 1, "unit": "d", "default": 7 }
+  ],
+  "presets": [{ "name": "SNH onboarding prompt" }]
+}
+{% endschema %}

@@ -133,7 +133,7 @@
   endif
 -%}
 {%- if top.size > 0 and top[0] != blank or quiz_card != false -%}
-  <section class="elpromos" aria-label="For you" data-pz-group data-pz-max="3"{% if top.size == 0 or top[0] == blank %} hidden{% endif %}>
+  <section class="elpromos" aria-label="For you" data-pz-group data-pz-max="3" data-p-goal="{{ goal | escape }}" data-p-goal2="{{ goal2 | escape }}" data-p-sport="{{ sport | escape }}" data-p-diet="{{ diet | escape }}" data-p-bought="{{ hay | strip | truncate: 600, '' | escape }}"{% if top.size == 0 or top[0] == blank %} hidden{% endif %}>
     {%- for t in top limit: 12 -%}
       {%- assign idx = t | split: '-' | last | plus: 0 -%}
       {%- assign f = recs[idx] | split: '~' -%}

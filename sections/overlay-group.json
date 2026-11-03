@@ -71,6 +71,10 @@
         "search_menu_show_title": true
       }
     },
+    "snh_onboarding": {
+      "type": "snh-onboarding-prompt",
+      "settings": {}
+    },
     "email-capture": {
       "type": "snh-email-capture",
       "settings": {
@@ -80,6 +84,7 @@
     }
   },
   "order": [
+    "snh_onboarding",
     "email-capture",
     "snh_envelope_popup_4fhFpY",
     "privacy-banner",
