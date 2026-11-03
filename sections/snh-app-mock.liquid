@@ -62,7 +62,7 @@
       </div>
     </div>
   {%- else -%}
-    {%- render 'snh-app', m: m, me: me, recent: recent, page_orders: recent, pagination_html: '', page_no: 1, sid: section.id, mock: true, mock_address: p.address, blocks: section.blocks -%}
+    {%- render 'snh-app', m: m, me: me, recent: recent, page_orders: recent, pagination_html: '', page_no: 1, sid: section.id, mock: true, mock_address: p.address, blocks: section.blocks, s: section.settings -%}
   {%- endif -%}
 </div>
 <style>
