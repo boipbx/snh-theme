@@ -233,3 +233,6 @@
 .spay { flex-wrap: wrap; row-gap: 4px; }
 .sbm__t b { font-weight: 600; }
 .sbm__t small { font-size: 12px; color: var(--grey-1); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Round 19 #1: neutral thumbnail tiles in the cart (cream + multiply turned packshots yellow) */
+.sline__img, .smini__img, .ssug__img { background: #F7F7F7; }

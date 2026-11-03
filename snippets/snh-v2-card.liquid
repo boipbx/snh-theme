@@ -9,7 +9,8 @@
   Tile: one cream backdrop, the pack contained with even padding. Packshots with SNH's baked-in orange frame
   (file name contains "SportsNutritionHub" or "snh-frame") are cropped inside the frame; assets/snh-v2.js
   (data-v2-lift) lifts grey studio backgrounds to white so every pack blends into the tile (mix-blend multiply).
-  Desktop hover crossfades to the next packshot (nutrition panels and screenshots skipped).
+  R19: no hover image swap (it flipped the tile to a different backdrop); hover is a shadow + 3 px lift only.
+  Tile is a neutral #F7F7F7 (was warm cream, which multiply-blended packs yellow).
   Body: brand · name (2 lines, whole words) · Judge.me stars (reviews.rating metafields, hidden when none) ·
   one key fact (custom.key_benefits, whole words) · price, compare-at · Koko.
   Quick add: single variant adds in one tap (data-v2-add); multi-variant opens the theme's quick-buy drawer.
@@ -62,31 +63,11 @@
   assign badge_list = badges | remove_first: ',' | split: ','
 
   assign img1 = product.featured_media.preview_image | default: product.featured_image
-  assign img2 = nil
-  for m in product.media offset: 1
-    if m.media_type != 'image'
-      continue
-    endif
-    # skip nutrition panels, labels and screenshots (file name without brand/store words, and the alt text)
-    assign fname = m.preview_image.src | split: '?' | first | split: '/' | last | downcase | remove: 'sportsnutritionhub' | remove: 'appliednutrition' | remove: 'rawnutrition' | remove: 'optimumnutrition' | remove: 'nutritionhub'
-    assign probe = m.alt | downcase | append: ' ' | append: fname
-    if probe contains 'nutritional' or fname contains 'nutri' or probe contains 'panel' or probe contains 'screenshot' or probe contains 'facts' or fname contains 'label' or probe contains 'ingredient' or probe contains 'nutrition info'
-      continue
-    endif
-    assign img2 = m.preview_image
-    break
-  endfor
   assign f1 = img1.src | split: '?' | first | downcase
   assign framed1 = false
   if f1 contains 'sportsnutritionhub' or f1 contains 'snh-frame'
     assign framed1 = true
   endif
-  assign f2 = img2.src | split: '?' | first | downcase
-  assign framed2 = false
-  if f2 contains 'sportsnutritionhub' or f2 contains 'snh-frame'
-    assign framed2 = true
-  endif
-
   assign chip = ''
   if multi
     for option in product.options_with_values
@@ -194,11 +175,6 @@
             {{- img1 | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'lazy', decoding: 'async', sizes: img_sizes, widths: '300,400,600,800', alt: '', data-v2-lift: '' -}}
           {%- endif -%}
         </span>
-        {%- if img2 != blank -%}
-          <span class="card__img card__img--alt{% if framed2 %} is-framed{% endif %}" aria-hidden="true">
-            {{- img2 | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'lazy', decoding: 'async', sizes: img_sizes, widths: '300,400,600,800', alt: '', data-v2-lift: '' -}}
-          </span>
-        {%- endif -%}
       {%- else -%}
         <span class="card__img">{{ 'product-1' | placeholder_svg_tag: 'card__ph' }}</span>
       {%- endif -%}

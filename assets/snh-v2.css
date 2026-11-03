@@ -2432,3 +2432,18 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 .qzb__ih { margin: 0; font: 600 clamp(24px, 3vw, 32px)/1.15 var(--sans); letter-spacing: -.02em; }
 .qzb__ih em { font-family: var(--serif); font-style: italic; font-weight: 400; }
 .qzb__loading { padding: 40px 0; text-align: center; color: var(--grey-2); }
+
+/* ---------- Round 19 #1: crisp, true-colour packshots. The warm #F5F2EC / #ECE5D9 tile + mix-blend multiply turned
+   every white backdrop (and the pack's own whites) cream/yellow, and the hover crossfade swapped in a second photo
+   with a different backdrop (the tile "flipped to white"). Now: one neutral #F7F7F7 tile (multiply on a neutral grey
+   only darkens 3 %, no colour cast), grey studio shots still tint the tile to their sampled grey (snh-v2.js), and
+   hover is a soft shadow + 3 px lift only: no image zoom, swap, filter or background change. */
+:root { --snh-tile: #F7F7F7; }
+.card__tile, .pc .card__tile, .v-section--cream .pc .card__tile { background: var(--snh-tile); }
+.card__img, .pc:hover .card__img, .card:hover .card__img { transform: none; transition: none; filter: none; opacity: 1; }
+.card__img--alt { display: none; }
+.pc { transition: box-shadow 260ms var(--ease), transform 260ms var(--ease), border-color 260ms var(--ease); }
+.pc:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -12px rgba(14, 14, 14, .22); }
+.pc .card__tile::after { background: #E7E7E7; }
+@media (hover: none), (max-width: 767px) { .pc:hover { transform: none; box-shadow: none; } }
+@media (prefers-reduced-motion: reduce) { .pc, .pc:hover { transform: none; transition: none; } }
