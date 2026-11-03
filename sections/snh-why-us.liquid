@@ -1,36 +1,67 @@
-{%- comment -%}SNH "Why choose us" ink band (prototype .why-head + .benefits): heading, inline stats, benefit grid.{%- endcomment -%}
+{%- comment -%}SNH "Why choose us" ink band. R18: bento grid: one large tile (orders counter that counts up on scroll, lead, Google rating) + the benefit tiles (icon, title, one line); orange glow, hover lift, staggered reveal; phones swipe the benefit cards.{%- endcomment -%}
 {%- capture snh_out -%}
 {%- assign hid = 'why-' | append: section.id -%}
-<section class="v2 v-section v-section--dark" aria-labelledby="{{ hid }}">
+{%- assign stats = section.blocks | where: 'type', 'stat' -%}
+{%- assign benefits = section.blocks | where: 'type', 'benefit' -%}
+<section class="v2 v-section v-section--dark sbx" aria-labelledby="{{ hid }}" data-sbx>
   <div class="v-wrap">
-    <div class="why-head">
-      <div class="head__text">
-        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
-        <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
-        {%- if section.settings.lead != blank -%}<p class="lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
-      </div>
-      {%- assign stats = section.blocks | where: 'type', 'stat' -%}
-      {%- if stats.size > 0 -%}
-        <div class="stats-inline">
-          {%- for b in stats -%}
-            {%- if b.settings.use_rating -%}
-              {%- if settings.snh_rating_value == blank -%}{%- continue -%}{%- endif -%}
-              <div {{ b.shopify_attributes }}><strong>{{ settings.snh_rating_value | escape }}<span class="star">★</span></strong><span>{% if settings.snh_rating_count != blank %}from {{ settings.snh_rating_count | escape }} {% endif %}{{ settings.snh_rating_source | default: 'Google reviews' | escape }}</span></div>
-            {%- else -%}
-              <div {{ b.shopify_attributes }}><strong>{{ b.settings.value | escape | replace: '★', '<span class="star">★</span>' }}</strong><span>{{ b.settings.label | escape }}</span></div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
+    <div class="sbx__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="v-h1" id="{{ hid }}">{% render 'snh-v2-heading', text: section.settings.heading %}</h2>
     </div>
-    <ul class="benefits">
-      {%- for b in section.blocks -%}
-        {%- if b.type == 'benefit' -%}
-          <li class="benefit" {{ b.shopify_attributes }}>{% render 'snh-v2-icon', name: b.settings.icon %}<p class="benefit__title">{{ b.settings.title | escape }}</p><p class="benefit__text">{{ b.settings.text | escape }}</p></li>
-        {%- endif -%}
-      {%- endfor -%}
-    </ul>
+    <div class="sbx__grid">
+      <div class="sbx__big sbx__t" style="--i: 0">
+        <span class="sbx__glow" aria-hidden="true"></span>
+        {%- for b in stats -%}
+          {%- if b.settings.use_rating -%}{%- continue -%}{%- endif -%}
+          {%- assign digits = b.settings.value | remove: ',' | remove: '+' | remove: '★' | strip -%}
+          {%- assign suffix = '' -%}{%- if b.settings.value contains '+' -%}{%- assign suffix = '+' -%}{%- endif -%}
+          <p class="sbx__stat" {{ b.shopify_attributes }}><strong class="sbx__num"><span data-count="{{ digits }}">{{ b.settings.value | remove: '+' | escape }}</span>{{ suffix }}</strong><span class="sbx__lbl">{{ b.settings.label | escape }}</span></p>
+          {%- break -%}
+        {%- endfor -%}
+        {%- if section.settings.lead != blank -%}<p class="sbx__lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+        {%- for b in stats -%}
+          {%- if b.settings.use_rating and settings.snh_rating_value != blank -%}
+            <p class="sbx__rating" {{ b.shopify_attributes }}><span class="sbx__stars" aria-hidden="true">★★★★★</span><strong>{{ settings.snh_rating_value | escape }}</strong> {% if settings.snh_rating_count != blank %}from {{ settings.snh_rating_count | escape }} {% endif %}{{ settings.snh_rating_source | default: 'Google reviews' | escape }}</p>
+          {%- elsif b.settings.use_rating == false and forloop.index0 > 0 -%}
+            <p class="sbx__rating" {{ b.shopify_attributes }}><strong>{{ b.settings.value | escape }}</strong> {{ b.settings.label | escape }}</p>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <ul class="sbx__list" role="list">
+        {%- for b in benefits -%}
+          <li class="sbx__card sbx__t" style="--i: {{ forloop.index }}" {{ b.shopify_attributes }}>
+            <span class="sbx__ic">{% render 'snh-v2-icon', name: b.settings.icon %}</span>
+            <p class="sbx__title">{{ b.settings.title | escape }}</p>
+            <p class="sbx__text">{{ b.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
   </div>
+  <script>
+    /* R18: staggered reveal + the orders counter counts up once, when the section scrolls in */
+    (function (sec) {
+      if (!sec || !('IntersectionObserver' in window)) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var n = sec.querySelector('[data-count]'), target = n ? parseInt(n.getAttribute('data-count'), 10) : 0;
+      if (!reduce) sec.classList.add('is-armed');
+      new IntersectionObserver(function (es, io) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        sec.classList.add('is-in');
+        if (!n || !target || reduce) return;
+        var t0 = null, d = 1800;
+        n.textContent = '0';
+        requestAnimationFrame(function step(t) {
+          t0 = t0 || t;
+          var k = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - k, 3);
+          n.textContent = Math.round(target * e).toLocaleString('en-US');
+          if (k < 1) requestAnimationFrame(step);
+        });
+      }, { threshold: 0.25 }).observe(sec);
+    })(document.currentScript.closest('section'));
+  </script>
 </section>
 {%- endcapture -%}
 {%- liquid
