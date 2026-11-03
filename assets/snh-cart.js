@@ -551,7 +551,8 @@
         bundles.forEach(function (b) {
           if (inCart[b.id] || used[b.id] || !bundleMatch(l.item, b)) return;
           var cover = lines.filter(function (x) { return !byId[x.it.product_id] && bundleMatch(x.item, b); });
-          var sc = cover.length * 1e7 + b.s;
+          // most basket items covered first, then the closest fit (the cheapest bundle: fewest extras), then the saving
+          var sc = cover.length * 1e12 - b.p * 1e3 + b.s / 1e3;
           if (!best || sc > best.sc) best = { b: b, cover: cover, sc: sc };
         });
         if (!best) return;
