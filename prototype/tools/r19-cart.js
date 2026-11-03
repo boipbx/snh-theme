@@ -28,7 +28,7 @@ const AUDIT = (root) => {
 (async () => {
   const b = await chromium.launch();
   for (const w of (process.env.W || '360,390,768,1440').split(',').map(Number)) {
-    const ctx = await context(b, w), p = await ctx.newPage();
+    const ctx = await context(b, w); await ctx.addInitScript(() => { try { localStorage.setItem('snh_sub', String(Date.now())); localStorage.setItem('snh_onb_t', String(Date.now())); } catch (e) {} }); const p = await ctx.newPage();
     await open(p, '/');
     let added = ''; for (let i = 0; i < 4 && !/ [1-9]/.test(added); i++) { if (i) await p.waitForTimeout(45000); added = await p.evaluate(async () => { try { await fetch('/cart/clear.js', { method: 'POST' });
       const pick = async (c) => { const j = await (await fetch('/collections/' + c + '/products.json?limit=30')).json(); const pr = j.products.find((x) => x.variants.some((v) => v.available) && x.variants.length > 1) || j.products.find((x) => x.variants.some((v) => v.available)); return pr.variants.find((v) => v.available).id; };

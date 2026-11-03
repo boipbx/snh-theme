@@ -42,7 +42,7 @@
     }
     var shown = false;
     function capped() { return Date.now() - (+ls('snh_ecm_t') || 0) < days * DAY; }
-    function busy() { return !!document.querySelector('dialog[open], x-drawer[open], .snh-sheet-open, quick-buy-drawer[open], #snh-pay-router:not([hidden])'); }
+    function busy() { return !!document.querySelector('dialog[open], x-drawer[open], #cart-drawer[open], cart-drawer[open], .snh-onb.is-on, .snh-sheet-open, quick-buy-drawer[open], #snh-pay-router:not([hidden])'); }
     function openModal(why) {
       if (shown || !modal || !modal.showModal) return;
       if (!test && (ls('snh_sub') || capped() || busy() || (teaser && !teaser.hidden))) return;
