@@ -3,7 +3,7 @@ const { chromium } = require(process.env.PW || '/Users/pabasaradissanayake/Docum
 const [, , FILE, NEEDLE, PATH = '/', MIN = '8'] = process.argv;
 const HOST = 'https://sports-nutrition-hub.myshopify.com', THEME = 189832462590;
 (async () => {
-  const b = await chromium.launch(), ctx = await b.newContext(), p = await ctx.newPage(), t0 = Date.now();
+  const b = await chromium.launch(), ctx = await b.newContext({ userAgent: process.env.UA || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36' }), p = await ctx.newPage(), t0 = Date.now();
   while (Date.now() - t0 < MIN * 60000) {
     try {
       await p.goto(HOST + PATH + (PATH.includes('?') ? '&' : '?') + 'preview_theme_id=' + THEME + '&_r=' + Date.now(), { waitUntil: 'domcontentloaded', timeout: 60000 });

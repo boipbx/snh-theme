@@ -27,7 +27,8 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function rs(cents) { return 'Rs ' + Math.round(Number(cents || 0) / 100).toLocaleString('en-US'); }
   function rsUp(cents) { return 'Rs ' + Math.max(0, Math.ceil(Number(cents || 0) / 100)).toLocaleString('en-US'); }
-  function img(url, w) { if (!url) return ''; url = typeof url === 'string' ? url : (url.src || url.url || ''); return url + (url.indexOf('?') > -1 ? '&' : '?') + 'width=' + w; }
+  // R19: same-origin /cdn/shop/ URL so snh-v2.js can read the pixels (data-v2-lift crops SNH's framed packshots)
+  function img(url, w) { if (!url) return ''; url = typeof url === 'string' ? url : (url.src || url.url || ''); url = url.replace(/^(https?:)?\/\/cdn\.shopify\.com\/s\/files\/\d+\/\d+\/\d+\/\d+\//, '/cdn/shop/'); return url + (url.indexOf('?') > -1 ? '&' : '?') + 'width=' + w; }
   function shortTitle(t, v) { if (!v) return t; var re = new RegExp('^' + v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '( NUTRITION)?\\s+', 'i'); return t.replace(re, '') || t; }
   function framed(u) { return /sportsnutritionhub|snh-frame/i.test(u || ''); }
   function cents(p) { return typeof p === 'string' ? Math.round(parseFloat(p) * 100) : Number(p || 0); }
@@ -156,7 +157,7 @@
       if (!cards.length) { swap.hidden = true; swap.innerHTML = ''; }
       else {
         swap.innerHTML = '<h2 class="scp__bt">Swap to a <em>bundle</em></h2>' + cards.map(function (c) {
-          return '<div class="sbundle"><img src="' + esc(c.hit.i) + '" alt="" width="64" height="64" loading="lazy"><div><p class="sbundle__eb">Bundle swap</p><p class="sbundle__t">' + esc(shortTitle(c.it.product_title, c.it.vendor)) + ' comes in the <b>' + esc(c.hit.t) + '</b>' + (c.hit.s ? '. Swap to the bundle and save <b>' + rs(c.hit.s) + '</b>' : '') + '.</p></div>' +
+          return '<div class="sbundle"><img src="' + esc(c.hit.i) + '" alt="" width="64" height="64" loading="lazy" data-v2-lift><div><p class="sbundle__eb">Bundle swap</p><p class="sbundle__t">' + esc(shortTitle(c.it.product_title, c.it.vendor)) + ' comes in the <b>' + esc(c.hit.t) + '</b>' + (c.hit.s ? '. Swap to the bundle and save <b>' + rs(c.hit.s) + '</b>' : '') + '.</p></div>' +
             (c.hit.v ? '<button type="button" class="v-btn v-btn--accent v-btn--sm" data-add="' + c.hit.v + ':1"><span>Add bundle · ' + rs(c.hit.p) + '</span></button>' : '<a class="v-btn v-btn--accent v-btn--sm" href="' + esc(c.hit.u) + '"><span>See bundle · ' + rs(c.hit.p) + '</span></a>') + '</div>';
         }).join('');
         swap.hidden = false;
@@ -181,7 +182,7 @@
     var variant = it.variant_title && it.variant_title !== 'Default Title' ? it.variant_title : '';
     var was = it.original_line_price > it.final_line_price ? it.original_line_price : 0;
     return '<li class="sline" data-line="' + n + '" data-key="' + esc(it.key) + '" data-handle="' + esc(it.handle) + '" data-vid="' + it.variant_id + '">' +
-      '<a class="sline__img' + (framed(it.image) ? ' is-framed' : '') + '" href="' + esc(it.url) + '" tabindex="-1">' + (it.image ? '<img src="' + esc(img(it.image, 200)) + '" alt="" width="88" height="88" loading="lazy">' : '') + '</a>' +
+      '<a class="sline__img' + (framed(it.image) ? ' is-framed' : '') + '" href="' + esc(it.url) + '" tabindex="-1">' + (it.image ? '<img src="' + esc(img(it.image, 200)) + '" alt="" width="88" height="88" loading="lazy" data-v2-lift>' : '') + '</a>' +
       '<div class="sline__b">' +
         '<p class="sline__brand">' + esc(it.vendor) + '</p>' +
         '<a class="sline__t" href="' + esc(it.url) + '">' + esc(shortTitle(it.product_title, it.vendor)) + '</a>' +
@@ -392,13 +393,13 @@
   };
   // compact carousel card: image, name, price, +
   Cart.prototype.card = function (p, why) {
-    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 200)) + '" alt="" width="96" height="96" loading="lazy">' : '') + '</a>' +
+    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 200)) + '" alt="" width="96" height="96" loading="lazy" data-v2-lift>' : '') + '</a>' +
       '<a class="ssug__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a>' +
       '<span class="ssug__f"><span class="ssug__p">' + rs(p.price) + (why ? '<i>' + esc(why) + '</i>' : '') + '</span>' +
       (p.multi ? '<button type="button" class="ssug__add" data-v2-pick="' + esc(p.handle || String(p.url).split('/products/')[1]) + '" aria-haspopup="dialog" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</button>' : '<button type="button" class="ssug__add" data-add="' + p.vid + '" aria-label="Add ' + esc(p.title) + ' to basket, ' + rs(p.price) + '">' + icons.plus + '</button>') + '</span></li>';
   };
   Cart.prototype.mini = function (p, helper) {
-    return '<li class="smini"><a class="smini__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 160)) + '" alt="" width="64" height="64" loading="lazy">' : '') + '</a>' +
+    return '<li class="smini"><a class="smini__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 160)) + '" alt="" width="64" height="64" loading="lazy" data-v2-lift>' : '') + '</a>' +
       '<span class="smini__b"><a class="smini__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a><span class="smini__p">' + rs(p.price) + (helper ? ' · <i>' + esc(helper) + '</i>' : '') + '</span></span>' +
       (p.multi ? '<button type="button" class="smini__add" data-v2-pick="' + esc(p.handle || String(p.url).split('/products/')[1]) + '" aria-haspopup="dialog" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</button>' : '<button type="button" class="smini__add" data-add="' + p.vid + '" aria-label="Add ' + esc(p.title) + ' to basket">' + icons.plus + '</button>') + '</li>';
   };
@@ -530,7 +531,7 @@
      the seeds, recently viewed. Cards add in one tap (single variant) or open the quick-buy sheet. */
   function wcard(p) {
     var multi = p.multi || (p.nv > 1);
-    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 300)) + '" alt="" width="150" height="150" loading="lazy">' : '') + '</a>' +
+    return '<li class="ssug"><a class="ssug__img' + (framed(p.image) ? ' is-framed' : '') + '" href="' + esc(p.url) + '" tabindex="-1" aria-label="' + esc(p.title) + '">' + (p.image ? '<img src="' + esc(img(p.image, 300)) + '" alt="" width="150" height="150" loading="lazy" data-v2-lift>' : '') + '</a>' +
       '<a class="ssug__t" href="' + esc(p.url) + '">' + esc(shortTitle(p.title, p.vendor)) + '</a>' +
       '<span class="ssug__f"><span class="ssug__p">' + rs(p.price) + (p.why ? '<i>' + esc(p.why) + '</i>' : '') + '</span>' +
       (multi ? '<button type="button" class="ssug__add" data-v2-pick="' + esc(p.handle) + '" aria-haspopup="dialog" aria-label="Choose options for ' + esc(p.title) + '">' + icons.plus + '</button>'
