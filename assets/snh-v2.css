@@ -2447,3 +2447,11 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 .pc .card__tile::after { background: #E7E7E7; }
 @media (hover: none), (max-width: 767px) { .pc:hover { transform: none; box-shadow: none; } }
 @media (prefers-reduced-motion: reduce) { .pc, .pc:hover { transform: none; transition: none; } }
+
+/* Round 19 #8: SNH standard band background video (snippets/snh-bg-video) */
+.sbx--video { position: relative; isolation: isolate; overflow: hidden; }
+.sbx--video > .v-wrap { position: relative; z-index: 1; }
+.sbx--video-section .sbx__big { background: rgba(20, 16, 13, .55); backdrop-filter: blur(2px); }
+.sbx--video-section .sbx__card { background: rgba(20, 16, 13, .5); }
+.sbx--video-tile .sbx__big > :not(.snh-bgv) { position: relative; z-index: 1; }
+.sbx--video .sbx__num, .sbx--video .sbx__title { text-shadow: 0 2px 18px rgba(0, 0, 0, .45); }

@@ -1,0 +1,54 @@
+{%- comment -%}
+  Round 19 #8: one background-video slot, reused by the SNH standard stats band, the register page and the account
+  Elite hero. Shopify video (picker) first, else a video URL (.mp4/.webm), with a poster image (else the video's own
+  preview). Muted, looped, playsinline; the <source> is only attached when the slot nears the viewport, it pauses
+  off-screen, and visitors who prefer reduced motion get the poster only (assets/snh-bgv.js). A dark overlay keeps it
+  black/dull so text on top stays readable. Renders nothing when no video and no poster are set (current look stays).
+  video (video setting) · url (text; "asset:file.mp4" = a theme asset) · poster (image setting) · overlay (0–100, % black) · class · tint (css colour)
+{%- endcomment -%}
+{%- liquid
+  assign src = ''
+  assign kind = 'video/mp4'
+  if video != blank
+    for s in video.sources
+      if s.mime_type == 'video/mp4'
+        assign src = s.url
+        if s.height <= 1080
+          break
+        endif
+      endif
+    endfor
+    if src == blank
+      assign src = video.sources.first.url
+      assign kind = video.sources.first.mime_type
+    endif
+  elsif url != blank
+    assign src = url | strip
+    if src contains 'asset:'
+      assign src = src | remove: 'asset:' | strip | asset_url
+    endif
+    if src contains '.webm'
+      assign kind = 'video/webm'
+    endif
+  endif
+  assign pimg = poster | default: video.preview_image
+  assign ov = overlay | default: 70 | divided_by: 100.0
+-%}
+{%- if src != blank or pimg != blank -%}
+  <div class="snh-bgv{% if class != blank %} {{ class }}{% endif %}" aria-hidden="true" style="--bgv-ov: {{ ov }};{% if tint != blank %} --bgv-tint: {{ tint }};{% endif %}" data-bgv>
+    {%- if pimg != blank -%}{{ pimg | image_url: width: 1920 | image_tag: class: 'snh-bgv__poster', alt: '', loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,1920' }}{%- endif -%}
+    {%- if src != blank -%}
+      <video class="snh-bgv__v" muted loop playsinline disablepictureinpicture preload="none" tabindex="-1"{% if pimg != blank %} poster="{{ pimg | image_url: width: 1600 }}"{% endif %} data-bgv-src="{{ src | escape }}" data-bgv-type="{{ kind }}"></video>
+    {%- endif -%}
+    <span class="snh-bgv__ov"></span>
+  </div>
+    <style>
+      .snh-bgv { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: #0B0908; }
+      .snh-bgv__poster, .snh-bgv__v { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .snh-bgv__v { opacity: 0; transition: opacity 600ms ease; }
+      .snh-bgv.is-playing .snh-bgv__v { opacity: 1; }
+      .snh-bgv__ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 7, 6, calc(var(--bgv-ov) * .92)) 0%, rgba(8, 7, 6, var(--bgv-ov)) 55%, rgba(8, 7, 6, min(1, calc(var(--bgv-ov) + .12))) 100%), var(--bgv-tint, transparent); }
+      @media (prefers-reduced-motion: reduce) { .snh-bgv__v { display: none; } }
+    </style>
+    <script src="{{ 'snh-bgv.js' | asset_url }}" defer></script>
+{%- endif -%}

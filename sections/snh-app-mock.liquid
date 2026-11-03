@@ -74,6 +74,12 @@
 {
   "name": "DEV · SNH Elite app mock",
   "settings": [
+    { "type": "header", "content": "Elite hero video (optional)" },
+    { "type": "paragraph", "content": "A muted, looped video behind the Elite card and points panel on the Overview, under a dark overlay. Loads lazily, pauses off-screen; reduced motion = the poster. Empty = the current look." },
+    { "type": "video", "id": "hero_video", "label": "Video (Shopify)" },
+    { "type": "text", "id": "hero_video_url", "label": "…or a video URL", "info": "An .mp4 or .webm link." },
+    { "type": "image_picker", "id": "hero_poster", "label": "Poster image" },
+    { "type": "range", "id": "hero_overlay", "label": "Darkness", "min": 40, "max": 95, "step": 5, "unit": "%", "default": 70 },
     {
       "type": "paragraph",
       "content": "Dev only. A mock persona for QA screenshots. Do not add to a live page."

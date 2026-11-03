@@ -25,21 +25,21 @@ let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); 
   ok(map.length >= 25 && map.every((m) => m.comps.length), 'every bundle product found with at least one component');
   await ctx.close();
   const vid = (h) => CAT.find((x) => x.handle === h).vid, pid = (h) => CAT.find((x) => x.handle === h).id;
-  const CASES = [['creatine', 'applied-nutrition-creatine-monohydrate', /creatine-starter/], ['whey-isolate', 'applied-nutrition-iso-xp-850g', /isolate-(pre|training)-stack/], ['pre-workout', 'applied-nutrition-abe-all-black-everything', /(whey|isolate)-pre-stack/], ['magnesium', 'revive-magnesium-glycinate', /revive-magnesium-glycinate-1|revive-daily|main-mineral|stress|daily-foundation/], ['gels', 'sis-go-isotonic-energy-gel', /race-day-pack-1-0|endurance-trial/]];
+  const CASES = [['creatine', 'applied-nutrition-creatine-monohydrate', /creatine-starter/], ['pre-workout', 'raw-essential-pre-workout', /raw-(training|loaded)-stack/], ['collagen', 'applied-nutrition-collagen-peptides', /strength-skin|scar-tissue/], ['magnesium', 'revive-magnesium-glycinate', /revive-magnesium-glycinate-1|revive-daily|main-mineral|stress|daily-foundation/], ['gels', 'sis-go-isotonic-energy-gel', /race-day-pack-1-0|endurance-trial/]];
   for (const w of W) {
     ({ ctx, p } = await open(b, w)); await go(p, '/');
     for (const [name, h, want] of CASES) {
       if (!vid(h)) { ok(false, w + ' ' + name + ': ' + h + ' not available'); continue; }
       let r = 0; for (let i = 0; i < 4 && r !== 200; i++) { if (i) await p.waitForTimeout(30000); r = await p.evaluate(async (id) => { try { await fetch('/cart/clear.js', { method: 'POST' }); const x = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: [{ id, quantity: 1 }] }) }); return x.status; } catch (e) { return -1; } }, vid(h)); }
       await p.evaluate(() => { sessionStorage.removeItem('snh_bwin'); SNHCart.refresh(true); });
-      await p.waitForSelector('#cart-drawer .sline .sbx', { timeout: 20000 }).catch(() => {});
+      await p.waitForSelector('#cart-drawer .sline .sbo', { timeout: 20000 }).catch(() => {});
       await p.waitForTimeout(1200);
-      const o = await p.evaluate(() => { const x = document.querySelector('#cart-drawer .sline .sbx'); return x ? { t: x.querySelector('.sbx__t').textContent, href: x.querySelector('.sbx__t').getAttribute('href'), eb: x.querySelector('.sbx__eb').textContent, s: x.querySelector('.sbx__s').textContent } : null; });
+      const o = await p.evaluate(() => { const x = document.querySelector('#cart-drawer .sline .sbo'); return x ? { t: x.querySelector('.sbo__t').textContent, href: x.querySelector('.sbo__t').getAttribute('href'), eb: x.querySelector('.sbo__eb').textContent, s: x.querySelector('.sbo__s').textContent } : null; });
       ok(r === 200 && o && want.test(o.href), w + ' ' + name + ' in the basket → "' + (o && o.eb) + '": ' + (o && o.t) + ' (' + (o && o.href) + ')');
       const ln = await p.$('#cart-drawer .sline'); if (ln) await ln.screenshot({ path: shot(`07-bundles/${name}-offer-${w}`) }).catch(() => {});
       await p.screenshot({ path: shot(`07-bundles/${name}-drawer-${w}`) });
       if (name === 'creatine' && o) {
-        await p.click('#cart-drawer .sbx__go');
+        await p.click('#cart-drawer .sbo__go');
         await p.waitForSelector('#cart-drawer [data-bundle-win]', { timeout: 20000 }).catch(() => {});
         await p.waitForTimeout(300);
         const fx = await p.evaluate(() => !!document.querySelector('#cart-drawer .sbw__fx i'));

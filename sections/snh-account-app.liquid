@@ -85,6 +85,12 @@
   "name": "SNH Elite member app",
   "class": "shopify-section--snh-app",
   "settings": [
+    { "type": "header", "content": "Elite hero video (optional)" },
+    { "type": "paragraph", "content": "A muted, looped video behind the Elite card and points panel on the Overview, under a dark overlay. Loads lazily, pauses off-screen; reduced motion = the poster. Empty = the current look." },
+    { "type": "video", "id": "hero_video", "label": "Video (Shopify)" },
+    { "type": "text", "id": "hero_video_url", "label": "…or a video URL", "info": "An .mp4 or .webm link." },
+    { "type": "image_picker", "id": "hero_poster", "label": "Poster image" },
+    { "type": "range", "id": "hero_overlay", "label": "Darkness", "min": 40, "max": 95, "step": 5, "unit": "%", "default": 70 },
     { "type": "paragraph", "content": "Points, tier and spend come from the customer's loyalty metafields. Rates, thresholds, point value, welcome points and perks: Theme settings → SNH Elite." },
     { "type": "header", "content": "Picked for you" },
     { "type": "collection", "id": "best_collection", "label": "Bestsellers (fallback)", "info": "Shown when a member has no goal and no order history. Empty = the Everything collection." },

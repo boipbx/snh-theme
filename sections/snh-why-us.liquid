@@ -1,9 +1,12 @@
-{%- comment -%}SNH "Why choose us" ink band. R18: bento grid: one large tile (orders counter that counts up on scroll, lead, Google rating) + the benefit tiles (icon, title, one line); orange glow, hover lift, staggered reveal; phones swipe the benefit cards.{%- endcomment -%}
+{%- comment -%}SNH "Why choose us" ink band. R19 #8: optional background video (snippets/snh-bg-video) behind the band or the big tile. R18: bento grid: one large tile (orders counter that counts up on scroll, lead, Google rating) + the benefit tiles (icon, title, one line); orange glow, hover lift, staggered reveal; phones swipe the benefit cards.{%- endcomment -%}
 {%- capture snh_out -%}
 {%- assign hid = 'why-' | append: section.id -%}
 {%- assign stats = section.blocks | where: 'type', 'stat' -%}
 {%- assign benefits = section.blocks | where: 'type', 'benefit' -%}
-<section class="v2 v-section v-section--dark sbx" aria-labelledby="{{ hid }}" data-sbx>
+{%- assign st = section.settings -%}
+{%- capture bgv -%}{%- render 'snh-bg-video', video: st.bg_video, url: st.bg_video_url, poster: st.bg_poster, overlay: st.bg_overlay, class: 'sbx__bgv' -%}{%- endcapture -%}
+<section class="v2 v-section v-section--dark sbx{% if bgv != blank %} sbx--video sbx--video-{{ st.bg_area | default: 'section' }}{% endif %}" aria-labelledby="{{ hid }}" data-sbx>
+  {%- if bgv != blank and st.bg_area != 'tile' -%}{{ bgv }}{%- endif -%}
   <div class="v-wrap">
     <div class="sbx__head">
       {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
@@ -11,6 +14,7 @@
     </div>
     <div class="sbx__grid">
       <div class="sbx__big sbx__t" style="--i: 0">
+        {%- if bgv != blank and st.bg_area == 'tile' -%}{{ bgv }}{%- endif -%}
         <span class="sbx__glow" aria-hidden="true"></span>
         {%- for b in stats -%}
           {%- if b.settings.use_rating -%}{%- continue -%}{%- endif -%}
@@ -79,7 +83,14 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why choose us" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "The SNH *standard*" },
-    { "type": "textarea", "id": "lead", "label": "Lead" }
+    { "type": "textarea", "id": "lead", "label": "Lead" },
+    { "type": "header", "content": "Background video (optional)" },
+    { "type": "paragraph", "content": "Plays muted and looped behind the stats under a dark overlay. Loads only when the section scrolls near, pauses off-screen; visitors who prefer reduced motion see the poster. Empty = the current look." },
+    { "type": "video", "id": "bg_video", "label": "Video (Shopify)" },
+    { "type": "text", "id": "bg_video_url", "label": "…or a video URL", "info": "An .mp4 or .webm link. Used when no Shopify video is picked." },
+    { "type": "image_picker", "id": "bg_poster", "label": "Poster image", "info": "Shown before the video loads and for reduced motion. Default: the video's own preview image." },
+    { "type": "range", "id": "bg_overlay", "label": "Darkness", "min": 40, "max": 95, "step": 5, "unit": "%", "default": 75 },
+    { "type": "select", "id": "bg_area", "label": "Video behind", "default": "section", "options": [{ "value": "section", "label": "The whole band" }, { "value": "tile", "label": "The big stats tile" }] }
   ],
   "blocks": [
     { "type": "stat", "name": "Stat", "limit": 3, "settings": [

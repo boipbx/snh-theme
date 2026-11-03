@@ -21,7 +21,10 @@
   <h1 class="app__h" id="{{ sid }}-overview-h">Welcome back, <em>{{ me[0] | default: 'there' | escape }}</em></h1>
 </header>
 
-<div class="app__hero app__hero--cards">
+{%- capture hero_bgv -%}{%- render 'snh-bg-video', video: s.hero_video, url: s.hero_video_url, poster: s.hero_poster, overlay: s.hero_overlay, class: 'app__herobgv' -%}{%- endcapture -%}
+<div class="app__hero app__hero--cards{% if hero_bgv != blank %} app__hero--video{% endif %}">
+  {%- comment -%} R19 #8: optional background video behind the Elite card + points panel (account section settings) {%- endcomment -%}
+  {{- hero_bgv -}}
   {%- comment -%} Round 16: ONE full-size flip card; the points panel beside it on desktop (same height), below it on
   smaller screens. {%- endcomment -%}
   <div class="app__ec">{%- render 'snh-elite-card', m: m, name: me[1], no: me[4], size: 'full', side: 'both' -%}</div>

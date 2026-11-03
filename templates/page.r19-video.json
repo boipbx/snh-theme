@@ -1,0 +1,119 @@
+{
+  "sections": {
+    "why": {
+      "type": "snh-why-us",
+      "settings": {
+        "eyebrow": "Why choose us",
+        "heading": "The SNH *standard*",
+        "lead": "QA page for the R19 background video slot (dev only).",
+        "bg_video_url": "asset:snh-sis-video.mp4",
+        "bg_overlay": 75,
+        "bg_area": "section"
+      },
+      "blocks": {
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "50,000+",
+            "label": "orders delivered"
+          }
+        },
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "100% authentic",
+            "text": "Straight from the brands."
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Same-day Colombo",
+            "text": "Order by 2 pm."
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "badge",
+            "title": "Informed Sport",
+            "text": "Tested lines."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "why_tile": {
+      "type": "snh-why-us",
+      "settings": {
+        "eyebrow": "Tile variant",
+        "heading": "Video in the *tile*",
+        "lead": "",
+        "bg_video_url": "asset:snh-sis-video.mp4",
+        "bg_overlay": 70,
+        "bg_area": "tile"
+      },
+      "blocks": {
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "50,000+",
+            "label": "orders delivered"
+          }
+        },
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "100% authentic",
+            "text": "Straight from the brands."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "b1"
+      ]
+    },
+    "plain": {
+      "type": "snh-why-us",
+      "settings": {
+        "eyebrow": "No video",
+        "heading": "Current *look*",
+        "lead": ""
+      },
+      "blocks": {
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "50,000+",
+            "label": "orders delivered"
+          }
+        }
+      },
+      "block_order": [
+        "s1"
+      ]
+    },
+    "reg": {
+      "type": "snh-account-register",
+      "settings": {
+        "bg_video_url": "asset:snh-sis-video.mp4",
+        "bg_overlay": 45
+      }
+    }
+  },
+  "order": [
+    "reg",
+    "why",
+    "why_tile",
+    "plain"
+  ]
+}

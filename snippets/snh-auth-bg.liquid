@@ -24,8 +24,10 @@
       {{- s[k] | image_url: width: 1920 | image_tag: loading: 'lazy', widths: '750,1100,1500,1920', sizes: '100vw', alt: '', class: 'auth__bgimg', style: st -}}
     {%- endif -%}
   {%- endfor -%}
-  {%- if s.bg_video != blank -%}
-    {{- s.bg_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'auth__bgvid', image_size: '1920x' -}}
+  {%- comment -%} R19 #8: the shared video slot (Shopify video or URL, poster, darkness; lazy, pauses off-screen) {%- endcomment -%}
+  {%- if s.bg_video != blank or s.bg_video_url != blank -%}
+    {%- assign pst = s.bg_poster | default: s.bg_1 -%}
+    {%- render 'snh-bg-video', video: s.bg_video, url: s.bg_video_url, poster: pst, overlay: s.bg_overlay, class: 'auth__bgv' -%}
   {%- endif -%}
   <i class="auth__bgtint"></i>
 </div>

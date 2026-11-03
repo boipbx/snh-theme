@@ -514,7 +514,8 @@
     var retail = {}; String(ab.retail || '').split(',').forEach(function (p) { var kv = p.split('='); if (kv[1]) retail[kv[0]] = +kv[1]; });
     var apply = function (list) { return list.map(function (b) { var o = over[b.h] || {}; return Object.assign({}, b, { only: o.only || null, plus: o.plus || null, minus: o.minus || null }); }); };
     if (cached && cached.sig === sig && Date.now() - cached.at < 18e5) return (bundlePromise = Promise.resolve(apply(cached.list)));
-    bundlePromise = Promise.all((ab.cols || []).map(function (c) { return json(root + 'collections/' + encodeURIComponent(c) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }); }))
+    var failed = false;
+    bundlePromise = Promise.all((ab.cols || []).map(function (c) { return json(root + 'collections/' + encodeURIComponent(c) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { failed = true; return []; }); }))
       .then(function (sets) {
         var seen = {}, list = [];
         sets.forEach(function (s) { s.forEach(function (p) {
@@ -523,7 +524,9 @@
           var price = cents(v.price), cmp = cents(v.compare_at_price || 0), was = cmp > price ? cmp : (retail[p.handle] || 0);
           list.push({ id: p.id, h: p.handle, t: p.title, u: '/products/' + p.handle, i: (p.images && p.images[0] && p.images[0].src) || '', vid: v.id, p: price, r: was, s: Math.max(0, was - price), sent: bSentences(p.body_html) });
         }); });
-        try { sessionStorage.setItem(KEY, JSON.stringify({ sig: sig, at: Date.now(), list: list })); } catch (e) {}
+        // a failed / rate-limited fetch is never cached: the next render tries again
+        if (failed || !list.length) bundlePromise = null;
+        else try { sessionStorage.setItem(KEY, JSON.stringify({ sig: sig, at: Date.now(), list: list })); } catch (e) {}
         return apply(list);
       });
     return bundlePromise;
@@ -545,7 +548,7 @@
       var used = {};
       lines.forEach(function (l, n) {
         var li = $('.sline[data-line="' + (n + 1) + '"]', self.el); if (!li) return;
-        var old = $('.sbx', li); if (old) old.remove();
+        var old = $('.sbo', li); if (old) old.remove();
         if (byId[l.it.product_id] || /bundle/i.test(l.it.product_type || '')) return;
         var best = null;
         bundles.forEach(function (b) {
@@ -559,12 +562,12 @@
         used[best.b.id] = 1;
         var keys = best.cover.map(function (x) { return x.it.key; }).join(',');
         var what = best.cover.map(function (x) { return shortTitle(x.it.product_title, x.it.vendor); });
-        var box = document.createElement('div'); box.className = 'sbx';
-        box.innerHTML = (best.b.i ? '<img class="sbx__img" src="' + esc(img(best.b.i, 160)) + '" alt="" width="56" height="56" loading="lazy" data-v2-lift>' : '') +
-          '<div class="sbx__b"><p class="sbx__eb">' + icons.tag + 'Make it a bundle' + (best.b.s ? ' · save ' + rs(best.b.s) : '') + '</p>' +
-          '<a class="sbx__t" href="' + esc(best.b.u) + '">' + esc(best.b.t) + '</a>' +
-          '<p class="sbx__s">Swaps your ' + esc(what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0]) + ' for the bundle · ' + rs(best.b.p) + '</p></div>' +
-          '<button type="button" class="sbx__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Swap</button>';
+        var box = document.createElement('div'); box.className = 'sbo';
+        box.innerHTML = (best.b.i ? '<img class="sbo__img" src="' + esc(img(best.b.i, 160)) + '" alt="" width="56" height="56" loading="lazy" data-v2-lift>' : '') +
+          '<div class="sbo__b"><p class="sbo__eb">' + icons.tag + 'Make it a bundle' + (best.b.s ? ' · save ' + rs(best.b.s) : '') + '</p>' +
+          '<a class="sbo__t" href="' + esc(best.b.u) + '">' + esc(best.b.t) + '</a>' +
+          '<p class="sbo__s">Swaps your ' + esc(what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0]) + ' for the bundle · ' + rs(best.b.p) + '</p></div>' +
+          '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Swap</button>';
         $('.sline__b', li).appendChild(box);
       });
     });

@@ -12,7 +12,7 @@
     "main": {
       "type": "snh-app-mock",
       "settings": {
-        "label": "Silver · near reward (320 points to go), running low, unfulfilled order",
+        "label": "Silver \u00b7 near reward (320 points to go), running low, unfulfilled order",
         "first_name": "Nimal",
         "last_name": "Perera",
         "email": "nimal@example.com",
@@ -27,7 +27,8 @@
         "address": "Nimal Perera<br>42 Galle Road<br>Colombo 03<br>Sri Lanka<br>+94 77 123 4567",
         "addresses": 2,
         "orders": "#18452|3|paid|unfulfilled|0|sis-go-hydro-tablets:2,sis-go-isotonic-energy-gel:6|\n#18311|25|paid|fulfilled|0|raw-thavage-pre-workout:1|\n#18190|55|paid|fulfilled|0|applied-nutrition-critical-whey-2kg:1|\n#17902|92|paid|fulfilled|0|revive-magnesium-glycinate:1|\n#17750|130|paid|fulfilled|0|applied-nutrition-creatine-monohydrate:1|",
-        "view": "app"
+        "view": "app",
+        "hero_video_url": "asset:snh-sis-video.mp4"
       },
       "blocks": {
         "promo_ryse": {
