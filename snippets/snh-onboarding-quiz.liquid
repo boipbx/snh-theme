@@ -16,8 +16,10 @@
   results is the submit button of the customer form below (POST /contact, contact[tags], data-shopify-captcha), back
   to /account#goals with a banner. Register mode: answers fill customer[tags] on the create_customer form; radios
   belong to no form (form="…-none"), so only the tags field posts. mock: true never submits.
-  blocks · id (unique) · mode: 'app' | 'register' · contact · email · a: current answers as tags string (preselect)
-  · phone · bday · stack: stack categories setting · bundle_handles · mock
+  blocks · id (unique) · mode: 'app' | 'register' | 'guest' · contact · email · a: current answers as tags string (preselect)
+  · phone · bday · stack: stack categories setting · bundle_handles · mock · return_to (app mode)
+  R18: mode 'guest' (homepage quiz band, signed out) = app mode without the save form: results show the stack and the
+  free workout plan (data-wk-plan), and sections/snh-quiz-band moves its sign-up gate into data-wk-gate-slot.
 {%- endcomment -%}
 {%- liquid
   assign keys = 'goal,goal2,lvl,freq,sess,sport,diet,budget,exp,take,challenge,flavour,age' | split: ','
@@ -167,6 +169,8 @@
       <ol class="qz__stack" role="list" data-qz-stack></ol>
       <div class="qz__tot" data-qz-tot></div>
       <aside class="qz__tip" data-qz-tip></aside>
+      <div class="wk" data-wk-plan hidden></div>
+      <div class="wk-gate-slot" data-wk-gate-slot></div>
       <div class="qz__share">
         <canvas class="qz__card" width="1080" height="1350" data-qz-canvas role="img" aria-label="Your SNH plan card"></canvas>
         <div class="qz__share-b">
@@ -184,14 +188,17 @@
     <button class="v-btn v-btn--line" type="button" data-quiz-back hidden><span>Back</span></button>
     <button class="v-link quiz__skip" type="button" data-quiz-skip>{% if mode == 'register' %}Skip the rest{% else %}Skip this question{% endif %}</button>
     <button class="v-btn v-btn--ink" type="button" data-quiz-next><span>Next</span></button>
-    {%- if mode != 'register' -%}
+    {%- if mode == 'app' -%}
       <button class="v-btn v-btn--accent" type="submit" form="{{ id }}-form" data-quiz-save hidden{% if mock %} disabled{% endif %}><span>Save my plan</span></button>
+    {%- endif -%}
+    {%- if mode != 'register' -%}
       <button class="v-btn v-btn--line" type="button" data-qz-retake hidden><span>Retake</span></button>
     {%- endif -%}
   </div>
-  {%- if mode != 'register' -%}
+  {%- if mode == 'app' -%}
     {%- assign fid = id | append: '-form' -%}
-    {%- form 'customer', class: 'quiz__form', id: fid, data-shopify-captcha: 'true', data-snh-post: 'goals', return_to: '/account?snh_posted=goals#goals' -%}
+    {%- assign rto = return_to | default: '/account?snh_posted=goals#goals' -%}
+    {%- form 'customer', class: 'quiz__form', id: fid, data-shopify-captcha: 'true', data-snh-post: 'goals', return_to: rto -%}
       <input type="hidden" name="contact[email]" value="{{ email | escape }}">
       <input type="hidden" name="contact[tags]" value="" data-quiz-tags>
     {%- endform -%}

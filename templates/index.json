@@ -120,63 +120,16 @@
         "slide_6"
       ]
     },
-    "snh_goalbar": {
-      "type": "snh-goal-strip",
+    "snh_quiz": {
+      "type": "snh-quiz-band",
       "settings": {
-        "label": "Shop by goal"
-      },
-      "blocks": {
-        "goal_1": {
-          "type": "goal",
-          "settings": {
-            "title": "Build muscle",
-            "link": "/collections/muscle-and-strength"
-          }
-        },
-        "goal_2": {
-          "type": "goal",
-          "settings": {
-            "title": "Lose fat",
-            "link": "/collections/fat-loss"
-          }
-        },
-        "goal_3": {
-          "type": "goal",
-          "settings": {
-            "title": "Endurance",
-            "link": "/collections/energy-and-endurance"
-          }
-        },
-        "goal_4": {
-          "type": "goal",
-          "settings": {
-            "title": "Hydration",
-            "link": "/collections/hydration-recovery"
-          }
-        },
-        "goal_5": {
-          "type": "goal",
-          "settings": {
-            "title": "Daily health",
-            "link": "/collections/health-wellness"
-          }
-        },
-        "goal_6": {
-          "type": "goal",
-          "settings": {
-            "title": "Recovery",
-            "link": "/collections/amino-bcaa"
-          }
-        }
-      },
-      "block_order": [
-        "goal_1",
-        "goal_2",
-        "goal_3",
-        "goal_4",
-        "goal_5",
-        "goal_6"
-      ]
+        "heading": "Not sure what to buy? *Get your plan in 60 seconds.*",
+        "subline": "A few quick taps: we'll match a supplement stack and a free workout plan to your goal, schedule and sport.",
+        "cta": "Find my stack",
+        "note": "Free · no sign-up needed to see your stack",
+        "stack_map": "",
+        "bundle_handles": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers"
+      }
     },
     "snh_logos": {
       "type": "snh-brand-marquee",
@@ -1249,7 +1202,7 @@
   },
   "order": [
     "snh_hero",
-    "snh_goalbar",
+    "snh_quiz",
     "snh_logos",
     "snh_ways",
     "snh_why",

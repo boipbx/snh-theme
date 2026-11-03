@@ -1,0 +1,89 @@
+{%- comment -%}
+  SNH workout plan library (Round 18). One JSON source for the homepage quiz band (sections/snh-quiz-band) and the
+  member app's Goals tab (snippets/snh-app-goals), read by assets/snh-app.js (SNHPlans.pick / SNHPlans.render).
+  12 plans: goal (muscle · fat · endurance · health) × days (2-3 · 4 · 5-6); 2–3 day plans are written for beginners,
+  4 and 5–6 day plans for intermediates; the JS adds a level tweak when the member's level differs, and a sport note.
+  Matching (assets/snh-app.js planFor): goal first, then days, then level. A member's plan is the tag plan:<id>.
+  Each day: d (day label), f (focus), x: [exercise, sets × reps, rest]. Edit here; WORKOUT-PLANS.md has the metaobject
+  definition to move this into Shopify admin later.
+{%- endcomment -%}
+<script type="application/json" data-wk-plans>
+[
+  {"id":"muscle-3","goal":"muscle","days":"2-3","level":"beginner","t":"Build muscle: 3-day full body","s":"Three full-body sessions a week: the fastest way for a newer lifter to add muscle. Rest a day between sessions.","w":[
+    {"d":"Mon","f":"Full body A","x":[["Goblet squat","3 × 10","90 s"],["Dumbbell bench press","3 × 10","90 s"],["Seated cable row","3 × 12","60 s"],["Romanian deadlift","3 × 10","90 s"],["Plank","3 × 30 s","45 s"]]},
+    {"d":"Wed","f":"Full body B","x":[["Leg press","3 × 12","90 s"],["Lat pulldown","3 × 10","60 s"],["Seated dumbbell shoulder press","3 × 10","60 s"],["Walking lunge","3 × 10 each","60 s"],["Dead bug","3 × 10 each","45 s"]]},
+    {"d":"Fri","f":"Full body C","x":[["Trap-bar deadlift","3 × 8","2 min"],["Incline dumbbell press","3 × 10","90 s"],["One-arm dumbbell row","3 × 10 each","60 s"],["Leg curl","3 × 12","60 s"],["Biceps curl + triceps pushdown","2 × 12","45 s"]]}
+  ]},
+  {"id":"muscle-4","goal":"muscle","days":"4","level":"intermediate","t":"Build muscle: 4-day upper / lower","s":"Each muscle trained twice a week with enough volume to grow. Add a rep or a little weight every week.","w":[
+    {"d":"Mon","f":"Upper (strength)","x":[["Barbell bench press","4 × 6","2 min"],["Barbell row","4 × 6","2 min"],["Overhead press","3 × 8","90 s"],["Pull-up or lat pulldown","3 × 8","90 s"],["EZ-bar curl","3 × 10","60 s"]]},
+    {"d":"Tue","f":"Lower (strength)","x":[["Back squat","4 × 6","2–3 min"],["Romanian deadlift","3 × 8","2 min"],["Bulgarian split squat","3 × 8 each","90 s"],["Standing calf raise","4 × 12","60 s"],["Hanging knee raise","3 × 12","60 s"]]},
+    {"d":"Thu","f":"Upper (volume)","x":[["Incline dumbbell press","4 × 10","90 s"],["Chest-supported row","4 × 10","90 s"],["Lateral raise","4 × 15","45 s"],["Cable fly","3 × 12","60 s"],["Triceps pushdown + hammer curl","3 × 12","45 s"]]},
+    {"d":"Fri","f":"Lower (volume)","x":[["Leg press","4 × 12","90 s"],["Hip thrust","4 × 10","90 s"],["Leg curl","3 × 12","60 s"],["Leg extension","3 × 15","60 s"],["Cable crunch","3 × 15","45 s"]]}
+  ]},
+  {"id":"muscle-6","goal":"muscle","days":"5-6","level":"intermediate","t":"Build muscle: 6-day push / pull / legs","s":"Push, pull, legs, twice through. High volume for lifters who recover well; drop to 5 days by skipping the second legs day.","w":[
+    {"d":"Mon","f":"Push","x":[["Barbell bench press","4 × 6–8","2 min"],["Seated dumbbell shoulder press","3 × 8–10","90 s"],["Incline dumbbell press","3 × 10","90 s"],["Lateral raise","4 × 15","45 s"],["Overhead triceps extension","3 × 12","60 s"]]},
+    {"d":"Tue","f":"Pull","x":[["Deadlift","3 × 5","3 min"],["Pull-up","4 × 6–8","2 min"],["Cable row","3 × 10","90 s"],["Face pull","3 × 15","45 s"],["Barbell curl","3 × 10","60 s"]]},
+    {"d":"Wed","f":"Legs","x":[["Back squat","4 × 6–8","2–3 min"],["Romanian deadlift","3 × 8","2 min"],["Walking lunge","3 × 12 each","90 s"],["Leg curl","3 × 12","60 s"],["Standing calf raise","4 × 12","60 s"]]},
+    {"d":"Thu","f":"Push (volume)","x":[["Incline barbell press","4 × 8","2 min"],["Dips","3 × 10","90 s"],["Arnold press","3 × 10","90 s"],["Cable fly","3 × 15","60 s"],["Triceps pushdown","3 × 15","45 s"]]},
+    {"d":"Fri","f":"Pull (volume)","x":[["Barbell row","4 × 8","2 min"],["Lat pulldown","3 × 12","90 s"],["One-arm dumbbell row","3 × 10 each","60 s"],["Rear-delt fly","3 × 15","45 s"],["Hammer curl","3 × 12","60 s"]]},
+    {"d":"Sat","f":"Legs (volume)","x":[["Front squat","4 × 8","2 min"],["Hip thrust","4 × 10","90 s"],["Leg press","3 × 15","90 s"],["Leg extension","3 × 15","60 s"],["Hanging leg raise","3 × 12","60 s"]]}
+  ]},
+  {"id":"fat-3","goal":"fat","days":"2-3","level":"beginner","t":"Lose fat: 3-day strength + steps","s":"Lifting keeps your muscle while you diet; short circuits and 8,000+ daily steps do the rest. Pair with a 300–500 calorie deficit.","w":[
+    {"d":"Mon","f":"Strength circuit A","x":[["Goblet squat","3 × 12","60 s"],["Push-up (knees if needed)","3 × 10","60 s"],["Dumbbell row","3 × 12 each","60 s"],["Glute bridge","3 × 15","45 s"],["Bike or rower, easy","10 min","—"]]},
+    {"d":"Wed","f":"Strength circuit B","x":[["Dumbbell Romanian deadlift","3 × 12","60 s"],["Dumbbell shoulder press","3 × 10","60 s"],["Lat pulldown","3 × 12","60 s"],["Reverse lunge","3 × 10 each","60 s"],["Incline walk","15 min","—"]]},
+    {"d":"Fri","f":"Full body + intervals","x":[["Leg press","3 × 12","60 s"],["Incline dumbbell press","3 × 10","60 s"],["Seated cable row","3 × 12","60 s"],["Farmer's carry","3 × 30 m","60 s"],["Bike intervals: 30 s hard / 90 s easy","8 rounds","—"]]}
+  ]},
+  {"id":"fat-4","goal":"fat","days":"4","level":"intermediate","t":"Lose fat: 4-day lift + condition","s":"Two heavy days to hold strength, two conditioning days to burn more. Keep protein high and sleep 7+ hours.","w":[
+    {"d":"Mon","f":"Lower strength","x":[["Back squat","4 × 6","2 min"],["Romanian deadlift","3 × 8","2 min"],["Walking lunge","3 × 10 each","90 s"],["Leg curl","3 × 12","60 s"],["Plank","3 × 45 s","45 s"]]},
+    {"d":"Tue","f":"Upper strength","x":[["Bench press","4 × 6","2 min"],["Pull-up or lat pulldown","4 × 8","90 s"],["Overhead press","3 × 8","90 s"],["Cable row","3 × 10","60 s"],["Face pull","3 × 15","45 s"]]},
+    {"d":"Thu","f":"Metabolic circuit","x":[["Kettlebell swing","4 × 15","45 s"],["Dumbbell thruster","4 × 10","45 s"],["Renegade row","4 × 8 each","45 s"],["Box step-up","4 × 10 each","45 s"],["Rower: 250 m hard","4 rounds","90 s"]]},
+    {"d":"Sat","f":"Intervals + core","x":[["Warm-up jog","10 min","—"],["Running or bike intervals: 1 min hard / 1 min easy","10 rounds","—"],["Hanging knee raise","3 × 12","45 s"],["Side plank","3 × 30 s each","30 s"],["Easy walk","15 min","—"]]}
+  ]},
+  {"id":"fat-6","goal":"fat","days":"5-6","level":"intermediate","t":"Lose fat: 5–6 day split + cardio","s":"An upper / lower split with conditioning finishers and one steady cardio day. Take day 6 as an easy walk if you feel run down.","w":[
+    {"d":"Mon","f":"Lower + finisher","x":[["Back squat","4 × 6","2 min"],["Hip thrust","3 × 10","90 s"],["Leg curl","3 × 12","60 s"],["Calf raise","3 × 15","45 s"],["Sled push or hill sprints","6 × 20 s","90 s"]]},
+    {"d":"Tue","f":"Upper + finisher","x":[["Incline bench press","4 × 8","2 min"],["Barbell row","4 × 8","90 s"],["Dumbbell shoulder press","3 × 10","60 s"],["Lat pulldown","3 × 12","60 s"],["Battle ropes","6 × 20 s","40 s"]]},
+    {"d":"Wed","f":"Steady cardio","x":[["Zone 2 run, bike or swim (you can talk in full sentences)","40–50 min","—"],["Mobility flow","10 min","—"]]},
+    {"d":"Thu","f":"Lower (volume)","x":[["Deadlift","3 × 5","2–3 min"],["Bulgarian split squat","3 × 10 each","90 s"],["Leg press","3 × 15","90 s"],["Kettlebell swing","3 × 20","60 s"],["Hanging leg raise","3 × 12","45 s"]]},
+    {"d":"Fri","f":"Upper (volume)","x":[["Dumbbell bench press","4 × 10","90 s"],["Chest-supported row","4 × 10","90 s"],["Lateral raise","3 × 15","45 s"],["Biceps curl + triceps pushdown","3 × 12","45 s"],["Rower intervals: 30 s hard / 30 s easy","10 rounds","—"]]},
+    {"d":"Sat","f":"Long walk or hike","x":[["Brisk walk, hike or easy cycle","60 min","—"]]}
+  ]},
+  {"id":"endurance-3","goal":"endurance","days":"2-3","level":"beginner","t":"Endurance: 3-day base builder","s":"Two runs (or rides) and one strength day. Most of it easy: build the engine first, speed comes later.","w":[
+    {"d":"Tue","f":"Easy aerobic","x":[["Run-walk or easy ride (conversation pace)","25–35 min","—"],["Calf raise","2 × 15","45 s"],["Hip mobility","5 min","—"]]},
+    {"d":"Thu","f":"Strength for endurance","x":[["Goblet squat","3 × 10","90 s"],["Step-up","3 × 10 each","60 s"],["Single-leg Romanian deadlift","3 × 8 each","60 s"],["Push-up","3 × 10","60 s"],["Side plank","3 × 30 s each","30 s"]]},
+    {"d":"Sat","f":"Long easy session","x":[["Long run-walk or ride; add 5 min each week","40–50 min","—"],["Stretch: calves, hips, hamstrings","10 min","—"]]}
+  ]},
+  {"id":"endurance-4","goal":"endurance","days":"4","level":"intermediate","t":"Endurance: 4-day speed + strength","s":"One quality session, one tempo, one long session and one strength day: a balanced week for 10 km to half-marathon or match fitness.","w":[
+    {"d":"Mon","f":"Strength","x":[["Back squat","3 × 6","2 min"],["Romanian deadlift","3 × 8","2 min"],["Bulgarian split squat","3 × 8 each","90 s"],["Pull-up","3 × 6–8","90 s"],["Copenhagen plank","3 × 20 s each","30 s"]]},
+    {"d":"Tue","f":"Intervals","x":[["Warm-up","15 min easy","—"],["Intervals: 6 × 3 min hard (90 s jog between)","6 rounds","90 s"],["Cool-down","10 min easy","—"]]},
+    {"d":"Thu","f":"Tempo","x":[["Warm-up","10 min easy","—"],["Tempo: comfortably hard, steady","20 min","—"],["Strides","4 × 20 s","40 s"],["Cool-down","10 min easy","—"]]},
+    {"d":"Sat","f":"Long session","x":[["Long run or ride at easy pace; practise your race fuel","60–90 min","—"]]}
+  ]},
+  {"id":"endurance-6","goal":"endurance","days":"5-6","level":"intermediate","t":"Endurance: 6-day performance week","s":"For athletes in a race or match block: two quality sessions, a long session, two easy days and strength. Keep easy days truly easy.","w":[
+    {"d":"Mon","f":"Easy + strength","x":[["Easy run or ride","30 min","—"],["Trap-bar deadlift","3 × 5","2 min"],["Step-up","3 × 8 each","90 s"],["Single-leg calf raise","3 × 12 each","45 s"],["Pallof press","3 × 10 each","45 s"]]},
+    {"d":"Tue","f":"VO₂ intervals","x":[["Warm-up","15 min easy","—"],["5 × 4 min hard (3 min easy between)","5 rounds","3 min"],["Cool-down","10 min","—"]]},
+    {"d":"Wed","f":"Recovery","x":[["Very easy spin, swim or walk","30–40 min","—"],["Mobility","15 min","—"]]},
+    {"d":"Thu","f":"Threshold","x":[["Warm-up","15 min easy","—"],["3 × 10 min at threshold (2 min easy between)","3 rounds","2 min"],["Cool-down","10 min","—"]]},
+    {"d":"Fri","f":"Easy + strength","x":[["Easy run or ride","30 min","—"],["Front squat","3 × 6","2 min"],["Nordic curl (assisted)","3 × 5","90 s"],["Push-up","3 × 12","60 s"],["Side plank","3 × 40 s each","30 s"]]},
+    {"d":"Sat","f":"Long session","x":[["Long run or ride; last 20 min at goal pace; fuel 60–90 g carbs an hour","90–120 min","—"]]}
+  ]},
+  {"id":"health-3","goal":"health","days":"2-3","level":"beginner","t":"Everyday health: 3-day feel-good plan","s":"Strength, cardio and mobility in short sessions you can keep up for life. Walk every day you can.","w":[
+    {"d":"Mon","f":"Strength basics","x":[["Sit-to-stand (box squat)","3 × 10","60 s"],["Wall or incline push-up","3 × 10","60 s"],["Band or cable row","3 × 12","60 s"],["Glute bridge","3 × 12","45 s"],["Bird dog","3 × 8 each","30 s"]]},
+    {"d":"Wed","f":"Cardio","x":[["Brisk walk, cycle or swim","30 min","—"],["Stretch: chest, hips, calves","10 min","—"]]},
+    {"d":"Fri","f":"Strength + balance","x":[["Goblet squat","3 × 10","60 s"],["Dumbbell shoulder press","3 × 10","60 s"],["Lat pulldown","3 × 10","60 s"],["Single-leg balance","3 × 30 s each","30 s"],["Farmer's carry","3 × 30 m","60 s"]]}
+  ]},
+  {"id":"health-4","goal":"health","days":"4","level":"intermediate","t":"Everyday health: 4-day balanced week","s":"Two strength days, one cardio day and one mixed day: the weekly mix health guidelines recommend, in under an hour each.","w":[
+    {"d":"Mon","f":"Full-body strength","x":[["Goblet squat","3 × 10","90 s"],["Dumbbell bench press","3 × 10","90 s"],["Seated cable row","3 × 12","60 s"],["Romanian deadlift","3 × 10","90 s"],["Plank","3 × 40 s","45 s"]]},
+    {"d":"Tue","f":"Zone 2 cardio","x":[["Easy run, ride or swim (conversation pace)","40 min","—"]]},
+    {"d":"Thu","f":"Full-body strength","x":[["Trap-bar deadlift","3 × 8","2 min"],["Overhead press","3 × 8","90 s"],["Lat pulldown","3 × 10","60 s"],["Reverse lunge","3 × 10 each","60 s"],["Side plank","3 × 30 s each","30 s"]]},
+    {"d":"Sat","f":"Mixed + mobility","x":[["Intervals: 30 s hard / 90 s easy (bike or rower)","8 rounds","—"],["Kettlebell swing","3 × 15","60 s"],["Yoga or mobility flow","20 min","—"]]}
+  ]},
+  {"id":"health-6","goal":"health","days":"5-6","level":"intermediate","t":"Everyday health: 5–6 day active lifestyle","s":"Move most days without burning out: alternate strength, cardio and recovery. Sunday is a rest day.","w":[
+    {"d":"Mon","f":"Strength: lower","x":[["Back squat","3 × 8","2 min"],["Hip thrust","3 × 10","90 s"],["Walking lunge","3 × 10 each","60 s"],["Calf raise","3 × 15","45 s"],["Dead bug","3 × 10 each","30 s"]]},
+    {"d":"Tue","f":"Cardio","x":[["Zone 2 run, ride or swim","40 min","—"],["Mobility","10 min","—"]]},
+    {"d":"Wed","f":"Strength: upper","x":[["Bench press","3 × 8","2 min"],["Pull-up or lat pulldown","3 × 8","90 s"],["Dumbbell shoulder press","3 × 10","60 s"],["Cable row","3 × 12","60 s"],["Face pull","3 × 15","45 s"]]},
+    {"d":"Thu","f":"Recovery","x":[["Walk","30–45 min","—"],["Yoga or stretching","20 min","—"]]},
+    {"d":"Fri","f":"Full-body circuit","x":[["Kettlebell swing","3 × 15","60 s"],["Push-up","3 × 12","60 s"],["Goblet squat","3 × 12","60 s"],["Dumbbell row","3 × 10 each","60 s"],["Bike intervals: 30 s hard / 60 s easy","8 rounds","—"]]},
+    {"d":"Sat","f":"Play","x":[["Sport, hike, swim or long walk: something you enjoy","45–90 min","—"]]}
+  ]}
+]
+</script>

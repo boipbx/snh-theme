@@ -1542,6 +1542,19 @@
         "default": 500
       },
       {
+        "type": "text",
+        "id": "snh_klaviyo_company",
+        "label": "Klaviyo public company ID (workout plan quiz)",
+        "default": "Usyrp8",
+        "info": "R18: the quiz sends a \"Workout Plan Unlocked\" event with the plan (KLAVIYO-WORKOUT.md)."
+      },
+      {
+        "type": "text",
+        "id": "snh_klaviyo_workout_list",
+        "label": "Klaviyo list ID for quiz sign-ups",
+        "info": "Optional. When set, members who tick \"Email me my plan and member offers\" are subscribed to this list."
+      },
+      {
         "type": "number",
         "id": "snh_redeem_from",
         "label": "Redeem from (points)",

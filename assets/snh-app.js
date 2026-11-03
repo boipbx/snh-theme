@@ -284,6 +284,8 @@
       nav();
       res.focus({ preventScroll: true });
       if (!reduce) res.classList.add('is-in');
+      // R18: the workout plan and the guest gate hook in here (sections/snh-quiz-band, the Goals tab)
+      q.dispatchEvent(new CustomEvent('snh:quiz-results', { bubbles: true, detail: { answers: answers(), label: lab } }));
     }
 
     if (form) form.addEventListener('submit', function (e) {
@@ -802,6 +804,108 @@
     }
   }
 
+  /* ---------- R18 · free workout plans (snippets/snh-workout-plans): pick the best match, render a weekly table ---------- */
+  var WK_GOAL = { 'build-muscle': 'muscle', 'lose-fat': 'fat', endurance: 'endurance', 'hydration-recovery': 'health', 'daily-health': 'health' };
+  var WK_ENDURE = { running: 1, cycling: 1, swimming: 1, cricket: 1, football: 1, rugby: 1, padel: 1 };
+  var WK_DAYS = { '1-2x': '2-3', '3x': '2-3', '4x': '4', '5x': '5-6', '6x': '5-6' };
+  var WK_SPORT = {
+    cricket: 'Cricket: after day 1, add 6 × 20 m sprints with a walk-back recovery, and do band shoulder rotations before every session.',
+    padel: 'Padel: add lateral shuffles and split-step drills (3 × 30 s) to your warm-ups, and forearm and shoulder band work twice a week.',
+    running: 'Running: keep 80% of your running easy, and add 4 × 20 s relaxed strides after one easy run a week.',
+    cycling: 'Cycling: swap any run for a ride at the same effort, and keep the single-leg work: it fixes left-right imbalances on the bike.',
+    swimming: 'Swimming: swap cardio days for pool sessions, and add band pull-aparts (3 × 15) to every strength day for healthy shoulders.',
+    football: 'Football: add 6 × 30 m sprints and change-of-direction drills once a week, and Copenhagen planks for groin strength.',
+    rugby: 'Rugby: add sled pushes or prowler work at the end of a lower day, and neck and shoulder strengthening twice a week.',
+    gym: 'Gym: log every session. Beat last week by one rep or a little weight; that is progressive overload.',
+    other: 'Your sport: add one short skill or conditioning session that mirrors how your sport moves, and keep a rest day before games.'
+  };
+  function wkData() { var el = document.querySelector('[data-wk-plans]'); if (!el) return []; if (!el.__d) { try { el.__d = JSON.parse(el.textContent); } catch (e) { el.__d = []; } } return el.__d; }
+  function planFor(a) {
+    var plans = wkData(); if (!plans.length) return null;
+    var g = a.goal === 'sport-specific' ? (a.sport === 'gym' ? 'muscle' : WK_ENDURE[a.sport] ? 'endurance' : 'health') : WK_GOAL[a.goal] || WK_GOAL[a.goal2] || 'health';
+    var lv = a.lvl === 'beginner' || !a.lvl ? 'beginner' : 'intermediate';
+    var d = WK_DAYS[a.freq] || (lv === 'beginner' ? '2-3' : '4');
+    var best = null, bs = -1;
+    plans.forEach(function (p) { var sc = (p.goal === g ? 100 : 0) + (p.days === d ? 10 : 0) + (p.level === lv ? 1 : 0); if (sc > bs) { bs = sc; best = p; } });
+    return best;
+  }
+  function planById(id) { return wkData().filter(function (p) { return p.id === id; })[0] || null; }
+  function planNotes(p, a) {
+    var n = [];
+    if (a && a.lvl === 'beginner' && p.level !== 'beginner') n.push('New to this? Do one set fewer on every exercise for the first two weeks, and finish each set with 2–3 reps left in the tank.');
+    if (a && a.lvl === 'advanced') n.push('Advanced: add a set to the first two exercises each day, and add load every week you hit the top of the rep range.');
+    if (a && a.sport && WK_SPORT[a.sport]) n.push(WK_SPORT[a.sport]);
+    return n;
+  }
+  // opts: answers, preview (only day 1 open, the rest locked), id prefix
+  function renderPlan(el, p, opts) {
+    if (!el || !p) return;
+    opts = opts || {};
+    var notes = planNotes(p, opts.answers);
+    var days = p.w.map(function (day, n) {
+      var lock = opts.preview && n > 0;
+      return '<section class="wk__day' + (lock ? ' is-locked' : '') + '"' + (lock ? ' aria-hidden="true"' : '') + '><header class="wk__dh"><span class="wk__dn">Day ' + (n + 1) + '</span><span class="wk__dd">' + esc(day.d) + '</span><b class="wk__df">' + esc(day.f) + '</b></header>' +
+        '<table class="wk__t"><thead><tr><th scope="col">Exercise</th><th scope="col">Sets × reps</th><th scope="col">Rest</th></tr></thead><tbody>' +
+        day.x.map(function (x) { return '<tr><td>' + esc(x[0]) + '</td><td>' + esc(x[1]) + '</td><td>' + esc(x[2]) + '</td></tr>'; }).join('') + '</tbody></table></section>';
+    }).join('');
+    el.innerHTML = '<div class="wk__head"><p class="eyebrow">Your free workout plan · by SNH</p><h3 class="wk__h">' + esc(p.t) + '</h3><p class="wk__s">' + esc(p.s) + '</p>' +
+      '<p class="wk__meta"><span>' + p.w.length + ' days a week</span><span>' + (p.level === 'beginner' ? 'Beginner' : 'Intermediate') + '</span><span>Plan ' + esc(p.id) + '</span></p></div>' +
+      '<div class="wk__days">' + days + '</div>' +
+      (notes.length && !opts.preview ? '<ul class="wk__notes" role="list">' + notes.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
+      '<p class="wk__fine">Warm up for 5–10 minutes first. Rest days are for walking, sleep and food. General guidance, not medical advice: check with a doctor if you have an injury or condition.</p>';
+    el.hidden = false;
+  }
+  // Klaviyo: profile properties + a "Workout Plan Unlocked" event (the flow in KLAVIYO-WORKOUT.md), and the list
+  // subscription when a list is set. Client API with keepalive, so a page POST right after doesn't cut it off.
+  function wkKlaviyo(o) {
+    var co = o.company, a = o.answers || {}, p = o.plan;
+    if (!co || !o.email) return Promise.resolve();
+    var props = { snh_goal: a.goal || '', snh_days: a.freq || '', snh_level: a.lvl || '', snh_sport: a.sport || '', snh_plan_id: p ? p.id : '', snh_plan_title: p ? p.t : '', snh_quiz_source: o.source || 'quiz' };
+    var prof = { email: o.email, properties: props };
+    if (o.first) prof.first_name = o.first;
+    if (o.phone) prof.phone_number = o.phone;
+    try { (window.klaviyo = window.klaviyo || []).push(['identify', Object.assign({ email: o.email }, props)]); } catch (e) {}
+    var H = { 'Content-Type': 'application/vnd.api+json', revision: '2024-10-15' }, base = 'https://a.klaviyo.com/client/';
+    var ev = { goal: a.goal || '', days: a.freq || '', level: a.lvl || '', sport: a.sport || '', plan_id: p ? p.id : '', plan_title: p ? p.t : '', plan_summary: p ? p.s : '', plan_days: p ? p.w.map(function (d, n) { return { day: 'Day ' + (n + 1) + ' · ' + d.d, focus: d.f, exercises: d.x.map(function (x) { return x[0] + ': ' + x[1] + ', rest ' + x[2]; }) }; }) : [], plan_url: location.origin + '/account#goals', source: o.source || 'quiz' };
+    var jobs = [fetch(base + 'events/?company_id=' + encodeURIComponent(co), { method: 'POST', keepalive: true, headers: H, body: JSON.stringify({ data: { type: 'event', attributes: { properties: ev, metric: { data: { type: 'metric', attributes: { name: 'Workout Plan Unlocked' } } }, profile: { data: { type: 'profile', attributes: prof } } } } }) })];
+    if (o.list && o.consent) jobs.push(fetch(base + 'subscriptions/?company_id=' + encodeURIComponent(co), { method: 'POST', keepalive: true, headers: H, body: JSON.stringify({ data: { type: 'subscription', attributes: { custom_source: 'Workout plan quiz', profile: { data: { type: 'profile', attributes: prof } } }, relationships: { list: { data: { type: 'list', id: o.list } } } } }) }));
+    return Promise.all(jobs.map(function (j) { return j.catch(function () {}); }));
+  }
+  window.SNHPlans = { pick: planFor, byId: planById, render: renderPlan, klaviyo: wkKlaviyo, tags: tagsFor };
+  window.snhQuizInit = function (q) { return quizInit(q, null); };
+
+  /* account: a plan the member saved (tag plan:<id>), and a plan built on the homepage before they signed in */
+  function wkAccount(app) {
+    var box = app.querySelector('[data-wk-account]');
+    if (box && box.getAttribute('data-plan')) {
+      var a = {}; (box.getAttribute('data-a') || '').split(',').forEach(function (t) { var m = t.trim().match(/^(\w+):(.+)$/); if (m && !a[m[1]]) a[m[1]] = m[2]; });
+      renderPlan(box.querySelector('[data-wk-body]'), planById(box.getAttribute('data-plan')), { answers: a });
+      box.hidden = false;
+    }
+    var pend = lsJson('snh_quiz_pending'), quizEl = app.querySelector('[data-goal-root] [data-quiz]');
+    if (!pend || !pend.answers || Date.now() - (pend.at || 0) > 864e5 * 3 || !quizEl) return;
+    if (box && box.getAttribute('data-plan') === pend.plan) { lsDel('snh_quiz_pending'); return; }
+    var card = app.querySelector('[data-wk-pending]');
+    if (!card) return;
+    var p = planById(pend.plan);
+    card.hidden = false;
+    if (p) card.querySelector('[data-wk-pending-t]').textContent = p.t;
+    if (location.hash !== '#goals') { var g = app.querySelector('a[href="#goals"]'); if (g) g.click(); }
+    card.querySelector('[data-wk-save]').addEventListener('click', function () {
+      var api = quizEl.__quiz, form = quizEl.querySelector('[data-quiz-save]') && quizEl.querySelector('[data-quiz-save]').form;
+      if (!api || !form) return;
+      api.fill(pend.answers);
+      var t = form.querySelector('[data-quiz-tags]');
+      t.__extra = function () { return ['plan:' + pend.plan, 'quiz:home']; };
+      api.sync();
+      var kl = document.querySelector('[data-kl]');
+      if (kl) wkKlaviyo({ company: kl.getAttribute('data-kl-company'), list: kl.getAttribute('data-kl-list'), consent: !!pend.consent, email: app.getAttribute('data-email'), answers: pend.answers, plan: p, source: 'quiz-home-signin' });
+      lsDel('snh_quiz_pending');
+      var sb = quizEl.querySelector('[data-quiz-save]');
+      if (form.requestSubmit) form.requestSubmit(sb); else sb.click();   // the quiz's own submit handler + Shopify's bot check
+    });
+  }
+
   /* ---------- register: step 3 quiz → customer[tags] on the create_customer form (one POST, hCaptcha included) ---------- */
   function registerQuiz() {
     var reg = document.getElementById('snh-register'), q = reg && document.querySelector('[data-quiz][data-mode="register"]');
@@ -820,6 +924,33 @@
 
   function init() {
     $$('[data-app]').forEach(appInit);
+    $$('[data-app]').forEach(wkAccount);
+    // R18: the homepage quiz's "Add" buttons (the app view binds its own inside [data-app])
+    if (!document.__snhQzAdd) {
+      document.__snhQzAdd = true;
+      // results → the matched workout plan: the full plan in app mode (and it saves as plan:<id> with the answers),
+      // day 1 + locked days for guests (sections/snh-quiz-band adds the sign-up gate)
+      document.addEventListener('snh:quiz-results', function (e) {
+        var q = e.target, a = e.detail.answers, p = planFor(a), box = q.querySelector('[data-wk-plan]');
+        if (!p || !box) return;
+        var guest = q.getAttribute('data-mode') === 'guest';
+        q.setAttribute('data-plan', p.id);
+        renderPlan(box, p, { answers: a, preview: guest });
+        var sv = q.querySelector('[data-quiz-save]'), t = sv && sv.form && sv.form.querySelector('[data-quiz-tags]');
+        if (t) { var src = q.getAttribute('data-source'); t.__extra = function () { return ['plan:' + p.id, src ? 'quiz:' + src : '']; }; if (q.__quiz) q.__quiz.sync(); }
+        if (sv && sv.form && !sv.form.__wk) {
+          sv.form.__wk = true;
+          sv.form.addEventListener('submit', function () {
+            var kl = document.querySelector('[data-kl]'), em = sv.form.querySelector('[name="contact[email]"]'), aa = q.__quiz ? q.__quiz.answers() : a;
+            if (kl && em && em.value) wkKlaviyo({ company: kl.getAttribute('data-kl-company'), list: kl.getAttribute('data-kl-list'), consent: false, email: em.value, answers: aa, plan: planFor(aa), source: q.getAttribute('data-source') || 'account' });
+          });
+        }
+      });
+      document.addEventListener('click', function (e) {
+        var r = e.target.closest && e.target.closest('[data-quiz] [data-app-reorder]');
+        if (r && !r.disabled && !r.closest('[data-app]') && !r.closest('[data-mock]')) reorder(r);
+      });
+    }
     registerQuiz();
     $$('[data-sl-mobile]').forEach(bindMobile);
     $$('[data-quiz]').forEach(function (q) { if (!q.__quiz && q.getAttribute('data-mode') !== 'register') quizInit(q, null); });

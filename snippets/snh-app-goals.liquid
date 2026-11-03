@@ -12,6 +12,30 @@
   <p class="app__lead">Tell us what you're working towards. Your picks, tips and guides follow your answers.</p>
 </header>
 
+{%- liquid
+  assign wk_plan = ''
+  if customer
+    for t in customer.tags
+      assign tl = t | downcase | strip
+      if tl contains 'plan:'
+        assign wk_plan = tl | remove_first: 'plan:' | strip
+      endif
+    endfor
+  endif
+-%}
+{%- comment -%} R18: the free workout plan (tag plan:<id>, snippets/snh-workout-plans) and the plan a member built on the homepage before signing in (localStorage snh_quiz_pending, assets/snh-app.js wkAccount) {%- endcomment -%}
+<i hidden data-kl data-kl-company="{{ settings.snh_klaviyo_company | default: 'Usyrp8' }}" data-kl-list="{{ settings.snh_klaviyo_workout_list }}"></i>
+<div class="app__card wk-pending" data-wk-pending hidden>
+  <p class="eyebrow">From the homepage quiz</p>
+  <h2 class="app__h2">Save your <em>plan</em></h2>
+  <p class="app__muted">You built <b data-wk-pending-t>a workout plan</b> and a stack before signing in. Save them to your account to unlock the full plan.</p>
+  <button class="v-btn v-btn--accent" type="button" data-wk-save><span>Save to my account</span></button>
+</div>
+<section class="app__card wk wk--account" data-wk-account data-plan="{{ wk_plan | escape }}" data-a="{{ me[11] | escape }}"{% if wk_plan == blank %} hidden{% endif %} aria-label="Your workout plan">
+  <div data-wk-body></div>
+</section>
+{%- render 'snh-workout-plans' -%}
+
 <div class="gview" data-goal-root data-goal="{{ goal | escape }}" data-freq="{{ freq | escape }}" data-sport="{{ sport | escape }}">
   <div class="gview__set" data-goal-set{% if goal == blank %} hidden{% endif %}>
     <div class="gview__sum app__card">

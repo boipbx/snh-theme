@@ -2400,3 +2400,35 @@ img.snh-koko { max-height: 20px !important; width: auto !important; max-width: n
 /* the homepage already ends with the "First to know" band: don't repeat the same signup in the footer right under it */
 body:has(.news__form) .ftr__news { display: none; }
 @media (max-width: 767px) { .ftr__sep { display: none; } .ftr__tel { display: table; margin-top: 2px; } }   /* footer stores: phone on its own line, no dangling "·" */
+
+/* ================= R18 · "Not sure what to buy?" quiz band + full-screen quiz (sections/snh-quiz-band) ================= */
+.qzb { position: relative; overflow: hidden; background: linear-gradient(100deg, #17110D 0%, #2A1408 55%, #BF4512 140%); color: var(--white); }
+.qzb::before { content: ""; position: absolute; right: -10%; top: -60%; width: 50%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(255, 122, 50, .35), transparent 65%); pointer-events: none; }
+.qzb__in { position: relative; display: grid; gap: 18px; padding-block: 28px; }
+.qzb__h { margin: 0; font: 600 clamp(22px, 2.6vw, 32px)/1.15 var(--sans); letter-spacing: -.02em; }
+.qzb__h em { font-family: var(--serif); font-style: italic; font-weight: 400; color: #FFB27A; letter-spacing: 0; }
+.qzb__p { margin: 6px 0 0; max-width: 60ch; font-size: 15px; line-height: 1.5; color: rgba(255, 255, 255, .74); }
+.qzb__act { display: grid; gap: 8px; justify-items: start; }
+.qzb__cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 56px; padding: 0 28px; border: 0; border-radius: var(--pill); background: var(--v-accent); color: var(--white); font: 600 17px/1 var(--sans); cursor: pointer; box-shadow: 0 10px 30px -10px rgba(224, 82, 28, .8); transition: background-color 200ms var(--ease), transform 200ms var(--ease); }
+.qzb__cta svg { width: 20px; height: 20px; transition: transform 250ms cubic-bezier(.22, 1, .36, 1); }
+.qzb__cta:hover { background: #D4501A; }
+.qzb__cta:hover svg { transform: translateX(4px); }
+.qzb__cta:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
+.qzb__note { margin: 0; font-size: 13px; color: rgba(255, 255, 255, .6); }
+@media (max-width: 767px) { .qzb__act { justify-items: stretch; } .qzb__cta { width: 100%; } .qzb__note { text-align: center; } }
+@media (min-width: 900px) { .qzb__in { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 40px; padding-block: 36px; } .qzb__act { justify-items: center; } }
+/* the full-screen flow */
+html.qzb-open, html.qzb-open body { overflow: hidden; }
+.qzb__ov { position: fixed; inset: 0; z-index: 130; overflow-y: auto; overscroll-behavior: contain; background: var(--white); color: var(--ink); animation: v-fade 200ms var(--ease); }
+.qzb__ov[hidden] { display: none; }
+.qzb__bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 var(--gutter); background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.qzb__brand { font: 700 18px/1 var(--sans); letter-spacing: -.02em; color: var(--v-accent); }
+.qzb__brand em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--ink); }
+.qzb__x { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -10px; border: 0; border-radius: 50%; background: none; color: var(--ink); cursor: pointer; }
+.qzb__x svg { width: 22px; height: 22px; }
+.qzb__body { width: min(100%, 760px); margin: 0 auto; padding: 24px var(--gutter) calc(48px + env(safe-area-inset-bottom)); }
+.qzb__intro { display: grid; gap: 4px; margin-bottom: 20px; }
+.qzb__intro .eyebrow { color: var(--v-accent); }
+.qzb__ih { margin: 0; font: 600 clamp(24px, 3vw, 32px)/1.15 var(--sans); letter-spacing: -.02em; }
+.qzb__ih em { font-family: var(--serif); font-style: italic; font-weight: 400; }
+.qzb__loading { padding: 40px 0; text-align: center; color: var(--grey-2); }

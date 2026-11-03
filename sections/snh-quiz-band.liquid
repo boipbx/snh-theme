@@ -1,0 +1,118 @@
+{%- comment -%}
+  SNH "Not sure what to buy?" quiz band (Round 18, replaces the goal chip strip under the hero).
+  A bold one-line hook + CTA that opens the onboarding quiz (snippets/snh-onboarding-quiz) as a full-screen flow.
+  · Guests: mode 'guest'. Results = their stack (existing logic) + the matched free workout plan with day 1 open and
+    the other days locked; the sign-up gate below (create_customer: first name, email, mobile, password) unlocks it.
+    The answers + plan:<id> + quiz:home post as customer[tags] with the account (the existing tag mechanism), so the
+    plan shows in the account's Goals tab; Klaviyo gets the profile properties and a "Workout Plan Unlocked" event
+    (assets/snh-app.js SNHPlans.klaviyo, KLAVIYO-WORKOUT.md). "Sign in" keeps the answers on this device
+    (localStorage snh_quiz_pending) and the Goals tab offers to save them.
+  · Signed-in members: mode 'app'. The full plan right away and "Save my plan" (the existing customer form → tags).
+  The quiz markup sits in a <template> and assets/snh-app.js / snh-app.css load on the first open, so the homepage
+  pays nothing until someone taps the button. Plans: snippets/snh-workout-plans. JS: assets/snh-quiz-band.js.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign welcome = settings.snh_welcome_points | default: 500
+  assign qid = 'qzb-' | append: section.id
+  assign parts = s.heading | split: '*'
+-%}
+<section class="v2 qzb" aria-labelledby="{{ qid }}-h" data-qzb data-css="{{ 'snh-account.css' | asset_url }} {{ 'snh-app.css' | asset_url }}" data-js="{{ 'snh-app.js' | asset_url }}"{% if customer %} data-customer{% endif %}>
+  <div class="v-wrap qzb__in">
+    <div class="qzb__copy">
+      <h2 class="qzb__h" id="{{ qid }}-h">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</h2>
+      {%- if s.subline != blank -%}<p class="qzb__p">{{ s.subline | escape }}</p>{%- endif -%}
+    </div>
+    <div class="qzb__act">
+      <button class="qzb__cta" type="button" data-qzb-open aria-haspopup="dialog" aria-controls="{{ qid }}-ov"><span>{{ s.cta | escape }}</span>{% render 'snh-v2-icon', name: 'arrow' %}</button>
+      {%- if s.note != blank -%}<p class="qzb__note">{{ s.note | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+
+  <div class="qzb__ov" id="{{ qid }}-ov" role="dialog" aria-modal="true" aria-label="Find my stack" hidden data-qzb-ov>
+    <div class="qzb__bar">
+      <span class="qzb__brand">SNH <em>plan</em></span>
+      <button class="qzb__x" type="button" data-qzb-close aria-label="Close">{% render 'snh-v2-icon', name: 'close' %}</button>
+    </div>
+    <div class="qzb__body">
+      <div class="qzb__intro">
+        <p class="eyebrow">Free · about 60 seconds</p>
+        <p class="qzb__ih">Your stack + a free <em>workout plan</em></p>
+      </div>
+      <div class="qzb__mount" data-qzb-mount><p class="qzb__loading" data-qzb-loading>Loading your quiz…</p></div>
+      <template data-qzb-tpl>
+        {%- if customer -%}
+          {%- render 'snh-onboarding-quiz', blocks: section.blocks, id: qid, mode: 'app', email: customer.email, stack: s.stack_map, bundle_handles: s.bundle_handles, return_to: '/account?snh_posted=goals#goals' -%}
+        {%- else -%}
+          {%- render 'snh-onboarding-quiz', blocks: section.blocks, id: qid, mode: 'guest', stack: s.stack_map, bundle_handles: s.bundle_handles -%}
+        {%- endif -%}
+        {%- render 'snh-workout-plans' -%}
+      </template>
+
+      {%- unless customer -%}
+        {%- comment -%} the gate: moved into the results by assets/snh-quiz-band.js; outside the template so Shopify's bot check sees the form on load {%- endcomment -%}
+        <div class="wk-gate" data-wk-gate hidden>
+          <div class="wk-gate__pitch">
+            <span class="wk-gate__lock" aria-hidden="true">{% render 'snh-v2-icon', name: 'gift' %}</span>
+            <p class="eyebrow">Free with SNH Elite</p>
+            <h3 class="wk-gate__h">Unlock your full <em data-wk-gate-days>plan</em></h3>
+            <ul class="wk-gate__list" role="list">
+              <li>The full weekly plan in your account (Goals) and in your inbox</li>
+              <li>Your stack saved, ready to re-order</li>
+              <li><b>{% render 'snh-num', n: welcome %} welcome points</b> when you join SNH Elite</li>
+            </ul>
+          </div>
+          {%- form 'create_customer', class: 'aform wk-gate__form', id: 'qzb-register', data-wk-form: '' -%}
+            <input type="hidden" name="return_to" value="/account?snh_posted=quiz#goals">
+            <input type="hidden" name="customer[tags]" value="" data-wk-tags>
+            {%- if form.errors -%}
+              <div class="aform__err" role="alert" data-wk-errors>{{ form.errors | default_errors }}{% if form.errors contains 'email' %} <a href="{{ routes.account_login_url }}" data-wk-signin>Sign in instead</a>{% endif %}</div>
+            {%- endif -%}
+            <div class="aform__grid">
+              <label class="fld"><span>First name</span><input type="text" name="customer[first_name]" autocomplete="given-name" required></label>
+              <label class="fld"><span>Mobile number</span><input type="tel" name="customer[note][Phone]" inputmode="tel" autocomplete="tel" placeholder="77 123 4567" required data-sl-mobile data-tel94 data-wk-mobile aria-describedby="qzb-mob-err"></label>
+              <p class="fld__err fld--full" id="qzb-mob-err" hidden data-sl-err>Enter a Sri Lankan mobile number, like 077 123 4567 or +94 77 123 4567.</p>
+              <label class="fld fld--full"><span>Email</span><input type="email" name="customer[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required data-wk-email></label>
+              <label class="fld fld--full"><span>Password</span><input type="password" name="customer[password]" autocomplete="new-password" minlength="5" required></label>
+              <label class="wk-gate__opt fld--full"><input type="checkbox" name="customer[accepts_marketing]" value="true" checked data-wk-consent><span>Email me my plan and member offers</span></label>
+            </div>
+            <button class="v-btn v-btn--accent wk-gate__go" type="submit"><span>Unlock my plan + {% render 'snh-num', n: welcome %} points</span></button>
+            <p class="wk-gate__in">Already a member? <a href="{{ routes.account_login_url }}" data-wk-signin>Sign in</a> and we'll save this plan to your account.</p>
+          {%- endform -%}
+          <p class="wk-gate__skip">Not now? Your stack and day 1 stay right here.</p>
+        </div>
+        <script src="{{ 'snh-phone.js' | asset_url }}" defer></script>
+      {%- endunless -%}
+      <i hidden data-kl data-kl-company="{{ settings.snh_klaviyo_company | default: 'Usyrp8' }}" data-kl-list="{{ settings.snh_klaviyo_workout_list }}"></i>
+    </div>
+  </div>
+</section>
+<script src="{{ 'snh-quiz-band.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "SNH quiz band",
+  "class": "snh-sec",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Hook", "default": "Not sure what to buy? *Get your plan in 60 seconds.*", "info": "Wrap words in *asterisks* for the serif italic." },
+    { "type": "text", "id": "subline", "label": "Subline", "default": "A few quick taps: we'll match a supplement stack and a free workout plan to your goal, schedule and sport." },
+    { "type": "text", "id": "cta", "label": "Button", "default": "Find my stack" },
+    { "type": "text", "id": "note", "label": "Small print", "default": "Free · no sign-up needed to see your stack" },
+    { "type": "textarea", "id": "stack_map", "label": "Stack categories", "info": "Empty = the defaults in snippets/snh-quiz-stackdata (same format as the account app's setting)." },
+    { "type": "text", "id": "bundle_handles", "label": "Bundle collections", "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers" }
+  ],
+  "blocks": [
+    { "type": "quiz", "name": "Quiz question", "settings": [
+      { "type": "select", "id": "step", "label": "Step", "options": [
+        { "value": "goal", "label": "Main goal" }, { "value": "goal2", "label": "Second goal" }, { "value": "lvl", "label": "Experience" }, { "value": "freq", "label": "Training days" },
+        { "value": "sess", "label": "Session type" }, { "value": "sport", "label": "Sport" }, { "value": "diet", "label": "Diet" }, { "value": "budget", "label": "Budget" },
+        { "value": "exp", "label": "Supplement experience" }, { "value": "take", "label": "Already taking" }, { "value": "challenge", "label": "Biggest challenge" }, { "value": "flavour", "label": "Flavour" }, { "value": "age", "label": "Age" }
+      ], "default": "goal" },
+      { "type": "text", "id": "question", "label": "Question" },
+      { "type": "text", "id": "help", "label": "Help text" },
+      { "type": "textarea", "id": "answers", "label": "Answers", "info": "One per line: value | label | icon. Keep the values the stack rules use." }
+    ] }
+  ],
+  "presets": [{ "name": "SNH quiz band" }]
+}
+{% endschema %}
