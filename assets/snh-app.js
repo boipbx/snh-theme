@@ -249,11 +249,11 @@
     q.addEventListener('input', sync);
 
     /* the shaker game: tap fast for 5 s, the shaker fills, then the stack appears. Purely for fun. */
-    var shaker = q.querySelector('[data-qz-shake]'), liq = q.querySelector('[data-qz-liq]'), meter = q.querySelector('[data-qz-meter]'), score = q.querySelector('[data-qz-score]');
+    var shaker = q.querySelector('[data-qz-shake]'), liq = q.querySelector('[data-qz-shk]'), meter = q.querySelector('[data-qz-meter]'), score = q.querySelector('[data-qz-score]');
     var taps = 0, t0 = 0, timer = null, FULL = 30;
     function startGame() {
       taps = 0; t0 = 0; clearTimeout(timer);
-      if (liq) liq.setAttribute('y', 170);
+      if (liq && window.SNH && SNH.shaker) { SNH.shaker(liq); SNH.shakerSet(liq, 0); }
       if (meter) meter.style.width = '0%';
       if (score) score.textContent = 'Tap to start';
     }
@@ -267,7 +267,7 @@
       if (!t0) { t0 = Date.now(); timer = setTimeout(endGame, 5000); }
       taps++;
       var f = Math.min(taps / FULL, 1);
-      liq.setAttribute('y', String(170 - f * 118));
+      if (liq && window.SNH && SNH.shakerSet) { SNH.shaker(liq); SNH.shakerSet(liq, f * 100); }
       meter.style.width = Math.round(f * 100) + '%';
       score.textContent = taps + ' shake' + (taps === 1 ? '' : 's');
       if (!reduce) { shaker.classList.remove('is-shake'); void shaker.offsetWidth; shaker.classList.add('is-shake'); }
@@ -923,7 +923,7 @@
     var pct = Math.round(s.into / WK_LVL * 100), wp = Math.round(s.done / s.need * 100);
     return '<div class="wkt" data-wk-tracker><div class="wkt__c"><p class="wkt__k">This week</p><p class="wkt__v"><b>' + s.done + '</b>/' + s.need + ' sessions</p><div class="wkt__bar" role="progressbar" aria-label="Sessions this week" aria-valuemin="0" aria-valuemax="' + s.need + '" aria-valuenow="' + s.done + '"><i style="width:' + wp + '%"></i></div></div>' +
       '<div class="wkt__c"><p class="wkt__k">Streak</p><p class="wkt__v"><b>' + s.streak + '</b> ' + (s.streak === 1 ? 'week' : 'weeks') + '</p><p class="wkt__s">Weeks with every session done</p></div>' +
-      '<div class="wkt__c wkt__c--xp"><p class="wkt__k">Level ' + s.level + '</p><p class="wkt__v"><b>' + s.xp.toLocaleString('en-US') + '</b> XP</p><div class="wkt__bar wkt__bar--xp" role="progressbar" aria-label="XP to the next level" aria-valuemin="0" aria-valuemax="' + WK_LVL + '" aria-valuenow="' + s.into + '"><i style="width:' + pct + '%"></i></div><p class="wkt__s">' + (WK_LVL - s.into) + ' XP to level ' + (s.level + 1) + ' · ' + WK_XP + ' XP a session</p></div></div>';
+      '<div class="wkt__c wkt__c--xp"><span data-shaker data-now data-pct="' + pct + '" data-tier="orange" data-size="72" data-label="' + pct + '% to level ' + (s.level + 1) + '"></span><div class="wkt__xt"><p class="wkt__k">Level ' + s.level + '</p><p class="wkt__v"><b>' + s.xp.toLocaleString('en-US') + '</b> XP</p><div class="wkt__bar wkt__bar--xp" role="progressbar" aria-label="XP to the next level" aria-valuemin="0" aria-valuemax="' + WK_LVL + '" aria-valuenow="' + s.into + '"><i style="width:' + pct + '%"></i></div><p class="wkt__s">' + (WK_LVL - s.into) + ' XP to level ' + (s.level + 1) + ' · ' + WK_XP + ' XP a session</p></div></div></div>';
   }
   // opts: answers, preview (only day 1 open, the rest locked), track (session ticks + tracker), compact (no notes)
   function renderPlan(el, p, opts) {
@@ -959,6 +959,7 @@
       (opts.compact ? '' : '<p class="wk__fine">Warm up for 5–10 minutes first. Rest days are for walking, sleep and food. General guidance, not medical advice: check with a doctor if you have an injury or condition.' + (st ? ' Your ticks are saved on this device only.' : '') + '</p>');
     el.classList.toggle('wk--track', !!st);
     el.hidden = false;
+    if (window.SNH && SNH.shakerRun) SNH.shakerRun(el);
     if (st && !el.__wkBound) {
       el.__wkBound = true;
       el.addEventListener('change', function (e) {
@@ -1001,6 +1002,7 @@
         '<p class="wko__next">' + (nd ? 'Next up: <b>Day ' + (next + 1) + ' · ' + esc(nd.f) + '</b> (' + nd.x.length + ' exercises)' : '<b>Week done.</b> Every session ticked: see you next week.') + '</p>' +
         wkTrackerHtml(st) + '<a class="v-btn v-btn--ink v-btn--sm wko__go" href="#goals" data-app-go="goals"><span>' + (nd ? 'Open my plan' : 'See my plan') + '</span></a>';
       card.hidden = false;
+      if (window.SNH && SNH.shakerRun) SNH.shakerRun(card);
     };
     paint();
     if (!card.__wk) { card.__wk = true; document.addEventListener('snh:wk', paint); }

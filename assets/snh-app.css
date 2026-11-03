@@ -932,3 +932,15 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 .wk__how { font: 600 12px/1.35 var(--sans); color: #BF4512; text-decoration: none; white-space: nowrap; }
 .wk__how:hover { text-decoration: underline; text-underline-offset: 2px; }
 .wk__wt .wk__how { flex-basis: 100%; }
+
+/* Round 19 #10: shaker placements */
+.lvlc { display: flex; align-items: center; gap: clamp(16px, 3vw, 28px); }
+.lvlc .shk { --shk-h: 132px; }
+.lvlc__go { justify-self: start; margin-top: 6px; font-size: 14px; }
+@media (max-width: 479px) { .lvlc .shk { --shk-h: 108px; } .lvlc { gap: 14px; } .lvlc .shk-row__v { font-size: 19px; } }
+.wkt__c--xp { grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 14px; }
+.wkt__xt { display: grid; gap: 6px; min-width: 0; }
+.wkt__c--xp .shk { --shk-h: 72px; }
+.qz__shaker .shk { --shk-h: 200px; margin: 0 auto; display: block; }
+.qz__shaker .shk__liq { transition-duration: 200ms; }
+.qz__shaker.is-shake .shk { animation: qz-shake 220ms ease; }

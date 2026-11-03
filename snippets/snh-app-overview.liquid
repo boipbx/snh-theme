@@ -31,6 +31,28 @@
   {%- render 'snh-app-reward', m: m, pending: pending, id: sid -%}
 </div>
 
+{%- liquid
+  assign lv_pct = m[11] | plus: 0
+  if m[12] == '1'
+    assign lv_pct = 100
+  endif
+-%}
+{%- comment -%} R19 #10: the level card: the SNH shaker fills with the progress to the next tier {%- endcomment -%}
+<section class="app__card lvlc" aria-labelledby="{{ sid }}-lvl-h">
+  <span data-shaker data-pct="{{ lv_pct }}" data-tier="{{ m[0] }}" data-size="132" data-label="{% if m[12] == '1' %}{{ m[1] }}, top tier{% else %}{{ lv_pct }}% of the way to {{ m[8] }}{% endif %}"></span>
+  <div class="shk-row__t">
+    <p class="shk-row__k" id="{{ sid }}-lvl-h">Your level · {{ m[1] }}</p>
+    {%- if m[12] == '1' -%}
+      <p class="shk-row__v">Top tier. Shaker full.</p>
+      <p class="shk-row__s">{{ m[7] }}% back in points on every order.</p>
+    {%- else -%}
+      <p class="shk-row__v">{{ lv_pct }}% to {{ m[8] }}</p>
+      <p class="shk-row__s">{% if m[10] == '0' %}{{ m[8] }} unlocks when your tier updates.{% else %}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more this year to reach {{ m[8] }} and earn more back.{% endif %}</p>
+    {%- endif -%}
+    <a class="v-link lvlc__go" href="#rewards" data-go="rewards">See all tiers</a>
+  </div>
+</section>
+
 {%- render 'snh-app-active', orders: recent, sid: sid -%}
 
 {%- comment -%} R19 #9: the member's workout plan + this week's progress (assets/snh-app.js wkOverview) {%- endcomment -%}
