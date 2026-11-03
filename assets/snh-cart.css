@@ -236,3 +236,32 @@
 
 /* Round 19 #1: neutral thumbnail tiles in the cart (cream + multiply turned packshots yellow) */
 .sline__img, .smini__img, .ssug__img { background: #F7F7F7; }
+
+/* ---------- Round 19 #2: cart CSS audit (drawer + /cart page) ----------
+   Quantity stepper: one 1px pill, three equal 36 px cells (−, qty, +), the − / + drawn as 12 px bars so they sit on
+   the exact optical centre (the text glyphs sat on different baselines and the qty looked pushed toward +). */
+.sqty { display: inline-grid; grid-template-columns: 36px minmax(32px, auto) 36px; align-items: center; height: 36px; padding: 0; border: 1px solid #D9D9D9; border-radius: 999px; background: #fff; box-sizing: border-box; }
+.sqty button, .sqty button:hover { position: relative; display: block; width: 36px; height: 34px; padding: 0; border: 0; border-radius: 999px; background: none; font-size: 0; color: var(--ink); cursor: pointer; }
+.sqty button::before, .sqty button:last-child::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; border-radius: 2px; background: currentColor; }
+.sqty button:last-child::after { transform: rotate(90deg); }
+.sqty button:hover { color: var(--v-accent); background: #F4F4F4; }
+.sqty button:focus-visible { outline: 2px solid var(--v-accent); outline-offset: -2px; }
+.sqty button[data-qty="0"]:first-child { color: var(--grey-2); }
+.sqty span { min-width: 32px; padding: 0 2px; text-align: center; font: 600 15px/34px var(--sans); font-variant-numeric: tabular-nums; }
+.sline__row { flex-wrap: nowrap; gap: 8px; margin-top: 10px; align-items: center; }
+.sline__rm { width: 36px; height: 36px; flex: none; }
+.sline__p { min-width: 0; align-self: center; line-height: 1.2; }
+.sline__p b { font-size: 16px; line-height: 1.25; }
+/* framed SNH packshots: crop inside the orange frame + logo (1.12 left the frame showing in 72–88 px thumbs) */
+.sline__img.is-framed img, .smini__img.is-framed img, .ssug__img.is-framed img { transform: scale(1.34) translateY(3%); }
+.sline__img { border: 1px solid #EDEDED; box-sizing: border-box; }
+.sline__t { font-size: 15px; line-height: 1.35; }
+.sline__v { font-size: 13px; line-height: 1.4; }
+@media (max-width: 399px) {
+  .sqty { grid-template-columns: 34px minmax(28px, auto) 34px; height: 34px; }
+  .sqty button { width: 34px; height: 32px; }
+  .sqty span { min-width: 28px; line-height: 32px; }
+  .sline__rm { width: 34px; height: 34px; }
+  .sline__row { gap: 4px; }
+  .sline__p b { font-size: 15px; }
+}
