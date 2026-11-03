@@ -128,12 +128,12 @@
       var r = square ? walk(N - 1, N - half, -1, function (x) { return or(x, mid); }) : -1;
       var t = square ? walk(0, half, 1, function (y) { return or(q, y); }) : -1;
       var b = square ? walk(N - 1, N - half, -1, function (y) { return or(q, y); }) : -1;
-      var x0 = .03 * N, y0 = .03 * N, x1 = .97 * N, y1 = .97 * N;
+      var x0 = .03 * N, y0 = .03 * N, x1 = .97 * N, y1 = .97 * N, framed = false;
       if (l > 0 && r > 0 && t > 0 && b > 0 && r - l > N * .4 && b - t > N * .4) {
         // the SNH logo hangs below the top edge on the right: find the lowest row that still has orange there
         var logo = t;
         for (var y = t; y < t + N * .12; y++) { var hit = false; for (var x = Math.round(l + (r - l) * .55); x < r; x++) { var k = (y * N + x) * 4; if (d[k] > 150 && d[k] - d[k + 2] > 60) { hit = true; break; } } if (hit) logo = y + 1; }
-        var pad = N * .03;
+        var pad = N * .03; framed = true;
         x0 = l + pad; x1 = r - pad; y0 = Math.max(t, logo) + pad; y1 = b - pad;
       }
       x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
@@ -147,7 +147,7 @@
         if (tile) { tile.style.background = 'rgb(' + Math.round(br) + ',' + Math.round(bgc) + ',' + Math.round(bb) + ')'; img.style.mixBlendMode = 'normal'; }
         // R19: a mid/dark grey studio shot can't blend into a light tile without seams: show the photo edge to edge
         // (true colour, unscaled, no clip) and flag it so the merchant can swap in a white-background file
-        if (tile && L < 215) { img.style.transform = 'none'; img.style.clipPath = 'none'; img.setAttribute('data-v2-greyshot', Math.round(L)); img.classList.add('is-ready'); return; }
+        if (tile && L < 215 && !framed) { img.style.transform = 'none'; img.style.clipPath = 'none'; img.setAttribute('data-v2-greyshot', Math.round(L)); img.classList.add('is-ready'); return; }
       }
       br = Math.min(255, br * lf); bgc = Math.min(255, bgc * lf); bb = Math.min(255, bb * lf);
       // the pack itself: bounding box of pixels that differ from the backdrop, so every pack sits at the same size
