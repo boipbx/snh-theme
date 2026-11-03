@@ -128,7 +128,7 @@
 
   /* ---------- "Build your SNH plan" (Round 10): branching questions, XP, level up, shaker game, stack, plan card ---------- */
   var MANY = { take: 1 };
-  var KEYS = ['goal', 'goal2', 'lvl', 'freq', 'sess', 'sport', 'diet', 'budget', 'exp', 'take', 'challenge', 'flavour', 'age'];
+  var KEYS = ['goal', 'goal2', 'lvl', 'freq', 'sess', 'sport', 'diet', 'exp', 'take', 'challenge', 'flavour', 'age'];
   function quizInit(q, onDone) {
     if (q.__quiz) return q.__quiz;
     var mode = q.getAttribute('data-mode'), mock = q.hasAttribute('data-mock');
@@ -332,7 +332,7 @@
   }
 
   /* "Your SNH stack": 3–5 products from the categories in snh-quiz-stackdata, by goal, second goal, challenge, diet,
-     what they already take, flavour and budget. Rules are plain data so they're easy to tune. */
+     what they already take and flavour (R19: no budget question, no price filtering; always 3+ picks). Rules are plain data so they're easy to tune. */
   var PLANS = {
     'build-muscle': [['P', 'Hits your daily protein target without extra cooking.'], ['creatine', 'The most researched strength supplement: 3–5 g a day, every day.'], ['pre', 'More drive for heavy days.', 'notnew']],
     'lose-fat': [['P', 'High protein keeps your muscle while you cut.'], ['fat', 'Supports your training in a calorie deficit.'], ['bar', 'A high-protein snack for when cravings hit.']],
@@ -350,7 +350,8 @@
   };
   var TAKES = { protein: ['P'], creatine: ['creatine'], 'pre-workout': ['pre'], electrolytes: ['hydra'], multivitamin: ['multi'], 'omega-3': ['omega'], magnesium: ['magnesium'] };
   var FLAV = { chocolate: ['choc', 'cocoa', 'brownie'], vanilla: ['vanilla', 'cookie', 'cream'], fruity: ['berry', 'fruit', 'orange', 'mango', 'lemon', 'strawberr', 'tropical', 'raspberr', 'melon', 'pineapple', 'peach', 'apple', 'grape'], unflavoured: ['unflavo'] };
-  var BUDGET = { 'under-10k': 10000, '10-20k': 20000, '20-35k': 35000 };
+  // R19: fallback order per goal when fewer than 3 stack picks match (complementary bestsellers for the goal)
+  var FILL = { 'build-muscle': ['P', 'creatine', 'bar', 'pre', 'magnesium', 'multi'], 'lose-fat': ['P', 'bar', 'fat', 'hydra', 'multi'], endurance: ['hydra', 'gel', 'P', 'bar', 'magnesium'], 'hydration-recovery': ['hydra', 'magnesium', 'P', 'gel', 'multi'], 'daily-health': ['multi', 'omega', 'magnesium', 'P', 'hydra'], 'sport-specific': ['hydra', 'gel', 'creatine', 'P', 'bar'] };
   var TIPS = {
     energy: 'Eat a carb-rich meal 2–3 hours before training, and save caffeine for the sessions that need it.',
     recovery: 'Get 20–40 g of protein within two hours of training, and protect your sleep: it’s when you recover.',
@@ -380,14 +381,14 @@
       if (skip[c] || want.some(function (w) { return w[0] === c; })) return;
       want.push([c, why]);
     }
-    // priority (budget trims from the end): the goal's core picks, the challenge, the second goal, then optional extras
+    // priority: the goal's core picks, the challenge, the second goal, then optional extras
     var plan = PLANS[a.goal] || PLANS['daily-health'];
     plan.forEach(function (x) { if (!x[2]) add(x[0], x[1]); });
     if (a.challenge && CHALLENGE[a.challenge]) { var ch = CHALLENGE[a.challenge]; add(ch[0], ch[1], ch[0] === 'pre' ? 'notnew' : ''); }
     if (a.goal2 && PLANS[a.goal2]) PLANS[a.goal2].some(function (x) { var n = want.length; add(x[0], x[1], x[2]); return want.length > n; });
     plan.forEach(function (x) { if (x[2]) add(x[0], x[1], x[2]); });
     // categories with no product in stock drop out; top up from the main plan's backups
-    var words = FLAV[a.flavour] || [], cheap = a.budget === 'under-10k' || a.budget === '10-20k', used = {};
+    var words = FLAV[a.flavour] || [], used = {};
     var stack = [];
     want.forEach(function (w) {
       if (stack.length >= 5) return;
@@ -395,31 +396,35 @@
       if (!list.length) return;
       list = list.slice().sort(function (x, y) {
         var fx = words.some(function (k) { return x.x.indexOf(k) > -1; }) ? 0 : 1, fy = words.some(function (k) { return y.x.indexOf(k) > -1; }) ? 0 : 1;
-        return fx - fy || (cheap ? x.p - y.p : 0);
+        return fx - fy;
       });
       used[list[0].u] = 1;
       stack.push({ p: list[0], why: w[1], c: w[0] });
     });
-    ['P', 'hydra', 'multi', 'magnesium'].forEach(function (c) {
-      if (stack.length >= 3) return;
-      c = c === 'P' ? P : c;
-      if (skip[c] || stack.some(function (s) { return s.c === c; })) return;
-      var p = (data.cats[c] || []).filter(function (x) { return !used[x.u]; })[0];
-      if (p) { used[p.u] = 1; stack.push({ p: p, why: 'A solid all-round base for your plan.', c: c }); }
+    // R19: always at least 3 picks: the goal's complementary categories first, then any category in stock
+    // (diet skips still apply; what they already take is only relaxed as a last resort)
+    var fillCats = (FILL[a.goal] || FILL['daily-health']).concat(Object.keys(data.cats));
+    [false, true].forEach(function (relax) {
+      fillCats.forEach(function (c) {
+        if (stack.length >= 3) return;
+        c = c === 'P' ? P : c;
+        if (relax ? (a.diet === 'vegan' || a.diet === 'lactose-free') && /^(protein|clear|bar)$/.test(c) || (a.diet === 'vegan' || a.diet === 'vegetarian') && c === 'omega' : skip[c]) return;
+        if (stack.some(function (s) { return s.c === c; })) return;
+        var p = (data.cats[c] || []).filter(function (x) { return !used[x.u]; })[0];
+        if (p) { used[p.u] = 1; stack.push({ p: p, why: relax ? 'A popular pick that goes with your goal.' : 'A bestseller that goes with your goal.', c: c }); }
+      });
     });
-    var max = BUDGET[a.budget], trimmed = false;
     function sum() { return stack.reduce(function (t, s) { return t + s.p.p / 100; }, 0); }
-    while (max && sum() > max && stack.length > 2) { stack.pop(); trimmed = true; }
 
     var bits = [lab('goal'), lab('freq'), lab('sport')].filter(Boolean);
-    q.querySelector('[data-qz-res-sum]').textContent = (bits.length ? bits.join(' · ') + '. ' : '') + (lab('diet') && a.diet !== 'none' ? lab('diet') + ' friendly. ' : '') + (trimmed ? 'Trimmed to fit your budget.' : '');
+    q.querySelector('[data-qz-res-sum]').textContent = (bits.length ? bits.join(' · ') + '. ' : '') + (lab('diet') && a.diet !== 'none' ? lab('diet') + ' friendly. ' : '');
     var ol = q.querySelector('[data-qz-stack]'), mockQ = q.hasAttribute('data-mock');
     ol.innerHTML = stack.map(function (s, n) {
       var p = s.p;
       return '<li class="qz__item" style="--n:' + n + '"><span class="oimg' + (p.f ? ' is-framed' : '') + '"><img src="' + esc(p.i) + '" alt="" width="88" height="88"></span>' +
         '<div class="qz__it"><p class="qz__brand">' + esc(p.b) + '</p><a class="qz__name" href="' + esc(p.u) + '">' + esc(p.t.replace(p.b, '').trim() || p.t) + '</a><p class="qz__why">' + esc(s.why) + '</p></div>' +
         '<div class="qz__buy"><b>' + rs(p.p / 100) + '</b>' + (p.v ? '<button class="v-btn v-btn--ink v-btn--sm" type="button" data-app-reorder="' + p.v + ':1"' + (mockQ ? ' disabled' : '') + '><span>Add</span></button>' : '<a class="v-btn v-btn--line v-btn--sm" href="' + esc(p.u) + '"><span>Choose</span></a>') + '</div></li>';
-    }).join('') || '<li class="app__muted">We couldn’t find products in stock for these answers right now. Try a different budget or diet.</li>';
+    }).join('') || '<li class="app__muted">We couldn’t find products in stock for these answers right now. Try a different diet.</li>';
     // a bundle that holds 2+ of the stack (its description names them)
     var best = null;
     data.bundles.forEach(function (b) {

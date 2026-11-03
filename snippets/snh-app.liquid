@@ -15,7 +15,6 @@
   assign goal = ''
   assign goal2 = ''
   assign diet = ''
-  assign budget = ''
   assign take = ''
   assign freq = ''
   assign sport = ''
@@ -40,10 +39,6 @@
       when 'diet'
         if diet == ''
           assign diet = v
-        endif
-      when 'budget'
-        if budget == ''
-          assign budget = v
         endif
       when 'take'
         assign take = take | append: v | append: ','
@@ -131,7 +126,7 @@
         <button class="app__x" type="button" data-flash-close aria-label="Dismiss">{% render 'snh-v2-icon', name: 'close' %}</button>
       </div>
       <section class="app__view" data-pane="overview" aria-labelledby="{{ sid }}-overview-h">
-        {%- render 'snh-app-overview', m: m, me: me, recent: recent, s: s, blocks: blocks, sid: sid, mock: mock, goal: goal, pending: pending, phone: phone, bday: bday, joined: joined, bundles: bundles, goal2: goal2, diet: diet, budget: budget, take: take, sport: sport -%}
+        {%- render 'snh-app-overview', m: m, me: me, recent: recent, s: s, blocks: blocks, sid: sid, mock: mock, goal: goal, pending: pending, phone: phone, bday: bday, joined: joined, bundles: bundles, goal2: goal2, diet: diet, take: take, sport: sport -%}
       </section>
       <section class="app__view" data-pane="rewards" aria-labelledby="{{ sid }}-rewards-h">
         {%- render 'snh-app-rewards', m: m, me: me, blocks: blocks, sid: sid, mock: mock, pending: pending -%}

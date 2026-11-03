@@ -4,9 +4,8 @@
   2. else order history → "Order history → complementary collections" rules (section setting pick_map)
   3. then bestsellers (section setting, else /collections/everything) to fill up to 6.
   Round 10: weighted by the plan quiz: the second goal's collection follows the first; vegan / lactose-free puts
-  plant protein first and drops whey, casein and collagen; vegetarian drops fish oil and collagen; a monthly budget
-  under Rs 20,000 drops products above it.
-  recent: snh-app-order-data records · s: section settings · blocks · goal · goal2 · diet · budget · sid
+  plant protein first and drops whey, casein and collagen; vegetarian drops fish oil and collagen; R19: no budget or price cap.
+  recent: snh-app-order-data records · s: section settings · blocks · goal · goal2 · diet · sid
 {%- endcomment -%}
 {%- liquid
   assign map = s.pick_map
@@ -98,7 +97,7 @@
   assign best = s.best_collection.handle | default: 'everything'
   assign handles = handles | append: ',' | append: best | remove_first: ','
   # quiz answers weight the picks: no whey/casein/collagen for vegan or lactose-free, no fish oil or collagen for
-  # vegetarian, nothing over the monthly budget
+  # vegetarian (R19: no budget cap)
   assign avoid = ''
   case diet
     when 'vegan', 'lactose-free'
@@ -107,14 +106,6 @@
       assign avoid = 'fish oil,omega 3 fish,collagen,beef'
   endcase
   assign avoid = avoid | split: ','
-  case budget
-    when 'under-10k'
-      assign cap = 1000000
-    when '10-20k'
-      assign cap = 2000000
-    else
-      assign cap = 0
-  endcase
   assign hl = handles | split: ','
 
   assign picked = ','
@@ -127,7 +118,6 @@
       {%- if n >= 6 -%}{%- break -%}{%- endif -%}
       {%- assign key = ',' | append: p.id | append: ',' -%}
       {%- if p.available == false or bought contains key or picked contains key -%}{%- continue -%}{%- endif -%}
-      {%- if cap > 0 and p.price > cap -%}{%- continue -%}{%- endif -%}
       {%- assign pt = p.title | append: ' ' | append: p.type | downcase -%}
       {%- assign bad = false -%}
       {%- for w in avoid -%}{%- if pt contains w -%}{%- assign bad = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
@@ -139,7 +129,7 @@
     {%- if n >= 6 -%}{%- break -%}{%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}
-{%- comment -%} Round 14: the shared engine's row (order history + goal + cart + viewed); the diet/budget-aware grid stays below {%- endcomment -%}
+{%- comment -%} Round 14: the shared engine's row (order history + goal + cart + viewed); the diet-aware grid stays below {%- endcomment -%}
 <section class="app__block snh-reco snh-reco--app" data-snh-reco="account" data-limit="4" data-heading="Goes with your orders" hidden></section>
 {%- if n > 0 -%}
   <section class="app__block" aria-labelledby="{{ sid }}-picks-h">
