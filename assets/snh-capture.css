@@ -69,7 +69,7 @@
 .ewin { display: grid; gap: 12px; }
 .ewin__prize { font: 500 16px/1.5 var(--sans); color: var(--grey-1); }
 .ewin__code { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 20px; border: 2px dashed var(--v-accent); border-radius: 16px; background: #FFF4EE; }
-.ewin__code code { flex: 1; font: 600 24px/1.1 var(--sans); letter-spacing: .06em; color: var(--ink); }
+.ewin__code code { flex: 1; font: 600 24px/1.1 var(--sans); letter-spacing: .04em; color: var(--ink); }
 .ewin__apply { justify-content: center; }
 .ewin__note { font: 400 12px/1.5 var(--sans); color: var(--grey-2); }
 .ecm--game .ecm__copy { align-content: start; }

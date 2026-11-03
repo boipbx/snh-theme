@@ -100,7 +100,7 @@ body {
 .snh-eyebrow {
   display: inline-block;
   font: 600 var(--snh-fs-eyebrow)/1.1 var(--snh-font-body);
-  letter-spacing: .12em;
+  letter-spacing: .04em;
   text-transform: uppercase;
   color: var(--snh-muted);
 }

@@ -89,7 +89,7 @@
 @media (max-width: 1023px) { .sp-buy { max-width: none; } }
 @media (min-width: 1024px) { .sp-buy.is-stick { position: sticky; top: var(--sp-top); } }
 
-.sp-eyebrow { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; color: var(--sp-muted); }
+.sp-eyebrow { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--sp-muted); }
 .sp-eyebrow:hover { color: var(--sp-ink); }
 .sp-brandlogo { display: inline-block; }
 .sp-brandlogo img { width: auto; height: 20px; }
@@ -222,7 +222,7 @@
 .sp-modal::backdrop { background: rgba(12, 12, 13, .48); }
 .sp-modal form { position: absolute; top: 12px; right: 12px; margin: 0; }
 .sp-modal__x { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--sp-cream); font-size: 20px; line-height: 1.1; font-family: inherit; color: var(--sp-ink); cursor: pointer; }
-.sp-modal__k { margin: 0 0 8px; font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; color: var(--sp-accent); }
+.sp-modal__k { margin: 0 0 8px; font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--sp-accent); }
 .sp-modal__t { margin: 0 0 16px; font-size: 24px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
 .sp-modal__b p { margin: 0; font-size: 15px; line-height: 1.5; color: #4B4B4B; }
 .sp-modal__b p + p { margin-top: 12px; }
@@ -231,7 +231,7 @@
 /* ── below the fold: shared section head ── */
 .sp-head { display: grid; gap: 12px; max-width: 760px; margin: 0 auto 32px; text-align: center; }
 .sp-head--left { margin-inline: 0; text-align: left; }
-.sp-head__k { font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; color: var(--sp-muted); }
+.sp-head__k { font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--sp-muted); }
 .sp-head__t { font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
 .sp-head__t .serif { font-family: var(--serif, "Instrument Serif", Georgia, serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
 @media (min-width: 1024px) { .sp-head__t { font-size: 44px; } .sp-head { margin-bottom: 48px; } }

@@ -3,7 +3,7 @@
 .cmp-tone--orange { --c-bg: #BF4512; --c-ink: #FFFFFF; } .cmp-tone--ink { --c-bg: #0C0C0D; --c-ink: #FFFFFF; }
 .cmp-tone--cream { --c-bg: #F5F2EC; --c-ink: #0C0C0D; } .cmp-tone--green { --c-bg: #14532D; --c-ink: #FFFFFF; }
 .cmp__code { display: inline-flex; align-items: center; gap: 8px; padding: 4px 4px 4px 12px; border: 1px dashed currentColor; border-radius: 12px; }
-.cmp__code code { font: 600 16px/1.5 var(--sans); letter-spacing: .06em; }
+.cmp__code code { font: 600 16px/1.5 var(--sans); letter-spacing: .04em; }
 .cmp__copy, .cmp__apply { height: 32px; padding: 0 12px; border: 0; border-radius: var(--pill); background: rgba(255, 255, 255, .2); color: inherit; font: 600 13px/32px var(--sans); cursor: pointer; }
 .cmp-tone--cream .cmp__copy, .cmp-tone--cream .cmp__apply { background: rgba(12, 12, 13, .08); }
 .cmp-slot { margin-block: 24px; }
