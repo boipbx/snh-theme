@@ -842,23 +842,131 @@
     if (a && a.sport && WK_SPORT[a.sport]) n.push(WK_SPORT[a.sport]);
     return n;
   }
-  // opts: answers, preview (only day 1 open, the rest locked), id prefix
+  /* R19 #4 + #9: exercise pictograms (48 × 48 line drawings by movement pattern), editor demos, the weekly table
+     (desktop) / day cards (phones), and the session tracker. Demos: "Exercise demo" blocks print
+     <script data-wk-demos> ({ name, img, video, url }); a demo whose name is in the exercise name replaces the drawing
+     and its URL replaces the YouTube search. */
+  var WK_FLOOR = 'M4 44h40';
+  var WK_PICS = {
+    stand: [[24, 8], 'M24 12v16M24 28l-5 16M24 28l5 16M24 15l-7 11M24 15l7 11'],
+    squat: [[18, 11], 'M20 15l6 15M26 30h10l-2 14M20 17l14 2M8 44h32'],
+    hinge: [[11, 18], 'M15 20l17 2M32 22l1 11-1 11M16 21l1 13M10 34h14M8 44h32'],
+    bench: [[10, 28], 'M14 30h18M32 30l6 8v6M20 30V16M12 16h16M8 35h30M12 35v9M34 35v9'],
+    press: [[24, 9], 'M24 13v15M24 28l-5 16M24 28l5 16M24 16l-7-6V3M24 16l7-6V3M10 3h28'],
+    row: [[11, 18], 'M15 20l17 2M32 22l1 11-1 11M16 21l6 7M20 29h6M8 44h32'],
+    pull: [[24, 14], 'M8 4h32M18 4l3 10M30 4l-3 10M24 18v13M24 31l-3 11M24 31l3 11'],
+    lunge: [[24, 8], 'M24 12v16M24 28l10 2v14M24 28l-8 10-6 6M24 15l-2 11M24 15l2 11M4 44h40'],
+    curl: [[24, 8], 'M24 12v16M24 28l-5 16M24 28l5 16M24 15l-5 10 -4-7M24 15l5 10 4-7'],
+    plank: [[8, 29], 'M12 31l28 5M14 32v7h6M40 36l2 8M4 44h40'],
+    pushup: [[8, 22], 'M12 24l28 14M14 25v19M40 38l2 6M4 44h40'],
+    run: [[26, 8], 'M25 12l-3 14M22 26l8 8-2 10M22 26l-6 8-6-2M24 15l6 5 4-4M24 15l-6 7-4-2'],
+    bike: [[32, 9], 'M12 36m-7 0a7 7 0 1 0 14 0a7 7 0 1 0-14 0M36 36m-7 0a7 7 0 1 0 14 0a7 7 0 1 0-14 0M12 36l10-10 14 10M30 13l-8 12M30 15l6 9M22 25l4 9'],
+    rower: [[14, 18], 'M16 22l6 12M22 34l10-8 8 8M17 24l13 2M4 42h40M30 26h6'],
+    swim: [[10, 24], 'M14 25l18 3M14 24L4 20M32 28l12-2M4 36c4-3 8 3 12 0s8 3 12 0 8 3 12 0'],
+    carry: [[24, 8], 'M24 12v16M24 28l-5 16M24 28l5 16M24 15l-8 13M24 15l8 13M13 28h6v6h-6zM29 28h6v6h-6z'],
+    jump: [[24, 6], 'M24 10v14M24 13l-8-9M24 13l8-9M24 24l-6 6 2 6M24 24l6 6-2 6M8 44h32'],
+    raise: [[24, 8], 'M24 12v16M24 28l-5 16M24 28l5 16M24 15H8M24 15h16M6 13v4M42 13v4'],
+    bridge: [[8, 40], 'M12 40l16-10M28 30l8 4v10M12 40v4M4 44h40'],
+    hang: [[24, 15], 'M14 4h20M20 4l2 8M28 4l-2 8M24 19v11M24 30l10-2v10'],
+    calf: [[24, 6], 'M24 10v16M24 26l-4 14M24 26l4 14M20 40l-2 2M28 40l2 2M24 13l-6 10M24 13l6 10M12 42h24v2H12z'],
+    stretch: [[24, 8], 'M24 12v16M24 28l-8 16M24 28l10 14M24 15l-6-9M24 15l10 4']
+  };
+  var WK_MATCH = [
+    ['bike', /bike|cycl|spin\b/], ['rower', /rower|rowing|\berg\b/], ['swim', /swim|pool/], ['calf', /calf/],
+    ['hang', /knee raise|leg raise|crunch|sit-up|ab wheel|cable crunch/], ['raise', /lateral raise|front raise|rear-delt|reverse fly|y-raise/],
+    ['bridge', /bridge|hip thrust|glute/], ['pull', /pull-up|pullup|chin-up|pulldown/], ['lunge', /lunge|split squat|step-up|step up|bulgarian/],
+    ['squat', /squat|leg press|goblet|wall sit|thruster|leg extension/], ['hinge', /deadlift|romanian|\brdl\b|good morning|swing|leg curl|hinge/],
+    ['press', /overhead|shoulder press|arnold|military|push press/], ['bench', /bench|chest press|\bfly\b|floor press|incline .*press|dumbbell press/],
+    ['row', /\brow\b|row\b|face pull|pull-apart|renegade/], ['pushup', /push-up|press-up|\bdips?\b/],
+    ['curl', /curl|tricep|pushdown|extension|kickback|skull/], ['plank', /plank|dead bug|bird dog|hollow|pallof|core|mountain/],
+    ['carry', /carry|farmer|suitcase/], ['jump', /jump|burpee|skater|hiit|box|skip|rope|jack|circuit/],
+    ['run', /run|jog|sprint|stride|interval|tempo|shuffle|drill/], ['stretch', /stretch|mobility|yoga|foam|walk|warm|cool/]
+  ];
+  function wkKind(n) { n = String(n).toLowerCase(); for (var i = 0; i < WK_MATCH.length; i++) if (WK_MATCH[i][1].test(n)) return WK_MATCH[i][0]; return 'stand'; }
+  function wkPic(name) {
+    var k = wkKind(name), d = WK_PICS[k];
+    return '<svg class="wk__pic-svg" viewBox="0 0 48 48" aria-hidden="true" data-kind="' + k + '"><circle cx="' + d[0][0] + '" cy="' + d[0][1] + '" r="4"/><path d="' + d[1] + '"/></svg>';
+  }
+  function wkDemos() { var el = document.querySelector('[data-wk-demos]'); if (!el) return []; if (!el.__d) { try { el.__d = JSON.parse(el.textContent).filter(function (x) { return x && x.name; }); } catch (e) { el.__d = []; } } return el.__d; }
+  function wkDemo(name) { var n = String(name).toLowerCase(), best = null; wkDemos().forEach(function (d) { var k = String(d.name).toLowerCase().trim(); if (k && n.indexOf(k) > -1 && (!best || k.length > best.name.length)) best = d; }); return best; }
+  function wkHow(name) { var d = wkDemo(name); return d && d.url ? d.url : 'https://www.youtube.com/results?search_query=' + encodeURIComponent(name + ' exercise form'); }
+  function wkVisual(name) {
+    var d = wkDemo(name);
+    if (d && d.video) return '<span class="wk__pic wk__pic--media"><video src="' + esc(d.video) + '" muted loop playsinline autoplay preload="none"' + (d.img ? ' poster="' + esc(d.img) + '"' : '') + ' aria-hidden="true"></video></span>';
+    if (d && d.img) return '<span class="wk__pic wk__pic--media"><img src="' + esc(d.img) + '" alt="" loading="lazy" width="96" height="96"></span>';
+    return '<span class="wk__pic">' + wkPic(name) + '</span>';
+  }
+  /* tracker: localStorage snh_wk_track = { plan, log: { 'YYYY-Www': [day indexes] } }. XP = 50 per completed session
+     (it only accumulates; no rewards). Device-only: cross-device sync needs a backend (WORKOUT-PLANS.md). */
+  var WK_XP = 50, WK_LVL = 500;
+  function wkWeek(dt) { var d = new Date(Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate())), day = d.getUTCDay() || 7; d.setUTCDate(d.getUTCDate() + 4 - day); var y = d.getUTCFullYear(), w = Math.ceil(((d - Date.UTC(y, 0, 1)) / 864e5 + 1) / 7); return y + '-W' + (w < 10 ? '0' : '') + w; }
+  function wkTrack(id) { var t = lsJson('snh_wk_track') || {}; if (!t.log) t.log = {}; if (t.plan !== id) { t.plan = id; } return t; }
+  function wkStats(p) {
+    var t = wkTrack(p.id), wk = wkWeek(new Date()), done = (t.log[wk] || []).length, total = 0, streak = 0;
+    Object.keys(t.log).forEach(function (k) { total += t.log[k].length; });
+    // streak: consecutive weeks (back from this one; this week counts once it has a session) with every session done
+    var d = new Date(), need = p.w.length;
+    if (done < need) d.setDate(d.getDate() - 7);
+    for (var i = 0; i < 104; i++) { var k = wkWeek(d); if ((t.log[k] || []).length >= need) { streak++; d.setDate(d.getDate() - 7); } else break; }
+    var xp = total * WK_XP;
+    return { week: wk, done: done, need: need, total: total, streak: streak, xp: xp, level: Math.floor(xp / WK_LVL) + 1, into: xp % WK_LVL, log: t.log[wk] || [] };
+  }
+  function wkToggle(p, n, on) {
+    var t = wkTrack(p.id), wk = wkWeek(new Date()), l = t.log[wk] || [];
+    l = l.filter(function (x) { return x !== n; }); if (on) l.push(n);
+    t.log[wk] = l.sort(); try { localStorage.setItem('snh_wk_track', JSON.stringify(t)); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('snh:wk', { detail: wkStats(p) }));
+  }
+  function wkTrackerHtml(s) {
+    var pct = Math.round(s.into / WK_LVL * 100), wp = Math.round(s.done / s.need * 100);
+    return '<div class="wkt" data-wk-tracker><div class="wkt__c"><p class="wkt__k">This week</p><p class="wkt__v"><b>' + s.done + '</b>/' + s.need + ' sessions</p><div class="wkt__bar" role="progressbar" aria-label="Sessions this week" aria-valuemin="0" aria-valuemax="' + s.need + '" aria-valuenow="' + s.done + '"><i style="width:' + wp + '%"></i></div></div>' +
+      '<div class="wkt__c"><p class="wkt__k">Streak</p><p class="wkt__v"><b>' + s.streak + '</b> ' + (s.streak === 1 ? 'week' : 'weeks') + '</p><p class="wkt__s">Weeks with every session done</p></div>' +
+      '<div class="wkt__c wkt__c--xp"><p class="wkt__k">Level ' + s.level + '</p><p class="wkt__v"><b>' + s.xp.toLocaleString('en-US') + '</b> XP</p><div class="wkt__bar wkt__bar--xp" role="progressbar" aria-label="XP to the next level" aria-valuemin="0" aria-valuemax="' + WK_LVL + '" aria-valuenow="' + s.into + '"><i style="width:' + pct + '%"></i></div><p class="wkt__s">' + (WK_LVL - s.into) + ' XP to level ' + (s.level + 1) + ' · ' + WK_XP + ' XP a session</p></div></div>';
+  }
+  // opts: answers, preview (only day 1 open, the rest locked), track (session ticks + tracker), compact (no notes)
   function renderPlan(el, p, opts) {
     if (!el || !p) return;
     opts = opts || {};
-    var notes = planNotes(p, opts.answers);
-    var days = p.w.map(function (day, n) {
+    var notes = planNotes(p, opts.answers), st = opts.track ? wkStats(p) : null;
+    var tick = function (n, where) { if (!st) return ''; var on = st.log.indexOf(n) > -1; return '<label class="wk__tick' + (where ? ' wk__tick--' + where : '') + '"><input type="checkbox" data-wk-done="' + n + '"' + (on ? ' checked' : '') + '><span>' + (on ? 'Done' : 'Mark done') + '</span></label>'; };
+    var ex = function (x, lock) {
+      var name = esc(x[0]);
+      return wkVisual(x[0]) + '<span class="wk__en">' + (lock ? '<span class="wk__nm">' + name + '</span>' : '<a class="wk__nm" href="' + esc(wkHow(x[0])) + '" target="_blank" rel="noopener">' + name + '<span class="v-sr"> (watch how, opens in a new tab)</span></a>') +
+        '<span class="wk__sr"><b>' + esc(x[1]) + '</b>' + (x[2] && x[2] !== '—' ? '<span>rest ' + esc(x[2]) + '</span>' : '') + '</span></span>';
+    };
+    // desktop: one weekly table (days as columns); phones: stacked day cards. Both in the DOM, CSS picks one.
+    var rows = Math.max.apply(null, p.w.map(function (d) { return d.x.length; })), head = '', body = '';
+    p.w.forEach(function (day, n) {
       var lock = opts.preview && n > 0;
-      return '<section class="wk__day' + (lock ? ' is-locked' : '') + '"' + (lock ? ' aria-hidden="true"' : '') + '><header class="wk__dh"><span class="wk__dn">Day ' + (n + 1) + '</span><span class="wk__dd">' + esc(day.d) + '</span><b class="wk__df">' + esc(day.f) + '</b></header>' +
-        '<table class="wk__t"><thead><tr><th scope="col">Exercise</th><th scope="col">Sets × reps</th><th scope="col">Rest</th></tr></thead><tbody>' +
-        day.x.map(function (x) { return '<tr><td>' + esc(x[0]) + '</td><td>' + esc(x[1]) + '</td><td>' + esc(x[2]) + '</td></tr>'; }).join('') + '</tbody></table></section>';
-    }).join('');
+      head += '<th scope="col" class="' + (lock ? 'is-locked' : '') + '"><span class="wk__dn">Day ' + (n + 1) + ' · ' + esc(day.d) + '</span><span class="wk__df">' + esc(day.f) + '</span>' + (lock ? '<span class="wk__lk">Locked</span>' : tick(n, 'th')) + '</th>';
+    });
+    for (var r = 0; r < rows; r++) {
+      body += '<tr>' + p.w.map(function (day, n) { var x = day.x[r], lock = opts.preview && n > 0; return '<td class="' + (lock ? 'is-locked' : '') + '"' + (lock ? ' aria-hidden="true"' : '') + '>' + (x ? '<div class="wk__ex">' + ex(x, lock) + '</div>' : '') + '</td>'; }).join('') + '</tr>';
+    }
+    var table = '<div class="wk__week"><table class="wk__wt" style="--cols:' + p.w.length + '"><caption class="v-sr">' + esc(p.t) + ': exercises per training day</caption><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>' +
+      (opts.preview && p.w.length > 1 ? '<p class="wk__lockline">Days 2–' + p.w.length + ' are locked: unlock them below</p>' : '') + '</div>';
+    var cards = '<div class="wk__days">' + p.w.map(function (day, n) {
+      var lock = opts.preview && n > 0;
+      return '<section class="wk__day' + (lock ? ' is-locked' : '') + '"' + (lock ? ' aria-hidden="true"' : '') + '><header class="wk__dh"><span class="wk__dn">Day ' + (n + 1) + ' · ' + esc(day.d) + '</span><b class="wk__df">' + esc(day.f) + '</b>' + (lock ? '' : tick(n, 'card')) + '</header>' +
+        '<ol class="wk__list" role="list">' + day.x.map(function (x) { return '<li class="wk__ex">' + ex(x, lock) + '</li>'; }).join('') + '</ol>' + (lock ? '<span class="wk__lk wk__lk--card">Locked: unlock below</span>' : '') + '</section>';
+    }).join('') + '</div>';
     el.innerHTML = '<div class="wk__head"><p class="eyebrow">Your free workout plan · by SNH</p><h3 class="wk__h">' + esc(p.t) + '</h3><p class="wk__s">' + esc(p.s) + '</p>' +
-      '<p class="wk__meta"><span>' + p.w.length + ' days a week</span><span>' + (p.level === 'beginner' ? 'Beginner' : 'Intermediate') + '</span><span>Plan ' + esc(p.id) + '</span></p></div>' +
-      '<div class="wk__days">' + days + '</div>' +
-      (notes.length && !opts.preview ? '<ul class="wk__notes" role="list">' + notes.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
-      '<p class="wk__fine">Warm up for 5–10 minutes first. Rest days are for walking, sleep and food. General guidance, not medical advice: check with a doctor if you have an injury or condition.</p>';
+      '<p class="wk__meta"><span>' + p.w.length + ' days a week</span><span>' + (p.level === 'beginner' ? 'Beginner' : 'Intermediate') + '</span><span>Tap an exercise to watch how</span></p></div>' +
+      (st ? wkTrackerHtml(st) : '') + table + cards +
+      (notes.length && !opts.preview && !opts.compact ? '<ul class="wk__notes" role="list">' + notes.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
+      (opts.compact ? '' : '<p class="wk__fine">Warm up for 5–10 minutes first. Rest days are for walking, sleep and food. General guidance, not medical advice: check with a doctor if you have an injury or condition.' + (st ? ' Your ticks are saved on this device only.' : '') + '</p>');
+    el.classList.toggle('wk--track', !!st);
     el.hidden = false;
+    if (st && !el.__wkBound) {
+      el.__wkBound = true;
+      el.addEventListener('change', function (e) {
+        var c = e.target.closest && e.target.closest('[data-wk-done]'); if (!c) return;
+        wkToggle(el.__wkPlan, +c.getAttribute('data-wk-done'), c.checked);
+        renderPlan(el, el.__wkPlan, el.__wkOpts);
+        var f = el.querySelector('[data-wk-done="' + c.getAttribute('data-wk-done') + '"]'); if (f) f.focus();
+      });
+    }
+    el.__wkPlan = p; el.__wkOpts = opts;
   }
   // Klaviyo: profile properties + a "Workout Plan Unlocked" event (the flow in KLAVIYO-WORKOUT.md), and the list
   // subscription when a list is set. Client API with keepalive, so a page POST right after doesn't cut it off.
@@ -876,7 +984,7 @@
     if (o.list && o.consent) jobs.push(fetch(base + 'subscriptions/?company_id=' + encodeURIComponent(co), { method: 'POST', keepalive: true, headers: H, body: JSON.stringify({ data: { type: 'subscription', attributes: { custom_source: 'Workout plan quiz', profile: { data: { type: 'profile', attributes: prof } } }, relationships: { list: { data: { type: 'list', id: o.list } } } } }) }));
     return Promise.all(jobs.map(function (j) { return j.catch(function () {}); }));
   }
-  window.SNHPlans = { pick: planFor, byId: planById, render: renderPlan, klaviyo: wkKlaviyo, tags: tagsFor };
+  window.SNHPlans = { pick: planFor, byId: planById, render: renderPlan, klaviyo: wkKlaviyo, tags: tagsFor, stats: wkStats, kind: wkKind };
   window.snhQuizInit = function (q) { return quizInit(q, null); };
 
   /* account: a plan the member saved (tag plan:<id>), and a plan built on the homepage before they signed in */
