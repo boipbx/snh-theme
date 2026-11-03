@@ -898,3 +898,6 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 @media (prefers-reduced-motion: reduce) { .wkt__bar i { transition: none; } }
 /* the quiz overlay widens for the plan on desktop (the weekly table needs the room); the stack stays readable */
 @media (min-width: 900px) { .qzb__body:has(.qz__res:not([hidden])) { width: min(100%, 1120px); } .qzb__body:has(.qz__res:not([hidden])) :is(.qzb__intro, .qz__res-h, .qz__stack, .qz__tot, .qz__tip, .qz__share, .app__note) { max-width: 760px; } }
+/* Impact's table rule zeroes the first/last cell padding: restore it on the weekly table */
+.wk table.wk__wt :is(th, td):first-child { padding-inline-start: 14px; }
+.wk table.wk__wt :is(th, td):last-child { padding-inline-end: 14px; }
