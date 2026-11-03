@@ -145,6 +145,9 @@
       if (L < 246 && L > 120) {
         var tile = img.closest('.card__img--alt') ? null : img.closest('.card__tile, .hs__img');
         if (tile) { tile.style.background = 'rgb(' + Math.round(br) + ',' + Math.round(bgc) + ',' + Math.round(bb) + ')'; img.style.mixBlendMode = 'normal'; }
+        // R19: a mid/dark grey studio shot can't blend into a light tile without seams: show the photo edge to edge
+        // (true colour, unscaled, no clip) and flag it so the merchant can swap in a white-background file
+        if (tile && L < 215) { img.style.transform = 'none'; img.style.clipPath = 'none'; img.setAttribute('data-v2-greyshot', Math.round(L)); img.classList.add('is-ready'); return; }
       }
       br = Math.min(255, br * lf); bgc = Math.min(255, bgc * lf); bb = Math.min(255, bb * lf);
       // the pack itself: bounding box of pixels that differ from the backdrop, so every pack sits at the same size
