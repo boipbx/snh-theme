@@ -2381,6 +2381,8 @@ img.snh-koko { max-height: 20px !important; width: auto !important; max-width: n
 /* ================= R18 · mobile homepage pass ================= */
 @media (max-width: 1023px) {
   /* Shop the Look rail: each card is its own card (the shared white stack made the next card's number look like part of this one) */
+  .hs__grid { grid-template-columns: minmax(0, 1fr); }
+  .hs__grid > *, .hs__side, .hs__stack { min-width: 0; }
   .hs__stack { overflow: visible; border: 0; border-radius: 0; background: none; box-shadow: none; }
   .hs__stack .hs__list { gap: 10px; padding-bottom: 6px; }
   .hs__stack .hs__item.hpc { flex: 0 0 min(84%, 340px); border: 1px solid rgba(12, 12, 13, .08); border-radius: 12px; overflow: hidden; }
