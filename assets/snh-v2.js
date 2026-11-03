@@ -838,13 +838,12 @@
     });
   });
 
-  /* ================= shop the look: dots ⇄ cards, zoom toward the active dot, popover / bottom sheet ================= */
+  /* ================= shop the look: dots ⇄ cards (static image, R18), popover / bottom sheet ================= */
   on('hotspots', function (hs) {
     var frame = hs.querySelector('.hs__frame');
     var dots = $$('.hs__dot', hs), items = $$('.hs__item', hs);
     var scrim = hs.querySelector('.hs__scrim');
     var popOn = hs.getAttribute('data-popover') !== 'false';
-    var zoom = parseFloat(getComputedStyle(hs).getPropertyValue('--hs-zoom')) || 1.12;
     var phone = window.matchMedia('(max-width: 767px)');
     var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
     var active = null, openDot = null;
@@ -852,19 +851,11 @@
     function dotOf(i) { return hs.querySelector('.hs__dot[data-spot="' + i + '"]'); }
     function itemOf(i) { return hs.querySelector('.hs__item[data-spot="' + i + '"]'); }
     function hot(i, isOn) { $$('[data-spot="' + i + '"]', hs).forEach(function (el) { el.classList.toggle('is-hot', isOn); }); }
-    function setZoom(i) {
-      var d = i == null ? null : dotOf(i);
-      if (!d || reduce || zoom <= 1) { frame.style.setProperty('--s', 1); return; }
-      frame.style.setProperty('--oxn', d.style.getPropertyValue('--x'));
-      frame.style.setProperty('--oyn', d.style.getPropertyValue('--y'));
-      frame.style.setProperty('--s', zoom);
-    }
     function inView(el) { var r = el.getBoundingClientRect(); return r.top >= 0 && r.bottom <= window.innerHeight; }
     function activate(i, scroll) {
       if (active !== null && active !== i) hot(active, false);
       active = i;
       hot(i, true);
-      setZoom(i);
       var it = itemOf(i);
       if (scroll && it && !inView(it) && !phone.matches) it.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
     }
@@ -872,7 +863,6 @@
       if (openDot || active === null) return;
       hot(active, false);
       active = null;
-      setZoom(null);
     }
     function closePop(refocus) {
       if (!openDot) return;

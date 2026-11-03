@@ -23,7 +23,7 @@
   endif
   assign img = section.settings.image
 -%}
-<section class="v2 v-section v-section--cream hs" aria-labelledby="{{ hid }}" data-v2="hotspots" data-popover="{{ section.settings.popover }}" style="--hs-zoom: {{ section.settings.zoom | divided_by: 100.0 }}">
+<section class="v2 v-section v-section--cream hs" aria-labelledby="{{ hid }}" data-v2="hotspots" data-popover="{{ section.settings.popover }}">
   <div class="v-wrap">
     {%- if section.settings.brand_logo != blank -%}
       <div class="head"><div class="head__text">
@@ -177,17 +177,6 @@
       "id": "image",
       "label": "Campaign image",
       "info": "Square, 2000 × 2000px. Place each product's dot with its block's position sliders."
-    },
-    {
-      "type": "range",
-      "id": "zoom",
-      "label": "Zoom toward the active dot",
-      "min": 100,
-      "max": 130,
-      "step": 2,
-      "unit": "%",
-      "default": 112,
-      "info": "100% turns the zoom off."
     },
     {
       "type": "checkbox",

@@ -1275,31 +1275,22 @@
 .news__msg--err { color: #A3361A; }
 .v2 ::placeholder { color: #757575; opacity: 1; }
 
-/* ================= phase 3 · Shop the Look, smooth ================= */
-/* The image and dots share a clipped square frame (aspect ratio reserved: no layout shift). Zoom = scale on the image
-   with transform-origin at the active dot; every dot moves by (its position − origin) × (scale − 1) in container
-   units, so the dots stay pinned to the product while only transforms animate. */
-.hs__frame { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--v-radius); background: #E9E4DC; container-type: inline-size; isolation: isolate; }
-.hs__frame > .hs__img-main { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0; aspect-ratio: auto;
-  transform-origin: calc(var(--oxn, 50) * 1%) calc(var(--oyn, 50) * 1%); transform: scale(var(--s, 1)); transition: transform 600ms cubic-bezier(.22, 1, .36, 1); will-change: transform; }
+/* ================= phase 3 · Shop the Look, calm (R18) ================= */
+/* The image is static: no zoom or pan. Hover / focus on a dot or a product row only highlights its partner. */
+.hs__frame { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--v-radius); background: #E9E4DC; isolation: isolate; }
+.hs__frame > .hs__img-main { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0; aspect-ratio: auto; transform: none; }
 .hs__frame > .hs__ph { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hs .hs__dot {
-  --dx: calc((var(--x, 50) - var(--oxn, 50)) * (var(--s, 1) - 1) * 1cqw);
-  --dy: calc((var(--y, 50) - var(--oyn, 50)) * (var(--s, 1) - 1) * 1cqw);
-  transform: translate3d(var(--dx), var(--dy), 0) scale(var(--ds, 1));
-  transition: transform 600ms cubic-bezier(.22, 1, .36, 1), background-color 200ms var(--ease), color 200ms var(--ease), box-shadow 200ms var(--ease);
-}
-.hs .hs__dot:hover { --ds: 1.08; transform: translate3d(var(--dx), var(--dy), 0) scale(var(--ds)); background: var(--white); color: var(--ink); }
-.hs .hs__dot.is-hot, .hs .hs__dot[aria-expanded="true"] { --ds: 1.22; background: var(--v-accent); color: var(--white); z-index: 3; box-shadow: 0 6px 20px rgba(224, 82, 28, .45); }
-.hs__dot::before { will-change: transform, opacity; }
+.hs .hs__dot { transition: background-color 200ms var(--ease), color 200ms var(--ease), box-shadow 200ms var(--ease); }
+.hs .hs__dot:hover { background: var(--white); color: var(--ink); }
+.hs .hs__dot.is-hot, .hs .hs__dot[aria-expanded="true"] { background: var(--v-accent); color: var(--white); z-index: 3; box-shadow: 0 0 0 4px rgba(224, 82, 28, .25); }
 .hs__dot.is-hot::before, .hs__dot[aria-expanded="true"]::before { border-color: rgba(224, 82, 28, .85); }
 .hs__dot:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
 
-/* list: the active card lifts, gets an orange edge, its number fills */
-.hs__item { position: relative; transition: transform 220ms var(--ease), box-shadow 220ms var(--ease), border-color 220ms var(--ease); }
-.hs__item.is-hot { transform: translateY(-2px); border-color: var(--v-accent); box-shadow: 0 10px 28px rgba(10, 10, 10, .08); }
-.hs__n { transition: background-color 220ms var(--ease), transform 220ms var(--ease); }
-.hs__item.is-hot .hs__n { background: var(--v-accent); transform: scale(1.08); }
+/* list: the active row gets an orange edge and its number fills; nothing moves */
+.hs__item { position: relative; transition: box-shadow 200ms var(--ease), border-color 200ms var(--ease); }
+.hs__item.is-hot { border-color: var(--v-accent); box-shadow: 0 0 0 1px var(--v-accent); }
+.hs__n { transition: background-color 200ms var(--ease); }
+.hs__item.is-hot .hs__n { background: var(--v-accent); }
 .hs__img img { aspect-ratio: 1; }
 
 /* add buttons: loading + success tick (V2.add toggles is-busy / is-added) */
@@ -1339,8 +1330,7 @@ a.hs__pts:hover { color: var(--white); }
 }
 @media (min-width: 768px) { .hs__scrim { display: none !important; } }
 @media (prefers-reduced-motion: reduce) {
-  .hs__frame > .hs__img-main, .hs .hs__dot { transition: none; }
-  .hs .hs__dot { --s: 1; }
+  .hs .hs__dot { transition: none; }
 }
 
 /* ================= phase 4 · brand marquee: seamless, uniform tiles, scrubbable ================= */
