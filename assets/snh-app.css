@@ -944,3 +944,4 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 .qz__shaker .shk { --shk-h: 200px; margin: 0 auto; display: block; }
 .qz__shaker .shk__liq { transition-duration: 200ms; }
 .qz__shaker.is-shake .shk { animation: qz-shake 220ms ease; }
+.wk__wt th > .wk__tick { display: inline-flex; }

@@ -2489,3 +2489,10 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 .acp__prog.acp__prog--shk { display: flex; align-items: center; gap: 12px; }
 .acp__prog--shk .shk { --shk-h: 64px; }
 .acp__prog--shk .acp__next { margin: 0; }
+/* R19 #10 contrast: tinted glass, deeper silver, a mark that reads on light and dark */
+.shk { --shk-mark: rgba(14, 14, 14, .42); --shk-glass: rgba(205, 214, 224, .32); --shk-edge: rgba(20, 20, 20, .4); }
+.shk[data-tier="silver"] { --shk-l1: #C3CCD8; --shk-l2: #5F6C7E; }
+.shk__back { fill: var(--shk-glass); }
+.shk__glass { stroke: var(--shk-edge); }
+.shk__mark { fill: var(--shk-mark); fill-opacity: 1; stroke: none; }
+.acp .shk, .v-section--dark .shk, .app__hero--video .shk { --shk-mark: rgba(255, 255, 255, .8); --shk-glass: rgba(255, 255, 255, .14); --shk-edge: rgba(255, 255, 255, .5); }
