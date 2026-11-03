@@ -498,7 +498,8 @@
       var t = toks.filter(function (t) { return s.indexOf(t + ' ') === 0; })[0]; if (!t) return false;
       var rest = s.slice(t.length + 1).split(' '), k = 0;
       while (k < bw.length && k < rest.length && (rest[k] === bw[k] || (k === bw.length - 1 && bw[k].length > 3 && rest[k].indexOf(bw[k]) === 0))) k++;
-      if (k < bw.length) return false;
+      // the full name, or a product code like "ISO-XP" / "BEEF-XP" as the first word ("AN ISO-XP 1KG delivers …")
+      if (k < bw.length && !(k >= 1 && bw[0].indexOf('-') > -1 && bw[0].length >= 5)) return false;
       var m = rest.slice(k, k + 6).join(' ').match(/^[^()]{0,20}\(([^)]*)\)/), a = m ? nums(m[1]) : [], tn = nums(item.title);
       return !(a.length && tn.length && !a.some(function (x) { return tn.indexOf(x) > -1; }));
     });
@@ -506,7 +507,7 @@
   var bundlePromise = null;
   function loadBundles(ab) {
     if (bundlePromise) return bundlePromise;
-    var KEY = 'snh_bmap2', cached = null;
+    var KEY = 'snh_bmap3', cached = null;
     try { cached = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
     var sig = (ab.cols || []).join(',') + '|' + (ab.map || '');
     var over = {};
@@ -536,6 +537,9 @@
     if (!ab || !ab.on || !cart.item_count) { var bn = $('[data-bundle-win]', this.el); if (bn) bn.remove(); return; }
     loadBundles(ab).then(function (bundles) {
       if (self.__lastCart !== cart) return;   // a newer render took over
+      // nothing loaded (rate-limited / offline): one more try a few seconds later
+      if (!bundles.length) { if (!self.__abRetry) { self.__abRetry = true; setTimeout(function () { if (self.__lastCart === cart) self.autoBundles(cart); }, 5000); } return; }
+      self.__abRetry = false;
       var byId = {}; bundles.forEach(function (b) { byId[b.id] = b; });
       var lines = cart.items.map(function (it) { return { it: it, item: { handle: it.handle, title: it.product_title, vendor: it.vendor } }; });
       // 1. bundle unlocked: bundle products in the basket (their saving × qty), and settings offers that are complete

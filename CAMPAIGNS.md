@@ -78,3 +78,20 @@ Example: "Weekend stack: Rs 2,000 off whey + creatine, Fri 6pm to Sun midnight".
 - Frequency is remembered in the shopper's browser (`snh_cmp_<id>`): `once` forever, `day` 24h, `session` until the
   tab closes, `always` every page view.
 - QA: `prototype/tools/r12-campaigns-qa.js` (past / active / future mocks) → `prototype/shots/r12/p8/campaigns.md`.
+
+
+## Round 19: relevant promos only
+
+- **Account + cart "Picked for you" promos** (Member promotion blocks / metaobject) now show only when they match the
+  visitor's preferences: goals / sports / diets / bought words you set on the promo, matched against the member's quiz
+  tags and the brands + product types of their last 10 orders, or a guest's quiz answers saved on their device.
+  Every field you set must match, and at least one must be set. A promo with no targeting matches the brand in its
+  link (`/collections/ryse` → shown to people who bought RYSE). Nobody sees untargeted "random" promos any more.
+- **No preference data at all** (no quiz answers, no goal tags, no orders): a "Personalise your SNH" quiz card instead
+  (on the account the existing goal prompt; elsewhere the promo slot's quiz card). The cart page shows nothing.
+- **Site campaigns** (popup, homepage banner, cart banner) get the same optional fields: *Who it's relevant to* →
+  Goals, Sports, Diets, Bought, and *Only show to matching visitors* (for launches: uses the link's brand when no
+  targeting is set). Announcements stay site-wide. Campaigns without targeting behave as before.
+- **Onboarding:** Customize → Overlay group → *SNH onboarding prompt*: a slide-in for visitors with no goal yet,
+  once per 7 days (setting), never on cart / checkout / account pages, never on the same page view as the email or a
+  campaign popup. Its button opens the homepage quiz (`/?snh-quiz=open`).

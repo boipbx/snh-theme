@@ -1,5 +1,33 @@
 # Bundle offers: how to fill them (Round 12)
 
+## Round 19: bundle products are found automatically
+
+The cart (drawer + /cart page) now finds every **bundle product** by itself, no setup needed:
+
+1. **Which products are bundles:** every available product in the *Bundle collections*
+   (Theme settings → SNH bundle offers → Bundle collections; default `training-strength-bundles,
+   daily-health-wellness-bundles, endurance-bundles, bundle-offers`). Today that's 25 products (type "Bundle").
+2. **What each bundle contains:** read from its description: a sentence that **starts with the brand and the
+   product's full name**, e.g. "AN Creatine Monohydrate (50 Servings) is …", "SiS GO Isotonic Energy Gels deliver …",
+   "SNH 2.0 Shaker Bottle 750ml is …". Brand short forms understood: AN / Applied Nutrition, RAW, SiS / Science in
+   Sport, REVIVE, MyProtein / MP, TRACE, SNH, Healthspan, EHP, MuscleTech, PhD. A size in brackets must match the
+   product's size (so a 50-serving creatine bundle doesn't claim the 200-serving tub).
+3. **Overrides:** Theme settings → SNH bundle offers → *Bundle contents: overrides*, one line per bundle, by handle:
+   `race-day-pack-1-0 + sis-go-hydro-tablets` (add), `deep-sleep - applied-nutrition-zma` (remove),
+   `my-new-stack = handle-a, handle-b` (set exactly). Two lines ship by default (Hydro tablets in Race Day Pack 1.0,
+   Omega 3 in Everyday Essentials: their descriptions name them in a form the reader can't match).
+
+**What the shopper sees.** Under a basket line that a bundle contains: *Make it a bundle · save Rs X*, the bundle's
+picture and name, "Swaps your <item> for the bundle · Rs P", and **Swap** (adds the bundle, takes one of each covered
+item out). The bundle offered is the closest fit: the one covering most basket items, then the cheapest (fewest
+extras). When a bundle product is in the basket (or a settings offer below is complete): **🎉 Bundle unlocked:
+you're saving Rs X** at the top of the drawer and cart page, with a short confetti burst once per bundle (off for
+reduced motion, or with *Confetti on Bundle unlocked*). The saving = compare-at price (else SNH's price sheet) − price.
+
+The full product → bundle table the cart computes: `prototype/shots/r19/07-bundles/bundles.md`
+(`node prototype/tools/r19-bundles.js <products.json>` regenerates it).
+
+
 The cart drawer and cart page show a collapsed **Bundle offer** row when a product in the basket belongs to an offer
 ("Make it a pair" for a one-product offer, "Complete the bundle · Rs X" for a multi-product one). Right now every
 offer is empty, so the row never appears. Two places feed it; the theme reads **both** (metaobject entries first).
