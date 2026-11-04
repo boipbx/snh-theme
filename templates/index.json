@@ -6,14 +6,11 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "snh_hero": {
       "type": "snh-hero-slider",
-      "settings": {
-        "label": "Featured",
-        "interval": 6
-      },
       "blocks": {
         "slide_1": {
           "type": "slide",
@@ -24,6 +21,7 @@
             "image_mobile": "shopify://shop_images/running.jpg",
             "pos": "62% 30%",
             "mpos": "50% 20%",
+            "alt": "",
             "eyebrow": "Sports Nutrition Hub · Sri Lanka",
             "heading": "Serious fuel for *serious* training.",
             "sub": "Authentic supplements from the brands athletes trust, delivered same-day across Colombo.",
@@ -43,7 +41,13 @@
             "pos": "50% 50%",
             "mpos": "50% 50%",
             "alt": "SNH: Fueling athletes, elevating wellness",
-            "link": "/collections/everything"
+            "eyebrow": "",
+            "heading": "Serious fuel for *serious* training.",
+            "sub": "",
+            "cta": "",
+            "link": "/collections/everything",
+            "cta2": "",
+            "link2": ""
           }
         },
         "slide_3": {
@@ -55,11 +59,14 @@
             "image_mobile": "shopify://shop_images/ryse_mobile_banner.jpg",
             "pos": "30% 50%",
             "mpos": "50% 0%",
+            "alt": "",
             "eyebrow": "New arrivals · RYSE",
             "heading": "Discover the all-new *RYSE* range.",
             "sub": "Loaded Protein, Pump and Pre: just landed at SNH.",
             "cta": "Shop RYSE",
-            "link": "/collections/ryse"
+            "link": "/collections/ryse",
+            "cta2": "",
+            "link2": ""
           }
         },
         "slide_4": {
@@ -71,11 +78,14 @@
             "image_mobile": "shopify://shop_images/revive_mobile.jpg",
             "pos": "25% 50%",
             "mpos": "50% 0%",
+            "alt": "",
             "eyebrow": "Revive MD",
             "heading": "The gold standard for *wellness*.",
             "sub": "Daily wellness essentials from Revive, now at SNH.",
             "cta": "Shop Revive",
-            "link": "/collections/revive"
+            "link": "/collections/revive",
+            "cta2": "",
+            "link2": ""
           }
         },
         "slide_5": {
@@ -87,11 +97,14 @@
             "image_mobile": "shopify://shop_images/the-sulek-stack_mobike.jpg",
             "pos": "45% 40%",
             "mpos": "50% 0%",
+            "alt": "",
             "eyebrow": "New drop · RAW × Sam Sulek",
             "heading": "The Sulek Stack has *landed*.",
             "sub": "Sam Sulek's own stack from RAW Nutrition, now in Sri Lanka.",
             "cta": "Shop the Sulek Stack",
-            "link": "/collections/the-sulek-stack"
+            "link": "/collections/the-sulek-stack",
+            "cta2": "",
+            "link2": ""
           }
         },
         "slide_6": {
@@ -103,11 +116,14 @@
             "image_mobile": "shopify://shop_images/nootropics-web-cover_mobile.jpg",
             "pos": "70% 40%",
             "mpos": "50% 30%",
+            "alt": "",
             "eyebrow": "Science in Sport · Beta Fuel + Nootropics",
             "heading": "The next level of athlete *nutrition*.",
             "sub": "Science in Sport Beta Fuel energy gel with added nootropics.",
             "cta": "Shop nootropics",
-            "link": "/products/sis-beta-fuel-energy-nootropics-gel"
+            "link": "/products/sis-beta-fuel-energy-nootropics-gel",
+            "cta2": "",
+            "link2": ""
           }
         }
       },
@@ -118,7 +134,11 @@
         "slide_4",
         "slide_5",
         "slide_6"
-      ]
+      ],
+      "settings": {
+        "label": "Featured",
+        "interval": 6
+      }
     },
     "snh_quiz": {
       "type": "snh-quiz-band",
@@ -133,17 +153,6 @@
     },
     "snh_logos": {
       "type": "snh-brand-marquee",
-      "settings": {
-        "heading": "Authorised distributors of *leading* brands",
-        "show_count": true,
-        "count": "",
-        "link_label": "All brands",
-        "link_url": "/pages/shop-by-brand",
-        "speed": 35,
-        "direction": "left",
-        "two_rows": true,
-        "logo_height": 40
-      },
       "blocks": {
         "logo_1": {
           "type": "logo",
@@ -290,17 +299,21 @@
         "logo_11",
         "logo_12",
         "logo_13"
-      ]
+      ],
+      "settings": {
+        "heading": "Authorised distributors of *leading* brands",
+        "show_count": true,
+        "count": "",
+        "link_label": "All brands",
+        "link_url": "/pages/shop-by-brand",
+        "speed": 35,
+        "direction": "left",
+        "two_rows": true,
+        "logo_height": 40
+      }
     },
     "snh_ways": {
       "type": "snh-shop-your-way",
-      "settings": {
-        "eyebrow": "Our collection",
-        "heading": "Shop *your* way",
-        "link_label": "Shop everything",
-        "link_url": "/collections/everything",
-        "link_style": "link"
-      },
       "blocks": {
         "tile_1": {
           "type": "tile",
@@ -394,21 +407,24 @@
         "tile_8",
         "tile_9",
         "tile_10"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Our collection",
+        "heading": "Shop *your* way",
+        "link_label": "Shop everything",
+        "link_url": "/collections/everything",
+        "link_style": "link"
+      }
     },
     "snh_why": {
       "type": "snh-why-us",
-      "settings": {
-        "eyebrow": "Why choose us",
-        "heading": "The SNH *standard*",
-        "lead": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka."
-      },
       "blocks": {
         "stat_1": {
           "type": "stat",
           "settings": {
             "value": "50,000+",
-            "label": "orders delivered"
+            "label": "orders delivered",
+            "use_rating": false
           }
         },
         "stat_2": {
@@ -477,21 +493,19 @@
         "benefit_6",
         "benefit_7",
         "benefit_8"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Why choose us",
+        "heading": "The SNH *standard*",
+        "lead": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka.",
+        "bg_video_url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SNHMAINBRANDVIDEO1-ezgif.com-video-to-webp-converter.webp?v=1793769075",
+        "bg_poster": "shopify://shop_images/SNHMAINBRANDVIDEO1-ezgif.com-video-to-webp-converter.webp",
+        "bg_overlay": 75,
+        "bg_area": "section"
+      }
     },
     "snh_look": {
       "type": "snh-shop-the-look",
-      "settings": {
-        "eyebrow": "Brand of the month",
-        "heading": "Shop the *look*: RYSE",
-        "link_label": "Shop all RYSE",
-        "link_url": "/collections/ryse",
-        "link_style": "button",
-        "image": "shopify://shop_images/brand_of_the_month_-_ryse.jpg",
-        "image_alt": "RYSE brand of the month: Loaded Protein, Pump, Pre and Pre MAX",
-        "show_points": true,
-        "popover": true
-      },
       "blocks": {
         "product_1": {
           "type": "product",
@@ -531,17 +545,21 @@
         "product_2",
         "product_3",
         "product_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Brand of the month",
+        "heading": "Shop the *look*: RYSE",
+        "link_label": "Shop all RYSE",
+        "link_url": "/collections/ryse",
+        "link_style": "button",
+        "image": "shopify://shop_images/brand_of_the_month_-_ryse.jpg",
+        "popover": true,
+        "image_alt": "RYSE brand of the month: Loaded Protein, Pump, Pre and Pre MAX",
+        "show_points": true
+      }
     },
     "snh_goals": {
       "type": "snh-shop-by-goal",
-      "settings": {
-        "eyebrow": "Shop by goal",
-        "heading": "What are you *training* for?",
-        "tab_1": "Train & perform",
-        "tab_2": "Health & wellness",
-        "anchor": "goals"
-      },
       "blocks": {
         "goal_1": {
           "type": "goal",
@@ -645,19 +663,17 @@
         "goal_8",
         "goal_9",
         "goal_10"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Shop by goal",
+        "heading": "What are you *training* for?",
+        "tab_1": "Train & perform",
+        "tab_2": "Health & wellness",
+        "anchor": "goals"
+      }
     },
     "snh_best": {
       "type": "snh-bestsellers",
-      "settings": {
-        "eyebrow": "What's new at SNH",
-        "heading": "Shop our *bestsellers*",
-        "link_label": "Shop all",
-        "link_url": "/collections/everything",
-        "link_style": "button",
-        "limit": 8,
-        "anchor": "shop"
-      },
       "blocks": {
         "tab_1": {
           "type": "tab",
@@ -672,7 +688,8 @@
               "raw-thavage-pre-workout",
               "ryse-loaded-protein-2lb",
               "ryse-loaded-pre-workout"
-            ]
+            ],
+            "collection": ""
           }
         },
         "tab_2": {
@@ -683,7 +700,8 @@
               "applied-nutrition-critical-whey-2kg",
               "raw-cbum-itholate-protein",
               "ryse-loaded-protein-2lb"
-            ]
+            ],
+            "collection": ""
           }
         },
         "tab_3": {
@@ -693,7 +711,8 @@
             "products": [
               "sis-go-hydro-tablets",
               "sis-go-isotonic-energy-gel"
-            ]
+            ],
+            "collection": ""
           }
         },
         "tab_4": {
@@ -704,7 +723,8 @@
               "applied-nutrition-creatine-monohydrate",
               "raw-thavage-pre-workout",
               "ryse-loaded-pre-workout"
-            ]
+            ],
+            "collection": ""
           }
         },
         "tab_5": {
@@ -714,7 +734,8 @@
             "products": [
               "revive-magnesium-glycinate",
               "applied-nutrition-multi-vitamin-complex"
-            ]
+            ],
+            "collection": ""
           }
         }
       },
@@ -724,29 +745,19 @@
         "tab_3",
         "tab_4",
         "tab_5"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "What's new at SNH",
+        "heading": "Shop our *bestsellers*",
+        "link_label": "Shop all",
+        "link_url": "/collections/everything",
+        "link_style": "button",
+        "limit": 8,
+        "anchor": "shop"
+      }
     },
     "snh_sis": {
       "type": "snh-sis-slider",
-      "settings": {
-        "label": "Science in Sport, official distributor",
-        "anchor": "sis",
-        "interval": 6,
-        "logo_url": "snh-sis-logo.svg",
-        "strip_title": "Bestselling SiS",
-        "strip_link_label": "Shop all Science in Sport",
-        "strip_link": "/collections/sis",
-        "products": [
-          "sis-go-hydro-tablets",
-          "sis-beta-fuel-gel",
-          "sis-go-isotonic-energy-gel",
-          "sis-beta-fuel-energy-nootropics-gel"
-        ],
-        "trust_1_title": "100% Informed Sport",
-        "trust_1_text": "Batch-tested for banned substances",
-        "trust_2_title": "Official distributor",
-        "trust_2_text": "Sourced direct by SNH in Sri Lanka"
-      },
       "blocks": {
         "video_1": {
           "type": "video",
@@ -805,18 +816,30 @@
         "video_1",
         "tiles_2",
         "trust_3"
-      ]
+      ],
+      "settings": {
+        "label": "Science in Sport, official distributor",
+        "anchor": "sis",
+        "interval": 6,
+        "logo_url": "snh-sis-logo.svg",
+        "trust_1_title": "100% Informed Sport",
+        "trust_1_text": "Batch-tested for banned substances",
+        "trust_2_title": "Official distributor",
+        "trust_2_text": "Sourced direct by SNH in Sri Lanka",
+        "strip_title": "Bestselling SiS",
+        "strip_link_label": "Shop all Science in Sport",
+        "strip_link": "/collections/sis",
+        "products": [
+          "sis-go-hydro-tablets",
+          "sis-beta-fuel-gel",
+          "sis-go-isotonic-energy-gel",
+          "sis-beta-fuel-energy-nootropics-gel"
+        ],
+        "collection": ""
+      }
     },
     "snh_bundles": {
       "type": "snh-bundles",
-      "settings": {
-        "eyebrow": "Offers",
-        "heading": "Bundle & *save*",
-        "lead": "Curated stacks built for better value, faster shopping and stronger daily routines.",
-        "link_label": "All bundles",
-        "link_url": "/collections/bundle-offers",
-        "link_style": "link"
-      },
       "blocks": {
         "offer_1": {
           "type": "offer",
@@ -850,30 +873,18 @@
         "offer_1",
         "offer_2",
         "offer_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Offers",
+        "heading": "Bundle & *save*",
+        "lead": "Curated stacks built for better value, faster shopping and stronger daily routines.",
+        "link_label": "All bundles",
+        "link_url": "/collections/bundle-offers",
+        "link_style": "link"
+      }
     },
     "snh_elite": {
       "type": "snh-elite",
-      "settings": {
-        "anchor": "elite",
-        "eyebrow": "SNH Elite · Sri Lanka's 1st premium VIP club",
-        "heading": "Fuel your goals. Earn your *rewards*.",
-        "lead": "Create your free account, claim 500 welcome points, and earn [bronze] to [gold] back in points on every order.",
-        "chips": "500 welcome points\nUp to [gold] back\nRedeem from 2,500 points",
-        "cta": "Join SNH Elite, it's free",
-        "cta_link": "/account/register",
-        "cta2": "Sign in",
-        "cta2_link": "/account/login",
-        "person": "shopify://shop_images/cricket.jpg",
-        "gift": "shopify://shop_images/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png",
-        "coins": "shopify://shop_images/2_37969279-4a78-43c8-8fdf-5256e55c6030.png",
-        "card_logo": "shopify://shop_images/sn_o.png",
-        "card_points": "2,860",
-        "card_tier": "Gold member",
-        "person_style": "photo",
-        "person_focal": "50% 28%",
-        "bg_focal": "70% 25%"
-      },
       "blocks": {
         "tier_1": {
           "type": "tier",
@@ -904,21 +915,39 @@
         "tier_1",
         "tier_2",
         "tier_3"
-      ]
+      ],
+      "settings": {
+        "show_card": true,
+        "bg_focal": "70% 25%",
+        "anchor": "elite",
+        "eyebrow": "SNH Elite · Sri Lanka's 1st premium VIP club",
+        "heading": "Fuel your goals. Earn your *rewards*.",
+        "lead": "Create your free account, claim 500 welcome points, and earn [bronze] to [gold] back in points on every order.",
+        "chips": "500 welcome points\nUp to [gold] back\nRedeem from 2,500 points",
+        "cta": "Join SNH Elite, it's free",
+        "cta_link": "/account/register",
+        "cta2": "Sign in",
+        "cta2_link": "/account/login",
+        "cta_member": "See my points",
+        "cta2_member": "How SNH Elite works",
+        "person": "shopify://shop_images/cricket.jpg",
+        "person_style": "photo",
+        "person_focal": "50% 28%",
+        "gift": "shopify://shop_images/1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png",
+        "coins": "shopify://shop_images/2_37969279-4a78-43c8-8fdf-5256e55c6030.png",
+        "card_logo": "shopify://shop_images/sn_o.png",
+        "card_points": "2,860",
+        "card_tier": "Gold member"
+      }
     },
     "snh_reviews": {
       "type": "snh-reviews",
-      "settings": {
-        "rating_text": "",
-        "heading": "Rated by *real* customers",
-        "link_label": "",
-        "link_url": "/pages/shop-by-brand"
-      },
       "blocks": {
         "google_reviews_carousel_widget_block_pMR7nx": {
           "type": "shopify://apps/google-reviews/blocks/carousel-widget-block/8b378e9e-c56d-47ce-a754-feca5e0caf59",
           "settings": {
             "contentIndex": "1",
+            "tag": "",
             "variant": "carousel",
             "headerType_rotator": "top",
             "headerType_carousel": "top",
@@ -947,7 +976,13 @@
       },
       "block_order": [
         "google_reviews_carousel_widget_block_pMR7nx"
-      ]
+      ],
+      "settings": {
+        "rating_text": "",
+        "heading": "Rated by *real* customers",
+        "link_label": "",
+        "link_url": "/pages/shop-by-brand"
+      }
     },
     "snh_guides": {
       "type": "snh-guides",
@@ -967,21 +1002,14 @@
       "settings": {
         "eyebrow": "Support · every day, 10am–7pm",
         "heading": "Questions, *answered*",
-        "lead": "Call or WhatsApp [whatsapp] for anything not covered here."
-      },
-      "blocks": {},
-      "block_order": []
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
+        "show_cta": true,
+        "cta": "Still stuck? WhatsApp us",
+        "style": "dark"
+      }
     },
     "snh_stores": {
       "type": "snh-stores",
-      "settings": {
-        "anchor": "stores",
-        "eyebrow": "Visit us",
-        "heading": "Three stores, open every *day*",
-        "link_label": "All locations",
-        "link_url": "/pages/location",
-        "link_style": "link"
-      },
       "blocks": {
         "store_1": {
           "type": "store",
@@ -1024,17 +1052,116 @@
         "store_1",
         "store_2",
         "store_3"
-      ]
-    },
-    "snh_news": {
-      "type": "snh-newsletter",
+      ],
       "settings": {
-        "heading": "First to *know*",
-        "lead": "New drops, restocks and member offers. No spam, only discount codes and product news.",
-        "placeholder": "Email address",
-        "button": "Subscribe",
-        "success": "Thanks, you're on the list.",
-        "tags": "newsletter,homepage"
+        "anchor": "stores",
+        "eyebrow": "Visit us",
+        "heading": "Three stores, open every *day*",
+        "link_label": "All locations",
+        "link_url": "/pages/location",
+        "link_style": "link"
+      }
+    },
+    "snh_grow": {
+      "type": "snh-grow",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/khizerinsid.webp",
+            "eyebrow": "Wholesale",
+            "title": "Stock SNH in your gym or store",
+            "text": "Trade prices on authentic whey, creatine and SiS for gyms, retailers and coaches.",
+            "cta": "Apply for wholesale",
+            "link": "/pages/wholesale-1"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/snhnuge.webp",
+            "eyebrow": "Franchise",
+            "title": "Open an SNH store in your city",
+            "text": "A proven supplement store, with supply, training and marketing behind you.",
+            "cta": "Explore the franchise",
+            "link": "/pages/franchise-partner"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2"
+      ],
+      "settings": {
+        "eyebrow": "For business",
+        "heading": "Grow *with SNH*"
+      }
+    },
+    "snh_tiktok": {
+      "type": "snh-tiktok",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7702151880029261063",
+            "caption": ""
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7702062300089306386",
+            "caption": ""
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7701932315999554824",
+            "caption": ""
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7701708250663701778",
+            "caption": ""
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7700968579969142034",
+            "caption": ""
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7700514921796160776",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6"
+      ],
+      "settings": {
+        "handle": "sportsnutritionhub.lk",
+        "heading": "Seen on *TikTok*",
+        "lead": "Unboxings, training tips and what's new in store, straight from our feed.",
+        "follow_label": "Follow on TikTok",
+        "side_heading": "New videos every week",
+        "side_text": "Product breakdowns, stacks that work and match-day fuel. Follow so you don't miss a drop.",
+        "videos_heading": "Featured *videos*",
+        "height": 640,
+        "profile": "auto",
+        "tone": "light"
       }
     },
     "snh_instagram": {
@@ -1105,99 +1232,16 @@
         "cream": false
       }
     },
-    "snh_tiktok": {
-      "type": "snh-tiktok",
+    "snh_news": {
+      "type": "snh-newsletter",
       "settings": {
-        "tone": "light",
-        "profile": "auto"
-      },
-      "blocks": {
-        "video_1": {
-          "type": "video",
-          "settings": {
-            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7702151880029261063",
-            "caption": ""
-          }
-        },
-        "video_2": {
-          "type": "video",
-          "settings": {
-            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7702062300089306386",
-            "caption": ""
-          }
-        },
-        "video_3": {
-          "type": "video",
-          "settings": {
-            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7701932315999554824",
-            "caption": ""
-          }
-        },
-        "video_4": {
-          "type": "video",
-          "settings": {
-            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7701708250663701778",
-            "caption": ""
-          }
-        },
-        "video_5": {
-          "type": "video",
-          "settings": {
-            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7700968579969142034",
-            "caption": ""
-          }
-        },
-        "video_6": {
-          "type": "video",
-          "settings": {
-            "url": "https://www.tiktok.com/@sportsnutritionhub.lk/video/7700514921796160776",
-            "caption": ""
-          }
-        }
-      },
-      "block_order": [
-        "video_1",
-        "video_2",
-        "video_3",
-        "video_4",
-        "video_5",
-        "video_6"
-      ]
-    },
-    "snh_grow": {
-      "type": "snh-grow",
-      "settings": {
-        "eyebrow": "For business",
-        "heading": "Grow *with SNH*"
-      },
-      "blocks": {
-        "card_1": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/khizerinsid.webp",
-            "eyebrow": "Wholesale",
-            "title": "Stock SNH in your gym or store",
-            "text": "Trade prices on authentic whey, creatine and SiS for gyms, retailers and coaches.",
-            "cta": "Apply for wholesale",
-            "link": "/pages/wholesale-1"
-          }
-        },
-        "card_2": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/snhnuge.webp",
-            "eyebrow": "Franchise",
-            "title": "Open an SNH store in your city",
-            "text": "A proven supplement store, with supply, training and marketing behind you.",
-            "cta": "Explore the franchise",
-            "link": "/pages/franchise-partner"
-          }
-        }
-      },
-      "block_order": [
-        "card_1",
-        "card_2"
-      ]
+        "heading": "First to *know*",
+        "lead": "New drops, restocks and member offers. No spam, only discount codes and product news.",
+        "placeholder": "Email address",
+        "button": "Subscribe",
+        "success": "Thanks, you're on the list.",
+        "tags": "newsletter,homepage"
+      }
     }
   },
   "order": [
