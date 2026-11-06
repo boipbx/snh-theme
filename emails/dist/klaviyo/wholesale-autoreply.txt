@@ -1,0 +1,37 @@
+Subject: We have your wholesale enquiry
+Preheader: Our wholesale team replies within one working day.
+
+Our wholesale team replies within one working day.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+WHOLESALE
+
+Thanks for your enquiry
+
+{{ first_name|default:'there' }}, we have your wholesale enquiry{% if
+person|lookup:'business_name' %} for {{ person|lookup:'business_name' }}{%
+endif %}. Here's what happens next:
+
+1. Our wholesale team reviews your details, usually within one working day.
+2. If we are a good fit, we send your trade price list and account terms.
+3. You order by email or WhatsApp; we deliver island-wide.
+
+Browse the range [https://www.sportsnutritionhub.lk/pages/wholesale-1]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

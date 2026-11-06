@@ -1,0 +1,42 @@
+Subject: Split it into 3 with Koko
+Preheader: 3 interest-free payments, 100% authentic stock.
+
+3 interest-free payments, 100% authentic stock.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+YOUR BASKET
+
+Pay in 3 with Koko
+
+{{ first_name|default:'there' }}, split your basket into 3 interest-free
+payments with Koko at checkout. Every product is sourced direct from the
+brand, and Colombo orders often arrive the same day.
+
+{% for item in event.Items %}
+
+{{ item.ProductURL }} {{ item.ProductName }} [{{ item.ProductURL }}]
+Qty {{ item.Quantity }}
+Rs {{ item.ItemPrice|floatformat:0 }}
+or 3 × Rs {{ item.ItemPrice|divide:3|floatformat:0 }} with 
+
+{% endfor %}
+
+Complete my order [{{
+event.CheckoutURL|default:'https://www.sportsnutritionhub.lk/cart' }}]
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

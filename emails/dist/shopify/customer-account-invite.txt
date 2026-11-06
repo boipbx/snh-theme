@@ -1,0 +1,48 @@
+Subject: Activate your SNH account
+Preheader: One click to set your password and start earning points.
+
+One click to set your password and start earning points.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+SNH ELITE
+
+Your account is ready
+
+Hi {{ customer.first_name | default: 'there' }}, set a password to see your
+orders, earn SNH Elite points and redeem rewards.
+
+Activate my account [{{ customer.account_activation_url }}]
+
+The link works once and expires after 30 days. Didn't expect this? You can
+ignore it.
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+This is a service email about your account or order with Sports Nutrition Hub.

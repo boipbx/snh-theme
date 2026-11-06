@@ -1,0 +1,44 @@
+Subject: Your checkout is waiting
+Preheader: Pick up right where you left off.
+
+Pick up right where you left off.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+ALMOST DONE
+
+One step left
+
+{{ first_name|default:'there' }}, your checkout is saved. Pay by card, Koko (3
+interest-free payments) or cash on delivery.
+
+{% for item in event.extra.line_items %}
+
+{{ item.product.url|default: {{ item.product.title }} [{{
+item.product.url|default:]
+{{ item.variant_title|default:"" }}
+Qty {{ item.quantity }}
+Rs {{ item.line_price|floatformat:0 }}
+or 3 × Rs {{ item.line_price|divide:3|floatformat:0 }} with 
+
+{% endfor %}
+
+TotalRs {{ event|lookup:"$value"|floatformat:0 }}
+
+Return to checkout [{{ event.extra.responsive_checkout_url }}]
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

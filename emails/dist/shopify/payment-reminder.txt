@@ -1,0 +1,35 @@
+Subject: Payment reminder for order {{ order_name }}
+Preheader: Complete your bank transfer and we will ship right away.
+
+Complete your bank transfer and we will ship right away.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+ORDER {{ ORDER_NAME }}
+
+One step to ship it
+
+Hi {{ customer.first_name | default: 'there' }}, we're holding order {{
+order_name }} for you. Transfer {{ total_price | money }} and WhatsApp the
+slip with your order number; we ship as soon as it clears.
+
+Prefer to pay on delivery? Reply on WhatsApp and we'll switch your order to
+cash on delivery (island-wide) or Koko (3 interest-free payments).
+
+View my order [{{ order_status_url }}]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+This is a service email about your account or order with Sports Nutrition Hub.

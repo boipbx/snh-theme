@@ -1,0 +1,55 @@
+Subject: Your SNH invoice {{ name }}
+Preheader: Review your items and pay securely online.
+
+Review your items and pay securely online.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+INVOICE {{ NAME }}
+
+Your order is ready to pay
+
+Hi {{ customer.first_name | default: 'there' }}, here's the order we put
+together for you. Pay securely online by card or Koko.
+
+{% for line in subtotal_line_items %}
+
+{{ shop.url }}{{ line.product.url }} {{ line.title }} [{{ shop.url }}{{
+line.product.url }}]
+{% if line.variant_title != blank %}{{ line.variant_title }}{% endif %}
+Qty {{ line.quantity }}
+{{ line.final_line_price | money }}
+or 3 × {{ line.final_line_price | divided_by: 3 | money }} with 
+
+{% endfor %}
+
+Subtotal{{ subtotal_price | money }}
+
+Delivery{% if shipping_price == 0 %}Free{% else %}{{ shipping_price | money
+}}{% endif %}
+
+{% if total_discounts > 0 %}
+
+Discount-{{ total_discounts | money }}
+
+{% endif %}
+
+Total{{ total_price | money }}
+
+Pay now [{{ invoice_url }}]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+This is a service email about your account or order with Sports Nutrition Hub.

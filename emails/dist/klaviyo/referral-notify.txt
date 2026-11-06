@@ -1,0 +1,30 @@
+Subject: You're on the list for SNH referrals
+Preheader: Refer friends, both of you earn points. Coming soon.
+
+Refer friends, both of you earn points. Coming soon.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+COMING SOON
+
+You're on the list
+
+{{ first_name|default:'there' }}, thanks for your interest in SNH referrals.
+When they open you'll be first to know: invite friends and you both earn SNH
+Elite points.
+
+Go to my account [https://www.sportsnutritionhub.lk/account]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

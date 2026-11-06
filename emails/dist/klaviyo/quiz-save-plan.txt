@@ -1,0 +1,34 @@
+Subject: You haven't saved your plan yet
+Preheader: Create a free account to keep it and track every session.
+
+Create a free account to keep it and track every session.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+SAVE YOUR PLAN
+
+Don't lose your plan
+
+{{ first_name|default:'there' }}, your plan “{{ event.plan_title }}” lives on
+this device only. Create a free SNH Elite account to keep it, track each
+session and get 500 welcome points.
+
+Create my free account [https://www.sportsnutritionhub.lk/account/register]
+
+Already have an account? Sign in
+[https://www.sportsnutritionhub.lk/account/login] and your plan saves
+automatically.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

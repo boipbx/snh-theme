@@ -1,0 +1,33 @@
+Subject: Running low on {{ event.product_title }}?
+Preheader: By our count you've got about {{ event.days_left }} days left.
+
+By our count you've got about {{ event.days_left }} days left.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+RESTOCK
+
+Running low?
+
+{{ first_name|default:'there' }}, by our count you have about {{
+event.days_left }} days left of {{ event.product_title }}. Restock now so you
+don't miss a session.
+
+{{ event.product_url }} {{ event.product_title }} [{{ event.product_url }}]
+Reorder in one tap
+
+Reorder now [{{ event.product_url }}]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

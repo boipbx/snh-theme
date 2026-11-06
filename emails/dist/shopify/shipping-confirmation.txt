@@ -1,0 +1,67 @@
+Subject: Your order {{ order_name }} is on its way
+Preheader: Track your parcel any time with the button inside.
+
+Track your parcel any time with the button inside.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+ORDER {{ ORDER_NAME }}
+
+It's on its way
+
+Hi {{ customer.first_name | default: 'there' }}, your order has left our
+store{% if fulfillment.tracking_company != blank %} with {{
+fulfillment.tracking_company }}{% endif %}. Most deliveries outside Colombo
+arrive in 1–3 working days.
+
+Tracking number
+{{ fulfillment.tracking_number }}
+
+Track my parcel [{% if fulfillment.tracking_url != blank %}{{
+fulfillment.tracking_url }}{% else %}{{ order_status_url }}{% endif %}]
+
+{% for line in fulfillment.fulfillment_line_items %}
+
+{{ shop.url }}{{ line.line_item.product.url }} {{ line.line_item.title }} [{{
+shop.url }}{{ line.line_item.product.url }}]
+Qty {{ line.quantity }}
+{{ line.line_item.final_line_price | money }}
+
+{% endfor %}
+
+Delivering to
+{{ shipping_address.name }}
+{{ shipping_address.address1 }}{% if shipping_address.address2 != blank %}, {{
+shipping_address.address2 }}{% endif %}
+{{ shipping_address.city }}{% if shipping_address.phone != blank %} · {{
+shipping_address.phone }}{% endif %}
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+This is a service email about your account or order with Sports Nutrition Hub.

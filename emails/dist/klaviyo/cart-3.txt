@@ -1,0 +1,51 @@
+Subject: Last call on your basket
+Preheader: We can't hold it forever. Here's a better deal.
+
+We can't hold it forever. Here's a better deal.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+LAST CALL
+
+Last call on your basket
+
+{{ first_name|default:'there' }}, stock moves fast on our best sellers. Here's
+your basket, and a bundle that saves more.
+
+{% for item in event.Items %}
+
+{{ item.ProductURL }} {{ item.ProductName }} [{{ item.ProductURL }}]
+Qty {{ item.Quantity }}
+Rs {{ item.ItemPrice|floatformat:0 }}
+or 3 × Rs {{ item.ItemPrice|divide:3|floatformat:0 }} with 
+
+{% endfor %}
+
+Finish my order [{{
+event.CheckoutURL|default:'https://www.sportsnutritionhub.lk/cart' }}]
+
+BUNDLE OFFER
+
+{{ person|lookup:'bundle_title'|default:'Build Muscle Stack' }}
+
+Whey, creatine and a shaker together, for less than buying them separately.
+
+Rs {{ person|lookup:'bundle_price'|default:'' }}
+
+See the bundle [{{
+person|lookup:'bundle_url'|default:'https://www.sportsnutritionhub.lk/collections/bundle-offers'
+}}]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

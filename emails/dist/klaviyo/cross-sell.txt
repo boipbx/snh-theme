@@ -1,0 +1,40 @@
+Subject: Complete your stack and save
+Preheader: Bundles cost less than buying each item alone.
+
+Bundles cost less than buying each item alone.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+COMPLETE YOUR STACK
+
+Save with a bundle
+
+{{ first_name|default:'there' }}, our bundles put the essentials together for
+less.
+
+BUNDLE OFFER
+
+{{ person|lookup:'bundle_title'|default:'Build Muscle Stack' }}
+
+Whey protein, creatine and a shaker, chosen to work together.
+
+{% if person|lookup:'bundle_price' %}Rs {{ person|lookup:'bundle_price' }}{%
+else %}See the price{% endif %}
+
+See the bundle [{{
+person|lookup:'bundle_url'|default:'https://www.sportsnutritionhub.lk/collections/bundle-offers'
+}}]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

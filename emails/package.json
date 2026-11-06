@@ -1,0 +1,1 @@
+{ "name": "snh-emails", "private": true, "description": "SNH email templates (MJML → HTML) for Shopify Notifications and Klaviyo", "scripts": { "build": "node build.js", "check": "node check.js", "shots": "node shots.js" }, "dependencies": { "mjml": "4.15.3", "html-to-text": "9.0.5" } }

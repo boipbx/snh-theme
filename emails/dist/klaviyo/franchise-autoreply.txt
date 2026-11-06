@@ -1,0 +1,44 @@
+Subject: We have your SNH franchise enquiry
+Preheader: We read every enquiry and reply within a few working days.
+
+We read every enquiry and reply within a few working days.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+FRANCHISE
+
+Let us talk about your store
+
+{{ first_name|default:'there' }}, thank you for your interest in opening an
+SNH store{% if person|lookup:'franchise_city' %} in {{
+person|lookup:'franchise_city' }}{% endif %}. We read every enquiry and reply
+within a few working days to book a first call.
+
+In the meantime, visit one of our stores in Dehiwala, Wattala or Nugegoda to
+see the SNH standard in person.
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

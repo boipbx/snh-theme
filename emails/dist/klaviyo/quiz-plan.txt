@@ -1,0 +1,75 @@
+Subject: Your plan: {{ event.plan_title }}
+Preheader: Built from your answers, with the stack to match.
+
+Built from your answers, with the stack to match.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+YOUR FREE PLAN
+
+{{ event.plan_title }}
+
+{{ event.plan_summary }}
+Built from your answers: {{ event.goal }}, {{ event.days }} a week, {{
+event.level }}{% if event.sport %}, {{ event.sport }}{% endif %}.
+
+{% for day in event.plan_days %}
+{{ day.day }} · {{ day.focus }}
+{% for ex in day.exercises %}{{ ex }}
+{% endfor %}
+{% endfor %}
+
+Open my full plan [{{
+event.plan_url|default:'https://www.sportsnutritionhub.lk/account#goals' }}]
+
+Your stack
+Matched to your goal. Every product is authentic and earns SNH Elite points.
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg
+Applied Nutrition Critical Whey 2KG
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg]
+Rs 31,999
+or 3 × Rs 10,667 with 
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate
+Applied Nutrition Creatine Monohydrate
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate]
+Rs 8,499
+or 3 × Rs 2,833 with 
+
+https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel SiS GO
+Isotonic Energy Gel
+[https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel]
+Rs 999
+or 3 × Rs 333 with 
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

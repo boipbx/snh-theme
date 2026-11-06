@@ -1,0 +1,68 @@
+<mjml lang="en"><mj-head>
+    <mj-title>What Sri Lanka is training with</mj-title>
+    <mj-preview>Our best sellers, plus a free plan built for your goal.</mj-preview>
+    <mj-raw><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"></mj-raw>
+    <mj-attributes>
+      <mj-all font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" color="#0E0E0E" padding="0 24px" />
+      <mj-section padding="0" />
+      <mj-column padding="0" />
+      <mj-image padding="0" />
+    </mj-attributes>
+    <mj-style inline="inline">
+      a { color: #0E0E0E; }
+      .lnk a, a.lnk { color: #BF4512; font-weight: 700; text-decoration: underline; }
+      .muted { color: #5C574F; }
+      .tbl td { font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.45; color: #0E0E0E; }
+    </mj-style>
+    <mj-style>
+      :root { color-scheme: light; supported-color-schemes: light; }
+      u + .body .gmail-fix { display: none; }
+      @media only screen and (max-width: 480px) {
+        .h1 div { font-size: 30px !important; line-height: 1.1 !important; }
+        .pad-m div { padding-left: 0 !important; padding-right: 0 !important; }
+        .stack td { display: block !important; width: 100% !important; }
+        .hide-m { display: none !important; max-height: 0 !important; overflow: hidden !important; }
+      }
+      [data-ogsc] .keep-ink, [data-ogsb] .keep-ink { color: #0E0E0E !important; }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#F6F4F1" width="600px" css-class="body">
+  
+  <mj-section background-color="#FFFFFF" padding="20px 24px" border-bottom="3px solid #BF4512">
+    <mj-column vertical-align="middle" width="50%"><mj-image src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/sn_o.png?width=360" alt="SNH, Sports Nutrition Hub" width="96px" align="left" href="https://www.sportsnutritionhub.lk/" /></mj-column>
+    <mj-column vertical-align="middle" width="50%" css-class="hide-m"><mj-text align="right" font-size="13px" color="#5C574F" padding="0"><a href="https://www.sportsnutritionhub.lk/collections/all" style="color:#5C574F;text-decoration:none;">Shop</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://www.sportsnutritionhub.lk/pages/snh-elite" style="color:#5C574F;text-decoration:none;">SNH Elite</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://www.sportsnutritionhub.lk/account" style="color:#5C574F;text-decoration:none;">Account</a></mj-text></mj-column>
+  </mj-section>
+  <mj-section background-color="#FFFFFF"><mj-column><mj-image src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/running.jpg?width=1200" alt="A runner training" width="600px" fluid-on-mobile="true" /></mj-column></mj-section>
+  <mj-section background-color="#FFFFFF" padding="28px 0 8px">
+    <mj-column>
+      <mj-text font-size="12px" font-weight="700" letter-spacing="2px" color="#BF4512" padding="0 24px 8px">BEST SELLERS</mj-text>
+      <mj-text css-class="h1" font-size="34px" line-height="1.08" font-weight="700" letter-spacing="-0.5px" padding="0 24px 12px">What athletes <em style="font-family:'Instrument Serif', Georgia, 'Times New Roman', serif;font-style:italic;font-weight:400;">reorder</em></mj-text>
+      <mj-text font-size="17px" color="#5C574F" padding="0 24px 8px">{{ first_name|default:'there' }}, these are the lines our customers come back for. Not sure where to start? Our quiz builds your stack and a free workout plan in about a minute.</mj-text>
+    </mj-column>
+  </mj-section>
+<mj-section background-color="#FFFFFF" padding="4px 0"><mj-column><mj-table css-class="tbl" padding="0 24px" cellpadding="0" cellspacing="0"><tr><td width="96" style="padding:12px 0 12px 0;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg"><img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CriticalWheyProtein2kgbyAppliedNutritionfromSportsNutritionHub_6.png?width=400" alt="Applied Nutrition Critical Whey 2KG" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
+    <td style="padding:12px 0 12px 12px;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg" style="font-weight:700;color:#0E0E0E;text-decoration:none;font-size:16px;">Applied Nutrition Critical Whey 2KG</a>
+    <br><span style="font-weight:700;font-size:18px;color:#0E0E0E;">Rs 31,999</span><br><span style="font-size:13px;color:#5C574F;">or 3 × Rs 10,667 with</span>&nbsp;<img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/t/36/assets/snh-koko.png" alt="Koko" width="33" height="15" style="display:inline-block;vertical-align:middle;border:0;width:33px;height:15px;"></td></tr><tr><td width="96" style="padding:12px 0 12px 0;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate"><img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_3ef6e203-bf8f-4730-9d50-0531c9412579.png?width=400" alt="Applied Nutrition Creatine Monohydrate" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
+    <td style="padding:12px 0 12px 12px;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate" style="font-weight:700;color:#0E0E0E;text-decoration:none;font-size:16px;">Applied Nutrition Creatine Monohydrate</a>
+    <br><span style="font-weight:700;font-size:18px;color:#0E0E0E;">Rs 8,499</span><br><span style="font-size:13px;color:#5C574F;">or 3 × Rs 2,833 with</span>&nbsp;<img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/t/36/assets/snh-koko.png" alt="Koko" width="33" height="15" style="display:inline-block;vertical-align:middle;border:0;width:33px;height:15px;"></td></tr><tr><td width="96" style="padding:12px 0 12px 0;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel"><img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GoIsotonicEnergyGelsbyScienceInSportfromSportsNutritionHub_7.png?width=400" alt="SiS GO Isotonic Energy Gel" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
+    <td style="padding:12px 0 12px 12px;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel" style="font-weight:700;color:#0E0E0E;text-decoration:none;font-size:16px;">SiS GO Isotonic Energy Gel</a>
+    <br><span style="font-weight:700;font-size:18px;color:#0E0E0E;">Rs 999</span><br><span style="font-size:13px;color:#5C574F;">or 3 × Rs 333 with</span>&nbsp;<img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/t/36/assets/snh-koko.png" alt="Koko" width="33" height="15" style="display:inline-block;vertical-align:middle;border:0;width:33px;height:15px;"></td></tr><tr><td width="96" style="padding:12px 0 12px 0;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/snh-shaker-bottle-750ml-orange"><img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShakerBottle750ml-OrangebySNHfromSportsNutritionHub.png?width=400" alt="SNH Shaker Bottle 750ml" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
+    <td style="padding:12px 0 12px 12px;vertical-align:top;"><a href="https://www.sportsnutritionhub.lk/products/snh-shaker-bottle-750ml-orange" style="font-weight:700;color:#0E0E0E;text-decoration:none;font-size:16px;">SNH Shaker Bottle 750ml</a>
+    <br><span style="font-weight:700;font-size:18px;color:#0E0E0E;">Rs 1,999</span><br><span style="font-size:13px;color:#5C574F;">or 3 × Rs 667 with</span>&nbsp;<img src="https://cdn.shopify.com/s/files/1/0258/9625/5550/t/36/assets/snh-koko.png" alt="Koko" width="33" height="15" style="display:inline-block;vertical-align:middle;border:0;width:33px;height:15px;"></td></tr></mj-table></mj-column></mj-section>
+<mj-section background-color="#FFFFFF" padding="12px 0 20px"><mj-column><mj-raw>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" style="padding:0 24px;">
+    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.sportsnutritionhub.lk/#quiz" style="height:50px;v-text-anchor:middle;width:260px;" arcsize="50%" stroke="f" fillcolor="#BF4512"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Find my stack</center></v:roundrect><![endif]-->
+    <!--[if !mso]><!--><a href="https://www.sportsnutritionhub.lk/#quiz" style="display:inline-block;background:#BF4512;color:#FFFFFF;font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:700;line-height:50px;height:50px;padding:0 30px;border-radius:999px;text-decoration:none;mso-hide:all;">Find my stack</a><!--<![endif]-->
+    </td></tr></table></mj-raw></mj-column></mj-section>
+<mj-section background-color="#0E0E0E" padding="16px 12px"><mj-column><mj-text align="center" color="#FFFFFF" font-size="14px" font-weight="600" padding="0">100% authentic&nbsp;&nbsp;·&nbsp;&nbsp;Official SiS distributor&nbsp;&nbsp;·&nbsp;&nbsp;Same-day Colombo delivery</mj-text></mj-column></mj-section>
+<mj-section background-color="#F6F4F1" padding="24px 12px 8px">
+  <mj-column width="33.33%"><mj-text font-size="14px" padding="0 12px 16px"><strong>SNH Dehiwala</strong><br><span style="color:#5C574F;">133A Kawdana Road</span><br><a href="tel:+94779773359" style="color:#0E0E0E;">+94 77 977 3359</a></mj-text></mj-column><mj-column width="33.33%"><mj-text font-size="14px" padding="0 12px 16px"><strong>SNH Wattala</strong><br><span style="color:#5C574F;">880 Negombo Road</span><br><a href="tel:+94768463359" style="color:#0E0E0E;">+94 76 846 3359</a></mj-text></mj-column><mj-column width="33.33%"><mj-text font-size="14px" padding="0 12px 16px"><strong>SNH Nugegoda</strong><br><span style="color:#5C574F;">555 High Level Road</span><br><a href="tel:+94764863359" style="color:#0E0E0E;">+94 76 486 3359</a></mj-text></mj-column>
+</mj-section>
+<mj-section background-color="#F6F4F1" padding="0 0 20px"><mj-column><mj-text font-size="15px">Questions? WhatsApp us on <a href="https://wa.me/94764863359" style="color:#BF4512;font-weight:700;">+94 76 486 3359</a>, every day 10am–7pm.</mj-text></mj-column></mj-section>
+<mj-section background-color="#0E0E0E" padding="28px 12px 8px">
+    <mj-column><mj-image src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/sn_o.png?width=360" alt="SNH" width="80px" align="left" padding="0 12px 14px" />
+      <mj-text color="#E9E4DC" font-size="14px" padding="0 12px 10px"><a href="https://www.instagram.com/sportsnutritionhub.lk/" style="color:#E9E4DC;text-decoration:underline;">Instagram</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://www.facebook.com/sportsnutritionhub.lk/" style="color:#E9E4DC;text-decoration:underline;">Facebook</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://www.tiktok.com/@sportsnutritionhub.lk" style="color:#E9E4DC;text-decoration:underline;">TikTok</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://wa.me/94764863359" style="color:#E9E4DC;text-decoration:underline;">WhatsApp</a></mj-text>
+      <mj-text color="#B9B2A7" font-size="12px" line-height="1.6" padding="0 12px 22px">Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka · <a href="https://www.sportsnutritionhub.lk/" style="color:#B9B2A7;">sportsnutritionhub.lk</a><br>You're receiving this because you signed up at sportsnutritionhub.lk. {% unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}</mj-text>
+    </mj-column></mj-section>
+  </mj-body></mjml>

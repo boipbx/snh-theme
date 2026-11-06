@@ -1,0 +1,44 @@
+Subject: Your SNH reward is ready
+Preheader: Trade your points for cash off your next order.
+
+Trade your points for cash off your next order.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+REWARD READY
+
+Your reward is ready
+
+{{ first_name|default:'there' }}, you have {{ person|lookup:'loyalty_points'
+}} points, worth Rs {{ person|lookup:'points_value_rs' }}. Redeem them in your
+account for cash off your next order.
+
+SNH Elite {{ person|lookup:'loyalty_tier'|default:'Bronze'|upper }}
+
+MEMBER
+
+{{ first_name|default:'' }} {{ last_name|default:'' }}
+
+{{ person|lookup:'loyalty_points'|default:'0' }} POINTS  · Rs {{
+person|lookup:'points_value_rs'|default:'0' }}
+
+  
+
+{% if person|lookup:'next_tier' %}Rs {{ person|lookup:'rs_to_next_tier' }} to
+{{ person|lookup:'next_tier' }}{% else %}Top tier{% endif %}
+
+Redeem my points [https://www.sportsnutritionhub.lk/account#rewards]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

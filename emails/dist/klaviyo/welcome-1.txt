@@ -1,0 +1,70 @@
+Subject: Welcome to SNH, {{ first_name|default:"there" }}
+Preheader: Authentic supplements, same-day Colombo delivery and points on every order.
+
+Authentic supplements, same-day Colombo delivery and points on every order.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+WELCOME
+
+Welcome to SNH
+
+Hi {{ first_name|default:'there' }}, thanks for joining Sri Lanka's home of
+authentic sports nutrition. As an SNH Elite member you start with {{
+person|lookup:'welcome_points'|default:'500' }} welcome points.
+
+Why athletes shop with us
+Everything is sourced direct from the brand or its authorised distributor, we
+are the official Science in Sport distributor in Sri Lanka, and Colombo orders
+often arrive the same day.
+
+Start shopping [https://www.sportsnutritionhub.lk/collections/all]
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg
+Applied Nutrition Critical Whey 2KG
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg]
+Rs 31,999
+or 3 × Rs 10,667 with 
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate
+Applied Nutrition Creatine Monohydrate
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate]
+Rs 8,499
+or 3 × Rs 2,833 with 
+
+https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel SiS GO
+Isotonic Energy Gel
+[https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel]
+Rs 999
+or 3 × Rs 333 with 
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

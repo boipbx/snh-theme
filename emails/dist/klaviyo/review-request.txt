@@ -1,0 +1,39 @@
+Subject: How did it go, {{ first_name|default:"there" }}?
+Preheader: Your review helps other athletes choose.
+
+Your review helps other athletes choose.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+YOUR REVIEW
+
+How did it go?
+
+{{ first_name|default:'there' }}, you've had your order for a week. A quick
+rating helps other athletes choose, and it takes 30 seconds.
+
+{% for item in event.Items %}
+
+{{ item.ProductURL }} {{ item.ProductName }} [{{ item.ProductURL }}]
+Qty {{ item.Quantity }}
+Rs {{ item.ItemPrice|floatformat:0 }}
+
+{% endfor %}
+
+Write a review [{{
+event.extra.judgeme_review_url|default:'https://www.sportsnutritionhub.lk/account'
+}}]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

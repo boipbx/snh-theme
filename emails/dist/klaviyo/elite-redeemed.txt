@@ -1,0 +1,34 @@
+Subject: Your reward code: {{ event.code }}
+Preheader: Use it at checkout. Valid for 30 days.
+
+Use it at checkout. Valid for 30 days.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+REDEEMED
+
+Here is your reward
+
+{{ first_name|default:'there' }}, you traded {{ event.points }} points for Rs
+{{ event.value_rs }} off. Use this code at checkout{% if event.expires_at %}
+before {{ event.expires_at }}{% endif %}.
+
+YOUR REWARD CODE
+{{ event.code }}
+
+Shop with my reward [https://www.sportsnutritionhub.lk/discount/{{ event.code
+}}]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

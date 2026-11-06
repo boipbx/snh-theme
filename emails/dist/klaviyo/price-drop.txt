@@ -1,0 +1,33 @@
+Subject: Price drop on {{ event.ProductName }}
+Preheader: Something you looked at just got cheaper.
+
+Something you looked at just got cheaper.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+PRICE DROP
+
+It just got cheaper
+
+{{ first_name|default:'there' }}, something you looked at has dropped in price
+to Rs {{ event.Price|floatformat:0 }}.
+
+{{ event.URL }} {{ event.ProductName }} [{{ event.URL }}]
+Rs {{ event.Price|floatformat:0 }}
+or 3 × Rs {{ event.Price|divide:3|floatformat:0 }} with 
+
+Shop the new price [{{ event.URL }}]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

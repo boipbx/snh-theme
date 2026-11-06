@@ -1,0 +1,43 @@
+Subject: Any questions before you order?
+Preheader: Our team answers on WhatsApp every day.
+
+Our team answers on WhatsApp every day.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+WE CAN HELP
+
+Questions? Ask us
+
+{{ first_name|default:'there' }}, not sure about a flavour, a size or how to
+take it? Our team answers on WhatsApp every day from 10am to 7pm.
+
+{% for item in event.extra.line_items %}
+
+{{ item.product.url|default: {{ item.product.title }} [{{
+item.product.url|default:]
+{{ item.variant_title|default:"" }}
+Qty {{ item.quantity }}
+Rs {{ item.line_price|floatformat:0 }}
+or 3 × Rs {{ item.line_price|divide:3|floatformat:0 }} with 
+
+{% endfor %}
+
+Complete my order [{{ event.extra.responsive_checkout_url }}]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

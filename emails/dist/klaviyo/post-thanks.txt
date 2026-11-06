@@ -1,0 +1,52 @@
+Subject: Thank you, {{ first_name|default:"there" }}. You just earned points
+Preheader: Here is what your order earned in SNH Elite points.
+
+Here is what your order earned in SNH Elite points.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+THANK YOU
+
+You just earned points
+
+{{ first_name|default:'there' }}, thank you for your order. It earned about {{
+event|lookup:'$value'|multiply:person|lookup:'earn_rate'|divide:100|floatformat:0
+}} points, which show in your account once it's paid.
+
+SNH Elite {{ person|lookup:'loyalty_tier'|default:'Bronze'|upper }}
+
+MEMBER
+
+{{ first_name|default:'' }} {{ last_name|default:'' }}
+
+{{ person|lookup:'loyalty_points'|default:'0' }} POINTS  · Rs {{
+person|lookup:'points_value_rs'|default:'0' }}
+
+  
+
+{% if person|lookup:'next_tier' %}Rs {{ person|lookup:'rs_to_next_tier' }} to
+{{ person|lookup:'next_tier' }}{% else %}Top tier{% endif %}
+
+{% for item in event.Items %}
+
+{{ item.ProductURL }} {{ item.ProductName }} [{{ item.ProductURL }}]
+Qty {{ item.Quantity }}
+Rs {{ item.ItemPrice|floatformat:0 }}
+
+{% endfor %}
+
+See my points [https://www.sportsnutritionhub.lk/account#rewards]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

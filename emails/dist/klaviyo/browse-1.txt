@@ -1,0 +1,35 @@
+Subject: Still thinking about {{ event.ProductName }}?
+Preheader: Authentic, in stock and ready to ship.
+
+Authentic, in stock and ready to ship.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+TAKE ANOTHER LOOK
+
+Still interested?
+
+{{ first_name|default:'there' }}, you were looking at this. It's in stock,
+authentic and ships today in Colombo.
+
+{{ event.URL }} {{ event.ProductName }} [{{ event.URL }}]
+Rs {{ event.Price|floatformat:0 }}
+or 3 × Rs {{ event.Price|divide:3|floatformat:0 }} with 
+
+View product [{{ event.URL }}]
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

@@ -1,0 +1,51 @@
+Subject: Pairs well with what you viewed
+Preheader: What other athletes take with it.
+
+What other athletes take with it.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+COMPLETE YOUR STACK
+
+Better together
+
+{{ first_name|default:'there' }}, athletes who look at {{ event.ProductName }}
+often pair it with these.
+
+{{ event.URL }} {{ event.ProductName }} [{{ event.URL }}]
+Rs {{ event.Price|floatformat:0 }}
+or 3 × Rs {{ event.Price|divide:3|floatformat:0 }} with 
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg
+Applied Nutrition Critical Whey 2KG
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg]
+Rs 31,999
+or 3 × Rs 10,667 with 
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate
+Applied Nutrition Creatine Monohydrate
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate]
+Rs 8,499
+or 3 × Rs 2,833 with 
+
+https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel SiS GO
+Isotonic Energy Gel
+[https://www.sportsnutritionhub.lk/products/sis-go-isotonic-energy-gel]
+Rs 999
+or 3 × Rs 333 with 
+
+Shop the range [https://www.sportsnutritionhub.lk/collections/all]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

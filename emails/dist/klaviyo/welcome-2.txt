@@ -1,0 +1,64 @@
+Subject: How SNH Elite pays you back
+Preheader: Earn points, climb tiers, trade points for cash off.
+
+Earn points, climb tiers, trade points for cash off.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+SNH ELITE
+
+Points on every order
+
+{{ first_name|default:'there' }}, here's how your membership works.
+
+SNH Elite {{ person|lookup:'loyalty_tier'|default:'Bronze'|upper }}
+
+MEMBER
+
+{{ first_name|default:'' }} {{ last_name|default:'' }}
+
+{{ person|lookup:'loyalty_points'|default:'0' }} POINTS  · Rs {{
+person|lookup:'points_value_rs'|default:'0' }}
+
+  
+
+{% if person|lookup:'next_tier' %}Rs {{ person|lookup:'rs_to_next_tier' }} to
+{{ person|lookup:'next_tier' }}{% else %}Top tier{% endif %}
+
+Earn 3% back as Bronze, 7% as Silver (from Rs 198,000 a year) and 10% as Gold
+(from Rs 300,000).
+Redeem from 2,500 points: 1 point = Rs 1 off.
+Extras birthday rewards for Silver and Gold, early access to launches.
+
+See my points [https://www.sportsnutritionhub.lk/account]
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

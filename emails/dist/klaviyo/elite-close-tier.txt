@@ -1,0 +1,44 @@
+Subject: You're close to {{ person|lookup:'next_tier'|default:'your next tier' }}
+Preheader: A little more this year unlocks a higher earn rate.
+
+A little more this year unlocks a higher earn rate.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+ALMOST THERE
+
+So close to {{ person|lookup:'next_tier'|default:'your next tier' }}
+
+{{ first_name|default:'there' }}, spend Rs {{ person|lookup:'rs_to_next_tier'
+}} more this year and you move up, earning {{
+person|lookup:'next_tier_rate'|default:'more' }}% back on every order.
+
+SNH Elite {{ person|lookup:'loyalty_tier'|default:'Bronze'|upper }}
+
+MEMBER
+
+{{ first_name|default:'' }} {{ last_name|default:'' }}
+
+{{ person|lookup:'loyalty_points'|default:'0' }} POINTS  · Rs {{
+person|lookup:'points_value_rs'|default:'0' }}
+
+  
+
+{% if person|lookup:'next_tier' %}Rs {{ person|lookup:'rs_to_next_tier' }} to
+{{ person|lookup:'next_tier' }}{% else %}Top tier{% endif %}
+
+Shop now [https://www.sportsnutritionhub.lk/collections/all]
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

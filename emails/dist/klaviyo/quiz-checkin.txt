@@ -1,0 +1,50 @@
+Subject: How's week 1 going, {{ first_name|default:'there' }}?
+Preheader: Small adjustments that make the plan work.
+
+Small adjustments that make the plan work.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+WEEK 1
+
+Three days in
+
+{{ first_name|default:'there' }}, how is {{ event.plan_title }} feeling? Two
+things help most in week 1:
+
+1. Start lighter than you think. Finish every set with 2 reps in reserve; add
+weight next week.
+2. Protein and sleep do the building. Aim for a protein serving within two
+hours of training and 7+ hours of sleep.
+
+Open my plan [{{
+event.plan_url|default:'https://www.sportsnutritionhub.lk/account#goals' }}]
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg
+Applied Nutrition Critical Whey 2KG
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-critical-whey-2kg]
+Rs 31,999
+or 3 × Rs 10,667 with 
+
+https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate
+Applied Nutrition Creatine Monohydrate
+[https://www.sportsnutritionhub.lk/products/applied-nutrition-creatine-monohydrate]
+Rs 8,499
+or 3 × Rs 2,833 with 
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+You're receiving this because you signed up at sportsnutritionhub.lk. {%
+unsubscribe 'Unsubscribe' %} · {% manage_preferences 'Manage preferences' %}

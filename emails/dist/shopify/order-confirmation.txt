@@ -1,0 +1,99 @@
+Subject: Order {{ order_name }} confirmed
+Preheader: We're packing it now. Here's everything you ordered.
+
+We're packing it now. Here's everything you ordered.
+
+https://www.sportsnutritionhub.lk/
+
+Shop [https://www.sportsnutritionhub.lk/collections/all]  ·  SNH Elite
+[https://www.sportsnutritionhub.lk/pages/snh-elite]  ·  Account
+[https://www.sportsnutritionhub.lk/account]
+
+{%- assign snh_tier = customer.metafields.custom.loyalty_tier.value | default:
+'Bronze' | downcase -%}{%- assign snh_rate = 3 -%}{%- if snh_tier == 'silver'
+-%}{%- assign snh_rate = 7 -%}{%- elsif snh_tier == 'gold' -%}{%- assign
+snh_rate = 10 -%}{%- endif -%}{%- assign snh_pts = subtotal_price |
+divided_by: 100 | times: snh_rate | divided_by: 100 -%}
+ORDER {{ ORDER_NAME }}
+
+Thank you, order confirmed
+
+Hi {{ customer.first_name | default: 'there' }}, we've got your order and
+we're packing it now. Colombo orders placed before 3pm usually arrive the same
+day.
+
+{% for line in subtotal_line_items %}
+
+{{ shop.url }}{{ line.product.url }} {{ line.title }} [{{ shop.url }}{{
+line.product.url }}]
+{% if line.variant_title != blank %}{{ line.variant_title }}{% endif %}
+Qty {{ line.quantity }}
+{{ line.final_line_price | money }}
+or 3 × {{ line.final_line_price | divided_by: 3 | money }} with 
+
+{% endfor %}
+
+Subtotal{{ subtotal_price | money }}
+
+Delivery{% if shipping_price == 0 %}Free{% else %}{{ shipping_price | money
+}}{% endif %}
+
+{% if total_discounts > 0 %}
+
+Discount-{{ total_discounts | money }}
+
+{% endif %}
+
+Total{{ total_price | money }}
+
++{{ snh_pts }} SNH Elite points on this order ({{ snh_rate }}% back as a {{
+snh_tier | capitalize }} member). They show in your account once the order is
+paid.
+
+{%- assign snh_gw = transactions.first.gateway | default: gateway | downcase
+-%}{% if snh_gw contains 'koko' %}
+Paid with Koko. Your 3 interest-free payments are in the Koko app; the first
+one is already taken.
+{% elsif snh_gw contains 'cash' or snh_gw contains 'cod' %}
+Cash on delivery. Please have {{ total_price | money }} ready when the rider
+arrives.
+{% elsif snh_gw contains 'bank' or snh_gw contains 'manual' %}
+Bank transfer. Please transfer {{ total_price | money }} and WhatsApp the slip
+with your order number {{ order_name }}. Bank details: see the order status
+page.
+{% endif %}
+
+Delivering to
+{{ shipping_address.name }}
+{{ shipping_address.address1 }}{% if shipping_address.address2 != blank %}, {{
+shipping_address.address2 }}{% endif %}
+{{ shipping_address.city }}{% if shipping_address.phone != blank %} · {{
+shipping_address.phone }}{% endif %}
+
+View my order [{{ order_status_url }}]
+
+100% authentic  ·  Official SiS distributor  ·  Same-day Colombo delivery
+
+SNH Dehiwala
+133A Kawdana Road
++94 77 977 3359 [tel:+94779773359]
+
+SNH Wattala
+880 Negombo Road
++94 76 846 3359 [tel:+94768463359]
+
+SNH Nugegoda
+555 High Level Road
++94 76 486 3359 [tel:+94764863359]
+
+Questions? WhatsApp us on +94 76 486 3359 [https://wa.me/94764863359], every
+day 10am–7pm.
+
+Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
+[https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
+[https://www.tiktok.com/@sportsnutritionhub.lk]  ·  WhatsApp
+[https://wa.me/94764863359]
+
+Sports Nutrition Hub (Pvt) Ltd · 133A Kawdana Road, Dehiwala, Sri Lanka ·
+sportsnutritionhub.lk [https://www.sportsnutritionhub.lk/]
+This is a service email about your account or order with Sports Nutrition Hub.
