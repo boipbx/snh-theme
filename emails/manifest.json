@@ -1229,7 +1229,7 @@
     "html": "emails/dist/klaviyo/campaign-sale.html",
     "text": "emails/dist/klaviyo/campaign-sale.txt",
     "mjml": "emails/src/klaviyo/campaign-sale.mjml",
-    "bytes": 27474
+    "bytes": 27402
   },
   {
     "id": "campaign-newsletter",
