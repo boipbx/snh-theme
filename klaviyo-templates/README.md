@@ -1,5 +1,10 @@
 # SNH Elite · Klaviyo email templates (Round 10 drafts)
 
+> **Superseded by `emails/`** (MJML system, 59 emails). The upgraded versions: welcome → `welcome-1`/`welcome-2`,
+> points-statement → `elite-statement`, tier-progress → `elite-close-tier`, near-reward → `elite-reward-ready`,
+> replenishment → `replenishment`, birthday → `elite-birthday`, win-back → `winback-1`/`winback-2`, review-request →
+> `review-request`. Use `emails/dist/klaviyo/*.html` and `emails/SETUP-KLAVIYO.md`.
+
 HTML files only. Nothing here is connected to Klaviyo. To use one: Klaviyo → Templates → Create → *Import HTML*,
 paste the file, then attach it to the flow in ELITE-ROADMAP.md §7.
 
