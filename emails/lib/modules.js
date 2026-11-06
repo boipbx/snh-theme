@@ -7,7 +7,7 @@ const C = { ink: '#0E0E0E', accent: '#BF4512', accentBright: '#E0521C', canvas: 
 const SANS = "Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif";
 const SERIF = "'Instrument Serif', Georgia, 'Times New Roman', serif";
 const STORE = 'https://www.sportsnutritionhub.lk';
-const WA = '94764863359', WA_FMT = '+94 76 486 3359';
+const WA = '94779773359', WA_FMT = '+94 77 977 3359';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // headline with one italic serif accent word: "Welcome to *SNH Elite*"
