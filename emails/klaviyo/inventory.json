@@ -1,0 +1,656 @@
+{
+  "flows": [
+    {
+      "id": "SHNKdu",
+      "name": "Post-Purchase Followup - Order Count Split",
+      "status": "live",
+      "trigger_type": "Metric",
+      "created": "2020-08-22T14:46:48+00:00",
+      "updated": "2020-08-22T14:46:50+00:00"
+    },
+    {
+      "id": "VsX7Lg",
+      "name": "Customer Thank You - New vs. Returning",
+      "status": "live",
+      "trigger_type": "Metric",
+      "created": "2025-03-20T09:33:59+00:00",
+      "updated": "2025-03-20T09:34:02+00:00"
+    },
+    {
+      "id": "X8B5Ft",
+      "name": "Customer Winback - Standard",
+      "status": "live",
+      "trigger_type": "Metric",
+      "created": "2020-08-22T14:34:48+00:00",
+      "updated": "2021-04-14T08:20:53+00:00"
+    },
+    {
+      "id": "XienEv",
+      "name": "Abandoned Cart",
+      "status": "live",
+      "trigger_type": "Metric",
+      "created": "2020-08-21T15:41:30+00:00",
+      "updated": "2020-08-21T15:41:31+00:00"
+    }
+  ],
+  "lists": [
+    {
+      "id": "RSUrNe",
+      "name": "Newsletter",
+      "created": "2020-08-22T13:36:11+00:00"
+    },
+    {
+      "id": "RrM7Lt",
+      "name": "SMS Subscribers",
+      "created": "2022-09-13T04:44:51+00:00"
+    }
+  ],
+  "segments": [],
+  "metrics": [
+    {
+      "id": "QNL59Q",
+      "name": "Unsubscribed from Text Messaging Marketing",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "QSX27N",
+      "name": "Viewed Collection",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "QTtwfu",
+      "name": "Merged Profile",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "QVxAQj",
+      "name": "Bounced Push",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "R57Z7j",
+      "name": "Subscribed to List",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "RRQYze",
+      "name": "Viewed Product",
+      "integration": {
+        "object": "integration",
+        "id": "7FtS4J",
+        "key": "api",
+        "name": "API",
+        "category": "API"
+      }
+    },
+    {
+      "id": "RUYicn",
+      "name": "Bounce suppression added",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "RWueUC",
+      "name": "Ordered Product",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "RePVWB",
+      "name": "Opened Email",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "RjtchZ",
+      "name": "Fulfilled Order",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "RkuFAt",
+      "name": "Marked Email as Spam",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "SBbWEj",
+      "name": "Subscribed to Text Messaging Marketing",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "Sa9t54",
+      "name": "Manually Suppressed from Email Marketing",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "ScHAHE",
+      "name": "Subscribed to Email Marketing",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "T3fPt6",
+      "name": "Received Email",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "T7T5Nu",
+      "name": "Refunded Order",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "T8Uz6W",
+      "name": "Clicked email to unsubscribe",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "TJU8r7",
+      "name": "Placed Order",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "TecZgW",
+      "name": "Received Text Message",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "UUiXiX",
+      "name": "Checkout Started",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "UVksBr",
+      "name": "Bounced Email",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "UgKpEa",
+      "name": "Unsubscribed from List",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "UpBQaN",
+      "name": "Sent Text Message",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "V2CSMr",
+      "name": "Clicked Text Message",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "V6X6rE",
+      "name": "Form submitted by profile",
+      "integration": {
+        "object": "integration",
+        "id": "7FtS4J",
+        "key": "api",
+        "name": "API",
+        "category": "API"
+      }
+    },
+    {
+      "id": "V9qqtU",
+      "name": "Received Push",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "VL6H73",
+      "name": "Updated Email Preferences",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "VZDpud",
+      "name": "Added to Cart",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "W5HNcP",
+      "name": "Active on Site",
+      "integration": {
+        "object": "integration",
+        "id": "7FtS4J",
+        "key": "api",
+        "name": "API",
+        "category": "API"
+      }
+    },
+    {
+      "id": "WGJQPs",
+      "name": "Subscribed to Back in Stock",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "WHLk7U",
+      "name": "Dropped Email",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "WP4LhU",
+      "name": "Failed to Deliver Text Message",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "WVQTT4",
+      "name": "Unsubscribed from Email Marketing",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "WVQhYp",
+      "name": "Opened Push",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "Wc3HFh",
+      "name": "Received Automated Response Text Message",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "XFhWFh",
+      "name": "Delivered Shipment",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "XNRLdc",
+      "name": "Submitted Search",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "XS9FHi",
+      "name": "Clicked Email",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "XYtBbL",
+      "name": "Failed to Deliver Automated Response Text Message",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "XjKTs5",
+      "name": "Cancelled Order",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "Y2gu8r",
+      "name": "Form completed by profile",
+      "integration": {
+        "object": "integration",
+        "id": "7FtS4J",
+        "key": "api",
+        "name": "API",
+        "category": "API"
+      }
+    },
+    {
+      "id": "YiwRw9",
+      "name": "Fulfilled Partial Order",
+      "integration": {
+        "object": "integration",
+        "id": "0eMvjm",
+        "key": "shopify",
+        "name": "Shopify",
+        "category": "eCommerce"
+      }
+    },
+    {
+      "id": "RviEaT",
+      "name": "qualified_form",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "ThJxFn",
+      "name": "Viewed Form",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "V6arbR",
+      "name": "Closed Form",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "VKuLQK",
+      "name": "unsubscribe_page_submit",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "WSAiGk",
+      "name": "Submitted Form",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "WzdPJe",
+      "name": "submitted_form_step",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    },
+    {
+      "id": "YgkjLy",
+      "name": "viewed_form_step",
+      "integration": {
+        "object": "integration",
+        "id": "0rG4eQ",
+        "key": "klaviyo",
+        "name": "Klaviyo",
+        "category": "Internal"
+      }
+    }
+  ],
+  "templates": [
+    {
+      "id": "VxjZVA",
+      "name": "Newsletter #1 (Images & Text)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:54+00:00"
+    },
+    {
+      "id": "WC7Au4",
+      "name": "Newsletter #2 (Image Gallery)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:54+00:00"
+    },
+    {
+      "id": "YqxtYx",
+      "name": "Newsletter #3 (Image Gallery with Captions)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:55+00:00"
+    },
+    {
+      "id": "Vn5veN",
+      "name": "Newsletter #4 (Story Boxes)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:55+00:00"
+    },
+    {
+      "id": "XavnKh",
+      "name": "Newsletter #5 (List of Text Headlines)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:56+00:00"
+    },
+    {
+      "id": "RacFBd",
+      "name": "Newsletter #6 (List of Icons & Headlines)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:57+00:00"
+    },
+    {
+      "id": "SWCz7G",
+      "name": "Newsletter #7 (Snack)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:57+00:00"
+    },
+    {
+      "id": "UK4sCb",
+      "name": "Newsletter #8 (Snack w/ Recommendations)",
+      "editor_type": "SYSTEM_DRAGGABLE",
+      "created": "2020-08-16T17:04:57+00:00"
+    }
+  ],
+  "profileSample": {
+    "status": 200,
+    "profiles": 50,
+    "properties": {
+      "$consent_timestamp": 28,
+      "Accepts Marketing": 50,
+      "Shopify Tags": 50,
+      "$consent": 28,
+      "Expected Date Of Next Order": 36,
+      "$phone_number_region": 2,
+      "$consent_method": 4,
+      "$source": 4,
+      "$consent_form_id": 4,
+      "$consent_form_version": 4
+    }
+  }
+}

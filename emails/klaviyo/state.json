@@ -1,0 +1,324 @@
+{
+  "templates": {
+    "welcome-1": {
+      "id": "XUUiye",
+      "name": "SNH · Welcome series · welcome + 500 Elite points",
+      "verified": true
+    },
+    "welcome-2": {
+      "id": "USsjNv",
+      "name": "SNH · Welcome series · how SNH Elite works",
+      "verified": true
+    },
+    "welcome-3": {
+      "id": "TCqezf",
+      "name": "SNH · Welcome series · best sellers + quiz",
+      "verified": true
+    },
+    "quiz-plan": {
+      "id": "UaN2Qu",
+      "name": "SNH · Quiz + workout plan · your stack + free workout plan",
+      "verified": true
+    },
+    "quiz-checkin": {
+      "id": "X8CKeP",
+      "name": "SNH · Quiz + workout plan · day-3 check-in",
+      "verified": true
+    },
+    "quiz-save-plan": {
+      "id": "REHQmY",
+      "name": "SNH · Quiz + workout plan · save your plan (guest → account)",
+      "verified": true
+    },
+    "popup-code": {
+      "id": "X3ZuTr",
+      "name": "SNH · Email popup game · Popup 1: your discount code",
+      "verified": true
+    },
+    "popup-expiring": {
+      "id": "VMXpEb",
+      "name": "SNH · Email popup game · Popup 2: code expiring",
+      "verified": true
+    },
+    "cart-1": {
+      "id": "TUUfNi",
+      "name": "SNH · Abandoned cart · Cart 1: reminder",
+      "verified": true
+    },
+    "cart-2": {
+      "id": "ThTdbF",
+      "name": "SNH · Abandoned cart · Cart 2: social proof + Koko",
+      "verified": true
+    },
+    "cart-3": {
+      "id": "RqQ5jN",
+      "name": "SNH · Abandoned cart · Cart 3: last call (+ bundle)",
+      "verified": true
+    },
+    "checkout-1": {
+      "id": "TKDK7w",
+      "name": "SNH · Abandoned checkout · Checkout 1: finish your order",
+      "verified": true
+    },
+    "checkout-2": {
+      "id": "Udqh3m",
+      "name": "SNH · Abandoned checkout · Checkout 2: questions? we can help",
+      "verified": true
+    },
+    "browse-1": {
+      "id": "YkDQjy",
+      "name": "SNH · Browse abandonment · still interested?",
+      "verified": true
+    },
+    "browse-2": {
+      "id": "X6BK6i",
+      "name": "SNH · Browse abandonment · goes well with",
+      "verified": true
+    },
+    "back-in-stock": {
+      "id": "RCGQdt",
+      "name": "SNH · Back in stock · Back in stock",
+      "verified": true
+    },
+    "price-drop": {
+      "id": "WikbLT",
+      "name": "SNH · Price drop · Price drop",
+      "verified": true
+    },
+    "post-thanks": {
+      "id": "TNfZip",
+      "name": "SNH · Post-purchase · Thank you + points earned",
+      "verified": true
+    },
+    "howto-protein": {
+      "id": "THCJWZ",
+      "name": "SNH · Post-purchase · How to use: protein",
+      "verified": true
+    },
+    "howto-creatine": {
+      "id": "UT3zQR",
+      "name": "SNH · Post-purchase · How to use: creatine",
+      "verified": true
+    },
+    "howto-preworkout": {
+      "id": "RQzB78",
+      "name": "SNH · Post-purchase · How to use: pre-workout",
+      "verified": true
+    },
+    "howto-hydration": {
+      "id": "UbpgSQ",
+      "name": "SNH · Post-purchase · How to use: hydration (SiS)",
+      "verified": true
+    },
+    "review-request": {
+      "id": "SVmbDA",
+      "name": "SNH · Post-purchase · Review request (Judge.me)",
+      "verified": true
+    },
+    "replenishment": {
+      "id": "XFBMyq",
+      "name": "SNH · Post-purchase · Replenishment: running low",
+      "verified": true
+    },
+    "cross-sell": {
+      "id": "UD9NNF",
+      "name": "SNH · Post-purchase · Cross-sell bundle",
+      "verified": true
+    },
+    "elite-statement": {
+      "id": "QXEMsj",
+      "name": "SNH · SNH Elite · Monthly points statement",
+      "verified": true
+    },
+    "elite-upgrade-silver": {
+      "id": "Rw4zHy",
+      "name": "SNH · SNH Elite · Tier upgrade: Silver",
+      "verified": true
+    },
+    "elite-upgrade-gold": {
+      "id": "TQSfvg",
+      "name": "SNH · SNH Elite · Tier upgrade: Gold",
+      "verified": true
+    },
+    "elite-close-tier": {
+      "id": "QNqgKx",
+      "name": "SNH · SNH Elite · Close to next tier",
+      "verified": true
+    },
+    "elite-reward-ready": {
+      "id": "Xm6LaQ",
+      "name": "SNH · SNH Elite · Reward ready (2,500 points)",
+      "verified": true
+    },
+    "elite-redeemed": {
+      "id": "SwcTUC",
+      "name": "SNH · SNH Elite · Redeem confirmation",
+      "verified": true
+    },
+    "elite-expiring": {
+      "id": "TFBJNu",
+      "name": "SNH · SNH Elite · Points expiring",
+      "verified": true
+    },
+    "elite-birthday": {
+      "id": "WDstcP",
+      "name": "SNH · SNH Elite · Birthday reward (Silver 10% / Gold 15%)",
+      "verified": true
+    },
+    "winback-1": {
+      "id": "RNyAWB",
+      "name": "SNH · Win-back · we miss you",
+      "verified": true
+    },
+    "winback-2": {
+      "id": "WyPcRr",
+      "name": "SNH · Win-back · a reason to come back",
+      "verified": true
+    },
+    "sunset": {
+      "id": "RHVkBd",
+      "name": "SNH · Win-back · Sunset: still want our emails?",
+      "verified": true
+    },
+    "wholesale-autoreply": {
+      "id": "Sgj8Ss",
+      "name": "SNH · Business · Wholesale enquiry auto-reply",
+      "verified": true
+    },
+    "franchise-autoreply": {
+      "id": "X2zJMg",
+      "name": "SNH · Business · Franchise enquiry auto-reply",
+      "verified": true
+    },
+    "referral-notify": {
+      "id": "YbYzF8",
+      "name": "SNH · Business · Referral “coming soon” confirmation",
+      "verified": true
+    },
+    "campaign-launch": {
+      "id": "XyXx4v",
+      "name": "SNH · Campaign · New launch",
+      "verified": true
+    },
+    "campaign-brand": {
+      "id": "VFUpcC",
+      "name": "SNH · Campaign · Brand of the month",
+      "verified": true
+    },
+    "campaign-sale": {
+      "id": "S2rmQg",
+      "name": "SNH · Campaign · Sale / offer",
+      "verified": true
+    },
+    "campaign-newsletter": {
+      "id": "Yz7Rfz",
+      "name": "SNH · Campaign · Newsletter (3 article cards)",
+      "verified": true
+    },
+    "campaign-store": {
+      "id": "XRtyhy",
+      "name": "SNH · Campaign · Store event / news",
+      "verified": true
+    }
+  },
+  "lists": {
+    "Newsletter": {
+      "id": "RSUrNe",
+      "existed": true
+    },
+    "Quiz takers": {
+      "id": "Sn8Tiy",
+      "created": true
+    },
+    "Wholesale leads": {
+      "id": "XEMhuB",
+      "created": true
+    },
+    "Franchise leads": {
+      "id": "VMJ9CJ",
+      "created": true
+    }
+  },
+  "segments": {
+    "SNH Elite · Bronze": {
+      "failed": "400 invalid Invalid input.: Profile property properties['loyalty_tier'] does not exist for this company."
+    },
+    "SNH Elite · Silver": {
+      "failed": "400 invalid Invalid input.: Profile property properties['loyalty_tier'] does not exist for this company."
+    },
+    "SNH Elite · Gold": {
+      "failed": "400 invalid Invalid input.: Profile property properties['loyalty_tier'] does not exist for this company."
+    },
+    "SNH · Engaged 90d": {
+      "id": "TEMeJF",
+      "created": true
+    },
+    "SNH · Unengaged 180d": {
+      "id": "U8xLEw",
+      "created": true
+    }
+  },
+  "flows": {
+    "welcome": {
+      "id": "XBVMgh",
+      "name": "SNH · Welcome series",
+      "status": "draft"
+    },
+    "cart": {
+      "id": "UqNxS8",
+      "name": "SNH · Abandoned cart",
+      "status": "draft"
+    },
+    "checkout": {
+      "id": "VqWS5c",
+      "name": "SNH · Abandoned checkout",
+      "status": "draft"
+    },
+    "browse": {
+      "id": "VfGmnq",
+      "name": "SNH · Browse abandonment",
+      "status": "draft"
+    },
+    "post": {
+      "id": "QSz343",
+      "name": "SNH · Post-purchase",
+      "status": "draft"
+    },
+    "review": {
+      "id": "YrpQEq",
+      "name": "SNH · Review request",
+      "status": "draft"
+    },
+    "howto": {
+      "id": "U4gwk3",
+      "name": "SNH · How to use",
+      "status": "draft",
+      "note": "protein only (the category split is manual)"
+    },
+    "replenish": {
+      "id": "TSZZDf",
+      "name": "SNH · Replenishment",
+      "status": "draft"
+    },
+    "winback": {
+      "id": "X9kKgD",
+      "name": "SNH · Win-back",
+      "status": "draft"
+    },
+    "sunset": {
+      "id": "TiBddv",
+      "name": "SNH · Sunset",
+      "status": "draft"
+    },
+    "wholesale": {
+      "id": "VyMCDP",
+      "name": "SNH · Wholesale enquiry reply",
+      "status": "draft"
+    },
+    "franchise": {
+      "id": "TB7esy",
+      "name": "SNH · Franchise enquiry reply",
+      "status": "draft"
+    }
+  }
+}
