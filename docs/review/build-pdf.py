@@ -23,6 +23,7 @@ thead { display: table-header-group; }
 tr { page-break-inside: avoid; }
 thead { display: table-header-group; }
 .keep { break-inside: avoid; page-break-inside: avoid; }
+h2, h3 { break-after: avoid; page-break-after: avoid; }
 th { background: #0E0E0E; color: #fff; text-align: left; padding: 6px 7px; font-weight: 700; }
 td { padding: 5px 7px; border-bottom: 1px solid #E3DCD0; vertical-align: top; }
 tr:nth-child(even) td { background: #F6F4F1; }
@@ -35,7 +36,10 @@ for name, label in [("collections-and-tags", "Collections & tags"), ("email-auto
     body = markdown.markdown(md, extensions=["tables"])
     # keep each heading on the same page as the block that follows it
     import re
-    body = re.sub(r'(<h([23])>[^<]*</h\2>\s*(?:<p>(?:(?!</p>).)*</p>\s*)?<(table|ol|ul)>.*?</\3>)', r'<div class="keep">\1</div>', body, flags=re.S)
+    def keep(m):
+        # short blocks move as one; long tables flow, with the heading held to the first rows
+        return f'<div class="keep">{m.group(1)}</div>' if m.group(1).count('<tr') <= 16 else m.group(1)
+    body = re.sub(r'(<h([23])>[^<]*</h\2>\s*(?:<p>(?:(?!</p>).)*</p>\s*)?<(table|ol|ul)>.*?</\3>)', keep, body, flags=re.S)
     html = f"<!doctype html><html><head><meta charset='utf-8'><title>{label}</title><style>{CSS}</style></head><body><div class='brand'><img src='data:image/png;base64,{logo}' alt='SNH'><span>Sports Nutrition Hub · launch review</span></div>{body}</body></html>"
     out = HERE / f"{name}.html"; out.write_text(html)
     js = f"""const {{ chromium }} = require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();await p.goto('file://{out}');await p.pdf({{path:'{HERE / (name + '.pdf')}',format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:'<div style="font-size:8px;width:100%;text-align:center;color:#5C574F;font-family:Arial">{label} · page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',margin:{{top:'16mm',bottom:'18mm',left:'16mm',right:'16mm'}}}});await b.close();}})();"""
