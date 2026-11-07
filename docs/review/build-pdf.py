@@ -30,7 +30,7 @@ code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 8.5pt; bac
 strong { color: #0E0E0E; }
 em { color: #5C574F; }
 """
-for name, label in [("collections-tags-menus", "Collections, tags & menus"), ("email-automations", "Email automations")]:
+for name, label in [("collections-and-tags", "Collections & tags"), ("email-automations", "Email automations")]:
     md = (HERE / f"{name}.md").read_text()
     body = markdown.markdown(md, extensions=["tables"])
     # keep each heading on the same page as the block that follows it
