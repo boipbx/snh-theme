@@ -21,6 +21,8 @@ li { margin: 2px 0; }
 table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9pt; page-break-inside: auto; }
 thead { display: table-header-group; }
 tr { page-break-inside: avoid; }
+thead { display: table-header-group; }
+.keep { break-inside: avoid; page-break-inside: avoid; }
 th { background: #0E0E0E; color: #fff; text-align: left; padding: 6px 7px; font-weight: 700; }
 td { padding: 5px 7px; border-bottom: 1px solid #E3DCD0; vertical-align: top; }
 tr:nth-child(even) td { background: #F6F4F1; }
@@ -31,6 +33,9 @@ em { color: #5C574F; }
 for name, label in [("collections-tags-menus", "Collections, tags & menus"), ("email-automations", "Email automations")]:
     md = (HERE / f"{name}.md").read_text()
     body = markdown.markdown(md, extensions=["tables"])
+    # keep each heading on the same page as the block that follows it
+    import re
+    body = re.sub(r'(<h([23])>[^<]*</h\2>\s*(?:<p>(?:(?!</p>).)*</p>\s*)?<(table|ol|ul)>.*?</\3>)', r'<div class="keep">\1</div>', body, flags=re.S)
     html = f"<!doctype html><html><head><meta charset='utf-8'><title>{label}</title><style>{CSS}</style></head><body><div class='brand'><img src='data:image/png;base64,{logo}' alt='SNH'><span>Sports Nutrition Hub · launch review</span></div>{body}</body></html>"
     out = HERE / f"{name}.html"; out.write_text(html)
     js = f"""const {{ chromium }} = require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();await p.goto('file://{out}');await p.pdf({{path:'{HERE / (name + '.pdf')}',format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:'<div style="font-size:8px;width:100%;text-align:center;color:#5C574F;font-family:Arial">{label} · page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',margin:{{top:'16mm',bottom:'18mm',left:'16mm',right:'16mm'}}}});await b.close();}})();"""
