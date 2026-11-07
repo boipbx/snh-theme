@@ -31,11 +31,11 @@ The new website links to **99 collections** from the menus, homepage, cart sugge
 | Creatine | `creatine` | 28 | 404 page, Footer, Franchise page, Homepage, Main menu, Wholesale page |
 | Pre-Workout | `pre-workout-1` | 30 | 404 page, Footer, Homepage, Main menu, Wholesale page |
 | Mass Gainers | `mass-gainer` | 9 | Homepage, Main menu, Wholesale page |
-| Bcaa & Eaa | `bcaa-eaa` | 4 | Main menu, Wholesale page |
+| BCAA & EAA | `bcaa-eaa` | 4 | Main menu, Wholesale page |
 | Protein Snacks | `protein-snacks` | 14 | Homepage, Main menu |
 | Energy Gels & Endurance | `energy-gels-and-endurance` | 57 | Main menu |
 | Electrolytes | `hydration-recovery` | 22 | Main menu, Member account |
-| SCIENCE IN SPORT | SiS | `sis` | 26 | Franchise page, Homepage, Main menu, Shop by brand page, Wholesale page |
+| Science in Sport (SiS) | `sis` | 26 | Franchise page, Homepage, Main menu, Shop by brand page, Wholesale page |
 | Vitamins & Wellness | `vitamins-minerals` | 94 | Homepage, Main menu, Wholesale page |
 | Health & Wellness | `health-wellness` | 103 | Footer, Main menu |
 | Muscle & Strength | `muscle-and-strength` | 106 | Homepage, Main menu |
