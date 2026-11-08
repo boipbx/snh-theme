@@ -29,3 +29,6 @@
 .cmp-pop__h { padding-right: 40px; font: 600 var(--t-h3)/1.1 var(--sans); letter-spacing: -.02em; }
 .cmp-pop__p { font: 400 16px/1.5 var(--sans); opacity: .9; }
 @media (max-width: 767px) { .cmp-pop { width: 100vw; max-width: none; margin: auto 0 0; border-radius: 20px 20px 0 0; } }
+/* Round 20: sitewide offer line under the product page price */
+.offer-line { margin: 8px 0 0; padding: 8px 12px; border-radius: 10px; background: #FCEEE6; color: #0E0E0E; font-size: .86rem; line-height: 1.35; }
+.offer-line b { color: #BF4512; margin-right: 4px; }

@@ -2496,3 +2496,7 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 .shk__glass { stroke: var(--shk-edge); }
 .shk__mark { fill: var(--shk-mark); fill-opacity: 1; stroke: none; }
 .acp .shk, .v-section--dark .shk, .app__hero--video .shk { --shk-mark: rgba(255, 255, 255, .8); --shk-glass: rgba(255, 255, 255, .14); --shk-edge: rgba(255, 255, 255, .5); }
+/* Round 20: sitewide offer highlight (assets/snh-campaigns.js sets html[data-offer] and --offer-label while it's live) */
+html[data-offer] .pc__frame::after { content: var(--offer-label); position: absolute; left: 16px; bottom: 10px; z-index: 3; display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: var(--pill); background: var(--orange, #BF4512); color: #fff; font: 700 12px/1 var(--sans); letter-spacing: .01em; pointer-events: none; box-shadow: 0 2px 8px rgba(14, 14, 14, .18); }
+@media (max-width: 749px) { html[data-offer] .pc__frame::after { left: 10px; bottom: 8px; height: 22px; padding: 0 8px; font-size: 11px; } }
+html[data-offer] .pc--out .pc__frame::after { display: none; }

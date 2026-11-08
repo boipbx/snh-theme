@@ -10,6 +10,8 @@
   visitors whose preferences don't match (SNH.prefsMatch in assets/snh-v2.js). On the homepage, visitors with no
   preferences get the quiz band right under the hero instead.
   Dates: "2026-11-01 08:00" (shop time, Sri Lanka). Empty start = live now; empty end = no end.
+  R20: "Repeat on days" (sat, fri,sat …) limits it to those weekdays every week; "Highlight on products" labels every
+  product card and adds a line under the product page price while it's live (the Saturday sale).
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -40,7 +42,7 @@
        "start": {% if e.start_at.value %}{{ e.start_at.value | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %}, "end": {% if e.end_at.value %}{{ e.end_at.value | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %},
        "pages": {{ e.target_pages.value | default: 'all' | downcase | json }}, "audience": {{ e.audience.value | default: 'all' | downcase | json }}, "priority": {{ e.priority.value | default: 0 }},
        "tone": {{ e.tone.value | default: 'orange' | downcase | json }}, "freq": {{ e.frequency.value | default: 'day' | downcase | json }},
-       "goals": {{ e.target_goals.value | join: ',' | json }}, "sports": {{ e.target_sports.value | join: ',' | json }}, "diets": {{ e.target_diets.value | join: ',' | json }}, "bought": {{ e.bought_triggers.value | join: ',' | json }}, "match": {{ e.match_only.value | default: false | json }}}
+       "goals": {{ e.target_goals.value | join: ',' | json }}, "sports": {{ e.target_sports.value | join: ',' | json }}, "diets": {{ e.target_diets.value | join: ',' | json }}, "bought": {{ e.bought_triggers.value | join: ',' | json }}, "match": {{ e.match_only.value | default: false | json }}, "days": {{ e.repeat_days.value | default: '' | json }}, "highlight": {{ e.highlight.value | default: '' | json }}}
     {%- endfor -%}
     {%- for b in section.blocks -%}
       {%- assign bs = b.settings -%}
@@ -51,7 +53,7 @@
        "cta": {{ bs.cta | json }}, "link": {{ bs.link | default: '' | json }}, "code": {{ bs.code | strip | json }},
        "start": {% if bs.start != blank %}{{ bs.start | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %}, "end": {% if bs.end != blank %}{{ bs.end | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% else %}""{% endif %},
        "pages": {{ bs.pages | json }}, "audience": {{ bs.audience | json }}, "priority": {{ bs.priority | default: 0 }}, "tone": {{ bs.tone | json }}, "freq": {{ bs.freq | json }},
-       "goals": {{ bs.goals | json }}, "sports": {{ bs.sports | json }}, "diets": {{ bs.diets | json }}, "bought": {{ bs.bought | json }}, "match": {{ bs.match_only | json }}}
+       "goals": {{ bs.goals | json }}, "sports": {{ bs.sports | json }}, "diets": {{ bs.diets | json }}, "bought": {{ bs.bought | json }}, "match": {{ bs.match_only | json }}, "days": {{ bs.days | default: '' | json }}, "highlight": {{ bs.highlight | default: '' | json }}}
     {%- endfor -%}
   ]
 }</script>
@@ -93,6 +95,8 @@
         { "type": "text", "id": "code", "label": "Discount code (optional)", "info": "Must already exist in Discounts. Shown with Copy and Apply." },
         { "type": "text", "id": "start", "label": "Starts", "placeholder": "2026-11-01 08:00", "info": "Shop time. Empty = now." },
         { "type": "text", "id": "end", "label": "Ends", "placeholder": "2026-11-03 23:59", "info": "Empty = no end." },
+        { "type": "text", "id": "days", "label": "Repeat on days", "placeholder": "sat", "info": "Only on these weekdays, every week (shop time). e.g. sat or fri,sat. Empty = every day." },
+        { "type": "text", "id": "highlight", "label": "Highlight on products", "placeholder": "−15% today", "info": "While live, this label shows on every product card, and the tag + message under the price on product pages. Use on one sitewide offer only." },
         { "type": "select", "id": "pages", "label": "Pages", "default": "all", "options": [
           { "value": "all", "label": "All pages" }, { "value": "home", "label": "Homepage" }, { "value": "collections", "label": "Collections" },
           { "value": "products", "label": "Products" }, { "value": "cart", "label": "Cart" } ] },

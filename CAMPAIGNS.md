@@ -95,3 +95,36 @@ Example: "Weekend stack: Rs 2,000 off whey + creatine, Fri 6pm to Sun midnight".
 - **Onboarding:** Customize → Overlay group → *SNH onboarding prompt*: a slide-in for visitors with no goal yet,
   once per 7 days (setting), never on cart / checkout / account pages, never on the same page view as the email or a
   campaign popup. Its button opens the homepage quiz (`/?snh-quiz=open`).
+
+## Round 20: Saturday sale (15% off everything, every Saturday)
+
+**What the website does by itself, every Saturday 00:00–23:59 Sri Lanka time** (Customize → Campaigns, the five
+"Saturday sale" blocks):
+
+| Where | What shoppers see |
+|---|---|
+| Announcement bar (first item, orange) | **Saturday sale** 15% off everything today · applied at checkout |
+| Popup (once a day, after 6 s) | It's Saturday: 15% off everything, with a Shop the sale button |
+| Homepage banner (under the hero) | Saturday sale: 15% off everything |
+| Cart drawer and cart page | Saturday sale: 15% off · applied automatically at checkout |
+| Every product card | an orange **−15% today** label on the image |
+| Product pages | a line under the price: **Saturday sale** 15% off everything today · applied at checkout |
+| Fridays (announcement bar only) | **Tomorrow** 15% off everything, all day Saturday |
+
+The website only **shows** the offer. The price comes off at checkout through a Shopify discount, which you set up in
+admin. Without it, shoppers would see the offer but not get it.
+
+**The discount (Shopify admin → Discounts → Create discount → Amount off products)**
+
+1. Method: **Automatic discount**. Title: `Saturday sale 15%` (shoppers see this in the cart and at checkout).
+2. Value: **15%**. Applies to: **All products** (or a collection, if some products are excluded).
+3. Combinations: decide whether it combines with other product discounts and with order discounts.
+4. Active dates: start **Saturday 00:00**, end **Saturday 23:59**.
+5. Shopify discounts don't repeat weekly by themselves. Either
+   - create the next 8 Saturdays at once (Duplicate the discount, change the dates; about 10 minutes for 2 months), or
+   - in **Shopify Flow**: a weekly *Scheduled time* trigger on Saturday 00:00 that activates the discount, and one on
+     Sunday 00:00 that deactivates it.
+
+**To change the wording, pause or stop it:** Customize → Campaigns → the "Saturday sale" blocks. Set an *Ends* date to
+stop on a given day, change *Repeat on days* to move it, or clear *Highlight on products* to drop the product labels.
+If the discount is paused in admin, pause these blocks too (or set an end date), so the website doesn't advertise it.

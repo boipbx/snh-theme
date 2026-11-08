@@ -16,7 +16,11 @@
   var PAGES = { home: ['index'], collections: ['collection', 'list-collections'], products: ['product'], cart: ['cart'] };
   function pageOk(pages, page) { return !pages || pages === 'all' || (PAGES[pages] || [pages]).indexOf(page) > -1; }
   function audOk(a, ctx) { return !a || a === 'all' || (a === 'guests' && !ctx.member) || (a === 'members' && ctx.member) || (ctx.member && a === ctx.tier); }
-  function live(c, now) { var a = t(c.start), b = t(c.end); return (a === null || a <= now) && (b === null || now < b); }
+  // Round 20: "days" repeats a campaign weekly (e.g. "sat" or "fri,sat"), counted in shop time (Sri Lanka, UTC+5:30, no DST)
+  var DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  function shopDay(now) { return DAYS[new Date(now + 330 * 60000).getUTCDay()]; }
+  function dayOk(days, now) { if (!days) return true; var d = shopDay(now); return String(days).toLowerCase().split(/[\s,]+/).some(function (x) { return x && x.slice(0, 3) === d; }); }
+  function live(c, now) { var a = t(c.start), b = t(c.end); return (a === null || a <= now) && (b === null || now < b) && dayOk(c.days, now); }
   function decide(list, ctx, now) {
     return (list || []).map(function (c) {
       // R19: targeted (goals / sports / diets / bought, or "only matching visitors") → shown only when SNH.prefsMatch says so
@@ -72,6 +76,17 @@
     }
 
     var top = function (type) { return on.filter(function (c) { return c.type === type; })[0]; };
+    // Round 20: sitewide highlight (e.g. Saturday 15% off): a label on every product card and a line under the price on
+    // product pages, while the campaign is live. Any live campaign with a "highlight" label drives it.
+    var hl = on.filter(function (c) { return c.highlight; })[0], root = document.documentElement;
+    if (hl) {
+      root.setAttribute('data-offer', hl.id); root.style.setProperty('--offer-label', JSON.stringify(hl.highlight));
+      if (data.ctx.page === 'product' && !document.querySelector('.offer-line')) {
+        var anchor = document.querySelector('.snh-points-banner') || document.querySelector('[class*="price"]');
+        if (anchor) { loadCss(); var ol = document.createElement('p'); ol.className = 'offer-line'; ol.innerHTML = '<b>' + esc(hl.tag || hl.highlight) + '</b> ' + esc(hl.message || ''); anchor.parentNode.insertBefore(ol, anchor.nextSibling); }
+      }
+    } else { root.removeAttribute('data-offer'); root.style.removeProperty('--offer-label'); }
+
     // homepage banner, under the hero
     var hb = top('home_banner');
     if (hb && data.ctx.page === 'index') {
