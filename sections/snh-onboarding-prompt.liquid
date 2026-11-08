@@ -69,7 +69,14 @@
   @media (max-width: 599px) {
     .snh-onb { left: 8px; right: 8px; width: auto; bottom: calc(8px + env(safe-area-inset-bottom)); grid-template-columns: 52px minmax(0, 1fr); padding: 16px; }
     .snh-onb__img { width: 52px; height: 52px; border-radius: 14px; }
-    .snh-onb__h { font-size: 18px; }
+    .snh-onb__h { font-size: 17px; }
+    /* audit: compact on phones so it doesn't cover half the screen (was ~240px tall at 320px) */
+    .snh-onb { grid-template-columns: minmax(0, 1fr); padding: 14px 16px; gap: 0; }
+    .snh-onb__img { display: none; }
+    .snh-onb__b { gap: 2px; padding-right: 28px; }
+    .snh-onb__p { font-size: 14px; line-height: 1.4; }
+    .snh-onb__act { margin-top: 6px; }
+    .snh-onb__go { min-height: 40px; padding: 0 18px; font-size: 14px; }
   }
   @media (prefers-reduced-motion: reduce) { .snh-onb { transition: none; transform: none; } }
 </style>

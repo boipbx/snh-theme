@@ -2503,3 +2503,15 @@ html[data-offer] .pc__frame::after { content: var(--offer-label); position: abso
 html[data-offer] .pc--out .pc__frame::after { display: none; }
 /* audit: the search page's submit icon gets a 44px tap area */
 .main-search-form .search-input button[type="submit"] { min-width: 44px; min-height: 44px; display: inline-grid; place-items: center; }
+/* audit (320–480px): the orange announcement ends in … instead of being cut on both sides */
+@media (max-width: 480px) {
+  .announce__item { display: block; padding: 0 12px; line-height: 34px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .announce__item b { display: inline-block; margin-right: 6px; line-height: 1.35; vertical-align: 1px; }
+  .announce__item > span[aria-hidden] { margin-left: 4px; }
+}
+/* audit (short phones, e.g. 320×568): the hero copy no longer slides up under the transparent header */
+@media (max-width: 400px) and (max-height: 700px) {
+  .hero { min-height: 580px; }
+  .hero .display { font-size: clamp(34px, 10.6vw, 40px); }
+  .hero__copy { gap: 10px; }
+}
