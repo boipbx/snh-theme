@@ -131,7 +131,7 @@
             "tone": "orange",
             "freq": "day",
             "priority": 5,
-            "name": "Saturday sale: Friday teaser (announcement)",
+            "name": "Saturday sale: Friday teaser (announcement, every Friday)",
             "type": "announcement",
             "tag": "Tomorrow",
             "message": "15% off everything, all day Saturday"
