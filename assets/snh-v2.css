@@ -590,7 +590,8 @@
 .store__img img { width: 100%; height: 100%; object-fit: cover; }
 .store__body { display: grid; gap: 4px; }
 .store__body .v-link { margin-top: 6px; justify-self: start; }
-@media (min-width: 900px) { .stores { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .stores { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) and (max-width: 899px) { .stores { gap: 14px; } .store__body { font-size: .92em; } }
 
 /* ---------- 14. footer ---------- */
 .ftr { background: var(--ink); color: var(--white); padding-top: 64px; overflow: hidden; }
@@ -2087,7 +2088,7 @@ a.hs__pts:hover .hs__pts-t { color: #FFF2E6; }
 }
 /* names / brands are word-clamped by assets/snh-v2.js (fitCard); the CSS clamp stays as the no-JS fallback */
 .pc--tight .pc__count { display: none; }
-.pc__brand { text-overflow: clip; }
+.pc__brand { text-overflow: ellipsis; } /* audit: a single long brand word at 320px ends in … instead of being cut mid-letter */
 /* Round 13 audit: the compact card on the type scale (sizes 12+, letter-spacing 0 / .06 / .12em, line-height 1.1 / 1.5) */
 .pc__brand { letter-spacing: .04em; }
 .pc__now { line-height: 1.1; }
@@ -2500,3 +2501,5 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 html[data-offer] .pc__frame::after { content: var(--offer-label); position: absolute; left: 16px; bottom: 10px; z-index: 3; display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: var(--pill); background: var(--orange, #BF4512); color: #fff; font: 700 12px/1 var(--sans); letter-spacing: .01em; pointer-events: none; box-shadow: 0 2px 8px rgba(14, 14, 14, .18); }
 @media (max-width: 749px) { html[data-offer] .pc__frame::after { left: 10px; bottom: 8px; height: 22px; padding: 0 8px; font-size: 11px; } }
 html[data-offer] .pc--out .pc__frame::after { display: none; }
+/* audit: the search page's submit icon gets a 44px tap area */
+.main-search-form .search-input button[type="submit"] { min-width: 44px; min-height: 44px; display: inline-grid; place-items: center; }

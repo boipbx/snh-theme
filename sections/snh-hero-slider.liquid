@@ -5,6 +5,8 @@
 {%- endcomment -%}
 {%- assign n = section.blocks.size -%}
 <section class="v2 hero" data-v2="carousel" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}" style="--hero-interval: {{ section.settings.interval }}s">
+  {%- comment -%} Audit fix: an image-only first slide on a page leaves the page without an H1; name it for screen readers and search {%- endcomment -%}
+  {%- if template.name == 'page' and section.index == 1 and section.blocks.first.settings.heading == blank -%}<h1 class="v-sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">{{ page.title | escape }}</h1>{%- endif -%}
   <div class="hero__stage">
     {%- for b in section.blocks -%}
       {%- liquid

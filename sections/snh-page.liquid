@@ -22,9 +22,55 @@
       </header>
       {%- assign body = section.settings.content | default: page.content -%}
       {%- if body != blank -%}<div class="v-prose spage__body">{{ body }}</div>{%- endif -%}
+      {%- liquid
+        # Audit fix: the old theme's default page template had a contact form, and some pages rely on it
+        # ("CONTACT US" = /pages/delivery-and-shipping, the footer's Contact link). Show one on a page titled or
+        # handled "contact", and on any page with no content, so no page is ever blank.
+        assign t_low = page.title | downcase
+        assign want_form = false
+        if body == blank or t_low contains 'contact' or page.handle contains 'contact'
+          assign want_form = true
+        endif
+      -%}
+      {%- if want_form and page and section.settings.contact_fallback -%}
+        {%- assign wa = settings.snh_whatsapp | default: '94779773359' | remove: '+' | remove: ' ' -%}
+        <div class="spage__empty">
+          {%- if body == blank -%}<p class="lead">Questions about a product, an order or what suits your goal? Send us a message and we'll reply within a working day, or chat to us on WhatsApp now.</p>{%- endif -%}
+          {{ 'snh-account.css' | asset_url | stylesheet_tag }}
+          {%- assign fid = 'spage-contact-' | append: section.id -%}
+          {%- form 'contact', id: fid, class: 'aform spage__form', data-shopify-captcha: 'true' -%}
+            {%- if form.posted_successfully? -%}
+              <p class="cf__ok" role="status">{% render 'snh-v2-icon', name: 'check' %}Thanks! We'll get back to you within a working day.</p>
+            {%- else -%}
+              {%- if form.errors -%}<div class="aform__err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+              <input type="hidden" name="contact[Form]" value="{{ page.title | escape }}">
+              <div class="aform__grid">
+                <label class="fld"><span>Name</span><input type="text" name="contact[name]" autocomplete="name" required value="{{ form.name | default: customer.name | escape }}"></label>
+                <label class="fld"><span>Phone</span><input type="tel" name="contact[phone]" autocomplete="tel" inputmode="tel" value="{{ form.phone | escape }}"></label>
+                <label class="fld fld--full"><span>Email</span><input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email | default: customer.email | escape }}"></label>
+                <label class="fld fld--full"><span>Message</span><textarea name="contact[body]" rows="5" required>{{ form.body | escape }}</textarea></label>
+              </div>
+              <button class="v-btn v-btn--accent" type="submit"><span>Send message</span></button>
+            {%- endif -%}
+          {%- endform -%}
+          <div class="spage__cta">
+            <a class="v-btn v-btn--line" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>WhatsApp us</span></a>
+            <a class="v-btn v-btn--line" href="/?snh-quiz=open"><span>Not sure what to buy? Take the quiz</span></a>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
   </section>
 {%- endunless -%}
+
+<style>
+  .spage__empty { margin-top: 12px; max-width: 640px; }
+  .spage__form { margin-top: 20px; display: grid; gap: 16px; }
+  .spage__form .v-btn { justify-self: start; }
+  .spage__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line, #E3DCD0); }
+  .spage__cta .v-btn svg { width: 18px; height: 18px; }
+  @media (max-width: 479px) { .spage__cta .v-btn { flex: 1 1 100%; justify-content: center; } }
+</style>
 
 {% schema %}
 {
@@ -37,6 +83,7 @@
     { "type": "text", "id": "lead", "label": "Lead" },
     { "type": "richtext", "id": "content", "label": "Content", "info": "Empty = the page's own content." },
     { "type": "checkbox", "id": "cream", "label": "Cream background", "default": false },
+    { "type": "checkbox", "id": "contact_fallback", "label": "Contact form on contact pages and empty pages", "default": false, "info": "On for the default page template: a page titled Contact, or with no content, shows a contact form, WhatsApp and the quiz." },
     { "type": "checkbox", "id": "hide_on_elite", "label": "Hide on the SNH Elite page (handle snh-elite)", "default": true }
   ],
   "presets": [{ "name": "SNH page" }]

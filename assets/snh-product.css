@@ -311,3 +311,6 @@
 
 /* recommendation sections stay out of the layout until their cards arrive (or for good when there are none) */
 [data-sp-recs]:not(:has(.sp-cards)) { display: none; }
+/* audit: the payment-options (i) button keeps its 16px look with a 40px tap area */
+.sp-info { position: relative; }
+.sp-info::after { content: ""; position: absolute; inset: -12px; }

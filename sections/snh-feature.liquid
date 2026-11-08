@@ -33,7 +33,8 @@
     {%- endif -%}
     <div class="ft__text">
       {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
-      {%- if s.heading != blank -%}<h2 class="v-h1{% if s.layout == 'statement' %} ft__big{% endif %}" id="{{ hid }}">{% render 'snh-v2-heading', text: s.heading %}</h2>{%- endif -%}
+      {%- assign htag = 'h2' -%}{%- if template.name == 'page' and section.index == 1 -%}{%- assign htag = 'h1' -%}{%- endif -%}
+      {%- if s.heading != blank -%}<{{ htag }} class="v-h1{% if s.layout == 'statement' %} ft__big{% endif %}" id="{{ hid }}">{% render 'snh-v2-heading', text: s.heading %}</{{ htag }}>{%- endif -%}
       {%- if s.text != blank -%}<div class="v-prose ft__body">{{ s.text }}</div>{%- endif -%}
       {%- if s.cta != blank or s.cta2 != blank -%}
         <div class="ft__ctas">

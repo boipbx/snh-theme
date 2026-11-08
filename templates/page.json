@@ -12,6 +12,7 @@
     "main": {
       "type": "snh-page",
       "settings": {
+        "contact_fallback": true,
         "hide_on_elite": true
       }
     },

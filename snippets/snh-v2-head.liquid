@@ -2,9 +2,11 @@
   Section head (prototype .head): eyebrow, heading (*serif word*), optional lead, optional link or ink button.
   s: section.settings with eyebrow, heading, lead, link_label, link_url, link_style ('link' | 'button'); id: heading id.
 {%- endcomment -%}
+{%- comment -%} Audit fix: the first section on a page template is the page's H1 (SEO: Locations had none) {%- endcomment -%}
+{%- assign htag = 'h2' -%}{%- if template.name == 'page' and section.index == 1 -%}{%- assign htag = 'h1' -%}{%- endif -%}
 <div class="head"><div class="head__text">
   {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
-  <h2 class="v-h1" id="{{ id }}">{% render 'snh-v2-heading', text: s.heading %}</h2>
+  <{{ htag }} class="v-h1" id="{{ id }}">{% render 'snh-v2-heading', text: s.heading %}</{{ htag }}>
   {%- if s.lead != blank -%}<p class="lead">{{ s.lead | escape }}</p>{%- endif -%}
 </div>
 {%- if s.link_label != blank -%}
