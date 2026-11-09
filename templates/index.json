@@ -397,6 +397,14 @@
     "snh_why": {
       "type": "snh-why-us",
       "blocks": {
+        "benefit_5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "star",
+            "title": "1600+ 5 STAR REVIEWS",
+            "text": "Sri Lanka’s highest and best reviewed Google Store! \nUnmatched service & product quality. \nSecuring Sri Lanka’s No.1 Health Supplement & Vitamin Brand"
+          }
+        },
         "stat_1": {
           "type": "stat",
           "settings": {
@@ -429,20 +437,12 @@
             "text": "Transparent prices with frequent bundles and member only deals."
           }
         },
-        "benefit_5": {
-          "type": "benefit",
-          "settings": {
-            "icon": "chat",
-            "title": "Expert support",
-            "text": "Fast guidance from our team via chat, phone, or WhatsApp."
-          }
-        },
         "benefit_6": {
           "type": "benefit",
           "settings": {
             "icon": "badge",
-            "title": "Secure payments",
-            "text": "SSL checkout with cards, bank transfer & KOKO"
+            "title": "RANGE OF PAYMENTS",
+            "text": "SSL checkout with cards, bank transfer, cash on delivery & KOKO"
           }
         },
         "benefit_7": {
@@ -457,17 +457,17 @@
           "type": "benefit",
           "settings": {
             "icon": "bolt",
-            "title": "Earn points",
+            "title": "LOYALTY POINTS",
             "text": "[bronze]–[gold] back on every order as an SNH Elite member."
           }
         }
       },
       "block_order": [
+        "benefit_5",
         "stat_1",
         "stat_2",
         "benefit_3",
         "benefit_4",
-        "benefit_5",
         "benefit_6",
         "benefit_7",
         "benefit_8"
