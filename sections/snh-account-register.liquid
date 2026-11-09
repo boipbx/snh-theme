@@ -64,6 +64,11 @@
           <legend class="auth__step-h">Build your SNH plan <span>(optional)</span></legend>
           <p class="fld__help">Quick taps so your dashboard, picks and tips fit your training. Skip whenever you like.</p>
           {%- render 'snh-onboarding-quiz', blocks: section.blocks, id: 'reg-quiz', mode: 'register' -%}
+          {%- comment -%} Go-live: email consent → Shopify accepts_marketing → Klaviyo's Shopify sync subscribes them (Welcome series) {%- endcomment -%}
+          <label class="reg__consent" style="display:flex;align-items:flex-start;gap:10px;margin:14px 0 4px;font-size:14px;line-height:1.45;cursor:pointer">
+            <input type="checkbox" name="customer[accepts_marketing]" value="true" checked style="flex:none;width:20px;height:20px;margin:1px 0 0;accent-color:var(--v-accent, #BF4512)">
+            <span>Email me offers and points updates. Unsubscribe any time.</span>
+          </label>
           <div class="reg__acts">
             <button class="v-btn v-btn--line" type="button" data-reg-back><span>Edit details</span></button>
             <button class="v-btn v-btn--accent" type="submit"><span>Create account</span></button>
