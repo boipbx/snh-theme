@@ -303,3 +303,66 @@
 .sbw small { display: block; margin-top: 2px; }
 .sbo__eb { flex-wrap: wrap; row-gap: 2px; }
 .sbo__save { display: inline-flex; align-items: center; height: 20px; margin-left: 4px; padding: 0 8px; border-radius: 999px; background: #BF4512; color: #fff; font: 700 12px/1 var(--sans); white-space: nowrap; }
+
+/* ---------- Post-launch mini cart: the first line item visible on a 390×844 phone without scrolling ----------
+   48px header · one-line free-delivery bar · compact lines (64px image, 32px stepper) · bundle states as one-line
+   rows/pills · "Goes with your order" as one row of max 3 small cards · footer unchanged (≈24% of the screen). */
+.snh-cd .scd__head { min-height: 48px; padding: 0 16px; }
+.snh-cd .scd__title { font-size: 17px; }
+.snh-cd .scd__count { transform: scale(.9); }
+.snh-cd .scd__bar { padding: 6px 16px 7px; }
+.snh-cd .scd__bar .sfree { gap: 3px; }
+.snh-cd .sfree__t { font-size: 12.5px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.snh-cd .sfree__t svg { width: 15px; height: 15px; }
+.snh-cd .sfree__bar { height: 3px; }
+/* campaign banners in the drawer (Saturday sale etc.): one compact line, never a big box over the items */
+.snh-cd [data-campaign-slot="cart"] .cmp-ban { display: flex; align-items: center; gap: 8px; margin: 8px 16px 0; padding: 7px 12px; border-radius: 10px; min-height: 0; }
+.snh-cd [data-campaign-slot="cart"] .cmp-ban__pic, .snh-cd [data-campaign-slot="cart"] .cmp-ban__go { display: none; }
+.snh-cd [data-campaign-slot="cart"] .cmp-ban__b { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; min-width: 0; }
+.snh-cd [data-campaign-slot="cart"] .cmp-ban__h { margin: 0; font-size: 13px; line-height: 1.3; }
+.snh-cd [data-campaign-slot="cart"] .cmp-ban__p { margin: 0; font-size: 12px; line-height: 1.3; }
+.snh-cd .scd__body { gap: 12px; padding: 12px 16px 16px; }
+.snh-cd .sline { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 10px 0; }
+.snh-cd .sline:first-child { padding-top: 0; }
+.snh-cd .sline__img { width: 64px; height: 64px; border-radius: 10px; }
+.snh-cd .sline__brand { font-size: 11px; line-height: 1.35; }
+.snh-cd .sline__t { font-size: 14px; line-height: 1.3; -webkit-line-clamp: 2; }
+.snh-cd .sline__v { font-size: 12px; line-height: 1.35; }
+.snh-cd .sline__tags { margin-top: 2px; }
+.snh-cd .sline__tags span { height: 20px; font-size: 11px; }
+.snh-cd .sline__row { margin-top: 6px; gap: 6px; }
+.snh-cd .sqty { grid-template-columns: 32px minmax(26px, auto) 32px; height: 32px; }
+.snh-cd .sqty button, .snh-cd .sqty button:hover { width: 32px; height: 30px; }
+.snh-cd .sqty span { min-width: 26px; font-size: 14px; line-height: 30px; }
+.snh-cd .sline__rm { width: 32px; height: 32px; }
+.snh-cd .sline__rm svg { width: 16px; height: 16px; }
+.snh-cd .sline__p b { font-size: 14px; }
+/* "Make it a bundle, save Rs X · Add" — one row under the item */
+.sbo.sbo--row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; padding: 6px 6px 6px 10px; border: 1px solid rgba(191, 69, 18, .25); border-radius: 999px; background: #FFF6F1; }
+.sbo--row .sbo__t { display: inline-flex; align-items: center; gap: 6px; min-width: 0; font: 500 12.5px/1.3 var(--sans); color: var(--ink); -webkit-line-clamp: unset; overflow: hidden; }
+.sbo--row .sbo__t span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sbo--row .sbo__t b { color: #BF4512; font-weight: 700; }
+.sbo--row .sbo__t svg { width: 14px; height: 14px; flex: none; color: #BF4512; }
+.sbo--row .sbo__go { min-width: 0; min-height: 28px; padding: 0 14px; font-size: 12.5px; }
+@media (max-width: 399px) { .sbo.sbo--row .sbo__go { width: auto; grid-column: auto; } }
+/* "Bundle unlocked · you're saving Rs X" — one fully visible pill at the top of the items */
+.sbw { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; padding: 8px 14px; min-height: 0; border-radius: 999px; overflow: visible; }
+.sbw__ic { font-size: 16px; }
+.sbw p { margin: 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sbw small { display: none; }
+.sbw.is-new { animation: sbw-pill 520ms cubic-bezier(.2, .8, .2, 1.3); }
+@keyframes sbw-pill { 0% { transform: scale(.92); opacity: 0; } 60% { transform: scale(1.03); opacity: 1; } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .sbw.is-new { animation: none; } }
+/* "Goes with your order": one row, max 3 small cards, no sideways scroll */
+.snh-cd .scd__bh { margin: 0 0 6px; font-size: 13px; }
+.snh-cd .ssugs { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-columns: auto; gap: 8px; margin: 0; padding: 0; overflow: visible; }
+.snh-cd .ssugs > li:nth-child(n+4) { display: none; }
+.snh-cd .ssug { gap: 3px; padding: 6px; border-radius: 10px; }
+.snh-cd .ssug__img { aspect-ratio: 4 / 3; }
+.snh-cd .ssug__t { font-size: 12px; line-height: 1.3; min-height: 31px; }
+.snh-cd .ssug__p { font-size: 12px; }
+.snh-cd .ssug__p i { display: none; }
+.snh-cd .ssug__add { width: 28px; height: 28px; }
+.snh-cd .ssug__add svg { width: 14px; height: 14px; }
+/* fixed footer stays compact */
+.snh-cd .scd__foot { gap: 6px; padding-top: 10px; }

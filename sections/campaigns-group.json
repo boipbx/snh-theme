@@ -24,20 +24,6 @@
             "freq": "day"
           }
         },
-        "default_koko": {
-          "type": "campaign",
-          "settings": {
-            "name": "Default: pay your way (cart banner)",
-            "type": "cart_banner",
-            "heading": "Pay in 3 with Koko",
-            "message": "Split your basket into 3 interest-free payments, or pay by card, cash on delivery or bank transfer.",
-            "pages": "all",
-            "audience": "all",
-            "priority": 0,
-            "tone": "cream",
-            "freq": "day"
-          }
-        },
         "default_elite": {
           "type": "campaign",
           "settings": {
@@ -145,7 +131,6 @@
         "sat_cart",
         "fri_teaser",
         "default_delivery",
-        "default_koko",
         "default_elite"
       ]
     }

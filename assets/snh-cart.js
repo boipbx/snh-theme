@@ -567,11 +567,11 @@
         var keys = best.cover.map(function (x) { return x.it.key; }).join(',');
         var what = best.cover.map(function (x) { return shortTitle(x.it.product_title, x.it.vendor); });
         var box = document.createElement('div'); box.className = 'sbo';
-        box.innerHTML = (best.b.i ? '<img class="sbo__img" src="' + esc(img(best.b.i, 160)) + '" alt="" width="56" height="56" loading="lazy" data-v2-lift>' : '') +
-          '<div class="sbo__b"><p class="sbo__eb">' + icons.tag + '<span>Make it a bundle</span>' + (best.b.s ? '<span class="sbo__save">Save ' + rs(best.b.s) + '</span>' : '') + '</p>' +
-          '<a class="sbo__t" href="' + esc(best.b.u) + '">' + esc(best.b.t) + '</a>' +
-          '<p class="sbo__s">Swaps your ' + esc(what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0]) + ' for the bundle · ' + rs(best.b.p) + '</p></div>' +
-          '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Swap</button>';
+        // Post-launch: one compact row under the item ("Make it a bundle, save Rs X · Add"); the bundle name is the link
+        box.className = 'sbo sbo--row';
+        box.innerHTML = '<a class="sbo__t" href="' + esc(best.b.u) + '" title="' + esc(best.b.t + ' · ' + rs(best.b.p) + ' · swaps your ' + (what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0])) + '">' + icons.tag +
+          '<span>Make it a bundle' + (best.b.s ? ', <b>save ' + rs(best.b.s) + '</b>' : '') + '</span></a>' +
+          '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Add</button>';
         $('.sline__b', li).appendChild(box);
       });
     });
@@ -579,12 +579,14 @@
   Cart.prototype.bundleWin = function (names, saving, ab) {
     var cur = $('[data-bundle-win]', this.el);
     if (!names.length) { if (cur) cur.remove(); return; }
-    var key = names.slice().sort().join('|'), html = '<span class="sbw__ic" aria-hidden="true">🎉</span><p><b>Bundle unlocked</b>' + (saving > 0 ? ': you\'re saving ' + rs(saving) : '') + '<small>' + esc(names.slice(0, 2).join(' + ')) + (names.length > 2 ? ' + ' + (names.length - 2) + ' more' : '') + '</small></p>';
+    var key = names.slice().sort().join('|'), html = '<span class="sbw__ic" aria-hidden="true">🎉</span><p title="' + esc(names.join(' + ')) + '"><b>Bundle unlocked</b>' + (saving > 0 ? ' · you\'re saving ' + rs(saving) : '') + '</p>';
     if (!cur) { cur = document.createElement('div'); cur.className = 'sbw'; cur.setAttribute('role', 'status'); cur.setAttribute('data-bundle-win', ''); this.body.insertBefore(cur, this.body.firstChild); }
     cur.innerHTML = html;
     var seen = ''; try { seen = sessionStorage.getItem('snh_bwin') || ''; } catch (e) {}
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (seen !== key && ab.confetti && !reduce) {
+    // Post-launch: a subtle pop instead of confetti (the pill stays one line, fully visible); none for reduced motion
+    if (seen !== key && !reduce) { cur.classList.add('is-new'); setTimeout(function () { cur.classList.remove('is-new'); }, 900); }
+    if (false) {
       var c = document.createElement('span'); c.className = 'sbw__fx'; c.setAttribute('aria-hidden', 'true');
       for (var i = 0; i < 18; i++) { var p = document.createElement('i'); p.style.cssText = '--x:' + Math.round(Math.random() * 100) + '%;--d:' + Math.round(Math.random() * 400) + 'ms;--r:' + Math.round(Math.random() * 360) + 'deg;--c:' + ['#E0521C', '#FFB27A', '#2BAA5E', '#F4C542', '#0E0E0E'][i % 5]; c.appendChild(p); }
       cur.appendChild(c); cur.classList.add('is-new');
