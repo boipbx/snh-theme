@@ -823,29 +823,27 @@
     "html": "emails/dist/klaviyo/review-request.html",
     "text": "emails/dist/klaviyo/review-request.txt",
     "mjml": "emails/src/klaviyo/review-request.mjml",
-    "bytes": 19974
+    "bytes": 20188
   },
   {
     "id": "replenishment",
     "platform": "klaviyo",
     "group": "Post-purchase",
     "name": "Replenishment: running low",
-    "trigger": "Metric “Elite Running Low” (or Placed Order + servings-based delay)",
-    "timing": "When the tub is ~80% used",
-    "subject": "Running low on {{ event.product_title }}?",
-    "alt_subject": "Time to restock, {{ first_name|default:\"there\" }}",
-    "preheader": "By our count you've got about {{ event.days_left }} days left.",
+    "trigger": "Metric “Placed Order” (no new order since)",
+    "timing": "+25 days",
+    "subject": "Running low, {{ first_name|default:\"there\" }}?",
+    "alt_subject": "Time to restock your {{ event.Items.0.ProductName|default:\"supplements\" }}",
+    "preheader": "It's been about four weeks since your last order.",
     "vars": [
-      "event.product_title",
-      "event.product_image",
-      "event.product_url",
-      "event.days_left"
+      "first_name",
+      "event.Items.0.ProductName / ProductURL / ImageURL (Placed Order)"
     ],
     "paste": "Klaviyo → Flows → Replenishment → Email",
     "html": "emails/dist/klaviyo/replenishment.html",
     "text": "emails/dist/klaviyo/replenishment.txt",
     "mjml": "emails/src/klaviyo/replenishment.mjml",
-    "bytes": 19777
+    "bytes": 20037
   },
   {
     "id": "cross-sell",

@@ -117,3 +117,18 @@ Manual (the trigger does not exist in the account yet, or needs Klaviyo's specia
 
 No API: `SHOPIFY-PASTE-GUIDE.md`.
 
+
+## Go-live, 9 November 2026 (owner request: "turn them on")
+
+- Fixed before switching on:
+  - **Replenishment**: the email used `event.days_left` / `event.product_title`, which the "Placed Order" trigger doesn't
+    have ("Running low on ?"). Now uses `event.Items.0.ProductName / ProductURL / ImageURL`, subject "Running low,
+    {first name}?". Klaviyo's API can't edit a flow email's subject, so the flow was rebuilt (old draft-built TSZZDf
+    deleted minutes after going live, nobody could have entered it yet: 25-day wait) as **X3m4yg**, now live.
+  - **Review request**: the button falls back to the product's review section (`ProductURL#judgeme_product_reviews`)
+    instead of /account when Judge.me sends no review link.
+- **Live (12)**: Welcome series, Abandoned cart, Abandoned checkout, Browse abandonment, Post-purchase, Review request,
+  How to use, Replenishment, Win-back, Sunset, Wholesale enquiry reply, Franchise enquiry reply. All 20 email steps live.
+- **Set to draft (4, replaced, same minute, so nobody gets both)**: Abandoned Cart, Customer Thank You – New vs.
+  Returning, Post-Purchase Followup – Order Count Split, Customer Winback – Standard.
+- Scripts: `klaviyo/golive-inspect.js` (read-only status list), `klaviyo/golive.js` (the switch).

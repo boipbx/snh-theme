@@ -43,8 +43,8 @@
 | klaviyo | howto-creatine | 25.1 KB | OK |
 | klaviyo | howto-preworkout | 25.1 KB | OK |
 | klaviyo | howto-hydration | 25.2 KB | OK |
-| klaviyo | review-request | 19.5 KB | OK |
-| klaviyo | replenishment | 19.3 KB | OK |
+| klaviyo | review-request | 19.7 KB | OK |
+| klaviyo | replenishment | 19.6 KB | OK |
 | klaviyo | cross-sell | 20.5 KB | OK |
 | klaviyo | elite-statement | 22.7 KB | OK |
 | klaviyo | elite-upgrade-silver | 20.4 KB | OK |

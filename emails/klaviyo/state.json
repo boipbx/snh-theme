@@ -295,11 +295,6 @@
       "status": "draft",
       "note": "protein only (the category split is manual)"
     },
-    "replenish": {
-      "id": "TSZZDf",
-      "name": "SNH · Replenishment",
-      "status": "draft"
-    },
     "winback": {
       "id": "X9kKgD",
       "name": "SNH · Win-back",
@@ -319,6 +314,11 @@
       "id": "TB7esy",
       "name": "SNH · Franchise enquiry reply",
       "status": "draft"
+    },
+    "replenish": {
+      "id": "X3m4yg",
+      "name": "SNH · Replenishment",
+      "status": "live"
     }
   }
 }

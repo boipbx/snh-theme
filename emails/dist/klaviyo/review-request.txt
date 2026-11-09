@@ -24,9 +24,10 @@ Rs {{ item.ItemPrice|floatformat:0 }}
 
 {% endfor %}
 
-Write a review [{{
-event.extra.judgeme_review_url|default:'https://www.sportsnutritionhub.lk/account'
-}}]
+Write a review [{% if event.extra.judgeme_review_url %}{{
+event.extra.judgeme_review_url }}{% else %}{{
+event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/'
+}}#judgeme_product_reviews{% endif %}]
 
 Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
 [https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok

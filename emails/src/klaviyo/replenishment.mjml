@@ -1,6 +1,6 @@
 <mjml lang="en"><mj-head>
-    <mj-title>Running low on ?</mj-title>
-    <mj-preview>By our count you've got about {{ event.days_left }} days left.</mj-preview>
+    <mj-title>Running low, ?</mj-title>
+    <mj-preview>It's been about four weeks since your last order.</mj-preview>
     <mj-raw><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"></mj-raw>
     <mj-attributes>
       <mj-all font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" />
@@ -38,16 +38,16 @@
     <mj-column>
       <mj-text font-size="12px" font-weight="700" letter-spacing="2px" color="#BF4512" padding="0 24px 8px">RESTOCK</mj-text>
       <mj-text css-class="h1" font-size="34px" line-height="1.08" font-weight="700" letter-spacing="-0.5px" padding="0 24px 12px">Running <em style="font-family:'Instrument Serif', Georgia, 'Times New Roman', serif;font-style:italic;font-weight:400;">low</em>?</mj-text>
-      <mj-text font-size="17px" color="#5C574F" padding="0 24px 8px">{{ first_name|default:'there' }}, by our count you have about <strong>{{ event.days_left }} days</strong> left of {{ event.product_title }}. Restock now so you don't miss a session.</mj-text>
+      <mj-text font-size="17px" color="#5C574F" padding="0 24px 8px">{{ first_name|default:'there' }}, it's been about four weeks since your order of {{ event.Items.0.ProductName|default:'your supplements' }}. Restock now so you don't miss a session.</mj-text>
     </mj-column>
   </mj-section>
-<mj-section background-color="#FFFFFF" padding="4px 0"><mj-column><mj-table css-class="tbl" padding="0 24px" cellpadding="0" cellspacing="0"><tr><td width="96" style="padding:12px 0 12px 0;vertical-align:top;"><a href="{{ event.product_url }}"><img src="{{ event.product_image }}" alt="{{ event.product_title }}" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
-    <td style="padding:12px 0 12px 12px;vertical-align:top;"><a href="{{ event.product_url }}" style="font-weight:700;color:#0E0E0E;text-decoration:none;font-size:16px;">{{ event.product_title }}</a>
+<mj-section background-color="#FFFFFF" padding="4px 0"><mj-column><mj-table css-class="tbl" padding="0 24px" cellpadding="0" cellspacing="0"><tr><td width="96" style="padding:12px 0 12px 0;vertical-align:top;"><a href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}"><img src="{{ event.Items.0.ImageURL }}" alt="{{ event.Items.0.ProductName|default:'Your last order' }}" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
+    <td style="padding:12px 0 12px 12px;vertical-align:top;"><a href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="font-weight:700;color:#0E0E0E;text-decoration:none;font-size:16px;">{{ event.Items.0.ProductName|default:'Your last order' }}</a>
     <br><span style="font-weight:700;font-size:18px;color:#0E0E0E;">Reorder in one tap</span></td></tr></mj-table></mj-column></mj-section>
 <mj-section background-color="#FFFFFF" padding="12px 0 20px"><mj-column><mj-raw>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" style="padding:0 24px;">
-    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ event.product_url }}" style="height:50px;v-text-anchor:middle;width:260px;" arcsize="50%" stroke="f" fillcolor="#BF4512"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Reorder now</center></v:roundrect><![endif]-->
-    <!--[if !mso]><!--><a href="{{ event.product_url }}" style="display:inline-block;background:#BF4512;color:#FFFFFF;font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:700;line-height:50px;height:50px;padding:0 30px;border-radius:999px;text-decoration:none;mso-hide:all;">Reorder now</a><!--<![endif]-->
+    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="height:50px;v-text-anchor:middle;width:260px;" arcsize="50%" stroke="f" fillcolor="#BF4512"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Reorder now</center></v:roundrect><![endif]-->
+    <!--[if !mso]><!--><a href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="display:inline-block;background:#BF4512;color:#FFFFFF;font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:700;line-height:50px;height:50px;padding:0 30px;border-radius:999px;text-decoration:none;mso-hide:all;">Reorder now</a><!--<![endif]-->
     </td></tr></table></mj-raw></mj-column></mj-section>
 <mj-section background-color="#0E0E0E" padding="28px 12px 8px">
     <mj-column><mj-image src="https://cdn.shopify.com/s/files/1/0258/9625/5550/files/sn_o.png?width=360" alt="SNH" width="80px" align="left" padding="0 12px 14px" />

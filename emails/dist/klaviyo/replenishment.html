@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" dir="auto" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
   <head>
-    <title>Running low on ?</title>
+    <title>Running low, ?</title>
     <!--[if !mso]><!-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<![endif]-->
@@ -69,7 +69,7 @@
   </head>
   <body style="word-spacing:normal;background-color:#F6F4F1;">
     
-    <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">By our count you've got about {{ event.days_left }} days left.</div>
+    <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">It's been about four weeks since your last order.</div>
   
     
       <div class="body" style="background-color:#F6F4F1;" lang="en" dir="auto">
@@ -207,7 +207,7 @@
               <tr>
                 <td align="left" style="font-size:0px;padding:0 24px 8px;word-break:break-word;">
                   
-      <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;line-height:1.5;text-align:left;color:#5C574F;">{{ first_name|default:'there' }}, by our count you have about <strong>{{ event.days_left }} days</strong> left of {{ event.product_title }}. Restock now so you don't miss a session.</div>
+      <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;line-height:1.5;text-align:left;color:#5C574F;">{{ first_name|default:'there' }}, it's been about four weeks since your order of {{ event.Items.0.ProductName|default:'your supplements' }}. Restock now so you don't miss a session.</div>
     
                 </td>
               </tr>
@@ -256,8 +256,8 @@
                 <td align="left" class="tbl" style="font-size:0px;padding:0 24px;word-break:break-word;">
                   
       <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#000000;font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
-        <tr><td width="96" style="font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.45; color: #0E0E0E; padding: 12px 0 12px 0; vertical-align: top;" valign="top"><a href="{{ event.product_url }}" style="color: #0E0E0E;"><img src="{{ event.product_image }}" alt="{{ event.product_title }}" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
-    <td style="font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.45; color: #0E0E0E; padding: 12px 0 12px 12px; vertical-align: top;" valign="top"><a href="{{ event.product_url }}" style="font-weight: 700; color: #0E0E0E; text-decoration: none; font-size: 16px;">{{ event.product_title }}</a>
+        <tr><td width="96" style="font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.45; color: #0E0E0E; padding: 12px 0 12px 0; vertical-align: top;" valign="top"><a href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="color: #0E0E0E;"><img src="{{ event.Items.0.ImageURL }}" alt="{{ event.Items.0.ProductName|default:'Your last order' }}" width="84" height="84" style="display:block;width:84px;height:84px;border:0;border-radius:10px;background:#F5F2EC;object-fit:contain;"></a></td>
+    <td style="font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.45; color: #0E0E0E; padding: 12px 0 12px 12px; vertical-align: top;" valign="top"><a href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="font-weight: 700; color: #0E0E0E; text-decoration: none; font-size: 16px;">{{ event.Items.0.ProductName|default:'Your last order' }}</a>
     <br><span style="font-weight:700;font-size:18px;color:#0E0E0E;">Reorder in one tap</span></td></tr>
       </table>
     
@@ -304,8 +304,8 @@
       <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
         <tbody>
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" style="padding:0 24px;">
-    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ event.product_url }}" style="height:50px;v-text-anchor:middle;width:260px;" arcsize="50%" stroke="f" fillcolor="#BF4512"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Reorder now</center></v:roundrect><![endif]-->
-    <!--[if !mso]><!--><a href="{{ event.product_url }}" style="display: inline-block; background: #BF4512; color: #FFFFFF; font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 50px; height: 50px; padding: 0 30px; border-radius: 999px; text-decoration: none; mso-hide: all;">Reorder now</a><!--<![endif]-->
+    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="height:50px;v-text-anchor:middle;width:260px;" arcsize="50%" stroke="f" fillcolor="#BF4512"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Reorder now</center></v:roundrect><![endif]-->
+    <!--[if !mso]><!--><a href="{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}" style="display: inline-block; background: #BF4512; color: #FFFFFF; font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 50px; height: 50px; padding: 0 30px; border-radius: 999px; text-decoration: none; mso-hide: all;">Reorder now</a><!--<![endif]-->
     </td></tr></table>
         </tbody>
       </table>

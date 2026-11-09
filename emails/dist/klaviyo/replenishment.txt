@@ -1,7 +1,7 @@
-Subject: Running low on {{ event.product_title }}?
-Preheader: By our count you've got about {{ event.days_left }} days left.
+Subject: Running low, {{ first_name|default:"there" }}?
+Preheader: It's been about four weeks since your last order.
 
-By our count you've got about {{ event.days_left }} days left.
+It's been about four weeks since your last order.
 
 https://www.sportsnutritionhub.lk/
 
@@ -13,14 +13,17 @@ RESTOCK
 
 Running low?
 
-{{ first_name|default:'there' }}, by our count you have about {{
-event.days_left }} days left of {{ event.product_title }}. Restock now so you
-don't miss a session.
+{{ first_name|default:'there' }}, it's been about four weeks since your order
+of {{ event.Items.0.ProductName|default:'your supplements' }}. Restock now so
+you don't miss a session.
 
-{{ event.product_url }} {{ event.product_title }} [{{ event.product_url }}]
+{{ event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }} {{
+event.Items.0.ProductName|default:'Your last order' }} [{{
+event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}]
 Reorder in one tap
 
-Reorder now [{{ event.product_url }}]
+Reorder now [{{
+event.Items.0.ProductURL|default:'https://www.sportsnutritionhub.lk/' }}]
 
 Instagram [https://www.instagram.com/sportsnutritionhub.lk/]  ·  Facebook
 [https://www.facebook.com/sportsnutritionhub.lk/]  ·  TikTok
