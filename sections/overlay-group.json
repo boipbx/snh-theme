@@ -80,11 +80,30 @@
       "settings": {
         "code": "SNH10",
         "image": "shopify://shop_images/cricket.jpg"
+      },
+      "disabled": true
+    },
+    "newsletter-popup": {
+      "type": "newsletter-popup",
+      "settings": {
+        "code": "SNH10",
+        "media_url": "",
+        "caption": "Fuelling Athletes.",
+        "kicker": "Welcome to SNH",
+        "title": "Get 10% off your first order",
+        "subtext": "Offers, new products and members-only drops.",
+        "button_text": "Get my 10% code",
+        "fine": "One use per customer. Unsubscribe any time.",
+        "ask_name": false,
+        "show_only_on_index": false,
+        "show_only_for_visitors": true,
+        "show_only_once": true
       }
     }
   },
   "order": [
     "snh_onboarding",
+    "newsletter-popup",
     "email-capture",
     "snh_envelope_popup_4fhFpY",
     "privacy-banner",

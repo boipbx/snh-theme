@@ -275,6 +275,26 @@
     #{{ nid }} .snh-np__panel { grid-row: 2; padding: 24px 20px 26px; }
     #{{ nid }} .snh-np__caption { font-size: 1.1rem; inset-block-end: 16px; inset-inline-start: 16px; }
   }
+  /* Post-launch: the same popup, smaller — 640px card on desktop, a compact card on phones with a short clip */
+  #{{ nid }} .snh-np__card { inline-size: min(640px, 100%); grid-template-columns: 260px minmax(0, 1fr); }
+  #{{ nid }} .snh-np__panel { padding: 28px 26px; gap: 10px; }
+  #{{ nid }} .snh-np__title { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.15; }
+  #{{ nid }} .snh-np__sub { font-size: .88rem; }
+  #{{ nid }} .snh-np__go { min-height: 46px; padding: 0 22px; font-size: .9rem; }
+  #{{ nid }} input[type="email"], #{{ nid }} input[type="text"] { min-height: 46px; font-size: 16px; }
+  @media screen and (max-width: 749px) {
+    #{{ nid }} { padding: 14px; align-items: end; }
+    #{{ nid }} .snh-np__card { inline-size: min(380px, 100%); grid-template-columns: 112px minmax(0, 1fr); grid-template-rows: auto; border-radius: 18px; }
+    #{{ nid }} .snh-np__art { grid-row: 1; grid-column: 1; block-size: auto; min-block-size: 100%; }
+    #{{ nid }} .snh-np__art img { block-size: 100%; object-position: center; }
+    #{{ nid }} .snh-np__caption { display: none; }
+    #{{ nid }} .snh-np__panel { grid-row: 1; grid-column: 2; padding: 16px 16px 16px 14px; gap: 8px; }
+    #{{ nid }} .snh-np__kicker { font-size: .66rem; }
+    #{{ nid }} .snh-np__title { font-size: 1.05rem; }
+    #{{ nid }} .snh-np__sub, #{{ nid }} .snh-np__fine { font-size: .74rem; }
+    #{{ nid }} .snh-np__go { min-height: 42px; inline-size: 100%; }
+    #{{ nid }} .snh-np__x { inset-block-start: 6px; inset-inline-end: 6px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     #{{ nid }}, #{{ nid }} .snh-np__card { transition: none; }
   }
@@ -321,6 +341,7 @@
   if (el.querySelector('[data-np-code]') || posted) { open(); return; }
   if (editor) { open(); return; }
 
+  if (/[?&]popup=test/.test(location.search)) { open(); return; }
   if (el.dataset.indexOnly === 'true' && el.dataset.isIndex !== '1') return;
 
   /* DESIGN.md popup rule: once per visitor, after 12s or 50% scroll, never on first paint */
@@ -336,6 +357,8 @@
     fired = true;
     clearTimeout(timer);
     window.removeEventListener('scroll', onScroll);
+    /* one popup per page view: skip if the onboarding prompt / a campaign popup already showed */
+    if (window.SNHPopups && !window.SNHPopups.claim('newsletter')) return;
     try { localStorage.setItem(SHOWN, String(Date.now())); } catch (e) {}
     open();
   }
