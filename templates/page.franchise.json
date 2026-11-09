@@ -1,5 +1,11 @@
 /*
- * Round 17: franchise page (v2, /pages/franchise-partner). Sections: snh-biz-*.
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
  */
 {
   "sections": {
@@ -15,35 +21,33 @@
         "cta_label": "Enquire about a franchise",
         "cta_link": "#biz-form",
         "show_wa": true,
+        "whatsapp": "",
         "wa_text": "Hi SNH, I'm interested in opening an SNH franchise.",
         "contact_type": "sales"
       }
     },
     "trust": {
       "type": "snh-biz-trust",
-      "settings": {
-        "label": "Why partner with SNH"
-      },
       "blocks": {
         "item_1": {
           "type": "item",
           "settings": {
             "icon": "badge",
-            "text": "Official SiS distributor"
+            "text": "Lucrative ROI"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
             "icon": "star",
-            "text": "18+ brands"
+            "text": "12+ brands"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
             "icon": "gift",
-            "text": "5,000+ SNH Elite members"
+            "text": "50,000+ customers island-wide"
           }
         },
         "item_4": {
@@ -67,7 +71,10 @@
         "item_3",
         "item_4",
         "item_5"
-      ]
+      ],
+      "settings": {
+        "label": "Why partner with SNH"
+      }
     },
     "intro": {
       "type": "snh-biz-copy",
@@ -77,24 +84,20 @@
         "body": "<p>Sports Nutrition Hub started with one goal: give Sri Lankan athletes authentic supplements and honest advice. Today SNH runs three stores in Dehiwala, Wattala and Nugegoda, supplies gyms and retailers island-wide, and rewards thousands of customers through SNH Elite.</p><p>The <strong>SNH franchise</strong> lets you bring that model to your city. You run the store and know the local community; we bring the brand, the supply chain, the systems and the playbook that already works in our own shops. It is a <strong>franchise opportunity in Sri Lanka</strong> for people who care about fitness and want a retail business with a clear plan behind it.</p>",
         "image": "shopify://shop_images/instore.webp",
         "image_alt": "An SNH store counter with protein and supplements on display",
+        "cta_label": "",
+        "cta_link": "#biz-form",
         "style": "white"
       }
     },
     "why": {
       "type": "snh-biz-cards",
-      "settings": {
-        "eyebrow": "Why SNH",
-        "heading": "Why partner *with us*",
-        "columns": "3",
-        "style": "cream"
-      },
       "blocks": {
         "card_1": {
           "type": "card",
           "settings": {
             "icon": "sparkle",
-            "title": "Brand reach",
-            "text": "<p>A recognised name with active social channels, a busy online store and word of mouth from athletes across the country.</p>"
+            "title": "Sri Lanka’s No.1 Health Supplement & Vitamin Brand!",
+            "text": "<p>A recognized name in the fitness and wellness community with proven frameworks and systems. Social media channels with over 20,000 followers, a busy online store, main suppliers to schools and clubs & with an existing wide base of athletes across all sports to represent the brand. &nbsp;</p>"
           }
         },
         "card_2": {
@@ -145,16 +148,19 @@
         "card_4",
         "card_5",
         "card_6"
-      ]
+      ],
+      "settings": {
+        "anchor": "",
+        "eyebrow": "Why SNH",
+        "heading": "Why partner *with us*",
+        "intro": "",
+        "outro": "",
+        "columns": "3",
+        "style": "cream"
+      }
     },
     "stores": {
       "type": "snh-biz-gallery",
-      "settings": {
-        "eyebrow": "Our stores",
-        "heading": "Proven stores in *Colombo*",
-        "intro": "<p>Every franchise follows the layout, range and service standard of our own stores. Visit one before you apply, or see all <a href=\"/pages/locations-info\">SNH store locations</a>.</p>",
-        "style": "white"
-      },
       "blocks": {
         "photo_1": {
           "type": "photo",
@@ -185,16 +191,16 @@
         "photo_1",
         "photo_2",
         "photo_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Our stores",
+        "heading": "Proven stores in *Colombo*",
+        "intro": "<p>Every franchise follows the layout, range and service standard of our own stores. Visit one before you apply, or see all <a href=\"/pages/locations-info\">SNH store locations</a>.</p>",
+        "style": "white"
+      }
     },
     "look": {
       "type": "snh-biz-cards",
-      "settings": {
-        "eyebrow": "Ideal partner",
-        "heading": "What we *look for*",
-        "columns": "4",
-        "style": "cream"
-      },
       "blocks": {
         "card_1": {
           "type": "card",
@@ -234,16 +240,19 @@
         "card_2",
         "card_3",
         "card_4"
-      ]
+      ],
+      "settings": {
+        "anchor": "",
+        "eyebrow": "Ideal partner",
+        "heading": "What we *look for*",
+        "intro": "",
+        "outro": "",
+        "columns": "4",
+        "style": "cream"
+      }
     },
     "get": {
       "type": "snh-biz-cards",
-      "settings": {
-        "eyebrow": "What you get",
-        "heading": "Everything you need to *open and grow*",
-        "columns": "3",
-        "style": "white"
-      },
       "blocks": {
         "card_1": {
           "type": "card",
@@ -301,15 +310,19 @@
         "card_4",
         "card_5",
         "card_6"
-      ]
+      ],
+      "settings": {
+        "anchor": "",
+        "eyebrow": "What you get",
+        "heading": "Everything you need to *open and grow*",
+        "intro": "",
+        "outro": "",
+        "columns": "3",
+        "style": "white"
+      }
     },
     "how": {
       "type": "snh-biz-steps",
-      "settings": {
-        "eyebrow": "The process",
-        "heading": "From enquiry to *opening day*",
-        "style": "ink"
-      },
       "blocks": {
         "step_1": {
           "type": "step",
@@ -353,7 +366,13 @@
         "step_3",
         "step_4",
         "step_5"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "The process",
+        "heading": "From enquiry to *opening day*",
+        "intro": "",
+        "style": "ink"
+      }
     },
     "invest": {
       "type": "snh-biz-copy",
@@ -361,6 +380,7 @@
         "eyebrow": "Investment",
         "heading": "Investment *overview*",
         "body": "<p>Investment details shared after the first call. The total depends on the size of the unit, its location and the opening range, so we walk you through a full breakdown once we understand your plans.</p><p>Until then, explore what customers buy most: <a href=\"/collections/whey-protein\">whey protein</a>, <a href=\"/collections/creatine\">creatine</a>, <a href=\"/collections/sis\">Science in Sport</a> and <a href=\"/pages/snh-elite\">SNH Elite</a> rewards. If you run a gym or store and want to stock SNH products rather than open a franchise, see <a href=\"/pages/wholesale-1\">wholesale</a>.</p>",
+        "image_alt": "",
         "cta_label": "Book a first call",
         "cta_link": "#biz-form",
         "style": "cream"
@@ -376,24 +396,17 @@
         "point_1": "Confidential, no obligation",
         "point_2": "A reply within a few working days",
         "point_3": "Investment details on the first call",
+        "msg_placeholder": "Your plans, the area you have in mind, any questions",
         "submit": "Send franchise enquiry",
+        "fine": "We reply within one working day. Your details are only used to answer this enquiry.",
         "ok_heading": "Thank you, your franchise enquiry is in",
         "ok_text": "<p>Here is what happens next:</p><ul><li>We read every enquiry and reply within a few working days.</li><li>If your plans fit, we book a first call to talk through the location and the investment.</li><li>In the meantime, visit one of our stores to see the SNH standard in person.</li></ul>",
         "ok_label": "Find a store",
-        "ok_link": "/pages/locations-info",
-        "msg_placeholder": "Your plans, the area you have in mind, any questions"
+        "ok_link": "/pages/locations-info"
       }
     },
     "faq": {
       "type": "snh-faq",
-      "settings": {
-        "eyebrow": "Franchise FAQ",
-        "heading": "Franchise *questions*",
-        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
-        "show_cta": true,
-        "cta": "Talk to us about a franchise",
-        "style": "dark"
-      },
       "blocks": {
         "question_1": {
           "type": "question",
@@ -445,7 +458,15 @@
         "question_4",
         "question_5",
         "question_6"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Franchise FAQ",
+        "heading": "Franchise *questions*",
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
+        "show_cta": true,
+        "cta": "Talk to us about a franchise",
+        "style": "dark"
+      }
     }
   },
   "order": [
