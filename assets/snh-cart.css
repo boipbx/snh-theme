@@ -366,3 +366,34 @@
 .snh-cd .ssug__add svg { width: 14px; height: 14px; }
 /* fixed footer stays compact */
 .snh-cd .scd__foot { gap: 6px; padding-top: 10px; }
+
+/* ---------- Post-launch cart page (phones/tablets): items above the fold ----------
+   Order: title → items → bundles / offers → recommendations → summary. The fixed summary bar reserves exactly its own
+   height (--scp-foot-h, measured by assets/snh-cart.js) so it never covers the last content. */
+@media (max-width: 1023px) {
+  .scp > .v-wrap { display: flex; flex-direction: column; }
+  .scp__head { order: 1; margin-bottom: 12px; }
+  .scp > .v-wrap > [data-campaign-slot="cart"] { order: 2; }
+  .scp__grid { order: 3; gap: 16px; }
+  .scp__offers { order: 4; margin: 16px 0 0; }
+  .scp__head .v-h1 { font-size: 26px; }
+  .scp__eta { font-size: 13px; line-height: 1.4; }
+  .scp__eta svg { width: 16px; height: 16px; }
+  .scp__main { gap: 16px; }
+  .scp .sline { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 12px 0; }
+  .scp .sline__img { width: 64px; height: 64px; }
+  .scp .sline__t { font-size: 14px; }
+  .scp .sqty { grid-template-columns: 32px minmax(26px, auto) 32px; height: 32px; }
+  .scp .sqty button, .scp .sqty button:hover { width: 32px; height: 30px; }
+  .scp .sqty span { line-height: 30px; font-size: 14px; }
+  .scp:has([data-cart-foot]:not([hidden])) { padding-bottom: calc(var(--scp-foot-h, 260px) + 16px); }
+  .scp [data-campaign-slot="cart"] .cmp-ban { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; }
+  .scp [data-campaign-slot="cart"] .cmp-ban__pic, .scp [data-campaign-slot="cart"] .cmp-ban__go { display: none; }
+  .scp [data-campaign-slot="cart"] .cmp-ban__h { margin: 0; font-size: 13px; }
+  .scp [data-campaign-slot="cart"] .cmp-ban__p { margin: 0; font-size: 12px; }
+}
+/* the line's text column never grows past its track (the one-line bundle row made it 286px inside 244 at 360px) */
+.sline__b { grid-template-columns: minmax(0, 1fr); }
+.sline__row, .sbo.sbo--row { min-width: 0; max-width: 100%; }
+.sbo__short { display: none; }
+@media (max-width: 419px) { .sbo__lead { display: none; } .sbo__short { display: inline; } }

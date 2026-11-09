@@ -55,6 +55,11 @@
     this.foot = $('[data-cart-foot]', el);
     this.busy = false;
     var self = this;
+    // Post-launch: the cart page's fixed summary bar (phones) reserves exactly its own height below the content
+    if (this.foot && el.getAttribute('data-mode') === 'page' && window.ResizeObserver) {
+      var scp = el.closest('.scp');
+      if (scp) new ResizeObserver(function () { scp.style.setProperty('--scp-foot-h', (self.foot.hidden ? 0 : self.foot.offsetHeight) + 'px'); }).observe(this.foot);
+    }
     el.addEventListener('click', function (e) { self.click(e); });
     if (this.cart) this.render(this.cart);
     else this.refresh();
@@ -570,7 +575,7 @@
         // Post-launch: one compact row under the item ("Make it a bundle, save Rs X · Add"); the bundle name is the link
         box.className = 'sbo sbo--row';
         box.innerHTML = '<a class="sbo__t" href="' + esc(best.b.u) + '" title="' + esc(best.b.t + ' · ' + rs(best.b.p) + ' · swaps your ' + (what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0])) + '">' + icons.tag +
-          '<span>Make it a bundle' + (best.b.s ? ', <b>save ' + rs(best.b.s) + '</b>' : '') + '</span></a>' +
+          '<span><span class="sbo__lead">Make it a bundle</span><span class="sbo__short">Bundle</span>' + (best.b.s ? ', <b>save ' + rs(best.b.s) + '</b>' : '') + '</span></a>' +
           '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Add</button>';
         $('.sline__b', li).appendChild(box);
       });
