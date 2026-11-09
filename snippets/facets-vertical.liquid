@@ -496,6 +496,27 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     .snh-active__clear { margin-inline-start: 0; }
     body.snh-sheet-open { overflow: hidden; }
     body.snh-sheet-open .snh-bar-form { z-index: 130; }
+    /* Post-launch (one filter system on phones): a single compact row — "Filter & sort" + the goal chips scrolling
+       beside it. The quick-find box and the brand rail leave the page (the header has search; brands open inside
+       the sheet), and the sheet is a bottom sheet over a blurred page instead of a full-screen panel. */
+    .snh-bar { grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 10px; padding: 8px var(--gutter, 20px); margin-block-end: 8px; }
+    .snh-bar > .snh-find, .snh-bar > .snh-brands, .snh-bar > :not(.snh-sheet-wrap) > .snh-brands { display: none; }
+    .snh-brands.is-in-sheet { display: block; }
+    .snh-bar > .snh-mtrig { grid-column: 1; grid-row: 1; padding: 0; }
+    .snh-bar > .snh-goals { grid-column: 2; grid-row: 1; min-width: 0; padding: 0; }
+    .snh-bar > .snh-bar__row, .snh-bar > :not(.snh-mtrig):not(.snh-goals):not(.snh-find):not(.snh-brands) { grid-column: 1 / -1; }
+    .snh-mtrig__btn { height: 40px; padding: 0 14px; font-size: 13.5px; }
+    .snh-mtrig__n { display: none; }
+    .snh-goals__rail { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+    .snh-goals__rail::-webkit-scrollbar { display: none; }
+    .snh-goals__rail .snh-goal { flex: none; height: 40px; display: inline-flex; align-items: center; padding: 0 14px; font-size: 13.5px; white-space: nowrap; }
+    .snh-bar-form .snh-bar__row { top: auto; bottom: 0; left: 0; right: 0; height: auto; padding-inline: var(--gutter, 20px); max-height: min(78vh, 680px); border-radius: 20px 20px 0 0; box-shadow: 0 -12px 40px rgba(10, 10, 10, .18); transform: translateY(102%); }
+    .snh-bar__row::before { content: ""; position: sticky; top: 0; z-index: 3; display: block; width: 40px; height: 4px; margin: 8px auto -12px; border-radius: 4px; background: rgba(12, 12, 13, .18); }
+    .snh-sheet__head { min-height: 56px; }
+    .snh-sheet__t { font-size: 18px; }
+    body.snh-sheet-open::after { content: ""; position: fixed; inset: 0; z-index: 110; background: rgba(10, 10, 10, .32); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+    .colhero__jump { display: none; }
+    .snh-bar-form { margin-block-end: 8px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .snh-bar-form *, .snh-bar-form *::before { transition: none !important; }
@@ -1143,6 +1164,8 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     document.addEventListener('click', function (e) {
       if (e.target.closest('[data-snh-sheet-open]')) { e.preventDefault(); set(true); }
       else if (e.target.closest('[data-snh-sheet-close]')) { e.preventDefault(); set(false); }
+      // tap on the blurred page behind the bottom sheet closes it
+      else if (document.body.classList.contains('snh-sheet-open') && (e.target === document.body || e.target === document.documentElement)) set(false);
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet() && sheet().classList.contains('is-open')) set(false); });
     // the section re-renders after each change: keep the sheet open while the shopper is still filtering
