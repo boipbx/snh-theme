@@ -664,11 +664,22 @@
     clearTimeout(toast.__t); toast.__t = setTimeout(function () { toast.classList.remove('is-on'); }, 6000);
   }
   function init() {
-    $$('[data-cart-root]').forEach(function (el) { if (!el.__cart) { el.__cart = new Cart(el); carts.push(el.__cart); } });
     var d = drawerEl();
+    var make = function (el) { if (!el.__cart) { el.__cart = new Cart(el); carts.push(el.__cart); } return el.__cart; };
+    // Post-launch speed: the closed drawer's basket (cart + 60-product picks fetch) is built when the browser is idle
+    // after load, or the moment the drawer opens, not during page load. The cart page and other roots build at once.
+    $$('[data-cart-root]').forEach(function (el) {
+      if (d && d.contains(el) && !d.open && !d.hasAttribute('open')) {
+        if (el.__cartQueued) return; el.__cartQueued = true;
+        var go = function () { make(el); };
+        var idleRun = window.requestIdleCallback ? function () { requestIdleCallback(go, { timeout: 4000 }); } : function () { setTimeout(go, 2500); };
+        if (document.readyState === 'complete') idleRun(); else window.addEventListener('load', idleRun, { once: true });
+      } else make(el);
+    });
     if (d && !d.__snhWatch) {
       d.__snhWatch = true;
-      d.addEventListener('dialog:after-show', function () { var c = d.querySelector('[data-cart-root]'); if (c && c.__cart) c.__cart.refresh(); if (toast) toast.classList.remove('is-on'); });
+      d.addEventListener('dialog:before-show', function () { var c = d.querySelector('[data-cart-root]'); if (c) make(c); });
+      d.addEventListener('dialog:after-show', function () { var c = d.querySelector('[data-cart-root]'); if (c) make(c).refresh(); if (toast) toast.classList.remove('is-on'); });
       d.addEventListener('dialog:after-hide', function () { var c = d.querySelector('[data-cart-root]'); if (c && c.__cart) showToast(c.__cart.cart); });
     }
   }
