@@ -60,7 +60,7 @@
         <{{ tag }} class="elc__name" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
       </div>
       <p class="elc__pts">
-        {%- if m[3] == 'x' -%}<span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">being updated, check back soon</span>
+        {%- if m[3] == 'x' -%}<span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val" title="Your points are being updated, check back soon">updating soon</span>
         {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong> <span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
       </p>
     </div>
