@@ -976,6 +976,7 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
   .app__view .app__grid > *:nth-child(n+5) { display: none; }
   .app .app__hero--cards .rwd { min-height: 0; height: auto; aspect-ratio: auto; }
   .app .rwd__stage, .app .rwd__fx { display: none; }
+  .app .rwd__in { padding-top: 0; }
   .app .rwd__pts { font-size: 40px; line-height: 1; }
   body:has(.app__tabs) #shop-hcaptcha-badge-container { bottom: calc(86px + env(safe-area-inset-bottom)) !important; }
   .app__tab[aria-current="page"] svg, .app__tab[aria-current="page"] span { color: #fff; }
