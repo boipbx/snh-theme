@@ -122,6 +122,12 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     </script>
     {{ content_for_header }}
 
+    {%- comment -%} Post-launch speed: the homepage hero (LCP) starts downloading from the head, not after the mega menus {%- endcomment -%}
+    {%- if template.name == 'index' and settings.snh_hero_preload != blank -%}
+      {%- assign hp = settings.snh_hero_preload -%}
+      <link rel="preload" as="image" fetchpriority="high" media="(max-width: 767px)" imagesrcset="{{ hp | image_url: width: 800 }} 800w, {{ hp | image_url: width: 1200 }} 1200w" imagesizes="100vw">
+      <link rel="preload" as="image" fetchpriority="high" media="(min-width: 768px)" imagesrcset="{{ hp | image_url: width: 1200 }} 1200w, {{ hp | image_url: width: 1800 }} 1800w, {{ hp | image_url: width: 2800 }} 2800w" imagesizes="100vw">
+    {%- endif -%}
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
     {{- 'snh-design-system.css' | asset_url | stylesheet_tag: preload: true -}}
     {{- 'snh-v2.css' | asset_url | stylesheet_tag: preload: true -}}

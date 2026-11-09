@@ -1633,6 +1633,12 @@
     "name": "SNH contact and reviews",
     "settings": [
       {
+        "type": "image_picker",
+        "id": "snh_hero_preload",
+        "label": "Homepage hero image to preload (speed)",
+        "info": "Pick the same image as the first homepage hero slide. It starts downloading before the menus, which makes the homepage show sooner. Leave empty if unsure."
+      },
+      {
         "type": "text",
         "id": "snh_whatsapp",
         "label": "WhatsApp number",
