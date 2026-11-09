@@ -167,3 +167,27 @@ theme code renders them). Screenshots: `docs/qa/post-launch/`.
 stylesheet loads, no broken images, exactly one H1 per page, no clipped text, nothing under 11px except Google's
 reCAPTCHA badge links. Remaining script errors are third-party: Amose Bundle (`map` on product pages) and an
 intermittent `marketingAllowed` read from a consent/pixel script (not in the theme, not reproducible on reload).
+
+## Phone polish round (9–10 Nov 2026)
+
+Live theme; each change previewed on the live page (injected CSS or swapped asset), pushed, then re-checked live.
+- **Collections (phones/tablets):** one filter row — "Filter & sort" + goal chips side by side; quick-find box,
+  brand rail and "Shop N products" button off the page (brands open inside the sheet); filters open as a bottom sheet
+  (≤ 78% of the screen) over a blurred page, tap outside closes. Hotfix the same hour: the closed-state transform
+  outranked `.is-open` (sheet didn't appear) → fixed and verified live (sheet top 460px on 844).
+- **Mini cart:** the "View basket" toast after closing is one line (was squeezed to 3); footer note + payment chips on
+  one row at 360px.
+- **Email popup:** back to the original cricket-clip popup, smaller (640px desktop; compact side-by-side card on
+  phones), one popup per page view (shares SNHPopups with the onboarding prompt), `?popup=test` to check. Copy is a
+  plain sign-up: the old 10% code SNH10 doesn't exist in Discounts. Spin-the-shaker capture disabled (kept).
+- **Account (phones):** floating tab bar, the current view as a filled pill, Shopify's captcha badge lifted above it;
+  reward card without the empty photo space; quick actions in a row; latest 3 activities; 4 picks; "coming soon"
+  referral card hidden; tighter rhythm; no focus outline on the view heading. Overview 5,852 → 4,310px.
+- **Sign-up / sign-in:** steps on one line (Login · Details · Your plan); clean dark band behind the card on phones.
+- **Pages:** an empty non-contact page shows a short "being updated" note (Shop all / WhatsApp) instead of a contact
+  form. SNHEALTH and Accessories render the default template: their admin template assignment points at names the
+  theme doesn't have → assign **page.snhealth** and **page.accessories-page** in Online Store → Pages.
+- **Speed:** collection LCP is the hero banner found late + 1.2s server render; the 2.4 MB checkout background
+  (`autumn_mood_2000x.png`, preloaded by Shopify on every page) and the 3 Google tags remain the biggest costs (admin).
+- **Phone crawl** (39 pages × 360 / 390): no overflow, all stylesheets load, no broken images, one H1 per page
+  (blog post content aside); remaining script errors are third-party.
