@@ -2515,3 +2515,35 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
   .hero .display { font-size: clamp(34px, 10.6vw, 40px); }
   .hero__copy { gap: 10px; }
 }
+
+/* ---------- Post-launch: "too zoomed in" — the UI one step smaller (≈ −12% phones, −8% desktop) ----------
+   Fluid type re-anchored at 390 → 1440: display 38→66, h1 32→52, h2 25→40, h3 21→33, h4 18→26, h5 16→22.
+   Body 15px on phones (16 from 768), section rhythm 40/56, buttons 44px (still the minimum tap size). */
+:root {
+  --t-display: clamp(38px, 27.6px + 2.667vw, 66px);
+  --t-h1: clamp(32px, 24.57px + 1.905vw, 52px);
+  --t-h2: clamp(25px, 19.43px + 1.429vw, 40px);
+  --t-h3: clamp(21px, 16.54px + 1.143vw, 33px);
+  --t-h4: clamp(18px, 15.03px + .762vw, 26px);
+  --t-h5: clamp(16px, 13.77px + .571vw, 22px);
+  --fs-body: 15px;
+  --section: 40px;
+  --btn-h: 44px;
+  --hdr-h: 56px;
+}
+@media (min-width: 768px) { :root { --fs-body: 16px; } }
+@media (min-width: 1024px) { :root { --section: 56px; --hdr-h: 66px; } }
+.v-btn { padding: 0 20px; font-size: 14px; }
+.hero__sub { font-size: 16px; }
+@media (min-width: 1024px) { .hero__sub { font-size: 17px; } }
+.lead { font-size: 16px; }
+@media (max-width: 767px) {
+  /* header stack ≤ 120px on phones: ticker 28 + announcement 30 + header 56 */
+  .ticker { font-size: 12px; }
+  .ticker__item { padding: 8px 22px; }
+  .ticker__item::after { margin-left: 22px; }
+  .announce, .announce__item { font-size: 12.5px; }
+  .announce__in { height: 30px; }
+  .announce__item { line-height: 30px; }
+  .lead { font-size: 15px; }
+}

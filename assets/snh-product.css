@@ -314,3 +314,6 @@
 /* audit: the payment-options (i) button keeps its 16px look with a 40px tap area */
 .sp-info { position: relative; }
 .sp-info::after { content: ""; position: absolute; inset: -12px; }
+/* Post-launch: one step smaller ("too zoomed in"): title 23/33, price 24/28 */
+.sp-title { font-size: 23px; }
+@media (min-width: 1024px) { .sp-title { font-size: 33px; } }
