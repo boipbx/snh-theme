@@ -41,7 +41,7 @@
   </ul>
   {%- if lis.size > 3 -%}<p class="ocard__more">+ {{ lis.size | minus: 3 }} more item{% if lis.size != 4 %}s{% endif %} in Track &amp; details</p>{%- endif -%}
   <div class="ocard__sum">
-    {%- if o[3] contains 'paid' or o[3] == 'partially_refunded' -%}{%- if o[11] != '1' -%}<span class="ocard__pts">{% render 'snh-v2-icon', name: 'badge' %}+{% render 'snh-num', n: earn %} pts est.</span>{%- endif -%}{%- endif -%}
+    {%- if o[3] == 'paid' or o[3] == 'partially_refunded' -%}{%- if o[11] != '1' -%}<span class="ocard__pts">{% render 'snh-v2-icon', name: 'badge' %}+{% render 'snh-num', n: earn %} pts est.</span>{%- endif -%}{%- elsif o[11] != '1' and o[3] != 'refunded' and o[3] != 'voided' -%}<span class="ocard__pts ocard__pts--wait">{% render 'snh-v2-icon', name: 'badge' %}Points added when payment is confirmed</span>{%- endif -%}
     <p class="ocard__total"><span>Total</span> <b>{{ o[8] | money_without_trailing_zeros }}</b></p>
   </div>
   <div class="ocard__acts">

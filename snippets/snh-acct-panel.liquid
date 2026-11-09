@@ -84,7 +84,7 @@
           {%- comment -%} R19 #10: the shaker fills with the progress to the next tier {%- endcomment -%}
           <span data-shaker data-now data-pct="{{ lv_pct }}" data-tier="{{ m[0] }}" data-size="64" data-label="{{ lv_label | strip | escape }}"></span>
           <p class="acp__next">
-            {%- if m[3] == 'x' -%}Your balance appears after your first paid order syncs.{% elsif m[14] == '1' %}Your reward is ready to redeem.{% else %}{% render 'snh-num', n: m[15] %} points to your first reward.{% endif %}
+            {%- if m[3] == 'x' -%}Your points are being updated, check back soon.{% elsif m[14] == '1' %}Your reward is ready to redeem.{% else %}{% render 'snh-num', n: m[15] %} points to your first reward.{% endif %}
             {% if m[12] == '1' %}Top tier · {{ m[7] }}% back on every order.{%- elsif m[10] == '0' -%}{{ m[8] }} unlocks when your tier updates.{%- else -%}Spend <b>{{ m[10] | times: 100 | money_without_trailing_zeros }}</b> more to reach {{ m[8] }}.{%- endif -%}
           </p>
           {%- if m[6] == '1' -%}<p class="acp__est">Estimated from your orders. Your Elite balance updates after each paid order.</p>{%- endif -%}

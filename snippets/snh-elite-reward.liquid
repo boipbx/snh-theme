@@ -14,8 +14,8 @@
 <aside class="rcard" aria-labelledby="rcard-t">
   <p class="eyebrow">Rewards</p>
   {%- if m[3] == 'x' -%}
-    <h2 class="rcard__h" id="rcard-t">Your points are on the way</h2>
-    <p class="rcard__p">Your balance shows here once your first paid order syncs. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
+    <h2 class="rcard__h" id="rcard-t">Your points are being updated</h2>
+    <p class="rcard__p">Check back soon: your balance shows here once it's updated. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
     <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
   {%- elsif m[14] == '1' -%}
     <h2 class="rcard__h" id="rcard-t">Your reward is <em>ready</em></h2>

@@ -36,8 +36,8 @@
   <div class="bal__fig">
     <p class="bal__l">Points balance</p>
     {%- if m[3] == 'x' -%}
-      <p class="bal__n">—</p>
-      <p class="bal__v">Shows once your first paid order syncs</p>
+      <p class="bal__n bal__n--wait">Updating</p>
+      <p class="bal__v">Your points are being updated, check back soon.</p>
     {%- else -%}
       <p class="bal__n">{% render 'snh-num', n: m[3] %}</p>
       <p class="bal__v">Worth {{ m[4] | times: 100 | money_without_trailing_zeros }} · 1 point = {{ per_point | times: 100 | money_without_trailing_zeros }}</p>

@@ -86,7 +86,11 @@
           <section class="acc__card ord__pts" data-tier="{{ m[0] }}" aria-labelledby="ord-pts">
             <h2 class="acc__h3" id="ord-pts">SNH Elite</h2>
             <p>This order earns about <b>{% render 'snh-num', n: earn %} points</b> at your {{ m[1] }} rate ({{ m[7] }}%).</p>
-            <p class="acc__muted">Points are credited once the order is paid and synced{% if order.total_refunded_amount > 0 %}; refunded amounts don't earn{% endif %}.</p>
+            {%- if order.financial_status == 'paid' or order.financial_status == 'partially_refunded' -%}
+              <p class="acc__muted">Points are credited to your balance shortly after a paid order{% if order.total_refunded_amount > 0 %}; refunded amounts don't earn{% endif %}.</p>
+            {%- else -%}
+              <p class="acc__muted"><b>Points added when payment is confirmed.</b> This order's payment is {{ order.financial_status_label | default: 'pending' | downcase }}.</p>
+            {%- endif -%}
           </section>
         {%- endunless -%}
         <section class="acc__card" aria-labelledby="ord-ship">

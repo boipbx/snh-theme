@@ -23,8 +23,8 @@
   <div class="rwd__in">
     <p class="rwd__label" id="rwd-h-{{ id }}">Available points</p>
     {%- if m[3] == 'x' -%}
-      <p class="rwd__pts">—</p>
-      <p class="rwd__p">Your balance shows here once your first paid order syncs. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
+      <p class="rwd__pts rwd__pts--wait">Updating</p>
+      <p class="rwd__p">Your points are being updated, check back soon. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
       <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
     {%- else -%}
       <p class="rwd__pts" data-count>{% render 'snh-num', n: m[3] %}</p>

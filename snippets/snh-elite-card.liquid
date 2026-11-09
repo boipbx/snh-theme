@@ -60,7 +60,7 @@
         <{{ tag }} class="elc__name" title="{{ name | escape }}">{{ name | escape }}</{{ tag }}>
       </div>
       <p class="elc__pts">
-        {%- if m[3] == 'x' -%}<strong>0</strong> <span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">after your first order</span>
+        {%- if m[3] == 'x' -%}<span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">being updated, check back soon</span>
         {%- else -%}<strong>{% render 'snh-num', n: m[3] %}</strong> <span class="elc__lbl">Points</span><span class="elc__dot" aria-hidden="true">·</span><span class="elc__val">{{ m[4] | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}
       </p>
     </div>
@@ -79,7 +79,7 @@
         <span class="elc__bar" aria-hidden="true"><i style="width: {{ m[11] }}%"></i></span>
       </div>
       <div><dt>Redeem at</dt><dd>{% render 'snh-num', n: redeem_from %} points</dd></div>
-      <div><dt>Points value</dt><dd>{% if m[3] == 'x' %}—{% else %}{{ m[4] | times: 100 | money_without_trailing_zeros }}{% endif %}</dd></div>
+      <div><dt>Points value</dt><dd>{% if m[3] == 'x' %}Updating{% else %}{{ m[4] | times: 100 | money_without_trailing_zeros }}{% endif %}</dd></div>
     </dl>
     <a class="elc__link" href="{{ rewards_url | strip }}"{% if side == 'both' %} tabindex="-1"{% endif %}>{% if sample %}How SNH Elite works{% else %}View rewards{% endif %} →</a>
   </div>

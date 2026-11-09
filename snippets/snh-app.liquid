@@ -70,7 +70,7 @@
   assign bundles = bundles | strip | split: '@@'
 
   assign views = 'overview,rewards,orders,goals,profile' | split: ','
-  assign pts_label = 'No points yet'
+  assign pts_label = 'Points updating'
   if m[3] != 'x'
     capture pts_label
       render 'snh-num', n: m[3]

@@ -945,3 +945,6 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 .qz__shaker .shk__liq { transition-duration: 200ms; }
 .qz__shaker.is-shake .shk { animation: qz-shake 220ms ease; }
 .wk__wt th > .wk__tick { display: inline-flex; }
+/* Post-launch loyalty states: unpaid orders and a balance that isn't synced yet never show a number */
+.ocard__pts--wait { color: #8A5A00; white-space: normal; }
+.bal__n--wait, .rwd__pts--wait { font-size: 1.4em; opacity: .8; }
