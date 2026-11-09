@@ -33,12 +33,29 @@
   endif
   assign pimg = poster | default: video.preview_image
   assign ov = overlay | default: 70 | divided_by: 100.0
+  # Post-launch speed: an animated image (.webp/.gif) set as the "video" or poster is never a playable video and Shopify
+  # can't resize it (8.7 MB, fetched twice by <img> + <video poster>). Show its static first frame (format: pjpg, ~40 KB)
+  # and swap the animation in only on desktop, when the slot is on screen (assets/snh-bgv.js, data-bgv-anim).
+  assign anim = ''
+  assign sl = src | downcase
+  if sl contains '.webp' or sl contains '.gif'
+    assign anim = src
+    assign src = ''
+  endif
+  if pimg != blank
+    assign pl = pimg.src | default: pimg | append: '' | downcase
+    if anim == blank and pl contains '.gif'
+      assign anim = pimg | image_url: width: 1600
+    endif
+  endif
 -%}
 {%- if src != blank or pimg != blank -%}
   <div class="snh-bgv{% if class != blank %} {{ class }}{% endif %}" aria-hidden="true" style="--bgv-ov: {{ ov }};{% if tint != blank %} --bgv-tint: {{ tint }};{% endif %}" data-bgv>
-    {%- if pimg != blank -%}{{ pimg | image_url: width: 1920 | image_tag: class: 'snh-bgv__poster', alt: '', loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,1920' }}{%- endif -%}
+    {%- if pimg != blank -%}
+      <img class="snh-bgv__poster" src="{{ pimg | image_url: width: 900, format: 'pjpg' }}" srcset="{{ pimg | image_url: width: 600, format: 'pjpg' }} 600w, {{ pimg | image_url: width: 900, format: 'pjpg' }} 900w, {{ pimg | image_url: width: 1400, format: 'pjpg' }} 1400w" sizes="100vw" width="{{ pimg.width }}" height="{{ pimg.height }}" alt="" loading="lazy" decoding="async"{% if anim != blank %} data-bgv-anim="{{ anim | escape }}"{% endif %}>
+    {%- endif -%}
     {%- if src != blank -%}
-      <video class="snh-bgv__v" muted loop playsinline disablepictureinpicture preload="none" tabindex="-1"{% if pimg != blank %} poster="{{ pimg | image_url: width: 1600 }}"{% endif %} data-bgv-src="{{ src | escape }}" data-bgv-type="{{ kind }}"></video>
+      <video class="snh-bgv__v" muted loop playsinline disablepictureinpicture preload="none" tabindex="-1" data-bgv-src="{{ src | escape }}" data-bgv-type="{{ kind }}"></video>
     {%- endif -%}
     <span class="snh-bgv__ov"></span>
   </div>

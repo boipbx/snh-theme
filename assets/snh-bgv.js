@@ -5,6 +5,12 @@
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function arm(box) {
     if (box.__bgv) return; box.__bgv = true;
+    // an animated image poster (data-bgv-anim): swap it in on desktop only, once on screen, unless data-saver / reduced motion
+    var im = box.querySelector('img[data-bgv-anim]');
+    if (im && !reduce && !(navigator.connection && navigator.connection.saveData) && window.matchMedia('(min-width: 768px)').matches && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); im.removeAttribute('srcset'); im.src = im.getAttribute('data-bgv-anim'); } }, { rootMargin: '100px 0px' });
+      io.observe(box);
+    }
     var v = box.querySelector('video[data-bgv-src]'); if (!v || reduce) return;
     var loaded = false;
     var play = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
