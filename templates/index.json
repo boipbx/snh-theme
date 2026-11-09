@@ -144,7 +144,7 @@
       "type": "snh-quiz-band",
       "settings": {
         "heading": "Not sure what to buy? *Get your plan in 60 seconds.*",
-        "subline": "A few quick taps: we'll match a supplement stack and a free workout plan to your goal, schedule and sport.",
+        "subline": "Answer a few quick questions and we'll match you with the right stack and a free workout plan built around your goal, schedule and sport.",
         "cta": "Find my stack",
         "note": "Free · no sign-up needed to see your stack",
         "stack_map": "",
@@ -301,7 +301,7 @@
         "logo_13"
       ],
       "settings": {
-        "heading": "Authorised distributors of *leading* brands",
+        "heading": "AUTHORIZED DISTRIBUTORS OF *LEADING* BRANDS",
         "show_count": true,
         "count": "",
         "link_label": "All brands",
