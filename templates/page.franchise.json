@@ -129,7 +129,7 @@
           "settings": {
             "icon": "home",
             "title": "Proven Success",
-            "text": "<p>6 years of experience in the space with founders invested and solely focused on this industry!&nbsp;<br/>ROI proven to be in less than 12 months. Capitulation requirement under LKR 8,000,000.&nbsp;<br/>Healthy cash flow.&nbsp;<br/>Involvement in a booming industry worldwide with a rapid increment in pace of customers. &nbsp;</p>"
+            "text": "<p>6 years of experience in the space with founders invested and solely focused on this industry!&nbsp;<br/>ROI proven to be in less than 12 months.&nbsp;<br/>Capitulation requirement under LKR 8,000,000.&nbsp;<br/>Healthy cash flow.&nbsp;<br/>Involvement in a booming industry worldwide with a rapid increment in pace of customers. &nbsp;</p>"
           }
         },
         "card_6": {
@@ -328,7 +328,7 @@
           "type": "step",
           "settings": {
             "title": "Enquire",
-            "text": "Send the form below. We reply within a few working days."
+            "text": "Send the form below. We reply within 3 working days."
           }
         },
         "step_2": {
@@ -412,7 +412,7 @@
           "type": "question",
           "settings": {
             "question": "How much does an SNH franchise cost?",
-            "answer": "<p>Investment details are shared after the first call, because the total depends on the unit size, location and opening range. We give you a full breakdown before any agreement.</p>"
+            "answer": "<p>Investment details are shared after the first call, because the total depends on the unit size, location and opening range. However, a minimum investment of LKR 5,000,000 is required.&nbsp;</p>"
           }
         },
         "question_2": {
@@ -447,7 +447,7 @@
           "type": "question",
           "settings": {
             "question": "How long does it take to open?",
-            "answer": "<p>It depends on the location and fit-out, but we plan every step with you and agree a target opening date in the franchise agreement.</p>"
+            "answer": "<p>It depends on the location and fit-out, but a timeline of 3-4 months from construction to a finish store is a good estimate.&nbsp;</p>"
           }
         }
       },
