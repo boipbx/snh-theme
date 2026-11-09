@@ -118,7 +118,8 @@
     "snh_silver_threshold": 198000,
     "snh_gold_threshold": 300000,
     "snh_whatsapp": "94764863359",
-    "snh_rating_source": "Google reviews"
+    "snh_rating_source": "Google reviews",
+    "snh_hero_preload": "shopify://shop_images/running.jpg"
   },
   "presets": {
     "Sound": {
