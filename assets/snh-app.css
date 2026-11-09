@@ -981,3 +981,5 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
   body:has(.app__tabs) #shop-hcaptcha-badge-container { bottom: calc(86px + env(safe-area-inset-bottom)) !important; }
   .app__tab[aria-current="page"] svg, .app__tab[aria-current="page"] span { color: #fff; }
 }
+/* Post-launch: the view heading takes focus on a tab switch (screen readers) without drawing an outline box */
+.app__view [tabindex="-1"]:focus, .app__head [tabindex="-1"]:focus, .app__view h1:focus, .app__view h2:focus { outline: none; box-shadow: none; }
