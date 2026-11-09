@@ -90,3 +90,80 @@ Target theme 189832462590 (feat/theme-v2); every check asserts `Shopify.theme.id
 10. "Swap to a bundle" page list replaced by the per-line bundle offer (item 7), so the same offer isn't shown twice.
 11. Our JSON fetches throw a clear error on non-OK responses (rate-limited 429 HTML pages were being parsed as JSON).
 Checked, no change needed: no horizontal overflow at any width; no visible text < 12 px; free-delivery bar, footer (total, points, checkout, Koko line, payment row) unchanged.
+
+## Post-launch round (9 Nov 2026): live theme, small verified commits
+
+Theme 189832462590 is live, so every change was a small commit, checked on www.sportsnutritionhub.lk at 360 / 390 /
+768 / 1440. From this environment the store's Cloudflare check challenged the headless browser and rate-limited its
+cart calls (HTTP 429); live checks therefore load the real pages through Playwright's server-side fetch, and the
+mini-cart/cart-page states use simulated carts built from real product JSON (only `/cart.js` is simulated; the live
+theme code renders them). Screenshots: `docs/qa/post-launch/`.
+
+**A1 Mini cart** (`assets/snh-cart.css`, `snh-cart.js`, `sections/campaigns-group.json`)
+- Big "Pay in 3 with Koko" box removed (it was the `default_koko` cart campaign); Koko stays as the one-line
+  "or 3 × Rs X" in the footer. Campaign banners in the drawer/cart are now one compact line (e.g. Saturday sale).
+- 48px header, one-line free-delivery bar (36px), lines with 64px image and 32px stepper.
+- "Bundle unlocked · you're saving Rs X": one fully visible pill at the top of the items, pop animation (none with
+  reduced motion; confetti dropped). "Make it a bundle, save Rs X · Add": one row under the matching item
+  ("Bundle, save Rs X" under 420px so the saving never truncates).
+- "Goes with your order": one row of max 3 small cards.
+- Verified live, 390 + 1440, simulated carts: 1 item, 3 items, bundle unlocked, bundle offer, near free delivery,
+  free delivery unlocked → first line starts at 96px (fully visible above the footer), footer 21–23% of the screen.
+  Guest only (members need a real login; the member points line uses the same footer).
+- Fix found on the way: the line's text column grew to 286px inside 244px at 360 (price and Add cut off) →
+  `.sline__b { grid-template-columns: minmax(0,1fr) }`.
+
+**A2 Cart page** (`assets/snh-cart.css`, `snh-cart.js`)
+- Phones/tablets: title → items → offers → recommendations → summary; compact lines; the fixed summary bar reserves
+  its real height (ResizeObserver → `--scp-foot-h`) instead of a hard 260px. Koko box gone (same campaign).
+- Verified live: first item fully visible above the summary at 360×740 and 390×844, summary 26–33% of the screen, no
+  horizontal overflow, last content never under the bar.
+
+**A3 "Too zoomed in"** (`assets/snh-v2.css`, `snh-product.css`)
+- Fluid type re-anchored: display 38→66, h1 32→52, h2 25→40, h3 21→33, h4 18→26, h5 16→22 (≈ −12% phones, −8%
+  desktop); body 15px on phones (16 from 768); buttons 44px; sections 40/56; PDP title 23/33.
+- Header stack on phones: ticker 29 + announcement 30 + header 57 = **116px** (was 135). Verified live at 360/390.
+
+**A4 Homepage speed** (Lighthouse mobile, local CLI against the live site)
+- Before: score 47–56 · LCP 3.9–4.9 s · TBT 740–780 ms · CLS 0 · **20.7 MB**.
+- After: score 49–63 · LCP **3.3 s** (2 of 3 runs; 4.8 s in a noisy run) · TBT 1.1–1.6 s · CLS ≤ 0.021 · **3.5 MB**.
+- Changes: the SNH standard band's 8.7 MB animated WebP (fetched twice: `<img>` + `<video poster>`) now shows a
+  ~40 KB static first frame; the animation loads on desktop only when on screen; the closed cart drawer builds on idle /
+  first open (no cart + 60-product fetch at load); the hero image preloads from the head (setting *Homepage hero image
+  to preload*, set to running.jpg). First slide was already eager + fetchpriority=high with srcset; other slides
+  already deferred; background videos already preload="none" + in-view only; no image > 1600px reaches phones.
+- TBT is third-party: theme code ≈ 146 ms of blocking; Google Tag Manager ≈ 650 ms (3 tags: G-XH211LVY25,
+  AW-11220377599, GT-T5MGH95), Facebook pixel ≈ 400 ms, Shopify web pixels / checkout preloads ≈ 270 ms.
+- Admin actions (not theme): see the summary list below.
+
+**Third-party apps slowing the site (admin action each)**
+| App / script | Cost | Action |
+|---|---|---|
+| Google Tag Manager (3 tag IDs) | ~650 ms blocking, ~650 KB | Keep one GA4 + one Ads tag; remove the duplicate GT/G tags in Online Store → Preferences / Google & YouTube app |
+| Facebook pixel | ~400 ms | Keep only via the Facebook & Instagram app (not also a custom pixel) |
+| Nosto | 402 Payment Required on every page | Uninstall (subscription lapsed) or renew |
+| Amose Bundle | JS error on product pages | Customize → App embeds → turn off if unused |
+| Reputon Google reviews | ~560 ms script, loads jQuery + Mustache + DOMPurify | Show the widget only on the homepage, or replace with the theme's own reviews strip |
+| Appstle subscriptions | 88 KB, 77 KB unused | Disable the embed if subscriptions aren't sold |
+| Microsoft Clarity | fails to start | Reconnect in the Clarity app or remove |
+| Checkout branding | 2.4 MB `autumn_mood_2000x.png` preloaded on every page by Shopify's checkout preloader | Settings → Checkout → Customize: replace the background with a compressed image (< 200 KB) or remove it |
+
+**Klaviyo go-live** (emails branch, `emails/SETUP-LOG.md`)
+- 12 SNH flows **live** (all 20 email steps live), the 4 old flows they replace set to **draft** the same minute.
+- Fixed first: Replenishment used fields Placed Order doesn't have ("Running low on ?") → rebuilt on `Items.0`
+  (flow re-created as X3m4yg because the API can't edit a flow email's subject); Review request button now falls back
+  to the product's review section instead of /account.
+
+**B Loyalty** (`snippets/snh-elite-card`, `snh-app-rewards`, `snh-app-reward`, `snh-acct-panel`, `snh-elite-reward`,
+`snh-app-order-card`, `sections/snh-account-order`, `LOYALTY-NOTES.md`)
+- Missing balance → "Your points are being updated, check back soon" (card: "updating soon"); never "—" or a fake 0.
+- Unpaid / pending orders → "Points added when payment is confirmed" (partially paid no longer shows "+N pts est.").
+- Verified on the live Elite mock views (empty-metafield persona).
+- No Shopify Admin credentials in this environment → store data not audited; LOYALTY-NOTES.md explains the most likely
+  cause (online orders never reach the loyalty system that writes the metafields), the exact redeem Flow, the admin
+  checks, and a reply for the member.
+
+**Regression after the round** (15 key pages × 360 / 390 / 768 / 1440 = 60 live loads): no horizontal overflow, every
+stylesheet loads, no broken images, exactly one H1 per page, no clipped text, nothing under 11px except Google's
+reCAPTCHA badge links. Remaining script errors are third-party: Amose Bundle (`map` on product pages) and an
+intermittent `marketingAllowed` read from a consent/pixel script (not in the theme, not reproducible on reload).
