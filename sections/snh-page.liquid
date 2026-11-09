@@ -28,10 +28,15 @@
         # handled "contact", and on any page with no content, so no page is ever blank.
         assign t_low = page.title | downcase
         assign want_form = false
-        if body == blank or t_low contains 'contact' or page.handle contains 'contact'
+        if t_low contains 'contact' or page.handle contains 'contact' or page.handle == 'what-s-holding-your-performance-back'
           assign want_form = true
         endif
       -%}
+      {%- if body == blank and want_form == false and page and section.settings.contact_fallback -%}
+        {%- comment -%} an empty page that isn't a contact page (e.g. a landing page whose template isn't assigned): a short note, never a blank page {%- endcomment -%}
+        <div class="spage__empty"><p class="lead">This page is being updated. In the meantime, browse the shop or message us on WhatsApp.</p>
+          <div class="spage__cta"><a class="v-btn v-btn--accent" href="{{ routes.all_products_collection_url }}"><span>Shop all</span></a><a class="v-btn v-btn--line" href="https://wa.me/{{ settings.snh_whatsapp | default: '94779773359' }}" target="_blank" rel="noopener"><span>WhatsApp us</span></a></div></div>
+      {%- endif -%}
       {%- if want_form and page and section.settings.contact_fallback -%}
         {%- assign wa = settings.snh_whatsapp | default: '94779773359' | remove: '+' | remove: ' ' -%}
         <div class="spage__empty">
