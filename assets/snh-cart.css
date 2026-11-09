@@ -397,3 +397,16 @@
 .sline__row, .sbo.sbo--row { min-width: 0; max-width: 100%; }
 .sbo__short { display: none; }
 @media (max-width: 419px) { .sbo__lead { display: none; } .sbo__short { display: inline; } }
+
+/* Post-launch: the "basket" toast after closing the drawer is one tidy line (it was squeezed into 3 lines) */
+.stoast { width: max-content; max-width: calc(100vw - 24px); gap: 12px; padding: 6px 6px 6px 16px; white-space: nowrap; font-size: 14px; }
+.stoast > span { white-space: nowrap; }
+.stoast button { flex: none; height: 38px; padding: 0 14px; white-space: nowrap; font-size: 13.5px; }
+/* basket footer on small phones: one-line note, payment chips on one row */
+@media (max-width: 399px) {
+  .snh-cd .sft__tot small, .scp .sft__tot small { font-size: 11px; white-space: nowrap; }
+  .snh-cd .sft__tot b { font-size: 22px; }
+  .snh-cd .spay, .scp .spay { flex-wrap: nowrap; gap: 4px; justify-content: center; }
+  .snh-cd .spay li, .scp .spay li { flex: none; }
+  .snh-cd .spay__cod, .scp .spay__cod { font-size: 11px; padding-inline: 6px; }
+}
