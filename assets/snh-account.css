@@ -386,3 +386,18 @@ td .pill + .pill { margin-left: 4px; }
 .auth__bg .auth__bgv { z-index: 0; }
 .auth__bg .auth__bgtint { z-index: 1; }
 .auth__bg:has(.auth__bgv) .auth__bgtint { opacity: .8; }
+
+/* Post-launch: sign-up steps on one line as a connected stepper (labels were wrapping to two lines) */
+.reg__steps { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; align-items: center; gap: 6px; margin: 4px 0 8px; font-size: 13px; white-space: nowrap; counter-reset: none; }
+.reg__steps li { position: relative; gap: 6px; }
+.reg__steps li + li::before { content: ""; width: 18px; height: 2px; margin-right: 4px; border-radius: 2px; background: #E3DCD0; }
+.reg__steps span { width: 22px; height: 22px; flex: none; }
+.reg__steps .is-done { color: var(--ink); }
+.reg__steps .is-done span { background: #1E7A43; color: #fff; }
+@media (max-width: 359px) { .reg__steps { font-size: 12px; } .reg__steps li + li::before { width: 10px; } }
+/* Post-launch: on phones the sign-in / sign-up card sits on a clean dark band (the photo was cropping the athlete's head) */
+@media (max-width: 767px) {
+  .auth__bg { height: 200px; }
+  .auth__bgimg, .auth__bgvid { opacity: 0 !important; animation: none !important; }
+  .auth__bgtint { background: radial-gradient(120% 90% at 85% 0%, rgba(191, 69, 18, .9) 0%, rgba(110, 34, 6, .85) 40%, #120A06 100%); }
+}

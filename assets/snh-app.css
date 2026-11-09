@@ -948,3 +948,35 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 /* Post-launch loyalty states: unpaid orders and a balance that isn't synced yet never show a number */
 .ocard__pts--wait { color: #8A5A00; white-space: normal; }
 .bal__n--wait, .rwd__pts--wait { font-size: 1.4em; opacity: .8; }
+
+/* ---------- Post-launch: account on phones — a cleaner tab bar and a shorter Overview ---------- */
+@media (max-width: 1023px) {
+  /* floating tab bar: bigger targets, the current view as a filled pill */
+  .app__tabs { inset: auto 10px calc(10px + env(safe-area-inset-bottom)) 10px; padding: 6px; gap: 4px; border: 1px solid rgba(12, 12, 13, .08); border-radius: 22px; box-shadow: 0 10px 30px rgba(10, 10, 10, .14); background: rgba(255, 255, 255, .96); }
+  .app__tab { min-height: 52px; gap: 3px; border-radius: 16px; font: 600 11.5px/1.2 var(--sans); color: #5C574F; letter-spacing: 0; transition: background-color 200ms var(--ease), color 200ms var(--ease); }
+  .app__tab svg { width: 21px; height: 21px; }
+  .app__tab[aria-current="page"] { background: var(--ink); color: #fff; }
+  .app__tab[aria-current="page"]::before { display: none; }
+  .app { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  body:has(.app__tabs) .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+  /* shorter Overview: tighter rhythm, compact reward card and promos, the latest 3 activities, 4 picks */
+  .app__view { gap: 20px; }
+  .rwd { min-height: 0; padding: 18px 18px 16px; }
+  .elpromo--hero .elpromo__img, .elpromo--hero > img, .elpromo--hero picture { max-height: 150px; }
+  .elpromo { padding: 12px; gap: 12px; grid-template-columns: 72px minmax(0, 1fr); }
+  .elpromo__img { width: 72px; height: 72px; }
+  .elpromo__t { font-size: 16px; }
+  .elpromo__p { font-size: 13px; }
+  .app__qa .refer--soon { display: none; }
+  .qact { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .qact > li { min-width: 0; }
+  .qact__a { flex-direction: column; align-items: flex-start; gap: 6px; min-height: 0; height: 100%; padding: 12px; font-size: 13px; }
+  .qact__a small, .qact__a span > small { font-size: 11.5px; }
+  .feed > li:nth-child(n+4) { display: none; }
+  .app__view .app__grid > *:nth-child(n+5) { display: none; }
+  .app .app__hero--cards .rwd { min-height: 0; height: auto; aspect-ratio: auto; }
+  .app .rwd__stage, .app .rwd__fx { display: none; }
+  .app .rwd__pts { font-size: 40px; line-height: 1; }
+  body:has(.app__tabs) #shop-hcaptcha-badge-container { bottom: calc(86px + env(safe-area-inset-bottom)) !important; }
+  .app__tab[aria-current="page"] svg, .app__tab[aria-current="page"] span { color: #fff; }
+}
