@@ -1139,3 +1139,85 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { run(); }); else run();
   document.addEventListener('shopify:section:load', function (e) { run(e.target); });
 })();
+
+/* ---------- 10 Nov 2026: even product thumbnails everywhere ----------
+   Product photos come with very different amounts of white space, so in the same grid one looked tiny and the next
+   cut off. Each thumbnail is measured once (a 48 px copy is read on a canvas: where the product is vs. the plain
+   background), then scaled and centred so the product fills the same share of every frame (--fit, default 78 %).
+   Full-bleed photos (no plain background) are left as they are. Results are cached per image for the visit. */
+(function () {
+  var S = window.SNH = window.SNH || {};
+  var SEL = '.card__img img, .sline__img img, .smini__img img, .ssug__img img, img.sbo__img, .sbundle img, .sbm__img img, .snh-reco img[data-fit], img[data-fit]';
+  var cache = {};
+  try { cache = JSON.parse(sessionStorage.getItem('snhFit') || '{}'); } catch (e) {}
+  var saveT;
+  function save() { clearTimeout(saveT); saveT = setTimeout(function () { try { sessionStorage.setItem('snhFit', JSON.stringify(cache)); } catch (e) {} }, 400); }
+  function key(src) { return (src || '').replace(/^https?:/, '').replace(/[?&](width|height|crop|v)=[^&]*/g, '').replace(/_\d+x\d*(?=\.)/, ''); }
+  function small(src) {
+    var u = src.indexOf('//') === 0 ? location.protocol + src : src;
+    u = u.replace(/([?&])(width|height|crop)=[^&]*&?/g, '$1').replace(/[?&]$/, '');
+    return u + (u.indexOf('?') > -1 ? '&' : '?') + 'width=48';
+  }
+  function measure(src, cb) {
+    var k = key(src);
+    if (cache[k]) return cb(cache[k]);
+    var im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
+    im.onload = function () {
+      try {
+        var W = im.naturalWidth, H = im.naturalHeight; if (!W || !H) return;
+        var c = document.createElement('canvas'); c.width = W; c.height = H;
+        var x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(im, 0, 0);
+        var d = x.getImageData(0, 0, W, H).data;
+        function px(i, j) { var o = (j * W + i) * 4; return [d[o], d[o + 1], d[o + 2], d[o + 3]]; }
+        var cs = [px(0, 0), px(W - 1, 0), px(0, H - 1), px(W - 1, H - 1)], bg = [0, 0, 0, 0];
+        cs.forEach(function (p) { for (var q = 0; q < 4; q++) bg[q] += p[q] / 4; });
+        var x0 = W, y0 = H, x1 = -1, y1 = -1;
+        for (var j = 0; j < H; j++) for (var i = 0; i < W; i++) {
+          var p = px(i, j), on;
+          if (bg[3] < 40) on = p[3] > 40; // transparent background
+          else on = p[3] > 40 && (Math.abs(p[0] - bg[0]) + Math.abs(p[1] - bg[1]) + Math.abs(p[2] - bg[2])) > 42;
+          if (on) { if (i < x0) x0 = i; if (i > x1) x1 = i; if (j < y0) y0 = j; if (j > y1) y1 = j; }
+        }
+        var r;
+        if (x1 < 0) r = { full: 1 };
+        else {
+          var bw = (x1 - x0 + 1) / W, bh = (y1 - y0 + 1) / H;
+          var flat = bg[3] < 40 || cs.every(function (p) { return Math.abs(p[0] - bg[0]) + Math.abs(p[1] - bg[1]) + Math.abs(p[2] - bg[2]) < 30; });
+          // a photo whose subject runs to the edges on both axes (or has no plain corners) is a full-bleed shot
+          r = (!flat || (bw > .97 && bh > .97)) ? { full: 1 } : { w: W, h: H, cx: (x0 + x1 + 1) / 2 / W, cy: (y0 + y1 + 1) / 2 / H, bw: bw, bh: bh };
+        }
+        cache[k] = r; save(); cb(r);
+      } catch (e) { /* unreadable: leave it */ }
+    };
+    im.src = small(src);
+  }
+  function apply(img, r) {
+    if (r.full) { img.style.transform = 'none'; img.setAttribute('data-fitted', 'full'); return; }
+    var Fw = img.offsetWidth, Fh = img.offsetHeight; // layout size, not the transformed one
+    if (!Fw || !Fh) return;
+    var T = parseFloat(getComputedStyle(img).getPropertyValue('--fit')) || .78;
+    var s = Math.min(Fw / r.w, Fh / r.h); // object-fit: contain
+    var cw = r.bw * r.w * s, ch = r.bh * r.h * s;
+    var k = Math.max(.6, Math.min(1.9, Math.min(T * Fw / cw, T * Fh / ch)));
+    var dx = (.5 - r.cx) * r.w * s * k, dy = (.5 - r.cy) * r.h * s * k;
+    img.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + k.toFixed(3) + ')';
+    img.setAttribute('data-fitted', '1');
+  }
+  var ro = 'ResizeObserver' in window ? new ResizeObserver(function (es) { es.forEach(function (e) { var i = e.target; if (i.__fitR && i.offsetWidth) apply(i, i.__fitR); }); }) : null;
+  function fit(img) {
+    if (img.__fit) return; img.__fit = 1;
+    if (ro) ro.observe(img);
+    var go = function () { var src = img.currentSrc || img.src; if (!src || src.indexOf('data:') === 0) return; measure(src, function (r) { img.__fitR = r; apply(img, r); }); };
+    if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go, { once: true });
+  }
+  function run(root) { (root || document).querySelectorAll(SEL).forEach(fit); }
+  S.fitRun = run;
+  function boot() {
+    run();
+    new MutationObserver(function (ms) {
+      ms.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType !== 1) return; if (n.matches && n.matches(SEL)) fit(n); else if (n.querySelectorAll) run(n); }); });
+    }).observe(document.body, { childList: true, subtree: true });
+    var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { document.querySelectorAll('img[data-fitted="1"]').forEach(function (i) { if (i.__fitR) apply(i, i.__fitR); }); }, 200); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();

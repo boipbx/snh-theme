@@ -518,6 +518,10 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     body.snh-sheet-open::after { content: ""; position: fixed; inset: 0; z-index: 110; background: rgba(10, 10, 10, .32); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
     .colhero__jump { display: none; }
     .snh-bar-form { margin-block-end: 8px; }
+    /* 10 Nov: one filter system on phones, for real — the goal/type chips leave the bar (the same choices are in the
+       sheet's Type filter), so the bar is just "Filter & sort" (+ the active filter pills under it). */
+    .snh-bar > .snh-goals { display: none; }
+    .snh-bar { grid-template-columns: minmax(0, 1fr); padding-block: 4px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .snh-bar-form *, .snh-bar-form *::before { transition: none !important; }
