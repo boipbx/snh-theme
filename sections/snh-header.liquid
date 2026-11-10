@@ -132,28 +132,22 @@
 
 <div class="v2 hdr-wrap{% if overlay %} hdr-wrap--overlay{% endif %}" data-v2="header">
   {%- assign ticker = section.settings.ticker | newline_to_br | split: '<br />' -%}
-  {%- if section.settings.ticker != blank -%}
-    <div class="ticker" data-chrome-bar role="region" aria-label="Store announcements" style="--ticker-speed: {{ section.settings.ticker_speed }}s">
-      <div class="ticker__track">
-        {%- for n in (1..2) -%}
-          <ul class="ticker__list"{% if n == 2 %} aria-hidden="true"{% endif %}>
-            {%- for r in (1..2) -%}{%- for tk in ticker -%}{%- assign t = tk | strip -%}{%- if t != blank -%}<li class="ticker__item">{{ t | escape }}</li>{%- endif -%}{%- endfor -%}{%- endfor -%}
-          </ul>
-        {%- endfor -%}
-      </div>
-    </div>
-  {%- endif -%}
+  {%- comment -%} 10 Nov: one slim bar above the header. The ticker lines no longer scroll in a second black bar: they
+    rotate in the announcement bar after the Announcement blocks (same setting, Ticker messages). {%- endcomment -%}
 
   {%- assign announcements = section.blocks | where: 'type', 'announcement' -%}
   {%- comment -%} Round 12: each Announcement has a schedule, colour and audience (assets/snh-campaigns.js applies them and adds
     scheduled campaign announcements); the bar is always printed so campaigns can fill it {%- endcomment -%}
-    <div class="announce"{% if announcements.size == 0 %} hidden{% endif %} data-chrome-bar data-interval="{{ section.settings.announce_interval }}" data-tone="{{ announcements.first.settings.tone | default: 'orange' }}" aria-live="polite">
+    <div class="announce"{% if announcements.size == 0 and section.settings.ticker == blank %} hidden{% endif %} data-chrome-bar data-interval="{{ section.settings.announce_interval }}" data-tone="{{ announcements.first.settings.tone | default: 'orange' }}" aria-live="polite">
       <div class="v-wrap announce__in">
         {%- for b in announcements -%}
           <a class="announce__item{% if forloop.first %} is-on{% endif %}" href="{{ b.settings.link | default: '#' }}"{% unless forloop.first %} tabindex="-1"{% endunless %} data-tone="{{ b.settings.tone | default: 'orange' }}" data-aud="{{ b.settings.audience | default: 'all' }}"{% if b.settings.start != blank %} data-start="{{ b.settings.start | date: '%Y-%m-%dT%H:%M:%S%z' }}"{% endif %}{% if b.settings.end != blank %} data-end="{{ b.settings.end | date: '%Y-%m-%dT%H:%M:%S%z' }}"{% endif %} {{ b.shopify_attributes }}>
             {%- if b.settings.tag != blank -%}<b>{{ b.settings.tag | escape }}</b>{%- endif -%}{{ b.settings.text | escape }}<span aria-hidden="true">→</span>
           </a>
         {%- endfor -%}
+        {%- for tk in ticker -%}{%- assign t = tk | strip -%}{%- if t != blank -%}
+          <span class="announce__item announce__item--note{% if announcements.size == 0 and forloop.first %} is-on{% endif %}" data-tone="orange" data-aud="all">{{ t | escape }}</span>
+        {%- endif -%}{%- endfor -%}
       </div>
     </div>
 
