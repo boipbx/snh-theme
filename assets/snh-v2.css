@@ -2457,27 +2457,30 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 .sbx--video-tile .sbx__big > :not(.snh-bgv) { position: relative; z-index: 1; }
 .sbx--video .sbx__num, .sbx--video .sbx__title { text-shadow: 0 2px 18px rgba(0, 0, 0, .45); }
 
-/* ---------- Round 19 #10: SNH shaker level (assets/snh-v2.js SNH.shaker) ---------- */
-.shk { --fill: 0; --shk-h: 120px; --shk-l1: #FF8A4C; --shk-l2: #C2410C; display: inline-block; flex: none; width: calc(var(--shk-h) * .5556); height: var(--shk-h); vertical-align: middle; }
-.shk[data-tier="bronze"] { --shk-l1: #E39A5E; --shk-l2: #9A4E1C; }
-.shk[data-tier="silver"] { --shk-l1: #D9E1EA; --shk-l2: #7D8A9C; }
-.shk[data-tier="gold"], .shk[data-tier="maxed-out"] { --shk-l1: #FFD66B; --shk-l2: #C48A12; }
-.shk[data-tier="green"] { --shk-l1: #6EDC98; --shk-l2: #1F7A44; }
-.shk__svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 6px 10px rgba(14, 14, 14, .18)); }
-.shk__back { fill: rgba(255, 255, 255, .28); }
-.shk__glass { stroke: rgba(20, 20, 20, .32); stroke-width: 1.4; }
-.shk__hl { fill: none; stroke: #fff; stroke-opacity: .7; stroke-width: 3; stroke-linecap: round; }
-.shk__hl--r { stroke-opacity: .35; stroke-width: 1.6; }
-.shk__ticks path { fill: none; stroke: rgba(20, 20, 20, .35); stroke-width: 1.2; stroke-linecap: round; }
-.shk__mark { font: 800 15px/1 var(--sans); letter-spacing: -.02em; fill: #fff; fill-opacity: .92; paint-order: stroke; stroke: rgba(20, 20, 20, .28); stroke-width: .8; }
-.shk__rib { fill: none; stroke: rgba(255, 255, 255, .12); stroke-width: 1; }
-.shk__liq { transform: translateY(calc(41px + (1 - var(--fill)) * 134px)); transition: transform 1400ms cubic-bezier(.2, .8, .2, 1); }
-.shk__wave { animation: shk-wave 2.6s linear infinite; }
-.shk__bub { fill: #fff; fill-opacity: .55; animation: shk-bub 3.2s ease-in infinite; }
-.shk__bub--2 { animation-delay: 1.1s; animation-duration: 2.7s; }
-.shk__bub--3 { animation-delay: 2s; animation-duration: 3.6s; }
-@keyframes shk-wave { to { transform: translateX(50px); } }
-@keyframes shk-bub { 0% { transform: translateY(40px); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+/* ---------- Round 19 #10, photo version (10 Nov 2026): the real SNH shaker (assets/snh-v2.js SNH.shaker) ----------
+   .shk__img = the bottle photo with see-through walls (on top); .shk__box = the inside of the bottle (mask) holding
+   .shk__liq, which rises to --fill (0–1). Liquid spans 31.2 % (neck) → 98 % (base) of the photo's height. */
+.shk { --fill: 0; --shk-h: 120px; --shk-l1: #FF9A5A; --shk-l2: #D2470C; position: relative; display: inline-block; flex: none; width: calc(var(--shk-h) * .4358); height: var(--shk-h); vertical-align: middle; }
+.shk[data-tier="bronze"] { --shk-l1: #F0A86A; --shk-l2: #A4521C; }
+.shk[data-tier="silver"] { --shk-l1: #DCE3EC; --shk-l2: #8593A6; }
+.shk[data-tier="gold"], .shk[data-tier="maxed-out"] { --shk-l1: #FFD970; --shk-l2: #CF8F10; }
+.shk[data-tier="green"] { --shk-l1: #7BE3A2; --shk-l2: #1F7A44; }
+.shk__img, .shk__box { position: absolute; inset: 0; }
+.shk__img { background: var(--shk-glass-img) center / 100% 100% no-repeat; filter: drop-shadow(0 6px 10px rgba(14, 14, 14, .16)); pointer-events: none; }
+.shk__box { overflow: hidden; -webkit-mask: var(--shk-mask-img) center / 100% 100% no-repeat; mask: var(--shk-mask-img) center / 100% 100% no-repeat; }
+.shk__liq { position: absolute; left: 0; right: 0; top: 0; height: 100%; background: linear-gradient(180deg, var(--shk-l1), var(--shk-l2) 70%); opacity: .94;
+  transform: translateY(calc(31.2% + 66.8% * (1 - var(--fill)) + 2px)); transition: transform 900ms cubic-bezier(.3, 1.25, .45, 1), opacity 200ms; }
+.shk__surf { position: absolute; left: 0; bottom: 100%; width: 200%; height: 8%; margin-bottom: -1px; display: block; }
+.shk__wave { fill: var(--shk-l1); animation: shk-wave 1.6s linear infinite; }
+.shk__wave--b { opacity: .55; animation-duration: 2.3s; animation-direction: reverse; }
+.shk__bub { position: absolute; bottom: 6%; left: 34%; width: 5%; aspect-ratio: 1; border-radius: 50%; background: rgba(255, 255, 255, .7); opacity: 0; animation: shk-bub 2.4s ease-in infinite; }
+.shk__bub--2 { left: 58%; width: 3.5%; animation-delay: .8s; animation-duration: 2s; }
+.shk__bub--3 { left: 46%; width: 6%; animation-delay: 1.5s; animation-duration: 2.8s; }
+.shk__bub--4 { left: 68%; width: 4%; animation-delay: 2.1s; animation-duration: 2.2s; }
+.shk[data-level="0"] .shk__bub { display: none; }
+.shk[data-level="0"] .shk__liq { opacity: 0; }
+@keyframes shk-wave { to { transform: translateX(-50%); } }
+@keyframes shk-bub { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(calc(var(--shk-h) * -.55)); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .shk__wave, .shk__bub { animation: none; } .shk__bub { display: none; } .shk__liq { transition: none; } }
 /* level rows: shaker + text */
 .shk-row { display: flex; align-items: center; gap: 14px; }
@@ -2490,13 +2493,6 @@ html.qzb-open, html.qzb-open body { overflow: hidden; }
 .acp__prog.acp__prog--shk { display: flex; align-items: center; gap: 12px; }
 .acp__prog--shk .shk { --shk-h: 64px; }
 .acp__prog--shk .acp__next { margin: 0; }
-/* R19 #10 contrast: tinted glass, deeper silver, a mark that reads on light and dark */
-.shk { --shk-mark: rgba(14, 14, 14, .42); --shk-glass: rgba(205, 214, 224, .32); --shk-edge: rgba(20, 20, 20, .4); }
-.shk[data-tier="silver"] { --shk-l1: #C3CCD8; --shk-l2: #5F6C7E; }
-.shk__back { fill: var(--shk-glass); }
-.shk__glass { stroke: var(--shk-edge); }
-.shk__mark { fill: var(--shk-mark); fill-opacity: 1; stroke: none; }
-.acp .shk, .v-section--dark .shk, .app__hero--video .shk { --shk-mark: rgba(255, 255, 255, .8); --shk-glass: rgba(255, 255, 255, .14); --shk-edge: rgba(255, 255, 255, .5); }
 /* Round 20: sitewide offer highlight (assets/snh-campaigns.js sets html[data-offer] and --offer-label while it's live) */
 html[data-offer] .pc__frame::after { content: var(--offer-label); position: absolute; left: 16px; bottom: 10px; z-index: 3; display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: var(--pill); background: var(--orange, #BF4512); color: #fff; font: 700 12px/1 var(--sans); letter-spacing: .01em; pointer-events: none; box-shadow: 0 2px 8px rgba(14, 14, 14, .18); }
 @media (max-width: 749px) { html[data-offer] .pc__frame::after { left: 10px; bottom: 8px; height: 22px; padding: 0 8px; font-size: 11px; } }

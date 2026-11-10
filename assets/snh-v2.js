@@ -1097,34 +1097,27 @@
   document.addEventListener('shopify:section:load', function (e) { run(e.target); });
 })();
 
-/* ---------- Round 19 #10: the SNH shaker level visual ----------
-   <span data-shaker data-pct="0–100" data-tier="bronze|silver|gold|orange" data-size="px" data-label="…"> becomes a
-   transparent SNH-branded shaker (SVG) whose liquid fills to data-pct with a gentle wave, in the tier's colour.
-   The fill animates in when it scrolls into view; reduced motion: no wave, no bubbles, the level is set at once.
+/* ---------- Round 19 #10 (photo version, 10 Nov 2026): the SNH shaker level visual ----------
+   <span data-shaker data-pct="0–100" data-tier="bronze|silver|gold|orange" data-size="px" data-label="…"> becomes the
+   real SNH shaker photo (assets/snh-shaker-glass.webp: the bottle with see-through walls) with liquid behind the glass,
+   clipped to the inside of the bottle (assets/snh-shaker-mask.png). The liquid pours in when it scrolls into view, with
+   a moving surface and a few bubbles, in the tier's colour. Reduced motion: the level is set at once, nothing moves.
    SNH.shaker(el) builds one, SNH.shakerSet(el, pct) moves its level (the quiz game uses it). */
 (function () {
   var S = window.SNH = window.SNH || {}, n = 0;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var me = document.currentScript && document.currentScript.src || '';
+  var base = me ? me.replace(/[^\/?]*(\?.*)?$/, '') : '';
+  if (base) {
+    document.documentElement.style.setProperty('--shk-glass-img', 'url("' + base + 'snh-shaker-glass.webp")');
+    document.documentElement.style.setProperty('--shk-mask-img', 'url("' + base + 'snh-shaker-mask.png")');
+  }
   function svg(id) {
-    var body = 'M21 40h58l-4.2 128.5c-.3 6-3.7 9.5-9.8 9.5H35c-6.1 0-9.5-3.5-9.8-9.5z';
-    var inner = 'M24 42h52l-4 125.6c-.25 4.9-2.8 7.4-7.6 7.4H35.6c-4.8 0-7.35-2.5-7.6-7.4z';
-    return '<svg class="shk__svg" viewBox="0 0 100 180" aria-hidden="true" focusable="false"><defs>' +
-      '<linearGradient id="' + id + 'l" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--shk-l1)"/><stop offset="1" stop-color="var(--shk-l2)"/></linearGradient>' +
-      '<linearGradient id="' + id + 'g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".18" stop-color="#fff" stop-opacity=".12"/><stop offset=".7" stop-color="#fff" stop-opacity=".04"/><stop offset=".9" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity=".08"/></linearGradient>' +
-      '<linearGradient id="' + id + 'c" x1="0" x2="1"><stop offset="0" stop-color="#2A2A2A"/><stop offset=".35" stop-color="#4A4A4A"/><stop offset="1" stop-color="#121212"/></linearGradient>' +
-      '<clipPath id="' + id + 'k"><path d="' + inner + '"/></clipPath></defs>' +
-      // bottle: back wall, liquid, glass front with highlights, ticks, SNH mark
-      '<path d="' + body + '" class="shk__back"/>' +
-      '<g clip-path="url(#' + id + 'k)"><g class="shk__liq"><path class="shk__wave" fill="url(#' + id + 'l)" d="M-60 4c12.5 0 12.5-6 25-6s12.5 6 25 6 12.5-6 25-6 12.5 6 25 6 12.5-6 25-6 12.5 6 25 6 12.5-6 25-6 12.5 6 25 6V200H-60z"/>' +
-      '<circle class="shk__bub" cx="38" cy="60" r="1.8"/><circle class="shk__bub shk__bub--2" cx="58" cy="90" r="1.3"/><circle class="shk__bub shk__bub--3" cx="48" cy="120" r="2.2"/></g></g>' +
-      '<path d="' + body + '" class="shk__glass" fill="url(#' + id + 'g)"/>' +
-      '<path d="M28.5 48v108" class="shk__hl"/><path d="M71.5 52l-2.6 98" class="shk__hl shk__hl--r"/>' +
-      '<g class="shk__ticks"><path d="M66 70h6M68 85h4M66 100h6M68 115h4M66 130h6M68 145h4"/></g>' +
-      '<text x="47" y="104" text-anchor="middle" class="shk__mark">SNH</text>' +
-      // lid: neck ring, cap with flip spout
-      '<rect x="19" y="33" width="62" height="8" rx="2" fill="url(#' + id + 'c)"/><path d="M23 33V16c0-6.5 3.5-10 10-10h34c6.5 0 10 3.5 10 10v17z" fill="url(#' + id + 'c)"/>' +
-      '<path d="M56 6V2.5C56 1 57 0 58.5 0h9C69 0 70 1 70 2.5V6z" fill="#121212"/><path d="M27 22h46M27 27h46" class="shk__rib"/><rect x="30" y="10" width="8" height="2.2" rx="1.1" fill="#fff" opacity=".35"/>' +
-      '</svg>';
+    return '<span class="shk__box"><span class="shk__liq"><svg class="shk__surf" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">' +
+      '<path class="shk__wave" d="M0 10c25 0 25-7 50-7s25 7 50 7 25-7 50-7 25 7 50 7 25-7 50-7 25 7 50 7V20H0z"/>' +
+      '<path class="shk__wave shk__wave--b" d="M0 12c25 0 25-5 50-5s25 5 50 5 25-5 50-5 25 5 50 5 25-5 50-5 25 5 50 5V20H0z"/></svg>' +
+      '<i class="shk__bub"></i><i class="shk__bub shk__bub--2"></i><i class="shk__bub shk__bub--3"></i><i class="shk__bub shk__bub--4"></i></span></span>' +
+      '<span class="shk__img" aria-hidden="true"></span>';
   }
   function setLevel(el, pct) { el.style.setProperty('--fill', Math.max(0, Math.min(100, +pct || 0)) / 100); el.setAttribute('data-level', Math.round(+pct || 0)); }
   S.shakerSet = setLevel;
