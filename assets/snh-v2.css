@@ -2567,3 +2567,23 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
   .announce, .announce__item { font-size: 12px; }
   .announce__item { line-height: 28px; }
 }
+
+/* 10 Nov (phones): "The SNH standard" in one screen — the brand video plays behind (MP4 now), the big tile is just the
+   counter (no paragraph, no rating line), and the benefits are a 2-column grid of icon + title (no sideways swipe, no
+   descriptions). Desktop is unchanged. */
+@media (max-width: 767px) {
+  .sbx.v-section { padding-block: 36px; }
+  .sbx__head { margin-bottom: 16px; gap: 4px; }
+  .sbx__grid { gap: 10px; }
+  .sbx__big { min-height: 0; gap: 4px; padding: 18px 20px; border-radius: 16px; }
+  .sbx__num { font-size: 46px; }
+  .sbx__lbl { font-size: 15px; }
+  .sbx__lead, .sbx__big .sbx__rating { display: none; }
+  .sbx__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; overflow: visible; }
+  .sbx__card { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 12px; }
+  .sbx__ic { flex: none; width: 32px; height: 32px; margin: 0; border-radius: 9px; }
+  .sbx__ic svg { width: 17px; height: 17px; }
+  .sbx__title { font-size: 12.5px; line-height: 1.25; letter-spacing: 0; }
+  .sbx__text { display: none; }
+  .sbx--video .snh-bgv__ov { opacity: .82; }
+}

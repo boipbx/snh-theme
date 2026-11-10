@@ -33,3 +33,9 @@ Every setting changed during the emails + points fix, with its value before the 
   the formula; their balance comes from the existing loyalty system and likely already reflects redemptions).
 
 To undo a customer: set the three metafields back to the "current_*" values in the CSV (blank = delete the metafield).
+
+## Theme settings (10 Nov 2026)
+
+| Where | Setting | Before | After |
+|---|---|---|---|
+| Home → "The SNH standard" (snh_why) | Video URL (`bg_video_url`) | `https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SNHMAINBRANDVIDEO1-ezgif.com-video-to-webp-converter.webp?v=1793769075` (37 MB animated WebP, phones only saw its first frame) | `asset:snh-brand-loop.mp4` (the same clip as a 1.3 MB MP4, plays on phones too) |
