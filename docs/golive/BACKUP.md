@@ -39,3 +39,19 @@ To undo a customer: set the three metafields back to the "current_*" values in t
 | Where | Setting | Before | After |
 |---|---|---|---|
 | Home → "The SNH standard" (snh_why) | Video URL (`bg_video_url`) | `https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SNHMAINBRANDVIDEO1-ezgif.com-video-to-webp-converter.webp?v=1793769075` (37 MB animated WebP, phones only saw its first frame) | `asset:snh-brand-loop.mp4` (the same clip as a 1.3 MB MP4, plays on phones too) |
+
+## Klaviyo: never-subscribed profiles suppressed (10 Nov 2026)
+
+Why: Klaviyo bills on *active* profiles. 9,053 were active but only 584 were subscribed to email; the other 8,469
+were Shopify customers synced in who never subscribed (email consent NEVER_SUBSCRIBED). The account was on the free
+plan (250 profiles / 500 sends a month), which is what stopped all sending on 8 Nov; the cheapest plan that fit 9,053
+profiles was USD 150/month.
+
+- **Before:** 8,469 profiles with email, consent NEVER_SUBSCRIBED, not suppressed.
+- **After:** the same profiles **suppressed** (85 bulk suppression jobs of 100). Nothing deleted: profiles, events and
+  order history stay. Anyone who later subscribes (site form, popup, checkout opt-in) can be emailed again.
+- **Backup:** Klaviyo list **"Backup · never-subscribed, suppressed 10 Nov 2026"** (id `R989Dd`) holds all 8,469
+  (adding to a list doesn't subscribe or email anyone), and `docs/golive/klaviyo-suppression-backup.csv` lists their
+  Klaviyo profile IDs (no emails in the repo).
+- **Undo:** run a bulk *unsuppress* (`profile-suppression-bulk-delete-jobs`) for the list `R989Dd`, or in Klaviyo:
+  Lists → that list → select all → Unsuppress.
