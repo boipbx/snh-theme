@@ -584,7 +584,7 @@
   Cart.prototype.bundleWin = function (names, saving, ab) {
     var cur = $('[data-bundle-win]', this.el);
     if (!names.length) { if (cur) cur.remove(); return; }
-    var key = names.slice().sort().join('|'), html = '<span class="sbw__ic" aria-hidden="true">🎉</span><p title="' + esc(names.join(' + ')) + '"><b>Bundle unlocked</b>' + (saving > 0 ? ' · you\'re saving ' + rs(saving) : '') + '</p>';
+    var key = names.slice().sort().join('|'), html = '<span class="sbw__ic" aria-hidden="true">' + icons.check + '</span><p title="' + esc(names.join(' + ')) + '"><b>Bundle unlocked</b>' + (saving > 0 ? ' · you\'re saving ' + rs(saving) : '') + '</p>';
     if (!cur) { cur = document.createElement('div'); cur.className = 'sbw'; cur.setAttribute('role', 'status'); cur.setAttribute('data-bundle-win', ''); this.body.insertBefore(cur, this.body.firstChild); }
     cur.innerHTML = html;
     var seen = ''; try { seen = sessionStorage.getItem('snh_bwin') || ''; } catch (e) {}

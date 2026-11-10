@@ -410,3 +410,26 @@
   .snh-cd .spay li, .scp .spay li { flex: none; }
   .snh-cd .spay__cod, .scp .spay__cod { font-size: 11px; padding-inline: 6px; }
 }
+
+/* 10 Nov: calmer "unlocked" states with even padding — the bundle message is a flat one-line note with a small check
+   (no emoji, no gradient, no pop: a short fade); "Free delivery unlocked" keeps the drawer's gutters instead of a
+   tight green strip; the delivery bar gets a little more air */
+.snh-cd .scd__bar { padding: 9px 16px 10px; }
+.snh-cd .scd__bar .sfree { gap: 6px; }
+.scd__bar .sfree.is-on { padding: 0; background: none; }
+.scd__bar .sfree.is-on .sfree__bar { display: none; }
+.scd__bar .sfree.is-on .sfree__t { color: #14532D; font-weight: 600; }
+.sbw { gap: 8px; margin: 0; padding: 9px 12px; border-radius: 10px; background: #EEF8F1; border: 1px solid #CFEBD9; color: #14532D; align-items: center; }
+.sbw__ic { display: grid; place-items: center; flex: none; width: 18px; height: 18px; border-radius: 50%; background: #1E7A43; color: #fff; font-size: 0; }
+.sbw__ic svg { width: 12px; height: 12px; }
+.sbw p { font: 400 13px/1.35 var(--sans); }
+.sbw b { font-weight: 600; color: #0F3D21; }
+.sbw.is-new { animation: sbw-in 240ms ease-out; }
+.sbw.is-new .sbw__ic { animation: none; }
+@keyframes sbw-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* 10 Nov: thumbnails read the same size everywhere in the cart: the product fills 86 % of its tile (assets/snh-v2.js
+   lift reads --lift-fill), suggestion tiles are square like the photos, and a grey studio backdrop tints the tile
+   instead of showing as a box */
+.sline__img img, .smini__img img, .ssug__img img { --lift-fill: .86; }
+.snh-cd .ssug__img { aspect-ratio: 1; }
