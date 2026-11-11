@@ -2547,8 +2547,10 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 /* 10 Nov (phones): the collection banner is capped at ~58 % of the screen width tall (it was up to a full screen of
    artwork before the products); the photo is cropped from the top, the title + count sit under it as before. */
 @media (max-width: 767px) {
-  .colhero--bleed .colhero__media { aspect-ratio: auto; height: min(calc(100vw / var(--ar-m)), 58vw); }
-  .colhero--bleed .colhero__pic img { object-fit: cover; object-position: 50% 22%; }
+  /* 11 Nov (rev): the whole banner photo, at its own shape, never cropped */
+  .colhero--bleed .colhero__media { aspect-ratio: auto; height: auto; }
+  .colhero--bleed .colhero__pic, .colhero--bleed .colhero__pic img { height: auto; }
+  .colhero--bleed .colhero__pic img { width: 100%; object-fit: contain; }
   .colhero--bleed { padding-top: 10px; }
   .colhero--bleed .colhero__crumbs { margin-bottom: 10px; }
 }

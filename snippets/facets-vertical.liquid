@@ -529,6 +529,16 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     .snh-bar > .snh-goals.snh-goals--keep { display: grid; grid-column: 1 / -1; grid-row: auto; padding: 4px 0 2px; }
     .snh-bar { grid-template-columns: minmax(0, 1fr); padding-block: 4px; }
   }
+  /* 11 Nov: ONE filter bar on desktop too. The goal/type chips leave (the Type filter has the same choices), except on
+     bundle pages, where the category chips sit inside the filter row itself. */
+  @media screen and (min-width: 1000px) {
+    .snh-bar > .snh-goals:not(.snh-goals--keep) { display: none; }
+    .snh-bar:has(> .snh-goals--keep) { grid-template-columns: auto minmax(0, 1fr); column-gap: 16px; align-items: center; }
+    .snh-bar > .snh-goals--keep { grid-column: 1; grid-row: 1; border: 0; padding-block: 10px; }
+    .snh-bar > .snh-goals--keep .snh-goals__label { display: none; }
+    .snh-bar:has(> .snh-goals--keep) > .snh-bar__row { grid-column: 2; grid-row: 1; }
+    .snh-bar:has(> .snh-goals--keep) > :not(.snh-goals):not(.snh-bar__row) { grid-column: 1 / -1; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .snh-bar-form *, .snh-bar-form *::before { transition: none !important; }
     .snh-brands__rail { scroll-behavior: auto; }
