@@ -220,13 +220,36 @@
     img.setAttribute('data-v2-lift', '');
     liftLater(img);
   }
+  /* 11 Nov: sharp thumbnails — an image without srcset that asks Shopify for a smaller file than it is shown at
+     (e.g. &width=240 in a 200 px box on a 2x screen, or scaled up by the trim above) gets re-requested at the size it
+     needs (steps of 360/480/720/960/1440). Files that are small at the source can't be helped. */
+  var STEPS = [360, 480, 720, 960, 1440];
+  function sharpen(img) {
+    if (img.srcset || img.__snhSharp) return;
+    var src = img.currentSrc || img.src || '';
+    var m = src.match(/[?&]width=(\d+)/); if (!m || !/\/(cdn\/shop|s\/files)\//.test(src)) return;
+    var shown = img.getBoundingClientRect().width; if (shown < 24) return;
+    var sc = 1, t = (img.style.transform || '').match(/scale\(([\d.]+)/); if (t) sc = Math.max(1, +t[1]);
+    var need = shown * sc * Math.min(2, window.devicePixelRatio || 1);
+    if (+m[1] >= need * .95) return;
+    var w = STEPS.filter(function (x) { return x >= need; })[0] || 1440;
+    if (w <= +m[1]) return;
+    img.__snhSharp = true;
+    img.src = src.replace(/([?&]width=)\d+/, '$1' + w);
+  }
   function autoScan(scope) {
     (scope || document).querySelectorAll('img').forEach(function (img) {
+      if (img.complete && img.naturalWidth) { sharpen(img); }
       if (img.complete && img.naturalWidth) autoLift(img);
       else if (!img.__snhAutoWait) { img.__snhAutoWait = true; img.addEventListener('load', function () { autoLift(img); }, { once: true }); }
     });
   }
   window.addEventListener('load', function () { autoScan(); });
+  // menu panels only get a size when opened: re-check their images then
+  var menuT;
+  function menuScan() { clearTimeout(menuT); menuT = setTimeout(function () { document.querySelectorAll('.mega img, .mmenu img, [class*="mega"] img, [class*="drawer"] img').forEach(sharpen); }, 350); }
+  document.addEventListener('pointerover', function (e) { if (e.target.closest && e.target.closest('.nav, [data-mega], .hdr__menu, .mega')) menuScan(); }, { passive: true });
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.hdr__menu, [data-mega], [aria-controls]')) menuScan(); }, { passive: true });
   if ('MutationObserver' in window) {
     var autoT;
     new MutationObserver(function () { clearTimeout(autoT); autoT = setTimeout(function () { autoScan(); }, 250); })
