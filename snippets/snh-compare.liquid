@@ -55,7 +55,7 @@
   <div class="v-wrap">
     <div class="cmpx__top">
       <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare</h2>
-      <p class="cmpx__lead">Pick any {{ pick.title | escape }} product to see the differences side by side.</p>
+      <p class="cmpx__lead">Tap a product name to swap it for another one like it, and see the differences side by side.</p>
       <label class="cmpx__diff"><input type="checkbox" data-cmpx-diff> <span>Show only differences</span></label>
     </div>
     <div class="cmpx__grid" data-cmpx-grid>
@@ -199,6 +199,7 @@
   var mini = root.querySelector('[data-cmpx-mini]'), heads = root.querySelector('[data-cmpx-heads]'), rowsEl = root.querySelector('[data-cmpx-rows]'), diff = root.querySelector('[data-cmpx-diff]');
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var list = function (s) { return String(s || '').split('|').map(function (x) { return x.trim(); }).filter(Boolean); };
+  var short = function (d) { var t = String(d.t || ''), v = String(d.v || ''); return v && t.toLowerCase().indexOf(v.toLowerCase() + ' ') === 0 ? t.slice(v.length + 1) : t; };
   var byH = {}; data.forEach(function (d) { byH[d.h] = d; });
   var cols = function () { return matchMedia('(max-width: 749px)').matches ? 2 : 3; };
   /* defaults: this product + the next ones in the list (other brands come first) */
@@ -220,7 +221,7 @@
     var c = cols(); root.style.setProperty('--cols', c);
     var cur = picked.slice(0, c).map(function (h) { return byH[h] || data[0]; });
     heads.innerHTML = cur.map(function (d, i) {
-      var opts = data.map(function (o) { return '<option value="' + esc(o.h) + '"' + (o.h === d.h ? ' selected' : '') + '>' + esc(o.t) + '</option>'; }).join('');
+      var opts = data.map(function (o) { return '<option value="' + esc(o.h) + '"' + (o.h === d.h ? ' selected' : '') + '>' + esc(short(o)) + '</option>'; }).join('');
       return '<div class="cmpx__col"><span class="cmpx__this">' + (d.h === data[0].h ? 'This product' : '') + '</span>' +
         '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="180" height="180" data-v2-lift>' : '') + '</a>' +
         '<label class="cmpx__sel"><span class="v-sr">Product ' + (i + 1) + '</span><select data-i="' + i + '">' + opts + '</select></label></div>';
@@ -238,7 +239,7 @@
       return '<div class="cmpx__v">' + (d.h === data[0].h ? '<span class="cmpx__na">You\'re viewing this</span>' : '<a class="v-btn v-btn--line cmpx__go" href="' + esc(d.u) + '"><span>View product</span></a>') + '</div>';
     }).join('') + '</div></div>';
     rowsEl.innerHTML = html;
-    if (mini) mini.innerHTML = '<div class="cmpx__mini-in">' + cur.map(function (d) { return '<div class="cmpx__mi">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" data-no-lift>' : '') + '<span>' + esc(d.t) + '</span></div>'; }).join('') + '</div>';
+    if (mini) mini.innerHTML = '<div class="cmpx__mini-in">' + cur.map(function (d) { return '<div class="cmpx__mi">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" data-no-lift>' : '') + '<span>' + esc(short(d)) + '</span></div>'; }).join('') + '</div>';
   }
   heads.addEventListener('change', function (e) {
     var s = e.target.closest('select'); if (!s) return;
