@@ -13,7 +13,7 @@
 <script src="https://roostercdn.s3-ap-southeast-1.amazonaws.com/rooster.min.js" defer></script>
 <script>
   window.addEventListener('load', function () {
-    if (!window.Rooster || !document.getElementById('rooster')) return;
+    if (typeof Rooster === 'undefined' || !document.getElementById('rooster')) return;
     var r = new Rooster('#rooster', 152788); r.setup();
   });
 </script>
@@ -33,4 +33,6 @@
   #rooster .rooster-job .data-row { padding: 0 0 4px; font-size: 14px; color: var(--grey-2, #6b6b6b); }
   #rooster .rooster-job .inline-value { margin-right: 10px; padding-right: 10px; }
   #rooster .rooster-job .inline-value:not(:last-child) { border-right: 1px solid #DDD; }
+  #rooster .rooster-btn-apply { display: inline-flex; align-items: center; height: 40px; margin-top: 10px; padding: 0 18px; border-radius: 999px; background: var(--v-accent, #BF4512); color: #fff !important; font-size: 14px; font-weight: 600; }
+  #rooster .rooster-btn-apply:hover { filter: brightness(1.08); }
 </style>
