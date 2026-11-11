@@ -1,0 +1,36 @@
+{%- comment -%}
+  Careers page: the Rooster job board (company 152788) — open roles, each with its own apply form for the CV.
+  Rendered by sections/snh-feature.liquid on /pages/careers only.
+{%- endcomment -%}
+<section class="v2 snh-roles" id="open-roles" aria-labelledby="open-roles-h">
+  <div class="v-wrap">
+    <p class="eyebrow">Open roles</p>
+    <h2 class="v-h2" id="open-roles-h">Apply for a role at SNH</h2>
+    <p class="snh-roles__lead">Pick a role below to read the details and send your CV. Nothing that fits right now? Message us on WhatsApp and we'll keep you in mind.</p>
+    <div id="rooster"><p class="snh-roles__load">Loading open roles…</p></div>
+  </div>
+</section>
+<script src="https://roostercdn.s3-ap-southeast-1.amazonaws.com/rooster.min.js" defer></script>
+<script>
+  window.addEventListener('load', function () {
+    if (!window.Rooster || !document.getElementById('rooster')) return;
+    var r = new Rooster('#rooster', 152788); r.setup();
+  });
+</script>
+<style>
+  .snh-roles { padding: clamp(40px, 6vw, 72px) 0; background: #fff; scroll-margin-top: 120px; }
+  .snh-roles .v-h2 { margin: 6px 0 10px; }
+  .snh-roles__lead { max-width: 640px; margin: 0 0 24px; font-size: 15px; line-height: 1.6; color: var(--grey-1, #4a4a4a); }
+  .snh-roles__load { color: var(--grey-2, #6b6b6b); font-size: 14px; }
+  #rooster .rooster-search { width: 100%; box-sizing: border-box; height: 48px; padding: 0 16px; margin-bottom: 16px; border: 1px solid #DEDEDE; border-radius: 999px; background: #fff; font-size: 15px; }
+  #rooster .rooster-department-header { margin: 0; padding: 28px 0 4px; color: var(--v-accent, #BF4512); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  #rooster .rooster-department-header h3 { margin: 0; font: inherit; }
+  #rooster .rooster-job { padding: 18px 0; border-bottom: 1px solid #EEE; }
+  #rooster .rooster-job a { color: var(--ink, #0E0E0E); text-decoration: none; }
+  #rooster .rooster-job h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  #rooster .rooster-job a:hover h3 { color: var(--v-accent, #BF4512); }
+  #rooster .rooster-job h4 { margin: 0; font-size: 14px; font-weight: 500; }
+  #rooster .rooster-job .data-row { padding: 0 0 4px; font-size: 14px; color: var(--grey-2, #6b6b6b); }
+  #rooster .rooster-job .inline-value { margin-right: 10px; padding-right: 10px; }
+  #rooster .rooster-job .inline-value:not(:last-child) { border-right: 1px solid #DDD; }
+</style>

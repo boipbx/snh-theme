@@ -38,13 +38,17 @@
       {%- if s.text != blank -%}<div class="v-prose ft__body">{{ s.text }}</div>{%- endif -%}
       {%- if s.cta != blank or s.cta2 != blank -%}
         <div class="ft__ctas">
-          {%- if s.cta != blank -%}<a class="v-btn v-btn--accent" href="{{ s.link | default: '#' }}"><span>{{ s.cta | escape }}</span></a>{%- endif -%}
+          {%- if s.cta != blank -%}{%- assign f_link = s.link | default: '#' -%}{%- if page.handle == 'careers' and f_link contains 'work-with-us' -%}{%- assign f_link = '#open-roles' -%}{%- endif -%}<a class="v-btn v-btn--accent" href="{{ f_link }}"><span>{{ s.cta | escape }}</span></a>{%- endif -%}
           {%- if s.cta2 != blank -%}<a class="v-btn {% if tone == 'dark' %}v-btn--white{% else %}v-btn--line{% endif %}" href="{{ s.link2 | default: '#' }}"><span>{{ s.cta2 | escape }}</span></a>{%- endif -%}
         </div>
       {%- endif -%}
     </div>
   </div>
 </section>
+
+{%- comment -%} 11 Nov: the careers page (/pages/careers) lists the open roles from Rooster under its banner; applicants open
+  a role there to apply and send their CV (snippets/snh-careers-roles). Only the first feature band on that page. {%- endcomment -%}
+{%- if page.handle == 'careers' and section.index == 1 -%}{%- render 'snh-careers-roles' -%}{%- endif -%}
 
 {% schema %}
 {

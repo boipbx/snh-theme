@@ -58,9 +58,12 @@ profiles was USD 150/month.
 
 ## Careers page (11 Nov 2026)
 
-`templates/page.contact.json` (only /pages/careers uses it): the "See open roles" button pointed to
+Careers (/pages/careers, template page.contact): the "See open roles" button pointed to
 `/pages/work-with-us` (404) → now `#open-roles`, and the **Rooster job board** (company id 152788, the list where
 applicants open a role and send their CV) is back as section `open_roles`, restyled. It had been dropped in Round 11
 together with the old custom-HTML careers block.
 - Wholesale + Franchise pages: 3 links to `/pages/locations-info` (404, no such page) → `/#stores` (the store list on
   the home page). Site-wide link check, 290 internal pages: no other broken links.
+  (Final form: Shopify's sync kept rejecting the template edit, so the template is back as it was and the job board is
+  rendered by `snippets/snh-careers-roles.liquid` from `sections/snh-feature.liquid` on /pages/careers only; the
+  button's old `/pages/work-with-us` link is swapped for `#open-roles` there.)
