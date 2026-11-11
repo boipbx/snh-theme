@@ -47,6 +47,9 @@ womens-health>womens-multivitamins|Multivitamins,beauty-hair-skin|Beauty & skin,
 daily-wellness>multivitamins|Multivitamins,fish-oil-omega|Omega,probiotics|Probiotics,gut-health|Gut health,sleep-relaxation|Sleep;
 joint-mobility>joint-support-supplements|Joint support,collagen-supplements|Collagen,fish-oil-omega|Omega,minerals|Minerals;
 bundle-offers>training-strength-bundles|Training & strength,endurance-bundles|Endurance,daily-health-wellness-bundles|Daily health;
+training-strength-bundles>bundle-offers|All bundles,training-strength-bundles|Training & strength,endurance-bundles|Endurance,daily-health-wellness-bundles|Daily health;
+endurance-bundles>bundle-offers|All bundles,training-strength-bundles|Training & strength,endurance-bundles|Endurance,daily-health-wellness-bundles|Daily health;
+daily-health-wellness-bundles>bundle-offers|All bundles,training-strength-bundles|Training & strength,endurance-bundles|Endurance,daily-health-wellness-bundles|Daily health;
 default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Energy & endurance,recovery|Recovery,daily-wellness|Daily wellness,womens-health|Women's health,joint-mobility|Joint & mobility,beauty-hair-skin|Beauty & skin,gut-health|Gut health
 {%- endcapture -%}
 
@@ -162,7 +165,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
       {%- endfor -%}
     {%- endcapture -%}
     {%- if goal_chips != blank -%}
-      <div class="snh-goals" data-snh-goals>
+      <div class="snh-goals{% if here contains 'bundle' %} snh-goals--keep{% endif %}" data-snh-goals>
         <span class="snh-goals__label">{% if here != '' and goal_line != '' %}Refine{% else %}Shop by goal{% endif %}</span>
         <div class="snh-goals__rail">{{ goal_chips }}</div>
       </div>
@@ -521,6 +524,9 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
     /* 10 Nov: one filter system on phones, for real — the goal/type chips leave the bar (the same choices are in the
        sheet's Type filter), so the bar is just "Filter & sort" (+ the active filter pills under it). */
     .snh-bar > .snh-goals { display: none; }
+    /* 11 Nov: bundle pages keep their category chips (All / Training / Endurance / Daily health): they switch between
+       bundle collections, which the filter sheet cannot do. */
+    .snh-bar > .snh-goals.snh-goals--keep { display: grid; grid-column: 1 / -1; grid-row: auto; padding: 4px 0 2px; }
     .snh-bar { grid-template-columns: minmax(0, 1fr); padding-block: 4px; }
   }
   @media (prefers-reduced-motion: reduce) {
