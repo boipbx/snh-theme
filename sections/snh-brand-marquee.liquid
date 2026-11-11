@@ -19,12 +19,16 @@
     assign count = section.blocks.size | append: ' brands'
   endif
 -%}
+{%- comment -%} 11 Nov: clean transparent theme logos (assets/brand-*.png) replace the filtered opaque squares, which
+  came out grey/cut (EHPlabs, PhD). Key = handleized block name, value = asset file. {%- endcomment -%}
+{%- assign clean_map = ',applied-nutrition:brand-applied-nutrition.png,science-in-sport:brand-science-in-sport.png,raw-nutrition:brand-raw.png,raw:brand-raw.png,myprotein:brand-myprotein.png,revive:brand-revive.png,muscletech:brand-muscletech.png,ryse:brand-ryse.png,ehp-labs:brand-ehplabs-white.png,ehplabs:brand-ehplabs-white.png,healthspan-elite:brand-healthspan-elite.png,dymatize:brand-dymatize.png,redcon1:brand-redcon1.png,phd:brand-phd.png,vitabiotics:brand-vitabiotics.png,centrum:brand-centrum.png,' -%}
 {%- capture row_a -%}
   {%- for b in section.blocks -%}
     {%- assign odd = forloop.index0 | modulo: 2 -%}
     {%- if two and odd == 1 -%}{%- continue -%}{%- endif -%}
-    <a class="logo{% if b.settings.dark %} logo--dark{% endif %}" href="{{ b.settings.link | default: '#' }}" title="{{ b.settings.name | escape }}" draggable="false" style="--ls: {{ b.settings.scale | divided_by: 100.0 }}" {{ b.shopify_attributes }}>
-      {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: b.settings.name, draggable: 'false', data-mq-logo: '' }}{%- else -%}<span class="brand__word">{{ b.settings.name | escape }}</span>{%- endif -%}
+    {%- assign ck = b.settings.name | handleize | prepend: ',' | append: ':' -%}{%- assign clean = '' -%}{%- if clean_map contains ck -%}{%- assign clean = clean_map | split: ck | last | split: ',' | first -%}{%- endif -%}
+    <a class="logo{% if clean != blank %} logo--clean is-fit{% elsif b.settings.dark %} logo--dark{% endif %}" href="{{ b.settings.link | default: '#' }}" title="{{ b.settings.name | escape }}" draggable="false" style="--ls: {{ b.settings.scale | divided_by: 100.0 }}" {{ b.shopify_attributes }}>
+      {%- if clean != blank -%}<img src="{{ clean | asset_url }}" alt="{{ b.settings.name | escape }}" loading="lazy" draggable="false" height="40" data-no-lift>{%- elsif b.settings.image != blank -%}{{ b.settings.image | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: b.settings.name, draggable: 'false', data-mq-logo: '' }}{%- else -%}<span class="brand__word">{{ b.settings.name | escape }}</span>{%- endif -%}
     </a>
   {%- endfor -%}
 {%- endcapture -%}
@@ -32,8 +36,9 @@
   {%- for b in section.blocks -%}
     {%- assign odd = forloop.index0 | modulo: 2 -%}
     {%- if odd == 0 -%}{%- continue -%}{%- endif -%}
-    <a class="logo{% if b.settings.dark %} logo--dark{% endif %}" href="{{ b.settings.link | default: '#' }}" title="{{ b.settings.name | escape }}" draggable="false" style="--ls: {{ b.settings.scale | divided_by: 100.0 }}">
-      {%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: b.settings.name, draggable: 'false', data-mq-logo: '' }}{%- else -%}<span class="brand__word">{{ b.settings.name | escape }}</span>{%- endif -%}
+    {%- assign ck = b.settings.name | handleize | prepend: ',' | append: ':' -%}{%- assign clean = '' -%}{%- if clean_map contains ck -%}{%- assign clean = clean_map | split: ck | last | split: ',' | first -%}{%- endif -%}
+    <a class="logo{% if clean != blank %} logo--clean is-fit{% elsif b.settings.dark %} logo--dark{% endif %}" href="{{ b.settings.link | default: '#' }}" title="{{ b.settings.name | escape }}" draggable="false" style="--ls: {{ b.settings.scale | divided_by: 100.0 }}">
+      {%- if clean != blank -%}<img src="{{ clean | asset_url }}" alt="{{ b.settings.name | escape }}" loading="lazy" draggable="false" height="40" data-no-lift>{%- elsif b.settings.image != blank -%}{{ b.settings.image | image_url: width: 360 | image_tag: width: 180, height: 180, loading: 'lazy', alt: b.settings.name, draggable: 'false', data-mq-logo: '' }}{%- else -%}<span class="brand__word">{{ b.settings.name | escape }}</span>{%- endif -%}
     </a>
   {%- endfor -%}
 {%- endcapture -%}
