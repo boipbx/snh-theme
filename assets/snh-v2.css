@@ -2609,3 +2609,9 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 .mini__p { color: var(--ink); }
 .mini__p s { margin-left: 6px; color: var(--grey-2); font-weight: 400; text-decoration-thickness: 1px; }
 .mini__save { display: inline-flex; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: #FFF1EA; color: var(--v-accent, #BF4512); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+
+/* 11 Nov: the page-not-found page was wider than a phone (search row + product rail): keep it inside the screen */
+.nf { overflow-x: clip; }
+.nf__search { display: flex; gap: 8px; max-width: 100%; }
+.nf__search input { flex: 1 1 auto; min-width: 0; }
+.nf__search button { flex: none; }
