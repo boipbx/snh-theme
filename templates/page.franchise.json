@@ -195,7 +195,7 @@
       "settings": {
         "eyebrow": "Our stores",
         "heading": "Proven stores in *Colombo*",
-        "intro": "<p>Every franchise follows the layout, range and service standard of our own stores. Visit one before you apply, or see all <a href=\"/pages/locations-info\">SNH store locations</a>.</p>",
+        "intro": "<p>Every franchise follows the layout, range and service standard of our own stores. Visit one before you apply, or see all <a href=\"/#stores\">SNH store locations</a>.</p>",
         "style": "white"
       }
     },
@@ -390,7 +390,7 @@
         "ok_heading": "Thank you, your franchise enquiry is in",
         "ok_text": "<p>Here is what happens next:</p><ul><li>We read every enquiry and reply within a few working days.</li><li>If your plans fit, we book a first call to talk through the location and the investment.</li><li>In the meantime, visit one of our stores to see the SNH standard in person.</li></ul>",
         "ok_label": "Find a store",
-        "ok_link": "/pages/locations-info"
+        "ok_link": "/#stores"
       }
     },
     "invest": {

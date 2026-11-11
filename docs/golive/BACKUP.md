@@ -62,3 +62,5 @@ profiles was USD 150/month.
 `/pages/work-with-us` (404) → now `#open-roles`, and the **Rooster job board** (company id 152788, the list where
 applicants open a role and send their CV) is back as section `open_roles`, restyled. It had been dropped in Round 11
 together with the old custom-HTML careers block.
+- Wholesale + Franchise pages: 3 links to `/pages/locations-info` (404, no such page) → `/#stores` (the store list on
+  the home page). Site-wide link check, 290 internal pages: no other broken links.
