@@ -90,3 +90,8 @@ refused the first test addition (bundles are owned by the Shopify Bundles app); 
 - Later (11 Nov, done by the team in admin, verified by API): the active General-profile products were moved into
   SHIP 26 (shakers, RYSE, PhD, Revive, SiS, RAW, EHPlabs, …). General now holds only 6 draft products + the Koko fee
   item. A cart mixing products no longer pays 599 twice.
+
+## Collection rule: BUNDLE OFFERS (/collections/bundle-offers), 11 Nov
+- Old rule: Title ENDS_WITH "Bundle" (all conditions). Only 10 of the 26 bundles matched (stacks/packs left out).
+- New rule: Product type EQUALS "Bundle" (all 26 active bundles). Sort order unchanged (BEST_SELLING).
+- To undo: Admin → Collections → BUNDLE OFFERS → Conditions → "Title ends with Bundle".
