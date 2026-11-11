@@ -9,6 +9,13 @@
 {%- liquid
   assign ci_out = ''
   assign ci_fi = product.featured_media.preview_image | default: product.featured_image
+  comment
+    bundles keep the thumbnail the team uploads (11 Nov), so no clean copy for them
+  endcomment
+  assign ci_pt = product.type | downcase
+  if ci_pt contains 'bundle'
+    assign ci_fi = nil
+  endif
   if ci_fi
     assign ci_base = ci_fi.src | split: '?' | first | split: '/' | last
     assign ci_key = ',' | append: product.handle | append: ':' | append: ci_base | append: ','

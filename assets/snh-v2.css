@@ -2623,13 +2623,19 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 .pc__st { border-radius: 6px !important; }
 .pc__save { border-radius: 4px; }
 
-/* 11 Nov: straight image banner on cards (no rounded corners), and Informed Sport as the small round logo sitting
-   above the quick-add "+" instead of a text pill. */
-.pc { border-radius: 0; }
-.pc .card__tile { border-radius: 0 !important; }
-.pc__inf { position: absolute; right: 14px; bottom: 60px; z-index: 3; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #0E0E0E; box-shadow: 0 4px 12px -4px rgba(14,14,14,.4); pointer-events: auto; }
-.pc__inf img { width: 30px; height: 30px; object-fit: contain; }
-@media (max-width: 767px) { .pc__inf { right: 12px; bottom: 54px; width: 32px; height: 32px; } .pc__inf img { width: 26px; height: 26px; } }
+/* 11 Nov (rev): rounded cards again (16px, image tile follows the top corners), and Informed Sport as a small round
+   logo in the TOP-RIGHT corner (the save / flavour badges keep the left side). Yellow disc + black mark on the light
+   product tiles so it reads at a glance; white disc where the card sits on a dark band. */
+.pc { border-radius: 16px; }
+.pc .card__tile { border-radius: 16px 16px 0 0 !important; }
+.pc__inf { position: absolute; top: 12px; right: 12px; z-index: 4; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #FFD23F; box-shadow: 0 4px 12px -4px rgba(14,14,14,.35), 0 0 0 2px rgba(255,255,255,.9); }
+.pc__inf img { width: 32px; height: 32px; object-fit: contain; filter: brightness(0); }
+.mqd .pc__inf, .sisx .pc__inf, [data-surface="dark"] .pc__inf { background: #fff; }
+.pc__frame:has(.pc__inf) .pc__status { top: 58px; }
+@media (max-width: 767px) { .pc__inf { top: 10px; right: 10px; width: 32px; height: 32px; } .pc__inf img { width: 27px; height: 27px; } .pc__frame:has(.pc__inf) .pc__status { top: 50px; } }
+/* product name: bigger and bolder */
+.pc__name { height: auto; min-height: 2.6em; font: 700 17px/1.3 var(--sans); letter-spacing: -.01em; }
+@media (max-width: 767px) { .pc__name { font-size: 15.5px; } }
 
 /* 11 Nov: SiS trust badges as full pills at every width, with a clearer edge. */
 .tbadge { border-radius: 999px !important; border: 1.5px solid rgba(255, 255, 255, .5); background: rgba(14, 14, 14, .62); box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .08); }
@@ -2656,5 +2662,5 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 
 /* 11 Nov: clean pack shots (snippets/snh-clean-img): transparent, every product trimmed and sized the same, so no
    frame, no grey studio backdrop and no "too zoomed / too small" mix. Sits on the warm tile as is. */
-.card__img.is-clean img { mix-blend-mode: normal; transform: scale(.9); opacity: 1 !important; filter: drop-shadow(0 10px 14px rgba(40, 30, 20, .10)); }
+.card__img.is-clean img { mix-blend-mode: normal; transform: scale(.8); opacity: 1 !important; filter: drop-shadow(0 10px 14px rgba(40, 30, 20, .10)); }
 .mini img[src*="/assets/pc-"], .cmpx img[src*="/assets/pc-"] { mix-blend-mode: normal; object-fit: contain; }
