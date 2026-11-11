@@ -214,9 +214,16 @@
               <div class="sp-b sp-price" data-g="price" data-sp-sync="price" {{ block.shopify_attributes }}>
                 <p class="sp-price__row">
                   <span class="sp-price__now">{{ v.price | money_without_trailing_zeros }}</span>
-                  {%- if v.compare_at_price > v.price -%}
-                    <s class="sp-price__was"><span class="visually-hidden">Was </span>{{ v.compare_at_price | money_without_trailing_zeros }}</s>
-                    <span class="sp-chip">Save {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>
+                  {%- comment -%} 11 Nov: bundles without a compare-at price show their bought-separately total too
+                    (same rule as the cards, snippets/snh-v2-retail) {%- endcomment -%}
+                  {%- assign p_was = v.compare_at_price | default: 0 -%}
+                  {%- unless p_was > v.price -%}
+                    {%- capture p_was -%}{% render 'snh-v2-retail', product: product %}{%- endcapture -%}
+                    {%- assign p_was = p_was | strip | plus: 0 -%}
+                  {%- endunless -%}
+                  {%- if p_was > v.price -%}
+                    <s class="sp-price__was"><span class="visually-hidden">Was </span>{{ p_was | money_without_trailing_zeros }}</s>
+                    <span class="sp-chip">Save {{ p_was | minus: v.price | money_without_trailing_zeros }}</span>
                   {%- endif -%}
                 </p>
                 {%- if servings > 0 -%}<p class="sp-price__per">{{ v.price | divided_by: servings | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros }} per serving · {{ servings }} servings</p>{%- endif -%}
