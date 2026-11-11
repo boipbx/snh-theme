@@ -113,12 +113,15 @@
   endif
   assign note = ''
   assign status = ''
+  assign is_inf = false
   for b in badge_list
     case b
       when 'Sale'
       when 'Sold out'
         assign status = status | append: ',Sold out'
-      when 'New', 'Bestseller', 'Informed Sport'
+      when 'Informed Sport'
+        assign is_inf = true
+      when 'New', 'Bestseller'
         if note == ''
           assign note = b
         endif
@@ -188,6 +191,7 @@
       <ul class="pc__status" role="list">{%- for b in status_list limit: 2 -%}<li class="pc__st pc__st--{{ b | handleize }}">{{ b | escape }}</li>{%- endfor -%}</ul>
     {%- endif -%}
     {%- if chip != blank -%}<span class="pc__chip">{{ chip }}</span>{%- endif -%}
+    {%- if is_inf -%}<span class="pc__inf" title="Informed Sport certified"><img src="{{ 'snh-informed-sport-white.png' | asset_url }}" alt="Informed Sport certified" width="34" height="34" loading="lazy" data-no-lift></span>{%- endif -%}
     {%- capture qb -%}v2-qb-{{ section.id }}-{{ product.id }}{%- endcapture -%}
     {%- if product.available and price_note == blank -%}
       {%- comment -%} Round 13: one round "+" on the image: single variant adds in one tap, several open the SNH quick-buy sheet (assets/snh-quick.js) {%- endcomment -%}
