@@ -98,7 +98,7 @@
               {%- assign key = ',' | append: media.id | append: ',' -%}
               {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
               <button type="button" class="sp-thumb" role="tab" data-sp-thumb="{{ gi }}" aria-label="Image {{ gi | plus: 1 }} of {{ gal_count }}" aria-selected="{% if media.id == gal_active.id %}true{% else %}false{% endif %}">
-                {{- media.preview_image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' -}}
+                {{- media.preview_image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-v2-lift: '' -}}
               </button>
               {%- assign gi = gi | plus: 1 -%}
             {%- endfor -%}
@@ -113,9 +113,9 @@
               <li class="sp-slide" data-sp-slide="{{ gi }}" data-media="{{ media.id }}"{% if media.id == gal_active.id %} data-active{% endif %}>
                 {%- if media.media_type == 'image' -%}
                   {%- if gi == 0 -%}
-                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'eager', fetchpriority: 'high', alt: media.alt -}}
+                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'eager', fetchpriority: 'high', alt: media.alt, data-v2-lift: '' -}}
                   {%- else -%}
-                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'lazy', alt: media.alt -}}
+                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'lazy', alt: media.alt, data-v2-lift: '' -}}
                   {%- endif -%}
                 {%- else -%}
                   {{- media | media_tag: image_size: '1200x' -}}
@@ -339,7 +339,7 @@
     {%- assign thumb = v.featured_media | default: product.featured_media -%}
     <div class="sp-sticky" data-sp-sticky aria-hidden="true">
       <div class="sp-wrap sp-sticky__in">
-        {%- if thumb -%}<span class="sp-sticky__img">{{ thumb | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy' }}</span>{%- endif -%}
+        {%- if thumb -%}<span class="sp-sticky__img">{{ thumb | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy', data-v2-lift: '' }}</span>{%- endif -%}
         <span class="sp-sticky__text">
           <span class="sp-sticky__name">{{ short_title | strip }}</span>
           <span class="sp-sticky__price" data-sp-sync="sprice">{{ v.price | money_without_trailing_zeros }}{% unless product.has_only_default_variant %}<span> · {{ v.title | remove: ' - Informed-Sport Tested' | replace: ' / ', ' · ' | escape }}</span>{% endunless %}</span>

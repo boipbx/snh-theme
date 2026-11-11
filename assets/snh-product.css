@@ -337,3 +337,10 @@
 @media (min-width: 1024px) {
   .sp-thumb[aria-selected="true"] { border-color: var(--sp-accent, #BF4512); }
 }
+
+/* 11 Nov: product photos are trimmed to the product like the cards (assets/snh-v2.js lift): less padding around the
+   main photo and the thumbnails, the product fills ~84 % of the frame whatever white space the file has */
+.sp-slide { padding: 3%; }
+.sp-slide img[data-v2-lift] { --lift-fill: .84; }
+.sp-thumb img[data-v2-lift], .sp-sticky__img img[data-v2-lift] { --lift-fill: .9; }
+.sp-sticky__img { overflow: hidden; }

@@ -139,7 +139,7 @@
       {%- assign f = recs[idx] | split: '~' -%}
       {%- assign parts = f[0] | split: '*' -%}
       <a class="elpromo" href="{{ f[3] | default: routes.all_products_collection_url }}" data-pz data-goals="{{ f[8] | escape }}" data-sports="{{ f[9] | escape }}" data-diets="{{ f[10] | escape }}" data-bought="{{ f[11] | escape }}" data-prio="{{ f[12] | plus: 0 }}" hidden>
-        {%- if f[4] != blank -%}<span class="elpromo__img"><img src="{{ f[4] }}" alt="" loading="lazy" width="600" height="600"></span>{%- endif -%}
+        {%- if f[4] != blank -%}<span class="elpromo__img"><img src="{{ f[4] }}" alt="" loading="lazy" width="600" height="600" data-v2-lift></span>{%- endif -%}
         <span class="elpromo__b">
           <span class="elpromo__eb"><span class="elpromo__eb-h">Picked for you</span><span class="elpromo__eb-s">For you</span></span>
           <span class="elpromo__t">{%- for p in parts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</span>

@@ -143,7 +143,7 @@
       // R18: no brightness lift or edge fade any more (it washed the packs out): images stay crisp and unfiltered.
       // A grey studio backdrop instead tints the tile to the sampled backdrop colour, so the photo's edges disappear.
       if (L < 246 && L > 120) {
-        var tile = img.closest('.card__img--alt') ? null : img.closest('.card__tile, .hs__img, .sline__img, .smini__img, .ssug__img');
+        var tile = img.closest('.card__img--alt') ? null : img.closest('.card__tile, .hs__img, .sline__img, .smini__img, .ssug__img, .sp-slide, .sp-thumb, .sp-sticky__img, .elpromo__img');
         if (tile) { tile.style.background = 'rgb(' + Math.round(br) + ',' + Math.round(bgc) + ',' + Math.round(bb) + ')'; img.style.mixBlendMode = 'normal'; }
         // R19: a mid/dark grey studio shot can't blend into a light tile without seams: show the photo edge to edge
         // (true colour, unscaled, no clip) and flag it so the merchant can swap in a white-background file

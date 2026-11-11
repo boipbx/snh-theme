@@ -983,3 +983,7 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 }
 /* Post-launch: the view heading takes focus on a tab switch (screen readers) without drawing an outline box */
 .app__view [tabindex="-1"]:focus, .app__head [tabindex="-1"]:focus, .app__view h1:focus, .app__view h2:focus { outline: none; box-shadow: none; }
+
+/* 11 Nov: account promo / "Picked for you" product shots are no longer cropped huge (cover): the whole product shows,
+   trimmed and centred by the shared image fit (data-v2-lift) */
+.elpromo__img img[data-v2-lift] { object-fit: contain; mix-blend-mode: multiply; --lift-fill: .8; }
