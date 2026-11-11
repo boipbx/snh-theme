@@ -1,193 +1,153 @@
 {%- comment -%}
-  "Compare" on the product page (11 Nov rework, Apple-style). The customer picks what to compare: every column has a
-  picker listing products from this product's most specific category, other brands first. Phones show 2 columns
-  side by side, desktop 3. Rows: price, per serving, servings, flavours, key specs, ingredients, dietary,
-  certifications, rating, brand. "Show only differences" hides rows that are the same for every picked product.
-  All data is rendered by Liquid into one JSON block (no extra requests). product
+  "Compare" on the product page (11 Nov, rework 2). Only products of the SAME product type (whey with whey, creatine
+  with creatine, never a fat burner next to a protein), taken from this product's category collections (brand
+  collections are skipped). Other brands, plus this product's other sizes (e.g. 25 -> 60 servings); the swap rail is
+  sorted by price per serving so better-value options come first. The customer taps products in the rail to put them
+  in a column; x removes. Rows: price, per serving (with the saving vs this product), servings, flavours, key specs,
+  rating. All data is rendered by Liquid (no extra requests). product
 {%- endcomment -%}
 {%- liquid
   assign skip = ',all,sale,bestsellers,best-sellers,new,new-arrivals,frontpage,offers,bundles,bundle-offers,recommended-products-seguno,'
-  assign pick = nil
-  assign pick_n = 100000
-  for c in product.collections
-    assign ck = ',' | append: c.handle | append: ','
-    if skip contains ck
-      continue
-    endif
-    if c.products_count > 2 and c.products_count < pick_n
-      assign pick = c
-      assign pick_n = c.products_count
-    endif
-  endfor
-  assign pool = ''
+  assign vh = product.vendor | handleize
+  assign vfirst = vh | split: '-' | first
+  assign vd = product.vendor | downcase
+  assign cur_v = product.selected_or_first_available_variant
+  assign pool = ','
   assign n = 0
-  if pick
-    for pass in (1..3)
-      for p in pick.products limit: 60
-        if p.id == product.id or p.available == false or n >= 24
+  assign ncol = 0
+  if product.type != blank and product.type != 'Bundle'
+    for c in product.collections
+      assign ck = ',' | append: c.handle | append: ','
+      if skip contains ck or c.handle contains vh or c.handle contains vfirst
+        continue
+      endif
+      assign ct = c.title | downcase
+      if ct contains vd
+        continue
+      endif
+      if ncol >= 6
+        break
+      endif
+      assign ncol = ncol | plus: 1
+      for p in c.products limit: 80
+        if p.id == product.id or p.available == false or p.type != product.type or n >= 30
           continue
         endif
         assign key = ',' | append: p.handle | append: ','
-        if pool contains key
-          continue
-        endif
-        assign other_brand = false
-        if p.vendor != product.vendor
-          assign other_brand = true
-        endif
-        if pass == 1 and other_brand and p.type == product.type
-          assign pool = pool | append: key
+        unless pool contains key
+          assign pool = pool | append: p.handle | append: ','
           assign n = n | plus: 1
-        elsif pass == 2 and other_brand
-          assign pool = pool | append: key
-          assign n = n | plus: 1
-        elsif pass == 3
-          assign pool = pool | append: key
-          assign n = n | plus: 1
-        endif
+        endunless
       endfor
     endfor
   endif
-  assign handles = product.handle | append: pool | split: ','
+  assign handles = pool | split: ','
+  assign cur_sz = ''
+  for ov in cur_v.options
+    if ov contains 'Serving'
+      assign cur_sz = ov
+    endif
+  endfor
+  assign sizes_done = ',' | append: cur_sz | append: ','
+  assign size_vars = ''
+  for vv in product.variants
+    if vv.available == false
+      continue
+    endif
+    for ov in vv.options
+      if ov contains 'Serving'
+        assign sk = ',' | append: ov | append: ','
+        unless sizes_done contains sk
+          assign sizes_done = sizes_done | append: ov | append: ','
+          assign size_vars = size_vars | append: vv.id | append: ','
+        endunless
+      endif
+    endfor
+  endfor
+  assign size_ids = size_vars | split: ','
+  assign total = n | plus: size_ids.size
 -%}
-{%- if n > 0 -%}
+{%- if total > 0 -%}
 <section class="v2 cmpx" id="compare" aria-labelledby="cmpx-h-{{ product.id }}" data-cmpx>
   <div class="v-wrap">
     <div class="cmpx__top">
-      <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare</h2>
-      <p class="cmpx__lead">Tap a product name to swap it for another one like it, and see the differences side by side.</p>
-      <label class="cmpx__diff"><input type="checkbox" data-cmpx-diff> <span>Show only differences</span></label>
+      <div>
+        <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare</h2>
+        <p class="cmpx__lead">Tap a product below to compare it. Best value per serving first.</p>
+      </div>
+      <label class="cmpx__diff"><input type="checkbox" data-cmpx-diff> <span>Only differences</span></label>
     </div>
-    <div class="cmpx__grid" data-cmpx-grid>
+    <div class="cmpx__rail" data-cmpx-rail role="list" aria-label="Products you can compare"></div>
+    <div class="cmpx__grid">
       <div class="cmpx__heads" data-cmpx-heads></div>
       <div class="cmpx__rows" data-cmpx-rows></div>
-      <div class="cmpx__mini" data-cmpx-mini aria-hidden="true"></div>
     </div>
+    <div class="cmpx__mini" data-cmpx-mini aria-hidden="true"></div>
   </div>
   <script type="application/json" data-cmpx-data>[
+    {%- render 'snh-compare-item', p: product, v: cur_v, sz: false -%}
+    {%- for vid in size_ids -%}{%- if vid == blank -%}{%- continue -%}{%- endif -%}
+      {%- for vv in product.variants -%}{%- assign vs = vv.id | append: '' -%}{%- if vs == vid -%},{%- render 'snh-compare-item', p: product, v: vv, sz: true -%}{%- endif -%}{%- endfor -%}
+    {%- endfor -%}
     {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}{%- if p == blank or p.id == blank -%}{%- continue -%}{%- endif -%}
-    {%- liquid
-      capture was
-        render 'snh-v2-retail', product: p
-      endcapture
-      assign was = was | strip | plus: 0
-      assign sv = 0
-      for o in p.options_with_values
-        assign on = o.name | downcase
-        if on contains 'serving' or on contains 'size'
-          for val in o.values
-            if val contains 'Serving'
-              assign sv = val | split: ' ' | first | plus: 0
-              break
-            endif
-          endfor
-        endif
-      endfor
-      if sv == 0 and p.title contains ' Servings'
-        assign t = p.title | split: ' Servings' | first | split: ' ' | last | plus: 0
-        if t > 0
-          assign sv = t
-        endif
-      endif
-      assign fls = ''
-      for o in p.options_with_values
-        assign on = o.name | downcase
-        if on contains 'flav'
-          assign fls = o.values | join: '|'
-        endif
-      endfor
-      assign rv = 0
-      assign rc = 0
-      assign jb = p.metafields.judgeme.badge | default: ''
-      if jb contains 'data-average-rating'
-        assign rv = jb | split: "data-average-rating='" | last | split: "'" | first | plus: 0
-        assign rc = jb | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
-      endif
-      if rc == 0
-        assign rc = p.metafields.reviews.rating_count.value | plus: 0
-        assign rv = p.metafields.reviews.rating.value.rating | default: 0 | plus: 0
-      endif
-      capture bu
-        render 'snh-brand-logo-url', vendor: p.vendor, width: 240
-      endcapture
-      assign bu = bu | strip
-      assign kb = p.metafields.custom.key_benefits.value | default: '' | strip_html | strip | newline_to_br | split: '<br />'
-      assign ing = ''
-      for m in p.metafields.shopify['detailed-ingredients'].value limit: 12
-        assign ing = ing | append: m.label | append: '|'
-      endfor
-      assign diet = ''
-      for m in p.metafields.shopify['dietary-preferences'].value limit: 8
-        assign diet = diet | append: m.label | append: '|'
-      endfor
-      assign cert = ''
-      for m in p.metafields.shopify['product-certifications-standards'].value limit: 6
-        assign cert = cert | append: m.label | append: '|'
-      endfor
-      assign ps = 0
-      if sv > 0
-        assign ps = p.price | divided_by: sv | divided_by: 100.0 | round | times: 100
-      endif
-    -%}
-    {%- unless forloop.first -%},{%- endunless -%}
-    {"h":{{ p.handle | json }},"t":{{ p.title | json }},"u":{{ p.url | json }},"v":{{ p.vendor | json }},
-     "img":{% if p.featured_image %}{{ p.featured_image | image_url: width: 400 | json }}{% else %}""{% endif %},
-     "pr":{{ p.price | money_without_trailing_zeros | json }},"was":{% if was > p.price %}{{ was | money_without_trailing_zeros | json }}{% else %}""{% endif %},
-     "ps":{% if ps > 0 %}{{ ps | money_without_trailing_zeros | json }}{% else %}""{% endif %},"sv":{{ sv }},
-     "fl":{{ fls | json }},"rv":{{ rv | round: 1 | json }},"rc":{{ rc }},"logo":{{ bu | json }},
-     "kb":[{%- for l in kb limit: 5 -%}{%- assign l = l | strip -%}{%- if l != blank -%}{{ l | json }},{%- endif -%}{%- endfor -%}""],
-     "ing":{{ ing | json }},"diet":{{ diet | json }},"cert":{{ cert | json }},"type":{{ p.type | json }}}
+      ,{%- render 'snh-compare-item', p: p, v: nil, sz: false -%}
     {%- endfor -%}
   ]</script>
 </section>
 <style>
-  .cmpx { padding: clamp(32px, 5vw, 56px) 0; }
-  .cmpx__top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 18px; }
-  .cmpx__h { margin: 0; font: 600 clamp(24px, 2.6vw, 32px)/1.15 var(--sans); letter-spacing: -.015em; }
-  .cmpx__lead { flex: 1 1 260px; margin: 0; color: #6B6B6B; font-size: 14px; }
-  .cmpx__diff { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; cursor: pointer; user-select: none; }
-  .cmpx__diff input { width: 18px; height: 18px; accent-color: var(--ink, #0E0E0E); }
-  .cmpx { --cols: 3; }
-  .cmpx__heads, .cmpx__vals { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 clamp(12px, 2.4vw, 32px); }
-  .cmpx__heads { padding: 10px 0 14px; border-bottom: 1px solid #ECECEC; }
-  .cmpx__mini { position: fixed; left: 0; right: 0; top: var(--hdr-h, 0px); z-index: 40; padding: 8px var(--gutter, 20px); background: rgba(255,255,255,.94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid #ECECEC; box-shadow: 0 6px 18px rgba(0,0,0,.05); transform: translateY(-110%); opacity: 0; pointer-events: none; transition: transform .22s ease, opacity .22s ease; }
-  .cmpx.is-stuck .cmpx__mini { transform: none; opacity: 1; pointer-events: auto; }
-  .cmpx__mini-in { max-width: var(--page-w, 1280px); margin: 0 auto; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 clamp(12px, 2.4vw, 32px); }
-  .cmpx__mi { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 12.5px; font-weight: 600; line-height: 1.25; color: var(--ink, #0E0E0E); }
-  .cmpx__mi img { flex: 0 0 40px; width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: #fff; }
-  .cmpx__mi span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .cmpx__col { min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
-  .cmpx__pic { display: block; width: min(100%, 180px); aspect-ratio: 1; border-radius: 14px; background: #fff; overflow: hidden; transition: width .25s ease; }
+  .cmpx { --cols: 3; padding: clamp(28px, 4vw, 48px) 0; }
+  .cmpx__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 20px; margin-bottom: 14px; }
+  .cmpx__h { margin: 0; font: 600 clamp(22px, 2.4vw, 28px)/1.15 var(--sans); letter-spacing: -.015em; }
+  .cmpx__lead { margin: 4px 0 0; color: #6B6B6B; font-size: 13.5px; }
+  .cmpx__diff { flex: none; display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; cursor: pointer; user-select: none; white-space: nowrap; }
+  .cmpx__diff input { width: 17px; height: 17px; margin: 0; accent-color: var(--ink, #0E0E0E); }
+  .cmpx__rail { display: flex; gap: 8px; overflow-x: auto; margin: 0 calc(var(--gutter, 20px) * -1) 14px; padding: 2px var(--gutter, 20px) 6px; scroll-snap-type: x proximity; scrollbar-width: none; }
+  .cmpx__rail::-webkit-scrollbar { display: none; }
+  .cmpx__opt { flex: 0 0 auto; scroll-snap-align: start; display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 8px; width: 210px; padding: 6px 10px 6px 6px; border: 1px solid #E4E4E4; border-radius: 10px; background: #fff; text-align: left; font: inherit; color: var(--ink, #0E0E0E); cursor: pointer; transition: border-color .15s ease, box-shadow .15s ease; }
+  .cmpx__opt:hover { border-color: #BDBDBD; }
+  .cmpx__opt.is-on { border-color: var(--ink, #0E0E0E); box-shadow: inset 0 0 0 1px var(--ink, #0E0E0E); }
+  .cmpx__opt img { width: 44px; height: 44px; object-fit: contain; border-radius: 6px; background: #fff; }
+  .cmpx__ot { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12.5px; font-weight: 600; line-height: 1.25; }
+  .cmpx__os { display: block; margin-top: 2px; font-size: 11.5px; color: #6B6B6B; }
+  .cmpx__os em { font-style: normal; font-weight: 600; color: #1D7A3E; }
+  .cmpx__grid { border-radius: 14px; background: #fff; padding: 4px clamp(12px, 2vw, 24px) 8px; }
+  .cmpx__heads, .cmpx__vals, .cmpx__mini-in { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 clamp(12px, 2vw, 28px); }
+  .cmpx__heads { padding: 14px 0 12px; }
+  .cmpx__col { position: relative; min-width: 0; }
+  .cmpx__pic { display: block; width: 100%; max-width: 150px; aspect-ratio: 1; margin-bottom: 8px; }
   .cmpx__pic img { width: 100%; height: 100%; object-fit: contain; }
-  .cmpx__sel { position: relative; width: 100%; }
-  .cmpx__sel select { appearance: none; -webkit-appearance: none; width: 100%; min-height: 44px; padding: 8px 30px 8px 12px; border: 1px solid #DCDCDC; border-radius: 10px; background: #fff; font: 600 13.5px/1.3 var(--sans); color: var(--ink, #0E0E0E); text-overflow: ellipsis; cursor: pointer; }
-  .cmpx__sel::after { content: ""; position: absolute; right: 12px; top: 50%; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
-  .cmpx__sel select:focus-visible { outline: 2px solid var(--v-accent, #BF4512); outline-offset: 2px; }
-  .cmpx__this { font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--v-accent, #BF4512); min-height: 14px; }
-  .cmpx__row { padding: 18px 0; border-bottom: 1px solid #ECECEC; }
+  .cmpx__tag { display: block; min-height: 15px; margin-bottom: 4px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--v-accent, #BF4512); }
+  .cmpx__name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 13.5px; font-weight: 600; line-height: 1.3; color: var(--ink, #0E0E0E); }
+  .cmpx__brand { display: block; margin-top: 2px; font-size: 11.5px; color: #8A8A8A; text-transform: uppercase; letter-spacing: .03em; }
+  .cmpx__x { position: absolute; top: 0; right: 0; z-index: 1; display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 50%; background: #F1F1F1; color: #555; font-size: 16px; line-height: 1; cursor: pointer; }
+  .cmpx__x:hover { background: #E4E4E4; color: #111; }
+  .cmpx__add { display: grid; place-items: center; min-height: 150px; border: 1.5px dashed #D6D6D6; border-radius: 12px; color: #8A8A8A; font-size: 13px; text-align: center; padding: 10px; }
+  .cmpx__row { padding: 10px 0; border-top: 1px solid #F0F0F0; }
   .cmpx__row[hidden] { display: none; }
-  .cmpx__lbl { margin: 0 0 10px; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: #8A8A8A; text-align: center; }
-  .cmpx__row.is-diff .cmpx__lbl::after { content: "Differs"; margin-left: 8px; padding: 2px 6px; border-radius: 4px; background: #FFF1E8; color: var(--v-accent, #BF4512); font-size: 10.5px; letter-spacing: .03em; }
-  .cmpx__v { min-width: 0; text-align: center; font-size: 14.5px; line-height: 1.45; color: var(--ink, #0E0E0E); overflow-wrap: anywhere; }
-  .cmpx__v b { font-size: 17px; }
-  .cmpx__v s { display: block; color: #8A8A8A; font-size: 13px; }
-  .cmpx__v ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
-  .cmpx__v li { font-size: 13.5px; }
-  .cmpx__tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
-  .cmpx__tag { padding: 3px 8px; border-radius: 6px; background: #F3F3F3; font-size: 12.5px; }
-  .cmpx__na { color: #A3A3A3; }
+  .cmpx__lbl { margin: 0 0 4px; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: #9A9A9A; }
+  .cmpx__v { min-width: 0; font-size: 13.5px; line-height: 1.4; color: var(--ink, #0E0E0E); overflow-wrap: anywhere; }
+  .cmpx__v b { font-size: 15px; }
+  .cmpx__v s { margin-left: 4px; color: #8A8A8A; font-size: 12px; }
+  .cmpx__v small { display: block; color: #6B6B6B; font-size: 12px; line-height: 1.35; margin-top: 2px; }
+  .cmpx__save { display: inline-block; margin-top: 3px; padding: 1px 6px; border-radius: 4px; background: #E8F5EC; color: #1D7A3E; font-size: 11.5px; font-weight: 600; }
+  .cmpx__na { color: #B5B5B5; }
   .cmpx__stars { color: #F2A100; }
-  .cmpx__brand { display: block; margin: 0 auto; width: auto; height: 24px; max-width: 120px; object-fit: contain; }
-  .cmpx__go { margin-top: 4px; min-height: 40px; padding: 0 16px; font-size: 13px; }
+  .cmpx__go { display: inline-block; font-size: 13px; font-weight: 600; color: var(--ink, #0E0E0E); text-decoration: underline; text-underline-offset: 3px; }
+  .cmpx__mini { position: fixed; left: 0; right: 0; top: var(--hdr-h, 0px); z-index: 40; padding: 8px var(--gutter, 20px); background: rgba(255,255,255,.95); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid #ECECEC; transform: translateY(-110%); opacity: 0; pointer-events: none; transition: transform .2s ease, opacity .2s ease; }
+  .cmpx.is-stuck .cmpx__mini { transform: none; opacity: 1; }
+  .cmpx__mini-in { max-width: var(--page-w, 1280px); margin: 0 auto; }
+  .cmpx__mi { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 12px; font-weight: 600; line-height: 1.25; }
+  .cmpx__mi img { flex: 0 0 36px; width: 36px; height: 36px; object-fit: contain; }
+  .cmpx__mi span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   @media (max-width: 749px) {
     .cmpx { --cols: 2; }
-    .cmpx__pic { width: min(100%, 140px); }
-    .cmpx__v { font-size: 13.5px; }
-    .cmpx__v b { font-size: 15.5px; }
-    .cmpx__v li, .cmpx__tag { font-size: 12.5px; }
-    .cmpx__sel select { font-size: 13px; padding-left: 10px; }
+    .cmpx__top { align-items: flex-start; }
+    .cmpx__lead { font-size: 13px; }
+    .cmpx__pic { max-width: 110px; margin-inline: auto; }
+    .cmpx__opt { width: 190px; }
+    .cmpx__grid { padding-inline: 12px; }
   }
-  @media (prefers-reduced-motion: reduce) { .cmpx__pic, .cmpx__mini { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .cmpx__mini { transition: none; } }
 </style>
 <script>
 (function () {
@@ -195,67 +155,79 @@
   while (root && !root.hasAttribute('data-cmpx')) root = root.previousElementSibling;
   if (!root) return;
   var data; try { data = JSON.parse(root.querySelector('[data-cmpx-data]').textContent); } catch (e) { return; }
-  if (!data || data.length < 2) return;
-  var mini = root.querySelector('[data-cmpx-mini]'), heads = root.querySelector('[data-cmpx-heads]'), rowsEl = root.querySelector('[data-cmpx-rows]'), diff = root.querySelector('[data-cmpx-diff]');
+  if (!data || data.length < 2) { root.hidden = true; return; }
+  var rail = root.querySelector('[data-cmpx-rail]'), heads = root.querySelector('[data-cmpx-heads]'), rowsEl = root.querySelector('[data-cmpx-rows]'), mini = root.querySelector('[data-cmpx-mini]'), diff = root.querySelector('[data-cmpx-diff]');
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var rs = function (c) { return 'Rs ' + Math.round(c / 100).toLocaleString('en-US'); };
   var list = function (s) { return String(s || '').split('|').map(function (x) { return x.trim(); }).filter(Boolean); };
-  var short = function (d) { var t = String(d.t || ''), v = String(d.v || ''); return v && t.toLowerCase().indexOf(v.toLowerCase() + ' ') === 0 ? t.slice(v.length + 1) : t; };
-  var byH = {}; data.forEach(function (d) { byH[d.h] = d; });
+  var short = function (d) { var t = String(d.t || ''), v = String(d.v || ''); if (v && t.toLowerCase().indexOf(v.toLowerCase() + ' ') === 0) t = t.slice(v.length + 1); if (d.sz && d.sv) t = t.replace(/\s*-?\s*\d+\s*Servings/i, '') + ' · ' + d.sv + ' servings'; return t; };
+  var me = data[0], byH = {}; data.forEach(function (d) { byH[d.h] = d; });
+  var saving = function (d) { return me.ps && d.ps && d.h !== me.h && d.ps < me.ps ? Math.round((1 - d.ps / me.ps) * 100) : 0; };
+  var others = data.slice(1).sort(function (a, b) { return (a.ps || 1e12) - (b.ps || 1e12); });
   var cols = function () { return matchMedia('(max-width: 749px)').matches ? 2 : 3; };
-  /* defaults: this product + the next ones in the list (other brands come first) */
-  var picked = data.slice(0, 3).map(function (d) { return d.h; });
-  while (picked.length < 3) picked.push(data[picked.length % data.length].h);
-  var ROWS = [
-    ['Price', function (d) { return '<b>' + esc(d.pr) + '</b>' + (d.was ? '<s>' + esc(d.was) + '</s>' : ''); }, function (d) { return d.pr + d.was; }],
-    ['Per serving', function (d) { return d.ps ? esc(d.ps) : ''; }, function (d) { return d.ps; }],
-    ['Servings', function (d) { return d.sv ? esc(d.sv) : ''; }, function (d) { return d.sv; }],
-    ['Flavours', function (d) { var f = list(d.fl); if (!f.length) return ''; return '<div><b>' + f.length + '</b> ' + (f.length === 1 ? 'flavour' : 'flavours') + '</div><div class="cmpx__tags" style="margin-top:6px">' + f.slice(0, 8).map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + (f.length > 8 ? '<span class="cmpx__tag">+' + (f.length - 8) + ' more</span>' : '') + '</div>'; }, function (d) { return d.fl; }],
-    ['Key specs', function (d) { var k = (d.kb || []).filter(Boolean); return k.length ? '<ul>' + k.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; }, function (d) { return (d.kb || []).join('|'); }],
-    ['Ingredients', function (d) { var f = list(d.ing); return f.length ? '<div class="cmpx__tags">' + f.map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }, function (d) { return d.ing; }],
-    ['Dietary', function (d) { var f = list(d.diet); return f.length ? '<div class="cmpx__tags">' + f.map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }, function (d) { return d.diet; }],
-    ['Certified', function (d) { var f = list(d.cert); return f.length ? '<div class="cmpx__tags">' + f.map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }, function (d) { return d.cert; }],
-    ['Rating', function (d) { return d.rc > 0 ? '<span class="cmpx__stars" aria-hidden="true">★</span> ' + esc(d.rv) + ' <span class="cmpx__na">(' + d.rc + ')</span>' : ''; }, function (d) { return d.rc ? d.rv + '/' + d.rc : ''; }],
-    ['Brand', function (d) { return d.logo ? '<img class="cmpx__brand" src="' + esc(d.logo) + '" alt="' + esc(d.v) + '" loading="lazy" data-no-lift>' : esc(d.v); }, function (d) { return d.v; }]
-  ];
+  var picked = [me.h].concat(others.slice(0, 2).map(function (d) { return d.h; }));
+  function railHTML() {
+    var shown = picked.slice(0, cols());
+    rail.innerHTML = others.map(function (d) {
+      var on = shown.indexOf(d.h) > -1, sv = saving(d);
+      return '<button type="button" role="listitem" class="cmpx__opt' + (on ? ' is-on' : '') + '" data-h="' + esc(d.h) + '" aria-pressed="' + on + '">' +
+        (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" data-no-lift>' : '<span></span>') +
+        '<span><span class="cmpx__ot">' + esc(short(d)) + '</span><span class="cmpx__os">' + (d.ps ? rs(d.ps) + ' / serving' : rs(d.p)) + (sv ? ' · <em>save ' + sv + '%</em>' : '') + '</span></span></button>';
+    }).join('');
+  }
   function render() {
     var c = cols(); root.style.setProperty('--cols', c);
-    var cur = picked.slice(0, c).map(function (h) { return byH[h] || data[0]; });
+    var cur = picked.slice(0, c).map(function (h) { return byH[h]; });
+    while (cur.length < c) cur.push(null);
     heads.innerHTML = cur.map(function (d, i) {
-      var opts = data.map(function (o) { return '<option value="' + esc(o.h) + '"' + (o.h === d.h ? ' selected' : '') + '>' + esc(short(o)) + '</option>'; }).join('');
-      return '<div class="cmpx__col"><span class="cmpx__this">' + (d.h === data[0].h ? 'This product' : '') + '</span>' +
-        '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="180" height="180" data-v2-lift>' : '') + '</a>' +
-        '<label class="cmpx__sel"><span class="v-sr">Product ' + (i + 1) + '</span><select data-i="' + i + '">' + opts + '</select></label></div>';
+      if (!d) return '<div class="cmpx__col"><span class="cmpx__tag"></span><div class="cmpx__add">Tap a product above to add it here</div></div>';
+      return '<div class="cmpx__col">' + (d.h === me.h ? '<span class="cmpx__tag">This product</span>' : '<button type="button" class="cmpx__x" data-rm="' + i + '" aria-label="Remove ' + esc(short(d)) + '">×</button><span class="cmpx__tag"></span>') +
+        '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="150" height="150" data-v2-lift>' : '') + '</a>' +
+        '<a class="cmpx__name" href="' + esc(d.u) + '">' + esc(short(d)) + '</a><span class="cmpx__brand">' + esc(d.v) + '</span></div>';
     }).join('');
-    var only = diff && diff.checked, html = '';
+    var ROWS = [
+      ['Price', function (d) { return '<b>' + rs(d.p) + '</b>' + (d.was ? '<s>' + rs(d.was) + '</s>' : ''); }, function (d) { return d.p; }],
+      ['Per serving', function (d) { if (!d.ps) return ''; var sv = saving(d); return '<b>' + rs(d.ps) + '</b>' + (sv ? '<br><span class="cmpx__save">Save ' + sv + '%</span>' : ''); }, function (d) { return Math.round(d.ps / 100); }],
+      ['Servings', function (d) { return d.sv ? String(d.sv) : ''; }, function (d) { return d.sv; }],
+      ['Flavours', function (d) { var f = list(d.fl); if (!f.length) return ''; return '<b>' + f.length + '</b><small>' + esc(f.slice(0, 3).join(', ')) + (f.length > 3 ? ' +' + (f.length - 3) : '') + '</small>'; }, function (d) { return d.fl; }],
+      ['Key specs', function (d) { var k = (d.kb || []).filter(Boolean); return k.length ? k.map(function (x) { return '<small>' + esc(x) + '</small>'; }).join('') : ''; }, function (d) { return (d.kb || []).join('|'); }],
+      ['Rating', function (d) { return d.rc > 0 ? '<span class="cmpx__stars" aria-hidden="true">★</span> ' + esc(d.rv) + ' <span class="cmpx__na">(' + d.rc + ')</span>' : ''; }, function (d) { return d.rc ? d.rv : ''; }]
+    ];
+    var only = diff && diff.checked, real = cur.filter(Boolean), html = '';
     ROWS.forEach(function (r) {
-      var cells = cur.map(function (d) { return r[1](d); });
+      var cells = cur.map(function (d) { return d ? r[1](d) : ''; });
       if (cells.every(function (x) { return !x; })) return;
-      var keys = cur.map(function (d) { return String(r[2](d) || '').toLowerCase(); });
+      var keys = real.map(function (d) { return String(r[2](d) || '').toLowerCase(); });
       var differs = keys.some(function (k) { return k !== keys[0]; });
-      html += '<div class="cmpx__row' + (differs ? ' is-diff' : '') + '"' + (only && !differs ? ' hidden' : '') + '><p class="cmpx__lbl">' + r[0] + '</p><div class="cmpx__vals">' +
-        cells.map(function (x) { return '<div class="cmpx__v">' + (x || '<span class="cmpx__na">–</span>') + '</div>'; }).join('') + '</div></div>';
+      html += '<div class="cmpx__row"' + (only && !differs ? ' hidden' : '') + '><p class="cmpx__lbl">' + r[0] + '</p><div class="cmpx__vals">' +
+        cells.map(function (x, i) { return '<div class="cmpx__v">' + (x || (cur[i] ? '<span class="cmpx__na">–</span>' : '')) + '</div>'; }).join('') + '</div></div>';
     });
     html += '<div class="cmpx__row"><div class="cmpx__vals">' + cur.map(function (d) {
-      return '<div class="cmpx__v">' + (d.h === data[0].h ? '<span class="cmpx__na">You\'re viewing this</span>' : '<a class="v-btn v-btn--line cmpx__go" href="' + esc(d.u) + '"><span>View product</span></a>') + '</div>';
+      return '<div class="cmpx__v">' + (!d || d.h === me.h ? '' : '<a class="cmpx__go" href="' + esc(d.u) + '">View product</a>') + '</div>';
     }).join('') + '</div></div>';
     rowsEl.innerHTML = html;
-    if (mini) mini.innerHTML = '<div class="cmpx__mini-in">' + cur.map(function (d) { return '<div class="cmpx__mi">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" data-no-lift>' : '') + '<span>' + esc(short(d)) + '</span></div>'; }).join('') + '</div>';
+    if (mini) mini.innerHTML = '<div class="cmpx__mini-in">' + cur.map(function (d) { return d ? '<div class="cmpx__mi">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" data-no-lift>' : '') + '<span>' + esc(short(d)) + '</span></div>' : '<div></div>'; }).join('') + '</div>';
+    railHTML();
   }
-  heads.addEventListener('change', function (e) {
-    var s = e.target.closest('select'); if (!s) return;
-    var i = +s.dataset.i, h = s.value, j = picked.indexOf(h);
-    if (j > -1 && j !== i) picked[j] = picked[i]; /* picking one already shown swaps the two */
-    picked[i] = h; render();
+  rail.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-h]'); if (!b) return;
+    var h = b.dataset.h, c = cols(), at = picked.slice(0, c).indexOf(h);
+    if (at > 0) picked.splice(at, 1);
+    else if (at === -1) { if (picked.length < c) picked.push(h); else picked[c - 1] = h; }
+    render();
+  });
+  heads.addEventListener('click', function (e) {
+    var x = e.target.closest('[data-rm]'); if (!x) return;
+    picked.splice(+x.dataset.rm, 1); render();
   });
   if (diff) diff.addEventListener('change', render);
   var lastC = cols(); addEventListener('resize', function () { var c = cols(); if (c !== lastC) { lastC = c; render(); } });
-  /* compact sticky header while scrolling through the rows */
-  var hdr = document.querySelector('.hdr, header');
+  var hdr = document.querySelector('.hdr');
   function stick() {
     var hh = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
     root.style.setProperty('--hdr-h', hh + 'px');
     var r = heads.getBoundingClientRect(), g = rowsEl.getBoundingClientRect();
-    root.classList.toggle('is-stuck', r.bottom < hh && g.bottom > hh + 120);
+    root.classList.toggle('is-stuck', r.bottom < hh && g.bottom > hh + 100);
   }
   addEventListener('scroll', stick, { passive: true });
   render(); stick();

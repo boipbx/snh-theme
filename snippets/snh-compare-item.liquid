@@ -1,0 +1,87 @@
+{%- comment -%}
+  One compare entry as JSON (used by snh-compare). p = product, v = variant (optional: else the variant with the
+  lowest price per serving), sz = true when this entry is "this product in another size".
+{%- endcomment -%}
+{%- liquid
+  assign best_v = v
+  assign best_ps = 0
+  assign best_sv = 0
+  if best_v == blank
+    for vv in p.variants
+      if vv.available == false
+        continue
+      endif
+      assign s = 0
+      for ov in vv.options
+        if ov contains 'Serving'
+          assign s = ov | split: ' ' | first | plus: 0
+        endif
+      endfor
+      if s > 0
+        assign pps = vv.price | divided_by: s
+        if best_ps == 0 or pps < best_ps
+          assign best_ps = pps
+          assign best_v = vv
+          assign best_sv = s
+        endif
+      endif
+    endfor
+    if best_v == blank
+      assign best_v = p.selected_or_first_available_variant
+    endif
+  endif
+  if best_sv == 0
+    for ov in best_v.options
+      if ov contains 'Serving'
+        assign best_sv = ov | split: ' ' | first | plus: 0
+      endif
+    endfor
+  endif
+  if best_sv == 0 and p.title contains ' Servings'
+    assign t = p.title | split: ' Servings' | first | split: ' ' | last | plus: 0
+    if t > 0
+      assign best_sv = t
+    endif
+  endif
+  capture was
+    render 'snh-v2-retail', product: p
+  endcapture
+  assign was = was | strip | plus: 0
+  assign price = best_v.price | default: p.price
+  if best_v.compare_at_price > price
+    assign was = best_v.compare_at_price
+  endif
+  assign ps = 0
+  if best_sv > 0
+    assign ps = price | divided_by: best_sv
+  endif
+  assign fls = ''
+  for o in p.options_with_values
+    assign on = o.name | downcase
+    if on contains 'flav'
+      assign fls = o.values | join: '|'
+    endif
+  endfor
+  assign rv = 0
+  assign rc = 0
+  assign jb = p.metafields.judgeme.badge | default: ''
+  if jb contains 'data-average-rating'
+    assign rv = jb | split: "data-average-rating='" | last | split: "'" | first | plus: 0
+    assign rc = jb | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
+  endif
+  if rc == 0
+    assign rc = p.metafields.reviews.rating_count.value | plus: 0
+    assign rv = p.metafields.reviews.rating.value.rating | default: 0 | plus: 0
+  endif
+  assign kb = p.metafields.custom.key_benefits.value | default: '' | strip_html | strip | newline_to_br | split: '<br />'
+  assign img = best_v.featured_image | default: p.featured_image
+  assign url = p.url
+  if sz
+    assign url = best_v.url
+  endif
+-%}
+{"h":{% if sz %}{{ p.handle | append: '~' | append: best_v.id | json }}{% else %}{{ p.handle | json }}{% endif %},"t":{{ p.title | json }},"u":{{ url | json }},"v":{{ p.vendor | json }},"sz":{% if sz %}true{% else %}false{% endif %},
+"img":{% if img %}{{ img | image_url: width: 360 | json }}{% else %}""{% endif %},
+"p":{{ price }},"was":{% if was > price %}{{ was }}{% else %}0{% endif %},"ps":{{ ps }},"sv":{{ best_sv }},
+"fl":{{ fls | json }},"rv":{{ rv | round: 1 | json }},"rc":{{ rc }},
+"kb":[{%- for l in kb limit: 2 -%}{%- assign l = l | strip -%}{%- if l != blank -%}{{ l | json }},{%- endif -%}{%- endfor -%}""]}
