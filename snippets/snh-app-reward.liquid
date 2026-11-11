@@ -37,6 +37,16 @@
         <a class="v-btn rwd__btn" href="#rewards" data-go="rewards" data-redeem-open><span>Redeem {% render 'snh-num', n: redeem_from %} points</span></a>
       {%- else -%}
         <p class="rwd__p">You're {% render 'snh-num', n: m[15] %} points from your first cash-off reward.</p>
+        {%- comment -%} 11 Nov: what that means in rupees — spend needed at the member's earn rate, and per month over 3 months {%- endcomment -%}
+        {%- liquid
+          assign g_rate = m[7] | plus: 0
+          if g_rate < 1
+            assign g_rate = settings.snh_rate_bronze | default: 3
+          endif
+          assign g_spend = m[15] | plus: 0 | times: 100 | divided_by: g_rate | divided_by: 100.0 | ceil | times: 100
+          assign g_month = g_spend | divided_by: 300.0 | ceil | times: 100
+        -%}
+        {%- if g_spend > 0 -%}<p class="rwd__guide">That's about <b>{{ g_spend | times: 100 | money_without_trailing_zeros }}</b> of shopping at your {{ g_rate }}% rate · <b>{{ g_month | times: 100 | money_without_trailing_zeros }} a month</b> gets you there in 3 months.</p>{%- endif -%}
         <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
       {%- endif -%}
     {%- endif -%}

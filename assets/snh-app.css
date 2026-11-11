@@ -987,3 +987,20 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
 /* 11 Nov: account promo / "Picked for you" product shots are no longer cropped huge (cover): the whole product shows,
    trimmed and centred by the shared image fit (data-v2-lift) */
 .elpromo__img img[data-v2-lift] { object-fit: contain; mix-blend-mode: multiply; --lift-fill: .8; }
+
+/* 11 Nov (phones): a calmer account overview — about half the scrolling. One set of product suggestions ("Picked for
+   you", 2 products), the latest activity only, a short profile prompt, the workout card without the XP/streak tiles,
+   and the points panel says how much to spend for the next reward */
+.rwd__guide { margin: 6px 0 12px; font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, .86); }
+.rwd__guide b { color: #fff; font-weight: 600; }
+@media (max-width: 749px) {
+  .app__view .elpromos, .app__view .snh-reco--app { display: none; }
+  .app__view .feed > li:nth-child(n+2) { display: none; }
+  .app__view .prof ul, .app__view .prof .prof__list, .app__view .prof li { display: none; }
+  .app__view .prof { display: flex; align-items: center; gap: 14px; padding-block: 14px; }
+  .app__view .prof .prof__ring { flex: none; width: 56px; height: 56px; }
+  .app__view .prof__body > p { margin: 2px 0 0; font-size: 13px; }
+  .app__view .wko .wkt__c--xp, .app__view .wko .wkt__c:nth-child(2) { display: none; }
+  .app__view .app__grid > *:nth-child(n+3) { display: none; }
+  .app__view > section, .app__view > aside { margin-block: 12px; }
+}
