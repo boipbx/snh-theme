@@ -98,7 +98,7 @@
               {%- assign key = ',' | append: media.id | append: ',' -%}
               {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
               <button type="button" class="sp-thumb" role="tab" data-sp-thumb="{{ gi }}" aria-label="Image {{ gi | plus: 1 }} of {{ gal_count }}" aria-selected="{% if media.id == gal_active.id %}true{% else %}false{% endif %}">
-                {{- media.preview_image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-v2-lift: '' -}}
+                {{- media.preview_image | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-v2-lift: '' -}}
               </button>
               {%- assign gi = gi | plus: 1 -%}
             {%- endfor -%}

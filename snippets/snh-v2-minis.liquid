@@ -7,7 +7,7 @@
     {%- for p in collection.products limit: limit -%}
       <li><a class="mini" href="{{ p.url }}">
         {%- if p.featured_image -%}
-          {{- p.featured_image | image_url: width: 160 | image_tag: width: 64, height: 64, loading: 'lazy', alt: '' -}}
+          {{- p.featured_image | image_url: width: 480 | image_tag: width: 240, height: 240, loading: 'lazy', alt: '', widths: '240,360,480', sizes: '(max-width: 749px) 40vw, 200px', data-v2-lift: '' -}}
         {%- else -%}<span class="mini__ph"></span>{%- endif -%}
         <span class="mini__t">{% render 'snh-v2-title', product: p %}</span>
         {%- comment -%} 11 Nov: was-price + saving made visible (same retail rule as the product cards) {%- endcomment -%}
