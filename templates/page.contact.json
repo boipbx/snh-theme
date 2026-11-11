@@ -18,7 +18,19 @@
         "heading": "Build your *career* with SNH",
         "text": "<p>Explore current opportunities at Sports Nutrition Hub and find a role where you can grow, contribute and make an impact.</p>",
         "cta": "See open roles",
-        "link": "/pages/work-with-us"
+        "link": "#open-roles"
+      }
+    },
+    "open_roles": {
+      "type": "custom-html",
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": true,
+        "html": "<section class=\"v2 snh-roles\" id=\"open-roles\" aria-labelledby=\"open-roles-h\">\n  <div class=\"v-wrap\">\n    <p class=\"eyebrow\">Open roles</p>\n    <h2 class=\"v-h2\" id=\"open-roles-h\">Apply for a role at SNH</h2>\n    <p class=\"snh-roles__lead\">Pick a role below to read the details and send your CV. Nothing that fits right now? Message us on WhatsApp and we will keep you in mind.</p>\n    <div id=\"rooster\"><p class=\"snh-roles__load\">Loading open roles…</p></div>\n  </div>\n</section>\n<script src=\"https://roostercdn.s3-ap-southeast-1.amazonaws.com/rooster.min.js\" defer></script>\n<script>window.addEventListener('load',function(){if(window.Rooster){var r=new Rooster('#rooster',152788);r.setup();}});</script>\n<style>\n.snh-roles{padding:clamp(40px,6vw,72px) 0;background:#fff;scroll-margin-top:120px}\n.snh-roles .v-h2{margin:6px 0 10px}\n.snh-roles__lead{max-width:640px;margin:0 0 24px;font-size:15px;line-height:1.6;color:var(--grey-1,#4a4a4a)}\n.snh-roles__load{color:var(--grey-2,#6b6b6b);font-size:14px}\n#rooster .rooster-search{width:100%;box-sizing:border-box;height:48px;padding:0 16px;margin-bottom:16px;border:1px solid #DEDEDE;border-radius:999px;background:#fff;font-size:15px}\n#rooster .rooster-department-header{margin:0;padding:28px 0 4px;color:var(--v-accent,#BF4512);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}\n#rooster .rooster-department-header h3{margin:0;font:inherit}\n#rooster .rooster-job{padding:18px 0;border-bottom:1px solid #EEE}\n#rooster .rooster-job a{color:var(--ink,#0E0E0E);text-decoration:none}\n#rooster .rooster-job h3{margin:0 0 6px;font-size:18px;font-weight:600}\n#rooster .rooster-job a:hover h3{color:var(--v-accent,#BF4512)}\n#rooster .rooster-job h4{margin:0;font-size:14px;font-weight:500}\n#rooster .rooster-job .data-row{padding:0 0 4px;font-size:14px;color:var(--grey-2,#6b6b6b)}\n#rooster .rooster-job .inline-value{margin-right:10px;padding-right:10px}\n#rooster .rooster-job .inline-value:not(:last-child){border-right:1px solid #DDD}\n</style>",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
       }
     },
     "contact": {
@@ -38,6 +50,7 @@
   },
   "order": [
     "custom_html_GWYpk9",
+    "open_roles",
     "contact",
     "faq"
   ]
