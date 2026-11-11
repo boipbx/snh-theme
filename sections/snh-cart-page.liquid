@@ -82,7 +82,7 @@
           <div class="scp__card" data-cart-foot{% if cart.item_count == 0 %} hidden{% endif %}></div>
           {%- if customer -%}
             <div class="scp__card scp__elite">
-              <p class="scp__h">SNH Elite</p>
+              <p class="scp__h">{% render 'snh-elite-mark' %}</p>
               <p class="app__muted">Points and tier progress for this order are in the summary above.</p>
               <a class="v-link" href="{{ routes.account_url }}#goals">Your SNH plan</a>
             </div>

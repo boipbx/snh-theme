@@ -84,7 +84,7 @@
       <aside class="ord__side">
         {%- unless order.cancelled -%}
           <section class="acc__card ord__pts" data-tier="{{ m[0] }}" aria-labelledby="ord-pts">
-            <h2 class="acc__h3" id="ord-pts">SNH Elite</h2>
+            <h2 class="acc__h3" id="ord-pts">{% render 'snh-elite-mark' %}</h2>
             <p>This order earns about <b>{% render 'snh-num', n: earn %} points</b> at your {{ m[1] }} rate ({{ m[7] }}%).</p>
             {%- if order.financial_status == 'paid' or order.financial_status == 'partially_refunded' -%}
               <p class="acc__muted">Points are credited to your balance shortly after a paid order{% if order.total_refunded_amount > 0 %}; refunded amounts don't earn{% endif %}.</p>

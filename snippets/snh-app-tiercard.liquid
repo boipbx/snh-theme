@@ -10,7 +10,7 @@
 <section class="metal" data-tier="{{ m[0] }}" aria-label="SNH Elite membership card">
   <i class="metal__sheen" aria-hidden="true"></i>
   <div class="metal__top">
-    <span class="metal__brand">SNH <em>Elite</em></span>
+    <span class="metal__brand">{% render 'snh-elite-mark', tone: 'current' %}</span>
     <span class="metal__no">{{ m[1] | upcase }} · No. {{ no }}</span>
   </div>
   <div class="metal__who">

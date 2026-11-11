@@ -319,20 +319,22 @@
 @media (min-width: 1024px) { .sp-title { font-size: 33px; } }
 
 /* 11 Nov: make "there are more photos" obvious, like the old product page — an orange progress line under the photo
-   (phones and desktop), a "1 / 8" counter on the photo, and on phones a strip of thumbnails under it */
+   (phones and desktop), a "1 / 8" counter on the photo, and on phones the thumbnails float over its left edge */
 .sp-count { display: none; }
 .sp-gal:not(.sp-gal--single) .sp-count { display: inline-flex; position: absolute; top: 12px; right: 12px; z-index: 2; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; background: rgba(14, 14, 14, .72); color: #fff; font: 600 12px/1 var(--sans, system-ui); font-variant-numeric: tabular-nums; letter-spacing: .02em; pointer-events: none; }
 .sp-gal:not(.sp-gal--single) .sp-progress { display: block; position: static; height: 4px; margin: 12px 0 0; border-radius: 4px; background: rgba(12, 12, 13, .1); overflow: hidden; }
 .sp-progress span { display: block; width: calc(100% / var(--n)); height: 100%; background: var(--sp-accent, #BF4512); border-radius: 4px; transform: translateX(calc(var(--i, 0) * 100%)); transition: transform 200ms ease; }
 @media (max-width: 1023px) {
-  .sp-gal:not(.sp-gal--single) { display: flex; flex-direction: column; }
-  .sp-gal:not(.sp-gal--single) .sp-stage { order: 1; }
+  /* 11 Nov: the thumbnails float as a column over the left edge of the photo (like the old product page), so there's
+     no extra row to scroll past; the column scrolls when there are many photos */
+  .sp-gal:not(.sp-gal--single) { position: relative; }
   .sp-gal:not(.sp-gal--single) .sp-progress { margin: 10px var(--sp-gutter) 0; }
-  .sp-gal:not(.sp-gal--single) .sp-rail { order: 2; display: flex; gap: 8px; margin-top: 10px; padding: 0 var(--sp-gutter) 2px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
+  .sp-gal:not(.sp-gal--single) .sp-rail { position: absolute; z-index: 3; top: 12px; left: calc(var(--sp-gutter) * .6); display: flex; flex-direction: column; gap: 8px;
+    width: 52px; max-height: calc(100vw - 24px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; padding: 1px; }
   .sp-rail::-webkit-scrollbar { display: none; }
-  .sp-rail .sp-thumb { flex: 0 0 56px; box-sizing: border-box; width: 56px; height: 56px; padding: 3px; border: 2px solid transparent; border-radius: 10px; background: var(--sp-cream); scroll-snap-align: start; }
+  .sp-rail .sp-thumb { flex: 0 0 50px; box-sizing: border-box; width: 50px; height: 50px; padding: 2px; border: 1.5px solid rgba(12, 12, 13, .08); border-radius: 10px; background: rgba(255, 255, 255, .92); box-shadow: 0 2px 8px rgba(14, 14, 14, .08); }
   .sp-rail .sp-thumb img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-  .sp-rail .sp-thumb[aria-selected="true"] { border-color: var(--sp-accent, #BF4512); }
+  .sp-rail .sp-thumb[aria-selected="true"] { border-color: var(--sp-accent, #BF4512); border-width: 2px; }
 }
 @media (min-width: 1024px) {
   .sp-thumb[aria-selected="true"] { border-color: var(--sp-accent, #BF4512); }

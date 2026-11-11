@@ -1,0 +1,7 @@
+{%- comment -%}
+  11 Nov: the SNH Elite lockup — the real SNH logo (assets/snh-logo-mark.png, brand orange) + "Elite" in the italic
+  serif — used wherever "SNH Elite" is a label (points strips, cart, product page, account). Scales with the text it
+  sits in (1em high). tone: 'current' = logo + Elite in the text colour (metal tier cards) · (blank) = orange logo + ink "Elite" for light backgrounds · 'dark' = orange logo + cream
+  "Elite" for dark backgrounds · 'white' = all white (on orange). class: extra classes.
+{%- endcomment -%}
+<span class="eltm{% if tone != blank %} eltm--{{ tone }}{% endif %}{% if class != blank %} {{ class }}{% endif %}" role="img" aria-label="SNH Elite"><i class="eltm__logo" aria-hidden="true"></i><em class="eltm__e" aria-hidden="true">Elite</em></span>

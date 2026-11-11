@@ -94,7 +94,7 @@
           {%- if first != blank -%}
             {%- assign pts = first.price | times: points_rate | divided_by: 10000.0 | round | times: 100 -%}
             <a class="hs__pts" href="{% if customer %}{{ routes.account_url }}#rewards{% else %}{{ routes.account_login_url }}{% endif %}" data-hs-pts>
-              <span class="hs__pts-tag">SNH Elite</span>
+              <span class="hs__pts-tag">{% render 'snh-elite-mark', tone: 'dark' %}</span>
               <span class="hs__pts-t">{% if customer %}You'll earn{% else %}Sign in to earn{% endif %} <strong data-hs-earn>{{ pts | money_without_trailing_zeros }}</strong> back in points{% if customer %} ({{ points_rate }}%){% endif %}</span>
             </a>
           {%- endif -%}

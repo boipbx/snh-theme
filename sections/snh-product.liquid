@@ -317,7 +317,7 @@
             {%- when 'elite' -%}
               <button type="button" class="sp-b sp-elite" data-sp-modal="elite" {{ block.shopify_attributes }}>
                 {%- render 'snh-product-icon', name: 'zap' -%}
-                <span><b>SNH Elite</b> · earn up to {{ rate_hi }}% back in points</span>
+                <span>{% render 'snh-elite-mark' %} · earn up to {{ rate_hi }}% back in points</span>
                 <span class="sp-elite__cta">{% if customer %}Your points{% else %}Join free{% endif %}</span>
               </button>
 

@@ -42,7 +42,7 @@
 <div class="v2 acp{% if mock %} acp--static{% endif %}" id="{{ id }}" role="dialog" aria-modal="{% if mock %}false{% else %}true{% endif %}" aria-labelledby="{{ id }}-t"{% unless mock %} hidden{% endunless %} data-acp>
   <div class="acp__sheet">
     <div class="acp__top">
-      <span class="acp__brand">SNH <em>Elite</em></span>
+      <span class="acp__brand">{% render 'snh-elite-mark', tone: 'dark' %}</span>
       <button class="icon-btn acp__close" type="button" aria-label="Close account panel" data-acp-close>{% render 'snh-v2-icon', name: 'close' %}</button>
     </div>
     <div class="acp__body">
