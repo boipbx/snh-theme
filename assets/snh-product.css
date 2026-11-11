@@ -346,3 +346,18 @@
 .sp-slide img[data-v2-lift] { --lift-fill: .84; }
 .sp-thumb img[data-v2-lift], .sp-sticky__img img[data-v2-lift] { --lift-fill: .9; }
 .sp-sticky__img { overflow: hidden; }
+
+/* 11 Nov: no cream shade behind the product photos — the gallery, thumbnails and sticky-bar image sit on white
+   (a photo with its own grey studio backdrop still tints its slide to match, via assets/snh-v2.js lift) */
+.sp-slides, .sp-slide { background: #fff; }
+.sp-thumb, .sp-rail .sp-thumb, .sp-sticky__img { background: #fff; }
+.sp-gal { background: #fff; }
+@media (min-width: 1024px) { .sp-slides { border: 1px solid rgba(12, 12, 13, .06); } }
+
+/* 11 Nov: brand logo instead of the brand name (links to the brand collection) + the same logo floating on the photo */
+.sp-brandlogo { display: inline-flex; align-items: center; }
+.sp-brandlogo img { width: auto; height: 26px; max-width: 160px; object-fit: contain; }
+.sp-floatbrand { position: absolute; z-index: 3; right: 12px; bottom: 26px; display: inline-flex; align-items: center; height: 38px; padding: 0 12px; border-radius: 12px; background: rgba(255, 255, 255, .94); box-shadow: 0 4px 16px rgba(14, 14, 14, .12); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform 200ms ease, box-shadow 200ms ease; }
+.sp-floatbrand img { width: auto; height: 20px; max-width: 110px; object-fit: contain; }
+.sp-floatbrand:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(14, 14, 14, .16); }
+@media (min-width: 1024px) { .sp-floatbrand { right: 16px; bottom: 32px; height: 44px; padding: 0 14px; } .sp-floatbrand img { height: 24px; max-width: 130px; } }

@@ -1,0 +1,21 @@
+{%- comment -%}
+  11 Nov: the brand's logo URL (same lookup as the collection brand rail, snippets/facets-vertical): Files
+  <brand>-logo.webp, else <brand>-logo.png, else the brand collection's image; blank when none. vendor: the brand name,
+  width: px (default 240). Capture it: {%- capture u -%}{% render 'snh-brand-logo-url', vendor: v %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign bh = vendor | handleize
+  assign w = width | default: 240
+  assign webp = bh | append: '-logo.webp'
+  assign png = bh | append: '-logo.png'
+  if images[webp] != blank
+    echo images[webp] | image_url: width: w
+  elsif images[png] != blank
+    echo images[png] | image_url: width: w
+  else
+    assign bcol = collections[bh]
+    if bcol.image != blank
+      echo bcol.image | image_url: width: w
+    endif
+  endif
+-%}

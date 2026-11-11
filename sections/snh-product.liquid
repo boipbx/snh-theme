@@ -125,6 +125,14 @@
             {%- endfor -%}
             {%- if gal_count == 0 -%}<li class="sp-slide">{{ 'product-1' | placeholder_svg_tag }}</li>{%- endif -%}
           </ul>
+          {%- comment -%} 11 Nov: the brand logo floats on the photo and opens the brand's collection {%- endcomment -%}
+          {%- capture fl_url -%}{% render 'snh-brand-logo-url', vendor: product.vendor, width: 300 %}{%- endcapture -%}
+          {%- assign fl_url = fl_url | strip -%}
+          {%- if fl_url != blank -%}
+            {%- assign fl_h = product.vendor | handleize -%}{%- assign fl_col = collections[fl_h] -%}
+            {%- assign fl_href = product.vendor | url_for_vendor -%}{%- if fl_col.url != blank -%}{%- assign fl_href = fl_col.url -%}{%- endif -%}
+            <a class="sp-floatbrand" href="{{ fl_href }}" aria-label="Shop all {{ product.vendor | escape }}"><img src="{{ fl_url }}" alt="" loading="lazy" data-no-lift></a>
+          {%- endif -%}
           {%- if gal_count > 1 -%}
             <div class="sp-progress" aria-hidden="true"><span data-sp-progress style="--n: {{ gal_count }}"></span></div>
             <span class="sp-count" data-sp-count aria-hidden="true">1 / {{ gal_count }}</span>
@@ -145,8 +153,16 @@
 
             {%- when 'vendor' -%}
               <div class="sp-b sp-vendor" data-g="head" {{ block.shopify_attributes }}>
+                {%- comment -%} 11 Nov: the brand's own logo (Files <brand>-logo / brand collection image), linking to the
+                  brand's collection; the name as text only when no logo exists {%- endcomment -%}
+                {%- capture bl_url -%}{% render 'snh-brand-logo-url', vendor: product.vendor, width: 360 %}{%- endcapture -%}
+                {%- assign bl_url = bl_url | strip -%}
+                {%- assign bl_h = product.vendor | handleize -%}{%- assign bl_col = collections[bl_h] -%}
+                {%- assign bl_href = product.vendor | url_for_vendor -%}{%- if bl_col.url != blank -%}{%- assign bl_href = bl_col.url -%}{%- endif -%}
                 {%- if block.settings.logo != blank -%}
-                  <a class="sp-brandlogo" href="{{ product.vendor | url_for_vendor }}">{{ block.settings.logo | image_url: height: 40 | image_tag: height: 20, alt: product.vendor }}</a>
+                  <a class="sp-brandlogo" href="{{ bl_href }}">{{ block.settings.logo | image_url: height: 60 | image_tag: height: 26, alt: product.vendor }}</a>
+                {%- elsif bl_url != blank -%}
+                  <a class="sp-brandlogo" href="{{ bl_href }}" aria-label="Shop all {{ product.vendor | escape }}"><img src="{{ bl_url }}" alt="{{ product.vendor | escape }}" height="26" loading="eager" data-no-lift></a>
                 {%- else -%}
                   <a class="sp-eyebrow" href="{{ product.vendor | url_for_vendor }}">{{ product.vendor | escape }}</a>
                 {%- endif -%}

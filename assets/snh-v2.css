@@ -2594,9 +2594,9 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 .hs__img img[data-v2-lift] { --lift-fill: .86; }
 
 /* 11 Nov: SNH Elite lockup (snippets/snh-elite-mark): the SNH logo in brand orange + "Elite" in the italic serif */
-.eltm { --eltm-logo: #F65922; --eltm-e: currentColor; display: inline-flex; align-items: center; gap: .3em; vertical-align: -.12em; line-height: 1; white-space: nowrap; text-transform: none; letter-spacing: 0; }
+.eltm { --eltm-logo: #F65922; --eltm-e: currentColor; display: inline-flex; align-items: baseline; gap: .28em; vertical-align: -.12em; line-height: 1; white-space: nowrap; text-transform: none; letter-spacing: 0; }
 .eltm__logo { display: block; height: .82em; aspect-ratio: 600 / 175; background: var(--eltm-logo); -webkit-mask: var(--snh-logo) center / contain no-repeat; mask: var(--snh-logo) center / contain no-repeat; }
-.eltm__e { font-family: var(--serif, 'Instrument Serif', serif); font-style: italic; font-weight: 400; font-size: 1.18em; line-height: 1; color: var(--eltm-e); }
+.eltm__e { font-family: var(--serif, 'Instrument Serif', serif); font-style: italic; font-weight: 400; font-size: .92em; line-height: 1; letter-spacing: .01em; color: var(--eltm-e); opacity: .92; }
 .eltm--dark { --eltm-e: #F2C9A6; }
 .eltm--white { --eltm-logo: #FFFFFF; --eltm-e: #FFFFFF; }
 .eltm--current { --eltm-logo: currentColor; --eltm-e: currentColor; }
