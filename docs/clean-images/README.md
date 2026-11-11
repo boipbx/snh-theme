@@ -17,3 +17,10 @@ shows the new (framed) image again until the clean copy is regenerated. Nothing 
    (frame crop → AI background removal, isnet-general-use → trim → 86% fill on 700×700).
 3. Check the contact sheet; put any bad result's handle in img/reject.txt (that product keeps its normal image).
 4. `python3 publish.py` writes the webps + list into the theme; commit and push.
+
+## Product page gallery (Files)
+Every gallery image gets a storefront-only copy without the SNH frame (`proc_pdp.py`): pack shots on a plain backdrop
+are cut out (transparent, evenly sized); lifestyle / infographic images are only cropped out of the frame and the
+SNH mark painted out. Images without a frame are left alone. Copies are uploaded to Shopify **Files** as
+`pdp-<media id>.webp` (`upload_pdp.py`, needs the app's read_files + write_files scopes). `sections/snh-product.liquid`
+uses `images['pdp-<media id>.webp']` when it exists; otherwise the original image shows. Product media is not changed.
