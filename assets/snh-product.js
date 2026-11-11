@@ -21,15 +21,20 @@
     var thumbs = Array.prototype.slice.call(root.querySelectorAll('[data-sp-thumb]'));
     var bar = root.querySelector('[data-sp-progress]');
     var rail = root.querySelector('.sp-rail');
+    var count = root.querySelector('[data-sp-count]');
     var current = 0;
 
     function mark(i) {
       current = i;
       thumbs.forEach(function (t, k) { t.setAttribute('aria-selected', String(k === i)); });
       if (bar) bar.style.setProperty('--i', i);
+      if (count) count.textContent = (i + 1) + ' / ' + slides.length;
       var t = thumbs[i];
-      if (t && rail && rail.scrollHeight > rail.clientHeight) {
+      if (t && rail && rail.scrollHeight > rail.clientHeight + 2) {
         rail.scrollTo({ top: Math.max(0, t.offsetTop - rail.clientHeight / 2 + t.offsetHeight / 2), behavior: 'smooth' });
+      } else if (t && rail && rail.scrollWidth > rail.clientWidth + 2) {
+        // phones (11 Nov): the thumbnail strip runs under the photo; keep the active one in view
+        rail.scrollTo({ left: Math.max(0, t.offsetLeft - rail.offsetLeft - rail.clientWidth / 2 + t.offsetWidth / 2), behavior: 'smooth' });
       }
     }
     function go(i, smooth) {
