@@ -536,22 +536,39 @@
       if (q.length < 2) { empty.hidden = false; res.hidden = true; return; }
       if (sCtl && sCtl.abort) sCtl.abort();
       sCtl = typeof AbortController === 'function' ? new AbortController() : null;
-      var url = shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q) +
-        '&resources[type]=product,collection,article&resources[limit]=6&resources[options][unavailable_products]=last&resources[options][fields]=title,product_type,variants.title,vendor,tag';
-      fetch(url, sCtl ? { signal: sCtl.signal } : {}).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
+      /* 11 Nov: one mixed request shares its limit across types (creatine showed 2 products), so ask for
+         10 of EACH type, and run a second "<q> bundle" query so matching bundles/stacks show too (bundles carry
+         goal tags like Creatine / Pre-Workout). Same approach as the previous theme's search. */
+      var F = '&resources[options][unavailable_products]=last&resources[options][fields]=title,product_type,vendor,tag';
+      var url = shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q) + '&resources[type]=product,collection,article&resources[limit]=10&resources[limit_scope]=each' + F;
+      var wantB = !/\b(bundle|stack|pack)s?\b/i.test(q);
+      var burl = shopRoot + 'search/suggest.json?q=' + encodeURIComponent(q + ' bundle') + '&resources[type]=product&resources[limit]=10' + F;
+      var opt = sCtl ? { signal: sCtl.signal } : {};
+      var getJ = function (u) { return fetch(u, opt).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); };
+      Promise.all([getJ(url), wantB ? getJ(burl).catch(function () { return null; }) : null]).then(function (both) {
+        var j = both[0], jb = both[1];
         var R = (j.resources && j.resources.results) || {};
-        var P = R.products || [], C = (R.collections || []).slice(0, 5), A = (R.articles || []).slice(0, 3);
-        srch.querySelector('[data-r="p"]').innerHTML = P.length ? P.map(function (p) {
+        var isB = function (p) { return /bundle/i.test(p.type || ''); };
+        var prods = R.products || [];
+        var Bx = ((jb && jb.resources && jb.resources.results.products) || []).filter(isB);
+        var seen = {}; var B = prods.filter(isB).concat(Bx).filter(function (p) { if (seen[p.id]) return false; seen[p.id] = 1; return true; }).slice(0, 6);
+        var P = prods.filter(function (p) { return !isB(p); });
+        if (!P.length && !wantB) { P = prods; B = []; }
+        var C = (R.collections || []).slice(0, 5), A = (R.articles || []).slice(0, 3);
+        var row = function (p) {
           var im = p.featured_image && p.featured_image.url || p.image;
-          return '<li><a class="mini" href="' + esc(p.url) + '">' + (im ? '<img src="' + esc(sized(im, 160)) + '" alt="" width="64" height="64">' : '<span class="mini__ph"></span>') +
+          return '<li><a class="mini" href="' + esc(p.url) + '">' + (im ? '<img src="' + esc(sized(im, 240)) + '" alt="" width="64" height="64" data-v2-lift>' : '<span class="mini__ph"></span>') +
             '<span class="mini__t">' + esc(tidy(p.title, p.vendor)) + '</span><span class="mini__p">' + rs(Number(p.price)) + '</span></a></li>';
-        }).join('') : '<li class="srch__nil">No products match “' + esc(q) + '”.</li>';
+        };
+        srch.querySelector('[data-r="p"]').innerHTML = P.length ? P.map(row).join('') : '<li class="srch__nil">No products match “' + esc(q) + '”.</li>';
+        var bl = srch.querySelector('[data-r="b"]'), bh = srch.querySelector('[data-r-h="b"]');
+        if (bl) { bl.innerHTML = B.map(row).join(''); bl.hidden = !B.length; if (bh) bh.hidden = !B.length; }
         srch.querySelector('[data-r="c"]').innerHTML = C.length ? C.map(function (c) {
           return '<li><a href="' + esc(c.url) + '">' + esc(c.title) + '</a></li>';
         }).join('') : '<li class="srch__nil">No collections.</li>';
         srch.querySelector('[data-r="a"]').innerHTML = A.length ? A.map(function (a) {
           var im = a.featured_image && a.featured_image.url || a.image;
-          return '<li><a class="mini mini--art" href="' + esc(a.url) + '">' + (im ? '<img src="' + esc(sized(im, 160)) + '" alt="" width="64" height="64">' : '<span class="mini__ph"></span>') +
+          return '<li><a class="mini mini--art" href="' + esc(a.url) + '">' + (im ? '<img src="' + esc(sized(im, 240)) + '" alt="" width="64" height="64">' : '<span class="mini__ph"></span>') +
             '<span class="mini__t">' + esc(a.title) + '</span><span class="mini__p">Article</span></a></li>';
         }).join('') : '<li class="srch__nil">No articles.</li>';
         var all = srch.querySelector('.srch__all');
