@@ -67,3 +67,23 @@ together with the old custom-HTML careers block.
   (Final form: Shopify's sync kept rejecting the template edit, so the template is back as it was and the job board is
   rendered by `snippets/snh-careers-roles.liquid` from `sections/snh-feature.liquid` on /pages/careers only; the
   button's old `/pages/work-with-us` link is swapped for `#open-roles` there.)
+
+## Shipping rates (11 Nov 2026) — old values: docs/golive/shipping-backup-2026-11-11.json
+
+Why: 41 orders over Rs 17,000 in 30 days paid 599 / 1,198 shipping. "Standard Delivery 599" had no price limit in
+either profile, and the General profile (61 newer products) had no FREE SHIPPING rate at all.
+
+| Profile | Rate | Before | After |
+|---|---|---|---|
+| SHIP 26 (500 variants) | Standard Delivery 599 | any order price | orders Rs 0 – 16,999.99 |
+| SHIP 26 | FREE SHIPPING 0 | ≥ 17,000 | unchanged |
+| General profile (185 variants) | Standard Delivery 599 | any order price | orders Rs 0 – 16,999.99 |
+| General profile | FREE SHIPPING 0 | (didn't exist) | created, orders ≥ 17,000 |
+
+Both verified by reading the profiles back after the change. Not done (needs approval): moving the 60 General-profile
+products into SHIP 26 (list in docs/golive/general-profile-products-backup-2026-11-11.json), which would stop a cart
+with products from both profiles paying 599 twice under Rs 17,000.
+
+## Bundles (11 Nov 2026) — NOT changed
+Backup + plan: docs/golive/bundle-components-backup-2026-11-11.json, bundle-fix-plan-2026-11-11.json. The API
+refused the first test addition (bundles are owned by the Shopify Bundles app); nothing was modified.
