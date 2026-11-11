@@ -111,13 +111,26 @@
     if (img.__v2lift || !img.complete || !img.naturalWidth) return;
     img.__v2lift = true;
     try {
-      var N = Math.min(400, img.naturalWidth);
+      // 11 Nov: images from another domain (cdn.shopify.com, e.g. swapped in by tabs/pop-ups) can't be read on a
+      // canvas; measure a CORS copy of the same file instead and style the original
+      var srcImg = img.__corsSrc || img;
+      var N = Math.min(400, srcImg.naturalWidth);
       liftCanvas = liftCanvas || document.createElement('canvas');
       liftCanvas.width = liftCanvas.height = N;
       var c = liftCanvas.getContext('2d', { willReadFrequently: true });
       c.clearRect(0, 0, N, N);
-      c.drawImage(img, 0, 0, N, N);
-      var d = c.getImageData(0, 0, N, N).data;
+      c.drawImage(srcImg, 0, 0, N, N);
+      var d;
+      try { d = c.getImageData(0, 0, N, N).data; }
+      catch (tainted) {
+        if (!img.__corsTry) {
+          img.__corsTry = true; img.__v2lift = false;
+          var cp = new Image(); cp.crossOrigin = 'anonymous';
+          cp.onload = function () { img.__corsSrc = cp; liftLater(img); };
+          cp.src = img.currentSrc || img.src;
+        }
+        img.classList.add('is-ready'); return;
+      }
       var or = function (x, y) { var i = (y * N + x) * 4, r = d[i], g = d[i + 1], b = d[i + 2]; return d[i + 3] > 180 && r > 170 && r - b > 90 && r - g > 50; };
       var lum = function (x, y) { var i = (y * N + x) * 4; return d[i + 3] < 180 ? 255 : (d[i] + d[i + 1] + d[i + 2]) / 3; };
       // walk in from an edge to the frame, then through it; returns the first pixel inside the frame or -1
@@ -185,6 +198,40 @@
   function liftAll(scope) { (scope || document).querySelectorAll('img[data-v2-lift]').forEach(liftLater); }
   liftAll();
   document.addEventListener('DOMContentLoaded', function () { liftAll(); });
+
+  /* 11 Nov: catch-all for product thumbnails that were never marked data-v2-lift (ranked lists, quick-add pop-ups,
+     app widgets, recommendation rails…): a small square product photo next to a price gets the same trim-to-product
+     fit, so every thumbnail on the site reads the same size. Banners, heroes and logos are left alone. */
+  var PRICE = /Rs\s?[\d,]{3,}/;
+  function autoLift(img) {
+    if (img.__snhAuto || img.hasAttribute('data-v2-lift')) return;
+    var src = img.currentSrc || img.src || '';
+    if (!/\/(files|products)\//.test(src) || /logo|icon|badge|koko|payment/i.test(src)) return;
+    if (img.closest('header, .hdr, .hero, [class*="hero"], [class*="banner"], .snh-bgv, .colhero, .sp-slides, .hs__frame, [class*="look"], [data-no-lift]')) return;
+    var w = img.offsetWidth; if (w < 36 || w > 360) return;
+    var nw = img.naturalWidth, nh = img.naturalHeight; if (!nw || Math.abs(nw / nh - 1) > .12) return;
+    var box = img.parentElement, ok = false;
+    for (var k = 0; k < 5 && box; k++, box = box.parentElement) { if (PRICE.test(box.textContent || '')) { ok = true; break; } }
+    if (!ok) return;
+    img.__snhAuto = true;
+    var cs = getComputedStyle(img);
+    if (cs.objectFit === 'cover' || cs.objectFit === 'fill') img.style.objectFit = 'contain';
+    if (w < 200) img.style.setProperty('--lift-fill', '.84');
+    img.setAttribute('data-v2-lift', '');
+    liftLater(img);
+  }
+  function autoScan(scope) {
+    (scope || document).querySelectorAll('img').forEach(function (img) {
+      if (img.complete && img.naturalWidth) autoLift(img);
+      else if (!img.__snhAutoWait) { img.__snhAutoWait = true; img.addEventListener('load', function () { autoLift(img); }, { once: true }); }
+    });
+  }
+  window.addEventListener('load', function () { autoScan(); });
+  if ('MutationObserver' in window) {
+    var autoT;
+    new MutationObserver(function () { clearTimeout(autoT); autoT = setTimeout(function () { autoScan(); }, 250); })
+      .observe(document.documentElement, { childList: true, subtree: true });
+  }
 
   /* ---------- brand logo marks ([data-mark]): trim each logo file to its mark and size it from CSS
      (--mh mark height, --mw max width), so every tile reads the same whatever padding the file has ---------- */

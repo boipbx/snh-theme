@@ -2587,3 +2587,8 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
   .sbx__text { display: none; }
   .sbx--video .snh-bgv__ov { opacity: .82; }
 }
+
+/* 11 Nov: shop-the-look list thumbnails were stretched to 64 × 80 by the row, so the trim-to-product crop (which
+   assumes a square photo) left the SNH frame and logo showing; keep the tile square and centred in its row */
+.hs__stack .hs__img img, .hs__stack .hpc .hs__img img { width: 100%; height: 100%; }
+.hs__img img[data-v2-lift] { --lift-fill: .86; }
