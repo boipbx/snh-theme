@@ -81,6 +81,8 @@
   </div>
 </section>
 {%- endif -%}
+{%- comment -%} 11 Nov: compare table under the details {%- endcomment -%}
+{%- if product -%}{% render 'snh-compare', product: product %}{%- endif -%}
 
 {% schema %}
 {

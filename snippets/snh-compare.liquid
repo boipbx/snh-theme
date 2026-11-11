@@ -1,0 +1,142 @@
+{%- comment -%}
+  11 Nov: "Compare similar products" (like Holland & Barrett) under the product details. This product + up to 2 others
+  from its most specific collection (same product type first): photo, price (+ was/saving), per-serving price,
+  servings, flavours, rating, brand, and an Add / Choose button. Pure Liquid, no extra requests. product
+{%- endcomment -%}
+{%- liquid
+  assign skip = ',all,sale,bestsellers,best-sellers,new,new-arrivals,frontpage,offers,bundles,'
+  assign pick = nil
+  assign pick_n = 100000
+  for c in product.collections
+    assign ck = ',' | append: c.handle | append: ','
+    if skip contains ck
+      continue
+    endif
+    if c.products_count > 2 and c.products_count < pick_n
+      assign pick = c
+      assign pick_n = c.products_count
+    endif
+  endfor
+  assign others = ''
+  assign n = 0
+  if pick
+    for p in pick.products limit: 40
+      if p.id == product.id or p.available == false
+        continue
+      endif
+      if p.type == product.type and n < 2
+        assign others = others | append: p.handle | append: ','
+        assign n = n | plus: 1
+      endif
+    endfor
+    if n < 2
+      for p in pick.products limit: 40
+        if p.id == product.id or p.available == false or others contains p.handle
+          continue
+        endif
+        if n < 2
+          assign others = others | append: p.handle | append: ','
+          assign n = n | plus: 1
+        endif
+      endfor
+    endif
+  endif
+  assign handles = product.handle | append: ',' | append: others | split: ','
+-%}
+{%- if n > 0 -%}
+<section class="v2 cmpx" aria-labelledby="cmpx-h-{{ product.id }}">
+  <div class="v-wrap">
+    <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare similar products</h2>
+    <div class="cmpx__scroll">
+      <table class="cmpx__t">
+        <thead>
+          <tr>
+            <th scope="col" class="cmpx__lbl"><span class="v-sr">Product</span></th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              <th scope="col" class="cmpx__col{% if forloop.first %} is-this{% endif %}">
+                {%- if forloop.first -%}<span class="cmpx__this">This product</span>{%- endif -%}
+                <a class="cmpx__pic" href="{{ p.url }}" tabindex="-1">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 360 | image_tag: width: 160, height: 160, loading: 'lazy', alt: '', data-v2-lift: '' }}{%- endif -%}</a>
+                <a class="cmpx__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p %}</a>
+              </th>
+            {%- endfor -%}
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row" class="cmpx__lbl">Price</th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              {%- capture was -%}{% render 'snh-v2-retail', product: p %}{%- endcapture -%}{%- assign was = was | strip | plus: 0 -%}
+              <td><b class="cmpx__price">{{ p.price | money_without_trailing_zeros }}</b>{% if was > p.price %} <s>{{ was | money_without_trailing_zeros }}</s>{% endif %}</td>
+            {%- endfor -%}</tr>
+          <tr><th scope="row" class="cmpx__lbl">Per serving</th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              {%- liquid
+                assign sv = 0
+                for o in p.options_with_values
+                  assign on = o.name | downcase
+                  if on contains 'serving' or on contains 'size'
+                    for val in o.values
+                      if val contains 'Serving'
+                        assign sv = val | split: ' ' | first | plus: 0
+                        break
+                      endif
+                    endfor
+                  endif
+                endfor
+                if sv == 0
+                  assign t = p.title | split: ' Servings' | first | split: ' ' | last | plus: 0
+                  if p.title contains ' Servings' and t > 0
+                    assign sv = t
+                  endif
+                endif
+              -%}
+              <td>{%- if sv > 0 -%}{{ p.price | divided_by: sv | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros }} <span class="cmpx__sub">· {{ sv }} servings</span>{%- else -%}<span class="cmpx__na">–</span>{%- endif -%}</td>
+            {%- endfor -%}</tr>
+          <tr><th scope="row" class="cmpx__lbl">Flavours</th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              {%- assign fl = 0 -%}{%- assign fl1 = '' -%}{%- for o in p.options_with_values -%}{%- assign on = o.name | downcase -%}{%- if on contains 'flav' -%}{%- assign fl = o.values.size -%}{%- assign fl1 = o.values.first -%}{%- endif -%}{%- endfor -%}
+              <td>{%- if fl > 1 -%}{{ fl }} flavours{%- elsif fl == 1 -%}{{ fl1 | escape }}{%- else -%}<span class="cmpx__na">–</span>{%- endif -%}</td>
+            {%- endfor -%}</tr>
+          <tr><th scope="row" class="cmpx__lbl">Rating</th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              {%- assign rc = p.metafields.reviews.rating_count.value | plus: 0 -%}{%- assign rv = p.metafields.reviews.rating.value.rating | default: 0 | round: 1 -%}
+              <td>{%- if rc > 0 -%}<span class="cmpx__stars" aria-hidden="true">★</span> {{ rv }} <span class="cmpx__sub">({{ rc }})</span>{%- else -%}<span class="cmpx__na">No reviews yet</span>{%- endif -%}</td>
+            {%- endfor -%}</tr>
+          <tr><th scope="row" class="cmpx__lbl">Brand</th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              {%- capture bu -%}{% render 'snh-brand-logo-url', vendor: p.vendor, width: 240 %}{%- endcapture -%}{%- assign bu = bu | strip -%}
+              <td>{%- if bu != blank -%}<img class="cmpx__brand" src="{{ bu }}" alt="{{ p.vendor | escape }}" loading="lazy" data-no-lift>{%- else -%}{{ p.vendor | escape }}{%- endif -%}</td>
+            {%- endfor -%}</tr>
+          <tr><th scope="row" class="cmpx__lbl"><span class="v-sr">Buy</span></th>
+            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
+              <td>{%- if forloop.first -%}<span class="cmpx__na">You're viewing this</span>{%- else -%}<a class="v-btn v-btn--line cmpx__go" href="{{ p.url }}"><span>View product</span></a>{%- endif -%}</td>
+            {%- endfor -%}</tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<style>
+  .cmpx { padding: clamp(32px, 5vw, 56px) 0; }
+  .cmpx__h { margin: 0 0 18px; font: 600 clamp(22px, 2.4vw, 28px)/1.2 var(--sans); letter-spacing: -.01em; }
+  .cmpx__scroll { overflow-x: auto; margin: 0 calc(var(--gutter, 20px) * -1); padding: 0 var(--gutter, 20px); scrollbar-width: thin; }
+  .cmpx__t { width: 100%; min-width: 560px; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 1.45; }
+  .cmpx__t th, .cmpx__t td { padding: 12px 14px; text-align: left; vertical-align: middle; border-bottom: 1px solid #ECECEC; }
+  .cmpx__t thead th { vertical-align: top; border-bottom: 0; }
+  .cmpx__lbl { position: sticky; left: 0; z-index: 1; width: 120px; min-width: 104px; background: #F7F7F7; font-weight: 600; color: var(--ink, #0E0E0E); }
+  .cmpx__t thead .cmpx__lbl { background: #fff; }
+  .cmpx__col { min-width: 150px; }
+  .cmpx__col.is-this, .cmpx__t td:nth-child(2) { background: #FFF8F4; }
+  .cmpx__this { display: inline-block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--v-accent, #BF4512); }
+  .cmpx__pic { position: relative; display: block; width: 112px; aspect-ratio: 1; margin-bottom: 8px; border-radius: 12px; background: #fff; overflow: hidden; }
+  .cmpx__pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+  .cmpx__name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 600; color: var(--ink, #0E0E0E); }
+  .cmpx__name:hover { color: var(--v-accent, #BF4512); }
+  .cmpx__price { font-size: 15px; }
+  .cmpx__t s { margin-left: 4px; color: #8A8A8A; font-size: 13px; }
+  .cmpx__sub, .cmpx__na { color: #8A8A8A; font-size: 13px; }
+  .cmpx__stars { color: #F2A100; }
+  .cmpx__brand { display: block; width: auto; height: 22px; max-width: 110px; object-fit: contain; }
+  .cmpx__go { min-height: 38px; padding: 0 16px; font-size: 13px; }
+  @media (max-width: 749px) { .cmpx__t { font-size: 13px; } .cmpx__t th, .cmpx__t td { padding: 10px; } .cmpx__pic { width: 88px; } .cmpx__col { min-width: 132px; } }
+</style>
+{%- endif -%}
