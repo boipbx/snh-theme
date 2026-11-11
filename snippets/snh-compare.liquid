@@ -1,10 +1,12 @@
 {%- comment -%}
-  11 Nov: "Compare similar products" (like Holland & Barrett) under the product details. This product + up to 2 others
-  from its most specific collection (same product type first): photo, price (+ was/saving), per-serving price,
-  servings, flavours, rating, brand, and an Add / Choose button. Pure Liquid, no extra requests. product
+  "Compare" on the product page (11 Nov rework, Apple-style). The customer picks what to compare: every column has a
+  picker listing products from this product's most specific category, other brands first. Phones show 2 columns
+  side by side, desktop 3. Rows: price, per serving, servings, flavours, key specs, ingredients, dietary,
+  certifications, rating, brand. "Show only differences" hides rows that are the same for every picked product.
+  All data is rendered by Liquid into one JSON block (no extra requests). product
 {%- endcomment -%}
 {%- liquid
-  assign skip = ',all,sale,bestsellers,best-sellers,new,new-arrivals,frontpage,offers,bundles,'
+  assign skip = ',all,sale,bestsellers,best-sellers,new,new-arrivals,frontpage,offers,bundles,bundle-offers,recommended-products-seguno,'
   assign pick = nil
   assign pick_n = 100000
   for c in product.collections
@@ -17,126 +19,245 @@
       assign pick_n = c.products_count
     endif
   endfor
-  assign others = ''
+  assign pool = ''
   assign n = 0
   if pick
-    for p in pick.products limit: 40
-      if p.id == product.id or p.available == false
-        continue
-      endif
-      if p.type == product.type and n < 2
-        assign others = others | append: p.handle | append: ','
-        assign n = n | plus: 1
-      endif
-    endfor
-    if n < 2
-      for p in pick.products limit: 40
-        if p.id == product.id or p.available == false or others contains p.handle
+    for pass in (1..3)
+      for p in pick.products limit: 60
+        if p.id == product.id or p.available == false or n >= 24
           continue
         endif
-        if n < 2
-          assign others = others | append: p.handle | append: ','
+        assign key = ',' | append: p.handle | append: ','
+        if pool contains key
+          continue
+        endif
+        assign other_brand = false
+        if p.vendor != product.vendor
+          assign other_brand = true
+        endif
+        if pass == 1 and other_brand and p.type == product.type
+          assign pool = pool | append: key
+          assign n = n | plus: 1
+        elsif pass == 2 and other_brand
+          assign pool = pool | append: key
+          assign n = n | plus: 1
+        elsif pass == 3
+          assign pool = pool | append: key
           assign n = n | plus: 1
         endif
       endfor
-    endif
+    endfor
   endif
-  assign handles = product.handle | append: ',' | append: others | split: ','
+  assign handles = product.handle | append: pool | split: ','
 -%}
 {%- if n > 0 -%}
-<section class="v2 cmpx" aria-labelledby="cmpx-h-{{ product.id }}">
+<section class="v2 cmpx" id="compare" aria-labelledby="cmpx-h-{{ product.id }}" data-cmpx>
   <div class="v-wrap">
-    <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare similar products</h2>
-    <div class="cmpx__scroll">
-      <table class="cmpx__t">
-        <thead>
-          <tr>
-            <th scope="col" class="cmpx__lbl"><span class="v-sr">Product</span></th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              <th scope="col" class="cmpx__col{% if forloop.first %} is-this{% endif %}">
-                {%- if forloop.first -%}<span class="cmpx__this">This product</span>{%- endif -%}
-                <a class="cmpx__pic" href="{{ p.url }}" tabindex="-1">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 360 | image_tag: width: 160, height: 160, loading: 'lazy', alt: '', data-v2-lift: '' }}{%- endif -%}</a>
-                <a class="cmpx__name" href="{{ p.url }}">{% render 'snh-v2-title', product: p %}</a>
-              </th>
-            {%- endfor -%}
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row" class="cmpx__lbl">Price</th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              {%- capture was -%}{% render 'snh-v2-retail', product: p %}{%- endcapture -%}{%- assign was = was | strip | plus: 0 -%}
-              <td><b class="cmpx__price">{{ p.price | money_without_trailing_zeros }}</b>{% if was > p.price %} <s>{{ was | money_without_trailing_zeros }}</s>{% endif %}</td>
-            {%- endfor -%}</tr>
-          <tr><th scope="row" class="cmpx__lbl">Per serving</th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              {%- liquid
-                assign sv = 0
-                for o in p.options_with_values
-                  assign on = o.name | downcase
-                  if on contains 'serving' or on contains 'size'
-                    for val in o.values
-                      if val contains 'Serving'
-                        assign sv = val | split: ' ' | first | plus: 0
-                        break
-                      endif
-                    endfor
-                  endif
-                endfor
-                if sv == 0
-                  assign t = p.title | split: ' Servings' | first | split: ' ' | last | plus: 0
-                  if p.title contains ' Servings' and t > 0
-                    assign sv = t
-                  endif
-                endif
-              -%}
-              <td>{%- if sv > 0 -%}{{ p.price | divided_by: sv | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros }} <span class="cmpx__sub">· {{ sv }} servings</span>{%- else -%}<span class="cmpx__na">–</span>{%- endif -%}</td>
-            {%- endfor -%}</tr>
-          <tr><th scope="row" class="cmpx__lbl">Flavours</th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              {%- assign fl = 0 -%}{%- assign fl1 = '' -%}{%- for o in p.options_with_values -%}{%- assign on = o.name | downcase -%}{%- if on contains 'flav' -%}{%- assign fl = o.values.size -%}{%- assign fl1 = o.values.first -%}{%- endif -%}{%- endfor -%}
-              <td>{%- if fl > 1 -%}{{ fl }} flavours{%- elsif fl == 1 -%}{{ fl1 | escape }}{%- else -%}<span class="cmpx__na">–</span>{%- endif -%}</td>
-            {%- endfor -%}</tr>
-          <tr><th scope="row" class="cmpx__lbl">Rating</th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              {%- assign rc = p.metafields.reviews.rating_count.value | plus: 0 -%}{%- assign rv = p.metafields.reviews.rating.value.rating | default: 0 | round: 1 -%}
-              <td>{%- if rc > 0 -%}<span class="cmpx__stars" aria-hidden="true">★</span> {{ rv }} <span class="cmpx__sub">({{ rc }})</span>{%- else -%}<span class="cmpx__na">No reviews yet</span>{%- endif -%}</td>
-            {%- endfor -%}</tr>
-          <tr><th scope="row" class="cmpx__lbl">Brand</th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              {%- capture bu -%}{% render 'snh-brand-logo-url', vendor: p.vendor, width: 240 %}{%- endcapture -%}{%- assign bu = bu | strip -%}
-              <td>{%- if bu != blank -%}<img class="cmpx__brand" src="{{ bu }}" alt="{{ p.vendor | escape }}" loading="lazy" data-no-lift>{%- else -%}{{ p.vendor | escape }}{%- endif -%}</td>
-            {%- endfor -%}</tr>
-          <tr><th scope="row" class="cmpx__lbl"><span class="v-sr">Buy</span></th>
-            {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}
-              <td>{%- if forloop.first -%}<span class="cmpx__na">You're viewing this</span>{%- else -%}<a class="v-btn v-btn--line cmpx__go" href="{{ p.url }}"><span>View product</span></a>{%- endif -%}</td>
-            {%- endfor -%}</tr>
-        </tbody>
-      </table>
+    <div class="cmpx__top">
+      <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare</h2>
+      <p class="cmpx__lead">Pick any {{ pick.title | escape }} product to see the differences side by side.</p>
+      <label class="cmpx__diff"><input type="checkbox" data-cmpx-diff> <span>Show only differences</span></label>
+    </div>
+    <div class="cmpx__grid" data-cmpx-grid>
+      <div class="cmpx__heads" data-cmpx-heads></div>
+      <div class="cmpx__rows" data-cmpx-rows></div>
+      <div class="cmpx__mini" data-cmpx-mini aria-hidden="true"></div>
     </div>
   </div>
+  <script type="application/json" data-cmpx-data>[
+    {%- for h in handles -%}{%- if h == blank -%}{%- continue -%}{%- endif -%}{%- assign p = all_products[h] -%}{%- if p == blank or p.id == blank -%}{%- continue -%}{%- endif -%}
+    {%- liquid
+      capture was
+        render 'snh-v2-retail', product: p
+      endcapture
+      assign was = was | strip | plus: 0
+      assign sv = 0
+      for o in p.options_with_values
+        assign on = o.name | downcase
+        if on contains 'serving' or on contains 'size'
+          for val in o.values
+            if val contains 'Serving'
+              assign sv = val | split: ' ' | first | plus: 0
+              break
+            endif
+          endfor
+        endif
+      endfor
+      if sv == 0 and p.title contains ' Servings'
+        assign t = p.title | split: ' Servings' | first | split: ' ' | last | plus: 0
+        if t > 0
+          assign sv = t
+        endif
+      endif
+      assign fls = ''
+      for o in p.options_with_values
+        assign on = o.name | downcase
+        if on contains 'flav'
+          assign fls = o.values | join: '|'
+        endif
+      endfor
+      assign rv = 0
+      assign rc = 0
+      assign jb = p.metafields.judgeme.badge | default: ''
+      if jb contains 'data-average-rating'
+        assign rv = jb | split: "data-average-rating='" | last | split: "'" | first | plus: 0
+        assign rc = jb | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
+      endif
+      if rc == 0
+        assign rc = p.metafields.reviews.rating_count.value | plus: 0
+        assign rv = p.metafields.reviews.rating.value.rating | default: 0 | plus: 0
+      endif
+      capture bu
+        render 'snh-brand-logo-url', vendor: p.vendor, width: 240
+      endcapture
+      assign bu = bu | strip
+      assign kb = p.metafields.custom.key_benefits.value | default: '' | strip_html | strip | newline_to_br | split: '<br />'
+      assign ing = ''
+      for m in p.metafields.shopify['detailed-ingredients'].value limit: 12
+        assign ing = ing | append: m.label | append: '|'
+      endfor
+      assign diet = ''
+      for m in p.metafields.shopify['dietary-preferences'].value limit: 8
+        assign diet = diet | append: m.label | append: '|'
+      endfor
+      assign cert = ''
+      for m in p.metafields.shopify['product-certifications-standards'].value limit: 6
+        assign cert = cert | append: m.label | append: '|'
+      endfor
+      assign ps = 0
+      if sv > 0
+        assign ps = p.price | divided_by: sv | divided_by: 100.0 | round | times: 100
+      endif
+    -%}
+    {%- unless forloop.first -%},{%- endunless -%}
+    {"h":{{ p.handle | json }},"t":{{ p.title | json }},"u":{{ p.url | json }},"v":{{ p.vendor | json }},
+     "img":{% if p.featured_image %}{{ p.featured_image | image_url: width: 400 | json }}{% else %}""{% endif %},
+     "pr":{{ p.price | money_without_trailing_zeros | json }},"was":{% if was > p.price %}{{ was | money_without_trailing_zeros | json }}{% else %}""{% endif %},
+     "ps":{% if ps > 0 %}{{ ps | money_without_trailing_zeros | json }}{% else %}""{% endif %},"sv":{{ sv }},
+     "fl":{{ fls | json }},"rv":{{ rv | round: 1 | json }},"rc":{{ rc }},"logo":{{ bu | json }},
+     "kb":[{%- for l in kb limit: 5 -%}{%- assign l = l | strip -%}{%- if l != blank -%}{{ l | json }},{%- endif -%}{%- endfor -%}""],
+     "ing":{{ ing | json }},"diet":{{ diet | json }},"cert":{{ cert | json }},"type":{{ p.type | json }}}
+    {%- endfor -%}
+  ]</script>
 </section>
 <style>
   .cmpx { padding: clamp(32px, 5vw, 56px) 0; }
-  .cmpx__h { margin: 0 0 18px; font: 600 clamp(22px, 2.4vw, 28px)/1.2 var(--sans); letter-spacing: -.01em; }
-  .cmpx__scroll { overflow-x: auto; margin: 0 calc(var(--gutter, 20px) * -1); padding: 0 var(--gutter, 20px); scrollbar-width: thin; }
-  .cmpx__t { width: 100%; min-width: 560px; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 1.45; }
-  .cmpx__t th, .cmpx__t td { padding: 12px 14px; text-align: left; vertical-align: middle; border-bottom: 1px solid #ECECEC; }
-  .cmpx__t thead th { vertical-align: top; border-bottom: 0; }
-  .cmpx__lbl { position: sticky; left: 0; z-index: 1; width: 120px; min-width: 104px; background: #F7F7F7; font-weight: 600; color: var(--ink, #0E0E0E); }
-  .cmpx__t thead .cmpx__lbl { background: #fff; }
-  .cmpx__col { min-width: 150px; }
-  .cmpx__col.is-this, .cmpx__t td:nth-child(2) { background: #FFF8F4; }
-  .cmpx__this { display: inline-block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--v-accent, #BF4512); }
-  .cmpx__pic { position: relative; display: block; width: 112px; aspect-ratio: 1; margin-bottom: 8px; border-radius: 12px; background: #fff; overflow: hidden; }
-  .cmpx__pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-  .cmpx__name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 600; color: var(--ink, #0E0E0E); }
-  .cmpx__name:hover { color: var(--v-accent, #BF4512); }
-  .cmpx__price { font-size: 15px; }
-  .cmpx__t s { margin-left: 4px; color: #8A8A8A; font-size: 13px; }
-  .cmpx__sub, .cmpx__na { color: #8A8A8A; font-size: 13px; }
+  .cmpx__top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 18px; }
+  .cmpx__h { margin: 0; font: 600 clamp(24px, 2.6vw, 32px)/1.15 var(--sans); letter-spacing: -.015em; }
+  .cmpx__lead { flex: 1 1 260px; margin: 0; color: #6B6B6B; font-size: 14px; }
+  .cmpx__diff { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; cursor: pointer; user-select: none; }
+  .cmpx__diff input { width: 18px; height: 18px; accent-color: var(--ink, #0E0E0E); }
+  .cmpx { --cols: 3; }
+  .cmpx__heads, .cmpx__vals { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 clamp(12px, 2.4vw, 32px); }
+  .cmpx__heads { padding: 10px 0 14px; border-bottom: 1px solid #ECECEC; }
+  .cmpx__mini { position: fixed; left: 0; right: 0; top: var(--hdr-h, 0px); z-index: 40; padding: 8px var(--gutter, 20px); background: rgba(255,255,255,.94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid #ECECEC; box-shadow: 0 6px 18px rgba(0,0,0,.05); transform: translateY(-110%); opacity: 0; pointer-events: none; transition: transform .22s ease, opacity .22s ease; }
+  .cmpx.is-stuck .cmpx__mini { transform: none; opacity: 1; pointer-events: auto; }
+  .cmpx__mini-in { max-width: var(--page-w, 1280px); margin: 0 auto; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 clamp(12px, 2.4vw, 32px); }
+  .cmpx__mi { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 12.5px; font-weight: 600; line-height: 1.25; color: var(--ink, #0E0E0E); }
+  .cmpx__mi img { flex: 0 0 40px; width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: #fff; }
+  .cmpx__mi span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cmpx__col { min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+  .cmpx__pic { display: block; width: min(100%, 180px); aspect-ratio: 1; border-radius: 14px; background: #fff; overflow: hidden; transition: width .25s ease; }
+  .cmpx__pic img { width: 100%; height: 100%; object-fit: contain; }
+  .cmpx__sel { position: relative; width: 100%; }
+  .cmpx__sel select { appearance: none; -webkit-appearance: none; width: 100%; min-height: 44px; padding: 8px 30px 8px 12px; border: 1px solid #DCDCDC; border-radius: 10px; background: #fff; font: 600 13.5px/1.3 var(--sans); color: var(--ink, #0E0E0E); text-overflow: ellipsis; cursor: pointer; }
+  .cmpx__sel::after { content: ""; position: absolute; right: 12px; top: 50%; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .cmpx__sel select:focus-visible { outline: 2px solid var(--v-accent, #BF4512); outline-offset: 2px; }
+  .cmpx__this { font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--v-accent, #BF4512); min-height: 14px; }
+  .cmpx__row { padding: 18px 0; border-bottom: 1px solid #ECECEC; }
+  .cmpx__row[hidden] { display: none; }
+  .cmpx__lbl { margin: 0 0 10px; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: #8A8A8A; text-align: center; }
+  .cmpx__row.is-diff .cmpx__lbl::after { content: "Differs"; margin-left: 8px; padding: 2px 6px; border-radius: 4px; background: #FFF1E8; color: var(--v-accent, #BF4512); font-size: 10.5px; letter-spacing: .03em; }
+  .cmpx__v { min-width: 0; text-align: center; font-size: 14.5px; line-height: 1.45; color: var(--ink, #0E0E0E); overflow-wrap: anywhere; }
+  .cmpx__v b { font-size: 17px; }
+  .cmpx__v s { display: block; color: #8A8A8A; font-size: 13px; }
+  .cmpx__v ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .cmpx__v li { font-size: 13.5px; }
+  .cmpx__tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+  .cmpx__tag { padding: 3px 8px; border-radius: 6px; background: #F3F3F3; font-size: 12.5px; }
+  .cmpx__na { color: #A3A3A3; }
   .cmpx__stars { color: #F2A100; }
-  .cmpx__brand { display: block; width: auto; height: 22px; max-width: 110px; object-fit: contain; }
-  .cmpx__go { min-height: 38px; padding: 0 16px; font-size: 13px; }
-  @media (max-width: 749px) { .cmpx__t { font-size: 13px; } .cmpx__t th, .cmpx__t td { padding: 10px; } .cmpx__pic { width: 88px; } .cmpx__col { min-width: 132px; } }
+  .cmpx__brand { display: block; margin: 0 auto; width: auto; height: 24px; max-width: 120px; object-fit: contain; }
+  .cmpx__go { margin-top: 4px; min-height: 40px; padding: 0 16px; font-size: 13px; }
+  @media (max-width: 749px) {
+    .cmpx { --cols: 2; }
+    .cmpx__pic { width: min(100%, 140px); }
+    .cmpx__v { font-size: 13.5px; }
+    .cmpx__v b { font-size: 15.5px; }
+    .cmpx__v li, .cmpx__tag { font-size: 12.5px; }
+    .cmpx__sel select { font-size: 13px; padding-left: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cmpx__pic, .cmpx__mini { transition: none; } }
 </style>
+<script>
+(function () {
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  while (root && !root.hasAttribute('data-cmpx')) root = root.previousElementSibling;
+  if (!root) return;
+  var data; try { data = JSON.parse(root.querySelector('[data-cmpx-data]').textContent); } catch (e) { return; }
+  if (!data || data.length < 2) return;
+  var mini = root.querySelector('[data-cmpx-mini]'), heads = root.querySelector('[data-cmpx-heads]'), rowsEl = root.querySelector('[data-cmpx-rows]'), diff = root.querySelector('[data-cmpx-diff]');
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var list = function (s) { return String(s || '').split('|').map(function (x) { return x.trim(); }).filter(Boolean); };
+  var byH = {}; data.forEach(function (d) { byH[d.h] = d; });
+  var cols = function () { return matchMedia('(max-width: 749px)').matches ? 2 : 3; };
+  /* defaults: this product + the next ones in the list (other brands come first) */
+  var picked = data.slice(0, 3).map(function (d) { return d.h; });
+  while (picked.length < 3) picked.push(data[picked.length % data.length].h);
+  var ROWS = [
+    ['Price', function (d) { return '<b>' + esc(d.pr) + '</b>' + (d.was ? '<s>' + esc(d.was) + '</s>' : ''); }, function (d) { return d.pr + d.was; }],
+    ['Per serving', function (d) { return d.ps ? esc(d.ps) : ''; }, function (d) { return d.ps; }],
+    ['Servings', function (d) { return d.sv ? esc(d.sv) : ''; }, function (d) { return d.sv; }],
+    ['Flavours', function (d) { var f = list(d.fl); if (!f.length) return ''; return '<div><b>' + f.length + '</b> ' + (f.length === 1 ? 'flavour' : 'flavours') + '</div><div class="cmpx__tags" style="margin-top:6px">' + f.slice(0, 8).map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + (f.length > 8 ? '<span class="cmpx__tag">+' + (f.length - 8) + ' more</span>' : '') + '</div>'; }, function (d) { return d.fl; }],
+    ['Key specs', function (d) { var k = (d.kb || []).filter(Boolean); return k.length ? '<ul>' + k.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; }, function (d) { return (d.kb || []).join('|'); }],
+    ['Ingredients', function (d) { var f = list(d.ing); return f.length ? '<div class="cmpx__tags">' + f.map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }, function (d) { return d.ing; }],
+    ['Dietary', function (d) { var f = list(d.diet); return f.length ? '<div class="cmpx__tags">' + f.map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }, function (d) { return d.diet; }],
+    ['Certified', function (d) { var f = list(d.cert); return f.length ? '<div class="cmpx__tags">' + f.map(function (x) { return '<span class="cmpx__tag">' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }, function (d) { return d.cert; }],
+    ['Rating', function (d) { return d.rc > 0 ? '<span class="cmpx__stars" aria-hidden="true">★</span> ' + esc(d.rv) + ' <span class="cmpx__na">(' + d.rc + ')</span>' : ''; }, function (d) { return d.rc ? d.rv + '/' + d.rc : ''; }],
+    ['Brand', function (d) { return d.logo ? '<img class="cmpx__brand" src="' + esc(d.logo) + '" alt="' + esc(d.v) + '" loading="lazy" data-no-lift>' : esc(d.v); }, function (d) { return d.v; }]
+  ];
+  function render() {
+    var c = cols(); root.style.setProperty('--cols', c);
+    var cur = picked.slice(0, c).map(function (h) { return byH[h] || data[0]; });
+    heads.innerHTML = cur.map(function (d, i) {
+      var opts = data.map(function (o) { return '<option value="' + esc(o.h) + '"' + (o.h === d.h ? ' selected' : '') + '>' + esc(o.t) + '</option>'; }).join('');
+      return '<div class="cmpx__col"><span class="cmpx__this">' + (d.h === data[0].h ? 'This product' : '') + '</span>' +
+        '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="180" height="180" data-v2-lift>' : '') + '</a>' +
+        '<label class="cmpx__sel"><span class="v-sr">Product ' + (i + 1) + '</span><select data-i="' + i + '">' + opts + '</select></label></div>';
+    }).join('');
+    var only = diff && diff.checked, html = '';
+    ROWS.forEach(function (r) {
+      var cells = cur.map(function (d) { return r[1](d); });
+      if (cells.every(function (x) { return !x; })) return;
+      var keys = cur.map(function (d) { return String(r[2](d) || '').toLowerCase(); });
+      var differs = keys.some(function (k) { return k !== keys[0]; });
+      html += '<div class="cmpx__row' + (differs ? ' is-diff' : '') + '"' + (only && !differs ? ' hidden' : '') + '><p class="cmpx__lbl">' + r[0] + '</p><div class="cmpx__vals">' +
+        cells.map(function (x) { return '<div class="cmpx__v">' + (x || '<span class="cmpx__na">–</span>') + '</div>'; }).join('') + '</div></div>';
+    });
+    html += '<div class="cmpx__row"><div class="cmpx__vals">' + cur.map(function (d) {
+      return '<div class="cmpx__v">' + (d.h === data[0].h ? '<span class="cmpx__na">You\'re viewing this</span>' : '<a class="v-btn v-btn--line cmpx__go" href="' + esc(d.u) + '"><span>View product</span></a>') + '</div>';
+    }).join('') + '</div></div>';
+    rowsEl.innerHTML = html;
+    if (mini) mini.innerHTML = '<div class="cmpx__mini-in">' + cur.map(function (d) { return '<div class="cmpx__mi">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" data-no-lift>' : '') + '<span>' + esc(d.t) + '</span></div>'; }).join('') + '</div>';
+  }
+  heads.addEventListener('change', function (e) {
+    var s = e.target.closest('select'); if (!s) return;
+    var i = +s.dataset.i, h = s.value, j = picked.indexOf(h);
+    if (j > -1 && j !== i) picked[j] = picked[i]; /* picking one already shown swaps the two */
+    picked[i] = h; render();
+  });
+  if (diff) diff.addEventListener('change', render);
+  var lastC = cols(); addEventListener('resize', function () { var c = cols(); if (c !== lastC) { lastC = c; render(); } });
+  /* compact sticky header while scrolling through the rows */
+  var hdr = document.querySelector('.hdr, header');
+  function stick() {
+    var hh = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+    root.style.setProperty('--hdr-h', hh + 'px');
+    var r = heads.getBoundingClientRect(), g = rowsEl.getBoundingClientRect();
+    root.classList.toggle('is-stuck', r.bottom < hh && g.bottom > hh + 120);
+  }
+  addEventListener('scroll', stick, { passive: true });
+  render(); stick();
+})();
+</script>
 {%- endif -%}
