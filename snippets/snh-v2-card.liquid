@@ -200,7 +200,10 @@
   </div>
   <div class="pc__body">
     <div class="pc__top">
-      <p class="pc__brand">{{ product.vendor | escape }}</p>
+      {%- comment -%} 11 Nov: no brand line on bundles (they're all "Sports Nutrition Hub") {%- endcomment -%}
+      {%- assign is_bundle = false -%}{%- assign pt = product.type | downcase -%}{%- assign tg = product.tags | join: ',' | downcase -%}
+      {%- if pt contains 'bundle' or tg contains 'bundle' or product.variants.first.requires_components -%}{%- assign is_bundle = true -%}{%- endif -%}
+      {%- unless is_bundle -%}<p class="pc__brand">{{ product.vendor | escape }}</p>{%- endunless -%}
       {%- if r_count > 0 -%}
         <p class="pc__rating" role="img" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="pc__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="pc__count">({{ r_count }})</span></span></p>
       {%- endif -%}

@@ -2615,3 +2615,10 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 .nf__search { display: flex; gap: 8px; max-width: 100%; }
 .nf__search input { flex: 1 1 auto; min-width: 0; }
 .nf__search button { flex: none; }
+
+/* 11 Nov: pills on product photos — squarer corners, a softer see-through red for savings, flavour count in black */
+.pc__badge { border-radius: 6px; background: rgba(192, 42, 27, .86); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); box-shadow: 0 2px 8px rgba(120, 20, 10, .14); }
+.pc__badge--note { background: rgba(14, 14, 14, .82); }
+.pc__chip { border-radius: 6px !important; background: rgba(14, 14, 14, .86) !important; color: #fff !important; border: 0 !important; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.pc__st { border-radius: 6px !important; }
+.pc__save { border-radius: 4px; }
