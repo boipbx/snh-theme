@@ -179,7 +179,7 @@
       var on = shown.indexOf(d.h) > -1, sv = saving(d);
       return '<button type="button" role="listitem" class="cmpx__opt' + (on ? ' is-on' : '') + '" data-h="' + esc(d.h) + '" aria-pressed="' + on + '">' +
         (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" data-no-lift>' : '<span></span>') +
-        '<span><span class="cmpx__ot">' + esc(short(d)) + '</span><span class="cmpx__os">' + (d.ps ? rs(d.ps) + ' / serving' : rs(d.p)) + (sv ? '<em>Save ' + sv + '% per serving</em>' : '') + '</span></span></button>';
+        '<span><span class="cmpx__ot">' + esc(short(d)) + '</span><span class="cmpx__os">' + (d.ps ? rs(d.ps) + ' / serving' : rs(d.p)) + (sv ? '<em>Save ' + sv + '%</em>' : '') + '</span></span></button>';
     }).join('');
   }
   function render() {
