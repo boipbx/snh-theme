@@ -92,7 +92,7 @@
         "also_included": {
           "type": "liquid",
           "settings": {
-            "liquid": "{%- comment -%}\n  ============================================================\n  ALSO INCLUDED  —  Sports Nutrition Hub\n  ============================================================\n  Lists the bundle components that have no flavour choice, so\n  customers understand they are included even though no picker\n  appears for them.\n  It adapts its own wording:\n    - Some components have choices, some do not\n        \"Also in this bundle:\"\n    - Every component is fixed (no pickers on the page at all)\n        \"What you get\"\n    - No fixed components (every one has a picker)\n        renders nothing\n  Each item links through to its own product page.\n  STOCK\n  Any component that is out of stock is struck through and\n  labelled. If the whole bundle is unavailable, a separate notice\n  names which component caused it, so customers are not left\n  guessing why a bundle they want cannot be bought.\n  Nothing to configure. It reads custom.bundle_contents and works\n  the rest out by counting variants and checking availability.\n  WHERE TO PUT IT\n  Online Store > Customize > open a bundle product page.\n  Click the main product section > Add block > Custom Liquid.\n  Paste this whole file in, then drag the block below Variant picker.\n  ============================================================\n{%- endcomment -%}\n{%- liquid\n  assign items = product.metafields.custom.bundle_contents.value\n  assign qtys = product.metafields.custom.bundle_quantities.value\n  assign fixed_count = 0\n  assign total_count = 0\n  assign oos_count = 0\n  if items != blank\n    assign total_count = items.size\n    for p in items\n      if p.variants.size == 1\n        assign fixed_count = fixed_count | plus: 1\n      endif\n      unless p.available\n        assign oos_count = oos_count | plus: 1\n      endunless\n    endfor\n  endif\n  assign all_fixed = false\n  if fixed_count > 0 and fixed_count == total_count\n    assign all_fixed = true\n  endif\n  assign show_oos_notice = false\n  if oos_count > 0 and product.available == false\n    assign show_oos_notice = true\n  endif\n-%}\n{%- if fixed_count > 0 or show_oos_notice -%}\n<style>\n  .snh-fixed{\n    margin:16px 0 4px;\n    padding:14px 16px;\n    border:1px solid rgba(0,0,0,.12);\n    border-left:3px solid #E1571F;\n    border-radius:8px;\n  }\n  .snh-fixed__title{\n    margin:0 0 11px;\n    font-size:12px;\n    font-weight:700;\n    letter-spacing:.1em;\n    text-transform:uppercase;\n    opacity:.7;\n  }\n  .snh-fixed__list{\n    margin:0; padding:0; list-style:none;\n    display:flex; flex-direction:column; gap:9px;\n  }\n  .snh-fixed__item{\n    font-size:14px; line-height:1.35;\n  }\n  .snh-fixed__item a{\n    display:flex; align-items:center; gap:10px;\n    color:inherit; text-decoration:none;\n  }\n  .snh-fixed__item a:hover .snh-fixed__name{\n    text-decoration:underline;\n  }\n  .snh-fixed__item img{\n    width:36px; height:36px; object-fit:contain;\n    border-radius:5px; background:rgba(0,0,0,.04);\n    flex:0 0 36px;\n  }\n  .snh-fixed__qty{\n    font-weight:700;\n  }\n  .snh-fixed__note{\n    margin:11px 0 0; font-size:12.5px; line-height:1.45; opacity:.6;\n  }\n\n  /* out of stock */\n  .snh-fixed__item--oos img{ opacity:.4; }\n  .snh-fixed__item--oos .snh-fixed__name{\n    text-decoration:line-through;\n    opacity:.5;\n  }\n  .snh-fixed__item--oos a:hover .snh-fixed__name{\n    text-decoration:line-through;\n  }\n  .snh-tag{\n    display:inline-block; margin-left:8px;\n    font-size:10.5px; font-weight:700; letter-spacing:.06em;\n    text-transform:uppercase; white-space:nowrap;\n    padding:2px 7px; border-radius:999px;\n    background:rgba(180,40,20,.1); color:#B42814;\n    text-decoration:none;\n  }\n  .snh-oos{\n    margin:12px 0 4px;\n    padding:13px 16px;\n    border:1px solid rgba(180,40,20,.25);\n    border-left:3px solid #B42814;\n    border-radius:8px;\n    background:rgba(180,40,20,.04);\n  }\n  .snh-oos__title{\n    margin:0 0 6px;\n    font-size:12px; font-weight:700;\n    letter-spacing:.1em; text-transform:uppercase;\n    color:#B42814;\n  }\n  .snh-oos__body{\n    margin:0; font-size:13.5px; line-height:1.5;\n  }\n  .snh-oos__body a{ color:inherit; }\n</style>\n\n{%- if fixed_count > 0 -%}\n<div class=\"snh-fixed\">\n  <p class=\"snh-fixed__title\">\n    {%- if all_fixed -%}\n      <b> What you get: </b>\n    {%- else -%}\n      <b>Also in this bundle:</b>\n    {%- endif -%}\n  </p>\n  <ul class=\"snh-fixed__list\">\n    {%- for p in items -%}\n      {%- if p.variants.size == 1 -%}\n        {%- liquid\n          assign q = 1\n          if qtys != blank and qtys[forloop.index0] != blank\n            assign q = qtys[forloop.index0] | plus: 0\n          endif\n          if q < 1\n            assign q = 1\n          endif\n        -%}\n        <li class=\"snh-fixed__item{% unless p.available %} snh-fixed__item--oos{% endunless %}\">\n          <a href=\"{{ p.url }}\">\n            {%- if p.featured_image -%}\n              {{ p.featured_image | image_url: width: 100 | image_tag:\n                 loading: 'lazy', widths: '36,72,100', alt: p.title | escape }}\n            {%- endif -%}\n            <span class=\"snh-fixed__name\">{% if q > 1 %}<span class=\"snh-fixed__qty\">{{ q }} &times;</span> {% endif %}{{ p.title | escape }}</span>\n            {%- unless p.available -%}<span class=\"snh-tag\">Out of stock</span>{%- endunless -%}\n          </a>\n        </li>\n      {%- endif -%}\n    {%- endfor -%}\n  </ul>\n  <p class=\"snh-fixed__note\">\n    {%- if all_fixed -%}\n      All {{ total_count }} ship together in one box. There is nothing to choose; just add it to your cart.\n    {%- elsif fixed_count == 1 -%}\n      This one comes in a single format, so there is nothing to pick. It ships with every bundle.\n    {%- else -%}\n      These come in a single format, so there is nothing to pick. They ship with every bundle.\n    {%- endif -%}\n  </p>\n</div>\n{%- endif -%}\n\n{%- if show_oos_notice -%}\n<div class=\"snh-oos\">\n  <p class=\"snh-oos__title\">\n    {%- if oos_count == 1 -%}Temporarily unavailable{%- else -%}Temporarily unavailable{%- endif -%}\n  </p>\n  <p class=\"snh-oos__body\">\n    {%- if oos_count == 1 -%}\n      This bundle is on hold because one item in it is out of stock:\n    {%- else -%}\n      This bundle is on hold because {{ oos_count }} items in it are out of stock:\n    {%- endif -%}\n    {% assign printed = 0 %}{% for p in items %}{% unless p.available %}{% if printed > 0 %}, {% endif %}<a href=\"{{ p.url }}\">{{ p.title | escape }}</a>{% assign printed = printed | plus: 1 %}{% endunless %}{% endfor %}.\n    Everything else is ready to go, so it will come back as soon as {% if oos_count == 1 %}that item is{% else %}those items are{% endif %} restocked.\n  </p>\n</div>\n{%- endif -%}\n\n{%- endif -%}"
+            "liquid": "{%- comment -%}\n  ============================================================\n  ALSO INCLUDED  —  Sports Nutrition Hub\n  ============================================================\n  Lists the bundle components that have no flavour choice, so\n  customers understand they are included even though no picker\n  appears for them.\n  It adapts its own wording:\n    - Some components have choices, some do not\n        \"Also in this bundle:\"\n    - Every component is fixed (no pickers on the page at all)\n        \"What you get\"\n    - No fixed components (every one has a picker)\n        renders nothing\n  Each item links through to its own product page.\n  STOCK\n  Any component that is out of stock is struck through and\n  labelled. If the whole bundle is unavailable, a separate notice\n  names which component caused it, so customers are not left\n  guessing why a bundle they want cannot be bought.\n  Nothing to configure. It reads custom.bundle_contents and works\n  the rest out by counting variants and checking availability.\n  WHERE TO PUT IT\n  Online Store > Customize > open a bundle product page.\n  Click the main product section > Add block > Custom Liquid.\n  Paste this whole file in, then drag the block below Variant picker.\n  ============================================================\n{%- endcomment -%}\n{%- liquid\n  assign items = product.metafields.custom.bundle_contents.value\n  assign qtys = product.metafields.custom.bundle_quantities.value\n  assign fixed_count = 0\n  assign total_count = 0\n  assign oos_count = 0\n  if items != blank\n    assign total_count = items.size\n    for p in items\n      if p.variants.size == 1\n        assign fixed_count = fixed_count | plus: 1\n      endif\n      unless p.available\n        assign oos_count = oos_count | plus: 1\n      endunless\n    endfor\n  endif\n  assign all_fixed = false\n  if fixed_count > 0 and fixed_count == total_count\n    assign all_fixed = true\n  endif\n  assign show_oos_notice = false\n  if oos_count > 0 and product.available == false\n    assign show_oos_notice = true\n  endif\n-%}\n{%- if fixed_count > 0 or show_oos_notice -%}\n<style>\n  .snh-fixed{\n    margin:16px 0 4px;\n    padding:14px 16px;\n    border:1px solid rgba(0,0,0,.12);\n    border-left:3px solid #E1571F;\n    border-radius:8px;\n  }\n  .snh-fixed__title{\n    margin:0 0 11px;\n    font-size:12px;\n    font-weight:700;\n    letter-spacing:.1em;\n    text-transform:uppercase;\n    opacity:.7;\n  }\n  .snh-fixed__list{\n    margin:0; padding:0; list-style:none;\n    display:flex; flex-direction:column; gap:9px;\n  }\n  .snh-fixed__item{\n    font-size:14px; line-height:1.35;\n  }\n  .snh-fixed__item a{\n    display:flex; align-items:center; gap:10px;\n    color:inherit; text-decoration:none;\n  }\n  .snh-fixed__item a:hover .snh-fixed__name{\n    text-decoration:underline;\n  }\n  .snh-fixed__item img{\n    width:36px; height:36px; object-fit:contain;\n    border-radius:5px; background:rgba(0,0,0,.04);\n    flex:0 0 36px;\n  }\n  .snh-fixed__qty{\n    font-weight:700;\n  }\n  .snh-fixed__note{\n    margin:11px 0 0; font-size:12.5px; line-height:1.45; opacity:.6;\n  }\n\n  \n  .snh-fixed__item--oos img{ opacity:.4; }\n  .snh-fixed__item--oos .snh-fixed__name{\n    text-decoration:line-through;\n    opacity:.5;\n  }\n  .snh-fixed__item--oos a:hover .snh-fixed__name{\n    text-decoration:line-through;\n  }\n  .snh-tag{\n    display:inline-block; margin-left:8px;\n    font-size:10.5px; font-weight:700; letter-spacing:.06em;\n    text-transform:uppercase; white-space:nowrap;\n    padding:2px 7px; border-radius:999px;\n    background:rgba(180,40,20,.1); color:#B42814;\n    text-decoration:none;\n  }\n  .snh-oos{\n    margin:12px 0 4px;\n    padding:13px 16px;\n    border:1px solid rgba(180,40,20,.25);\n    border-left:3px solid #B42814;\n    border-radius:8px;\n    background:rgba(180,40,20,.04);\n  }\n  .snh-oos__title{\n    margin:0 0 6px;\n    font-size:12px; font-weight:700;\n    letter-spacing:.1em; text-transform:uppercase;\n    color:#B42814;\n  }\n  .snh-oos__body{\n    margin:0; font-size:13.5px; line-height:1.5;\n  }\n  .snh-oos__body a{ color:inherit; }\n</style>\n\n{%- if fixed_count > 0 -%}\n<div class=\"snh-fixed\">\n  <p class=\"snh-fixed__title\">\n    {%- if all_fixed -%}\n      <b> What you get: </b>\n    {%- else -%}\n      <b>Also in this bundle:</b>\n    {%- endif -%}\n  </p>\n  <ul class=\"snh-fixed__list\">\n    {%- for p in items -%}\n      {%- if p.variants.size == 1 -%}\n        {%- liquid\n          assign q = 1\n          if qtys != blank and qtys[forloop.index0] != blank\n            assign q = qtys[forloop.index0] | plus: 0\n          endif\n          if q < 1\n            assign q = 1\n          endif\n        -%}\n        <li class=\"snh-fixed__item{% unless p.available %} snh-fixed__item--oos{% endunless %}\">\n          <a href=\"{{ p.url }}\">\n            {%- if p.featured_image -%}\n              {{ p.featured_image | image_url: width: 100 | image_tag:\n                 loading: 'lazy', widths: '36,72,100', alt: p.title | escape }}\n            {%- endif -%}\n            <span class=\"snh-fixed__name\">{% if q > 1 %}<span class=\"snh-fixed__qty\">{{ q }} &times;</span> {% endif %}{{ p.title | escape }}</span>\n            {%- unless p.available -%}<span class=\"snh-tag\">Out of stock</span>{%- endunless -%}\n          </a>\n        </li>\n      {%- endif -%}\n    {%- endfor -%}\n  </ul>\n  <p class=\"snh-fixed__note\">\n    {%- if all_fixed -%}\n      All {{ total_count }} ship together in one box. There is nothing to choose; just add it to your cart.\n    {%- elsif fixed_count == 1 -%}\n      This one comes in a single format, so there is nothing to pick. It ships with every bundle.\n    {%- else -%}\n      These come in a single format, so there is nothing to pick. They ship with every bundle.\n    {%- endif -%}\n  </p>\n</div>\n{%- endif -%}\n\n{%- if show_oos_notice -%}\n<div class=\"snh-oos\">\n  <p class=\"snh-oos__title\">\n    {%- if oos_count == 1 -%}Temporarily unavailable{%- else -%}Temporarily unavailable{%- endif -%}\n  </p>\n  <p class=\"snh-oos__body\">\n    {%- if oos_count == 1 -%}\n      This bundle is on hold because one item in it is out of stock:\n    {%- else -%}\n      This bundle is on hold because {{ oos_count }} items in it are out of stock:\n    {%- endif -%}\n    {% assign printed = 0 %}{% for p in items %}{% unless p.available %}{% if printed > 0 %}, {% endif %}<a href=\"{{ p.url }}\">{{ p.title | escape }}</a>{% assign printed = printed | plus: 1 %}{% endunless %}{% endfor %}.\n    Everything else is ready to go, so it will come back as soon as {% if oos_count == 1 %}that item is{% else %}those items are{% endif %} restocked.\n  </p>\n</div>\n{%- endif -%}\n\n{%- endif -%}"
           }
         }
       },
@@ -286,7 +286,8 @@
     "blocks_AciBAG": {
       "type": "_blocks",
       "name": "Magnesium FAQ",
-      "settings": {}
+      "settings": {},
+      "disabled": true
     },
     "snh_faq_support_gtc7dT": {
       "type": "snh-faq-support",
@@ -367,7 +368,102 @@
         "panel_background": "#ffffff",
         "text_color": "#171717",
         "accent_color": "#e0521c"
-      }
+      },
+      "disabled": true
+    },
+    "snh_why": {
+      "type": "snh-why-us",
+      "settings": {
+        "eyebrow": "Why choose us",
+        "heading": "The SNH *standard*",
+        "lead": "Shop trusted brands backed by our expert guidance, secure checkout, and fast delivery across Sri Lanka."
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "50,000+",
+            "label": "orders delivered"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "",
+            "label": "",
+            "use_rating": true
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "100% authentic",
+            "text": "Direct from brand and authorized distributors."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "card",
+            "title": "Fair pricing",
+            "text": "Transparent prices with frequent bundles and member only deals."
+          }
+        },
+        "benefit_5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "chat",
+            "title": "Expert support",
+            "text": "Fast guidance from our team via chat, phone, or WhatsApp."
+          }
+        },
+        "benefit_6": {
+          "type": "benefit",
+          "settings": {
+            "icon": "badge",
+            "title": "Secure payments",
+            "text": "SSL checkout with cards, bank transfer & KOKO"
+          }
+        },
+        "benefit_7": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Same-day Colombo",
+            "text": "Colombo orders same day, island-wide in 2–3 working days."
+          }
+        },
+        "benefit_8": {
+          "type": "benefit",
+          "settings": {
+            "icon": "bolt",
+            "title": "Earn points",
+            "text": "[bronze]–[gold] back on every order as an SNH Elite member."
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "benefit_3",
+        "benefit_4",
+        "benefit_5",
+        "benefit_6",
+        "benefit_7",
+        "benefit_8"
+      ]
+    },
+    "snh_faq": {
+      "type": "snh-faq",
+      "settings": {
+        "eyebrow": "Support · every day, 10am–7pm",
+        "heading": "Questions, *answered*",
+        "lead": "Call or WhatsApp [whatsapp] for anything not covered here.",
+        "style": "light"
+      },
+      "blocks": {},
+      "block_order": []
     }
   },
   "order": [
@@ -381,6 +477,8 @@
     "snh_articles",
     "recent",
     "blocks_AciBAG",
-    "snh_faq_support_gtc7dT"
+    "snh_faq_support_gtc7dT",
+    "snh_why",
+    "snh_faq"
   ]
 }
