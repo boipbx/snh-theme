@@ -2604,3 +2604,8 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 .hs__stack .hs__pts-tag:has(.eltm)::before { display: none; }
 .acp__brand .eltm { font-size: 17px; }
 .sp-elite .eltm { font-size: 1.05em; }
+
+/* 11 Nov: bundle / offer savings easy to see in the menu deals list */
+.mini__p { color: var(--ink); }
+.mini__p s { margin-left: 6px; color: var(--grey-2); font-weight: 400; text-decoration-thickness: 1px; }
+.mini__save { display: inline-flex; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: #FFF1EA; color: var(--v-accent, #BF4512); font-size: 11.5px; font-weight: 700; white-space: nowrap; }

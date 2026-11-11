@@ -14,11 +14,13 @@
     assign retail = product.compare_at_price_max
   endif
   if retail == 0
-    assign sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+    assign sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=539500,race-day-pack-1-0=999300,race-day-pack-2-0=1059300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3599700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+    # 11 Nov: the sheet is keyed by product handle (the title fallback is kept for older keys); totals of
+    # multi-flavour bundles updated to today's shelf prices
     assign tkey = product.title | handleize
     for pair in sheet
       assign kv = pair | split: '='
-      if kv[0] == tkey
+      if kv[0] == product.handle or kv[0] == tkey
         assign retail = kv[1] | times: 1
         break
       endif

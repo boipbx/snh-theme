@@ -10,7 +10,9 @@
           {{- p.featured_image | image_url: width: 160 | image_tag: width: 64, height: 64, loading: 'lazy', alt: '' -}}
         {%- else -%}<span class="mini__ph"></span>{%- endif -%}
         <span class="mini__t">{% render 'snh-v2-title', product: p %}</span>
-        <span class="mini__p">{{ p.price | money_without_trailing_zeros }}{% if p.compare_at_price > p.price %} <s>{{ p.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}</span>
+        {%- comment -%} 11 Nov: was-price + saving made visible (same retail rule as the product cards) {%- endcomment -%}
+        {%- capture m_retail -%}{% render 'snh-v2-retail', product: p %}{%- endcapture -%}{%- assign m_retail = m_retail | strip | plus: 0 -%}
+        <span class="mini__p">{{ p.price | money_without_trailing_zeros }}{% if m_retail > p.price %} <s>{{ m_retail | money_without_trailing_zeros }}</s> <b class="mini__save">Save {{ m_retail | minus: p.price | money_without_trailing_zeros }}</b>{% endif %}</span>
       </a></li>
     {%- endfor -%}
   </ul>
