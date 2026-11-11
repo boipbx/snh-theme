@@ -361,4 +361,4 @@
 .sp-floatbrand img { width: auto; height: 20px; max-width: 110px; object-fit: contain; }
 .sp-floatbrand:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(14, 14, 14, .16); }
 @media (min-width: 1024px) { .sp-floatbrand { right: 16px; bottom: 32px; height: 44px; padding: 0 14px; } .sp-floatbrand img { height: 24px; max-width: 130px; } }
-@media (max-width: 1023px) { .sp-b.sp-vendor { display: none; } } /* 11 Nov: phones/tablets have the floating brand badge on the photo */
+.sp-b.sp-vendor { display: none; } /* 11 Nov: one brand logo only, the floating badge on the photo (links to the brand) */
