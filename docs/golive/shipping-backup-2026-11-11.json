@@ -1,0 +1,123 @@
+{
+ "deliveryProfiles": {
+  "nodes": [
+   {
+    "id": "gid://shopify/DeliveryProfile/46691614782",
+    "name": "General profile",
+    "default": true,
+    "productVariantsCount": {
+     "count": 185
+    },
+    "profileLocationGroups": [
+     {
+      "locationGroup": {
+       "id": "gid://shopify/DeliveryLocationGroup/108339298558"
+      },
+      "locationGroupZones": {
+       "nodes": [
+        {
+         "zone": {
+          "id": "gid://shopify/DeliveryZone/435780681982",
+          "name": "Asia",
+          "countries": [
+           {
+            "code": {
+             "countryCode": "LK"
+            }
+           }
+          ]
+         },
+         "methodDefinitions": {
+          "nodes": [
+           {
+            "id": "gid://shopify/DeliveryMethodDefinition/749408780542",
+            "name": "Standard Delivery",
+            "active": true,
+            "rateProvider": {
+             "id": "gid://shopify/DeliveryRateDefinition/684279857406",
+             "price": {
+              "amount": "599.0"
+             }
+            },
+            "methodConditions": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "id": "gid://shopify/DeliveryProfile/106906353918",
+    "name": "SHIP 26",
+    "default": false,
+    "productVariantsCount": {
+     "count": 500
+    },
+    "profileLocationGroups": [
+     {
+      "locationGroup": {
+       "id": "gid://shopify/DeliveryLocationGroup/108339757310"
+      },
+      "locationGroupZones": {
+       "nodes": [
+        {
+         "zone": {
+          "id": "gid://shopify/DeliveryZone/435781697790",
+          "name": "Asia",
+          "countries": [
+           {
+            "code": {
+             "countryCode": "LK"
+            }
+           }
+          ]
+         },
+         "methodDefinitions": {
+          "nodes": [
+           {
+            "id": "gid://shopify/DeliveryMethodDefinition/749410189566",
+            "name": "Standard Delivery",
+            "active": true,
+            "rateProvider": {
+             "id": "gid://shopify/DeliveryRateDefinition/684280971518",
+             "price": {
+              "amount": "599.0"
+             }
+            },
+            "methodConditions": []
+           },
+           {
+            "id": "gid://shopify/DeliveryMethodDefinition/749410222334",
+            "name": "FREE SHIPPING",
+            "active": true,
+            "rateProvider": {
+             "id": "gid://shopify/DeliveryRateDefinition/684281004286",
+             "price": {
+              "amount": "0.0"
+             }
+            },
+            "methodConditions": [
+             {
+              "id": "gid://shopify/DeliveryCondition/177335107838?operator=greater_than_or_equal_to",
+              "field": "TOTAL_PRICE",
+              "operator": "GREATER_THAN_OR_EQUAL_TO",
+              "conditionCriteria": {
+               "amount": "17000.0"
+              }
+             }
+            ]
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
