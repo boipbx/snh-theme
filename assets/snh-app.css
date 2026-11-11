@@ -975,9 +975,17 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
   .feed > li:nth-child(n+4) { display: none; }
   .app__view .app__grid > *:nth-child(n+5) { display: none; }
   .app .app__hero--cards .rwd { min-height: 0; height: auto; aspect-ratio: auto; }
-  .app .rwd__stage, .app .rwd__fx { display: none; }
-  .app .rwd__in { padding-top: 0; }
-  .app .rwd__pts { font-size: 40px; line-height: 1; }
+  /* 11 Nov (rev): the athletes play on phones again, on the right; copy on the left */
+  .app .rwd { min-height: 210px; justify-content: center; padding: 20px 18px; }
+  .app .rwd__stage { inset: auto 0 0 auto; width: 46%; height: 100%; }
+  .app .rwd__stage::after { display: none; }
+  .app .rwd__ath { height: 92%; max-width: 100%; right: 0; }
+  .app .rwd__fx--gift { display: none; }
+  .app .rwd__fx--coins { top: 10px; left: auto; right: 38%; width: 34px; }
+  .app .rwd__in { padding-top: 0; max-width: 60%; gap: 6px; }
+  .app .rwd__big { font-size: 24px; }
+  .app .rwd__p { font-size: 13px; }
+  .app .rwd .rwd__btn { min-height: 42px; padding: 0 18px; justify-self: start; }
   body:has(.app__tabs) #shop-hcaptcha-badge-container { bottom: calc(86px + env(safe-area-inset-bottom)) !important; }
   .app__tab[aria-current="page"] svg, .app__tab[aria-current="page"] span { color: #fff; }
 }
@@ -1004,3 +1012,9 @@ a.wk__nm:hover { color: var(--v-accent); text-decoration: underline; text-underl
   .app__view .app__grid > *:nth-child(n+3) { display: none; }
   .app__view > section, .app__view > aside { margin-block: 12px; }
 }
+
+/* 11 Nov (rev): "Next reward" card: one big line, a progress bar, one short line, one button */
+.rwd__big { margin: 0; font: 700 30px/1.1 var(--sans); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.rwd__bar { position: relative; height: 6px; margin: 6px 0 2px; border-radius: 999px; background: rgba(255, 255, 255, .28); overflow: hidden; }
+.rwd__bar i { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: #fff; transition: width .8s cubic-bezier(.22, 1, .36, 1); }
+.rwd__p b { color: #fff; font-weight: 600; }

@@ -21,32 +21,39 @@
   <img class="rwd__fx rwd__fx--coins" src="{{ cdn }}2_37969279-4a78-43c8-8fdf-5256e55c6030.png?v=1783764457&width=120" alt="" width="60" height="60" loading="lazy" aria-hidden="true">
   <img class="rwd__fx rwd__fx--gift" src="{{ cdn }}1_57b712a6-c53e-4f6b-bcc0-6fea0e096b6e.png?v=1783764454&width=96" alt="" width="44" height="44" loading="lazy" aria-hidden="true">
   <div class="rwd__in">
-    <p class="rwd__label" id="rwd-h-{{ id }}">Available points</p>
+    <p class="rwd__label" id="rwd-h-{{ id }}">Next reward</p>
     {%- if m[3] == 'x' -%}
       <p class="rwd__pts rwd__pts--wait">Updating</p>
       <p class="rwd__p">Your points are being updated, check back soon. New members start with {% render 'snh-num', n: welcome %} welcome points.</p>
       <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
     {%- else -%}
-      <p class="rwd__pts" data-count>{% render 'snh-num', n: m[3] %}</p>
-      <p class="rwd__val">Worth {{ m[4] | times: 100 | money_without_trailing_zeros }}</p>
+      {%- comment -%} 11 Nov (rev): the balance itself is on the Elite card above, so this card is only about the NEXT
+        reward: points to go, a progress bar, one short line of what it takes, one button. No repeated numbers. {%- endcomment -%}
+      {%- liquid
+        assign have = m[3] | plus: 0
+        assign pct = have | times: 100 | divided_by: redeem_from
+        if pct > 100
+          assign pct = 100
+        endif
+        assign g_rate = m[7] | plus: 0
+        if g_rate < 1
+          assign g_rate = settings.snh_rate_bronze | default: 3
+        endif
+        assign g_spend = m[15] | plus: 0 | times: 100 | divided_by: g_rate | divided_by: 100.0 | ceil | times: 100
+        assign g_month = g_spend | divided_by: 300.0 | ceil | times: 100
+      -%}
       {%- if pending -%}
-        <p class="rwd__p">Your redeem request is in. Your reward arrives by email.</p>
+        <p class="rwd__big">Reward on its way</p>
+        <p class="rwd__p">Your redeem request is in. It arrives by email.</p>
         <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See rewards</span></a>
       {%- elsif m[14] == '1' -%}
-        <p class="rwd__p">Your cash-off reward is ready. Trade it in before you check out.</p>
-        <a class="v-btn rwd__btn" href="#rewards" data-go="rewards" data-redeem-open><span>Redeem {% render 'snh-num', n: redeem_from %} points</span></a>
+        <p class="rwd__big">{{ redeem_from | times: per_point | times: 100 | money_without_trailing_zeros }} off is ready</p>
+        <div class="rwd__bar" aria-hidden="true"><i style="width: 100%"></i></div>
+        <a class="v-btn rwd__btn" href="#rewards" data-go="rewards" data-redeem-open><span>Redeem now</span></a>
       {%- else -%}
-        <p class="rwd__p">You're {% render 'snh-num', n: m[15] %} points from your first cash-off reward.</p>
-        {%- comment -%} 11 Nov: what that means in rupees — spend needed at the member's earn rate, and per month over 3 months {%- endcomment -%}
-        {%- liquid
-          assign g_rate = m[7] | plus: 0
-          if g_rate < 1
-            assign g_rate = settings.snh_rate_bronze | default: 3
-          endif
-          assign g_spend = m[15] | plus: 0 | times: 100 | divided_by: g_rate | divided_by: 100.0 | ceil | times: 100
-          assign g_month = g_spend | divided_by: 300.0 | ceil | times: 100
-        -%}
-        {%- if g_spend > 0 -%}<p class="rwd__guide">That's about <b>{{ g_spend | times: 100 | money_without_trailing_zeros }}</b> of shopping at your {{ g_rate }}% rate · <b>{{ g_month | times: 100 | money_without_trailing_zeros }} a month</b> gets you there in 3 months.</p>{%- endif -%}
+        <p class="rwd__big"><span data-count>{% render 'snh-num', n: m[15] %}</span> points to go</p>
+        <div class="rwd__bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ redeem_from }}" aria-valuenow="{{ have }}" aria-label="Progress to your first cash-off reward"><i style="width: {{ pct }}%"></i></div>
+        <p class="rwd__p">to {{ redeem_from | times: per_point | times: 100 | money_without_trailing_zeros }} off your order{% if g_spend > 0 %} · about <b>{{ g_month | times: 100 | money_without_trailing_zeros }} a month</b> for 3 months{% endif %}</p>
         <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
       {%- endif -%}
     {%- endif -%}
