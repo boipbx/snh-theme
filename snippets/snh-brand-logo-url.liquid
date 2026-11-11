@@ -8,7 +8,13 @@
   assign w = width | default: 240
   assign webp = bh | append: '-logo.webp'
   assign png = bh | append: '-logo.png'
-  if images[webp] != blank
+  # 11 Nov: trimmed, transparent copies kept in the theme (assets/brand-<handle>.png) come first, so every logo
+  # sits at the same visual size
+  assign theme_logos = ',applied-nutrition,centrum,dymatize,ehplabs,healthspan-elite,muscletech,myprotein,phd,raw,redcon1,revive,ryse,science-in-sport,sports-nutrition-hub-snh,surge,trace-minerals,vitabiotics,'
+  assign key = ',' | append: bh | append: ','
+  if theme_logos contains key
+    echo 'brand-' | append: bh | append: '.png' | asset_url
+  elsif images[webp] != blank
     echo images[webp] | image_url: width: w
   elsif images[png] != blank
     echo images[png] | image_url: width: w
