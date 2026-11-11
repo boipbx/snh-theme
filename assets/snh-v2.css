@@ -2653,3 +2653,8 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 .shopify-section:has(> .qzb) + .shopify-section > .mqd .mqd__count { margin-top: 8px; font-size: 15px; }
 .shopify-section:has(> .qzb) + .shopify-section > .mqd .mqd__link { margin-top: 12px; }
 @media (min-width: 1024px) { .shopify-section:has(> .qzb) + .shopify-section > .mqd .mqd__in { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 40px; } }
+
+/* 11 Nov: clean pack shots (snippets/snh-clean-img): transparent, every product trimmed and sized the same, so no
+   frame, no grey studio backdrop and no "too zoomed / too small" mix. Sits on the warm tile as is. */
+.card__img.is-clean img { mix-blend-mode: normal; transform: scale(.9); opacity: 1 !important; filter: drop-shadow(0 10px 14px rgba(40, 30, 20, .10)); }
+.mini img[src*="/assets/pc-"], .cmpx img[src*="/assets/pc-"] { mix-blend-mode: normal; object-fit: contain; }

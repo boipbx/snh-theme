@@ -1,0 +1,22 @@
+{%- comment -%}
+  Clean card image (11 Nov): a background-free, evenly sized pack shot for the storefront only (cards, compare, menu,
+  search). The Shopify product images keep the SNH frame (Google Shopping / listings); these clean copies live in the
+  theme as assets/pc-<handle>.webp and are listed in snippets/snh-clean-list as ",handle:main-image-file,".
+  The file name is part of the key, so if a product's main image is changed in admin the card falls back to it
+  automatically until the clean copy is regenerated (docs/clean-images/README.md). Outputs the asset URL or nothing.
+  product
+{%- endcomment -%}
+{%- liquid
+  assign ci_out = ''
+  assign ci_fi = product.featured_media.preview_image | default: product.featured_image
+  if ci_fi
+    assign ci_base = ci_fi.src | split: '?' | first | split: '/' | last
+    assign ci_key = ',' | append: product.handle | append: ':' | append: ci_base | append: ','
+    capture ci_list
+      render 'snh-clean-list'
+    endcapture
+    if ci_list contains ci_key
+      assign ci_out = 'pc-' | append: product.handle | append: '.webp' | asset_url
+    endif
+  endif
+-%}{{ ci_out }}

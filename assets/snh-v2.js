@@ -557,6 +557,10 @@
         var C = (R.collections || []).slice(0, 5), A = (R.articles || []).slice(0, 3);
         var row = function (p) {
           var im = p.featured_image && p.featured_image.url || p.image;
+          /* clean storefront pack shot when one exists for this exact main image (snippets/snh-clean-img) */
+          var CL = window.SNHClean, base = String(im || '').split('?')[0].split('/').pop();
+          if (CL && CL.l && base && CL.l.indexOf(',' + p.handle + ':' + base + ',') > -1) return '<li><a class="mini" href="' + esc(p.url) + '"><img src="' + esc(CL.b + 'pc-' + p.handle + '.webp') + '" alt="" width="64" height="64" data-no-lift>' +
+            '<span class="mini__t">' + esc(tidy(p.title, p.vendor)) + '</span><span class="mini__p">' + rs(Number(p.price)) + '</span></a></li>';
           return '<li><a class="mini" href="' + esc(p.url) + '">' + (im ? '<img src="' + esc(sized(im, 240)) + '" alt="" width="64" height="64" data-v2-lift>' : '<span class="mini__ph"></span>') +
             '<span class="mini__t">' + esc(tidy(p.title, p.vendor)) + '</span><span class="mini__p">' + rs(Number(p.price)) + '</span></a></li>';
         };

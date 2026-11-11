@@ -198,7 +198,7 @@
     heads.innerHTML = cur.map(function (d, i) {
       if (!d) return '<div class="cmpx__col"><span class="cmpx__tag"></span><div class="cmpx__add">Tap a product above to add it here</div></div>';
       return '<div class="cmpx__col' + (d.h === me.h ? ' is-me' : '') + '">' + (d.h === me.h ? '<span class="cmpx__tag">This product</span>' : '<button type="button" class="cmpx__x" data-rm="' + i + '" aria-label="Remove ' + esc(short(d)) + '">×</button><span class="cmpx__tag"></span>') +
-        '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="150" height="150" data-v2-lift>' : '') + '</a>' +
+        '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="150" height="150"' + (d.cl ? ' data-no-lift' : ' data-v2-lift') + '>' : '') + '</a>' +
         '<a class="cmpx__name" href="' + esc(d.u) + '">' + esc(short(d)) + '</a><span class="cmpx__brand">' + esc(d.v) + '</span></div>';
     }).join('');
     var ROWS = [

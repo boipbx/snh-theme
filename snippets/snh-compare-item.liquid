@@ -75,13 +75,20 @@
   endif
   assign kb = p.metafields.custom.key_benefits.value | default: '' | strip_html | strip | newline_to_br | split: '<br />'
   assign img = best_v.featured_image | default: p.featured_image
+  assign cimg = ''
+  unless sz
+    capture cimg
+      render 'snh-clean-img', product: p
+    endcapture
+    assign cimg = cimg | strip
+  endunless
   assign url = p.url
   if sz
     assign url = best_v.url
   endif
 -%}
 {"h":{% if sz %}{{ p.handle | append: '~' | append: best_v.id | json }}{% else %}{{ p.handle | json }}{% endif %},"t":{{ p.title | json }},"u":{{ url | json }},"v":{{ p.vendor | json }},"sz":{% if sz %}true{% else %}false{% endif %},
-"img":{% if img %}{{ img | image_url: width: 360 | json }}{% else %}""{% endif %},
+"img":{% if cimg != blank %}{{ cimg | json }}{% elsif img %}{{ img | image_url: width: 360 | json }}{% else %}""{% endif %},"cl":{% if cimg != blank %}true{% else %}false{% endif %},
 "p":{{ price }},"was":{% if was > price %}{{ was }}{% else %}0{% endif %},"ps":{{ ps }},"sv":{{ best_sv }},
 "fl":{{ fls | json }},"rv":{{ rv | round: 1 | json }},"rc":{{ rc }},
 "kb":[{%- for l in kb limit: 2 -%}{%- assign l = l | strip -%}{%- if l != blank -%}{{ l | json }},{%- endif -%}{%- endfor -%}""]}

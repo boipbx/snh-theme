@@ -170,7 +170,10 @@
 <product-card class="card pc{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}"{% if position %} style="--o: {{ position | times: 10 }}"{% endif %}>
   <div class="pc__frame">
     <a class="card__tile pc__shot" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
-      {%- if img1 -%}
+      {%- capture clean1 -%}{% render 'snh-clean-img', product: product %}{%- endcapture -%}{%- assign clean1 = clean1 | strip -%}
+      {%- if clean1 != blank -%}
+        <span class="card__img is-clean"><img src="{{ clean1 }}" alt="" width="700" height="700" {% if eager %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %} data-no-lift></span>
+      {%- elsif img1 -%}
         <span class="card__img{% if framed1 %} is-framed{% endif %}">
           {%- if eager -%}
             {{- img1 | image_url: width: 800 | image_tag: width: 600, height: 600, loading: 'eager', fetchpriority: 'high', sizes: img_sizes, widths: '300,400,600,800', alt: '', data-v2-lift: '' -}}

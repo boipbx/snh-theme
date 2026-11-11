@@ -135,6 +135,8 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     <style>:root { --snh-logo: url("{{ 'snh-logo-mark.png' | asset_url }}"); }</style>
     <script>window.SNH = window.SNH || {}; SNH.koko = {{ 'snh-koko.png' | asset_url | json }}; SNH.kokoImg = function (h) { h = Math.min(h || 14, 20); return '<img class="snh-koko" src="' + SNH.koko + '" alt="Koko" width="' + Math.round(h * 215 / 98) + '" height="' + h + '" style="height:' + h + 'px;max-height:' + h + 'px;width:auto" loading="lazy" decoding="async">'; };</script>
     {%- render 'snh-prefs' -%}
+    {%- capture snh_cl -%}{% render 'snh-clean-list' %}{%- endcapture -%}
+    <script>window.SNHClean={b:{{ 'pc-x.webp' | asset_url | split: 'pc-x.webp' | first | json }},l:{{ snh_cl | strip | json }}};</script>
     <script src="{{ 'snh-v2.js' | asset_url }}" defer></script>
     <script src="{{ 'snh-quick.js' | asset_url }}" defer></script>
     {%- if template contains 'customers' -%}<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>{%- endif -%}
