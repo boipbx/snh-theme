@@ -1,0 +1,89 @@
+[
+ {
+  "id": "gid://shopify/Location/35669737534",
+  "name": "Dehiwala",
+  "isActive": true,
+  "fulfillsOnlineOrders": false,
+  "shipsInventory": false,
+  "address": {
+   "address1": "133a Kawdana Road",
+   "address2": "",
+   "city": "Dehiwala-Mount Lavinia",
+   "province": null,
+   "zip": "10350",
+   "country": "Sri Lanka",
+   "phone": "+94779773359",
+   "formatted": [
+    "133a Kawdana Road",
+    "Dehiwala-Mount Lavinia",
+    "10350",
+    "Sri Lanka"
+   ]
+  },
+  "localPickupSettingsV2": null
+ },
+ {
+  "id": "gid://shopify/Location/84598063358",
+  "name": "Nugegoda",
+  "isActive": true,
+  "fulfillsOnlineOrders": true,
+  "shipsInventory": true,
+  "address": {
+   "address1": "555 High Level Road",
+   "address2": "",
+   "city": "Nugegoda",
+   "province": null,
+   "zip": "",
+   "country": "Sri Lanka",
+   "phone": "+94764863359",
+   "formatted": [
+    "555 High Level Road",
+    "Nugegoda",
+    "Sri Lanka"
+   ]
+  },
+  "localPickupSettingsV2": null
+ },
+ {
+  "id": "gid://shopify/Location/91753021694",
+  "name": "Warehouse",
+  "isActive": true,
+  "fulfillsOnlineOrders": false,
+  "shipsInventory": false,
+  "address": {
+   "address1": "",
+   "address2": "",
+   "city": "",
+   "province": null,
+   "zip": "",
+   "country": "Sri Lanka",
+   "phone": "",
+   "formatted": [
+    "Sri Lanka"
+   ]
+  },
+  "localPickupSettingsV2": null
+ },
+ {
+  "id": "gid://shopify/Location/72139014398",
+  "name": "Wattala",
+  "isActive": true,
+  "fulfillsOnlineOrders": false,
+  "shipsInventory": false,
+  "address": {
+   "address1": "no. 880 Negombo Road",
+   "address2": "",
+   "city": "Wattala",
+   "province": null,
+   "zip": "",
+   "country": "Sri Lanka",
+   "phone": "+94779773359",
+   "formatted": [
+    "no. 880 Negombo Road",
+    "Wattala",
+    "Sri Lanka"
+   ]
+  },
+  "localPickupSettingsV2": null
+ }
+]
