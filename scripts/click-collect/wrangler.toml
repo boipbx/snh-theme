@@ -1,0 +1,13 @@
+name = "snh-click-collect"
+main = "src/worker.mjs"
+compatibility_date = "2026-10-01"
+
+[triggers]
+crons = ["*/30 * * * *"]   # every 30 minutes; the 03:30 UTC run (09:00 Sri Lanka) also sends the ops digest
+
+[vars]
+SHOPIFY_STORE = "sports-nutrition-hub.myshopify.com"
+PICKUP_LAUNCH_AT = "SET-AT-DEPLOY"       # ISO time of deploy, e.g. 2026-11-14T08:00:00+05:30 — older orders are never touched
+DRY_RUN = "true"                          # switch to "false" after one clean dry run
+PAY_AT_STORE_NAME = "Pay at the store"
+# secrets (wrangler secret put …): SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY, RUN_KEY (optional)

@@ -1,0 +1,6 @@
+{
+  "name": "snh-click-collect",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test test/logic.test.mjs", "dry": "DRY_RUN=true node cli.mjs", "deploy": "wrangler deploy" }
+}
