@@ -384,3 +384,42 @@
 .pua__st.is-off { color: #8A8A8A; }
 .pua__list small { font-size: 12.5px; color: #6B6B6B; }
 .pua__how { display: inline-block; font-size: 12.5px; color: #6B6B6B; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 14 Nov: gallery QA — one fixed square frame, the whole image always visible (contain), never zoomed or cropped.
+   Overrides the 11 Nov lift (pack trimmed + scaled to 84 %) and the 13 Nov frame crop on the product page. */
+.sp-slide { position: relative; aspect-ratio: 1 / 1; height: auto; overflow: hidden; padding: 4%; background: #fff; cursor: zoom-in; }
+.sp-slide img { display: block; width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain !important; transform: none !important; clip-path: none !important; }
+.sp-slide--clean { padding: 6%; }               /* clean cut-outs fill 88 % of their file: the pack ends up at ~80 % */
+.sp-slide--info { padding: 2%; }                /* text images: as large as possible, in full */
+.sp-slide--info img { mix-blend-mode: normal; }
+.sp-thumb { overflow: hidden; }
+.sp-thumb img { object-fit: contain !important; transform: none !important; clip-path: none !important; }
+@media (max-width: 1023px) {
+  /* thumbnails as a row under the photo instead of floating over its left edge (they covered text on info images) */
+  .sp-gal:not(.sp-gal--single) { display: flex; flex-direction: column; }
+  .sp-gal:not(.sp-gal--single) .sp-stage { order: 1; }
+  .sp-gal:not(.sp-gal--single) .sp-rail { order: 2; position: static; z-index: auto; flex-direction: row; width: auto; max-height: none; gap: 8px;
+    padding: 10px var(--sp-gutter) 2px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
+  .sp-gal:not(.sp-gal--single) .sp-rail .sp-thumb { flex: 0 0 52px; width: 52px; height: 52px; box-shadow: none; scroll-snap-align: start; }
+  .sp-floatbrand { bottom: 12px; }
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  /* tablets: keep the frame from taking the whole screen; the image still sits whole inside it */
+  .sp-slide { aspect-ratio: auto; height: min(100vw, 58vh); }
+}
+
+/* full-screen viewer (assets/snh-zoom.js) */
+.szv { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: #fff; color: #0E0E0E; opacity: 0; transition: opacity 180ms ease; touch-action: none; }
+.szv[data-open] { opacity: 1; }
+.szv__bar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 8px 0 16px; flex: none; font: 600 14px/1 var(--sans, system-ui); font-variant-numeric: tabular-nums; border-bottom: 1px solid rgba(12, 12, 13, .08); }
+.szv__btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; }
+.szv__btn:hover { background: rgba(12, 12, 13, .06); }
+.szv__btn:focus-visible { outline: 2px solid var(--sp-accent, #BF4512); outline-offset: 2px; }
+.szv__stage { position: relative; flex: 1; overflow: hidden; cursor: zoom-in; }
+.szv__stage[data-zoomed] { cursor: grab; }
+.szv__img { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; transform-origin: 0 0; user-select: none; -webkit-user-drag: none; will-change: transform; }
+.szv__nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, .92); box-shadow: 0 2px 10px rgba(14, 14, 14, .12); }
+.szv__nav--prev { left: 12px; } .szv__nav--next { right: 12px; }
+.szv__hint { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); padding: 6px 12px; border-radius: 999px; background: rgba(14, 14, 14, .72); color: #fff; font: 500 12px/1.2 var(--sans, system-ui); pointer-events: none; transition: opacity 300ms ease; }
+@media (hover: none) { .szv__nav { display: none; } }
+@media (prefers-reduced-motion: reduce) { .szv { transition: none; } }

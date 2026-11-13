@@ -10,6 +10,7 @@
 {%- endcomment -%}
 {{ 'snh-product.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'snh-product.js' | asset_url }}" defer></script>
+<script src="{{ 'snh-zoom.js' | asset_url }}" defer></script>
 {%- liquid
   assign v = product.selected_or_first_available_variant
   assign form_id = 'sp-form-' | append: section.id
@@ -21,8 +22,18 @@
   # Theme settings → SNH product images → Prefer clean images: leave out media whose file name or alt matches a frame
   # keyword (SNH's orange-frame renders), as long as one image is left.
   assign gal_skip = ','
-  capture frame_crops
-    render 'snh-frame-crops'
+  # 14 Nov: the CSS frame crop (snippets/snh-frame-crops) is no longer used in the gallery: it zoomed tall images
+  # past the frame and could cut text. Clean copies come from custom.clean_images instead.
+  # 14 Nov: custom.clean_images = list of files in gallery order (a clean cut-out where one exists, otherwise the
+  # original media). Used only while it still lines up with the media (same count); delete it to show the originals.
+  assign ci = product.metafields.custom.clean_images.value
+  assign ci_ok = false
+  if ci != blank and ci.size == product.media.size
+    assign ci_ok = true
+  endif
+  # 14 Nov: info images (nutrition panels, ingredients, certificates, how-to): shown in full, never cropped or zoomed
+  capture info_media
+    render 'snh-info-media'
   endcapture
   if settings.snh_clean_images
     assign kws = settings.snh_frame_keywords | downcase | split: ','
@@ -101,8 +112,8 @@
               {%- assign key = ',' | append: media.id | append: ',' -%}
               {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
               <button type="button" class="sp-thumb" role="tab" data-sp-thumb="{{ gi }}" aria-label="Image {{ gi | plus: 1 }} of {{ gal_count }}" aria-selected="{% if media.id == gal_active.id %}true{% else %}false{% endif %}">
-                {%- assign cfn = 'pdp-' | append: media.id | append: '.webp' -%}{%- assign cimg = images[cfn] -%}
-                {%- assign crop = blank -%}{%- assign ck = ',' | append: media.id | append: ':' -%}{%- if frame_crops contains ck -%}{%- assign crop = frame_crops | split: ck | last | split: ',' | first | split: ':' -%}{%- endif -%}{%- if cimg != blank -%}{{- cimg | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-no-lift: '' -}}{%- elsif crop != blank -%}<span class="sp-crop" style="--cl:{{ crop[0] }};--ct:{{ crop[1] }};--cw:{{ crop[2] }};--ch:{{ crop[3] }}">{{- media.preview_image | image_url: width: 300 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-no-lift: '' -}}</span>{%- else -%}{{- media.preview_image | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-v2-lift: '' -}}{%- endif -%}
+                {%- assign tsrc = media.preview_image -%}{%- if ci_ok -%}{%- assign cand = ci[forloop.index0] -%}{%- if cand != blank and media.media_type == 'image' -%}{%- assign tsrc = cand -%}{%- endif -%}{%- endif -%}
+                {{- tsrc | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-no-lift: '' -}}
               </button>
               {%- assign gi = gi | plus: 1 -%}
             {%- endfor -%}
@@ -114,26 +125,17 @@
             {%- for media in product.media -%}
               {%- assign key = ',' | append: media.id | append: ',' -%}
               {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
-              <li class="sp-slide" data-sp-slide="{{ gi }}" data-media="{{ media.id }}"{% if media.id == gal_active.id %} data-active{% endif %}>
-                {%- comment -%} 11 Nov: storefront-only clean copy of this image (SNH frame removed), uploaded to Files as
-                  pdp-<media id>.webp; the product media itself keeps the frame for Google. A replaced photo has a new
-                  media id, so it simply shows as uploaded. {%- endcomment -%}
-                {%- assign cfn = 'pdp-' | append: media.id | append: '.webp' -%}{%- assign cimg = images[cfn] -%}
-                {%- assign crop = blank -%}{%- assign ck = ',' | append: media.id | append: ':' -%}{%- if frame_crops contains ck -%}{%- assign crop = frame_crops | split: ck | last | split: ',' | first | split: ':' -%}{%- endif -%}
-                {%- if media.media_type == 'image' and cimg != blank -%}
-                  {%- assign cld = 'lazy' -%}{%- if gi == 0 -%}{%- assign cld = 'eager' -%}{%- endif -%}
-                  {{- cimg | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: cld, alt: media.alt, data-no-lift: '' -}}
-                {%- elsif media.media_type == 'image' and crop != blank -%}
-                  {%- comment -%} 13 Nov: until the clean copy is uploaded, show the photo cropped to just inside the SNH frame
-                    and below the SNH mark (snippets/snh-frame-crops, measured per image). The image file is unchanged. {%- endcomment -%}
-                  {%- assign cld = 'lazy' -%}{%- if gi == 0 -%}{%- assign cld = 'eager' -%}{%- endif -%}
-                  <span class="sp-crop" style="--cl:{{ crop[0] }};--ct:{{ crop[1] }};--cw:{{ crop[2] }};--ch:{{ crop[3] }}">{{- media | image_url: width: 1600 | image_tag: widths: '700,1000,1300,1600', sizes: '(max-width: 1023px) 115vw, 760px', loading: cld, alt: media.alt, data-no-lift: '' -}}</span>
-                {%- elsif media.media_type == 'image' -%}
-                  {%- if gi == 0 -%}
-                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'eager', fetchpriority: 'high', alt: media.alt, data-v2-lift: '' -}}
-                  {%- else -%}
-                    {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'lazy', alt: media.alt, data-v2-lift: '' -}}
-                  {%- endif -%}
+              {%- assign ik = ',' | append: media.id | append: ',' -%}
+              {%- assign src = media -%}{%- assign sclass = '' -%}
+              {%- if info_media contains ik -%}{%- assign sclass = ' sp-slide--info' -%}{%- elsif ci_ok and media.media_type == 'image' -%}{%- assign cand = ci[forloop.index0] -%}{%- if cand != blank -%}{%- assign src = cand -%}{%- if cand.id != media.id -%}{%- assign sclass = ' sp-slide--clean' -%}{%- endif -%}{%- endif -%}{%- endif -%}
+              <li class="sp-slide{{ sclass }}" data-sp-slide="{{ gi }}" data-media="{{ media.id }}"{% if media.id == gal_active.id %} data-active{% endif %}>
+                {%- comment -%} 14 Nov: every image sits whole inside the square frame (object-fit: contain), never zoomed or
+                  cropped. Product photos use the clean copy from custom.clean_images when there is one; info images always
+                  show the original file in full. Tap / click opens the full-screen viewer (assets/snh-zoom.js). {%- endcomment -%}
+                {%- if media.media_type == 'image' -%}
+                  {%- assign cld = 'lazy' -%}{%- assign fp = 'auto' -%}{%- if gi == 0 -%}{%- assign cld = 'eager' -%}{%- assign fp = 'high' -%}{%- endif -%}
+                  {%- assign full = src | image_url: width: 2400 -%}
+                  {{- src | image_url: width: 1600 | image_tag: widths: '600,900,1200,1600', sizes: '(max-width: 1023px) 100vw, 640px', loading: cld, fetchpriority: fp, alt: media.alt, data-no-lift: '', data-full: full -}}
                 {%- else -%}
                   {{- media | media_tag: image_size: '1200x' -}}
                 {%- endif -%}
