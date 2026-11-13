@@ -377,7 +377,24 @@
   </div>
 
   {%- comment -%} ── Sticky add to cart: shown by assets/snh-product.js once the main button has scrolled away ── {%- endcomment -%}
-  {%- assign ibdbg = product.metafields.custom.in_bundles -%}<div hidden data-ibdbg="{{ ibdbg.value.size }}|{{ ibdbg.value.first.title | escape }}|{{ ibdbg.value.first.handle }}|{{ ibdbg | json | escape }}|{{ ibdbg.value | json | escape | truncate: 300 }}"></div>
+  {%- comment -%} 14 Nov: "Save with a bundle" — the live bundles that contain this product (custom.in_bundles, written by
+    scripts/sync-bundle-links.mjs, biggest saving first). Same card as the collections, max 4, swipe on phones. Hidden when
+    empty; never this product, never an unpublished or sold-out bundle. {%- endcomment -%}
+  {%- capture swb_cards -%}
+    {%- assign swb_n = 0 -%}
+    {%- for b in product.metafields.custom.in_bundles.value -%}
+      {%- if swb_n >= 4 -%}{%- break -%}{%- endif -%}
+      {%- if b.id == product.id or b.handle == blank or b.published_at == blank or b.available != true -%}{%- continue -%}{%- endif -%}
+      {%- assign swb_n = swb_n | plus: 1 -%}
+      <div class="swb__item">{%- render 'product-card', product: b, position: swb_n -%}</div>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if swb_n > 0 -%}
+    <section class="sp-wrap swb" aria-labelledby="swb-h-{{ section.id }}">
+      <div class="swb__head"><h2 class="swb__h" id="swb-h-{{ section.id }}">Save with a bundle</h2><a class="swb__all" href="/collections/bundle-offers">All bundles</a></div>
+      <div class="swb__row" role="list">{{ swb_cards }}</div>
+    </section>
+  {%- endif -%}
   {%- comment -%} Round 14: "Goes well with" from the shared recommendation engine (assets/snh-cart.js widget) {%- endcomment -%}
   <div class="sp-wrap snh-reco snh-reco--pdp" data-snh-reco="pdp" data-handle="{{ product.handle }}" data-limit="4" hidden></div>
   {%- if section.settings.sticky_atc -%}
