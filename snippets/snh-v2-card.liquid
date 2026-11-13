@@ -167,7 +167,16 @@
   assign earn = product.price | times: rate | divided_by: 100 | times: pv | divided_by: 100.0 | round | times: 100
 -%}
 
-<product-card class="card pc{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}"{% if position %} style="--o: {{ position | times: 10 }}"{% endif %}>
+{%- liquid
+  # 14 Nov: bundle cards carry the green "BUNDLE" ribbon inside their own photo (top right), so the Informed Sport badge moves
+  assign pc_bundle = false
+  assign pc_pt = product.type | downcase
+  assign pc_tg = product.tags | join: ',' | downcase
+  if pc_pt contains 'bundle' or pc_tg contains 'bundle' or product.variants.first.requires_components
+    assign pc_bundle = true
+  endif
+-%}
+<product-card class="card pc{% if pc_bundle %} pc--bundle{% endif %}{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}"{% if position %} style="--o: {{ position | times: 10 }}"{% endif %}>
   <div class="pc__frame">
     <a class="card__tile pc__shot" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
       {%- capture clean1 -%}{% render 'snh-clean-img', product: product %}{%- endcapture -%}{%- assign clean1 = clean1 | strip -%}

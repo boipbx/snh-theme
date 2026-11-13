@@ -2692,3 +2692,14 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
   form.snh-bar-form .snh-active { padding-block: 0 8px; }
   @media (prefers-reduced-motion: reduce) { form.snh-bar-form { transition: none; } }
 }
+
+/* 14 Nov: bundle cards — the photo's own green "BUNDLE" ribbon sits top right, so the Informed Sport badge moves to the
+   left, stacked under the "Save Rs" pill (or in its place when there is no saving). Nothing overlaps. */
+.pc--bundle .pc__inf { right: auto; left: 12px; top: 12px; }
+.pc--bundle .pc__frame:has(.pc__badge) .pc__inf { top: 46px; }
+.pc--bundle .pc__frame:has(.pc__inf) .pc__status { top: 12px; }
+@media (max-width: 767px) {
+  .pc--bundle .pc__inf { left: 10px; top: 10px; }
+  .pc--bundle .pc__frame:has(.pc__badge) .pc__inf { top: 40px; }
+  .pc--bundle .pc__frame:has(.pc__inf) .pc__status { top: 10px; }
+}
