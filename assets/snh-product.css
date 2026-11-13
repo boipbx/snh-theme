@@ -423,3 +423,5 @@
 .szv__hint { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); padding: 6px 12px; border-radius: 999px; background: rgba(14, 14, 14, .72); color: #fff; font: 500 12px/1.2 var(--sans, system-ui); pointer-events: none; transition: opacity 300ms ease; }
 @media (hover: none) { .szv__nav { display: none; } }
 @media (prefers-reduced-motion: reduce) { .szv { transition: none; } }
+.sp-slide > img { width: 100% !important; height: 100% !important; }
+.sp-stage.is-info .sp-floatbrand, .sp-stage.is-info .sp-count { opacity: 0; pointer-events: none; transition: opacity 160ms ease; }

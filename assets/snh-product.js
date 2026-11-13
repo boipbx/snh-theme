@@ -29,6 +29,10 @@
       thumbs.forEach(function (t, k) { t.setAttribute('aria-selected', String(k === i)); });
       if (bar) bar.style.setProperty('--i', i);
       if (count) count.textContent = (i + 1) + ' / ' + slides.length;
+      // 14 Nov: info images (nutrition panels etc.) get the whole frame: the counter and brand badge step aside
+      var stg = root.querySelector('.sp-stage'), sl = slides[i];
+      if (stg && sl) stg.classList.toggle('is-info', sl.classList.contains('sp-slide--info'));
+      slides.forEach(function (x, k) { if (k === i) x.setAttribute('data-active', ''); else x.removeAttribute('data-active'); });
       var t = thumbs[i];
       if (t && rail && rail.scrollHeight > rail.clientHeight + 2) {
         rail.scrollTo({ top: Math.max(0, t.offsetTop - rail.clientHeight / 2 + t.offsetHeight / 2), behavior: 'smooth' });
