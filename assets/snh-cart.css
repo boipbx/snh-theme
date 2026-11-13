@@ -450,7 +450,7 @@
    side, title + saving on two lines, even padding. Slides in once per unlock with a short confetti burst
    (assets/snh-cart.js bundleWin + confetti); reduced motion: plain fade. The canvas is absolutely positioned, so
    nothing shifts and the banner adds no height beyond itself. */
-.sbw { position: relative; display: flex; flex: none; align-items: center; gap: 12px; min-height: max-content; margin: 0 0 8px; padding: 12px 14px;
+.sbw { position: relative; display: flex; flex: none; align-items: center; gap: 12px; min-height: auto; margin: 0 0 8px; padding: 12px 14px;
   border-radius: 14px; border: 1px solid #CFEBD9; background: #EEF8F1; color: #14532D; overflow: visible; box-shadow: none; }
 .sbw__ic { display: grid; place-items: center; flex: 0 0 24px; width: 24px; height: 24px; margin: 0; border-radius: 50%; background: #1E7A43; color: #fff; font-size: 0; }
 .sbw__ic svg { width: 14px; height: 14px; }
