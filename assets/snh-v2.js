@@ -875,6 +875,22 @@
     addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(sync); } }, { passive: true });
   })();
 
+  /* 14 Nov: phones/tablets — the slim "Filter & sort" bar hides while you scroll down the grid and slides back as soon
+     as you scroll up (never while the filter sheet is open). Desktop keeps its bar as is. */
+  (function () {
+    var form = document.querySelector('form.snh-bar-form'); if (!form) return;
+    var mq = matchMedia('(max-width: 999px)'), last = scrollY, tick = false;
+    function sync() {
+      tick = false;
+      var y = scrollY, d = y - last, top = form.parentNode ? form.parentNode.getBoundingClientRect().top + y : 0;
+      if (!mq.matches || document.body.classList.contains('snh-sheet-open') || y < top + 120) form.classList.remove('is-away');
+      else if (d > 8) form.classList.add('is-away');
+      else if (d < -6) form.classList.remove('is-away');
+      if (Math.abs(d) > 6 || y < top + 120) last = y;
+    }
+    addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(sync); } }, { passive: true });
+  })();
+
   /* search: Collections tab (predictive search), next to the Products / Articles result pages */
   on('srtabs', function (nav) {
     var btn = nav.querySelector('[data-srtab-col]'), panel = document.getElementById(btn.getAttribute('aria-controls')), done = false;

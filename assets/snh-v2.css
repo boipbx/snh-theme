@@ -2666,3 +2666,29 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
    frame, no grey studio backdrop and no "too zoomed / too small" mix. Sits on the warm tile as is. */
 .card__img.is-clean img { mix-blend-mode: normal; transform: scale(.8); opacity: 1 !important; filter: drop-shadow(0 10px 14px rgba(40, 30, 20, .10)); }
 .mini img[src*="/assets/pc-"], .cmpx img[src*="/assets/pc-"] { mix-blend-mode: normal; object-fit: contain; }
+
+/* 14 Nov: "Filter & sort" on phones/tablets (collections, search, Bundle Offers — all snippets/facets-vertical): a slim
+   sticky bar under the header with a solid white background and a hairline border, never over the product cards.
+   Left: icon + "Filter & sort" (+ an orange badge with the number of active filters); right: the product count.
+   Hides on scroll down, back on scroll up (assets/snh-v2.js). */
+@media screen and (max-width: 999px) {
+  form.snh-bar-form { position: sticky; top: var(--header-height, var(--v-hdr, 0px)); z-index: 11; background: #fff;
+    box-shadow: 0 0 0 100vmax #fff; clip-path: inset(0 -100vmax 0 -100vmax); border-bottom: 1px solid var(--line, rgba(12, 12, 13, .1));
+    transition: transform 220ms var(--ease, cubic-bezier(.22, 1, .36, 1)); }
+  form.snh-bar-form.is-condensed { box-shadow: 0 0 0 100vmax #fff; border-bottom: 1px solid var(--line, rgba(12, 12, 13, .1)); }
+  form.snh-bar-form.is-away { transform: translateY(calc(-100% - 2px)); }
+  body.snh-sheet-open form.snh-bar-form { transform: none; clip-path: none; }
+  form.snh-bar-form .snh-bar { padding: 0; margin: 0; background: #fff; }
+  form.snh-bar-form .snh-bar > .snh-mtrig { display: flex; grid-column: 1 / -1; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 4px 0; }
+  form.snh-bar-form .snh-mtrig__btn { height: 40px; padding: 0 10px 0 2px; gap: 8px; border: 0; border-radius: 10px; background: transparent; color: var(--ink, #0C0C0D);
+    font: 600 14.5px/1 var(--sans); box-shadow: none; }
+  form.snh-bar-form .snh-mtrig__btn:hover { background: rgba(12, 12, 13, .05); }
+  form.snh-bar-form .snh-mtrig__btn:focus-visible { outline: 2px solid var(--v-accent, #E0521C); outline-offset: 2px; }
+  form.snh-bar-form .snh-mtrig__btn svg { width: 20px; height: 20px; }
+  form.snh-bar-form .snh-mtrig__btn b { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+    background: var(--v-accent, #E0521C); color: #fff; font: 700 11.5px/1 var(--sans); }
+  form.snh-bar-form .snh-mtrig__n { display: inline; font: 500 13px/1.2 var(--sans); color: var(--grey-2, #5b5b5f); white-space: nowrap; }
+  form.snh-bar-form .snh-bar > .snh-goals.snh-goals--keep { padding: 0 0 8px; }
+  form.snh-bar-form .snh-active { padding-block: 0 8px; }
+  @media (prefers-reduced-motion: reduce) { form.snh-bar-form { transition: none; } }
+}
