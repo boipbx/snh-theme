@@ -16,7 +16,10 @@ for m in M:
     o = (z[..., 0] > 150) & (z[..., 2] < 150) & (z[..., 0] - z[..., 2] > 60) & (z[..., 0] - z[..., 1] > 25)
     d = 0
     if o.sum() > 20:
-        ys = np.where(o.any(1))[0]; d = int(ys.max() + h * .01)
+        import cv2
+        n, lab, st, _ = cv2.connectedComponentsWithStats(o.astype(np.uint8), 8)
+        bottoms = [st[i][1] + st[i][3] for i in range(1, n) if st[i][1] < h * .05 and st[i][4] > 6]   # the mark touches the top
+        if bottoms: d = int(max(bottoms) + h * .012)
     if d > h * .14: skipped += 1; continue          # mark sits too low: leave this image as it is
     top = t + d; s = min(r - l, b - top); left = l + ((r - l) - s) / 2
     out.append(f'{mid}:{left / W:.4f}:{top / H:.4f}:{s / W:.4f}:{s / H:.4f}')
