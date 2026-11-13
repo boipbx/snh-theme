@@ -425,3 +425,8 @@
 @media (prefers-reduced-motion: reduce) { .szv { transition: none; } }
 .sp-slide > img { width: 100% !important; height: 100% !important; }
 .sp-stage.is-info .sp-floatbrand, .sp-stage.is-info .sp-count { opacity: 0; pointer-events: none; transition: opacity 160ms ease; }
+/* the image box is pinned inside the square (a grid row would otherwise grow to a tall image's own height) */
+.sp-slide { --pad: 4%; }
+.sp-slide--clean { --pad: 6%; }
+.sp-slide--info { --pad: 2%; }
+.sp-slide > img { position: absolute; top: var(--pad); left: var(--pad); width: calc(100% - 2 * var(--pad)) !important; height: calc(100% - 2 * var(--pad)) !important; }
