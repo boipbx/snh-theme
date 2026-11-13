@@ -1,0 +1,41 @@
+/* 14 Nov 2026 — Saturday SiS deal chip + wheel sheet (assets/snh-satdeal.js). Fixed-position only: no layout shift. */
+.ssd-chip { position: fixed; left: 12px; bottom: 16px; z-index: 60; display: flex; align-items: center; border-radius: 999px; background: #0E0E0E; color: #fff;
+  box-shadow: 0 8px 24px -8px rgba(14, 14, 14, .45); opacity: 0; transform: translateY(8px); transition: opacity .25s ease, transform .25s ease, bottom .2s ease; }
+.ssd-chip.is-in { opacity: 1; transform: none; }
+.ssd-chip__go { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 6px 0 14px; border: 0; background: none; color: inherit; font: 600 13.5px/1 var(--sans, system-ui); cursor: pointer; }
+.ssd-chip__x { display: grid; place-items: center; width: 32px; height: 40px; margin-right: 2px; border: 0; background: none; color: rgba(255, 255, 255, .8); cursor: pointer; border-radius: 999px; }
+.ssd-chip button:focus-visible, .ssd button:focus-visible, .ssd a:focus-visible { outline: 2px solid #E0521C; outline-offset: 2px; }
+html.ssd-lock { overflow: hidden; }
+.ssd { position: fixed; inset: 0; z-index: 1001; display: none; }
+.ssd.is-open { display: block; }
+.ssd__scrim { position: absolute; inset: 0; background: rgba(10, 10, 10, .45); animation: ssd-fade .2s ease both; }
+.ssd__box { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92vh; overflow-y: auto; padding: 22px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  border-radius: 20px 20px 0 0; background: #fff; color: #0E0E0E; text-align: center; font-family: var(--sans, system-ui); animation: ssd-up .28s cubic-bezier(.2, .8, .2, 1) both; }
+@media (min-width: 750px) { .ssd__box { left: 50%; top: 50%; right: auto; bottom: auto; width: 420px; border-radius: 20px; transform: translate(-50%, -50%); animation: ssd-fade .2s ease both; } }
+.ssd__x { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border: 0; background: none; font-size: 26px; line-height: 1; color: #0E0E0E; cursor: pointer; border-radius: 999px; }
+.ssd__eb { margin: 0 0 4px; font: 700 12px/1.2 var(--sans, system-ui); letter-spacing: .08em; text-transform: uppercase; color: #B4410F; }
+.ssd__t { margin: 0 32px 6px; font: 700 21px/1.2 var(--sans, system-ui); letter-spacing: -.01em; }
+.ssd__d { margin: 0 0 14px; font: 400 14px/1.45 var(--sans, system-ui); color: #4A4A4A; }
+.ssd__wheel { position: relative; width: min(260px, 70vw); aspect-ratio: 1; margin: 6px auto 16px; }
+.ssd__wheel svg { width: 100%; height: 100%; font-family: var(--sans, system-ui); }
+.ssd-w { will-change: transform; }
+.ssd__ptr { position: absolute; z-index: 1; left: 50%; top: -6px; width: 0; height: 0; margin-left: -11px; border: 11px solid transparent; border-top: 20px solid #0E0E0E; border-bottom: 0; transform-origin: 50% 0; }
+.ssd__ptr.is-tick { animation: ssd-tick .12s ease-out; }
+.ssd__spin, .ssd__apply, .ssd__copy { height: 48px; padding: 0 22px; border-radius: 999px; font: 700 15px/1 var(--sans, system-ui); cursor: pointer; }
+.ssd__spin { width: 100%; max-width: 320px; border: 0; background: #E0521C; color: #fff; }
+.ssd__spin:disabled { opacity: .7; cursor: default; }
+.ssd__res.is-fade { animation: ssd-fade .35s ease both; }
+.ssd__win { margin: 0 0 8px; font: 400 15px/1.3 var(--sans, system-ui); }
+.ssd__code { display: inline-block; margin: 0 0 14px; padding: 12px 24px; border: 2px dashed #E0521C; border-radius: 999px; background: #FFF4EE; color: #0E0E0E;
+  font: 800 26px/1 var(--sans, system-ui); letter-spacing: .06em; user-select: all; }
+.ssd__btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.ssd__apply { border: 0; background: #0E0E0E; color: #fff; flex: 1 1 180px; max-width: 240px; }
+.ssd__copy { border: 1.5px solid #0E0E0E; background: #fff; color: #0E0E0E; flex: 0 1 140px; }
+.ssd__st { min-height: 20px; margin: 10px 0 4px; font: 600 14px/1.35 var(--sans, system-ui); color: #166534; }
+.ssd__small { margin: 0; font: 400 13px/1.4 var(--sans, system-ui); color: #4A4A4A; }
+.ssd__small a { color: #0E0E0E; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.ssd__fx { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 3; }
+@keyframes ssd-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ssd-up { from { transform: translateY(30px); opacity: .4; } to { transform: none; opacity: 1; } }
+@keyframes ssd-tick { 0% { transform: rotate(0); } 40% { transform: rotate(-14deg); } 100% { transform: rotate(0); } }
+@media (prefers-reduced-motion: reduce) { .ssd-chip, .ssd__box, .ssd__scrim, .ssd__ptr.is-tick { transition: none; animation: none; } .ssd__res.is-fade { animation: ssd-fade .3s ease both; } }

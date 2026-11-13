@@ -62,25 +62,8 @@
             "name": "Saturday sale: announcement (every Saturday)",
             "type": "announcement",
             "tag": "Saturday deal",
-            "message": "15% off all SiS products today · code SIS15 + date, e.g. SIS15-14NOV",
+            "message": "15% off all SiS products today · tap 🎁 Saturday SiS deal for your code",
             "highlight": ""
-          }
-        },
-        "sat_popup": {
-          "type": "campaign",
-          "settings": {
-            "pages": "all",
-            "audience": "all",
-            "link": "shopify://collections/sis",
-            "days": "sat",
-            "tone": "orange",
-            "freq": "day",
-            "priority": 10,
-            "name": "Saturday sale: popup (every Saturday)",
-            "type": "popup",
-            "heading": "Saturday deal: 15% off all SiS products",
-            "message": "Today only, on Science in Sport (SiS) products. Use code SIS15-14NOV at checkout.",
-            "cta": "Shop SiS"
           }
         },
         "sat_home": {
@@ -96,7 +79,7 @@
             "name": "Saturday sale: homepage banner (every Saturday)",
             "type": "home_banner",
             "heading": "Saturday deal: 15% off all SiS products",
-            "message": "Every Saturday, on Science in Sport (SiS). Today's code: SIS15-14NOV.",
+            "message": "Every Saturday, on Science in Sport (SiS). Tap 🎁 Saturday SiS deal (bottom left) for today's code.",
             "cta": "Shop now"
           }
         },
@@ -113,7 +96,7 @@
             "name": "Saturday sale: cart banner (every Saturday)",
             "type": "cart_banner",
             "heading": "Saturday deal: 15% off SiS",
-            "message": "On Science in Sport products only, with today's code SIS15-14NOV."
+            "message": "On Science in Sport products only, with today's code (🎁 Saturday SiS deal, bottom left)."
           }
         },
         "fri_teaser": {
@@ -135,7 +118,6 @@
       },
       "block_order": [
         "sat_announce",
-        "sat_popup",
         "sat_home",
         "sat_cart",
         "fri_teaser",
