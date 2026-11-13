@@ -582,23 +582,54 @@
     });
   };
   Cart.prototype.bundleWin = function (names, saving, ab) {
+    // 14 Nov: a rounded card — 24 px tick, "Bundle unlocked" + "You're saving Rs X" — that slides in with a short
+    // confetti burst once per unlock (not on re-renders or reloads); reduced motion: a plain fade, no confetti
     var cur = $('[data-bundle-win]', this.el);
-    if (!names.length) { if (cur) cur.remove(); return; }
-    var key = names.slice().sort().join('|'), html = '<span class="sbw__ic" aria-hidden="true">' + icons.check + '</span><p title="' + esc(names.join(' + ')) + '"><b>Bundle unlocked</b>' + (saving > 0 ? ' · you\'re saving ' + rs(saving) : '') + '</p>';
-    if (!cur) { cur = document.createElement('div'); cur.className = 'sbw'; cur.setAttribute('role', 'status'); cur.setAttribute('data-bundle-win', ''); this.body.insertBefore(cur, this.body.firstChild); }
-    cur.innerHTML = html;
-    var seen = ''; try { seen = sessionStorage.getItem('snh_bwin') || ''; } catch (e) {}
-    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Post-launch: a subtle pop instead of confetti (the pill stays one line, fully visible); none for reduced motion
-    if (seen !== key && !reduce) { cur.classList.add('is-new'); setTimeout(function () { cur.classList.remove('is-new'); }, 900); }
-    if (false) {
-      var c = document.createElement('span'); c.className = 'sbw__fx'; c.setAttribute('aria-hidden', 'true');
-      for (var i = 0; i < 18; i++) { var p = document.createElement('i'); p.style.cssText = '--x:' + Math.round(Math.random() * 100) + '%;--d:' + Math.round(Math.random() * 400) + 'ms;--r:' + Math.round(Math.random() * 360) + 'deg;--c:' + ['#E0521C', '#FFB27A', '#2BAA5E', '#F4C542', '#0E0E0E'][i % 5]; c.appendChild(p); }
-      cur.appendChild(c); cur.classList.add('is-new');
-      setTimeout(function () { if (c.parentNode) c.remove(); cur.classList.remove('is-new'); }, 2200);
+    if (!names.length) {
+      if (cur) cur.remove();
+      try { sessionStorage.removeItem('snh_bwin'); } catch (e) {}   // a later unlock celebrates again
+      return;
     }
+    var key = names.slice().sort().join('|') + '#' + saving;
+    var html = '<span class="sbw__ic" aria-hidden="true">' + icons.check + '</span><p title="' + esc(names.join(' + ')) + '"><b>Bundle unlocked</b>' +
+      (saving > 0 ? '<span class="sbw__s">You\'re saving ' + rs(saving) + '</span>' : '<span class="sbw__s">' + esc(names.join(' + ')) + '</span>') + '</p>';
+    if (!cur) { cur = document.createElement('div'); cur.className = 'sbw'; cur.setAttribute('role', 'status'); cur.setAttribute('data-bundle-win', ''); this.body.insertBefore(cur, this.body.firstChild); }
+    if (cur.__html !== html) { cur.innerHTML = html; cur.__html = html; }
+    var seen = ''; try { seen = sessionStorage.getItem('snh_bwin') || ''; } catch (e) {}
+    var unlockOnly = seen.split('#')[0] === key.split('#')[0];   // same bundles, only the quantity / saving changed
     try { sessionStorage.setItem('snh_bwin', key); } catch (e) {}
+    if (seen === key || unlockOnly) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    cur.classList.remove('is-new', 'is-fade'); void cur.offsetWidth;
+    cur.classList.add(reduce ? 'is-fade' : 'is-new');
+    setTimeout(function () { cur.classList.remove('is-new', 'is-fade'); }, 400);
+    if (!reduce) confetti(cur);
   };
+  // tiny canvas burst from the banner: ~40 flakes in SNH orange, green and white, 1.2 s, then the canvas is removed
+  function confetti(host) {
+    var cv = document.createElement('canvas'), r = host.getBoundingClientRect(), W = Math.round(r.width + 40), H = Math.round(r.height + 120), dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.className = 'sbw__fx'; cv.setAttribute('aria-hidden', 'true'); cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    host.appendChild(cv);
+    var c = cv.getContext('2d'); if (!c) { cv.remove(); return; }
+    c.scale(dpr, dpr);
+    var cols = ['#E0521C', '#F28C55', '#1E9E57', '#7ED3A0', '#FFFFFF'], P = [], ox = 34, oy = 60 + r.height / 2;
+    for (var i = 0; i < 42; i++) { var a = -Math.PI / 2 + (Math.random() - .5) * 2.4, v = 2.4 + Math.random() * 3.6; P.push({ x: ox + Math.random() * (r.width * .6), y: oy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, s: 3 + Math.random() * 4, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: cols[i % cols.length] }); }
+    var t0 = 0;
+    (function f(t) {
+      if (!t0) t0 = t; var k = (t - t0) / 1200;
+      c.clearRect(0, 0, W, H);
+      if (k >= 1 || !cv.isConnected) { cv.remove(); return; }
+      c.globalAlpha = k < .7 ? 1 : (1 - k) / .3;
+      P.forEach(function (p) {
+        p.vy += .12; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        c.save(); c.translate(p.x, p.y); c.rotate(p.r); c.fillStyle = p.c; c.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * .66);
+        if (p.c === '#FFFFFF') { c.strokeStyle = 'rgba(30,122,67,.45)'; c.lineWidth = .8; c.strokeRect(-p.s / 2, -p.s / 3, p.s, p.s * .66); }
+        c.restore();
+      });
+      requestAnimationFrame(f);
+    })(performance.now());
+    requestAnimationFrame(function (t) { t0 = t; });
+  }
   Cart.prototype.swap = function (vid, keys, btn) {
     if (btn.getAttribute('aria-busy') === 'true') return;
     var self = this, cart = this.__lastCart || { items: [] }, updates = {};

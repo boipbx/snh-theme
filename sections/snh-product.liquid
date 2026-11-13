@@ -104,7 +104,7 @@
 
     <div class="sp-grid">
       {%- comment -%} ── Gallery ── {%- endcomment -%}
-      <div class="sp-gal{% if gal_count < 2 %} sp-gal--single{% endif %}" data-sp-gal data-ci="{{ ci.size }}/{{ product.media.size }}/{{ ci_ok }}/{{ product.metafields.custom.clean_images.type }}/{{ ci.first.id }}/{{ ci.first.media_type }}">
+      <div class="sp-gal{% if gal_count < 2 %} sp-gal--single{% endif %}" data-sp-gal data-ci="{{ ci.size }}/{{ ci_ok }}/[{{ ci.first }}]/{{ ci.first.id }}/{{ ci.first.media_type }}/{{ ci.first.alt }}/{{ ci.first.src }}/{{ ci.first.url }}/{{ ci.first.preview_image.src }}/{{ ci.first | image_url: width: 100 }}/{{ ci.first.width }}">
         {%- if gal_count > 1 -%}
           <div class="sp-rail" role="tablist" aria-label="Product images">
             {%- assign gi = 0 -%}
