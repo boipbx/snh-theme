@@ -1,0 +1,116 @@
+{
+ "id": "gid://shopify/Product/9410575958270",
+ "handle": "revive-longevity-restore-90-vegetarian-capsules",
+ "title": "Revive Longevity Restore",
+ "status": "ACTIVE",
+ "vendor": "REVIVE",
+ "productType": "VITAMINS & WELLNESS",
+ "tags": [
+  "90 Capsules",
+  "Daily Wellness",
+  "Health & Wellness",
+  "Longevity",
+  "NAD+",
+  "REVIVE",
+  "Vegetarian"
+ ],
+ "descriptionHtml": "<div><div class=\"standard-markdown grid-cols-1 grid [&amp;&gt;_*]:min-w-0 gap-3\"><h2 class=\"text-text-100 mt-3 -mb-1 text-[1.375rem] font-bold\">Revive Longevity Restore \u2013 90 Vegetarian Capsules</h2></div></div><div><div class=\"standard-markdown grid-cols-1 grid [&amp;&gt;_*]:min-w-0 gap-3\"><p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\"><strong>Overview</strong><br>Revive Longevity Restore is a physician-formulated cellular wellness supplement centred on NAD+ support and healthy ageing. With 30 servings per bottle (three capsules once daily with food), it combines NMN, TMG, and a curated stack of polyphenols and longevity-associated compounds to support cellular repair, methylation balance, and overall cellular vitality. Note: this product was previously listed under the supplier shorthand \u201cRevive Restore\u201d \u2014 the correct public title is Revive Longevity Restore.</p></div></div><div><div class=\"standard-markdown grid-cols-1 grid [&amp;&gt;_*]:min-w-0 gap-3\">\n<p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\"><strong>Key Benefits</strong></p>\n<ul class=\"list-disc flex flex-col gap-1 pl-8 mb-3\">\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>NMN (500 mg)</strong> \u2014 a direct NAD+ precursor to support cellular energy and repair pathways</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>TMG / Trimethylglycine (500 mg)</strong> \u2014 supports methylation balance, an important cofactor when supplementing NMN</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>Quercefit\u00ae (300 mg)</strong> \u2014 a highly bioavailable quercetin phytosome for antioxidant and cellular wellness support</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>Pterostilbene (100 mg)</strong> \u2014 a potent polyphenol associated with healthy ageing and cellular protection</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>Apigenin (50 mg)</strong> \u2014 a plant flavonoid associated with healthy ageing support</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>L-Ergothioneine (25 mg)</strong> \u2014 a unique antioxidant amino acid found in longevity-associated dietary patterns</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>Spermidine (10 mg)</strong> \u2014 supports autophagy and cellular renewal processes</li>\n</ul>\n</div></div><div><div class=\"standard-markdown grid-cols-1 grid [&amp;&gt;_*]:min-w-0 gap-3\"><p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\"><strong>Key Ingredients (per serving \u2013 3 capsules)</strong><br>NMN 500 mg | TMG 500 mg | Quercefit\u00ae 300 mg | Pterostilbene 100 mg | Apigenin 50 mg | L-Ergothioneine 25 mg | Spermidine 10 mg</p></div></div><div><div class=\"standard-markdown grid-cols-1 grid [&amp;&gt;_*]:min-w-0 gap-3\"><p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\"><strong>How to Use</strong><br>Take three capsules once daily with food. 30 servings per bottle. Consistent daily use is recommended for best results.</p></div></div><div><div class=\"standard-markdown grid-cols-1 grid [&amp;&gt;_*]:min-w-0 gap-3\"><p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\"><strong>Warnings</strong><br>Not intended to diagnose, treat, cure, or prevent any disease. Keep out of reach of children. Store in a cool, dry place. Consult a healthcare professional before use if you are pregnant, nursing, or taking medication.</p></div></div>",
+ "seo": {
+  "title": "Revive Longevity Restore \u2013 90 Veg Capsules | REVIVE MD",
+  "description": "Revive Longevity Restore supports NAD+ and cellular wellness with NMN, TMG, Quercefit, pterostilbene & spermidine. 90 vegetarian capsules, 30 servings."
+ },
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48876237062398",
+    "price": "34999.00",
+    "compareAtPrice": null
+   }
+  ]
+ },
+ "metafields": {
+  "nodes": [
+   {
+    "namespace": "shopify",
+    "key": "dietary-preferences",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/54975693054\"]"
+   },
+   {
+    "namespace": "shopify",
+    "key": "detailed-ingredients",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/68511039742\"]"
+   },
+   {
+    "namespace": "shopify",
+    "key": "route-of-administration",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/162944712958\"]"
+   },
+   {
+    "namespace": "custom",
+    "key": "caution",
+    "type": "multi_line_text_field",
+    "value": "REVIVE MD is a physician-formulated supplement brand founded by Dr. Domenic Iacovone and Adam Cayce. All REVIVE products are manufactured in GMP-certified, FDA-registered facilities in the United States with rigorous third-party testing and transparent labelling."
+   },
+   {
+    "namespace": "custom",
+    "key": "key_benefits",
+    "type": "multi_line_text_field",
+    "value": "NMN for NAD+ support and cellular energy\nTMG for methylation balance\nQuercefit\u00ae for bioavailable antioxidant support\nPterostilbene for cellular protection\nSpermidine for autophagy and cellular renewal"
+   },
+   {
+    "namespace": "custom",
+    "key": "how_to_use",
+    "type": "multi_line_text_field",
+    "value": "Take three capsules once daily with food. 30 servings per bottle."
+   },
+   {
+    "namespace": "custom",
+    "key": "summery_brief",
+    "type": "single_line_text_field",
+    "value": "NAD+ and cellular wellness formula with NMN, TMG, Quercefit, pterostilbene & spermidine. 90 vegetarian capsules, 30 servings."
+   },
+   {
+    "namespace": "global",
+    "key": "title_tag",
+    "type": "string",
+    "value": "Revive Longevity Restore \u2013 90 Veg Capsules | REVIVE MD"
+   },
+   {
+    "namespace": "global",
+    "key": "description_tag",
+    "type": "string",
+    "value": "Revive Longevity Restore supports NAD+ and cellular wellness with NMN, TMG, Quercefit, pterostilbene & spermidine. 90 vegetarian capsules, 30 servings."
+   },
+   {
+    "namespace": "mc-facebook",
+    "key": "google_product_category",
+    "type": "string",
+    "value": "525"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "badge",
+    "type": "string",
+    "value": "<div style='display:none' class='jdgm-prev-badge' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0'> <span class='jdgm-prev-badge__stars' data-score='0.00' tabindex='0' aria-label='0.00 stars' role='button'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> <span class='jdgm-prev-badge__text'> No reviews </span> </div>"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "widget",
+    "type": "string",
+    "value": "<div class='jdgm-rev-widg' data-updated-at='2026-09-05T19:08:10Z' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0' data-image-url='https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LongevityRestoreNAD_bySNH.png?v=1786590208'> <style class='jdgm-temp-hiding-style'>.jdgm-rev-widg{ display: none }</style> <div class='jdgm-rev-widg__header'> <h2 class='jdgm-rev-widg__title'>Customer Reviews</h2>  <div class='jdgm-rev-widg__summary'> <div class='jdgm-rev-widg__summary-stars' aria-label='Average rating is 0.00 stars' role='img'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </div> <div class='jdgm-rev-widg__summary-text'>Be the first to write a review</div> </div> <a style='display: none' href='#' class='jdgm-write-rev-link' role='button'>Write a review</a> <div class='jdgm-histogram jdgm-temp-hidden'>  <div class='jdgm-histogram__row' data-rating='5' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 5 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='4' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 4 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='3' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 3 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='2' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 2 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='1' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 1 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row jdgm-histogram__clear-filter' data-rating=null tabindex='0'></div> </div>     <div class='jdgm-rev-widg__sort-wrapper'></div> </div> <div class='jdgm-rev-widg__body'>  <div class='jdgm-rev-widg__reviews'></div> <div class='jdgm-paginate' data-per-page='5' data-url='https://api.judge.me/reviews/reviews_for_widget' style=\"display: none;\"></div>  </div> <div class='jdgm-rev-widg__paginate-spinner-wrapper'> <div class='jdgm-spinner'></div> </div> </div>"
+   },
+   {
+    "namespace": "booster_apps_seo",
+    "key": "config",
+    "type": "json",
+    "value": "{\"override_title\":true,\"meta_title\":\"Revive Longevity Restore \u2013 90 Vegetarian Capsules | Sports Nutrition Hub \",\"override_desc\":true,\"meta_desc\":\"Revive Longevity Restore \u2013 90 Vegetarian CapsulesOverviewRevive Longevity Restore is a physician-formulated cellular wellness supplement centred on NAD+ support and healthy ageing. With 30 servings per bottle (three capsules once daily with food),...\"}"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": []
+ }
+}

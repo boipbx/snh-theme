@@ -1,0 +1,135 @@
+{
+ "id": "gid://shopify/Product/9433933218046",
+ "handle": "creatine-starter",
+ "title": "Creatine Starter Pack",
+ "status": "ACTIVE",
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48804961550590",
+    "sku": "SNH-CSP-BLAC",
+    "price": "8999.00",
+    "compareAtPrice": "10998.00",
+    "title": "Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575955849470",
+    "sku": "SNH-CSP-WHIT",
+    "price": "8999.00",
+    "compareAtPrice": "10998.00",
+    "title": "White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575955882238",
+    "sku": "SNH-CSP-HG",
+    "price": "8999.00",
+    "compareAtPrice": "10998.00",
+    "title": "Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575955915006",
+    "sku": "SNH-CSP-AM",
+    "price": "8999.00",
+    "compareAtPrice": "10998.00",
+    "title": "Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575955947774",
+    "sku": "SNH-CSP-MAGE",
+    "price": "8999.00",
+    "compareAtPrice": "10998.00",
+    "title": "Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575955980542",
+    "sku": "SNH-CSP-TB",
+    "price": "8999.00",
+    "compareAtPrice": "10998.00",
+    "title": "Teal Blue"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/4715545428030",
+     "title": "APPLIED NUTRITION Creatine Monohydrate 50 Servings"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/6154889330750",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "50 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/10384416932094",
+       "name": "Flavor"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Unflavored",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/9051839758590",
+     "title": "SNH 2.0 Shaker Bottle 750ml"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/12014366359806",
+       "name": "Colors"
+      },
+      "parentOption": {
+       "name": "SNH 2.0 Shaker Bottle 750ml (Colors)"
+      },
+      "values": [
+       {
+        "value": "Black",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Harbor Grey",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Magenta",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Teal Blue",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Aqua Marine",
+        "selectionStatus": "UNAVAILABLE"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

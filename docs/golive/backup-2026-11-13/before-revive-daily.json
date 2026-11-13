@@ -1,0 +1,118 @@
+{
+ "id": "gid://shopify/Product/9434983661822",
+ "handle": "revive-daily",
+ "title": "REVIVE Daily",
+ "status": "ACTIVE",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "productType": "Bundle",
+ "tags": [
+  "bundle",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "Health & Wellness",
+  "health-foundation",
+  "magnesium",
+  "REVIVE",
+  "vitamin-D3"
+ ],
+ "descriptionHtml": "<p class=\"_p_1x4zg_107\"><span>REVIVE was built by physicians who were frustrated by the gap between what supplement science actually supports and what most brands put in their products. Every product in the REVIVE range is formulated around a single health pillar, dosed at a clinically meaningful level, and manufactured in GMP-certified US facilities under the same standards applied to pharmaceutical production. The REVIVE Daily bundle takes the two most foundational products in that range and pairs them into a daily protocol that addresses the two most widespread nutritional deficiencies in active adults.</span></p>\n<p class=\"_p_1x4zg_107\"><span>REVIVE Magnesium Glycinate delivers 200mg of elemental magnesium in the glycinate form \u2014 the highest bioavailability magnesium format, bound to glycine for superior gut tolerance compared to the magnesium oxide found in most budget products. Magnesium is involved in over 300 enzymatic processes. Most people who train, experience regular stress, or sleep poorly are chronically low in it without realising. The glycinate form adds its own calming and sleep-supportive benefit from the glycine pairing on top of the core magnesium function. Informed-Sport certified, US-made.</span></p>\n<p class=\"_p_1x4zg_107\"><span>REVIVE Vitamin D3 &amp; K2 (5000 IU) takes the most important daily vitamin protocol and delivers it at a genuinely therapeutic dose. 5000 IU of D3 is the level at which serum Vitamin D actually moves meaningfully for most adults who are starting from a deficient baseline \u2014 which describes the majority of people in Sri Lanka who work indoors or train in evening hours. The K2 pairing ensures that the calcium mobilised by elevated D3 is directed into bones rather than arteries. One capsule, physician-formulated, US-made.</span></p>\n<p class=\"_p_1x4zg_107\"><span>Two REVIVE products. Two of the most critical daily nutrients for active adults. Formulated to a standard that most supplement brands do not operate at.</span></p>\n<p class=\"_p_1x4zg_107\"><span>Normally LKR 17,500. Bundle price LKR 14,999. You save LKR 2500.</span></p>",
+ "seo": {
+  "title": "REVIVE DailyREVIVE Daily Bundle | REVIVE Magnesium Glycinate + Vitamin D3 K2 5000 IU | SNH Sri Lanka",
+  "description": "Build your daily health foundation with REVIVE Magnesium Glycinate and REVIVE Vitamin D3 & K2 5000 IU. Save LKR 2,299 at Sports Nutrition Hub Sri Lanka."
+ },
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48807796146430",
+    "price": "14999.00",
+    "compareAtPrice": "17298.00"
+   }
+  ]
+ },
+ "metafields": {
+  "nodes": [
+   {
+    "namespace": "judgeme",
+    "key": "badge",
+    "type": "string",
+    "value": "<div style='display:none' class='jdgm-prev-badge' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0'> <span class='jdgm-prev-badge__stars' data-score='0.00' tabindex='0' aria-label='0.00 stars' role='button'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> <span class='jdgm-prev-badge__text'> No reviews </span> </div>"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "widget",
+    "type": "string",
+    "value": "<div class='jdgm-rev-widg' data-updated-at='2026-10-20T11:29:20Z' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0' data-image-url='https://cdn.shopify.com/s/files/1/0258/9625/5550/files/revivedaily_f8295c9c-2ba3-4664-a779-581a5b3f91fd.jpg?v=1789740753'> <style class='jdgm-temp-hiding-style'>.jdgm-rev-widg{ display: none }</style> <div class='jdgm-rev-widg__header'> <h2 class='jdgm-rev-widg__title'>Customer Reviews</h2>  <div class='jdgm-rev-widg__summary'> <div class='jdgm-rev-widg__summary-stars'> <span class='jdgm-rev-widg__summary-stars-img' aria-label='Average rating is 0.00 stars' role='img'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> </div> <div class='jdgm-rev-widg__summary-text'>Be the first to write a review</div> </div> <a style='display: none' href='#' class='jdgm-write-rev-link' role='button'>Write a review</a> <div class='jdgm-histogram jdgm-temp-hidden'>  <div class='jdgm-histogram__row' data-rating='5' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 5 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='4' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 4 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='3' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 3 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='2' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 2 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='1' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 1 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row jdgm-histogram__clear-filter' data-rating=null tabindex='0'></div> </div>     <div class='jdgm-rev-widg__sort-wrapper'></div> </div> <div class='jdgm-rev-widg__body'>  <div class='jdgm-rev-widg__reviews'></div> <div class='jdgm-paginate' data-per-page='5' data-url='https://api.judge.me/reviews/reviews_for_widget' style=\"display: none;\"></div>  </div> <div class='jdgm-rev-widg__paginate-spinner-wrapper'> <div class='jdgm-spinner'></div> </div> </div>"
+   },
+   {
+    "namespace": "global",
+    "key": "title_tag",
+    "type": "string",
+    "value": "REVIVE DailyREVIVE Daily Bundle | REVIVE Magnesium Glycinate + Vitamin D3 K2 5000 IU | SNH Sri Lanka"
+   },
+   {
+    "namespace": "global",
+    "key": "description_tag",
+    "type": "string",
+    "value": "Build your daily health foundation with REVIVE Magnesium Glycinate and REVIVE Vitamin D3 & K2 5000 IU. Save LKR 2,299 at Sports Nutrition Hub Sri Lanka."
+   },
+   {
+    "namespace": "custom",
+    "key": "bundle_contents",
+    "type": "list.product_reference",
+    "value": "[\"gid://shopify/Product/8756581138686\",\"gid://shopify/Product/8756578615550\"]"
+   },
+   {
+    "namespace": "custom",
+    "key": "caution",
+    "type": "multi_line_text_field",
+    "value": "Revive is a US-based physician-formulated supplement brand built on transparent labelling, clinical dosing, and rigorous GMP manufacturing standards, with a product line developed under medical guidance around researched ingredients at researched doses. Sports Nutrition Hub (SNH) is the trusted distributor of Revive in Sri Lanka, supplying verified authentic products to local athletes, professionals, and active consumers."
+   },
+   {
+    "namespace": "custom",
+    "key": "key_benefits",
+    "type": "multi_line_text_field",
+    "value": "200mg Magnesium Glycinate for sleep, stress and cellular function 5000 IU Vitamin D3 with K2 for bone, immune and cardiovascular support Both physician-formulated, Informed-Sport certified, US-made by REVIVE"
+   },
+   {
+    "namespace": "custom",
+    "key": "how_to_use",
+    "type": "multi_line_text_field",
+    "value": "Take REVIVE Vitamin D3 & K2 with your morning meal containing fat for best absorption of these fat-soluble nutrients. Take REVIVE Magnesium Glycinate in the evening or 30 to 60 minutes before bed to support sleep and overnight recovery. Use both consistently every day \u2014 Vitamin D3 serum levels build over 8 to 12 weeks and magnesium benefits accumulate over weeks of daily use. Note: Vitamin K2 can interact with blood-thinning medication such as warfarin \u2014 consult a healthcare professional before use if you take anticoagulants."
+   },
+   {
+    "namespace": "custom",
+    "key": "summery_brief",
+    "type": "single_line_text_field",
+    "value": "A two-product physician-formulated daily health bundle combining REVIVE Magnesium Glycinate 200mg and REVIVE Vitamin D3 & K2 5000 IU \u2014 addressing the two most widespread nutritional deficiencies in active adults with clinical-grade US-made formulations."
+   },
+   {
+    "namespace": "booster_apps_seo",
+    "key": "config",
+    "type": "json",
+    "value": "{\"override_title\":true,\"meta_title\":\"REVIVE Daily | Sports Nutrition Hub (SNH)\",\"override_desc\":true,\"meta_desc\":\"REVIVE was built by physicians who were frustrated by the gap between what supplement science actually supports and what most brands put in their products. Every product in the REVIVE range is formulated around a single health pillar, dosed at a c...\"}"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8756578615550",
+     "title": "REVIVE Magnesium Glycinate",
+     "handle": "revive-magnesium-glycinate",
+     "vendor": "REVIVE"
+    }
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8756581138686",
+     "title": "REVIVE Vitamin K2 & D3 (5000 IU)",
+     "handle": "revive-vitamin-d3-k2",
+     "vendor": "REVIVE"
+    }
+   }
+  ]
+ }
+}

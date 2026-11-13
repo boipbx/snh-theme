@@ -1,0 +1,119 @@
+{
+ "id": "gid://shopify/Product/9427353600254",
+ "handle": "stress-recovery",
+ "title": "Stress & Recovery Bundle",
+ "status": "ACTIVE",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "productType": "Bundle",
+ "tags": [
+  "Ashwagandha",
+  "bundle",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "Health & Wellness",
+  "magnesium",
+  "RECOVERY",
+  "Sleep Health",
+  "stress"
+ ],
+ "descriptionHtml": "<p class=\"_p_1x4zg_107\"><span>Stress and poor recovery are not separate problems. Chronically elevated cortisol disrupts sleep, slows muscle repair, suppresses testosterone and keeps the nervous system in a state it was never designed to sustain long-term. The Stress &amp; Recovery bundle targets both sides of this cycle with two of the most evidence-backed daily supplements available.</span></p>\n<p class=\"_p_1x4zg_107\"><span>REVIVE Magnesium Glycinate delivers 200mg of elemental magnesium in the glycinate form \u2014 bound to glycine, a calming amino acid that supports sleep and relaxation on top of the magnesium's own benefits. Unlike cheap magnesium oxide supplements that are poorly absorbed and cause digestive issues, magnesium glycinate is one of the most bioavailable forms available and is completely gentle on the stomach. It supports muscle and nerve function, sleep quality, bone health, energy production and the body's stress response. Informed-Sport certified, vegan, US-made to GMP standards.</span></p>\n<p class=\"_p_1x4zg_107\"><span>AN Ashwagandha KSM-66 is not a generic Ashwagandha product. KSM-66 is a specific patented full-spectrum root extract that has been the subject of more clinical trials than any other Ashwagandha extract on the market \u2014 covering cortisol reduction, sleep quality improvement, strength and muscle recovery support, and testosterone-related markers in men. Most commodity Ashwagandha products use low-grade extracts with poorly standardised withanolide content. This is not one of them. Extracted using a green milk and water process with no harsh chemical solvents. Halal certified, veggie capsule, UK-made.</span></p>\n<p class=\"_p_1x4zg_107\"><span>Together these two products work on the stress and recovery cycle from both ends. Magnesium supports the nervous system and sleep architecture overnight. Ashwagandha manages the cortisol and HPA-axis response during the day. Used consistently over 4 to 8 weeks, the compounding effect on sleep quality, recovery speed and daily stress tolerance is meaningful.</span></p>\n<p class=\"_p_1x4zg_107\"><span>Normally LKR 17,000. Bundle price LKR 14,000. You save LKR 3000.</span></p>",
+ "seo": {
+  "title": "Stress & Recovery Bundle | REVIVE Magnesium Glycinate + AN Ashwagandha KSM-66 | SNH Sri Lanka",
+  "description": "Manage stress and speed up recovery with REVIVE Magnesium Glycinate and AN Ashwagandha KSM-66. Informed-Sport certified. Save LKR 2,499 at Sports Nutrition Hub Sri Lanka."
+ },
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48790055747838",
+    "price": "13999.00",
+    "compareAtPrice": "16498.00"
+   }
+  ]
+ },
+ "metafields": {
+  "nodes": [
+   {
+    "namespace": "judgeme",
+    "key": "badge",
+    "type": "string",
+    "value": "<div style='display:none' class='jdgm-prev-badge' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0'> <span class='jdgm-prev-badge__stars' data-score='0.00' tabindex='0' aria-label='0.00 stars' role='button'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> <span class='jdgm-prev-badge__text'> No reviews </span> </div>"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "widget",
+    "type": "string",
+    "value": "<div class='jdgm-rev-widg' data-updated-at='2026-08-29T14:33:12Z' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0' data-image-url='https://cdn.shopify.com/s/files/1/0258/9625/5550/files/stressandrecovery.jpg?v=1788013424'> <style class='jdgm-temp-hiding-style'>.jdgm-rev-widg{ display: none }</style> <div class='jdgm-rev-widg__header'> <h2 class='jdgm-rev-widg__title'>Customer Reviews</h2>  <div class='jdgm-rev-widg__summary'> <div class='jdgm-rev-widg__summary-stars' aria-label='Average rating is 0.00 stars' role='img'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </div> <div class='jdgm-rev-widg__summary-text'>Be the first to write a review</div> </div> <a style='display: none' href='#' class='jdgm-write-rev-link' role='button'>Write a review</a> <div class='jdgm-histogram jdgm-temp-hidden'>  <div class='jdgm-histogram__row' data-rating='5' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 5 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='4' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 4 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='3' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 3 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='2' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 2 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='1' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 1 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row jdgm-histogram__clear-filter' data-rating=null tabindex='0'></div> </div>     <div class='jdgm-rev-widg__sort-wrapper'></div> </div> <div class='jdgm-rev-widg__body'>  <div class='jdgm-rev-widg__reviews'></div> <div class='jdgm-paginate' data-per-page='5' data-url='https://api.judge.me/reviews/reviews_for_widget' style=\"display: none;\"></div>  </div> <div class='jdgm-rev-widg__paginate-spinner-wrapper'> <div class='jdgm-spinner'></div> </div> </div>"
+   },
+   {
+    "namespace": "global",
+    "key": "title_tag",
+    "type": "string",
+    "value": "Stress & Recovery Bundle | REVIVE Magnesium Glycinate + AN Ashwagandha KSM-66 | SNH Sri Lanka"
+   },
+   {
+    "namespace": "global",
+    "key": "description_tag",
+    "type": "string",
+    "value": "Manage stress and speed up recovery with REVIVE Magnesium Glycinate and AN Ashwagandha KSM-66. Informed-Sport certified. Save LKR 2,499 at Sports Nutrition Hub Sri Lanka."
+   },
+   {
+    "namespace": "custom",
+    "key": "caution",
+    "type": "multi_line_text_field",
+    "value": "REVIVE is a US-based physician-formulated supplement brand built on clinical dosing, transparent labelling and rigorous GMP manufacturing. Applied Nutrition is a UK-based sports nutrition brand with full label transparency and Informed-Sport certification on key products. Sports Nutrition Hub (SNH) is the trusted distributor of both brands in Sri Lanka, supplying verified authentic products to local athletes and active consumers."
+   },
+   {
+    "namespace": "custom",
+    "key": "key_benefits",
+    "type": "multi_line_text_field",
+    "value": "KSM-66 Ashwagandha and Magnesium Glycinate in one bundle Supports cortisol balance, sleep quality and muscle recovery Informed-Sport certified, Halal friendly, GMP-manufactured"
+   },
+   {
+    "namespace": "custom",
+    "key": "how_to_use",
+    "type": "multi_line_text_field",
+    "value": "Take AN Ashwagandha KSM-66 as 1 capsule twice daily with food \u2014 morning and evening to maintain steady serum levels. Take REVIVE Magnesium Glycinate in the evening or 30 to 60 minutes before bed to support sleep and overnight recovery. Use both consistently for at least 4 to 8 weeks \u2014 adaptogenic and magnesium benefits build cumulatively and most clinical outcomes are measured at 8 weeks of continuous use."
+   },
+   {
+    "namespace": "custom",
+    "key": "summery_brief",
+    "type": "single_line_text_field",
+    "value": "KSM-66 Ashwagandha and Magnesium Glycinate in one bundle Supports cortisol balance, sleep quality and muscle recovery Informed-Sport certified, Halal friendly, GMP-manufactured"
+   },
+   {
+    "namespace": "custom",
+    "key": "bundle_contents",
+    "type": "list.product_reference",
+    "value": "[\"gid://shopify/Product/6757490753732\",\"gid://shopify/Product/8756578615550\"]"
+   },
+   {
+    "namespace": "booster_apps_seo",
+    "key": "config",
+    "type": "json",
+    "value": "{\"override_title\":true,\"meta_title\":\"Stress & Recovery | Sports Nutrition Hub \",\"override_desc\":true,\"meta_desc\":\"Stress and poor recovery are not separate problems. Chronically elevated cortisol disrupts sleep, slows muscle repair, suppresses testosterone and keeps the nervous system in a state it was never designed to sustain long-term. The Stress &amp; Rec...\"}"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8756578615550",
+     "title": "REVIVE Magnesium Glycinate",
+     "handle": "revive-magnesium-glycinate",
+     "vendor": "REVIVE"
+    }
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/6757490753732",
+     "title": "APPLIED NUTRITION Ashwagandha KSM-66",
+     "handle": "applied-nutrition-ashwagandha-ksm-66",
+     "vendor": "Applied Nutrition"
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,451 @@
+{
+ "id": "gid://shopify/Product/9434069041406",
+ "handle": "isolate-pre-stack",
+ "title": "Lean Energy Stack",
+ "status": "ACTIVE",
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48807685521662",
+    "sku": "SNH-LES-CIB-STRA",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Strawberry"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867048190",
+    "sku": "SNH-LES-CIB-CL",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Cafe Latte"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867080958",
+    "sku": "SNH-LES-CIB-CH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867113726",
+    "sku": "SNH-LES-CIB-CD",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Chocolate Dessert"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807685652734",
+    "sku": "SNH-LES-CIB-CP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Choco Peanut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867146494",
+    "sku": "SNH-LES-CIB-CC",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Cookies & Cream"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807685554430",
+    "sku": "SNH-LES-CIB-VANI",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / Vanilla"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867179262",
+    "sku": "SNH-LES-CIB-WCH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / White Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867212030",
+    "sku": "SNH-LES-CIB-WCP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Candy Ice Blast / White Choc Pistachio"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807685783806",
+    "sku": "SNH-LES-ENER-STRA",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Strawberry"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867244798",
+    "sku": "SNH-LES-ENER-CL",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Cafe Latte"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867277566",
+    "sku": "SNH-LES-ENER-CH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867310334",
+    "sku": "SNH-LES-ENER-CD",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Chocolate Dessert"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807685914878",
+    "sku": "SNH-LES-ENER-CP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Choco Peanut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867343102",
+    "sku": "SNH-LES-ENER-CC",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Cookies & Cream"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807685816574",
+    "sku": "SNH-LES-ENER-VANI",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / Vanilla"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867375870",
+    "sku": "SNH-LES-ENER-WCH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / White Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867408638",
+    "sku": "SNH-LES-ENER-WCP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Energy / White Choc Pistachio"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807686045950",
+    "sku": "SNH-LES-CC-STRA",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Strawberry"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867441406",
+    "sku": "SNH-LES-CC-CL",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Cafe Latte"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867474174",
+    "sku": "SNH-LES-CC-CH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867506942",
+    "sku": "SNH-LES-CC-CD",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Chocolate Dessert"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807686177022",
+    "sku": "SNH-LES-CC-CP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Choco Peanut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867539710",
+    "sku": "SNH-LES-CC-CC",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Cookies & Cream"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807686078718",
+    "sku": "SNH-LES-CC-VANI",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / Vanilla"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867572478",
+    "sku": "SNH-LES-CC-WCH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / White Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867605246",
+    "sku": "SNH-LES-CC-WCP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Cherry Cola / White Choc Pistachio"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807686832382",
+    "sku": "SNH-LES-SA-STRA",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Strawberry"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867638014",
+    "sku": "SNH-LES-SA-CL",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Cafe Latte"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867670782",
+    "sku": "SNH-LES-SA-CH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867703550",
+    "sku": "SNH-LES-SA-CD",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Chocolate Dessert"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807686963454",
+    "sku": "SNH-LES-SA-CP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Choco Peanut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867736318",
+    "sku": "SNH-LES-SA-CC",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Cookies & Cream"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807686865150",
+    "sku": "SNH-LES-SA-VANI",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / Vanilla"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867769086",
+    "sku": "SNH-LES-SA-WCH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / White Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867801854",
+    "sku": "SNH-LES-SA-WCP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "Sour Apple / White Choc Pistachio"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807687880958",
+    "sku": "SNH-LES-WHIT-STRA",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Strawberry"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867834622",
+    "sku": "SNH-LES-WHIT-CL",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Cafe Latte"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867867390",
+    "sku": "SNH-LES-WHIT-CH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867900158",
+    "sku": "SNH-LES-WHIT-CD",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Chocolate Dessert"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807688012030",
+    "sku": "SNH-LES-WHIT-CP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Choco Peanut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867932926",
+    "sku": "SNH-LES-WHIT-CC",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Cookies & Cream"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807687913726",
+    "sku": "SNH-LES-WHIT-VANI",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / Vanilla"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867965694",
+    "sku": "SNH-LES-WHIT-WCH",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / White Choco Hazelnut"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575867998462",
+    "sku": "SNH-LES-WHIT-WCP",
+    "price": "35499.00",
+    "compareAtPrice": null,
+    "title": "White / White Choc Pistachio"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/4715540283454",
+     "title": "APPLIED NUTRITION ABE - All Black Everything"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/6154881073214",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/6154881105982",
+       "name": "Flavor"
+      },
+      "parentOption": {
+       "name": "APPLIED NUTRITION ABE - All Black Everything 375g (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Candy Ice Blast",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Energy",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Cherry Cola",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Apple",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/9349069144318",
+     "title": "APPLIED NUTRITION ISO-XP - Whey Protein Isolate"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/11855063351550",
+       "name": "Flavor"
+      },
+      "parentOption": {
+       "name": "APPLIED NUTRITION ISO-XP - Whey Protein Isolate (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Strawberry",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Cafe Latte",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Choco Hazelnut",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Chocolate Dessert",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Choco Peanut",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Cookies & Cream",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Vanilla",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White Choco Hazelnut",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White Choc Pistachio",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/11911974977790",
+       "name": "Servings"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "34 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

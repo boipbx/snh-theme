@@ -1,0 +1,117 @@
+{
+ "id": "gid://shopify/Product/15440883941630",
+ "handle": "revive-glutamine",
+ "title": "REVIVE Glutamine",
+ "status": "ACTIVE",
+ "vendor": "REVIVE",
+ "productType": "VITAMINS & WELLNESS",
+ "tags": [
+  "Amino's & BCAA",
+  "GLUTAMINE",
+  "Gut Health",
+  "Health & Wellness",
+  "Muscle & Strength",
+  "RECOVERY",
+  "Train & Perform",
+  "VITAMINS & MINERALS"
+ ],
+ "descriptionHtml": "<h1>REVIVE - GLUTAMINE (10g Per Scoop)</h1>\n<p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\"><meta charset=\"utf-8\"><span>Glutamine has great benefits that include supporting the immune system and is the main fuel source for your body's lymphocytes, white blood cells, that fight infection and disease. The immune system support is closely related to its activity in the intestinal lining.*</span></p>",
+ "seo": {
+  "title": "Gut Health & Recovery | Revive MD Glutamine Powder | SNH",
+  "description": "Revive MD L-Glutamine powder, 30 servings. Pure, unflavoured and vegan, it mixes easily to support recovery, digestion and immunity. Order in Sri Lanka today."
+ },
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/67805359243518",
+    "price": "9999.00",
+    "compareAtPrice": "0.00"
+   }
+  ]
+ },
+ "metafields": {
+  "nodes": [
+   {
+    "namespace": "booster_apps_seo",
+    "key": "config",
+    "type": "json",
+    "value": "{\"override_title\":true,\"meta_title\":\"REVIVE Glutamine | Sports Nutrition Hub (SNH)\",\"override_desc\":true,\"meta_desc\":\"REVIVE - GLUTAMINE (10g Per Scoop)\\nGlutamine has great benefits that include supporting the immune system and is the main fuel source for your body's lymphocytes, white blood cells, that fight infection and disease. The immune system support is cl...\"}"
+   },
+   {
+    "namespace": "custom",
+    "key": "caution",
+    "type": "multi_line_text_field",
+    "value": "REVIVE MD is a physician-formulated supplement brand founded by Dr. Domenic Iacovone and Adam Cayce. All REVIVE products are manufactured in GMP-certified, FDA-registered facilities in the United States with rigorous third-party testing and transparent labelling.."
+   },
+   {
+    "namespace": "custom",
+    "key": "how_to_use",
+    "type": "multi_line_text_field",
+    "value": "1 Scoop Daily. "
+   },
+   {
+    "namespace": "custom",
+    "key": "key_benefits",
+    "type": "multi_line_text_field",
+    "value": "Truly, anyone looking to improve their overall internal health while supporting immune function and digestive health. If you exercise regularly or put your body under stress where you need more amino acids, then Glutamine is a great option for you. Both men and women can experience significant benefits from Glutamine.\nIt\u2019s generally safe to take Glutamine every day. Glutamine is a naturally occurring amino acid that you already get from many protein-rich foods like meat, fish, beans, and dairy. Taking it as a supplement simply helps you get more, which can be useful if you\u2019re training hard, recovering from illness, or want extra support for gut and immune health."
+   },
+   {
+    "namespace": "custom",
+    "key": "summery_brief",
+    "type": "single_line_text_field",
+    "value": "Supports gut lining and overall digestive comfort  Helps maintain immune function during daily stress  Aids muscle recovery after training  Mixes easily for a simple addition to any routine"
+   },
+   {
+    "namespace": "global",
+    "key": "description_tag",
+    "type": "string",
+    "value": "Revive MD L-Glutamine powder, 30 servings. Pure, unflavoured and vegan, it mixes easily to support recovery, digestion and immunity. Order in Sri Lanka today."
+   },
+   {
+    "namespace": "global",
+    "key": "title_tag",
+    "type": "string",
+    "value": "Gut Health & Recovery | Revive MD Glutamine Powder | SNH"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "badge",
+    "type": "string",
+    "value": "<div style='display:none' class='jdgm-prev-badge' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0'> <span class='jdgm-prev-badge__stars' data-score='0.00' tabindex='0' aria-label='0.00 stars' role='button'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> <span class='jdgm-prev-badge__text'> No reviews </span> </div>"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "widget",
+    "type": "string",
+    "value": "<div class='jdgm-rev-widg' data-updated-at='2026-10-20T06:31:37Z' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0' data-image-url=''> <style class='jdgm-temp-hiding-style'>.jdgm-rev-widg{ display: none }</style> <div class='jdgm-rev-widg__header'> <h2 class='jdgm-rev-widg__title'>Customer Reviews</h2>  <div class='jdgm-rev-widg__summary'> <div class='jdgm-rev-widg__summary-stars'> <span class='jdgm-rev-widg__summary-stars-img' aria-label='Average rating is 0.00 stars' role='img'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> </div> <div class='jdgm-rev-widg__summary-text'>Be the first to write a review</div> </div> <a style='display: none' href='#' class='jdgm-write-rev-link' role='button'>Write a review</a> <div class='jdgm-histogram jdgm-temp-hidden'>  <div class='jdgm-histogram__row' data-rating='5' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 5 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='4' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 4 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='3' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 3 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='2' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 2 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='1' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 1 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row jdgm-histogram__clear-filter' data-rating=null tabindex='0'></div> </div>     <div class='jdgm-rev-widg__sort-wrapper'></div> </div> <div class='jdgm-rev-widg__body'>  <div class='jdgm-rev-widg__reviews'></div> <div class='jdgm-paginate' data-per-page='5' data-url='https://api.judge.me/reviews/reviews_for_widget' style=\"display: none;\"></div>  </div> <div class='jdgm-rev-widg__paginate-spinner-wrapper'> <div class='jdgm-spinner'></div> </div> </div>"
+   },
+   {
+    "namespace": "shopify",
+    "key": "detailed-ingredients",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/87491215614\"]"
+   },
+   {
+    "namespace": "shopify",
+    "key": "dietary-use",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/170341892350\"]"
+   },
+   {
+    "namespace": "shopify",
+    "key": "route-of-administration",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/162944712958\"]"
+   },
+   {
+    "namespace": "shopify",
+    "key": "supplement-health-focus",
+    "type": "list.metaobject_reference",
+    "value": "[\"gid://shopify/Metaobject/170342383870\"]"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": []
+ }
+}

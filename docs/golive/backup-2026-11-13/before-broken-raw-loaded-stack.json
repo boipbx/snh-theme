@@ -1,0 +1,586 @@
+{
+ "id": "gid://shopify/Product/9434950500606",
+ "handle": "raw-loaded-stack",
+ "title": "RAW Full Loaded Stack",
+ "status": "ACTIVE",
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48807724187902",
+    "sku": "SNH-FLS-SSWC-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sam Sulek White Cherry (Limited Edition) / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443587326",
+    "sku": "SNH-FLS-SSWC-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sam Sulek White Cherry (Limited Edition) / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443620094",
+    "sku": "SNH-FLS-SSWC-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sam Sulek White Cherry (Limited Edition) / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443652862",
+    "sku": "SNH-FLS-SSWC-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sam Sulek White Cherry (Limited Edition) / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443685630",
+    "sku": "SNH-FLS-SSWC-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sam Sulek White Cherry (Limited Edition) / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443718398",
+    "sku": "SNH-FLS-SSWC-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sam Sulek White Cherry (Limited Edition) / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724220670",
+    "sku": "SNH-FLS-GRAP-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Grape / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443751166",
+    "sku": "SNH-FLS-GRAP-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Grape / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443783934",
+    "sku": "SNH-FLS-GRAP-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Grape / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443816702",
+    "sku": "SNH-FLS-GRAP-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Grape / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443849470",
+    "sku": "SNH-FLS-GRAP-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Grape / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443882238",
+    "sku": "SNH-FLS-GRAP-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Grape / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724253438",
+    "sku": "SNH-FLS-BR-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Blue Raspberry / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443915006",
+    "sku": "SNH-FLS-BR-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Blue Raspberry / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443947774",
+    "sku": "SNH-FLS-BR-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Blue Raspberry / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575443980542",
+    "sku": "SNH-FLS-BR-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Blue Raspberry / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444013310",
+    "sku": "SNH-FLS-BR-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Blue Raspberry / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444046078",
+    "sku": "SNH-FLS-BR-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Blue Raspberry / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724286206",
+    "sku": "SNH-FLS-PM-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Peach Mango / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444078846",
+    "sku": "SNH-FLS-PM-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Peach Mango / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444111614",
+    "sku": "SNH-FLS-PM-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Peach Mango / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444144382",
+    "sku": "SNH-FLS-PM-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Peach Mango / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444177150",
+    "sku": "SNH-FLS-PM-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Peach Mango / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444209918",
+    "sku": "SNH-FLS-PM-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Peach Mango / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724318974",
+    "sku": "SNH-FLS-CG-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Citrus Grapefruit / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444242686",
+    "sku": "SNH-FLS-CG-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Citrus Grapefruit / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444275454",
+    "sku": "SNH-FLS-CG-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Citrus Grapefruit / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444308222",
+    "sku": "SNH-FLS-CG-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Citrus Grapefruit / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444340990",
+    "sku": "SNH-FLS-CG-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Citrus Grapefruit / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444373758",
+    "sku": "SNH-FLS-CG-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Citrus Grapefruit / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724351742",
+    "sku": "SNH-FLS-SW-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sour Watermelon / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444406526",
+    "sku": "SNH-FLS-SW-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sour Watermelon / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444439294",
+    "sku": "SNH-FLS-SW-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sour Watermelon / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444472062",
+    "sku": "SNH-FLS-SW-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sour Watermelon / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444504830",
+    "sku": "SNH-FLS-SW-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sour Watermelon / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444537598",
+    "sku": "SNH-FLS-SW-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Sour Watermelon / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724384510",
+    "sku": "SNH-FLS-RC-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Raspberry Creamthickle / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444570366",
+    "sku": "SNH-FLS-RC-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Raspberry Creamthickle / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444603134",
+    "sku": "SNH-FLS-RC-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Raspberry Creamthickle / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444635902",
+    "sku": "SNH-FLS-RC-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Raspberry Creamthickle / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444668670",
+    "sku": "SNH-FLS-RC-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Raspberry Creamthickle / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444701438",
+    "sku": "SNH-FLS-RC-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Raspberry Creamthickle / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724417278",
+    "sku": "SNH-FLS-ORAN-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Orange / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444734206",
+    "sku": "SNH-FLS-ORAN-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Orange / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444766974",
+    "sku": "SNH-FLS-ORAN-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Orange / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444799742",
+    "sku": "SNH-FLS-ORAN-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Orange / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444832510",
+    "sku": "SNH-FLS-ORAN-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Orange / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444865278",
+    "sku": "SNH-FLS-ORAN-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Orange / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724450046",
+    "sku": "SNH-FLS-GP-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Guava Passionfruit / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444898046",
+    "sku": "SNH-FLS-GP-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Guava Passionfruit / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444930814",
+    "sku": "SNH-FLS-GP-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Guava Passionfruit / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444963582",
+    "sku": "SNH-FLS-GP-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Guava Passionfruit / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575444996350",
+    "sku": "SNH-FLS-GP-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Guava Passionfruit / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575445029118",
+    "sku": "SNH-FLS-GP-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Guava Passionfruit / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807724482814",
+    "sku": "SNH-FLS-WG-BLAC",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Watermelon Grape / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575445061886",
+    "sku": "SNH-FLS-WG-WHIT",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Watermelon Grape / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575445094654",
+    "sku": "SNH-FLS-WG-HG",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Watermelon Grape / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575445127422",
+    "sku": "SNH-FLS-WG-AM",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Watermelon Grape / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575445160190",
+    "sku": "SNH-FLS-WG-MAGE",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Watermelon Grape / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575445192958",
+    "sku": "SNH-FLS-WG-TB",
+    "price": "27499.00",
+    "compareAtPrice": null,
+    "title": "Watermelon Grape / Teal Blue"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8167657832702",
+     "title": "RAW NUTRITION Essential Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/10381956088062",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/10381957660926",
+       "name": "Flavor"
+      },
+      "parentOption": {
+       "name": "RAW NUTRITION Essential Pre-Workout (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Sam Sulek White Cherry (Limited Edition)",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Blue Raspberry",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Peach Mango",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Citrus Grapefruit",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Watermelon",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Raspberry Creamthickle",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Orange",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Guava Passionfruit",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Watermelon Grape",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8608641548542",
+     "title": "RAW NUTRITION Creatine Monohydrate 500g"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/10898019713278",
+       "name": "Flavor"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Unflavored",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/10898019746046",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "100 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/9051839758590",
+     "title": "SNH 2.0 Shaker Bottle 750ml"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/12014366359806",
+       "name": "Colors"
+      },
+      "parentOption": {
+       "name": "SNH 2.0 Shaker Bottle 750ml (Colors)"
+      },
+      "values": [
+       {
+        "value": "Black",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Harbor Grey",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Magenta",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Teal Blue",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Aqua Marine",
+        "selectionStatus": "UNAVAILABLE"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

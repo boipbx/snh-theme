@@ -1,0 +1,95 @@
+{
+ "id": "gid://shopify/Product/9434990772478",
+ "handle": "deep-sleep",
+ "title": "Deep Sleep Bundle",
+ "status": "ACTIVE",
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48807808860414",
+    "sku": "SNH-DSB-MB",
+    "price": "19999.00",
+    "compareAtPrice": null,
+    "title": "Mixed Berry"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48807808893182",
+    "sku": "SNH-DSB-BG",
+    "price": "19999.00",
+    "compareAtPrice": null,
+    "title": "Black Grape"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8950640083198",
+     "title": "APPLIED NUTRITION Sleep Support Supplement"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/11347030900990",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/11347030933758",
+       "name": "Flavor"
+      },
+      "parentOption": {
+       "name": "APPLIED NUTRITION Sleep Support Supplement (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Mixed Berry",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Black Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Honey Lemon",
+        "selectionStatus": "NEW"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/4728562516030",
+     "title": "APPLIED NUTRITION Zinc, Magnesium & Vitamin B6 Capsules With Ashwagandha (ZMA)"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/6177469366334",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "90 Capsules",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

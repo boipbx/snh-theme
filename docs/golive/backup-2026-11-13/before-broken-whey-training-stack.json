@@ -1,0 +1,598 @@
+{
+ "id": "gid://shopify/Product/9434011730174",
+ "handle": "whey-training-stack",
+ "title": "Athlete Essential Stack",
+ "status": "ACTIVE",
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48805130109182",
+    "sku": "SNH-AES-CMIS-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chocolate Milkshake - Informed-Sport Tested / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368024318",
+    "sku": "SNH-AES-CMIS-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chocolate Milkshake - Informed-Sport Tested / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368057086",
+    "sku": "SNH-AES-CMIS-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chocolate Milkshake - Informed-Sport Tested / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368089854",
+    "sku": "SNH-AES-CMIS-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chocolate Milkshake - Informed-Sport Tested / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368122622",
+    "sku": "SNH-AES-CMIS-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chocolate Milkshake - Informed-Sport Tested / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368155390",
+    "sku": "SNH-AES-CMIS-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chocolate Milkshake - Informed-Sport Tested / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130207486",
+    "sku": "SNH-AES-WCP-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choc Pistachio / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368188158",
+    "sku": "SNH-AES-WCP-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choc Pistachio / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368220926",
+    "sku": "SNH-AES-WCP-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choc Pistachio / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368253694",
+    "sku": "SNH-AES-WCP-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choc Pistachio / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368286462",
+    "sku": "SNH-AES-WCP-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choc Pistachio / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368319230",
+    "sku": "SNH-AES-WCP-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choc Pistachio / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130240254",
+    "sku": "SNH-AES-WCH-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choco Hazelnut / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368351998",
+    "sku": "SNH-AES-WCH-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choco Hazelnut / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368384766",
+    "sku": "SNH-AES-WCH-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choco Hazelnut / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368417534",
+    "sku": "SNH-AES-WCH-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choco Hazelnut / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368450302",
+    "sku": "SNH-AES-WCH-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choco Hazelnut / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368483070",
+    "sku": "SNH-AES-WCH-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "White Choco Hazelnut / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130273022",
+    "sku": "SNH-AES-CHB-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Choco Hazelnut (Bueno) / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368515838",
+    "sku": "SNH-AES-CHB-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Choco Hazelnut (Bueno) / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368548606",
+    "sku": "SNH-AES-CHB-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Choco Hazelnut (Bueno) / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368581374",
+    "sku": "SNH-AES-CHB-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Choco Hazelnut (Bueno) / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368614142",
+    "sku": "SNH-AES-CHB-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Choco Hazelnut (Bueno) / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368646910",
+    "sku": "SNH-AES-CHB-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Choco Hazelnut (Bueno) / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130305790",
+    "sku": "SNH-AES-VM-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Vanilla Matcha / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368679678",
+    "sku": "SNH-AES-VM-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Vanilla Matcha / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368712446",
+    "sku": "SNH-AES-VM-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Vanilla Matcha / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368745214",
+    "sku": "SNH-AES-VM-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Vanilla Matcha / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368777982",
+    "sku": "SNH-AES-VM-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Vanilla Matcha / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368810750",
+    "sku": "SNH-AES-VM-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Vanilla Matcha / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130338558",
+    "sku": "SNH-AES-SC-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Salted Caramel / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368843518",
+    "sku": "SNH-AES-SC-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Salted Caramel / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368876286",
+    "sku": "SNH-AES-SC-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Salted Caramel / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368909054",
+    "sku": "SNH-AES-SC-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Salted Caramel / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368941822",
+    "sku": "SNH-AES-SC-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Salted Caramel / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575368974590",
+    "sku": "SNH-AES-SC-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Salted Caramel / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130404094",
+    "sku": "SNH-AES-CNC-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Cookies \u2018N\u2019 Cream / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369007358",
+    "sku": "SNH-AES-CNC-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Cookies \u2018N\u2019 Cream / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369040126",
+    "sku": "SNH-AES-CNC-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Cookies \u2018N\u2019 Cream / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369072894",
+    "sku": "SNH-AES-CNC-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Cookies \u2018N\u2019 Cream / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369105662",
+    "sku": "SNH-AES-CNC-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Cookies \u2018N\u2019 Cream / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369138430",
+    "sku": "SNH-AES-CNC-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Cookies \u2018N\u2019 Cream / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130436862",
+    "sku": "SNH-AES-CL-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Caramel Latte / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369171198",
+    "sku": "SNH-AES-CL-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Caramel Latte / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369203966",
+    "sku": "SNH-AES-CL-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Caramel Latte / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369236734",
+    "sku": "SNH-AES-CL-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Caramel Latte / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369269502",
+    "sku": "SNH-AES-CL-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Caramel Latte / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369302270",
+    "sku": "SNH-AES-CL-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Caramel Latte / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130469630",
+    "sku": "SNH-AES-BM-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Banana Milkshake / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369335038",
+    "sku": "SNH-AES-BM-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Banana Milkshake / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369367806",
+    "sku": "SNH-AES-BM-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Banana Milkshake / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369400574",
+    "sku": "SNH-AES-BM-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Banana Milkshake / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369433342",
+    "sku": "SNH-AES-BM-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Banana Milkshake / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369466110",
+    "sku": "SNH-AES-BM-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Banana Milkshake / Teal Blue"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/48805130502398",
+    "sku": "SNH-AES-CBSS-BLAC",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chiquita Banana Strawberry Smoothie / Black"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369498878",
+    "sku": "SNH-AES-CBSS-WHIT",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chiquita Banana Strawberry Smoothie / White"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369531646",
+    "sku": "SNH-AES-CBSS-HG",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chiquita Banana Strawberry Smoothie / Harbor Grey"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369564414",
+    "sku": "SNH-AES-CBSS-AM",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chiquita Banana Strawberry Smoothie / Aqua Marine"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369597182",
+    "sku": "SNH-AES-CBSS-MAGE",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chiquita Banana Strawberry Smoothie / Magenta"
+   },
+   {
+    "id": "gid://shopify/ProductVariant/67575369629950",
+    "sku": "SNH-AES-CBSS-TB",
+    "price": "27999.00",
+    "compareAtPrice": null,
+    "title": "Chiquita Banana Strawberry Smoothie / Teal Blue"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/8978658066686",
+     "title": "APPLIED NUTRITION Critical Whey Protein - 25 Servings"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/11381136163070",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "25 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/11381136195838",
+       "name": "Flavor"
+      },
+      "parentOption": {
+       "name": "APPLIED NUTRITION Critical Whey Protein - 25 Servings (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Chocolate Milkshake - Informed-Sport Tested",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Strawberry Milkshake",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Vanilla Ice Cream",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "White Choc Pistachio",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White Choco Hazelnut",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Choco Hazelnut (Bueno)",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Vanilla Matcha",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Salted Caramel",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Cookies \u2018N\u2019 Cream",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Caramel Latte",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Banana Milkshake",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Chiquita Banana Strawberry Smoothie",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Frappe",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/4715545428030",
+     "title": "APPLIED NUTRITION Creatine Monohydrate 50 Servings"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/6154889330750",
+       "name": "Size"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "50 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/10384416932094",
+       "name": "Flavor"
+      },
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Unflavored",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "id": "gid://shopify/Product/9051839758590",
+     "title": "SNH 2.0 Shaker Bottle 750ml"
+    },
+    "optionSelections": [
+     {
+      "componentOption": {
+       "id": "gid://shopify/ProductOption/12014366359806",
+       "name": "Colors"
+      },
+      "parentOption": {
+       "name": "SNH 2.0 Shaker Bottle 750ml (Colors)"
+      },
+      "values": [
+       {
+        "value": "Black",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "White",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Harbor Grey",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Magenta",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Teal Blue",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Aqua Marine",
+        "selectionStatus": "UNAVAILABLE"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

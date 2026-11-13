@@ -1,0 +1,92 @@
+{
+ "id": "gid://shopify/Product/9198191378686",
+ "handle": "revive-ashwagandha-ksm-66",
+ "title": "REVIVE Ashwagandha KSM-66",
+ "status": "ACTIVE",
+ "vendor": "REVIVE",
+ "productType": "VITAMINS & WELLNESS",
+ "tags": [
+  "Ashwagandha",
+  "Health & Wellness",
+  "Herbs & Natural Solutions",
+  "SLEEP & RELAXATION",
+  "Sleep Health",
+  "Testosterone Supplements",
+  "VITAMINS & MINERALS"
+ ],
+ "descriptionHtml": "<div>\n<div class=\"standard-markdown grid-cols-1 grid [&amp;_&gt;_*]:min-w-0 gap-3\">\n<h2 class=\"text-text-100 mt-3 -mb-1 text-[1.375rem] font-bold\">Revive Ashwagandha KSM-66</h2>\n</div>\n</div>\n<div>\n<div class=\"standard-markdown grid-cols-1 grid [&amp;_&gt;_*]:min-w-0 gap-3\">\n<p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\">A clinically dosed daily <strong>ashwagandha</strong> supplement built for athletes, lifters, busy professionals, and active adults dealing with elevated stress, training-induced fatigue, or sleep disruption from running too high for too long. Particularly relevant for hard trainers whose recovery is being compromised by chronic cortisol elevation, and anyone wanting documented adaptogen support backed by real clinical data \u2014 not generic herbal capsules.</p>\n</div>\n</div>\n<div>\n<div class=\"standard-markdown grid-cols-1 grid [&amp;_&gt;_*]:min-w-0 gap-3\">\n<p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\">What separates this from the average ashwagandha product comes down to the specific extract used. Revive uses KSM-66\u00ae \u2014 the most clinically researched ashwagandha extract on the market, produced through a patented extraction process that preserves the full spectrum of root constituents at high concentration. KSM-66 has been the subject of multiple peer-reviewed human clinical trials demonstrating measurable reductions in cortisol, perceived stress, and stress-related food cravings, alongside documented improvements in endurance, strength, muscle size, recovery rate, memory, and cognitive function. That clinical pedigree is the difference between paying for an evidence-backed extract and paying for an unverified bulk-grade powder. The formulation also includes BioPerine\u00ae \u2014 a patented black pepper fruit extract that improves nutrient absorption, helping the body actually use what's in the capsule.</p>\n</div>\n</div>\n<div>\n<div class=\"standard-markdown grid-cols-1 grid [&amp;_&gt;_*]:min-w-0 gap-3\">\n<p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\">Revive manufactures all of its supplements in the United States in facilities certified to <a class=\"underline underline underline-offset-2 decoration-1 decoration-current/40 hover:decoration-current focus:decoration-current\" href=\"https://www.who.int/health-topics/good-manufacturing-practices\">GMP</a> standards, with rigorous third-party testing and transparent labelling across the range. Note: this is a wellness and recovery supplement, not a sports-tested product \u2014 competing tested-pool athletes should always check the most current ingredient panel against their governing body's banned-substance list before use, but for general adult use the brand's manufacturing pedigree and physician-formulated approach make it one of the more credible options in the adaptogen category.</p>\n</div>\n</div>\n<div>\n<div class=\"standard-markdown grid-cols-1 grid [&amp;_&gt;_*]:min-w-0 gap-3\">\n<ul class=\"[li_&amp;]:mb-0 [li_&amp;]:mt-1 [li_&amp;]:gap-1 [&amp;:not(:last-child)_ul]:pb-1 [&amp;:not(:last-child)_ol]:pb-1 list-disc flex flex-col gap-1 pl-8 mb-3\">\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>KSM-66\u00ae ashwagandha extract</strong> \u2014 the most clinically researched ashwagandha on the market with documented benefits in human trials</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>Clinical ashwagandha benefits</strong> include reduced cortisol, improved strength and endurance, better recovery, and supported cognitive function</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>BioPerine\u00ae black pepper extract included</strong> to improve nutrient absorption from the formulation</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>Daily-use ashwagandha tablet</strong> built for cumulative benefit \u2014 works best after 4\u20138 weeks of consistent daily use</li>\n<li class=\"whitespace-normal break-words pl-2\">\n<strong>A credible answer for anyone searching ashwagandha Sri Lanka</strong> \u2014 clinical-grade extract from a US brand, far above generic herbal capsules</li>\n</ul>\n</div>\n</div>\n<div>\n<div class=\"standard-markdown grid-cols-1 grid [&amp;_&gt;_*]:min-w-0 gap-3\">\n<p class=\"font-claude-response-body break-words whitespace-normal leading-[1.7]\">Pair it with a daily multivitamin or recovery supplement from our <a class=\"underline underline underline-offset-2 decoration-1 decoration-current/40 hover:decoration-current focus:decoration-current\" href=\"/collections/vitamins-supplements\">vitamins and supplements range</a> to round out a complete daily wellness routine.</p>\n</div>\n</div>",
+ "seo": {
+  "title": "Ashwagandha in Sri Lanka | Revive KSM-66 | SNH",
+  "description": "Shop Revive Ashwagandha KSM-66 in Sri Lanka. Clinical ashwagandha benefits include stress, cortisol, strength, and recovery support. US-made GMP."
+ },
+ "variants": {
+  "nodes": [
+   {
+    "id": "gid://shopify/ProductVariant/48101005263102",
+    "price": "8499.00",
+    "compareAtPrice": null
+   }
+  ]
+ },
+ "metafields": {
+  "nodes": [
+   {
+    "namespace": "booster_apps_seo",
+    "key": "config",
+    "type": "json",
+    "value": "{\"override_title\":true,\"meta_title\":\"REVIVE Ashwagandha KSM-66 | Sports Nutrition Hub \",\"override_desc\":true,\"meta_desc\":\"\\n\\nRevive Ashwagandha KSM-66\\n\\n\\n\\n\\nA clinically dosed daily ashwagandha supplement built for athletes, lifters, busy professionals, and active adults dealing with elevated stress, training-induced fatigue, or sleep disruption from running too high fo...\"}"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "badge",
+    "type": "string",
+    "value": "<div style='display:none' class='jdgm-prev-badge' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0'> <span class='jdgm-prev-badge__stars' data-score='0.00' tabindex='0' aria-label='0.00 stars' role='button'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </span> <span class='jdgm-prev-badge__text'> No reviews </span> </div>"
+   },
+   {
+    "namespace": "judgeme",
+    "key": "widget",
+    "type": "string",
+    "value": "<div class='jdgm-rev-widg' data-updated-at='2026-04-21T15:20:29Z' data-average-rating='0.00' data-number-of-reviews='0' data-number-of-questions='0' data-image-url=''> <style class='jdgm-temp-hiding-style'>.jdgm-rev-widg{ display: none }</style> <div class='jdgm-rev-widg__header'> <h2 class='jdgm-rev-widg__title'>Customer Reviews</h2>  <div class='jdgm-rev-widg__summary'> <div class='jdgm-rev-widg__summary-stars' aria-label='Average rating is 0.00 stars' role='img'> <span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span> </div> <div class='jdgm-rev-widg__summary-text'>Be the first to write a review</div> </div> <a style='display: none' href='#' class='jdgm-write-rev-link' role='button'>Write a review</a> <div class='jdgm-histogram jdgm-temp-hidden'>  <div class='jdgm-histogram__row' data-rating='5' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 5 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='4' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 4 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='3' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 3 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='2' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 2 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row' data-rating='1' data-frequency='0' data-percentage='0'>  <div class='jdgm-histogram__star' role='button' aria-label=\"0% (0) reviews with 1 star rating\"  tabindex='0' ><span class='jdgm-star jdgm--on'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span><span class='jdgm-star jdgm--off'></span></div> <div class='jdgm-histogram__bar'> <div class='jdgm-histogram__bar-content' style='width: 0%;'> </div> </div> <div class='jdgm-histogram__percentage'>0%</div> <div class='jdgm-histogram__frequency'>(0)</div> </div>  <div class='jdgm-histogram__row jdgm-histogram__clear-filter' data-rating=null tabindex='0'></div> </div>     <div class='jdgm-rev-widg__sort-wrapper'></div> </div> <div class='jdgm-rev-widg__body'>  <div class='jdgm-rev-widg__reviews'></div> <div class='jdgm-paginate' data-per-page='5' data-url='https://api.judge.me/reviews/reviews_for_widget' style=\"display: none;\"></div>  </div> <div class='jdgm-rev-widg__paginate-spinner-wrapper'> <div class='jdgm-spinner'></div> </div> </div>"
+   },
+   {
+    "namespace": "custom",
+    "key": "key_benefits",
+    "type": "multi_line_text_field",
+    "value": "Clinically proven KSM-66 reduces stress and cortisol\nSupports strength, endurance, and recovery\nBioPerine improves absorption of active compounds"
+   },
+   {
+    "namespace": "custom",
+    "key": "how_to_use",
+    "type": "multi_line_text_field",
+    "value": "Take the recommended daily serving with water, ideally with a meal for best absorption. Use consistently for at least 4\u20138 weeks for cumulative benefit \u2014 adaptogen effects build over time, not in a single dose. Many users prefer evening dosing to support the natural cortisol downshift before sleep. Consult a healthcare professional before use if you are pregnant, nursing, taking prescription medications, or have an existing medical condition (particularly thyroid conditions). Store in a cool, dry place away from direct sunlight."
+   },
+   {
+    "namespace": "custom",
+    "key": "summery_brief",
+    "type": "single_line_text_field",
+    "value": "A US-made physician-formulated daily ashwagandha supplement using clinical-grade KSM-66 extract with BioPerine for stress, recovery, and performance support."
+   },
+   {
+    "namespace": "global",
+    "key": "title_tag",
+    "type": "string",
+    "value": "Ashwagandha in Sri Lanka | Revive KSM-66 | SNH"
+   },
+   {
+    "namespace": "global",
+    "key": "description_tag",
+    "type": "string",
+    "value": "Shop Revive Ashwagandha KSM-66 in Sri Lanka. Clinical ashwagandha benefits include stress, cortisol, strength, and recovery support. US-made GMP."
+   },
+   {
+    "namespace": "custom",
+    "key": "caution",
+    "type": "multi_line_text_field",
+    "value": "Revive is a US-based premium supplement brand founded around physician-formulated, single-purpose products \u2014 each designed to address a specific health pillar rather than load up on filler ingredients. Built on transparent labelling, clinical dosing, and rigorous manufacturing standards, Revive has grown into one of the more respected names in the wellness and longevity supplement space, with a product line developed under medical guidance and built around branded, research-backed ingredients like KSM-66 and BioPerine. All products are manufactured in the United States in GMP-certified facilities with strict quality control. Sports Nutrition Hub (SNH) is a trusted distributor of Revive in Sri Lanka, bringing the certified range to local athletes, professionals, and active consumers with verified authenticity and reliable supply."
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": []
+ }
+}
