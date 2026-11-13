@@ -362,3 +362,8 @@
 .sp-floatbrand:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(14, 14, 14, .16); }
 @media (min-width: 1024px) { .sp-floatbrand { right: 16px; bottom: 32px; height: 44px; padding: 0 14px; } .sp-floatbrand img { height: 24px; max-width: 130px; } }
 .sp-b.sp-vendor { display: none; } /* 11 Nov: one brand logo only, the floating badge on the photo (links to the brand) */
+
+/* 13 Nov: framed gallery photos shown cropped to just inside the SNH frame / below the SNH mark
+   (sections/snh-product.liquid + snippets/snh-frame-crops: per image left/top/width/height as fractions). */
+.sp-crop { position: relative; display: block; width: 100%; height: 100%; aspect-ratio: 1; overflow: hidden; }
+.sp-crop img { position: absolute; max-width: none; width: calc(100% / var(--cw)) !important; height: calc(100% / var(--ch)) !important; left: calc(-100% * var(--cl) / var(--cw)); top: calc(-100% * var(--ct) / var(--ch)); object-fit: fill !important; }

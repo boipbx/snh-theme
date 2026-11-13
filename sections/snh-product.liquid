@@ -21,6 +21,9 @@
   # Theme settings → SNH product images → Prefer clean images: leave out media whose file name or alt matches a frame
   # keyword (SNH's orange-frame renders), as long as one image is left.
   assign gal_skip = ','
+  capture frame_crops
+    render 'snh-frame-crops'
+  endcapture
   if settings.snh_clean_images
     assign kws = settings.snh_frame_keywords | downcase | split: ','
     assign kept = 0
@@ -99,7 +102,7 @@
               {%- if gal_skip contains key -%}{%- continue -%}{%- endif -%}
               <button type="button" class="sp-thumb" role="tab" data-sp-thumb="{{ gi }}" aria-label="Image {{ gi | plus: 1 }} of {{ gal_count }}" aria-selected="{% if media.id == gal_active.id %}true{% else %}false{% endif %}">
                 {%- assign cfn = 'pdp-' | append: media.id | append: '.webp' -%}{%- assign cimg = images[cfn] -%}
-                {%- if cimg != blank -%}{{- cimg | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-no-lift: '' -}}{%- else -%}{{- media.preview_image | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-v2-lift: '' -}}{%- endif -%}
+                {%- assign crop = blank -%}{%- assign ck = ',' | append: media.id | append: ':' -%}{%- if frame_crops contains ck -%}{%- assign crop = frame_crops | split: ck | last | split: ',' | first | split: ':' -%}{%- endif -%}{%- if cimg != blank -%}{{- cimg | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-no-lift: '' -}}{%- elsif crop != blank -%}<span class="sp-crop" style="--cl:{{ crop[0] }};--ct:{{ crop[1] }};--cw:{{ crop[2] }};--ch:{{ crop[3] }}">{{- media.preview_image | image_url: width: 300 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-no-lift: '' -}}</span>{%- else -%}{{- media.preview_image | image_url: width: 240 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '', data-v2-lift: '' -}}{%- endif -%}
               </button>
               {%- assign gi = gi | plus: 1 -%}
             {%- endfor -%}
@@ -116,9 +119,15 @@
                   pdp-<media id>.webp; the product media itself keeps the frame for Google. A replaced photo has a new
                   media id, so it simply shows as uploaded. {%- endcomment -%}
                 {%- assign cfn = 'pdp-' | append: media.id | append: '.webp' -%}{%- assign cimg = images[cfn] -%}
+                {%- assign crop = blank -%}{%- assign ck = ',' | append: media.id | append: ':' -%}{%- if frame_crops contains ck -%}{%- assign crop = frame_crops | split: ck | last | split: ',' | first | split: ':' -%}{%- endif -%}
                 {%- if media.media_type == 'image' and cimg != blank -%}
                   {%- assign cld = 'lazy' -%}{%- if gi == 0 -%}{%- assign cld = 'eager' -%}{%- endif -%}
                   {{- cimg | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: cld, alt: media.alt, data-no-lift: '' -}}
+                {%- elsif media.media_type == 'image' and crop != blank -%}
+                  {%- comment -%} 13 Nov: until the clean copy is uploaded, show the photo cropped to just inside the SNH frame
+                    and below the SNH mark (snippets/snh-frame-crops, measured per image). The image file is unchanged. {%- endcomment -%}
+                  {%- assign cld = 'lazy' -%}{%- if gi == 0 -%}{%- assign cld = 'eager' -%}{%- endif -%}
+                  <span class="sp-crop" style="--cl:{{ crop[0] }};--ct:{{ crop[1] }};--cw:{{ crop[2] }};--ch:{{ crop[3] }}">{{- media | image_url: width: 1600 | image_tag: widths: '700,1000,1300,1600', sizes: '(max-width: 1023px) 115vw, 760px', loading: cld, alt: media.alt, data-no-lift: '' -}}</span>
                 {%- elsif media.media_type == 'image' -%}
                   {%- if gi == 0 -%}
                     {{- media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(max-width: 1023px) 100vw, 640px', loading: 'eager', fetchpriority: 'high', alt: media.alt, data-v2-lift: '' -}}
