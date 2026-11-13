@@ -24,10 +24,9 @@
   assign gal_skip = ','
   # 14 Nov: the CSS frame crop (snippets/snh-frame-crops) is no longer used in the gallery: it zoomed tall images
   # past the frame and could cut text. Clean copies come from custom.clean_images instead.
-  # 14 Nov: custom.clean_images = list of files in gallery order (a clean cut-out where one exists, otherwise the
-  # original media). It switches the clean copies on for this product while it still lines up with the media (same
-  # count); delete it and the original photos show again. The clean files themselves are read by file name
-  # (Files: pdp-<media id>.webp), because the storefront can't resolve file references without a metafield definition.
+  # 14 Nov: custom.clean_images lists the gallery files in order (clean copy where one exists, else the original).
+  # While it matches the media count it switches the clean copies on; delete it and the originals show again.
+  # The clean files are read by file name from Files (pdp-MEDIAID.webp).
   assign ci_mf = product.metafields.custom.clean_images
   assign ci_ok = false
   if ci_mf != blank and ci_mf.value.size == product.media.size
@@ -106,7 +105,7 @@
 
     <div class="sp-grid">
       {%- comment -%} ── Gallery ── {%- endcomment -%}
-      <div class="sp-gal{% if gal_count < 2 %} sp-gal--single{% endif %}" data-sp-gal data-ci="{{ ci_ok }}">
+      <div class="sp-gal{% if gal_count < 2 %} sp-gal--single{% endif %}" data-sp-gal>
         {%- if gal_count > 1 -%}
           <div class="sp-rail" role="tablist" aria-label="Product images">
             {%- assign gi = 0 -%}
