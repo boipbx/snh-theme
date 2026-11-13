@@ -75,4 +75,8 @@ const ACTIVATE = `mutation($p:ProductUpdateInput!){productUpdate(product:$p){pro
   console.table(rows);
   const done = rows.filter((r) => r.result === 'ACTIVATED').length;
   console.log(`${DRY ? 'Dry run: ' : ''}${done} activated, ${rows.length - done} not activated, ${rows.length} draft bundles checked.`);
+  // 14 Nov: refresh "Save with a bundle" (custom.in_bundles on component products) so new bundles show at once
+  console.log('\nSyncing bundle links (custom.in_bundles)…');
+  const { syncBundleLinks } = await import('./sync-bundle-links.mjs');
+  await syncBundleLinks({ dry: DRY });
 })().catch((e) => { console.error(String(e.message || e).replace(/shpat_[A-Za-z0-9]+/g, '[redacted]')); process.exit(1); });
