@@ -235,7 +235,7 @@ default>muscle-strength|Muscle & strength,fat-loss|Fat loss,energy-endurance|Ene
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="7" r="2" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="17" r="2" stroke="currentColor" stroke-width="1.8"/></svg>
         <span>Filter &amp; sort</span>{%- if active_total > 0 -%}<b>{{ active_total }}</b>{%- endif -%}
       </button>
-      <span class="snh-mtrig__n">{{ results.products_count }} product{% if results.products_count != 1 %}s{% endif %}</span>
+      {%- assign snh_rc = results.products_count | default: results.results_count | default: 0 -%}<span class="snh-mtrig__n">{{ snh_rc }} product{% if snh_rc != 1 %}s{% endif %}</span>
     </div>
     <div class="snh-bar__row" id="snh-sheet-{{ section.id }}" data-snh-sheet role="group" aria-label="Filter and sort">
       <div class="snh-sheet__head"><p class="snh-sheet__t">Filter &amp; sort</p><button type="button" class="snh-sheet__x" data-snh-sheet-close aria-label="Close filters"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
