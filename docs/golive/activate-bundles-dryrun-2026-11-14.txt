@@ -1,0 +1,33 @@
+┌─────────┬────────────────────────────┬───────────────────────────────┬────────┬──────────────────────────────────┐
+│ (index) │ bundle                     │ handle                        │ images │ result                           │
+├─────────┼────────────────────────────┼───────────────────────────────┼────────┼──────────────────────────────────┤
+│ 0       │ 'Bar Box 6'                │ 'bar-box-6'                   │ 2      │ 'ready (dry run, not activated)' │
+│ 1       │ 'Bar Box 12'               │ 'bar-box-12'                  │ 2      │ 'ready (dry run, not activated)' │
+│ 2       │ 'Loaded Pre + Pre MAX Duo' │ 'loaded-pre-plus-pre-max-duo' │ 3      │ 'ready (dry run, not activated)' │
+│ 3       │ 'Loaded Pre Flavour Duo'   │ 'loaded-pre-flavour-duo'      │ 2      │ 'ready (dry run, not activated)' │
+│ 4       │ 'Stim + Pump Stack'        │ 'stim-plus-pump-stack'        │ 3      │ 'ready (dry run, not activated)' │
+│ 5       │ 'Godzilla Beast Mode'      │ 'godzilla-beast-mode'         │ 3      │ 'ready (dry run, not activated)' │
+│ 6       │ 'RYSE Loaded Stack'        │ 'ryse-loaded-stack'           │ 3      │ 'ready (dry run, not activated)' │
+│ 7       │ 'RYSE x RAW'               │ 'ryse-x-raw'                  │ 3      │ 'ready (dry run, not activated)' │
+│ 8       │ 'Her Wellness'             │ 'her-wellness'                │ 3      │ 'ready (dry run, not activated)' │
+│ 9       │ 'Her Wellness+'            │ 'her-wellness-plus'           │ 4      │ 'ready (dry run, not activated)' │
+│ 10      │ 'Sleep Starter'            │ 'sleep-starter'               │ 3      │ 'ready (dry run, not activated)' │
+│ 11      │ 'Revive Deep Sleep Stack'  │ 'revive-deep-sleep-stack'     │ 4      │ 'ready (dry run, not activated)' │
+│ 12      │ 'Calm & Focus'             │ 'calm-focus'                  │ 3      │ 'ready (dry run, not activated)' │
+│ 13      │ 'Unwind'                   │ 'unwind'                      │ 3      │ 'ready (dry run, not activated)' │
+│ 14      │ '24-Hour Pack'             │ '24-hour-pack'                │ 5      │ 'ready (dry run, not activated)' │
+│ 15      │ 'Gut Reset'                │ 'gut-reset'                   │ 3      │ 'ready (dry run, not activated)' │
+│ 16      │ 'Gut & Liver Reset'        │ 'gut-liver-reset'             │ 3      │ 'ready (dry run, not activated)' │
+│ 17      │ 'Full Reset'               │ 'full-reset'                  │ 4      │ 'ready (dry run, not activated)' │
+│ 18      │ 'Revive Strength'          │ 'revive-strength'             │ 3      │ 'ready (dry run, not activated)' │
+│ 19      │ 'Build & Recover'          │ 'build-recover'               │ 3      │ 'ready (dry run, not activated)' │
+│ 20      │ 'Athlete Recovery'         │ 'athlete-recovery'            │ 4      │ 'ready (dry run, not activated)' │
+│ 21      │ 'Revive Daily Plus'        │ 'revive-daily-plus'           │ 4      │ 'ready (dry run, not activated)' │
+│ 22      │ 'Couples Daily'            │ 'couples-daily'               │ 3      │ 'ready (dry run, not activated)' │
+│ 23      │ '3-Month Magnesium'        │ '3-month-magnesium'           │ 2      │ 'ready (dry run, not activated)' │
+│ 24      │ '3-Month Daily'            │ '3-month-daily'               │ 3      │ 'ready (dry run, not activated)' │
+│ 25      │ 'Longevity Duo'            │ 'longevity-duo'               │ 3      │ 'ready (dry run, not activated)' │
+│ 26      │ 'Executive Stack'          │ 'executive-stack'             │ 4      │ 'ready (dry run, not activated)' │
+│ 27      │ 'Longevity Premium'        │ 'longevity-premium'           │ 4      │ 'ready (dry run, not activated)' │
+└─────────┴────────────────────────────┴───────────────────────────────┴────────┴──────────────────────────────────┘
+Dry run: 0 activated, 28 not activated, 28 draft bundles checked.

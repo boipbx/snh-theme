@@ -161,3 +161,65 @@ Every write made by the run: mutation, object, before → after. Backups: docs/g
 | 2026-11-13 17:46 | Klaviyo flow create | SNH · Click & collect · Ops digest | - | flow YuWmw2, trigger metric U42gU4, template RKNRjd |
 | 2026-11-13 17:46 | Klaviyo flow status | SNH · Click & collect · Ops digest | draft | live |
 | 2026-11-13 17:48 | pageCreate | gid://shopify/Page/165120377086 (/pages/click-and-collect) | - (handle was free) | page "Click & collect", published |
+
+# Write log (14 Nov 2026 QA round: bundle images, gallery, cart banner, filter bar)
+Backups: docs/golive/backup-qa-2026-11-14/. Note: `productCreateMedia` was removed from Admin API 2026-10. Its documented replacement, `productUpdate(product:{id}, media:[…])` with ONLY the id and the media list (no other field), was used to attach the images to the 28 draft bundles. Nothing else on those products was changed.
+
+| time (UTC) | mutation | object | before | after |
+|---|---|---|---|---|
+| 2026-11-13 18:37 | stagedUploadsCreate | 2 staged images for Bar Box 6 | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506052448510 | 0 media | 2 images: hero "Bar Box 6 – 6 x RAW Protein Bar" first, then RAW Protein Bar |
+| 2026-11-13 18:37 | stagedUploadsCreate | 2 staged images for Bar Box 12 | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506056216830 | 0 media | 2 images: hero "Bar Box 12 – 12 x RAW Protein Bar" first, then RAW Protein Bar |
+| 2026-11-13 18:37 | stagedUploadsCreate | 3 staged images for Loaded Pre + Pre MAX Duo | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506056839422 | 0 media | 3 images: hero "Loaded Pre + Pre MAX Duo – RYSE Loaded Pre-Workout + Loaded Pre MAX" first, then RYSE Loaded Pre-Workout, RYSE Loaded Pre MAX |
+| 2026-11-13 18:37 | stagedUploadsCreate | 2 staged images for Loaded Pre Flavour Duo | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506057658622 | 0 media | 2 images: hero "Loaded Pre Flavour Duo – 2 x RYSE Loaded Pre-Workout" first, then RYSE Loaded Pre-Workout |
+| 2026-11-13 18:37 | stagedUploadsCreate | 3 staged images for Stim + Pump Stack | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506059002110 | 0 media | 3 images: hero "Stim + Pump Stack – RYSE Loaded Pre MAX + Loaded Pump" first, then RYSE Loaded Pre MAX, RYSE Loaded Pump |
+| 2026-11-13 18:37 | stagedUploadsCreate | 3 staged images for Godzilla Beast Mode | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506059690238 | 0 media | 3 images: hero "Godzilla Beast Mode – RYSE Godzilla Pre-Workout + Loaded Pump" first, then RYSE Godzilla Pre-Workout, RYSE Loaded Pump |
+| 2026-11-13 18:37 | stagedUploadsCreate | 3 staged images for RYSE Loaded Stack | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506060411134 | 0 media | 3 images: hero "RYSE Loaded Stack – RYSE Loaded Protein 2LB + Loaded Pre-Workout" first, then RYSE Loaded Protein 2LB, RYSE Loaded Pre-Workout |
+| 2026-11-13 18:37 | stagedUploadsCreate | 3 staged images for RYSE x RAW | - | uploaded to Shopify staging |
+| 2026-11-13 18:37 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506061689086 | 0 media | 3 images: hero "RYSE x RAW – RYSE Loaded Pre-Workout + RAW Premium Creatine 50 Servings" first, then RYSE Loaded Pre-Workout, RAW NUTRITION Premium Creatine Monohydrate 50 Servings |
+| 2026-11-13 18:37 | stagedUploadsCreate | 3 staged images for Her Wellness | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506062278910 | 0 media | 3 images: hero "Her Wellness – Revive Women's Health + CollaPURE Collagen" first, then REVIVE Women's Health - Female Hormone Support, REVIVE CollaPURE - 100% Grass-Fed Collagen |
+| 2026-11-13 18:38 | stagedUploadsCreate | 4 staged images for Her Wellness+ | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506062868734 | 0 media | 4 images: hero "Her Wellness+ – Revive Women's Health + CollaPURE + Thyroid Support" first, then REVIVE Women's Health - Female Hormone Support, REVIVE CollaPURE - 100% Grass-Fed Collagen, REVIVE Thyroid Support |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Sleep Starter | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506063327486 | 0 media | 3 images: hero "Sleep Starter – Revive Magnesium Glycinate + Sleep Support" first, then REVIVE Magnesium Glycinate, Revive Sleep Support |
+| 2026-11-13 18:38 | stagedUploadsCreate | 4 staged images for Revive Deep Sleep Stack | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506063786238 | 0 media | 4 images: hero "Revive Deep Sleep Stack – Revive Magnesium + Sleep Support + Suntheanine" first, then REVIVE Magnesium Glycinate, Revive Sleep Support, Revive Suntheanine (L-Theanine) |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Calm & Focus | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506064146686 | 0 media | 3 images: hero "Calm & Focus – Revive CALM+ + Suntheanine" first, then REVIVE CALM+, Revive Suntheanine (L-Theanine) |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Unwind | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506064572670 | 0 media | 3 images: hero "Unwind – Revive CALM+ + Magnesium Glycinate" first, then REVIVE CALM+, REVIVE Magnesium Glycinate |
+| 2026-11-13 18:38 | stagedUploadsCreate | 5 staged images for 24-Hour Pack | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506064965886 | 0 media | 5 images: hero "24-Hour Pack – Revive D3 & K2 + Omega 3 + Magnesium + Sleep Support" first, then REVIVE Vitamin K2 & D3 (5000 IU), REVIVE Omega 3, REVIVE Magnesium Glycinate, Revive Sleep Support |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Gut Reset | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506065391870 | 0 media | 3 images: hero "Gut Reset – Revive Digest Aid + Glutamine" first, then Revive Digest Aid, REVIVE Glutamine |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Gut & Liver Reset | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506065817854 | 0 media | 3 images: hero "Gut & Liver Reset – Revive Digest Aid + Liver Support" first, then Revive Digest Aid, Revive Liver Support |
+| 2026-11-13 18:38 | stagedUploadsCreate | 4 staged images for Full Reset | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506066243838 | 0 media | 4 images: hero "Full Reset – Revive Digest Aid + Liver Support + Glutamine" first, then Revive Digest Aid, Revive Liver Support, REVIVE Glutamine |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Revive Strength | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506066768126 | 0 media | 3 images: hero "Revive Strength – Revive Creatine + HMB + Magnesium Glycinate" first, then Revive Creatine + HMB, REVIVE Magnesium Glycinate |
+| 2026-11-13 18:38 | stagedUploadsCreate | 3 staged images for Build & Recover | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506067128574 | 0 media | 3 images: hero "Build & Recover – Revive Creatine + HMB + Glutamine" first, then Revive Creatine + HMB, REVIVE Glutamine |
+| 2026-11-13 18:38 | stagedUploadsCreate | 4 staged images for Athlete Recovery | - | uploaded to Shopify staging |
+| 2026-11-13 18:38 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506067521790 | 0 media | 4 images: hero "Athlete Recovery – Revive Glutamine + Magnesium Glycinate + Omega 3" first, then REVIVE Glutamine, REVIVE Magnesium Glycinate, REVIVE Omega 3 |
+| 2026-11-13 18:39 | stagedUploadsCreate | 4 staged images for Revive Daily Plus | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506067947774 | 0 media | 4 images: hero "Revive Daily Plus – Magnesium Glycinate + Vitamin D3 & K2 + Omega 3" first, then REVIVE Magnesium Glycinate, REVIVE Vitamin K2 & D3 (5000 IU), REVIVE Omega 3 |
+| 2026-11-13 18:39 | stagedUploadsCreate | 3 staged images for Couples Daily | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506068242686 | 0 media | 3 images: hero "Couples Daily – 2 x Revive Magnesium Glycinate + 2 x Vitamin D3 & K2" first, then REVIVE Magnesium Glycinate, REVIVE Vitamin K2 & D3 (5000 IU) |
+| 2026-11-13 18:39 | stagedUploadsCreate | 2 staged images for 3-Month Magnesium | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506068668670 | 0 media | 2 images: hero "3-Month Magnesium – 3 x Revive Magnesium Glycinate" first, then REVIVE Magnesium Glycinate |
+| 2026-11-13 18:39 | stagedUploadsCreate | 3 staged images for 3-Month Daily | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506069061886 | 0 media | 3 images: hero "3-Month Daily – 3 x Revive Magnesium Glycinate + 3 x Vitamin D3 & K2" first, then REVIVE Magnesium Glycinate, REVIVE Vitamin K2 & D3 (5000 IU) |
+| 2026-11-13 18:39 | stagedUploadsCreate | 3 staged images for Longevity Duo | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506069586174 | 0 media | 3 images: hero "Longevity Duo – Revive Longevity Restore + Longevity Core" first, then Revive Longevity Restore, Revive Longevity Core |
+| 2026-11-13 18:39 | stagedUploadsCreate | 4 staged images for Executive Stack | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506070012158 | 0 media | 4 images: hero "Executive Stack – Revive Longevity Core + CALM+ + Magnesium Glycinate" first, then Revive Longevity Core, REVIVE CALM+, REVIVE Magnesium Glycinate |
+| 2026-11-13 18:39 | stagedUploadsCreate | 4 staged images for Longevity Premium | - | uploaded to Shopify staging |
+| 2026-11-13 18:39 | productUpdate (media only, replaces productCreateMedia) | gid://shopify/Product/15506070405374 | 0 media | 4 images: hero "Longevity Premium – Revive Longevity Core + Omega 3 + Vitamin D3 & K2" first, then Revive Longevity Core, REVIVE Omega 3, REVIVE Vitamin K2 & D3 (5000 IU) |
