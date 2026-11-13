@@ -1,0 +1,87 @@
+{
+ "id": "gid://shopify/Product/15506070405374",
+ "handle": "longevity-premium",
+ "title": "Longevity Premium",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Health & Wellness",
+  "Longevity",
+  "omega-3",
+  "REVIVE",
+  "Vitamin D"
+ ],
+ "seo": {
+  "title": "Longevity Premium | Revive Longevity Core + Omega 3 + Vitamin D3 & K2",
+  "description": "Longevity Core with the two daily foundations, Omega 3 and D3 & K2. Save Rs 15,441. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-LP",
+    "price": "35556.00",
+    "compareAtPrice": "50997.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Longevity Core"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Omega 3"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Vitamin K2 & D3 (5000 IU)"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "35 Softgels",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

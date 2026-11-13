@@ -1,0 +1,70 @@
+{
+ "id": "gid://shopify/Product/15506064572670",
+ "handle": "unwind",
+ "title": "Unwind",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Health & Wellness",
+  "Magnesium",
+  "REVIVE",
+  "SLEEP & RELAXATION",
+  "stress"
+ ],
+ "seo": {
+  "title": "Unwind | Revive CALM+ + Magnesium Glycinate",
+  "description": "CALM+ for the day and magnesium for the evening, to help you unwind. Save Rs 2,199. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-UNW",
+    "price": "19499.00",
+    "compareAtPrice": "21698.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE CALM+"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

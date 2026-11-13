@@ -1,0 +1,88 @@
+{
+ "id": "gid://shopify/Product/15506066243838",
+ "handle": "full-reset",
+ "title": "Full Reset",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Detox",
+  "Digestive Support",
+  "GLUTAMINE",
+  "Gut Health",
+  "Liver Support",
+  "REVIVE"
+ ],
+ "seo": {
+  "title": "Full Reset | Revive Digest Aid + Liver Support + Glutamine",
+  "description": "The complete Revive gut and liver routine. Save Rs 4,498. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-FR",
+    "price": "32499.00",
+    "compareAtPrice": "36997.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Digest Aid"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "90 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Liver Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "20 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Glutamine"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

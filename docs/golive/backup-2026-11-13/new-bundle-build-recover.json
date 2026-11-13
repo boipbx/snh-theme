@@ -1,0 +1,84 @@
+{
+ "id": "gid://shopify/Product/15506067128574",
+ "handle": "build-recover",
+ "title": "Build & Recover",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Creatine",
+  "GLUTAMINE",
+  "HMB",
+  "Muscle & Strength",
+  "RECOVERY",
+  "REVIVE",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Build & Recover | Revive Creatine + HMB + Glutamine",
+  "description": "Build with Creatine + HMB, recover with Glutamine. Save Rs 2,999. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-BR",
+    "price": "23999.00",
+    "compareAtPrice": "26998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Creatine + HMB"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Lemon Lime",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Unflavored",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Glutamine"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

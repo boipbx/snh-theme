@@ -1,0 +1,97 @@
+{
+ "id": "gid://shopify/Product/15506063786238",
+ "handle": "revive-deep-sleep-stack",
+ "title": "Revive Deep Sleep Stack",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Magnesium",
+  "REVIVE",
+  "sleep",
+  "SLEEP & RELAXATION",
+  "Sleep Health",
+  "Sleep Support"
+ ],
+ "seo": {
+  "title": "Revive Deep Sleep Stack | Revive Magnesium + Sleep Support +",
+  "description": "Sleep Starter with L-Theanine added, for people who struggle to switch off at night. Save Rs 3,998. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-RDSS",
+    "price": "30499.00",
+    "compareAtPrice": "34497.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Sleep Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Honey Lemon",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Suntheanine (L-Theanine)"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

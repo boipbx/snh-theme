@@ -1,0 +1,115 @@
+{
+ "id": "gid://shopify/Product/15506064965886",
+ "handle": "24-hour-pack",
+ "title": "24-Hour Pack",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "health-foundation",
+  "Magnesium",
+  "omega-3",
+  "REVIVE",
+  "Sleep Support",
+  "Vitamin D"
+ ],
+ "seo": {
+  "title": "24-Hour Pack | Revive D3 & K2 + Omega 3 + Magnesium + Sleep Support",
+  "description": "A full day covered. D3 & K2 and Omega 3 in the morning, Magnesium and Sleep Support at night. Save Rs 15,980. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-24H",
+    "price": "32516.00",
+    "compareAtPrice": "48496.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Vitamin K2 & D3 (5000 IU)"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "35 Softgels",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Omega 3"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Sleep Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Honey Lemon",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

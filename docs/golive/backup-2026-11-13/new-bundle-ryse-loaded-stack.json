@@ -1,0 +1,173 @@
+{
+ "id": "gid://shopify/Product/15506060411134",
+ "handle": "ryse-loaded-stack",
+ "title": "RYSE Loaded Stack",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Muscle & Strength",
+  "Pre-Workout",
+  "PROTEIN",
+  "RYSE",
+  "Train & Perform",
+  "Training & Strength Bundles",
+  "Whey Proteins"
+ ],
+ "seo": {
+  "title": "RYSE Loaded Stack | RYSE Loaded Protein 2LB + Loaded Pre-Workout",
+  "description": "Pre-workout before training, protein after, both from RYSE. Save Rs 3,999. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-RLS-LDCB-KAG",
+    "price": "35999.00",
+    "compareAtPrice": "39998.00"
+   },
+   {
+    "sku": "SNH-RLS-LDCB-PF",
+    "price": "35999.00",
+    "compareAtPrice": "39998.00"
+   },
+   {
+    "sku": "SNH-RLS-LDCB-SPSW",
+    "price": "35999.00",
+    "compareAtPrice": "39998.00"
+   },
+   {
+    "sku": "SNH-RLS-LDCB-SPBR",
+    "price": "35999.00",
+    "compareAtPrice": "39998.00"
+   },
+   {
+    "sku": "SNH-RLS-LDCB-SPSG",
+    "price": "35999.00",
+    "compareAtPrice": "39998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Protein 2LB"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "27 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Protein 2LB (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Little Debbie\u00ae Cosmic Brownies",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Little Debbie\u00ae Strawberry Shortcake Rolls",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Chocolate Cookie Blast",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Peanut Butter Cup",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Vanilla Peanut Butter",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Skippy Peanut Butter",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Marshmallow",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Blueberry Muffin",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "JIF Creamy Peanut Butter",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre-Workout (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Kool-Aid\u2122 Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Popsicle\u00ae Firecracker",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Country Time\u2122 Blueberry Lemonade",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Watermelon",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u2122 Blue Raz",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Green Apple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Airheads\u00ae Cherry",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Cotton Candy",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

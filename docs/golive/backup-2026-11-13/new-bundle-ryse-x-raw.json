@@ -1,0 +1,139 @@
+{
+ "id": "gid://shopify/Product/15506061689086",
+ "handle": "ryse-x-raw",
+ "title": "RYSE x RAW",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Creatine",
+  "Muscle & Strength",
+  "Pre-Workout",
+  "RAW-nutrition",
+  "RYSE",
+  "Train & Perform",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "RYSE x RAW | RYSE Loaded Pre-Workout + RAW Premium Creatine 50",
+  "description": "Two brands, one stack: RYSE's popular pre with RAW's best-value creatine. Save Rs 2,499. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-RXR-KAG",
+    "price": "21499.00",
+    "compareAtPrice": "23998.00"
+   },
+   {
+    "sku": "SNH-RXR-PF",
+    "price": "21499.00",
+    "compareAtPrice": "23998.00"
+   },
+   {
+    "sku": "SNH-RXR-SPSW",
+    "price": "21499.00",
+    "compareAtPrice": "23998.00"
+   },
+   {
+    "sku": "SNH-RXR-SPBR",
+    "price": "21499.00",
+    "compareAtPrice": "23998.00"
+   },
+   {
+    "sku": "SNH-RXR-SPSG",
+    "price": "21499.00",
+    "compareAtPrice": "23998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre-Workout (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Kool-Aid\u2122 Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Popsicle\u00ae Firecracker",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Country Time\u2122 Blueberry Lemonade",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Watermelon",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u2122 Blue Raz",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Green Apple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Airheads\u00ae Cherry",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Cotton Candy",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RAW NUTRITION Premium Creatine Monohydrate 50 Servings"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Unflavored",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "50 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

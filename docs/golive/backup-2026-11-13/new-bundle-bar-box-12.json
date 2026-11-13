@@ -1,0 +1,90 @@
+{
+ "id": "gid://shopify/Product/15506056216830",
+ "handle": "bar-box-12",
+ "title": "Bar Box 12",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Muscle & Strength",
+  "Protein Bars",
+  "PROTEIN SNACKS & BARS",
+  "RAW-nutrition",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Bar Box 12 | 12 x RAW Protein Bar",
+  "description": "Two weeks of protein snacks at our best price per bar, about Rs 1,250 a bar instead of Rs 1,499. Save Rs 2,989. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-BB12-PBF",
+    "price": "14999.00",
+    "compareAtPrice": "17988.00"
+   },
+   {
+    "sku": "SNH-BB12-DFB",
+    "price": "14999.00",
+    "compareAtPrice": "17988.00"
+   },
+   {
+    "sku": "SNH-BB12-SCP",
+    "price": "14999.00",
+    "compareAtPrice": "17988.00"
+   },
+   {
+    "sku": "SNH-BB12-DCCB",
+    "price": "14999.00",
+    "compareAtPrice": "17988.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 12,
+    "componentProduct": {
+     "title": "RAW Protein Bar"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "1 Bar",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RAW Protein Bar (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Peanut Butter Fudge",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Double Fudge Brownie",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Salted Caramel Pretzel",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Dark Chocolate Cookie Butter",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "id": "gid://shopify/Product/15506069586174",
+ "handle": "longevity-duo",
+ "title": "Longevity Duo",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Health & Wellness",
+  "Longevity",
+  "Mitochondrial Health",
+  "NAD+",
+  "REVIVE"
+ ],
+ "seo": {
+  "title": "Longevity Duo | Revive Longevity Restore + Longevity Core",
+  "description": "Revive's two longevity formulas together, for people investing in long-term health. Save Rs 16,459. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-LD",
+    "price": "45539.00",
+    "compareAtPrice": "61998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Longevity Restore"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Longevity Core"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

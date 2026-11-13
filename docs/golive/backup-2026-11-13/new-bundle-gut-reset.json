@@ -1,0 +1,69 @@
+{
+ "id": "gid://shopify/Product/15506065391870",
+ "handle": "gut-reset",
+ "title": "Gut Reset",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Digestive Support",
+  "GLUTAMINE",
+  "Gut Health",
+  "REVIVE"
+ ],
+ "seo": {
+  "title": "Gut Reset | Revive Digest Aid + Glutamine",
+  "description": "Digestive enzymes with Glutamine, for everyday gut support. Save Rs 2,499. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-GR",
+    "price": "22499.00",
+    "compareAtPrice": "24998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Digest Aid"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "90 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Glutamine"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

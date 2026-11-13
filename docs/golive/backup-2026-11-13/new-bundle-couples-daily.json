@@ -1,0 +1,71 @@
+{
+ "id": "gid://shopify/Product/15506068242686",
+ "handle": "couples-daily",
+ "title": "Couples Daily",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "couples",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "his-and-hers",
+  "Magnesium",
+  "REVIVE",
+  "Vitamin D"
+ ],
+ "seo": {
+  "title": "Couples Daily | 2 x Revive Magnesium Glycinate + 2 x Vitamin D3 & K2",
+  "description": "Revive Daily for two people, at a better price than buying two bundles. Save Rs 7,497. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-CD",
+    "price": "27499.00",
+    "compareAtPrice": "34996.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 2,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 2,
+    "componentProduct": {
+     "title": "REVIVE Vitamin K2 & D3 (5000 IU)"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "35 Softgels",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

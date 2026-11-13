@@ -1,0 +1,70 @@
+{
+ "id": "gid://shopify/Product/15506065817854",
+ "handle": "gut-liver-reset",
+ "title": "Gut & Liver Reset",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Detox",
+  "Digestive Support",
+  "Gut Health",
+  "Liver Support",
+  "REVIVE"
+ ],
+ "seo": {
+  "title": "Gut & Liver Reset | Revive Digest Aid + Liver Support",
+  "description": "Support for digestion and the liver in one simple routine. Save Rs 2,999. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-GLR",
+    "price": "23999.00",
+    "compareAtPrice": "26998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Digest Aid"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "90 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Liver Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "20 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

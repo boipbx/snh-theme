@@ -1,0 +1,80 @@
+{
+ "id": "gid://shopify/Product/15506063327486",
+ "handle": "sleep-starter",
+ "title": "Sleep Starter",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "Health & Wellness",
+  "Magnesium",
+  "REVIVE",
+  "sleep",
+  "Sleep Health",
+  "Sleep Support"
+ ],
+ "seo": {
+  "title": "Sleep Starter | Revive Magnesium Glycinate + Sleep Support",
+  "description": "The easy first step to better nights: magnesium plus a dedicated sleep formula. Save Rs 2,499. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-SLS",
+    "price": "21999.00",
+    "compareAtPrice": "24498.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Sleep Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Honey Lemon",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

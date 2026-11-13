@@ -1,0 +1,168 @@
+{
+ "id": "gid://shopify/Product/15506057658622",
+ "handle": "loaded-pre-flavour-duo",
+ "title": "Loaded Pre Flavour Duo",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Muscle & Strength",
+  "Pre-Workout",
+  "RYSE",
+  "STIMULANT",
+  "Train & Perform",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Loaded Pre Flavour Duo | 2 x RYSE Loaded Pre-Workout",
+  "description": "Two tubs of RYSE Loaded Pre in any two flavours, so you never get bored of your pre. Save Rs 2,999. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-LPFD-KAG-KAG",
+    "price": "26999.00",
+    "compareAtPrice": "29998.00"
+   },
+   {
+    "sku": "SNH-LPFD-KAG-PF",
+    "price": "26999.00",
+    "compareAtPrice": "29998.00"
+   },
+   {
+    "sku": "SNH-LPFD-KAG-SPSW",
+    "price": "26999.00",
+    "compareAtPrice": "29998.00"
+   },
+   {
+    "sku": "SNH-LPFD-KAG-SPBR",
+    "price": "26999.00",
+    "compareAtPrice": "29998.00"
+   },
+   {
+    "sku": "SNH-LPFD-KAG-SPSG",
+    "price": "26999.00",
+    "compareAtPrice": "29998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre-Workout (Flavor 1)"
+      },
+      "values": [
+       {
+        "value": "Kool-Aid\u2122 Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Popsicle\u00ae Firecracker",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Country Time\u2122 Blueberry Lemonade",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Watermelon",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u2122 Blue Raz",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Green Apple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Airheads\u00ae Cherry",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Cotton Candy",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre-Workout (Flavor 2)"
+      },
+      "values": [
+       {
+        "value": "Kool-Aid\u2122 Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Popsicle\u00ae Firecracker",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Country Time\u2122 Blueberry Lemonade",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Watermelon",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u2122 Blue Raz",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Green Apple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Airheads\u00ae Cherry",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Cotton Candy",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

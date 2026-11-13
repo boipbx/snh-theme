@@ -1,0 +1,88 @@
+{
+ "id": "gid://shopify/Product/15506062868734",
+ "handle": "her-wellness-plus",
+ "title": "Her Wellness+",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "COLLAGEN",
+  "Daily Health & Wellness Bundles",
+  "Female Wellness",
+  "Health & Wellness",
+  "hormonal-support",
+  "REVIVE",
+  "Women's Health"
+ ],
+ "seo": {
+  "title": "Her Wellness+ | Revive Women's Health + CollaPURE + Thyroid Support",
+  "description": "Her Wellness with Thyroid Support added, for a fuller daily routine. Save Rs 9,148. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-HWP",
+    "price": "28349.00",
+    "compareAtPrice": "37497.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Women's Health - Female Hormone Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE CollaPURE - 100% Grass-Fed Collagen"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Thyroid Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

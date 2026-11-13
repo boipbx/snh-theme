@@ -1,0 +1,132 @@
+{
+ "id": "gid://shopify/Product/15506059690238",
+ "handle": "godzilla-beast-mode",
+ "title": "Godzilla Beast Mode",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Pre-Workout",
+  "Pump",
+  "RYSE",
+  "STIMULANT",
+  "Train & Perform",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Godzilla Beast Mode | RYSE Godzilla Pre-Workout + Loaded Pump",
+  "description": "The hardcore stack: RYSE's strongest pre with a stim-free pump on top. Save Rs 3,999. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-GBM-PP-BRS",
+    "price": "32999.00",
+    "compareAtPrice": "36998.00"
+   },
+   {
+    "sku": "SNH-GBM-PP-OC",
+    "price": "32999.00",
+    "compareAtPrice": "36998.00"
+   },
+   {
+    "sku": "SNH-GBM-SK-BRS",
+    "price": "32999.00",
+    "compareAtPrice": "36998.00"
+   },
+   {
+    "sku": "SNH-GBM-SK-OC",
+    "price": "32999.00",
+    "compareAtPrice": "36998.00"
+   },
+   {
+    "sku": "SNH-GBM-GA-BRS",
+    "price": "32999.00",
+    "compareAtPrice": "36998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Godzilla Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "40 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Godzilla Pre-Workout (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Passion Pineapple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Strawberry Kiwi",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Blue Raspberry",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Green Apple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Strawberry Mango",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pump"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "25 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pump (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Blue Razz Slush",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Orange Cream",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

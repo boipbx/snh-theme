@@ -1,0 +1,148 @@
+{
+ "id": "gid://shopify/Product/15506056839422",
+ "handle": "loaded-pre-plus-pre-max-duo",
+ "title": "Loaded Pre + Pre MAX Duo",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Muscle & Strength",
+  "Pre-Workout",
+  "RYSE",
+  "STIMULANT",
+  "Train & Perform",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Loaded Pre + Pre MAX Duo | RYSE Loaded Pre-Workout + Loaded Pre MAX",
+  "description": "Regular Loaded Pre for normal sessions, Pre MAX for your heaviest days. Save Rs 2,999. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-LPMD-KAG-OC",
+    "price": "27999.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-LPMD-KAG-BRS",
+    "price": "27999.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-LPMD-PF-OC",
+    "price": "27999.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-LPMD-PF-BRS",
+    "price": "27999.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-LPMD-SPSW-OC",
+    "price": "27999.00",
+    "compareAtPrice": "30998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre-Workout"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre-Workout (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Kool-Aid\u2122 Grape",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Popsicle\u00ae Firecracker",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Country Time\u2122 Blueberry Lemonade",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Watermelon",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u2122 Blue Raz",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Sour Punch\u00ae Sour Green Apple",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Airheads\u00ae Cherry",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Cotton Candy",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre MAX"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "25 servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre MAX (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Orange Cream",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Blue Razz Slush",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Frosted Lemonade",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

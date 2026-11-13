@@ -1,0 +1,53 @@
+{
+ "id": "gid://shopify/Product/15506068668670",
+ "handle": "3-month-magnesium",
+ "title": "3-Month Magnesium",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "Magnesium",
+  "Minerals",
+  "REVIVE",
+  "sleep"
+ ],
+ "seo": {
+  "title": "3-Month Magnesium | 3 x Revive Magnesium Glycinate",
+  "description": "Three months of magnesium at Rs 6,000 a bottle. Save Rs 7,497. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-3MM",
+    "price": "18000.00",
+    "compareAtPrice": "25497.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 3,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

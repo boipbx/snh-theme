@@ -1,0 +1,84 @@
+{
+ "id": "gid://shopify/Product/15506066768126",
+ "handle": "revive-strength",
+ "title": "Revive Strength",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Creatine",
+  "HMB",
+  "Magnesium",
+  "Muscle & Strength",
+  "RECOVERY",
+  "REVIVE",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Revive Strength | Revive Creatine + HMB + Magnesium Glycinate",
+  "description": "Creatine with HMB for training, plus magnesium for recovery. Save Rs 3,228. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-RST",
+    "price": "22270.00",
+    "compareAtPrice": "25498.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "Revive Creatine + HMB"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "Lemon Lime",
+        "selectionStatus": "DESELECTED"
+       },
+       {
+        "value": "Unflavored",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

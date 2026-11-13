@@ -1,0 +1,119 @@
+{
+ "id": "gid://shopify/Product/15506059002110",
+ "handle": "stim-plus-pump-stack",
+ "title": "Stim + Pump Stack",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Muscle & Strength",
+  "Pre-Workout",
+  "Pump",
+  "RYSE",
+  "Train & Perform",
+  "Training & Strength Bundles"
+ ],
+ "seo": {
+  "title": "Stim + Pump Stack | RYSE Loaded Pre MAX + Loaded Pump",
+  "description": "Energy and pump in one drink. Mix a scoop of each before training. Save Rs 3,499. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-SPS-OC-BRS",
+    "price": "27499.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-SPS-OC-OC",
+    "price": "27499.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-SPS-BRS-BRS",
+    "price": "27499.00",
+    "compareAtPrice": "30998.00"
+   },
+   {
+    "sku": "SNH-SPS-BRS-OC",
+    "price": "27499.00",
+    "compareAtPrice": "30998.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pre MAX"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "25 servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pre MAX (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Orange Cream",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Blue Razz Slush",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Frosted Lemonade",
+        "selectionStatus": "DESELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "RYSE Loaded Pump"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "25 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     },
+     {
+      "parentOption": {
+       "name": "RYSE Loaded Pump (Flavor)"
+      },
+      "values": [
+       {
+        "value": "Blue Razz Slush",
+        "selectionStatus": "SELECTED"
+       },
+       {
+        "value": "Orange Cream",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

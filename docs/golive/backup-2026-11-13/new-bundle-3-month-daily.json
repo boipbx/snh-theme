@@ -1,0 +1,70 @@
+{
+ "id": "gid://shopify/Product/15506069061886",
+ "handle": "3-month-daily",
+ "title": "3-Month Daily",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "health-foundation",
+  "Magnesium",
+  "REVIVE",
+  "Vitamin D"
+ ],
+ "seo": {
+  "title": "3-Month Daily | 3 x Revive Magnesium Glycinate + 3 x Vitamin D3 & K2",
+  "description": "Three months of Revive Daily in one order, our biggest saving on Revive. Save Rs 25,421. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-3MD",
+    "price": "27073.00",
+    "compareAtPrice": "52494.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 3,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 3,
+    "componentProduct": {
+     "title": "REVIVE Vitamin K2 & D3 (5000 IU)"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "35 Softgels",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

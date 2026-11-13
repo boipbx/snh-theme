@@ -1,0 +1,71 @@
+{
+ "id": "gid://shopify/Product/15506062278910",
+ "handle": "her-wellness",
+ "title": "Her Wellness",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "COLLAGEN",
+  "Daily Health & Wellness Bundles",
+  "Female Wellness",
+  "Health & Wellness",
+  "hormonal-support",
+  "REVIVE",
+  "Women's Health"
+ ],
+ "seo": {
+  "title": "Her Wellness | Revive Women's Health + CollaPURE Collagen",
+  "description": "A simple daily routine for women: hormone support and grass-fed collagen in one bundle. Save Rs 8,099. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-HW",
+    "price": "16399.00",
+    "compareAtPrice": "24498.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Women's Health - Female Hormone Support"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE CollaPURE - 100% Grass-Fed Collagen"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "30 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,89 @@
+{
+ "id": "gid://shopify/Product/15506067947774",
+ "handle": "revive-daily-plus",
+ "title": "Revive Daily Plus",
+ "status": "DRAFT",
+ "productType": "Bundle",
+ "vendor": "Sports Nutrition Hub (SNH)",
+ "tags": [
+  "bundle",
+  "bundles-nov26",
+  "Daily Health & Wellness Bundles",
+  "daily-wellness",
+  "health-foundation",
+  "Magnesium",
+  "omega-3",
+  "REVIVE",
+  "Vitamin D",
+  "vitamin-D3"
+ ],
+ "seo": {
+  "title": "Revive Daily Plus | Magnesium Glycinate + Vitamin D3 & K2 + Omega 3",
+  "description": "Our Revive Daily bundle with Omega 3 added, for a complete daily foundation. Save Rs 4,498. Genuine stock, delivered across Sri Lanka."
+ },
+ "hasVariantsThatRequiresComponents": true,
+ "variants": {
+  "nodes": [
+   {
+    "sku": "SNH-RDP",
+    "price": "27999.00",
+    "compareAtPrice": "32497.00"
+   }
+  ]
+ },
+ "bundleComponents": {
+  "nodes": [
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Magnesium Glycinate"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Vitamin K2 & D3 (5000 IU)"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "35 Softgels",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "quantity": 1,
+    "componentProduct": {
+     "title": "REVIVE Omega 3"
+    },
+    "optionSelections": [
+     {
+      "parentOption": null,
+      "values": [
+       {
+        "value": "60 Servings",
+        "selectionStatus": "SELECTED"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}
