@@ -1,0 +1,150 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "custom.campaigns",
+  "name": "Campaigns",
+  "sections": {
+    "campaigns": {
+      "type": "snh-campaigns",
+      "settings": {
+        "metaobject_type": "site_campaign",
+        "popup_delay": 6
+      },
+      "blocks": {
+        "default_delivery": {
+          "type": "campaign",
+          "settings": {
+            "name": "Default: free delivery (announcement)",
+            "type": "announcement",
+            "tag": "Free delivery",
+            "message": "On orders over Rs 17,000 · same-day in Colombo",
+            "link": "shopify://collections/all",
+            "pages": "all",
+            "audience": "all",
+            "priority": 0,
+            "tone": "ink",
+            "freq": "day"
+          }
+        },
+        "default_elite": {
+          "type": "campaign",
+          "settings": {
+            "name": "Default: SNH Elite (home banner)",
+            "type": "home_banner",
+            "heading": "Earn 3–10% back on every order",
+            "message": "Join SNH Elite free and start with 500 welcome points.",
+            "cta": "Join SNH Elite",
+            "link": "shopify://pages/snh-elite",
+            "pages": "home",
+            "audience": "guests",
+            "priority": 0,
+            "tone": "ink",
+            "freq": "day"
+          }
+        },
+        "sat_announce": {
+          "type": "campaign",
+          "settings": {
+            "pages": "all",
+            "audience": "all",
+            "link": "shopify://collections/all",
+            "days": "sat",
+            "tone": "orange",
+            "freq": "day",
+            "priority": 10,
+            "name": "Saturday sale: announcement (every Saturday)",
+            "type": "announcement",
+            "tag": "Saturday sale",
+            "message": "15% off everything today · applied at checkout",
+            "highlight": "−15% today"
+          }
+        },
+        "sat_popup": {
+          "type": "campaign",
+          "settings": {
+            "pages": "all",
+            "audience": "all",
+            "link": "shopify://collections/all",
+            "days": "sat",
+            "tone": "orange",
+            "freq": "day",
+            "priority": 10,
+            "name": "Saturday sale: popup (every Saturday)",
+            "type": "popup",
+            "heading": "It's Saturday: 15% off everything",
+            "message": "Today only, on every product. The discount is applied automatically at checkout, no code needed.",
+            "cta": "Shop the sale"
+          }
+        },
+        "sat_home": {
+          "type": "campaign",
+          "settings": {
+            "pages": "home",
+            "audience": "all",
+            "link": "shopify://collections/all",
+            "days": "sat",
+            "tone": "orange",
+            "freq": "day",
+            "priority": 10,
+            "name": "Saturday sale: homepage banner (every Saturday)",
+            "type": "home_banner",
+            "heading": "Saturday sale: 15% off everything",
+            "message": "Every Saturday, sitewide. Applied automatically at checkout.",
+            "cta": "Shop now"
+          }
+        },
+        "sat_cart": {
+          "type": "campaign",
+          "settings": {
+            "pages": "all",
+            "audience": "all",
+            "link": "",
+            "days": "sat",
+            "tone": "cream",
+            "freq": "day",
+            "priority": 10,
+            "name": "Saturday sale: cart banner (every Saturday)",
+            "type": "cart_banner",
+            "heading": "Saturday sale: 15% off",
+            "message": "Applied automatically at checkout. Today only."
+          }
+        },
+        "fri_teaser": {
+          "type": "campaign",
+          "settings": {
+            "pages": "all",
+            "audience": "all",
+            "link": "shopify://collections/all",
+            "days": "fri",
+            "tone": "orange",
+            "freq": "day",
+            "priority": 5,
+            "name": "Saturday sale: Friday teaser (announcement, every Friday)",
+            "type": "announcement",
+            "tag": "Tomorrow",
+            "message": "15% off everything, all day Saturday"
+          }
+        }
+      },
+      "block_order": [
+        "sat_announce",
+        "sat_popup",
+        "sat_home",
+        "sat_cart",
+        "fri_teaser",
+        "default_delivery",
+        "default_elite"
+      ]
+    }
+  },
+  "order": [
+    "campaigns"
+  ]
+}

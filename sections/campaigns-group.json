@@ -54,16 +54,16 @@
           "settings": {
             "pages": "all",
             "audience": "all",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/sis",
             "days": "sat",
             "tone": "orange",
             "freq": "day",
             "priority": 10,
             "name": "Saturday sale: announcement (every Saturday)",
             "type": "announcement",
-            "tag": "Saturday sale",
-            "message": "15% off everything today · applied at checkout",
-            "highlight": "−15% today"
+            "tag": "Saturday deal",
+            "message": "15% off all SiS products today · code SIS15 + date, e.g. SIS15-14NOV",
+            "highlight": ""
           }
         },
         "sat_popup": {
@@ -71,16 +71,16 @@
           "settings": {
             "pages": "all",
             "audience": "all",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/sis",
             "days": "sat",
             "tone": "orange",
             "freq": "day",
             "priority": 10,
             "name": "Saturday sale: popup (every Saturday)",
             "type": "popup",
-            "heading": "It's Saturday: 15% off everything",
-            "message": "Today only, on every product. The discount is applied automatically at checkout, no code needed.",
-            "cta": "Shop the sale"
+            "heading": "Saturday deal: 15% off all SiS products",
+            "message": "Today only, on Science in Sport (SiS) products. Use code SIS15-14NOV at checkout.",
+            "cta": "Shop SiS"
           }
         },
         "sat_home": {
@@ -88,15 +88,15 @@
           "settings": {
             "pages": "home",
             "audience": "all",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/sis",
             "days": "sat",
             "tone": "orange",
             "freq": "day",
             "priority": 10,
             "name": "Saturday sale: homepage banner (every Saturday)",
             "type": "home_banner",
-            "heading": "Saturday sale: 15% off everything",
-            "message": "Every Saturday, sitewide. Applied automatically at checkout.",
+            "heading": "Saturday deal: 15% off all SiS products",
+            "message": "Every Saturday, on Science in Sport (SiS). Today's code: SIS15-14NOV.",
             "cta": "Shop now"
           }
         },
@@ -112,8 +112,8 @@
             "priority": 10,
             "name": "Saturday sale: cart banner (every Saturday)",
             "type": "cart_banner",
-            "heading": "Saturday sale: 15% off",
-            "message": "Applied automatically at checkout. Today only."
+            "heading": "Saturday deal: 15% off SiS",
+            "message": "On Science in Sport products only, with today's code SIS15-14NOV."
           }
         },
         "fri_teaser": {
@@ -129,7 +129,7 @@
             "name": "Saturday sale: Friday teaser (announcement, every Friday)",
             "type": "announcement",
             "tag": "Tomorrow",
-            "message": "15% off everything, all day Saturday"
+            "message": "15% off all SiS products, all day Saturday"
           }
         }
       },
