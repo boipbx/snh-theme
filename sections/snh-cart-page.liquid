@@ -60,6 +60,8 @@
     <header class="scp__head">
       <h1 class="v-h1" id="{{ hid }}">Your <em>basket</em> <span class="scd__count" data-cart-count>{{ cart.item_count }}</span></h1>
       <p class="scp__eta" data-cart-eta>{% render 'snh-v2-icon', name: 'truck' %}<span>Colombo: <b>same-day delivery</b> · Rest of Sri Lanka: <b>2–3 working days</b></span></p>
+      {%- capture cc_outlets -%}{% render 'snh-pickup-outlets' %}{%- endcapture -%}
+      <p class="scp__eta scp__cc"><a href="/pages/click-and-collect">{% render 'snh-v2-icon', name: 'pin' %}<span>Free click &amp; collect at <b>{{ cc_outlets | strip }}</b>, held for 48 hours</span></a></p>
     </header>
 
     {%- capture promos -%}{%- render 'snh-app-promos', blocks: section.blocks, tier: tier, goal: goal, goal2: goal2, sport: sport, diet: diet, recent: '', sid: section.id, quiz_card: false -%}{%- endcapture -%}

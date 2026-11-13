@@ -33,6 +33,8 @@
       {%- endif -%}
     </div>
     <footer class="scd__foot" data-cart-foot{% if cart.item_count == 0 %} hidden{% endif %}></footer>
+    {%- capture cc_outlets -%}{% render 'snh-pickup-outlets' %}{%- endcapture -%}
+    <a class="scd__cc" href="/pages/click-and-collect">{% render 'snh-v2-icon', name: 'pin' %}<span>Free click &amp; collect at {{ cc_outlets | strip }}, held for 48 hours</span></a>
   </div>
 </x-drawer>
 
