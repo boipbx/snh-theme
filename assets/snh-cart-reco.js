@@ -123,11 +123,12 @@
       var b = scored.filter(function (x) { return x.cat === 'bars-snacks' && x.p.price <= 1500 * 100; })[0];
       if (b) { if (!b.label) b.label = 'Try a protein bar'; if (picked.length >= max) picked.pop(); picked.push(b); }
     }
-    var head = close ? 'Close the gap to free delivery' : unlocked ? 'Free delivery is on. Add a little extra' : 'Goes with your order';
+    // 14 Nov: once free delivery is unlocked the heading is just "Goes well with your order", with no price hint
+    var head = close ? 'Close the gap to free delivery' : unlocked ? 'Goes well with your order' : 'Goes with your order';
     var log = { subtotal: sub / 100, threshold: cfg.threshold / 100, gap: Math.max(0, gap) / 100, rule: close ? 'close' : unlocked ? 'unlocked' : 'addons',
       window: close ? [lo / 100, hi / 100] : null, cap: close ? null : capR, cartCats: Object.keys(cartCats), member: !!cfg.member, history: Object.keys(histCat), goal: reco.goal || '',
       pool: scored.length, excluded: ex, picked: picked.map(function (x) { return x.p.title + ' @' + x.p.price / 100 + ' [' + x.cat + ' ' + x.score + ': ' + x.why + '] "' + x.label + '"'; }) };
-    return { rule: log.rule, head: head, cap: close ? '' : 'under ' + rsTxt(capR), items: picked.map(function (x) { return Object.assign({ why: x.label, cat: x.cat }, x.p); }), log: log, targets: Object.keys(comp) };
+    return { rule: log.rule, head: head, cap: (close || unlocked) ? '' : 'under ' + rsTxt(capR), items: picked.map(function (x) { return Object.assign({ why: x.label, cat: x.cat }, x.p); }), log: log, targets: Object.keys(comp) };
   }
 
   // recently viewed: product pages record their handle (newest first, 8 max)
