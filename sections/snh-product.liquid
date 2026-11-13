@@ -315,6 +315,7 @@
                   <button type="submit" class="sp-btn sp-btn--accent" form="{{ form_id }}" name="return_to" value="/checkout" data-snh-checkout-trigger data-snh-product-buy-now data-sp-buynow{% unless v.available %} hidden{% endunless %}>Buy it now</button>
                 {%- endif -%}
               </div>
+              {%- render 'snh-pickup-availability', product: product, variant: v -%}
 
             {%- when 'whatsapp' -%}
               {%- if wa != blank -%}

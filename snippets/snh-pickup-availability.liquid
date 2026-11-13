@@ -1,0 +1,55 @@
+{%- comment -%}
+  Click & collect line under add-to-cart (13 Nov 2026). Uses variant.store_availabilities, only outlets with local pickup
+  switched on (pick_up_enabled). Follows the selected variant (variant:change event from assets/snh-product.js).
+  Hidden on bundles (their stock is the components', so outlet availability is not meaningful). product, variant
+{%- endcomment -%}
+{%- liquid
+  assign pua_bundle = false
+  assign pua_pt = product.type | downcase
+  if pua_pt contains 'bundle' or product.variants.first.requires_components
+    assign pua_bundle = true
+  endif
+-%}
+{%- unless pua_bundle -%}
+  {%- capture pua_html -%}
+    {%- for vv in product.variants -%}
+      {%- assign pa = vv.store_availabilities | where: 'pick_up_enabled', true -%}
+      {%- if pa.size == 0 -%}{%- continue -%}{%- endif -%}
+      {%- assign pa_ok = pa | where: 'available', true -%}
+      <div class="pua__v" data-pua-v="{{ vv.id }}"{% unless vv.id == variant.id %} hidden{% endunless %}>
+        {%- if pa_ok.size > 0 -%}
+          <p class="pua__line"><span class="pua__dot" aria-hidden="true"></span><span>Pickup available at <b>{{ pa_ok.first.location.name }}</b> · {{ pa_ok.first.pick_up_time | default: 'Usually ready in 24 hours' | downcase }}</span></p>
+        {%- else -%}
+          <p class="pua__line is-off"><span class="pua__dot" aria-hidden="true"></span><span>Pickup not available for this option right now</span></p>
+        {%- endif -%}
+        <details class="pua__more">
+          <summary>Check other outlets</summary>
+          <ul class="pua__list" role="list">
+            {%- for a in pa -%}
+              <li>
+                <b>SNH {{ a.location.name }}</b>
+                <span class="pua__st{% unless a.available %} is-off{% endunless %}">{% if a.available %}In stock · {{ a.pick_up_time | default: 'Usually ready in 24 hours' | downcase }}{% else %}Out of stock here{% endif %}</span>
+                <small>{{ a.location.address.address1 }}{% if a.location.address.city != blank %}, {{ a.location.address.city }}{% endif %}</small>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <a class="pua__how" href="/pages/click-and-collect">How click &amp; collect works · held for 48 hours</a>
+        </details>
+      </div>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if pua_html != blank -%}
+    <div class="sp-b pua" data-pua>{{ pua_html }}</div>
+    <script>
+      (function () {
+        var box = document.currentScript && document.currentScript.previousElementSibling; if (!box || !box.hasAttribute('data-pua')) return;
+        document.addEventListener('variant:change', function (e) {
+          var id = e.detail && e.detail.variant && String(e.detail.variant.id); if (!id) return;
+          var any = false;
+          box.querySelectorAll('[data-pua-v]').forEach(function (el) { var on = el.getAttribute('data-pua-v') === id; el.hidden = !on; if (on) any = true; });
+          box.hidden = !any;
+        });
+      })();
+    </script>
+  {%- endif -%}
+{%- endunless -%}
