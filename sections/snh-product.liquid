@@ -379,7 +379,7 @@
   {%- comment -%} ── Sticky add to cart: shown by assets/snh-product.js once the main button has scrolled away ── {%- endcomment -%}
   {%- comment -%} 14 Nov: "Save with a bundle" — the live bundles that contain this product (custom.in_bundles, written by
     scripts/sync-bundle-links.mjs, biggest saving first). Same card as the collections, max 4, swipe on phones. Hidden when
-    empty; never this product, never an unpublished or sold-out bundle. {%- endcomment -%}
+    empty; never this product, never an unpublished or sold-out bundle (re-sync 14 Nov). {%- endcomment -%}
   {%- capture swb_cards -%}
     {%- assign swb_n = 0 -%}
     {%- for b in product.metafields.custom.in_bundles.value -%}

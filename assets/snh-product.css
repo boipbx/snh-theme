@@ -431,7 +431,7 @@
 .sp-slide--info { --pad: 2%; }
 .sp-slide > img { position: absolute; top: var(--pad); left: var(--pad); width: calc(100% - 2 * var(--pad)) !important; height: calc(100% - 2 * var(--pad)) !important; }
 
-/* 14 Nov: "Save with a bundle" row (sections/snh-product.liquid): the collection card, max 4; swipe row on phones */
+/* 14 Nov: "Save with a bundle" row (sections/snh-product.liquid): the collection card, max 4; swipe row on phones (re-sync) */
 .swb { margin-top: 40px; }
 .swb__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .swb__h { margin: 0; font: 600 20px/1.2 var(--sans); letter-spacing: -.01em; color: var(--sp-ink, #0C0C0D); }
