@@ -1547,11 +1547,7 @@
           <div class="snh-profile-row"><div class="snh-profile-icon">&#8962;</div><div><div class="snh-profile-label">Default shipping</div><div class="snh-profile-value">{% if customer.default_address %}{{ customer.default_address.street }}<br>{{ customer.default_address.city }}{% if customer.default_address.zip != blank %}, {{ customer.default_address.zip }}{% endif %}<br>{{ customer.default_address.country }}{% else %}No default address set yet.{% endif %}</div></div></div>
         </div>
 
-        <div class="snh-referral-card-dark">
-          <h3>Give Rs. 500, <em>get</em> Rs. 500</h3>
-          <p>Share SNH Elite with a friend. When they shop, you both win.</p>
-          <a href="/pages/contact" class="snh-btn">Get your referral link</a>
-        </div>
+        {%- comment -%} 14 Nov: referral card removed until the referral programme exists (its link was a 404) {%- endcomment -%}
 
         <div class="snh-info-card">
           <h3>Quick actions</h3>

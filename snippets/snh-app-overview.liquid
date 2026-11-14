@@ -138,12 +138,14 @@
     <div class="refer refer--app">{%- for b in ref_apps -%}{% render b %}{%- endfor -%}</div>
   {%- elsif s.refer_live and s.refer_text != blank -%}
     {%- assign rparts = s.refer_text | split: '*' -%}
-    <a class="refer" href="{% if mock %}#overview{% else %}{{ s.refer_link | default: '/pages/contact' }}{% endif %}">
+    <a class="refer" href="{% if mock %}#overview{% else %}{{ s.refer_link | default: '/pages/delivery-and-shipping' }}{% endif %}">
       <span class="refer__h">{%- for p in rparts -%}{%- if forloop.index0 == 1 -%}<em>{{ p | escape }}</em>{%- else -%}{{ p | escape }}{%- endif -%}{%- endfor -%}</span>
       <span class="refer__p">{{ s.refer_body | default: 'Share SNH Elite with a friend. When they shop, you both win.' | escape }}</span>
       <span class="refer__go">Refer a friend {% render 'snh-v2-icon', name: 'arrow' %}</span>
     </a>
-  {%- else -%}
+  {%- elsif false -%}
+    {%- comment -%} 14 Nov: the "coming soon" referral card is hidden until the referral programme is built (no link, no
+      tracking, no rewards exist yet). A referral app block or "Referral rewards are live" brings a card back. {%- endcomment -%}
     <div class="refer refer--soon">
       <span class="refer__h">Referral rewards are <em>coming soon</em></span>
       <span class="refer__p">Soon you'll get points when a friend you invite places their first order, and they'll get a welcome reward too.</span>

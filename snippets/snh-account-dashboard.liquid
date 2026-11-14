@@ -84,7 +84,7 @@
       <ul class="acc__links" role="list">
         <li><a href="#orders">{% render 'snh-v2-icon', name: 'bag' %}<span>Track an order</span></a></li>
         <li><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>WhatsApp support</span></a></li>
-        {%- if refer_text != blank -%}<li><a href="{{ refer_link | default: '/pages/contact' }}">{% render 'snh-v2-icon', name: 'gift' %}<span>{{ refer_text | escape }}</span></a></li>{%- endif -%}
+        {%- if refer_text != blank and refer_link != blank -%}<li><a href="{{ refer_link }}">{% render 'snh-v2-icon', name: 'gift' %}<span>{{ refer_text | escape }}</span></a></li>{%- endif -%}
         <li><a href="{{ routes.account_logout_url }}" data-no-instant>{% render 'snh-v2-icon', name: 'arrow' %}<span>Sign out</span></a></li>
       </ul>
     </section>

@@ -165,7 +165,7 @@
         "pick_map": "whey, isolate, protein powder, mass gainer => creatine, accessories-1\npre-workout, pre workout, pump => creatine, hydration-recovery\ncreatine => whey-protein, pre-workout-1\ngel, carb, beta fuel => hydration-recovery, energy-and-endurance\nelectrolyte, hydro, hydration => energy-gels, magnesium\nmagnesium, sleep => vitamins-minerals, probiotics\nvitamin, omega, fish oil, multi => magnesium, probiotics\ncollagen => joint-and-mobility, vitamins-minerals\nfat burner, carnitine, weight => fat-loss, clear-protein",
         "refer_text": "Give Rs 500, *get* Rs 500",
         "refer_body": "Share SNH Elite with a friend. When they shop, you both win.",
-        "refer_link": "/pages/contact",
+        "refer_link": "",
         "sms_live": false,
         "goal_prompt": true
       }

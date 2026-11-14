@@ -1,0 +1,92 @@
+{%- comment -%}
+  Account dashboard body (Round 7). Rendered by sections/snh-account (real customer) and sections/snh-elite-mock
+  (QA mock data), so both show the same layout.
+  m: split snh-elite-calc output · first_name, name, email, phone, no · address: formatted default address (HTML) ·
+  addresses_count · orders_html / orders_count / pagination_html: rows from snippets/snh-order-row ·
+  refer_text / refer_link · mock: true for the QA page.
+{%- endcomment -%}
+{%- liquid
+  assign redeem_from = settings.snh_redeem_from | default: 2500
+  assign wa = settings.snh_whatsapp | default: '94764863359' | remove: '+' | remove: ' '
+  capture elite_url
+    render 'snh-elite-url'
+  endcapture
+  assign elite_url = elite_url | strip
+-%}
+<div class="v-wrap acc">
+  <header class="acc__head">
+    <p class="eyebrow">My account</p>
+    <h1 class="acc__h">Welcome back, <em>{{ first_name | default: 'there' | escape }}</em></h1>
+  </header>
+  {%- render 'snh-account-nav', active: 'dashboard' -%}
+
+  <div class="acc__hero">
+    {%- render 'snh-elite-card', m: m, name: name, no: no -%}
+    {%- render 'snh-elite-reward', m: m, mock: mock -%}
+  </div>
+
+  <section class="acc__block" aria-labelledby="acc-how">
+    <div class="acc__bh">
+      <h2 class="acc__h2" id="acc-how">How your points work</h2>
+      <a class="v-link" href="{{ elite_url }}">All about SNH Elite</a>
+    </div>
+    <ol class="how" role="list">
+      <li><span class="how__n">01</span><h3>Earn {{ m[7] }}% back</h3><p>Every paid order adds {{ m[7] }}% of the order value to your points, at your {{ m[1] }} rate.</p></li>
+      <li><span class="how__n">02</span><h3>Redeem from {% render 'snh-num', n: redeem_from %}</h3><p>At {% render 'snh-num', n: redeem_from %} points, trade them for a cash-off reward right here. Refunds reverse the points they earned.</p></li>
+      <li><span class="how__n">03</span><h3>{% if m[12] == '1' %}Top tier{% else %}Climb to {{ m[8] }}{% endif %}</h3><p>{% if m[12] == '1' %}You earn our highest rate. Your tier is reviewed on your spend over the year.{% else %}Your spend over the year sets your tier. {{ m[8] }} earns more on every order.{% endif %}</p></li>
+    </ol>
+    {%- render 'snh-elite-tiers', current: m[0] -%}
+  </section>
+
+  <section class="acc__block" id="orders" aria-labelledby="acc-orders">
+    <div class="acc__bh">
+      <h2 class="acc__h2" id="acc-orders">Orders{% if orders_count > 0 %} <span class="acc__count">{{ orders_count }}</span>{% endif %}</h2>
+    </div>
+    {%- if orders_count > 0 -%}
+      <div class="otable-wrap">
+        <table class="otable">
+          <thead><tr><th scope="col">Order</th><th scope="col">Date</th><th scope="col">Status</th><th scope="col">Total</th><th scope="col"><span class="v-sr">Actions</span></th></tr></thead>
+          <tbody>{{ orders_html }}</tbody>
+        </table>
+      </div>
+      {{ pagination_html }}
+      <p class="acc__note">Paid orders earn points at your tier's rate. Points show in your balance once the order syncs.</p>
+    {%- else -%}
+      <div class="acc__empty">
+        <p class="acc__empty-h">No orders yet</p>
+        <p>Shop while signed in and every paid order earns {{ m[7] }}% back in points.</p>
+        <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Start shopping</span></a>
+      </div>
+    {%- endif -%}
+  </section>
+
+  <div class="acc__grid">
+    <section class="acc__card" aria-labelledby="acc-addr">
+      <h2 class="acc__h3" id="acc-addr">Default address</h2>
+      {%- if address != blank -%}
+        <address class="acc__addr">{{ address }}</address>
+      {%- else -%}
+        <p class="acc__muted">No address saved yet. Add one for faster checkout.</p>
+      {%- endif -%}
+      <a class="v-link" href="{{ routes.account_addresses_url }}">{% if addresses_count > 0 %}Manage addresses ({{ addresses_count }}){% else %}Add an address{% endif %}</a>
+    </section>
+    <section class="acc__card" aria-labelledby="acc-prof">
+      <h2 class="acc__h3" id="acc-prof">Your details</h2>
+      <dl class="acc__dl">
+        <div><dt>Name</dt><dd>{{ name | escape }}</dd></div>
+        <div><dt>Email</dt><dd>{{ email | escape }}</dd></div>
+        <div><dt>Phone</dt><dd>{{ phone | default: '—' | escape }}</dd></div>
+      </dl>
+      <a class="v-link" href="{{ routes.account_addresses_url }}">Edit details</a>
+    </section>
+    <section class="acc__card" aria-labelledby="acc-quick">
+      <h2 class="acc__h3" id="acc-quick">Quick links</h2>
+      <ul class="acc__links" role="list">
+        <li><a href="#orders">{% render 'snh-v2-icon', name: 'bag' %}<span>Track an order</span></a></li>
+        <li><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{% render 'snh-v2-icon', name: 'whatsapp' %}<span>WhatsApp support</span></a></li>
+        {%- if refer_text != blank -%}<li><a href="{{ refer_link | default: '/pages/contact' }}">{% render 'snh-v2-icon', name: 'gift' %}<span>{{ refer_text | escape }}</span></a></li>{%- endif -%}
+        <li><a href="{{ routes.account_logout_url }}" data-no-instant>{% render 'snh-v2-icon', name: 'arrow' %}<span>Sign out</span></a></li>
+      </ul>
+    </section>
+  </div>
+</div>

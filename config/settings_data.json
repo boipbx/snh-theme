@@ -92,7 +92,7 @@
       },
       "9589668175390395553": {
         "type": "shopify://apps/amose-bundle/blocks/quantity_options/50476a12-3ce4-457e-ba71-230751f626b6",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       },
       "10436698916776057164": {
