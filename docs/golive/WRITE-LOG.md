@@ -560,3 +560,59 @@ Backup: docs/golive/backup-2026-11-14/.
 | 2026-11-14 12:33 | discountCodeBasicCreate | gid://shopify/DiscountCodeNode/1895509557502 (SUN15-17JAN) | - | 15% off collection SCIENCE IN SPORT \| SiS (453152768254), 2027-01-17T00:00:00+05:30 → 2027-01-17T23:59:59+05:30, all customers, no minimum, combines with nothing, unlimited uses |
 | 2026-11-14 12:33 | discountCodeBasicCreate | gid://shopify/DiscountCodeNode/1895509590270 (SUN15-24JAN) | - | 15% off collection SCIENCE IN SPORT \| SiS (453152768254), 2027-01-24T00:00:00+05:30 → 2027-01-24T23:59:59+05:30, all customers, no minimum, combines with nothing, unlimited uses |
 | 2026-11-14 12:33 | discountCodeBasicCreate | gid://shopify/DiscountCodeNode/1895509623038 (SUN15-31JAN) | - | 15% off collection SCIENCE IN SPORT \| SiS (453152768254), 2027-01-31T00:00:00+05:30 → 2027-01-31T23:59:59+05:30, all customers, no minimum, combines with nothing, unlimited uses |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8756578615550 (revive-magnesium-glycinate) custom.in_bundles | ["gid://shopify/Product/9427401670910","gid://shopify/Product/9513378906366","gid://shopify/Product/9427353600254","gid://shopify/Product/9434983661822","gid://shopify/Product/9427352027390"] | 3-Month Daily (save 25421), 24-Hour Pack (save 15980), Executive Stack (save 15145), 3-Month Magnesium (save 7497), Couples Daily (save 7497), Athlete Recovery (save 4498), Revive Daily Plus (save 4498), Revive Deep Sleep Stack (save 3998), Revive Strength (save 3228), Essential  Mineral Trio (save 3200), REVIVE Magnesium Glycinate - Bundle of 2 (save 2599), Sleep Starter (save 2499), Stress & Recovery Bundle (save 2499), REVIVE Daily (save 2299), Unwind (save 2199), Daily Health Foundation Bundle (save 2098) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8756581138686 (revive-vitamin-d3-k2) custom.in_bundles | ["gid://shopify/Product/9434983661822"] | 3-Month Daily (save 25421), 24-Hour Pack (save 15980), Longevity Premium (save 15441), Couples Daily (save 7497), Revive Daily Plus (save 4498), REVIVE Daily (save 2299) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9198203732222 (raw-protein-bar) custom.in_bundles | - (none) | Bar Box 12 (save 2989), Bar Box 6 (save 995) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8088641765630 (ryse-loaded-pre-workout) custom.in_bundles | - (none) | RYSE Loaded Stack (save 3999), Loaded Pre + Pre MAX Duo (save 2999), Loaded Pre Flavour Duo (save 2999), RYSE x RAW (save 2499) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9217914044670 (ryse-loaded-pre-max) custom.in_bundles | - (none) | Stim + Pump Stack (save 3499), Loaded Pre + Pre MAX Duo (save 2999) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9410589753598 (ryse-loaded-pump-25-servings) custom.in_bundles | - (none) | Godzilla Beast Mode (save 3999), Stim + Pump Stack (save 3499) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8088644714750 (ryse-godzilla-pre-workout) custom.in_bundles | - (none) | Godzilla Beast Mode (save 3999) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8088646156542 (ryse-loaded-protein-2lb) custom.in_bundles | - (none) | RYSE Loaded Stack (save 3999) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8756519928062 (raw-premium-creatine-50-servings) custom.in_bundles | - (none) | RYSE x RAW (save 2499) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9114509246718 (revive-womens-health) custom.in_bundles | - (none) | Her Wellness+ (save 9148), Her Wellness (save 8099) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/15441838932222 (revive-collapure-grass-fed-collagen) custom.in_bundles | - (none) | Her Wellness+ (save 9148), Her Wellness (save 8099) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9268547518718 (revive-thyroid-support) custom.in_bundles | - (none) | Her Wellness+ (save 9148) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9410578743550 (revive-sleep-support-30-servings) custom.in_bundles | - (none) | 24-Hour Pack (save 15980), Revive Deep Sleep Stack (save 3998), Sleep Starter (save 2499) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/15440800710910 (revive-suntheanine-l-theanine) custom.in_bundles | - (none) | Revive Deep Sleep Stack (save 3998), Calm & Focus (save 2199) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9198195900670 (revive-calm-plus) custom.in_bundles | - (none) | Executive Stack (save 15145), Calm & Focus (save 2199), Unwind (save 2199) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9198189117694 (revive-omega-3) custom.in_bundles | - (none) | 24-Hour Pack (save 15980), Longevity Premium (save 15441), Athlete Recovery (save 4498), Revive Daily Plus (save 4498) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9410567471358 (revive-digest-aid-90-vegetarian-capsules) custom.in_bundles | - (none) | Full Reset (save 4498), Gut & Liver Reset (save 2999), Gut Reset (save 2499) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/15440883941630 (revive-glutamine) custom.in_bundles | - (none) | Athlete Recovery (save 4498), Full Reset (save 4498), Build & Recover (save 2999), Gut Reset (save 2499) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/15440787833086 (revive-liver-support) custom.in_bundles | - (none) | Full Reset (save 4498), Gut & Liver Reset (save 2999) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9410585166078 (revive-creatine-hmb-30-servings) custom.in_bundles | - (none) | Revive Strength (save 3228), Build & Recover (save 2999) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9410575958270 (revive-longevity-restore-90-vegetarian-capsules) custom.in_bundles | - (none) | Longevity Duo (save 16459) |
+| 2026-11-14 17:40 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9410570682622 (revive-longevity-core-90-vegetarian-capsules) custom.in_bundles | - (none) | Longevity Duo (save 16459), Longevity Premium (save 15441), Executive Stack (save 15145) |
+
+# Write log (14 Nov 2026): new bundles activated
+Backup: docs/golive/backup-2026-11-14/bundles-before-activation.json.
+
+| time (UTC) | mutation | object | before | after |
+|---|---|---|---|---|
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Bar Box 6 (/products/bar-box-6) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Bar Box 12 (/products/bar-box-12) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Loaded Pre + Pre MAX Duo (/products/loaded-pre-plus-pre-max-duo) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Loaded Pre Flavour Duo (/products/loaded-pre-flavour-duo) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Stim + Pump Stack (/products/stim-plus-pump-stack) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Godzilla Beast Mode (/products/godzilla-beast-mode) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | RYSE Loaded Stack (/products/ryse-loaded-stack) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | RYSE x RAW (/products/ryse-x-raw) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Her Wellness (/products/her-wellness) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Her Wellness+ (/products/her-wellness-plus) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Sleep Starter (/products/sleep-starter) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Revive Deep Sleep Stack (/products/revive-deep-sleep-stack) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Calm & Focus (/products/calm-focus) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Unwind (/products/unwind) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | 24-Hour Pack (/products/24-hour-pack) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Gut Reset (/products/gut-reset) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Gut & Liver Reset (/products/gut-liver-reset) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Full Reset (/products/full-reset) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Revive Strength (/products/revive-strength) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Build & Recover (/products/build-recover) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Athlete Recovery (/products/athlete-recovery) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Revive Daily Plus (/products/revive-daily-plus) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Couples Daily (/products/couples-daily) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | 3-Month Magnesium (/products/3-month-magnesium) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | 3-Month Daily (/products/3-month-daily) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Longevity Duo (/products/longevity-duo) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Executive Stack (/products/executive-stack) | DRAFT | ACTIVE |
+| 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Longevity Premium (/products/longevity-premium) | DRAFT | ACTIVE |

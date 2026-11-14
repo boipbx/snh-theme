@@ -1,0 +1,89 @@
+┌─────────┬────────────────────────────┬───────────────────────────────┬────────┬─────────────┐
+│ (index) │ bundle                     │ handle                        │ images │ result      │
+├─────────┼────────────────────────────┼───────────────────────────────┼────────┼─────────────┤
+│ 0       │ 'Bar Box 6'                │ 'bar-box-6'                   │ 2      │ 'ACTIVATED' │
+│ 1       │ 'Bar Box 12'               │ 'bar-box-12'                  │ 2      │ 'ACTIVATED' │
+│ 2       │ 'Loaded Pre + Pre MAX Duo' │ 'loaded-pre-plus-pre-max-duo' │ 3      │ 'ACTIVATED' │
+│ 3       │ 'Loaded Pre Flavour Duo'   │ 'loaded-pre-flavour-duo'      │ 2      │ 'ACTIVATED' │
+│ 4       │ 'Stim + Pump Stack'        │ 'stim-plus-pump-stack'        │ 3      │ 'ACTIVATED' │
+│ 5       │ 'Godzilla Beast Mode'      │ 'godzilla-beast-mode'         │ 3      │ 'ACTIVATED' │
+│ 6       │ 'RYSE Loaded Stack'        │ 'ryse-loaded-stack'           │ 3      │ 'ACTIVATED' │
+│ 7       │ 'RYSE x RAW'               │ 'ryse-x-raw'                  │ 3      │ 'ACTIVATED' │
+│ 8       │ 'Her Wellness'             │ 'her-wellness'                │ 3      │ 'ACTIVATED' │
+│ 9       │ 'Her Wellness+'            │ 'her-wellness-plus'           │ 4      │ 'ACTIVATED' │
+│ 10      │ 'Sleep Starter'            │ 'sleep-starter'               │ 3      │ 'ACTIVATED' │
+│ 11      │ 'Revive Deep Sleep Stack'  │ 'revive-deep-sleep-stack'     │ 4      │ 'ACTIVATED' │
+│ 12      │ 'Calm & Focus'             │ 'calm-focus'                  │ 3      │ 'ACTIVATED' │
+│ 13      │ 'Unwind'                   │ 'unwind'                      │ 3      │ 'ACTIVATED' │
+│ 14      │ '24-Hour Pack'             │ '24-hour-pack'                │ 5      │ 'ACTIVATED' │
+│ 15      │ 'Gut Reset'                │ 'gut-reset'                   │ 3      │ 'ACTIVATED' │
+│ 16      │ 'Gut & Liver Reset'        │ 'gut-liver-reset'             │ 3      │ 'ACTIVATED' │
+│ 17      │ 'Full Reset'               │ 'full-reset'                  │ 4      │ 'ACTIVATED' │
+│ 18      │ 'Revive Strength'          │ 'revive-strength'             │ 3      │ 'ACTIVATED' │
+│ 19      │ 'Build & Recover'          │ 'build-recover'               │ 3      │ 'ACTIVATED' │
+│ 20      │ 'Athlete Recovery'         │ 'athlete-recovery'            │ 4      │ 'ACTIVATED' │
+│ 21      │ 'Revive Daily Plus'        │ 'revive-daily-plus'           │ 4      │ 'ACTIVATED' │
+│ 22      │ 'Couples Daily'            │ 'couples-daily'               │ 3      │ 'ACTIVATED' │
+│ 23      │ '3-Month Magnesium'        │ '3-month-magnesium'           │ 2      │ 'ACTIVATED' │
+│ 24      │ '3-Month Daily'            │ '3-month-daily'               │ 3      │ 'ACTIVATED' │
+│ 25      │ 'Longevity Duo'            │ 'longevity-duo'               │ 3      │ 'ACTIVATED' │
+│ 26      │ 'Executive Stack'          │ 'executive-stack'             │ 4      │ 'ACTIVATED' │
+│ 27      │ 'Longevity Premium'        │ 'longevity-premium'           │ 4      │ 'ACTIVATED' │
+└─────────┴────────────────────────────┴───────────────────────────────┴────────┴─────────────┘
+28 activated, 0 not activated, 28 draft bundles checked.
+
+Syncing bundle links (custom.in_bundles)…
+active bundles: 54, component products: 53, writes: 22
+  applied-nutrition-pure-shilajit [1] unchanged
+  applied-nutrition-ashwagandha-ksm-66 [2] unchanged
+  applied-nutrition-zma [3] unchanged
+  trace-shilajit-resin [1] unchanged
+  applied-nutrition-berberine-1000mg [1] unchanged
+  applied-nutrition-gut-health-capsules [1] unchanged
+  applied-nutrition-vitamin-d3-k2 [6] unchanged
+  applied-nutrition-calcium-vitamin-k2 [1] unchanged
+  applied-nutrition-zinc [2] unchanged
+  applied-nutrition-collagen-peptides [1] unchanged
+  applied-nutrition-vitamin-c-1000mg [2] unchanged
+  revive-magnesium-glycinate [16] set: 3-Month Daily, 24-Hour Pack, Executive Stack, 3-Month Magnesium, Couples Daily, Athlete Recovery, Revive Daily Plus, Revive Deep Sleep Stack, Revive Strength, Essential  Mineral Trio, REVIVE Magnesium Glycinate - Bundle of 2, Sleep Starter, Stress & Recovery Bundle, REVIVE Daily, Unwind, Daily Health Foundation Bundle
+  applied-nutrition-omega-3 [2] unchanged
+  sis-go-isotonic-energy-gel [2] unchanged
+  sis-beta-fuel-gel [2] unchanged
+  sis-go-energy-electrolyte-gel [1] unchanged
+  sis-go-energy-caffeine-gel [1] unchanged
+  sis-beta-fuel-energy-nootropics-gel [1] unchanged
+  applied-nutrition-creatine-monohydrate [5] unchanged
+  applied-nutrition-wellness-collagen-supplement [1] unchanged
+  snh-2-0-shaker-bottle-750ml-teal-blue [4] unchanged
+  sis-go-hydro-tablets [2] unchanged
+  applied-nutrition-abe-all-black-everything [2] unchanged
+  applied-nutrition-critical-whey-25-servings [2] unchanged
+  applied-nutrition-iso-xp-850g [2] unchanged
+  raw-essential-pre-workout [2] unchanged
+  raw-creatine-monohydrate-500g [1] unchanged
+  raw-creatine-monohydrate-30-servings [1] unchanged
+  applied-nutrition-multi-vitamin-complex [1] unchanged
+  revive-vitamin-d3-k2 [6] set: 3-Month Daily, 24-Hour Pack, Longevity Premium, Couples Daily, Revive Daily Plus, REVIVE Daily
+  applied-nutrition-sleep-support [1] unchanged
+  applied-nutrition-sex-bomb-for-him [1] unchanged
+  applied-nutrition-sex-bomb-for-her [1] unchanged
+  raw-protein-bar [2] set: Bar Box 12, Bar Box 6
+  ryse-loaded-pre-workout [4] set: RYSE Loaded Stack, Loaded Pre + Pre MAX Duo, Loaded Pre Flavour Duo, RYSE x RAW
+  ryse-loaded-pre-max [2] set: Stim + Pump Stack, Loaded Pre + Pre MAX Duo
+  ryse-loaded-pump-25-servings [2] set: Godzilla Beast Mode, Stim + Pump Stack
+  ryse-godzilla-pre-workout [1] set: Godzilla Beast Mode
+  ryse-loaded-protein-2lb [1] set: RYSE Loaded Stack
+  raw-premium-creatine-50-servings [1] set: RYSE x RAW
+  revive-womens-health [2] set: Her Wellness+, Her Wellness
+  revive-collapure-grass-fed-collagen [2] set: Her Wellness+, Her Wellness
+  revive-thyroid-support [1] set: Her Wellness+
+  revive-sleep-support-30-servings [3] set: 24-Hour Pack, Revive Deep Sleep Stack, Sleep Starter
+  revive-suntheanine-l-theanine [2] set: Revive Deep Sleep Stack, Calm & Focus
+  revive-calm-plus [3] set: Executive Stack, Calm & Focus, Unwind
+  revive-omega-3 [4] set: 24-Hour Pack, Longevity Premium, Athlete Recovery, Revive Daily Plus
+  revive-digest-aid-90-vegetarian-capsules [3] set: Full Reset, Gut & Liver Reset, Gut Reset
+  revive-glutamine [4] set: Athlete Recovery, Full Reset, Build & Recover, Gut Reset
+  revive-liver-support [2] set: Full Reset, Gut & Liver Reset
+  revive-creatine-hmb-30-servings [2] set: Revive Strength, Build & Recover
+  revive-longevity-restore-90-vegetarian-capsules [1] set: Longevity Duo
+  revive-longevity-core-90-vegetarian-capsules [3] set: Longevity Duo, Longevity Premium, Executive Stack
