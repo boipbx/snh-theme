@@ -451,3 +451,9 @@
 .sp-slide--clean { --pad: 1.5%; }
 .sp-slide--bleed { --pad: 0%; }
 .sp-slide--bleed > img { mix-blend-mode: normal; }
+/* 14 Nov: brand logo on the gallery — the logo alone (transparent theme assets, assets/brand-*.png), no plate, border,
+   shadow or blur behind it. It steps aside on dark full-bleed photos and info images, where it could not be read. */
+.sp-floatbrand, .sp-floatbrand:hover { height: auto; padding: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; transform: none; }
+.sp-floatbrand img { height: 22px; max-width: 96px; }
+@media (min-width: 1024px) { .sp-floatbrand img { height: 26px; max-width: 120px; } }
+.sp-stage.is-dark .sp-floatbrand { opacity: 0; pointer-events: none; transition: opacity 160ms ease; }

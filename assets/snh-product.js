@@ -36,6 +36,8 @@
         r /= n; g /= n; b /= n;
         if ((r + g + b) / 3 > 238) return;                     // white / near-white background: nothing to do
         sl.classList.add('sp-slide--bleed'); sl.style.backgroundColor = 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
+        // a dark photo: the floating brand logo (no plate behind it any more) steps aside while this slide shows
+        if ((r * .299 + g * .587 + b * .114) < 170) { sl.__dark = true; var stg2 = root.querySelector('.sp-stage'); if (stg2 && sl.hasAttribute('data-active')) stg2.classList.add('is-dark'); }
       } catch (e) {}
     }
     Array.prototype.forEach.call(root.querySelectorAll('.sp-slide img'), function (im) {
@@ -50,6 +52,7 @@
       // 14 Nov: info images (nutrition panels etc.) get the whole frame: the counter and brand badge step aside
       var stg = root.querySelector('.sp-stage'), sl = slides[i];
       if (stg && sl) stg.classList.toggle('is-info', sl.classList.contains('sp-slide--info'));
+      if (stg && sl) stg.classList.toggle('is-dark', !!sl.__dark);
       slides.forEach(function (x, k) { if (k === i) x.setAttribute('data-active', ''); else x.removeAttribute('data-active'); });
       var t = thumbs[i];
       if (t && rail && rail.scrollHeight > rail.clientHeight + 2) {
