@@ -8,7 +8,7 @@ Read-only. Checked through the Shopify Admin API (SNH Ops app), the Klaviyo API 
 - **Nothing is live.** There is no referral app, no referral metafield, no referral Klaviyo flow, and nothing writes referral rewards.
 - **What the site shows:** the account page has a card "Referral rewards are coming soon" with a "notify me" button.
   - The button adds the tag `notify:referrals` to the customer. That's all it does.
-  - The card's "live" switch (`refer_live`) is off. Its link setting points to /pages/contact.
+  - The card's "live" switch (`refer_live`) is off. Its link setting points to /pages/contact, which is a **404 page** (it doesn't exist).
 - **Old account template:** `sections/main-customers-account.liquid` still has a dark card "Get your referral link" that links to the contact page. It is not the template in use.
 - **No link is created or tracked.** The friend gets nothing and the referrer gets nothing, because no system exists behind the card.
 
@@ -16,6 +16,7 @@ Read-only. Checked through the Shopify Admin API (SNH Ops app), the Klaviyo API 
 - The default heading text "Give Rs 500, get Rs 500" is a promise with no mechanism. It only shows if someone turns `refer_live` on.
 
 **Fix and who does it**
+- **Dead link:** before turning referrals on, point the card at a real page (you, in the theme editor).
 - **Decide the offer** (Khizer): for example, friend gets Rs 500 off the first order, referrer gets 500 points after it's paid.
 - **Pick a mechanism** (needs an app or Khizer's approval):
   - a referral app (ReferralCandy, Smile, BON), added as an app block on the account page; the theme already has the slot, or
@@ -118,3 +119,6 @@ Read-only. Checked through the Shopify Admin API (SNH Ops app), the Klaviyo API 
 3. **Loyalty redemption is unproven and 870 balances need reconciling.** One test redemption; Esoft review.
 4. **Klaviyo time zone is wrong and clicks are near zero.** Fix the setting; test the emails.
 5. **Two WhatsApp numbers on the site.** Confirm the right one in Theme settings.
+
+## Also found
+- **A third-party app throws a JavaScript error on every product page:** "Amose Bundle" (`initializeAmoseBundle … reading 'map'`). It doesn't break the page, but the app is misconfigured or unused. You, in admin: open the app and fix or remove its product-page embed. The theme can't fix an app's script.
