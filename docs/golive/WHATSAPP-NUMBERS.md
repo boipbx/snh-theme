@@ -27,5 +27,5 @@ Nothing was changed. Confirm with Khizer which number is for what, then change i
 
 ## What this means
 - The site's buttons open WhatsApp on **76 486 3359**; the emails and the login page say **77 977 3359**.
-- The two numbers look like the two outlets' phones. If only one has WhatsApp, the other places are wrong.
+- The email footers label them by outlet: **77 977 3359 = Dehiwala, 76 486 3359 = Nugegoda**, plus a third, **76 846 3359 = Wattala** (emails only; check it isn't a typo of the Nugegoda number). If only one outlet answers WhatsApp, the other places are wrong.
 - **To change everything driven by the setting:** Theme settings → SNH contact and reviews → WhatsApp number. The typed-in places need a small theme edit; tell me the answer and I'll do it.
