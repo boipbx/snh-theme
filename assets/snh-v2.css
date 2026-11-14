@@ -2710,7 +2710,7 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
    inline loader in layout/theme.liquid from the Asia/Colombo weekday). Sits bottom-left, above the flavours chip. */
 html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame::after { content: "−15% online today"; position: absolute; left: 12px; bottom: 12px; z-index: 3; display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 6px; background: #B4410F; color: #fff; font: 700 12px/1 var(--sans); pointer-events: none; }
 html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bottom: 44px; }
-@media (max-width: 749px) { html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame::after { left: 10px; bottom: 10px; height: 22px; padding: 0 7px; font-size: 11px; } html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bottom: 38px; } }
+@media (max-width: 749px) { html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame::after { left: 8px; bottom: 10px; height: 22px; padding: 0 5px; font-size: 12px; letter-spacing: -.02em; } html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bottom: 38px; } }
 
 /* ===================== 14 Nov polish round: shared tokens + phone declutter =====================
    One spacing scale, one card radius, one motion speed; applied through shared classes, not per page. */
