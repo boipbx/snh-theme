@@ -15,6 +15,29 @@
     var data = {};
     try { data = JSON.parse(root.querySelector('[data-sp-json]').textContent); } catch (e) { data.variants = []; }
 
+    /* ---------- 14 Nov: long open detail sections (the description) are clamped on phones with "Read more" ---------- */
+    (function () {
+      if (!matchMedia('(max-width: 1023px)').matches) return;
+      Array.prototype.forEach.call(document.querySelectorAll('.sp-det .det__body'), function (b) {
+        if (b.__clamp) return; b.__clamp = true;
+        var fit = function () {
+          if (b.__open || b.classList.contains('is-clamped') || b.scrollHeight < 460) return;
+          b.classList.add('is-clamped');
+          var m = document.createElement('button'); m.type = 'button'; m.className = 'det__more'; m.textContent = 'Read more'; m.setAttribute('aria-expanded', 'false');
+          m.addEventListener('click', function () { var open = b.classList.toggle('is-clamped') === false; b.__open = open; m.textContent = open ? 'Show less' : 'Read more'; m.setAttribute('aria-expanded', String(open)); if (!open) b.parentNode.scrollIntoView({ block: 'start' }); });
+          b.parentNode.insertBefore(m, b.nextSibling);
+        };
+        fit(); var acc = b.previousElementSibling; if (acc) acc.addEventListener('click', function () { setTimeout(fit, 30); });
+      });
+      // images inside the details (nutrition tables etc.) open in the full-screen viewer too
+      document.addEventListener('click', function (e) {
+        var im = e.target.closest && e.target.closest('.sp-rte img, .sp-panelimg img'); if (!im || im.closest('a')) return;
+        var g = document.querySelector('[data-sp-gal]'); if (!g) return;
+        var ghost = document.createElement('li'); ghost.className = 'sp-slide'; ghost.hidden = true; var c = im.cloneNode(); c.setAttribute('data-full', im.currentSrc || im.src); ghost.appendChild(c);
+        var list = g.querySelector('[data-sp-slides]'); list.appendChild(ghost); c.click(); setTimeout(function () { ghost.remove(); }, 0);
+      });
+    })();
+
     /* ---------- gallery ---------- */
     var list = root.querySelector('[data-sp-slides]');
     var slides = list ? Array.prototype.slice.call(list.querySelectorAll('[data-sp-slide]')) : [];

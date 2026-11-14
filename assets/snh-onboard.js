@@ -34,7 +34,7 @@
   });
   if (test) { show(); return; }
   if (!noGoal()) return;
-  timer = setTimeout(show, delay);
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // 14 Nov: the shared popup gate decides when (15 s + scroll, one auto popup per session, never on cart / account)
+  if (P.when) P.when(show); else { timer = setTimeout(show, delay); window.addEventListener('scroll', onScroll, { passive: true }); }
   window.SNHOnboard = { show: show, hide: hide };
 })();

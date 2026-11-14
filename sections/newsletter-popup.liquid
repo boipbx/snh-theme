@@ -367,8 +367,10 @@
     var depth = (window.scrollY + window.innerHeight) / Math.max(doc.scrollHeight, 1);
     if (depth >= 0.5) trigger();
   }
-  var timer = setTimeout(trigger, 12000);
-  window.addEventListener('scroll', onScroll, { passive: true });
+  /* 14 Nov: the shared popup gate (layout/theme.liquid) decides when: 15 s + scroll, one auto popup per session */
+  var timer;
+  if (window.SNHPopups && window.SNHPopups.when) window.SNHPopups.when(trigger);
+  else { timer = setTimeout(trigger, 12000); window.addEventListener('scroll', onScroll, { passive: true }); }
 })();
 </script>
 

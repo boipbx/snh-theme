@@ -133,6 +133,10 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {{- 'snh-v2.css' | asset_url | stylesheet_tag: preload: true -}}
     <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
     <style>:root { --snh-logo: url("{{ 'snh-logo-mark.png' | asset_url }}"); }</style>
+    {%- comment -%} 14 Nov: one gate for every auto-shown popup (onboarding prompt, newsletter, campaign promos). At most one per
+      session, never before 15 s AND some scroll, never on cart / checkout / account. Popups register with when(fn) and
+      must win claim(name) before opening. User-opened sheets (Sunday deal chip, quiz, drawers) don't use it. {%- endcomment -%}
+    <script>(function(){var q=[],t0=Date.now(),sc=false,ok=false,P=window.SNHPopups={taken:null,off:/^\/(cart|checkout|checkouts|account)(\/|$)/.test(location.pathname),ready:function(){return ok},claim:function(n){if(P.off||!ok||P.taken)return false;try{if(sessionStorage.getItem('snh_pop'))return false;sessionStorage.setItem('snh_pop',n)}catch(e){}P.taken=n;return true},when:function(f){ok?f():q.push(f)}};function chk(){if(ok||P.off||!sc||Date.now()-t0<15000)return;ok=true;removeEventListener('scroll',os);q.splice(0).forEach(function(f){try{f()}catch(e){}})}function os(){if(scrollY>240){sc=true;chk()}}addEventListener('scroll',os,{passive:true});setTimeout(chk,15050);})();</script>
     <script>window.SNH = window.SNH || {}; SNH.koko = {{ 'snh-koko.png' | asset_url | json }}; SNH.kokoImg = function (h) { h = Math.min(h || 14, 20); return '<img class="snh-koko" src="' + SNH.koko + '" alt="Koko" width="' + Math.round(h * 215 / 98) + '" height="' + h + '" style="height:' + h + 'px;max-height:' + h + 'px;width:auto" loading="lazy" decoding="async">'; };</script>
     {%- render 'snh-prefs' -%}
     {%- capture snh_cl -%}{% render 'snh-clean-list' %}{%- endcapture -%}

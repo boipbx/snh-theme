@@ -2711,3 +2711,44 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
 html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame::after { content: "−15% online today"; position: absolute; left: 12px; bottom: 12px; z-index: 3; display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 6px; background: #B4410F; color: #fff; font: 700 12px/1 var(--sans); pointer-events: none; }
 html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bottom: 44px; }
 @media (max-width: 749px) { html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame::after { left: 10px; bottom: 10px; height: 22px; padding: 0 7px; font-size: 11px; } html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bottom: 38px; } }
+
+/* ===================== 14 Nov polish round: shared tokens + phone declutter =====================
+   One spacing scale, one card radius, one motion speed; applied through shared classes, not per page. */
+:root { --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --r-card: 16px; --r-sheet: 20px; --t-fast: 150ms; --t-med: 220ms;
+  --shadow-pop: 0 18px 48px -12px rgba(12, 12, 13, .28), 0 2px 8px rgba(12, 12, 13, .06); }
+
+/* phones: no text under 13px. Every small meta label shares this floor (the cart-count bubble is a number badge, not text). */
+@media (max-width: 749px) {
+  .pc__brand, .pc__sub, .pc__per, .pc__koko, .pc__chip, .pc__count, .pc__badge, .pc__st, .pc__was, .pc__save, .pc__from,
+  .hpc__brand, .hpc__koko, .hs__n, .eyebrow, .announce__item, .announce__item b, .mqd__link, .sbx__title, .v-badge, .ttv__by, .igr__handle,
+  .elc__tier, .elc__lbl, .elc__link, .elc dt, .elc dd, .snh-opt__n, .colhero__count, .art-tile__eb, .post__cat, .snh-article-category,
+  .sp-count, .sp-pillstate, .sp-info, .pua__how, .sp-head__k, .save, .cmpx__ot, .cmpx__os, .cmpx__tag, .cmpx__brand, .cmpx__lbl,
+  .scd__count, .sfree__th, .sline__brand, .sbo__short, .sbo__go, .how__n, .ep2__calc-fine, .qz__lvl,
+  .sp small, .scp small, .scd small, .ftr h3, footer h3, .sbo b, .sbo span { font-size: 13px; }
+  /* forms: 44px tap targets everywhere */
+  .v2 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]), .v2 select,
+  .main-search-form input[type="search"], .main-search-form input[name="q"], .snh-drop__find, .snh-bar-form .field input { min-height: 44px; }
+}
+
+/* one look for every popup / sheet: card radius, soft shadow, 44px close target, same speed */
+.snh-np__card, .snh-onb, .cmp-pop, .ssd__box { box-shadow: var(--shadow-pop) !important; }
+.snh-onb { border-radius: var(--r-sheet) !important; }
+.snh-np__card { border-radius: var(--r-sheet) !important; }
+.snh-np__x, .snh-onb__x { width: 44px !important; height: 44px !important; }
+.snh-np__card, .snh-onb, .cmp-pop { transition-duration: var(--t-med) !important; }
+@media (max-width: 749px) {
+  /* phones: popups are bottom sheets — full width, anchored to the bottom edge */
+  .snh-onb { left: 8px !important; right: 8px !important; width: auto !important; bottom: calc(8px + env(safe-area-inset-bottom)) !important; }
+}
+
+/* phone declutter: one message per screen section */
+@media (max-width: 749px) {
+  .auth__aside .auth__perks, .auth__aside .auth__proof, .auth__aside .elc-hint, .auth__aside .auth__lead { display: none; }   /* said once in the form card already */
+  .auth__aside { padding-block: var(--s-5); }
+  .scp__main .scp__more ~ .scp__more { display: none; }             /* cart page: one extra list of suggestions, not two */
+}
+
+/* motion: quick, consistent, and off for people who ask for less */
+@media (prefers-reduced-motion: reduce) {
+  .v2 *, .v2 *::before, .v2 *::after, .snh-np__card, .snh-onb, .cmp-pop { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

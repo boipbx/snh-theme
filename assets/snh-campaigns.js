@@ -104,7 +104,8 @@
     if (pc) {
       var key = 'snh_cmp_' + pc.id, store = pc.freq === 'session' ? sessionStorage : localStorage, seen = +ls(store, key) || 0;
       var capped = pc.freq === 'always' ? false : pc.freq === 'day' ? now - seen < 864e5 : !!seen;
-      if (!capped) setTimeout(function () {
+      var gate = P.when ? function (f) { P.when(f); } : function (f) { setTimeout(f, (data.delay || 0) * 1000); };   // 14 Nov: shared popup gate
+      if (!capped) gate(function () {
         if (document.querySelector('dialog[open], x-drawer[open], #snh-pay-router:not([hidden])') || !P.claim('campaign')) return;
         loadCss();
         var d = document.createElement('dialog');
@@ -117,7 +118,7 @@
         d.addEventListener('close', function () { d.remove(); });
         ls(store, key, String(Date.now()));
         d.showModal();
-      }, (data.delay || 0) * 1000);
+      });
     }
   }
   document.addEventListener('click', function (e) {
