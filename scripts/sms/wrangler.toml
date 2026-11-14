@@ -1,0 +1,12 @@
+name = "snh-sms"
+main = "src/worker.mjs"
+compatibility_date = "2026-10-01"
+
+[vars]
+DRY_RUN = "true"                 # "false" only after a gateway + sender ID are approved (docs/golive/SMS-PLAN.md)
+SMS_PROVIDER = "none"            # notifylk | textlk | dialog
+SMS_SENDER_ID = ""               # the approved sender ID / mask, e.g. "SNH"
+WHATSAPP_NUMBER = ""             # shown in every SMS, e.g. "0764863359" (to be confirmed)
+STORE_URL = "sportsnutritionhub.lk"
+# secrets (wrangler secret put …): SHOPIFY_WEBHOOK_SECRET, and for the chosen gateway:
+#   notifylk: NOTIFYLK_USER_ID, NOTIFYLK_API_KEY     textlk: TEXTLK_API_TOKEN     dialog: DIALOG_ESMS_USERNAME, DIALOG_ESMS_PASSWORD

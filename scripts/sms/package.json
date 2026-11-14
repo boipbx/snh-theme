@@ -1,0 +1,6 @@
+{
+  "name": "snh-sms",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test test/sms.test.mjs", "sample": "node cli.mjs", "deploy": "wrangler deploy" }
+}
