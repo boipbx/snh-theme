@@ -446,3 +446,8 @@
   .swb__h { font-size: 24px; }
   .swb__row { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; margin-inline: 0; padding-inline: 0; }
 }
+/* 14 Nov (SiS image fix): clean cut-outs fill ~85 % of the square; photos with their own coloured background go edge to
+   edge on that colour (assets/snh-product.js bleed) — no white or coloured bands, nothing cropped */
+.sp-slide--clean { --pad: 1.5%; }
+.sp-slide--bleed { --pad: 0%; }
+.sp-slide--bleed > img { mix-blend-mode: normal; }

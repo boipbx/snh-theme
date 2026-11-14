@@ -2703,3 +2703,5 @@ html[data-offer] .pc--out .pc__frame::after { display: none; }
   .pc--bundle .pc__frame:has(.pc__badge) .pc__inf { top: 40px; }
   .pc--bundle .pc__frame:has(.pc__inf) .pc__status { top: 10px; }
 }
+/* 14 Nov: SiS cards — the clean cut-out fills ~86 % of the square tile (other brands keep the 80 % look) */
+.pc--sis .card__img.is-clean img { transform: none; }

@@ -176,7 +176,7 @@
     assign pc_bundle = true
   endif
 -%}
-<product-card class="card pc{% if pc_bundle %} pc--bundle{% endif %}{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}"{% if position %} style="--o: {{ position | times: 10 }}"{% endif %}>
+{%- assign pc_v = product.vendor | downcase -%}<product-card class="card pc{% if pc_bundle %} pc--bundle{% endif %}{% if pc_v contains 'science in sport' %} pc--sis{% endif %}{% unless product.available %} pc--out card--out{% endunless %}" handle="{{ product.handle }}"{% if position %} style="--o: {{ position | times: 10 }}"{% endif %}>
   <div class="pc__frame">
     <a class="card__tile pc__shot" href="{{ product.url }}" aria-label="{{ title_full }}" tabindex="-1">
       {%- capture clean1 -%}{% render 'snh-clean-img', product: product %}{%- endcapture -%}{%- assign clean1 = clean1 | strip -%}

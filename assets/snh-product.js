@@ -23,6 +23,24 @@
     var rail = root.querySelector('.sp-rail');
     var count = root.querySelector('[data-sp-count]');
     var current = 0;
+    // 14 Nov: a photo whose own background isn't white (studio grey, lifestyle shot) fills the frame edge to edge on a
+    // background of its edge colour, instead of sitting inside a white border. Never cropped: still object-fit contain.
+    var probe = document.createElement('canvas'); probe.width = probe.height = 48;
+    function bleed(img) {
+      var sl = img.closest('.sp-slide'); if (!sl || sl.__bled) return; sl.__bled = true;
+      try {
+        var c = probe.getContext('2d', { willReadFrequently: true }); c.clearRect(0, 0, 48, 48); c.drawImage(img, 0, 0, 48, 48);
+        var d = c.getImageData(0, 0, 48, 48).data, n = 0, r = 0, g = 0, b = 0;
+        for (var k = 0; k < 48; k++) [[k, 0], [k, 47], [0, k], [47, k]].forEach(function (q) { var o = (q[1] * 48 + q[0]) * 4; if (d[o + 3] > 200) { n++; r += d[o]; g += d[o + 1]; b += d[o + 2]; } });
+        if (n < 150) return;                                   // transparent cut-out: keep the white frame
+        r /= n; g /= n; b /= n;
+        if ((r + g + b) / 3 > 238) return;                     // white / near-white background: nothing to do
+        sl.classList.add('sp-slide--bleed'); sl.style.backgroundColor = 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
+      } catch (e) {}
+    }
+    Array.prototype.forEach.call(root.querySelectorAll('.sp-slide img'), function (im) {
+      if (im.complete && im.naturalWidth) bleed(im); else im.addEventListener('load', function () { bleed(im); }, { once: true });
+    });
 
     function mark(i) {
       current = i;
