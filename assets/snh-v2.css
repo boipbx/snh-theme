@@ -2724,7 +2724,8 @@ html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bo
   .elc__tier, .elc__lbl, .elc__link, .elc dt, .elc dd, .snh-opt__n, .colhero__count, .art-tile__eb, .post__cat, .snh-article-category,
   .sp-count, .sp-pillstate, .sp-info, .pua__how, .sp-head__k, .save, .cmpx__ot, .cmpx__os, .cmpx__tag, .cmpx__brand, .cmpx__lbl,
   .scd__count, .sfree__th, .sline__brand, .sbo__short, .sbo__go, .how__n, .ep2__calc-fine, .qz__lvl,
-  .sp small, .scp small, .scd small, .ftr h3, footer h3, .sbo b, .sbo span { font-size: 13px; }
+  .sp small, .scp small, .scd small, .ftr h3, footer h3, .sbo b, .sbo span, .sp-head .sp-head__k, .elc .elc__lbl, .scp small, .scd small, .sline small,
+  form.snh-bar-form .snh-opt__n, [class*="cmpx__"], .ttv .ttv__by, .how .how__n, .snh-article-category { font-size: 13px !important; }
   /* forms: 44px tap targets everywhere */
   .v2 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]), .v2 select,
   .main-search-form input[type="search"], .main-search-form input[name="q"], .snh-drop__find, .snh-bar-form .field input { min-height: 44px; }
