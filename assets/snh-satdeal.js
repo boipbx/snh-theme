@@ -46,7 +46,7 @@
     for (var i = 0; i < n; i++) {
       var a0 = (i * a - 90 - a / 2) * Math.PI / 180, a1 = ((i + 1) * a - 90 - a / 2) * Math.PI / 180;
       s += '<path d="M0 0L' + (r * Math.cos(a0)).toFixed(2) + ' ' + (r * Math.sin(a0)).toFixed(2) + 'A' + r + ' ' + r + ' 0 0 1 ' + (r * Math.cos(a1)).toFixed(2) + ' ' + (r * Math.sin(a1)).toFixed(2) + 'Z" fill="' + FILL[i] + '" stroke="#0E0E0E" stroke-width="1"/>';
-      s += '<text transform="rotate(' + (i * a) + ') translate(0 -62) rotate(90)" fill="' + INK[i] + '" font-size="' + (i ? 9.5 : 10.5) + '" font-weight="' + (i ? 600 : 800) + '" text-anchor="middle" dominant-baseline="middle">' + LABELS[i] + '</text>';
+      s += '<text transform="rotate(' + (i * a) + ') translate(0 -62) rotate(' + (i === 2 || i === 3 ? -90 : 90) + ')" fill="' + INK[i] + '" font-size="' + (i ? 9.5 : 10.5) + '" font-weight="' + (i ? 600 : 800) + '" text-anchor="middle" dominant-baseline="middle">' + LABELS[i] + '</text>';
     }
     return '<svg viewBox="-104 -104 208 208" aria-hidden="true"><g class="ssd-w">' + s + '<circle r="104" fill="none" stroke="#0E0E0E" stroke-width="6"/></g><circle r="16" fill="#0E0E0E"/><circle r="6" fill="#E0521C"/></svg>';
   }
