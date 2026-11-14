@@ -50,3 +50,13 @@
 - **Dark photos:** the logo is hidden on dark full-bleed photos and on info images.
 - **Ronnie Coleman:** has no logo, so no chip shows.
 - **Check:** 10 brands at 375 and 1440 all pass (qa-2026-11-14/logos/).
+
+## 14 Nov 05:30 UTC: deal removed from the website (in-store only)
+- **Theme (1c8a8e5):** live at 05:30–05:32 UTC (11:00 Sri Lanka time). Removed:
+  - the Saturday campaign blocks: announcement, homepage banner, cart banner and Friday teaser (the popup and the "−15% today" card label were already removed)
+  - the deal wheel: its loader and the snh-satdeal JS/CSS files
+- **Old browser data:** a one-line script clears the wheel's saved keys (snh_sat_*) from visitors' browsers.
+- **Backups:** docs/golive/backup-sat-off-2026-11-14/.
+- **Live check:** home, SiS collection, SiS product and cart drawer at 375 and 1440 (qa-2026-11-14/sat-off/). No Saturday text, code, 15% badge, chip, popup or offer attribute anywhere.
+- **Discounts:** the 12 SIS15- codes were deactivated (discountCodeDeactivate, now EXPIRED); nothing was deleted. HYROX (15% SiS, expired 12 Sep) was left as it was. No other Saturday/SiS discounts exist.
+- **Orders:** 55 orders since Sat 00:00 Sri Lanka time; **0** used a Saturday SiS code or discount.

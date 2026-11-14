@@ -1,3 +1,8 @@
+> **14 Nov 2026, 05:30 UTC: switched off. The Saturday 15% SiS deal is IN-STORE ONLY.**
+> - All 12 codes below were deactivated (status EXPIRED), not deleted.
+> - The website no longer shows or applies the deal anywhere.
+> - **Do not run scripts/create-saturday-codes.mjs.** See docs/golive/SATURDAY-SIS-LOG.md.
+
 # Saturday SiS deal codes
 
 **The deal:** 15% off **Science in Sport (SiS)** products only, every Saturday. It is not sitewide.

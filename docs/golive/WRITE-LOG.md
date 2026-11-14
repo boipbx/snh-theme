@@ -525,3 +525,20 @@ Backups: docs/golive/backup-qa-2026-11-14/. Note: `productCreateMedia` was remov
 | 2026-11-13 19:32 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8950640083198 (applied-nutrition-sleep-support) custom.in_bundles | - (none) | Deep Sleep Bundle (save 0) |
 | 2026-11-13 19:32 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9272442749182 (applied-nutrition-sex-bomb-for-him) custom.in_bundles | - (none) | Couples Bedroom Bundle (save 2999) |
 | 2026-11-13 19:32 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9385516269822 (applied-nutrition-sex-bomb-for-her) custom.in_bundles | - (none) | Couples Bedroom Bundle (save 2999) |
+
+# Write log (14 Nov 2026): Saturday SiS deal is in-store only, website discounts switched off
+
+| time (UTC) | mutation | object | before | after |
+|---|---|---|---|---|
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404142846 (Saturday SiS 15% (SIS15-14NOV)) | ACTIVE | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:41Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404175614 (Saturday SiS 15% (SIS15-21NOV)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:41Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404208382 (Saturday SiS 15% (SIS15-28NOV)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:41Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404241150 (Saturday SiS 15% (SIS15-05DEC)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:41Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404306686 (Saturday SiS 15% (SIS15-12DEC)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:42Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404339454 (Saturday SiS 15% (SIS15-19DEC)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:42Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404372222 (Saturday SiS 15% (SIS15-26DEC)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:42Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404404990 (Saturday SiS 15% (SIS15-02JAN)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:42Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404437758 (Saturday SiS 15% (SIS15-09JAN)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:43Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404470526 (Saturday SiS 15% (SIS15-16JAN)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:43Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404503294 (Saturday SiS 15% (SIS15-23JAN)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:43Z'} |
+| 2026-11-14 05:30 | discountCodeDeactivate | gid://shopify/DiscountCodeNode/1895404536062 (Saturday SiS 15% (SIS15-30JAN)) | SCHEDULED | {'status': 'EXPIRED', 'endsAt': '2026-11-14T05:30:43Z'} |
