@@ -174,8 +174,8 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
       {%- endif -%}
     </main>
   {% render 'koko-checkout-modal' %}
-    {%- comment -%} 14 Nov: Saturday SiS deal chip + wheel (assets/snh-satdeal.*), Saturdays only (Asia/Colombo), loaded after
-      the page is idle; never on cart / checkout / account. Code = SIS15-DDMON (docs/golive/SATURDAY-CODES.md). {%- endcomment -%}
-    <script>(function(){try{if(/^\/(cart|checkout|account)/.test(location.pathname))return;var p={};new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Colombo',weekday:'short',day:'2-digit',month:'short',year:'numeric'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});if(p.weekday!=='Sat')return;window.SNHSat={code:'SIS15-'+p.day+String(p.month).slice(0,3).toUpperCase(),day:p.year+p.month+p.day,sis:{{ collections['sis'].url | default: '/collections/sis' | json }}};var go=function(){var l=document.createElement('link');l.rel='stylesheet';l.href={{ 'snh-satdeal.css' | asset_url | json }};document.head.appendChild(l);var s=document.createElement('script');s.src={{ 'snh-satdeal.js' | asset_url | json }};s.async=true;document.body.appendChild(s)};var idle=function(){'requestIdleCallback' in window?requestIdleCallback(go,{timeout:5000}):setTimeout(go,2000)};document.readyState==='complete'?setTimeout(idle,1200):addEventListener('load',function(){setTimeout(idle,1200)})}catch(e){}})();</script>
+    {%- comment -%} 14 Nov: the Saturday SiS 15% deal is in-store only; nothing about it shows on the website. This clears the
+      keys the removed Saturday wheel left in visitors' browsers. {%- endcomment -%}
+    <script>try{Object.keys(localStorage).forEach(function(k){if(/^snh_satx?_/.test(k))localStorage.removeItem(k)})}catch(e){}</script>
   </body>
 </html>

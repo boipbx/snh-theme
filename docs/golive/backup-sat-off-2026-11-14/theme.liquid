@@ -1,0 +1,181 @@
+{%- comment -%}
+------------------------------------------------------------------------------------------------------------------------
+NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing this theme as much as we did for
+  developing it. We have put a lot of work to make this theme as developer friendly as possible by offering you
+  hooks to integrate into critical parts of the theme. You will find the complete technical documentation (including
+  all events, dependencies...) in the "documentation.txt" file, located in the Assets folder.
+------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<!doctype html>
+
+<html lang="{{ request.locale.iso_code }}" dir="{% render 'direction' %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="{{ settings.header_background }}">
+
+    {%- comment -%} Round 13 SEO: titles in sentence case when typed in capitals, always carrying the brand; a meta
+       description on every template (collection / blog / page text, else the shop description) {%- endcomment -%}
+    {%- liquid
+      assign seo_t = page_title | default: shop.name | strip
+      assign seo_up = seo_t | upcase
+      if seo_up == seo_t
+        assign seo_t = seo_t | downcase | capitalize
+      endif
+      assign seo_d = page_description | strip_html | strip
+      if seo_d == blank
+        case request.page_type
+          when 'collection'
+            assign seo_d = collection.description | strip_html | strip | truncate: 150
+            if seo_d == blank
+              assign seo_d = 'Shop ' | append: seo_t | append: ' at SNH: ' | append: collection.products_count | append: ' authentic products, same-day Colombo delivery, islandwide shipping and pay in 3 with Koko.'
+            endif
+          when 'blog'
+            assign seo_d = blog.title | append: ': training, nutrition and supplement guides from Sports Nutrition Hub, Sri Lanka.'
+          when 'page'
+            assign seo_d = page.content | strip_html | strip | truncatewords: 26
+          when 'cart'
+            assign seo_d = 'Your SNH basket: free delivery over Rs 17,000, pay in 3 with Koko, cash on delivery or bank transfer.'
+          when 'customers/login', 'customers/register', 'customers/account'
+            assign seo_d = 'Sign in or join SNH Elite: earn 3–10% back in points on every order at Sports Nutrition Hub.'
+        endcase
+      endif
+      if seo_d == blank
+        assign seo_d = shop.description | strip_html | strip
+      endif
+    -%}
+    <title>{{ seo_t }}{% if current_page != 1 %} &ndash; {{ 'general.page' | t: page: current_page }}{% endif %}{% unless seo_t contains 'SNH' or seo_t contains shop.name %} | SNH{% endunless %}</title>
+
+    {%- if seo_d != blank -%}
+      <meta name="description" content="{{ seo_d | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 96 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180 }}">
+    {%- endif -%}
+
+    {%- comment -%}Few prefetch to increase performance on commonly used third-parties{%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+
+    {%- comment -%} Round 12: only the body font is preloaded (Inter 400, Shopify's latin subset); headings and the serif
+      italic arrive with font-display: swap, so they don't compete with the CSS and the hero image {%- endcomment -%}
+
+    {%- unless settings.text_font.system? -%}
+      <link rel="preload" href="{{ settings.text_font | font_url }}" as="font" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- render 'social-meta-tags' -%}
+    {%- render 'microdata-schema' -%}
+    {%- render 'css-variables' -%}
+    {%- render 'js-variables' -%}
+
+    <script>
+      if (!(HTMLScriptElement.supports && HTMLScriptElement.supports('importmap'))) {
+        const importMapPolyfill = document.createElement('script');
+        importMapPolyfill.async = true;
+        importMapPolyfill.src = "{{ 'es-module-shims.min.js' | asset_url }}";
+
+        document.head.appendChild(importMapPolyfill);
+      }
+    </script>
+
+    <script type="importmap">
+      {%- comment -%}On Safari 16.3 and lower, a polyfill is used to load importmap{%- endcomment -%}
+      {
+        "imports": {
+          "vendor": "{{ 'vendor.min.js' | asset_url }}",
+          "theme": "{{ 'theme.js' | asset_url }}",
+          "photoswipe": "{{ 'photoswipe.min.js' | asset_url }}"
+        }
+      }
+    </script>
+
+    <script type="module" src="{{ 'vendor.min.js' | asset_url }}"></script>
+    <script type="module" src="{{ 'theme.js' | asset_url }}"></script>
+
+    {%- comment -%}
+      Round 12 performance: Shopify's app ScriptTag loader (asyncLoad: Reputon, Hextom, Nosto, Tagembed, Klaviyo's
+      ScriptTag copy, …) waits for the shopper's first interaction, or 6s after load, instead of firing
+      on window load. content_for_header is output untouched: only a 'load' listener named asyncLoad is rerouted.
+      App embeds (Judge.me, Klaviyo onsite, Clarity, Appstle) are not affected.
+    {%- endcomment -%}
+    <script>
+      (function () {
+        function later(fn) {
+          var done = false, ev = ['pointerdown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+          function go() { if (done) return; done = true; fn(); }
+          ev.forEach(function (e) { addEventListener(e, go, { passive: true, once: true }); });
+          setTimeout(go, 6000);   // no interaction: 6s after load (idle callbacks fired too early, before the LCP)
+        }
+        var add = window.addEventListener;
+        window.addEventListener = function (type, fn, opts) {
+          if (type === 'load' && typeof fn === 'function' && fn.name === 'asyncLoad') return add.call(window, 'load', function () { later(fn); }, opts);
+          return add.call(window, type, fn, opts);
+        };
+      })();
+    </script>
+    {{ content_for_header }}
+
+    {%- comment -%} Post-launch speed: the homepage hero (LCP) starts downloading from the head, not after the mega menus {%- endcomment -%}
+    {%- if template.name == 'index' and settings.snh_hero_preload != blank -%}
+      {%- assign hp = settings.snh_hero_preload -%}
+      <link rel="preload" as="image" fetchpriority="high" media="(max-width: 767px)" imagesrcset="{{ hp | image_url: width: 800 }} 800w, {{ hp | image_url: width: 1200 }} 1200w" imagesizes="100vw">
+      <link rel="preload" as="image" fetchpriority="high" media="(min-width: 768px)" imagesrcset="{{ hp | image_url: width: 1200 }} 1200w, {{ hp | image_url: width: 1800 }} 1800w, {{ hp | image_url: width: 2800 }} 2800w" imagesizes="100vw">
+    {%- endif -%}
+    {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
+    {{- 'snh-design-system.css' | asset_url | stylesheet_tag: preload: true -}}
+    {{- 'snh-v2.css' | asset_url | stylesheet_tag: preload: true -}}
+    <script src="{{ 'snh-design-system.js' | asset_url }}" defer></script>
+    <style>:root { --snh-logo: url("{{ 'snh-logo-mark.png' | asset_url }}"); }</style>
+    <script>window.SNH = window.SNH || {}; SNH.koko = {{ 'snh-koko.png' | asset_url | json }}; SNH.kokoImg = function (h) { h = Math.min(h || 14, 20); return '<img class="snh-koko" src="' + SNH.koko + '" alt="Koko" width="' + Math.round(h * 215 / 98) + '" height="' + h + '" style="height:' + h + 'px;max-height:' + h + 'px;width:auto" loading="lazy" decoding="async">'; };</script>
+    {%- render 'snh-prefs' -%}
+    {%- capture snh_cl -%}{% render 'snh-clean-list' %}{%- endcapture -%}
+    <script>window.SNHClean={b:{{ 'pc-x.webp' | asset_url | split: 'pc-x.webp' | first | json }},l:{{ snh_cl | strip | json }}};</script>
+    <script src="{{ 'snh-v2.js' | asset_url }}" defer></script>
+    <script src="{{ 'snh-quick.js' | asset_url }}" defer></script>
+    {%- if template contains 'customers' -%}<script src="{{ 'snh-phone.js' | asset_url }}" defer></script>{%- endif -%}
+  </head>
+
+  <body class="{% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">
+    {%- render 'shadow-dom-templates' -%}
+
+    <a href="#main" class="skip-to-content sr-only">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {%- if request.page_type != 'password' -%}
+      {%- sections 'header-group' -%}
+      {%- sections 'overlay-group' -%}
+      {%- sections 'campaigns-group' -%}
+
+      {%- if settings.cart_type == 'popover' -%}
+        <cart-notification-drawer open-from="bottom" class="quick-buy-drawer drawer"></cart-notification-drawer>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%}
+      Round 10: Impact's account banner (grey "Orders · Addresses · Logout" strip) is no longer rendered above the
+      customer pages; the SNH Elite app shell has its own navigation. sections/account-banner.liquid stays in the repo.
+    {%- endcomment -%}
+
+    <main role="main" id="main" class="anchor">
+      {{ content_for_layout }}
+
+      {%- comment -%}
+      IMPLEMENTATION NOTE: due to the very complex logic of margin/padding collapsing in Impact, the footer group is
+      added into the main element to ensure that dynamic sections added into the footer group are properly laid out.
+      {%- endcomment -%}
+      {%- if request.page_type != 'password' -%}
+        {%- sections 'footer-group' -%}
+      {%- endif -%}
+    </main>
+  {% render 'koko-checkout-modal' %}
+    {%- comment -%} 14 Nov: Saturday SiS deal chip + wheel (assets/snh-satdeal.*), Saturdays only (Asia/Colombo), loaded after
+      the page is idle; never on cart / checkout / account. Code = SIS15-DDMON (docs/golive/SATURDAY-CODES.md). {%- endcomment -%}
+    <script>(function(){try{if(/^\/(cart|checkout|account)/.test(location.pathname))return;var p={};new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Colombo',weekday:'short',day:'2-digit',month:'short',year:'numeric'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});if(p.weekday!=='Sat')return;window.SNHSat={code:'SIS15-'+p.day+String(p.month).slice(0,3).toUpperCase(),day:p.year+p.month+p.day,sis:{{ collections['sis'].url | default: '/collections/sis' | json }}};var go=function(){var l=document.createElement('link');l.rel='stylesheet';l.href={{ 'snh-satdeal.css' | asset_url | json }};document.head.appendChild(l);var s=document.createElement('script');s.src={{ 'snh-satdeal.js' | asset_url | json }};s.async=true;document.body.appendChild(s)};var idle=function(){'requestIdleCallback' in window?requestIdleCallback(go,{timeout:5000}):setTimeout(go,2000)};document.readyState==='complete'?setTimeout(idle,1200):addEventListener('load',function(){setTimeout(idle,1200)})}catch(e){}})();</script>
+  </body>
+</html>
