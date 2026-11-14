@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// IN-STORE ONLY since 14 Nov 2026: DO NOT RUN. The Saturday SiS deal must never apply online. Use scripts/create-sunday-codes.mjs.
 // Create the next Saturday SiS codes: SIS15-DDMON, 15% off the "SCIENCE IN SPORT | SiS" collection, valid Saturday
 // 00:00–23:59 Sri Lanka time (UTC+5:30, no DST), all customers, no minimum, combines with nothing, unlimited uses.
 // Starts after the latest existing SIS15- code (or this Saturday if none) and makes N codes (default 12).
@@ -9,6 +10,7 @@
 //   node scripts/create-saturday-codes.mjs [N]            # create N codes
 // Then add the new codes to docs/golive/SATURDAY-CODES.md. The token is never printed.
 
+console.error('Saturday SiS deal is in-store only. This script is disabled; use scripts/create-sunday-codes.mjs.'); process.exit(1);
 const API = '2026-10';
 const COLLECTION = 'gid://shopify/Collection/453152768254'; // SCIENCE IN SPORT | SiS (handle: sis)
 const DRY = process.argv.includes('--dry-run');
