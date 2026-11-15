@@ -16,7 +16,7 @@ Writes are in `WRITE-LOG.md` (section "14 Nov 2026 polish round"); backups in `b
 - **Tested with a day override (since removed):**
   - Sunday: chip, wheel, label, focus trap, Esc, no chip on /cart, second open goes straight to the code.
   - Saturday, Monday and today: nothing shows and nothing loads.
-- **Not yet tested: the discount line in the cart.** The first code only becomes active at 00:00 Sunday. A follow-up run is scheduled for just after that to do spin → apply → discount line, 3 times at 375 and 1440.
+- **Real Sunday test (15 Nov, 08:40 Sri Lanka time, no override):** spin → apply → cart showed SUN15-15NOV with Rs 599.85 (15%) off the SiS Hydro line in all 6 runs (3 at 375, 3 at 1440). The chip stayed clear of the add-to-cart bar, was absent on /cart, and reopening went straight to the code. The cart was cleared after each run.
 - **Phone label:** it is 12px, 1px under the 13px floor, so it fits beside the quick-add button.
 
 ## Phase 2: UI polish
