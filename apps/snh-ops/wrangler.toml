@@ -1,0 +1,17 @@
+name = "snh-ops"
+main = "src/worker.mjs"
+compatibility_date = "2026-10-01"
+
+# 02:00 Asia/Colombo = 20:30 UTC starts the nightly sync; the 2-minute tick only advances a sync that is in progress.
+[triggers]
+crons = ["30 20 * * *", "*/2 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "snh-ops"
+database_id = "SET-AT-DEPLOY"        # from: wrangler d1 create snh-ops
+
+[vars]
+API_VERSION = "2026-10"
+# secrets (wrangler secret put …): SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY
+# Per-store settings live in D1 (table shops, column config), not here: see config/example-store.json.

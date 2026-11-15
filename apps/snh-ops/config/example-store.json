@@ -1,0 +1,20 @@
+{
+  "_comment": "Per-store settings, saved in D1: shops.config. Nothing here is a secret.",
+  "currency": "LKR",
+  "tzOffsetMinutes": 330,
+  "tiers": [
+    { "name": "Bronze", "minSpend": 0, "ratePct": 3 },
+    { "name": "Silver", "minSpend": 198000, "ratePct": 7 },
+    { "name": "Gold", "minSpend": 300000, "ratePct": 10 }
+  ],
+  "pointValue": 1,
+  "welcomePoints": 500,
+  "rewardPoints": 2500,
+  "rewardCodePrefix": "ELITE-",
+  "awardedTag": "points_awarded",
+  "bundleProductType": "Bundle",
+  "promoCodePrefix": "SUN15-",
+  "pickupHoldHours": 48,
+  "monthsOfOrders": 12,
+  "services": { "clickCollectUrl": "", "smsUrl": "" }
+}
