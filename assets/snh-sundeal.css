@@ -1,10 +1,11 @@
 /* 14 Nov 2026 — Sunday SiS deal chip + wheel sheet (assets/snh-sundeal.js). Fixed-position only: no layout shift. */
-.ssd-chip { position: fixed; left: 12px; bottom: 16px; z-index: 60; display: flex; align-items: center; border-radius: 999px; background: #0E0E0E; color: #fff;
-  box-shadow: 0 8px 24px -8px rgba(14, 14, 14, .45); opacity: 0; transform: translateY(8px); transition: opacity .25s ease, transform .25s ease, bottom .2s ease; }
+.ssd-chip { position: fixed; left: 12px; bottom: 16px; z-index: 60; display: flex; align-items: center; border-radius: 999px; background: #B4410F; color: #fff;
+  box-shadow: 0 0 0 2px #fff, 0 10px 26px -6px rgba(14, 14, 14, .55); opacity: 0; transform: translateY(8px); transition: opacity .25s ease, transform .25s ease, bottom .2s ease; }
 .ssd-chip.is-in { opacity: 1; transform: none; }
-.ssd-chip__go { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 6px 0 14px; border: 0; background: none; color: inherit; font: 600 13.5px/1 var(--sans, system-ui); cursor: pointer; }
-.ssd-chip__x { display: grid; place-items: center; width: 32px; height: 40px; margin-right: 2px; border: 0; background: none; color: rgba(255, 255, 255, .8); cursor: pointer; border-radius: 999px; }
-.ssd-chip button:focus-visible, .ssd button:focus-visible, .ssd a:focus-visible { outline: 2px solid #E0521C; outline-offset: 2px; }
+.ssd-chip__go { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 6px 0 16px; border: 0; background: none; color: inherit; font: 700 14.5px/1 var(--sans, system-ui); cursor: pointer; }
+.ssd-chip__x { display: grid; place-items: center; width: 36px; height: 44px; margin-right: 2px; border: 0; background: none; color: #fff; cursor: pointer; border-radius: 999px; }
+.ssd-chip button:focus-visible { outline: 2px solid #0E0E0E; outline-offset: 2px; }
+.ssd button:focus-visible, .ssd a:focus-visible { outline: 2px solid #E0521C; outline-offset: 2px; }
 html.ssd-lock { overflow: hidden; }
 .ssd { position: fixed; inset: 0; z-index: 1001; display: none; }
 .ssd.is-open { display: block; }
