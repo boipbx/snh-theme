@@ -21,7 +21,7 @@
         "default_delivery": {
           "type": "campaign",
           "settings": {
-            "name": "Default: free delivery (announcement)",
+            "name": "Default: free delivery (announcement bar)",
             "type": "announcement",
             "tag": "Free delivery",
             "message": "On orders over Rs 17,000 · same-day in Colombo",
