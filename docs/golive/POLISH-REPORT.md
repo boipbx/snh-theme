@@ -71,3 +71,14 @@ Also: the "Amose Bundle" app throws a JavaScript error on every product page (an
 ## Skipped as outside scope
 - Fixing the Amose app error, the WhatsApp number, the Klaviyo time zone and the referral link: all admin settings.
 - Any change to prices, stock, customers, points, orders, shipping or payments.
+
+## 15 Nov, 21:15 Sri Lanka time: "Sunday deal not showing" fix
+- **What the checks found:** the deal was on the live theme and the code was ACTIVE; my test browser showed the chip and labels. Saturday's kill switch and the popup gate were not involved (the chip never used the gate).
+- **Likely causes on real phones, all fixed in 202c9d8:**
+  - The chip was black, so it was close to invisible on the dark home hero. It is now brand orange with a white ring.
+  - The chip waited for the full page load (every image and video). It now loads as soon as the page is interactive.
+  - The Sunday check used a browser time-zone feature that fails silently in some in-app browsers, which hides the chip and the labels. It now uses plain UTC+5:30 arithmetic.
+- **Not reproduced:** I couldn't reproduce a real phone showing nothing, so the cause is a best judgement, not proven.
+- **Live checks, no override, 375 and 1440:** chip on home, SiS collection and SiS product within 2–4 seconds; labels on SiS cards only (0 on other brands); spin → apply gave 15% (Rs 599.85) off the SiS item and nothing off the Applied Nutrition item, 2 runs at each size. Screenshots: `qa-2026-11-14/sunday-live/`.
+- **Auto-hide:** the same arithmetic gives "off" at 00:00 Monday and SUN15-22NOV at 00:00 next Sunday (checked at the boundaries).
+- **Home Elite banner removed** (5eb6bba, re-synced in 26c2484): it was the "default_elite" campaign block, not a home-template section. Hero to quiz band gap is 0px at 375 and 1440.
