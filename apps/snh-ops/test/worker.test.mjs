@@ -11,30 +11,35 @@ const stmt = (sql, a = []) => ({ bind: (...x) => stmt(sql, x), run: async () => 
 const env = { DB: { prepare: (s) => stmt(s), batch: async (l) => { for (const s of l) s._run(); return []; } }, SHOPIFY_CLIENT_ID: 'app', SHOPIFY_CLIENT_SECRET: 'sec' };
 const shop = 'demo-store.myshopify.com';
 db.prepare('INSERT INTO shops (shop, config) VALUES (?, ?)').run(shop, fs.readFileSync(new URL('../config/example-store.json', import.meta.url), 'utf8'));
-db.prepare("INSERT INTO customers (shop,id,name,tier,points,annual_spend,created_at) VALUES (?,?,?,?,?,?,?)").run(shop, 'c1', 'Asha, "Ace"', 'Gold', 5000, 400000, '2026-01-01T00:00:00Z');
-db.prepare("INSERT INTO customers (shop,id,name,tier,points,annual_spend,created_at) VALUES (?,?,?,?,?,?,?)").run(shop, 'c2', '=cmd', 'Bronze', 10, 100, '2026-01-01T00:00:00Z');
+db.prepare("INSERT INTO customers (shop,id,name,tier,points,annual_spend,created_at,state) VALUES (?,?,?,?,?,?,?,'ENABLED')").run(shop, 'c1', 'Asha, "Ace"', 'Gold', 5000, 400000, '2026-01-01T00:00:00Z');
+db.prepare("INSERT INTO customers (shop,id,name,tier,points,annual_spend,created_at,state) VALUES (?,?,?,?,?,?,?,'DISABLED')").run(shop, 'c2', '=cmd', 'Bronze', 10, 100, '2026-01-01T00:00:00Z');
 db.prepare("INSERT INTO customers (shop,id,name,tier,points,annual_spend,created_at) VALUES (?,?,?,?,?,?,?)").run('other-store.myshopify.com', 'x1', 'Other shop member', 'Gold', 9, 1, '2026-01-01T00:00:00Z');
 const tok = async (s = shop, secret = 'sec') => { const n = Math.floor(Date.now() / 1000); return sign({ iss: `https://${s}/admin`, dest: `https://${s}`, aud: 'app', sub: '1', exp: n + 60, nbf: n - 5 }, secret); };
 const call = async (path, o = {}) => worker.fetch(new Request('https://x.test' + path, { method: o.method || 'GET', headers: o.token === false ? {} : { Authorization: 'Bearer ' + (o.token || await tok()) } }), env, { waitUntil() {} });
 
 test('no token / bad token → 401, and no data in the body', async () => {
-  for (const o of [{ token: false }, { token: await tok(shop, 'wrong') }, { token: 'abc' }]) { const r = await call('/api/overview', o); assert.equal(r.status, 401); assert.deepEqual(await r.json(), { error: 'unauthorized' }); }
+  for (const o of [{ token: false }, { token: await tok(shop, 'wrong') }, { token: 'abc' }]) { const r = await call('/api/data', o); assert.equal(r.status, 401); assert.deepEqual(await r.json(), { error: 'unauthorized' }); }
 });
-test('a store that is not registered gets 403', async () => { const r = await call('/api/overview', { token: await tok('stranger.myshopify.com') }); assert.equal(r.status, 403); });
+test('a store that is not registered gets 403', async () => { const r = await call('/api/data', { token: await tok('stranger.myshopify.com') }); assert.equal(r.status, 403); });
 test('status returns a plain object for counts (stored as text or as an object)', async () => {
   const r = await call('/api/status'); assert.equal(r.status, 200); const j = await r.json(); assert.deepEqual(j.sync.counts, {}); assert.equal(j.sync.running, false);
   db.prepare("INSERT INTO sync_state (shop, phase, counts) VALUES (?, 'idle', ?)").run(shop, '{"customers":2}'); assert.deepEqual((await (await call('/api/status')).json()).sync.counts, { customers: 2 });
 });
-test('pages answer after a snapshot; members are scoped to the caller\'s shop', async () => {
-  await snapshot(env, shop, Date.parse('2026-11-15T00:00:00Z'));
-  const o = await (await call('/api/overview')).json(); assert.equal(o.data.members, 2); assert.equal(o.data.tiers.tiers.Gold, 1);
-  for (const p of ['loyalty', 'bundles', 'promotions']) assert.equal((await call('/api/' + p)).status, 200);
-  const m = await (await call('/api/members?q=')).json(); assert.equal(m.total, 2); assert.ok(!JSON.stringify(m).includes('Other shop'));
-  assert.equal((await (await call('/api/members?q=asha')).json()).total, 1);
+test('data answers before any snapshot (worked out from the cache), and after one', async () => {
+  const j = await (await call('/api/data')).json(); assert.equal(j.interim, true); assert.equal(j.data.totals.members, 1); assert.equal(j.data.totals.records, 2); assert.equal(j.data.totals.tiersMembers.Gold, 1);
+  await snapshot(env, shop, Date.parse('2026-11-15T00:00:00Z')); const k = await (await call('/api/data')).json(); assert.equal(k.interim, false); assert.equal(k.data.version, 2); assert.equal(k.writes.budget, 80000);
 });
-test('CSV export: quoted, and spreadsheet formulas are neutralised', async () => {
-  const r = await call('/api/members.csv'); assert.match(r.headers.get('content-type'), /text\/csv/); const t = await r.text();
-  assert.match(t, /"Asha, ""Ace""",Gold,5000/); assert.match(t, /'=cmd,Bronze/); assert.ok(!t.includes('Other shop'));
+test('members: accounts by default, all records on request, scoped to the caller\'s shop', async () => {
+  const m = await (await call('/api/members')).json(); assert.equal(m.total, 1); assert.equal(m.scope, 'members'); assert.equal(m.rows[0].name, 'Asha, "Ace"');
+  const all = await (await call('/api/members?scope=records&all=1')).json(); assert.equal(all.total, 2); assert.ok(!JSON.stringify(all).includes('Other shop'));
+  assert.equal((await (await call('/api/members?scope=records&q=asha')).json()).total, 1); assert.equal((await (await call('/api/members?scope=records&tier=bronze')).json()).total, 1);
+  assert.equal((await (await call("/api/members?sort=points;DROP TABLE customers")).json()).total, 1);            // unknown sort falls back
+});
+test('full resync is for admins when the store lists admins; refresh needs POST', async () => {
+  assert.equal((await call('/api/refresh')).status, 404);
+  db.prepare('UPDATE shops SET config = json_set(config, \'$.admins\', json_array(\'42\')) WHERE shop = ?').run(shop);
+  const r = await call('/api/resync', { method: 'POST' }); assert.equal(r.status, 403); assert.match((await r.json()).error, /admin/);
+  db.prepare('UPDATE shops SET config = json_remove(config, \'$.admins\') WHERE shop = ?').run(shop);
 });
 test('the page shell holds no store data and sets frame-ancestors for the shop', async () => {
   const r = await call('/?shop=' + shop, { token: false }); assert.match(r.headers.get('content-security-policy'), /frame-ancestors https:\/\/demo-store\.myshopify\.com https:\/\/admin\.shopify\.com/); assert.ok(!(await r.text()).includes('Asha'));

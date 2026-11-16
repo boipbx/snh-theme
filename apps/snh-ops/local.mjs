@@ -1,5 +1,5 @@
 // Local run without Cloudflare: the same Worker code on Node, with SQLite standing in for D1.
-//   node --experimental-sqlite local.mjs sync     → run a full sync against the store in SHOPIFY_STORE (read-only)
+//   node --experimental-sqlite local.mjs sync [full] → run an incremental (or full) sync against the store in SHOPIFY_STORE (read-only)
 //   node --experimental-sqlite local.mjs serve    → http://localhost:8799 with a signed dev session token
 // Env: SHOPIFY_STORE, SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY (optional). Data file: .local/ops.sqlite (git-ignored).
 import fs from 'node:fs'; import http from 'node:http'; import { DatabaseSync } from 'node:sqlite';
@@ -13,9 +13,9 @@ const cfg = fs.readFileSync(new URL(process.env.STORE_CONFIG || './config/exampl
 db.prepare('INSERT INTO shops (shop, config) VALUES (?, ?) ON CONFLICT(shop) DO UPDATE SET config=excluded.config').run(shop, cfg);
 const mode = process.argv[2] || 'serve';
 if (mode === 'sync') {
-  let s = await startSync(env, shop); console.log(s.phase, s.message);
+  let s = await startSync(env, shop, Date.now(), process.argv[3] === 'full' ? 'full' : 'incremental'); console.log(s.phase, s.kind, s.message);
   while (!['idle', 'error'].includes(s.phase)) { await new Promise((r) => setTimeout(r, s.phase.endsWith(':export') ? 5000 : 50)); const p = s.phase + s.message; s = await step(env, shop); if (s.phase + s.message !== p) console.log(s.phase, '|', s.message, '|', s.counts); }
-  console.log('finished:', s.phase, s.message, s.counts); process.exit(s.phase === 'idle' ? 0 : 1);
+  console.log('finished:', s.phase, s.message, s.counts, 'rows written:', s.rows); process.exit(s.phase === 'idle' ? 0 : 1);
 } else {
   const now = Math.floor(Date.now() / 1000);
   const token = await sign({ iss: `https://${shop}/admin`, dest: `https://${shop}`, aud: env.SHOPIFY_CLIENT_ID, sub: 'local', exp: now + 6 * 3600, nbf: now - 5 }, env.SHOPIFY_CLIENT_SECRET);

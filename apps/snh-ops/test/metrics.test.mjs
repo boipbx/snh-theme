@@ -6,12 +6,12 @@ import fs from 'node:fs';
 const cfg = M.withDefaults(JSON.parse(fs.readFileSync(new URL('../config/example-store.json', import.meta.url))));
 const NOW = Date.parse('2026-11-15T12:00:00Z'); const ago = (d) => new Date(NOW - d * M.DAY).toISOString();
 const C = [
-  { id: 'c1', name: 'A', tier: 'Gold', points: 37701, annual_spend: 372011, created_at: ago(400), last_reward_code: '' },
-  { id: 'c2', name: 'B', tier: 'Silver', points: 2500, annual_spend: 285000, created_at: ago(20), last_reward_code: '' },
-  { id: 'c3', name: 'C', tier: 'bronze', points: 500, annual_spend: 180000, created_at: ago(3), last_reward_code: '' },
-  { id: 'c4', name: 'D', tier: 'Bronze', points: 3000, annual_spend: 1000, created_at: ago(100), last_reward_code: 'ELITE-1' },
-  { id: 'c5', name: 'E', tier: '', points: null, annual_spend: null, created_at: ago(2) },
-  { id: 'c6', name: 'F', tier: '', points: 500, annual_spend: 0, created_at: ago(50) },
+  { id: 'c1', state: 'ENABLED', name: 'A', tier: 'Gold', points: 37701, annual_spend: 372011, created_at: ago(400), last_reward_code: '' },
+  { id: 'c2', state: 'ENABLED', name: 'B', tier: 'Silver', points: 2500, annual_spend: 285000, created_at: ago(20), last_reward_code: '' },
+  { id: 'c3', state: 'ENABLED', name: 'C', tier: 'bronze', points: 500, annual_spend: 180000, created_at: ago(3), last_reward_code: '' },
+  { id: 'c4', state: 'ENABLED', name: 'D', tier: 'Bronze', points: 3000, annual_spend: 1000, created_at: ago(100), last_reward_code: 'ELITE-1' },
+  { id: 'c5', state: 'DISABLED', name: 'E', tier: '', points: null, annual_spend: null, created_at: ago(2) },
+  { id: 'c6', state: 'ENABLED', name: 'F', tier: '', points: 500, annual_spend: 0, created_at: ago(50) },
 ];
 const O = [
   { id: 'o1', created_at: ago(1), customer_id: 'c1', total: 10000, subtotal: 9500, discount_total: 0, financial: 'PAID', codes: '', tags: 'points_awarded' },

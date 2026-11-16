@@ -18,9 +18,13 @@ export async function gql(env, shop, query, variables = {}) {
   throw new Error('Shopify API unavailable');
 }
 const MF = (alias, key) => `${alias}:metafield(namespace:"custom",key:"${key}"){value}`;
-export const CUSTOMERS_QUERY = `{customers{edges{node{id displayName tags createdAt numberOfOrders amountSpent{amount} lastOrder{createdAt}
+// since = ISO time: only records updated at or after it (incremental sync). No since = everything.
+const upd = (since) => (since ? `updated_at:>='${since}'` : '');
+export const customersQuery = (since) => `{customers${since ? `(query:"${upd(since)}")` : ''}{edges{node{id displayName tags state createdAt updatedAt numberOfOrders amountSpent{amount} lastOrder{createdAt}
+  defaultEmailAddress{marketingState}
   ${MF('pts', 'loyalty_points')} ${MF('tier', 'loyalty_tier')} ${MF('spend', 'annual_spend')} ${MF('code', 'last_reward_code')}}}}}`;
-export const ordersQuery = (sinceIso) => `{orders(query:"created_at:>=${sinceIso}"){edges{node{id name createdAt cancelledAt tags customer{id}
+export const CUSTOMERS_QUERY = customersQuery();
+export const ordersQuery = (sinceIso, updatedSince) => `{orders(query:"created_at:>=${sinceIso}${updatedSince ? ' AND ' + upd(updatedSince) : ''}"){edges{node{id name createdAt cancelledAt tags customer{id}
   currentTotalPriceSet{shopMoney{amount}} currentSubtotalPriceSet{shopMoney{amount}} currentTotalDiscountsSet{shopMoney{amount}}
   displayFinancialStatus displayFulfillmentStatus discountCodes fulfillments{displayStatus createdAt}
   lineItems{edges{node{id title quantity discountedTotalSet{shopMoney{amount}} product{id productType} lineItemGroup{id title quantity productId}}}}
@@ -39,12 +43,13 @@ const intOrNull = (v) => (v == null || v === '' || Number.isNaN(Number(v)) ? nul
 export function customerRow(n) {
   return { id: n.id, name: n.displayName || '', tags: (n.tags || []).join(','), points: intOrNull(n.pts && n.pts.value), tier: (n.tier && n.tier.value) || '',
     annual_spend: n.spend && n.spend.value !== '' && n.spend.value != null ? Number(n.spend.value) : null, last_reward_code: (n.code && n.code.value) || '',
+    state: n.state || '', updated_at: n.updatedAt || null, consent: (n.defaultEmailAddress && n.defaultEmailAddress.marketingState) || '',
     created_at: n.createdAt, orders_count: Number(n.numberOfOrders || 0), amount_spent: n.amountSpent ? Number(n.amountSpent.amount) : 0, last_order_at: n.lastOrder ? n.lastOrder.createdAt : null };
 }
 export function orderRow(n) {
   const f = n.fulfillments || []; const ready = f.filter((x) => x.displayStatus === 'READY_FOR_PICKUP' || x.displayStatus === 'PICKED_UP').map((x) => x.createdAt).sort()[0] || null;
   return { id: n.id, name: n.name, created_at: n.createdAt, cancelled: n.cancelledAt ? 1 : 0, customer_id: n.customer ? n.customer.id : null, total: money(n.currentTotalPriceSet), subtotal: money(n.currentSubtotalPriceSet),
-    discount_total: money(n.currentTotalDiscountsSet), financial: n.displayFinancialStatus, fulfillment: n.displayFulfillmentStatus, delivery: '', ready_at: ready,
+    discount_total: money(n.currentTotalDiscountsSet), financial: n.displayFinancialStatus, fulfillment: n.displayFulfillmentStatus, ready_at: ready,
     pickup_status: f.some((x) => x.displayStatus === 'PICKED_UP') ? 'PICKED_UP' : ready ? 'READY_FOR_PICKUP' : '', codes: (n.discountCodes || []).join(','), tags: (n.tags || []).join(',') };
 }
 export function lineRow(n) {
@@ -55,7 +60,7 @@ export function lineRow(n) {
 // every product of the bundle type (any status), so grouped component lines can be recognised as a bundle sale
 export async function bundleProducts(env, shop, type) {
   const out = []; let c = null;
-  do { const d = await gql(env, shop, `query($c:String,$q:String!){products(first:250,after:$c,query:$q){pageInfo{hasNextPage endCursor} nodes{id title productType}}}`, { c, q: `product_type:"${String(type).replace(/"/g, '')}"` });
+  do { const d = await gql(env, shop, `query($c:String,$q:String!){products(first:250,after:$c,query:$q){pageInfo{hasNextPage endCursor} nodes{id title productType tags createdAt status}}}`, { c, q: `product_type:"${String(type).replace(/"/g, '')}"` });
     out.push(...d.products.nodes.filter((p) => String(p.productType).toLowerCase() === String(type).toLowerCase())); c = d.products.pageInfo.hasNextPage ? d.products.pageInfo.endCursor : null; } while (c);
   return out;
 }

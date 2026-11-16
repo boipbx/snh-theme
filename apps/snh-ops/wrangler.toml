@@ -14,4 +14,6 @@ database_id = "5ce3bc23-f18a-4621-b97f-d24f86418db6"
 [vars]
 API_VERSION = "2026-10"
 # secrets (wrangler secret put …): SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY
-# Per-store settings live in D1 (table shops, column config), not here: see config/example-store.json.
+# Per-store settings live in D1 (table shops, column config): see config/example-store.json.
+# SHOP_CONFIG (optional) = deploy-time defaults per shop, as JSON keyed by shop domain; the D1 config wins. Nothing secret.
+SHOP_CONFIG = """{"sports-nutrition-hub.myshopify.com":{"newBundleTag":"bundles-nov26","klaviyoFlowPrefix":"SNH ·","brand":{"name":"SNH","program":"Elite","filePrefix":"snh","logoUrl":"https://www.sportsnutritionhub.lk/cdn/shop/t/36/assets/snh-logo-mark.png?width=320"}}}"""

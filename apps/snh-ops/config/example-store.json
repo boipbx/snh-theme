@@ -3,9 +3,21 @@
   "currency": "LKR",
   "tzOffsetMinutes": 330,
   "tiers": [
-    { "name": "Bronze", "minSpend": 0, "ratePct": 3 },
-    { "name": "Silver", "minSpend": 198000, "ratePct": 7 },
-    { "name": "Gold", "minSpend": 300000, "ratePct": 10 }
+    {
+      "name": "Bronze",
+      "minSpend": 0,
+      "ratePct": 3
+    },
+    {
+      "name": "Silver",
+      "minSpend": 198000,
+      "ratePct": 7
+    },
+    {
+      "name": "Gold",
+      "minSpend": 300000,
+      "ratePct": 10
+    }
   ],
   "pointValue": 1,
   "welcomePoints": 500,
@@ -16,5 +28,18 @@
   "promoCodePrefix": "SUN15-",
   "pickupHoldHours": 48,
   "monthsOfOrders": 12,
-  "services": { "clickCollectUrl": "", "smsUrl": "" }
+  "services": {
+    "clickCollectUrl": "",
+    "smsUrl": ""
+  },
+  "newBundleTag": "bundles-nov26",
+  "dailyWriteBudget": 80000,
+  "klaviyoFlowPrefix": "SNH ·",
+  "admins": [],
+  "brand": {
+    "name": "SNH",
+    "program": "Elite",
+    "filePrefix": "snh",
+    "logoUrl": "https://www.sportsnutritionhub.lk/cdn/shop/t/36/assets/snh-logo-mark.png?width=320"
+  }
 }

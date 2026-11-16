@@ -48,3 +48,42 @@ Other figures at the time of the test: Silver 78, Bronze 20,055; 18,274,568 poin
 ## Not done
 - **Service logs:** the Operations page checks a health URL for click & collect and SMS. Neither is deployed, so both show "not deployed".
 - **React Polaris:** not used; web components keep it to one small file.
+
+## 16 Nov 2026: v2 (definitions, redesign, exports, write budget)
+
+Deployed 16 Nov 04:41 UTC (10:11 Colombo), version 5bc8707f. Tests: 36 pass (`node --experimental-sqlite --test test/*.test.mjs`).
+
+**Decisions (made without asking, as instructed)**
+- **Member = customer with an ENABLED account.** Everything else is a "customer record". Points are shown for members and for all records. Anything worked out from rules, not read from Shopify, carries an "Estimate" label (points issued, member growth).
+- **Sync writes only what changed.** Each row from Shopify is compared with the stored row; equal rows are skipped. This does the job of a stored hash without an extra column or an extra write.
+- **Incremental by default.** "Refresh now" and the nightly run ask Shopify only for customers and orders updated since the last successful sync (cursor = that sync's start time, minus 5 minutes of overlap). "Full resync" re-reads everything and still writes only changed rows.
+- **Write budget 80,000 rows a day** (`dailyWriteBudget` in the store config; 0 turns it off on a paid plan). A sync that would pass it is skipped or stopped before the batch is written, with a message. Nothing is half-written. No retry loop: one catch-up try in the first 10 minutes after 00:00 UTC, only for a store that has never finished a v2 sync.
+- **All three secondary indexes dropped** (`customers_tier`, `orders_created`, `lines_order`): no query used them and each cost one extra row write per row.
+- **"Admin only" for Full resync:** the session token carries the staff user ID but not their role. If the store config lists `admins` (user IDs), only they see and can run it. The list is empty for now, so every staff member who can open the app can run it, after a confirmation. Your user ID is shown at the bottom of the Operations tab; send it to lock this down.
+- **Promotions tab removed.** SUN15 usage per Sunday is the "Campaigns" card on Overview.
+- **Klaviyo:** numbers are saved during each sync (D1 only at page load). Default view = live flows whose name starts "SNH ·"; a toggle shows drafts and old flows. Revenue per flow is included (Klaviyo's own attribution of Shopify "Placed Order").
+- **Charts:** Chart.js 4.4.1 from cdnjs. Excel export: SheetJS 0.18.5 from cdnjs, loaded on first use. Series colours were checked for colour-blind separation in light and dark.
+- **Store-specific values** (brand name, logo URL, "New" tag, flow prefix) are config, not code: `SHOP_CONFIG` in `wrangler.toml` (deploy-time defaults) and `shops.config` in D1 (wins).
+- **Screenshots carry no customer names** (replaced with "Customer 1…" before saving).
+
+**State at deploy**
+- D1 had already passed the free daily write limit (three full syncs earlier today), so nothing could be written, not even the schema change. The new version runs on the existing cache: all revenue, bundle and record numbers work; member numbers show "–" with a notice until account states are synced.
+- The first v2 sync starts by itself in the first minutes after 00:00 UTC on 17 Nov (05:30 Colombo). Expected writes for that first load: about 20,300 rows (the account state of every customer). Measured on a local copy of the same data.
+- **Typical incremental sync: 8 rows written when nothing changed** (measured). On a normal day expect a few hundred (changed customers and orders, about 3 rows per new order).
+
+**Cross-checks against Shopify (16 Nov, on the same code with a local sync)**
+
+| Number | Dashboard | Shopify |
+|---|---|---|
+| Members (ENABLED accounts) | 1,578 | 1,578 |
+| Gold, members | 5 | 5 |
+| Gold, all records | 22 | 22 |
+| Customer records | 20,160 | 20,160 |
+| Bundle revenue, 18 Oct to 16 Nov (30 days) | Rs 1,035,320, 78 orders, 80 bundles | Rs 1,035,320, 78 orders, 80 bundles |
+
+The earlier figure of Rs 1,087,818 covered 31 calendar days (it included 17 Oct, Rs 52,498, 2 orders).
+
+**Screenshots** (`docs/golive/ops-app/v2/`)
+- Full data, every tab, 1440 and 390, light and dark: `overview-1440.png`, `loyalty-1440.png`, `bundles-1440.png`, `operations-1440.png`, the `-390` versions and the `-dark` versions.
+- Production right after deploy (member numbers pending the first sync): `prod-interim/`.
+- Time to data on screen: 0.3 to 0.5 s locally; 0.5 to 2.1 s from production through a proxy. The skeleton paints at once.
