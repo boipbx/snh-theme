@@ -26,6 +26,8 @@
 
 {%- capture search_form -%}
   <form class="main-search-form" action="{{ routes.search_url }}" method="get" role="search">
+    {%- comment -%} 16 Nov: sold-out products stay in the results, listed last {%- endcomment -%}
+    <input type="hidden" name="options[unavailable_products]" value="last">
     <input type="hidden" name="type" value="{{ stype }}">
 
     <div class="v-stack gap-6 sm:gap-12">
