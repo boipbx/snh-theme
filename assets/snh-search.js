@@ -17,11 +17,15 @@
     raw: ['raw nutrition', 'raw'], ryse: ['ryse'], pvl: ['pvl'], usn: ['usn'], mp: ['myprotein', 'my protein'], gn: ['go nutrition'], hs: ['healthspan'],
     tm: ['trace minerals'], vb: ['vitabiotics'], ss: ['seven seas'], dym: ['dymatize'], scitec: ['scitec nutrition', 'scitec'] };
 
+  /* customers say "tablets" for capsules and the other way round: any of these words stands for all of them */
+  var FORMS = ['tablets', 'tablet', 'tabs', 'capsules', 'capsule', 'caps', 'softgels', 'softgel', 'pills'];
+
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function normalise(v) { return String(v || '').toLowerCase().replace(/[^a-z0-9\s]+/g, ' ').replace(/\s+/g, ' ').trim(); }
   function wordsOf(v) { return normalise(v).split(' ').filter(Boolean); }
   function rs(n) { return 'Rs ' + Math.round(Number(n) || 0).toLocaleString('en-US'); }
   function sized(u, w) { u = String(u || ''); return u ? u + (u.indexOf('?') > -1 ? '&' : '?') + 'width=' + w : ''; }
+  function tidy(t, v) { t = String(t || ''); v = String(v || ''); return v && t.toLowerCase().indexOf(v.toLowerCase() + ' ') === 0 && t.length > v.length + 3 ? t.slice(v.length + 1) : t; }
   function uniq(a) { var s = {}, o = []; a.forEach(function (x) { if (!s[x]) { s[x] = 1; o.push(x); } }); return o; }
 
   /* "sis go electrolyte" → "science in sport go electrolyte", so Shopify itself can find products whose title never has the shorthand */
@@ -122,14 +126,16 @@
 
   function render(el, query, rawProducts, R, cfg, isExcl) {
     var q = normalise(query), rawTokens = q.split(' ').filter(Boolean);
-    var groups = rawTokens.map(function (t) { return [t].concat((BRAND_ALIASES[t] || []).map(normalise)); });
+    var groups = rawTokens.map(function (t) { return FORMS.indexOf(t) > -1 ? [t].concat(FORMS) : [t].concat((BRAND_ALIASES[t] || []).map(normalise)); });
+    /* a group = the typed word or what it stands for; a two-word brand name counts only when both words are there */
+    var groupScore = function (g, words) { var best = 0; g.forEach(function (variant) { var parts = variant.split(' ').filter(Boolean), low = 100; parts.forEach(function (part) { low = Math.min(low, tokenScore(part, words)); }); if (parts.length) best = Math.max(best, low); }); return best; };
     function scoreProduct(p) {
       var titleWords = wordsOf(p.title), brandWords = wordsOf(p.vendor).concat(wordsOf(p.type || p.product_type)).concat(wordsOf(String(p.handle || '').replace(/-/g, ' ')));
-      var title = titleWords.join(' '), score = 0, matched = 0;
+      var title = titleWords.join(' '), score = 0, matched = 0, inTitle = 0;
       if (title === q) score += 1200; else if (title.indexOf(q) === 0) score += 700; else if (title.indexOf(q) > -1) score += 450;
       groups.forEach(function (g) {
-        var inT = 0, inB = 0;
-        g.forEach(function (variant) { variant.split(' ').filter(Boolean).forEach(function (part) { inT = Math.max(inT, tokenScore(part, titleWords)); inB = Math.max(inB, tokenScore(part, brandWords)); }); });
+        var inT = groupScore(g, titleWords), inB = groupScore(g, brandWords);
+        if (inT >= 82) inTitle++;
         if (Math.max(inT, inB)) { matched++; score += inT >= inB ? inT : Math.round(inB * 0.7); }
       });
       /* every word the customer typed is accounted for somewhere */
@@ -140,11 +146,12 @@
       var bm = bundleMeta(p); p.__bundle = bm; p.__hit = false;
       if (bm && rawTokens.length) {
         var bMatched = 0;
-        groups.forEach(function (g) { var best = 0; g.forEach(function (t) { t.split(' ').forEach(function (part) { best = Math.max(best, tokenScore(part, bm.words)); }); }); if (best >= 68) bMatched++; });
+        groups.forEach(function (g) { if (groupScore(g, bm.words) >= 68) bMatched++; });
         if (bMatched === rawTokens.length) { score = Math.max(score, 305) + bMatched * 35; p.__hit = true; }
       }
       /* exclusive brands break ties in their favour, never ahead of a better match */
       if (isExcl(p)) score += 45;
+      p.__tm = inTitle;
       return score;
     }
     /* Shopify may never return the right product: score our own catalogue too and merge what genuinely matches */
@@ -158,7 +165,9 @@
     var top = scored.length ? Math.max.apply(null, scored.map(function (e) { return e.s; })) : 0;
     var weak = rawTokens.length > 0 && (scored.length === 0 || top < 260) && !!catalogue;
     var real = scored.some(function (e) { return e.s >= 300; });
-    var list = (real ? scored.filter(function (e) { return e.s >= 120; }) : weak ? [] : scored)
+    /* nothing matches every word: show the closest ones (a typed word is in the title) instead of a blank, never unrelated products */
+    var close = !real && rawTokens.length > 1 ? scored.filter(function (e) { return e.p.__tm > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 8) : [];
+    var list = (real ? scored.filter(function (e) { return e.s >= 120; }) : close.length ? close : weak ? [] : scored)
       /* in stock first and sold out last; inside each, best match first */
       .sort(function (a, b) { if (a.ok !== b.ok) return a.ok ? -1 : 1; if (b.s !== a.s) return b.s - a.s; return a.i - b.i; });
     /* a bundle that contains what was searched is lifted to position 2 at most */
@@ -178,7 +187,7 @@
       else img = im ? '<img src="' + esc(sized(im, 240)) + '" alt="" width="64" height="64" loading="lazy" data-v2-lift>' : '<span class="mini__ph"></span>';
       var bm = p.__bundle, price = bm && bm.price ? bm.price : Number(p.price) || 0, save = bm && bm.compare > price ? bm.compare - price : 0;
       var h = '<li><a class="mini mini--s' + (e.ok ? '' : ' is-out') + '" href="' + esc(p.url) + '">' + img +
-        '<span class="mini__t">' + (p.vendor && !bm ? '<small class="mini__v">' + esc(p.vendor) + (isExcl(p) ? '<em class="mini__x">Exclusive to SNH</em>' : '') + '</small>' : bm ? '<small class="mini__v">Bundle</small>' : '') + esc(p.title) + '</span>' +
+        '<span class="mini__t">' + (p.vendor && !bm ? '<small class="mini__v">' + esc(p.vendor) + (isExcl(p) ? '<em class="mini__x">Exclusive to SNH</em>' : '') + '</small>' : bm ? '<small class="mini__v">Bundle</small>' : '') + esc(tidy(p.title, p.vendor)) + '</span>' +
         '<span class="mini__p">' + (price ? rs(price) : '') + (save ? '<s>' + rs(bm.compare) + '</s><em class="mini__save">Save ' + rs(save) + '</em>' : '') + (e.ok ? '' : '<em class="mini__out">Out of stock</em>') + '</span></a>';
       if (!e.ok && out.length === 1 && wa) h += '<div class="rstk rstk--row"><a class="rstk__btn" href="' + esc(waUrl('Hi SNH, I want updates on when this is restocked:\n\n' + line(p))) + '" target="_blank" rel="noopener">Update me when restocked ' + arrow + '</a>' + comm + '</div>';
       return h + '</li>';
@@ -187,7 +196,7 @@
     if (out.length > 1 && wa) html += '<li class="rstk rstk--all"><a class="rstk__btn" href="' + esc(waUrl('Hi SNH, I want updates on when these are restocked:\n\n' + out.map(function (e) { return line(e.p); }).join('\n\n'))) + '" target="_blank" rel="noopener">Update me on all ' + out.length + ' out-of-stock items ' + arrow + '</a>' + comm + '</li>';
     var pl = el.querySelector('[data-r="p"]'), heads = el.querySelectorAll('.srch__res .mz__h');
     pl.innerHTML = html || '<li class="srch__nil">No products match “' + esc(query) + '”. Try a brand, a goal or a supplement type.</li>';
-    if (heads[0]) heads[0].textContent = list.length ? list.length + (list.length === 1 ? ' result' : ' results') + ' for “' + query + '”' : 'Products';
+    if (heads[0]) heads[0].textContent = !list.length ? 'Products' : !real && close.length ? 'Closest matches for “' + query + '”' : list.length + (list.length === 1 ? ' result' : ' results') + ' for “' + query + '”';
     var bl = el.querySelector('[data-r="b"]'), bh = el.querySelector('[data-r-h="b"]'); if (bl) { bl.innerHTML = ''; bl.hidden = true; } if (bh) bh.hidden = true;   // bundles are ranked in the one list now
 
     /* second column: guides & articles, suggested searches, collections & pages */
