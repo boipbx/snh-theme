@@ -9,7 +9,7 @@ crons = ["30 20 * * *", "*/2 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "snh-ops"
-database_id = "SET-AT-DEPLOY"        # from: wrangler d1 create snh-ops
+database_id = "5ce3bc23-f18a-4621-b97f-d24f86418db6"
 
 [vars]
 API_VERSION = "2026-10"

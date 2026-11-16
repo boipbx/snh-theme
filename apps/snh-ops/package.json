@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test test/*.test.mjs",
+    "test": "node --experimental-sqlite --test test/*.test.mjs",
     "local": "node --experimental-sqlite local.mjs",
     "db:init": "wrangler d1 execute snh-ops --remote --file=schema.sql",
     "deploy": "wrangler deploy"

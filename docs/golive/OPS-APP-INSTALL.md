@@ -1,11 +1,16 @@
 # SNH Ops dashboard: deploy and install
 
-**Status (15 Nov 2026):** built and tested locally against the live store. **Not deployed:** `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` were not set in the build environment, so there is no Worker URL yet. Part A below deploys it (about 10 minutes); Part B is your clicks in the Dev Dashboard.
+**Status (16 Nov 2026): deployed and synced.** Part A is done. Only Part B (your clicks in the Dev Dashboard) is left.
+
+- **Worker URL:** https://snh-ops.raspy-wind-fe2d.workers.dev
+- **Health check:** https://snh-ops.raspy-wind-fe2d.workers.dev/health returns `ok`.
+- **First sync:** finished 16 Nov, 03:58 UTC: 20,158 customers, 17,100 orders, 30,388 order lines.
+- **Nightly sync:** 02:00 Sri Lanka time.
 
 Code: `apps/snh-ops/`. It reads from Shopify and Klaviyo and writes only to its own Cloudflare database.
 
-## Part A: deploy to Cloudflare
-Either add the two Cloudflare variables to the environment and ask me to "deploy snh-ops", or run this on any computer with Node 20+:
+## Part A: deploy to Cloudflare (done on 16 Nov; kept here for a redeploy)
+Run this on any computer with Node 20+:
 
 ```bash
 cd apps/snh-ops
@@ -59,13 +64,13 @@ It prints the **Worker URL**, like `https://snh-ops.<your-subdomain>.workers.dev
 
 ## Part B: your clicks in the Shopify Dev Dashboard
 1. Go to **dev.shopify.com → Apps → SNH Ops → Versions → Create a version** (or **Configuration**, depending on the layout).
-2. **App URL:** paste the Worker URL.
+2. **App URL:** `https://snh-ops.raspy-wind-fe2d.workers.dev`
 3. Tick **Embed app in Shopify admin**.
-4. **Redirect URLs:** paste the Worker URL followed by `/auth/callback`, e.g. `https://snh-ops.<your-subdomain>.workers.dev/auth/callback`. The app doesn't use a redirect today (it signs in with session tokens), but the field can't be empty.
+4. **Redirect URLs:** `https://snh-ops.raspy-wind-fe2d.workers.dev/auth/callback` The app doesn't use a redirect today (it signs in with session tokens), but the field can't be empty.
 5. Leave the scopes as they are. The dashboard needs only the read scopes the app already has.
 6. **Release** the new version.
 7. In Shopify admin, open **Apps → SNH Ops**. The dashboard loads inside admin.
-8. Press **Refresh now** once. The first load takes about 5–10 minutes (20,000 customers, 17,000 orders). After that it refreshes by itself every night at 02:00 Sri Lanka time.
+8. The data is already loaded. **Refresh now** reloads it on demand (about 5 minutes); otherwise it refreshes by itself every night at 02:00 Sri Lanka time.
 
 ## If something looks wrong
 - **"Open this app from Shopify admin":** the page was opened directly, not inside admin. That is expected; it shows no data outside admin.

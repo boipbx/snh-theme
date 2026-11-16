@@ -2,7 +2,7 @@
 
 ## Decisions
 - **Repo:** `apps/snh-ops/` in the theme repo. Shopify's theme sync ignores folders outside the theme structure (the repo already has `docs/`, `scripts/` and `prototype/`). Checked after the push: the live theme was unchanged.
-- **Not deployed:** the Cloudflare token and account ID were not in the environment. Everything else is done; deploy steps are in `OPS-APP-INSTALL.md`.
+- **Deployed 16 Nov:** https://snh-ops.raspy-wind-fe2d.workers.dev (D1 database `snh-ops`, three secrets set, crons on).
 - **UI:** one page, App Bridge for session tokens, Polaris web components for the shell, plain HTML tables and SVG charts inside. No build step, no dependencies.
 - **Auth:** every `/api/*` call must carry a Shopify session token. It is verified for signature, expiry, app (audience) and a `*.myshopify.com` shop. The only open URLs are the empty page shell and `/health`.
 - **Admin API token:** client-credentials grant per shop, as the other SNH Ops scripts use.
@@ -35,7 +35,16 @@ Admin itself isn't reachable from here, so each number was checked against a sep
 
 Other figures at the time of the test: Silver 78, Bronze 20,055; 18,274,568 points outstanding; 54 bundle products; 12-month bundle revenue Rs 2,128,151.
 
+## Deploy, 16 Nov 2026
+- **Cloudflare variables:** both were saved with angle brackets around the value (`<…>`). I stripped them at run time; fix them in the environment settings so the next session doesn't trip on it.
+- **Created:** D1 database `snh-ops` (tables + SNH settings), Worker `snh-ops`, secrets SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET and KLAVIYO_KEY. Click & collect and SMS were not deployed.
+- **Checks:** `/health` returns `ok`; `/api/*` without a session token returns 401; the page sets `frame-ancestors` for the shop and admin.shopify.com.
+- **Two bugs found on the first production sync, both fixed and now covered by tests (23 pass):**
+  - The status response mis-read its own counts and returned an error while loading.
+  - Bundle-product inserts bound more than D1's 100 values per statement.
+- **First sync:** 20,158 customers, 17,100 orders, 30,388 lines; Bronze 20,058, Silver 78, Gold 22; 30-day bundle revenue Rs 1,087,818 (80 orders, 82 bundles, 54 bundle products).
+- **Not yet seen inside Shopify admin:** that needs Part B of the install guide. The embedded page was tested locally and its API on production with a signed test token.
+
 ## Not done
-- **Deploy to Cloudflare** and the first production sync.
 - **Service logs:** the Operations page checks a health URL for click & collect and SMS. Neither is deployed, so both show "not deployed".
 - **React Polaris:** not used; web components keep it to one small file.

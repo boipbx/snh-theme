@@ -23,8 +23,9 @@ export async function startSync(env, shop, now = Date.now()) {
   const op = await startBulk(env, shop, CUSTOMERS_QUERY);
   return setState(env, shop, { phase: 'customers:export', op_id: op, url: null, offset: 0, started_at: new Date(now).toISOString(), finished_at: null, message: 'Exporting customers', counts: '{}', orders_since: since });
 }
-async function insertMany(env, table, cols, rows) {
-  if (!rows.length) return 0; const per = Math.max(1, Math.floor(95 / cols.length)); const stmts = [];
+export async function insertMany(env, table, cols, rows) {
+  if (!rows.length) return 0; const per = Math.max(1, Math.floor(99 / (cols.length + 1))); const stmts = [];
+  // D1 allows 100 bound values per statement; each row also binds the shop
   for (let i = 0; i < rows.length; i += per) { const part = rows.slice(i, i + per);
     stmts.push(env.DB.prepare(`INSERT OR REPLACE INTO ${table} (shop,${cols.join(',')}) VALUES ${part.map(() => '(' + Array(cols.length + 1).fill('?').join(',') + ')').join(',')}`).bind(...part.flatMap((r) => [r.shop, ...cols.map((c) => (r[c] === undefined ? null : r[c]))]))); }
   for (let i = 0; i < stmts.length; i += 50) await env.DB.batch(stmts.slice(i, i + 50));
@@ -49,7 +50,7 @@ async function readLines(url, offset) {
   return { lines, used, done };
 }
 export async function step(env, shop, now = Date.now()) {
-  const st = await getState(env, shop); const counts = JSON.parse(st.counts || '{}');
+  const st = await getState(env, shop); const counts = typeof st.counts === 'string' ? JSON.parse(st.counts || '{}') : (st.counts || {});
   try {
     if (st.phase === 'customers:export' || st.phase === 'orders:export') {
       const b = await bulkStatus(env, shop, st.op_id); const what = st.phase.split(':')[0];

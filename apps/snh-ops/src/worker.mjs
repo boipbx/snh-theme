@@ -11,7 +11,7 @@ import { page } from './ui.mjs';
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 const SHOP_RE = /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/;
 async function snap(env, shop, key) { const r = await env.DB.prepare('SELECT json, updated_at FROM snapshots WHERE shop=? AND key=?').bind(shop, key).first(); return r ? { data: JSON.parse(r.json), updated_at: r.updated_at } : { data: null, updated_at: null }; }
-const pubState = (s) => ({ phase: s.phase, message: s.message, started_at: s.started_at, finished_at: s.finished_at, counts: JSON.parse(s.counts || '{}'), running: !['idle', 'error'].includes(s.phase) });
+const pubState = (s) => ({ phase: s.phase, message: s.message, started_at: s.started_at, finished_at: s.finished_at, counts: typeof s.counts === 'string' ? JSON.parse(s.counts || '{}') : (s.counts || {}), running: !['idle', 'error'].includes(s.phase) });
 
 async function serviceHealth(url) {
   if (!url) return { status: 'not deployed' };
