@@ -127,6 +127,7 @@
   function render(el, query, rawProducts, R, cfg, isExcl) {
     var q = normalise(query), rawTokens = q.split(' ').filter(Boolean);
     var groups = rawTokens.map(function (t) { return FORMS.indexOf(t) > -1 ? [t].concat(FORMS) : [t].concat((BRAND_ALIASES[t] || []).map(normalise)); });
+    var hasForm = rawTokens.some(function (t) { return FORMS.indexOf(t) > -1; });
     /* a group = the typed word or what it stands for; a two-word brand name counts only when both words are there */
     var groupScore = function (g, words) { var best = 0; g.forEach(function (variant) { var parts = variant.split(' ').filter(Boolean), low = 100; parts.forEach(function (part) { low = Math.min(low, tokenScore(part, words)); }); if (parts.length) best = Math.max(best, low); }); return best; };
     function scoreProduct(p) {
@@ -144,7 +145,8 @@
       score -= Math.min(titleWords.length, 12) * 2;
       /* a bundle whose contents cover everything typed clears the relevance floor, but stays below a product whose own title matches */
       var bm = bundleMeta(p); p.__bundle = bm; p.__hit = false;
-      if (bm && rawTokens.length) {
+      /* not when a form was typed ("tablets", "capsules"): that customer wants one product, and every description mentions capsules */
+      if (bm && rawTokens.length && !hasForm) {
         var bMatched = 0;
         groups.forEach(function (g) { if (groupScore(g, bm.words) >= 68) bMatched++; });
         if (bMatched === rawTokens.length) { score = Math.max(score, 305) + bMatched * 35; p.__hit = true; }
@@ -171,7 +173,7 @@
       /* in stock first and sold out last; inside each, best match first */
       .sort(function (a, b) { if (a.ok !== b.ok) return a.ok ? -1 : 1; if (b.s !== a.s) return b.s - a.s; return a.i - b.i; });
     /* a bundle that contains what was searched is lifted to position 2 at most */
-    var at = -1; list.some(function (e, i) { if (e.p.__hit && e.ok) { at = i; return true; } return false; });
+    var at = -1; list.some(function (e, i) { if (e.p.__hit && e.p.__tm > 0 && e.ok) { at = i; return true; } return false; });   // only a bundle named after what was typed
     if (at > 2 && list.length > 2) list.splice(1, 0, list.splice(at, 1)[0]);
 
     var out = list.filter(function (e) { return !e.ok; });
