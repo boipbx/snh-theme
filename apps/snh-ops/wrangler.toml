@@ -3,8 +3,9 @@ main = "src/worker.mjs"
 compatibility_date = "2026-10-01"
 
 # 02:00 Asia/Colombo = 20:30 UTC starts the nightly sync; the 2-minute tick only advances a sync that is in progress.
+# The 5-minute tick runs the redeem service and the welcome points (see REDEEM_MODE / WELCOME_MODE below).
 [triggers]
-crons = ["30 20 * * *", "*/2 * * * *"]
+crons = ["30 20 * * *", "*/2 * * * *", "*/5 * * * *"]
 
 [[d1_databases]]
 binding = "DB"
@@ -13,7 +14,10 @@ database_id = "5ce3bc23-f18a-4621-b97f-d24f86418db6"
 
 [vars]
 API_VERSION = "2026-10"
+# off = do nothing · qa = only the QA customer IDs in the store config · live = every customer. Change to "live" only on the owner's say-so.
+REDEEM_MODE = "qa"
+WELCOME_MODE = "qa"
 # secrets (wrangler secret put …): SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY
 # Per-store settings live in D1 (table shops, column config): see config/example-store.json.
 # SHOP_CONFIG (optional) = deploy-time defaults per shop, as JSON keyed by shop domain; the D1 config wins. Nothing secret.
-SHOP_CONFIG = """{"sports-nutrition-hub.myshopify.com":{"newBundleTag":"bundles-nov26","klaviyoFlowPrefix":"SNH ·","brand":{"name":"SNH","program":"Elite","filePrefix":"snh","logoUrl":"https://www.sportsnutritionhub.lk/cdn/shop/t/36/assets/snh-logo-mark.png?width=320"}}}"""
+SHOP_CONFIG = """{"sports-nutrition-hub.myshopify.com":{"newBundleTag":"bundles-nov26","klaviyoFlowPrefix":"SNH ·","dailyWriteBudget":2000000,"redeem":{"qaCustomerIds":["31482633617662"],"accountUrl":"https://www.sportsnutritionhub.lk/account","welcome":{"qaCustomerIds":[]}},"brand":{"name":"SNH","program":"Elite","filePrefix":"snh","logoUrl":"https://www.sportsnutritionhub.lk/cdn/shop/t/36/assets/snh-logo-mark.png?width=320"}}}"""

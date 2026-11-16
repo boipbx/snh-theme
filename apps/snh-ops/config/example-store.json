@@ -33,7 +33,7 @@
     "smsUrl": ""
   },
   "newBundleTag": "bundles-nov26",
-  "dailyWriteBudget": 80000,
+  "dailyWriteBudget": 2000000,
   "klaviyoFlowPrefix": "SNH ·",
   "admins": [],
   "brand": {
@@ -41,5 +41,24 @@
     "program": "Elite",
     "filePrefix": "snh",
     "logoUrl": "https://www.sportsnutritionhub.lk/cdn/shop/t/36/assets/snh-logo-mark.png?width=320"
+  },
+  "redeem": {
+    "tag": "Trigger_Redeem_2500",
+    "points": 2500,
+    "value": 2500,
+    "minOrder": 2501,
+    "expiryDays": 90,
+    "dailyCap": 50,
+    "eventName": "Elite Reward Ready",
+    "accountUrl": "https://www.sportsnutritionhub.lk/account",
+    "qaCustomerIds": [
+      "31482633617662"
+    ],
+    "welcome": {
+      "points": 500,
+      "tier": "Bronze",
+      "tag": "welcome_awarded",
+      "qaCustomerIds": []
+    }
   }
 }

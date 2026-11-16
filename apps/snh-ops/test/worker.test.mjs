@@ -27,7 +27,7 @@ test('status returns a plain object for counts (stored as text or as an object)'
 });
 test('data answers before any snapshot (worked out from the cache), and after one', async () => {
   const j = await (await call('/api/data')).json(); assert.equal(j.interim, true); assert.equal(j.data.totals.members, 1); assert.equal(j.data.totals.records, 2); assert.equal(j.data.totals.tiersMembers.Gold, 1);
-  await snapshot(env, shop, Date.parse('2026-11-15T00:00:00Z')); const k = await (await call('/api/data')).json(); assert.equal(k.interim, false); assert.equal(k.data.version, 2); assert.equal(k.writes.budget, 80000);
+  await snapshot(env, shop, Date.parse('2026-11-15T00:00:00Z')); const k = await (await call('/api/data')).json(); assert.equal(k.interim, false); assert.equal(k.data.version, 2); assert.equal(k.writes.budget, 2000000);
 });
 test('members: accounts by default, all records on request, scoped to the caller\'s shop', async () => {
   const m = await (await call('/api/members')).json(); assert.equal(m.total, 1); assert.equal(m.scope, 'members'); assert.equal(m.rows[0].name, 'Asha, "Ace"');

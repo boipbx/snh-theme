@@ -17,3 +17,8 @@ CREATE TABLE IF NOT EXISTS bundle_products (shop TEXT NOT NULL, product_id TEXT 
 -- one row per sync: how many table rows it wrote (the free D1 plan allows 100,000 a day)
 CREATE TABLE IF NOT EXISTS sync_log (shop TEXT NOT NULL, started_at TEXT NOT NULL, finished_at TEXT, kind TEXT, rows_written INTEGER NOT NULL DEFAULT 0, status TEXT, message TEXT, PRIMARY KEY (shop, started_at));
 -- No secondary indexes: every query reads by shop (the primary key prefix), and each index costs one extra row write per row.
+-- Redeem service: one row per redeem request (customer IDs only, no names), and a per-customer lock so a request runs once.
+-- backup = the customer's loyalty fields and tags as they were before the request was processed.
+CREATE TABLE IF NOT EXISTS redeem_requests (shop TEXT NOT NULL, id TEXT NOT NULL, customer_id TEXT NOT NULL, status TEXT NOT NULL, code TEXT, discount_id TEXT, points_before INTEGER, points_after INTEGER,
+  created_at TEXT NOT NULL, updated_at TEXT, note TEXT, mode TEXT, code_status TEXT, expires_at TEXT, notified INTEGER NOT NULL DEFAULT 0, backup TEXT, PRIMARY KEY (shop, id));
+CREATE TABLE IF NOT EXISTS redeem_locks (shop TEXT NOT NULL, customer_id TEXT NOT NULL, request_id TEXT NOT NULL, locked_at TEXT NOT NULL, PRIMARY KEY (shop, customer_id));

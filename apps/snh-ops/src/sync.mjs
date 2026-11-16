@@ -22,7 +22,7 @@ export async function getConfig(env, shop) {
   const r = await env.DB.prepare('SELECT config FROM shops WHERE shop=?').bind(shop).first(); if (!r) return null; let c = {}, extra = {};
   try { c = JSON.parse(r.config || '{}'); } catch (e) {}
   try { extra = (JSON.parse(env.SHOP_CONFIG || '{}') || {})[shop] || {}; } catch (e) {}      // deploy-time defaults per shop; the D1 config wins
-  return M.withDefaults({ ...extra, ...c, brand: { ...extra.brand, ...c.brand }, services: { ...extra.services, ...c.services } });
+  return M.withDefaults({ ...extra, ...c, brand: { ...extra.brand, ...c.brand }, services: { ...extra.services, ...c.services }, redeem: { ...extra.redeem, ...c.redeem, welcome: { ...(extra.redeem || {}).welcome, ...(c.redeem || {}).welcome } } });
 }
 export async function getState(env, shop) {
   const s = await env.DB.prepare('SELECT * FROM sync_state WHERE shop=?').bind(shop).first();
