@@ -319,6 +319,8 @@
                 {%- endif -%}
               </div>
               {%- render 'snh-pickup-availability', product: product, variant: v -%}
+              {%- comment -%} 16 Nov: sold out → WhatsApp restock link; follows the chosen variant (data-sp-sync) {%- endcomment -%}
+              <div data-sp-sync="restock">{%- unless v.available -%}{%- render 'snh-restock', product: product -%}{%- endunless -%}</div>
 
             {%- when 'whatsapp' -%}
               {%- if wa != blank -%}

@@ -1,0 +1,18 @@
+{%- comment -%}
+  16 Nov 2026 — "Update me when restocked": a WhatsApp link with the product prefilled, shown on sold-out products.
+  Number: Theme settings → SNH → Restock WhatsApp number. Optional community link beside it (hidden when empty).
+  Usage: {% render 'snh-restock', product: product %}
+{%- endcomment -%}
+{%- assign rs_wa = settings.snh_restock_whatsapp | default: settings.snh_whatsapp | default: '94764863359' | remove: '+' | remove: ' ' -%}
+{%- if rs_wa != blank -%}
+  {%- capture rs_text -%}Hi SNH, I want updates on when this is restocked:
+
+{{ product.title }}
+{{ shop.url }}{{ product.url }}{%- endcapture -%}
+  <div class="rstk rstk--pdp">
+    <a class="rstk__btn" href="https://wa.me/{{ rs_wa }}?text={{ rs_text | url_encode }}" target="_blank" rel="noopener">Update me when restocked {% render 'snh-v2-icon', name: 'arrow' %}</a>
+    {%- if settings.snh_whatsapp_community != blank -%}
+      <a class="rstk__comm" href="{{ settings.snh_whatsapp_community }}" target="_blank" rel="noopener">Join the SNH WhatsApp community for restock alerts</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}
