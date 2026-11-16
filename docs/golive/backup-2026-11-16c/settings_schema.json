@@ -1,0 +1,1725 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Impact",
+    "theme_author": "Maestrooo",
+    "theme_version": "6.4.1",
+    "theme_documentation_url": "https://support.maestrooo.com/",
+    "theme_support_url": "https://support.maestrooo.com/article/203-contact-us"
+  },
+  {
+    "name": "Appearance and spacing",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Adapt the theme to your brand style by changing rounded elements, spacing and icons style."
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1300,
+        "max": 1800,
+        "step": 20,
+        "unit": "px",
+        "label": "Page width",
+        "default": 1600
+      },
+      {
+        "type": "header",
+        "content": "Section spacing"
+      },
+      {
+        "type": "select",
+        "id": "section_vertical_spacing",
+        "label": "Vertical space between sections",
+        "options": [
+          {
+            "value": "xsmall",
+            "label": "X-Small"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "section_boxed_horizontal_spacing",
+        "label": "Horizontal space inside sections",
+        "options": [
+          {
+            "value": "xsmall",
+            "label": "X-Small"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "header",
+        "content": "Rounding"
+      },
+      {
+        "type": "range",
+        "id": "button_border_radius",
+        "min": 0,
+        "max": 60,
+        "step": 2,
+        "unit": "px",
+        "label": "Button corner radius",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "input_border_radius",
+        "min": 0,
+        "max": 10,
+        "step": 2,
+        "unit": "px",
+        "label": "Input corner radius",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "block_border_radius",
+        "min": 0,
+        "max": 64,
+        "step": 4,
+        "unit": "px",
+        "label": "Block corner radius",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Shadow"
+      },
+      {
+        "type": "range",
+        "id": "block_shadow_opacity",
+        "min": 0,
+        "max": 100,
+        "unit": "%",
+        "label": "Opacity",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "block_shadow_horizontal_offset",
+        "min": -32,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "label": "Horizontal offset",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "block_shadow_vertical_offset",
+        "min": -32,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "label": "Vertical offset",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "block_shadow_blur",
+        "min": 0,
+        "max": 60,
+        "step": 5,
+        "unit": "px",
+        "label": "Blur",
+        "default": 50
+      },
+      {
+        "type": "header",
+        "content": "Icon"
+      },
+      {
+        "type": "range",
+        "id": "icon_stroke_width",
+        "min": 1,
+        "max": 2,
+        "step": 0.1,
+        "unit": "px",
+        "label": "Icon thickness",
+        "default": 2
+      },
+      {
+        "type": "select",
+        "id": "icon_style",
+        "label": "Icon style",
+        "info": "Not all icons have duo-tone style.",
+        "options": [
+          {
+            "value": "mono",
+            "label": "Monochrome"
+          },
+          {
+            "value": "duo",
+            "label": "Duo-tone"
+          }
+        ],
+        "default": "duo"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "options": [
+          {
+            "value": "fill",
+            "label": "Fill"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          }
+        ],
+        "default": "fill"
+      },
+      {
+        "type": "select",
+        "id": "button_hover_effect",
+        "label": "Hover effect",
+        "info": "Hover is not available on touch devices (phone, tablet...).",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "fade",
+            "label": "Fade"
+          },
+          {
+            "value": "reverse",
+            "label": "Reverse style"
+          }
+        ],
+        "default": "fade"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text",
+        "default": "#677279"
+      },
+      {
+        "type": "color",
+        "id": "success_color",
+        "label": "Success",
+        "default": "#00a341"
+      },
+      {
+        "type": "color",
+        "id": "warning_color",
+        "label": "Warning",
+        "default": "#ffb74a"
+      },
+      {
+        "type": "color",
+        "id": "error_color",
+        "label": "Error",
+        "default": "#f83a3a"
+      },
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "color",
+        "id": "header_background",
+        "label": "Background",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "header_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "footer_background",
+        "label": "Background",
+        "default": "#f3f5f6"
+      },
+      {
+        "type": "color",
+        "id": "footer_text_color",
+        "label": "Text",
+        "default": "#677279"
+      },
+      {
+        "type": "header",
+        "content": "Drawer/popover"
+      },
+      {
+        "type": "color",
+        "id": "dialog_background",
+        "label": "Modal/popover background",
+        "info": "Choose a color similar to the primary background.",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Primary button"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_background",
+        "label": "Background",
+        "default": "#00badb"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_text_color",
+        "label": "Text",
+        "default": "#677279"
+      },
+      {
+        "type": "header",
+        "content": "Secondary button"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Product",
+        "info": "[Learn more](https://support.maestrooo.com/article/75-collection-displaying-custom-label) about setting custom badges."
+      },
+      {
+        "type": "color",
+        "id": "product_card_background",
+        "label": "Card background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "product_card_text_color",
+        "label": "Card text",
+        "default": "#677279"
+      },
+      {
+        "type": "color",
+        "id": "product_rating_color",
+        "label": "Star rating",
+        "default": "#ffb74a"
+      },
+      {
+        "type": "color",
+        "id": "product_on_sale_accent",
+        "label": "On sale accent",
+        "default": "#f83a3a"
+      },
+      {
+        "type": "color",
+        "id": "product_sold_out_badge_background",
+        "label": "Sold out badge",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "product_primary_badge_background",
+        "label": "Custom badge",
+        "default": "#1e316a"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Font",
+        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https://help.shopify.com/en/manual/online-store/os/store-speed/improving-speed#fonts)",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "select",
+        "id": "heading_font_size",
+        "label": "Heading size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "heading_text_transform",
+        "label": "Heading style",
+        "options": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
+        ],
+        "default": "normal"
+      },
+      {
+        "type": "range",
+        "min": -5,
+        "max": 10,
+        "step": 0.5,
+        "unit": "%",
+        "id": "heading_letter_spacing",
+        "label": "Heading letter spacing",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Body text"
+      },
+      {
+        "type": "font_picker",
+        "id": "text_font",
+        "label": "Font",
+        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https://help.shopify.com/en/manual/online-store/os/store-speed/improving-speed#fonts)",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "range",
+        "id": "text_font_size_mobile",
+        "label": "Base size (mobile)",
+        "min": 11,
+        "max": 20,
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "text_font_size_desktop",
+        "label": "Base size (tablet and desktop)",
+        "min": 11,
+        "max": 20,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "min": -5,
+        "max": 10,
+        "step": 0.5,
+        "unit": "%",
+        "id": "text_font_letter_spacing",
+        "label": "Body letter spacing",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Currency format",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Currency codes"
+      },
+      {
+        "type": "paragraph",
+        "content": "Cart and checkout total prices always show currency codes. Example: $1.00 USD."
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_code_enabled",
+        "label": "Show currency codes",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Users who configured their preferences to minimize non-essential motion will automatically experience reduced animations."
+      },
+      {
+        "type": "checkbox",
+        "id": "zoom_image_on_hover",
+        "label": "Zoom image on hover",
+        "info": "Various images are zoomed when hovered.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "stagger_products_apparition",
+        "label": "Reveal products one by one",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "reduce_drawer_animation",
+        "label": "Reduce drawer animation",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "reduce_menu_animation",
+        "label": "Reduce header menu animation",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "heading_apparition",
+        "label": "Heading apparition",
+        "info": "Line by line apparition can't be used for gradient heading. [Learn more](https://support.maestrooo.com/article/299-limitation-for-gradients-on-impact-theme)",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "fade",
+            "label": "Fade"
+          },
+          {
+            "value": "split_fade",
+            "label": "Line by line, fade"
+          },
+          {
+            "value": "split_clip",
+            "label": "Line by line, clipped"
+          },
+          {
+            "value": "split_rotation",
+            "label": "Line by line, rotated"
+          }
+        ],
+        "default": "split_rotation"
+      }
+    ]
+  },
+  {
+    "name": "Color swatch",
+    "settings": [
+      {
+        "type": "select",
+        "id": "color_swatch_style",
+        "label": "Shape",
+        "options": [
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "rectangle",
+            "label": "Rectangle"
+          },
+          {
+            "value": "round",
+            "label": "Round"
+          }
+        ],
+        "default": "round"
+      },
+      {
+        "type": "textarea",
+        "id": "color_swatch_config",
+        "label": "Configuration (deprecated)",
+        "placeholder": "Red:#ff0000\nGreen:#00ff00\nBlue:#0000ff",
+        "info": "Native color swatch should be used instead. [Learn more](https://help.shopify.com/en/manual/online-store/themes/theme-structure/theme-settings#options-with-swatches). Configuration based color swatches is deprecated and will be removed in the future. If you still need to use the configuration based system, you can [learn more](https://support.maestrooo.com/article/718-configuring-color-swatches) about the exact naming convention."
+      }
+    ]
+  },
+  {
+    "name": "Product card",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_secondary_image",
+        "label": "Show secondary image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quick_buy",
+        "label": "Show quick buy",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_product_rating",
+        "label": "Show product rating",
+        "info": "To display a rating, add a product rating app. [Learn more](https://help.shopify.com/en/manual/products/product-reviews/installation)",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "product_rating_mode",
+        "label": "Show product rating as...",
+        "options": [
+          {
+            "value": "rating",
+            "label": "Average rating (e.g. \"4.5\")"
+          },
+          {
+            "value": "count",
+            "label": "Count (e.g. \"3 reviews\")"
+          }
+        ],
+        "default": "rating"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sold_out_badge",
+        "label": "Show sold out badge",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_discount",
+        "label": "Show discount badge",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "discount_mode",
+        "label": "Show discount as...",
+        "options": [
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "saving",
+            "label": "Saving"
+          }
+        ],
+        "default": "saving"
+      },
+      {
+        "type": "select",
+        "id": "product_color_display",
+        "label": "Color display mode",
+        "info": "Variant images are hidden on mobile and small screens.",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Hide"
+          },
+          {
+            "value": "count",
+            "label": "Count"
+          },
+          {
+            "value": "swatch",
+            "label": "Swatch"
+          },
+          {
+            "value": "variant",
+            "label": "Variant image"
+          }
+        ],
+        "default": "count"
+      },
+      {
+        "type": "select",
+        "id": "product_image_aspect_ratio",
+        "label": "Product image size",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural"
+          },
+          {
+            "value": "short",
+            "label": "Short (4:3)"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "tall",
+            "label": "Tall (2:3)"
+          },
+          {
+            "value": "short_crop",
+            "label": "Short (4:3) - fill card"
+          },
+          {
+            "value": "square_crop",
+            "label": "Square (1:1) - fill card"
+          },
+          {
+            "value": "tall_crop",
+            "label": "Tall (2:3) - fill card"
+          }
+        ],
+        "default": "natural"
+      },
+      {
+        "type": "select",
+        "id": "product_info_alignment",
+        "label": "Product info alignment",
+        "options": [
+          {
+            "value": "start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "start"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          },
+          {
+            "value": "popover",
+            "label": "Confirmation popup"
+          },
+          {
+            "value": "page",
+            "label": "Page"
+          }
+        ],
+        "default": "popover"
+      },
+      {
+        "type": "select",
+        "id": "cart_icon",
+        "label": "Cart icon",
+        "options": [
+          {
+            "value": "shopping_basket",
+            "label": "Shopping basket"
+          },
+          {
+            "value": "tote_bag",
+            "label": "Tote bag"
+          },
+          {
+            "value": "shopping_cart",
+            "label": "Shopping cart"
+          }
+        ],
+        "default": "shopping_basket"
+      },
+      {
+        "type": "url",
+        "id": "cart_empty_button_link",
+        "label": "Empty button link",
+        "default": "/collections/all"
+      },
+      {
+        "type": "header",
+        "content": "Free shipping bar",
+        "info": "Show a shipping bar advancement on cart page and cart drawer. Configure your [shipping rates](/admin/settings/shipping) to match the amount."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_free_shipping_threshold",
+        "label": "Show shipping bar",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping minimum amount",
+        "info": "Indicate the value in your store main currency.",
+        "default": "50"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter",
+        "label": "X (formerly Twitter)"
+      },
+      {
+        "type": "url",
+        "id": "social_threads",
+        "label": "Threads"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_vimeo",
+        "label": "Vimeo"
+      },
+      {
+        "type": "url",
+        "id": "social_whatsapp",
+        "label": "WhatsApp"
+      },
+      {
+        "type": "url",
+        "id": "social_tumblr",
+        "label": "Tumblr"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "url",
+        "id": "social_linkedin",
+        "label": "LinkedIn"
+      },
+      {
+        "type": "url",
+        "id": "social_snapchat",
+        "label": "Snapchat"
+      },
+      {
+        "type": "url",
+        "id": "social_fancy",
+        "label": "Fancy"
+      },
+      {
+        "type": "url",
+        "id": "social_wechat",
+        "label": "WeChat"
+      },
+      {
+        "type": "url",
+        "id": "social_reddit",
+        "label": "Reddit"
+      },
+      {
+        "type": "url",
+        "id": "social_line",
+        "label": "LINE"
+      },
+      {
+        "type": "url",
+        "id": "social_spotify",
+        "label": "Spotify"
+      },
+      {
+        "type": "url",
+        "id": "social_21buttons",
+        "label": "21 Buttons"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Image",
+        "info": "180 x 180px .png recommended"
+      }
+    ]
+  },
+  {
+    "name": "SNH bundle offers",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Bundle products (auto, Round 19)"
+      },
+      {
+        "type": "paragraph",
+        "content": "The cart finds your bundle products by itself: every product in the collections below, and what each one contains from its description (a sentence starting with the brand and product name, e.g. \"AN Creatine Monohydrate (50 Servings) …\"). A product in the basket that's in a bundle gets \"Make it a bundle\" under it; a bundle in the basket shows \"Bundle unlocked\". The saving = the bundle's compare-at price (or SNH's price sheet) minus its price."
+      },
+      {
+        "type": "text",
+        "id": "snh_bundle_collections",
+        "label": "Bundle collections",
+        "default": "training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_bundle_map",
+        "label": "Bundle contents: overrides",
+        "default": "race-day-pack-1-0 + sis-go-hydro-tablets\neveryday-essentials + applied-nutrition-omega-3",
+        "info": "One bundle per line, by product handle. \"bundle = a, b\" sets its contents, \"bundle + a, b\" adds to what was found, \"bundle - a\" removes one."
+      },
+      {
+        "type": "checkbox",
+        "id": "snh_bundle_cart",
+        "label": "Show bundle offers and Bundle unlocked in the cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "snh_bundle_confetti",
+        "label": "Confetti on Bundle unlocked",
+        "default": true,
+        "info": "Off for visitors who prefer reduced motion."
+      },
+      {
+        "type": "paragraph",
+        "content": "Global bundle offers — set once here, they apply on EVERY product template. Each offer only shows on the pages of the products it contains. The discount itself comes from your Shopify discounts. Need more offers? Use the next empty slot."
+      },
+      {
+        "type": "header",
+        "content": "Offer 1"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_1_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_1_title",
+        "label": "Offer name",
+        "default": "Flavoured creatine twin pack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_1_save",
+        "label": "Saving label",
+        "default": "2 for Rs 15,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 2"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_2_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_2_title",
+        "label": "Offer name",
+        "default": "Unflavoured creatine twin pack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_2_save",
+        "label": "Saving label",
+        "default": "2 for Rs 15,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 3"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_3_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_3_title",
+        "label": "Offer name",
+        "default": "ISO-XP + creatine stack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_3_save",
+        "label": "Saving label",
+        "default": "Save Rs 2,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 4"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_4_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_4_title",
+        "label": "Offer name",
+        "default": "Creatine + ABE stack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_4_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 5"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_5_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_5_title",
+        "label": "Offer name",
+        "default": "Daily wellness trio"
+      },
+      {
+        "type": "text",
+        "id": "bundle_5_save",
+        "label": "Saving label",
+        "default": "Save Rs 2,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 6"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_6_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_6_title",
+        "label": "Offer name",
+        "default": "ZMA + multivitamin"
+      },
+      {
+        "type": "text",
+        "id": "bundle_6_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 7"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_7_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_7_title",
+        "label": "Offer name",
+        "default": "Ashwagandha + multivitamin"
+      },
+      {
+        "type": "text",
+        "id": "bundle_7_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 8"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_8_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_8_title",
+        "label": "Offer name",
+        "default": "Collagen + creatine"
+      },
+      {
+        "type": "text",
+        "id": "bundle_8_save",
+        "label": "Saving label",
+        "default": "Save Rs 1,500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 9"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_9_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_9_title",
+        "label": "Offer name",
+        "default": "Multi + omega-3 + D3/K2"
+      },
+      {
+        "type": "text",
+        "id": "bundle_9_save",
+        "label": "Saving label",
+        "default": "Save Rs 2,000"
+      },
+      {
+        "type": "header",
+        "content": "Offer 10"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_10_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_10_title",
+        "label": "Offer name",
+        "default": "Hydro tablet twin pack"
+      },
+      {
+        "type": "text",
+        "id": "bundle_10_save",
+        "label": "Saving label",
+        "default": "Save Rs 500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 11"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_11_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_11_title",
+        "label": "Offer name",
+        "default": "Hydro tablets + isotonic gels"
+      },
+      {
+        "type": "text",
+        "id": "bundle_11_save",
+        "label": "Saving label",
+        "default": "Save Rs 500"
+      },
+      {
+        "type": "header",
+        "content": "Offer 12"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_12_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_12_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_12_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 13"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_13_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_13_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_13_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 14"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_14_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_14_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_14_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 15"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_15_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_15_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_15_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 16"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_16_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_16_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_16_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 17"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_17_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_17_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_17_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 18"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_18_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_18_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_18_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 19"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_19_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_19_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_19_save",
+        "label": "Saving label"
+      },
+      {
+        "type": "header",
+        "content": "Offer 20"
+      },
+      {
+        "type": "product_list",
+        "id": "bundle_20_products",
+        "label": "Products in this bundle",
+        "limit": 4,
+        "info": "Offer shows on each of these product pages. One product = twin pack."
+      },
+      {
+        "type": "text",
+        "id": "bundle_20_title",
+        "label": "Offer name"
+      },
+      {
+        "type": "text",
+        "id": "bundle_20_save",
+        "label": "Saving label"
+      }
+    ]
+  },
+  {
+    "name": "SNH cart suggestions",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "How the cart drawer and cart page pick suggestions. gap = free-delivery threshold − subtotal. A small gap (up to the larger of the two limits below) gets \"Close the gap\" products priced from the gap to the gap + the band. A bigger gap gets low-ticket add-ons only (the lower of the two caps). One complementary item is always added. In-cart, sold-out and items priced at or above the subtotal are never shown."
+      },
+      {
+        "type": "number",
+        "id": "snh_cart_close_min",
+        "label": "Close the gap: up to (Rs)",
+        "default": 3000
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_close_pct",
+        "label": "…or up to this % of the subtotal",
+        "min": 5,
+        "max": 60,
+        "step": 5,
+        "unit": "%",
+        "default": 25
+      },
+      {
+        "type": "number",
+        "id": "snh_cart_close_band",
+        "label": "Close the gap: price band above the gap (Rs)",
+        "default": 1500
+      },
+      {
+        "type": "number",
+        "id": "snh_cart_addon_max",
+        "label": "Add-ons: at most (Rs)",
+        "default": 2000
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_addon_pct",
+        "label": "…and at most this % of the subtotal",
+        "min": 5,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_comp_pct",
+        "label": "Complementary item: at most this % of the subtotal",
+        "min": 5,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "snh_cart_max",
+        "label": "Suggestions in the drawer",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "textarea",
+        "id": "snh_cart_pairs",
+        "label": "Complementary pairs",
+        "default": "creatine => shaker, bottle\nwhey, protein, isolate => bar, snack, cookie\npre-workout, pre workout => shaker, bottle\nelectrolyte, hydration, isotonic => gel, chew, bar\ngel => electrolyte, hydro, tablet\nmass, gainer => shaker, creatine",
+        "info": "One per line: words in a basket product => words in the item to suggest. Searches the Cart add-ons collection and Shopify's complementary products."
+      },
+      {
+        "type": "header",
+        "content": "Smart recommendations (Round 13)"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_reco_complements",
+        "label": "Goes with (complement map)",
+        "default": "creatine => pre-workout, bars-snacks, accessories, whey\nwhey, isolate => creatine, bars-snacks, accessories, oats\npre-workout => creatine, bcaa-eaa, accessories\nmass-gainer => creatine, accessories\nelectrolytes, gels => gels, electrolytes, bars-snacks\nvitamins => omega, magnesium, probiotics\n* => bars-snacks",
+        "info": "One per line: basket category => categories to suggest (* = any basket). Categories: creatine, whey, isolate, mass-gainer, pre-workout, bcaa-eaa, electrolytes, gels, bars-snacks, oats, vitamins, omega, magnesium, probiotics, collagen, accessories."
+      },
+      {
+        "type": "textarea",
+        "id": "snh_reco_collections",
+        "label": "Where each category's products are",
+        "default": "creatine => creatine\nwhey => whey-protein\nisolate => isolate-protein\nmass-gainer => mass-gainer\npre-workout => pre-workout-1\nbcaa-eaa => bcaa-eaa\nelectrolytes => hydration-recovery\ngels => energy-gels\nbars-snacks => protein-bars, protein-snacks\noats => protein-oats\nvitamins => multivitamins\nomega => fish-oil-omega\nmagnesium => magnesium\nprobiotics => probiotics\ncollagen => collagen\naccessories => accessories-1",
+        "info": "One per line: category => collection handle(s). Suggestions are drawn from these collections plus Shopify's recommendations."
+      },
+      {
+        "type": "collection",
+        "id": "snh_reco_bestsellers",
+        "label": "Bestsellers (score +10, 'Popular with members')"
+      }
+    ]
+  },
+  {
+    "name": "SNH Elite",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "One place for the loyalty figures. The Elite band, Shop the Look points strip, product page points, cart, account and register pages all read these. Confirm the thresholds with the client: the register page says Rs 198,000 / 300,000, older sections used 200,000 / 500,000."
+      },
+      {
+        "type": "range",
+        "id": "snh_rate_bronze",
+        "label": "Bronze earn rate",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "unit": "%",
+        "default": 3
+      },
+      {
+        "type": "range",
+        "id": "snh_rate_silver",
+        "label": "Silver earn rate",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "unit": "%",
+        "default": 7
+      },
+      {
+        "type": "range",
+        "id": "snh_rate_gold",
+        "label": "Gold earn rate",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "unit": "%",
+        "default": 10
+      },
+      {
+        "type": "number",
+        "id": "snh_silver_threshold",
+        "label": "Silver from (Rs annual spend)",
+        "default": 198000
+      },
+      {
+        "type": "number",
+        "id": "snh_gold_threshold",
+        "label": "Gold from (Rs annual spend)",
+        "default": 300000
+      },
+      {
+        "type": "header",
+        "content": "Points"
+      },
+      {
+        "type": "paragraph",
+        "content": "Balances, tiers and annual spend come from the customer metafields custom.loyalty_points, custom.loyalty_tier and custom.annual_spend. The theme only shows them."
+      },
+      {
+        "type": "number",
+        "id": "snh_welcome_points",
+        "label": "Welcome points",
+        "default": 500
+      },
+      {
+        "type": "text",
+        "id": "snh_klaviyo_company",
+        "label": "Klaviyo public company ID (workout plan quiz)",
+        "default": "Usyrp8",
+        "info": "R18: the quiz sends a \"Workout Plan Unlocked\" event with the plan (KLAVIYO-WORKOUT.md)."
+      },
+      {
+        "type": "text",
+        "id": "snh_klaviyo_workout_list",
+        "label": "Klaviyo list ID for quiz sign-ups",
+        "info": "Optional. When set, members who tick \"Email me my plan and member offers\" are subscribed to this list."
+      },
+      {
+        "type": "checkbox",
+        "id": "loyalty_redeem_paused",
+        "label": "Pause redemption",
+        "info": "On: the account page hides the Redeem button and says rewards are being updated. Points and tiers are not changed.",
+        "default": false
+      },
+      {
+        "type": "number",
+        "id": "snh_redeem_from",
+        "label": "Redeem from (points)",
+        "default": 2500
+      },
+      {
+        "type": "number",
+        "id": "snh_point_value",
+        "label": "Rs value of one point",
+        "info": "Used to show a balance in rupees. Confirm with the client.",
+        "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Tier perks"
+      },
+      {
+        "type": "paragraph",
+        "content": "One perk per line. Shown on the account dashboard, the register page and the SNH Elite page. The earn rate line is added automatically."
+      },
+      {
+        "type": "textarea",
+        "id": "snh_perks_bronze",
+        "label": "Bronze perks",
+        "default": "500 welcome points when you join\nRedeem as soon as you reach 2,500 points\nSpend tracked automatically from paid orders"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_perks_silver",
+        "label": "Silver perks",
+        "default": "A 10% reward every birthday\n5% off every gift voucher\nPriority access to member-only campaigns"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_perks_gold",
+        "label": "Gold perks",
+        "default": "Free shipping on every order\nA 15% reward every birthday\n10% off gift vouchers and first access to new drops"
+      }
+    ]
+  },
+  {
+    "name": "SNH contact and reviews",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "snh_hero_preload",
+        "label": "Homepage hero image to preload (speed)",
+        "info": "Pick the same image as the first homepage hero slide. It starts downloading before the menus, which makes the homepage show sooner. Leave empty if unsure."
+      },
+      {
+        "type": "text",
+        "id": "snh_whatsapp",
+        "label": "WhatsApp number",
+        "default": "94764863359",
+        "info": "Country code + number, no + or spaces. Used by the footer, product pages and every product template."
+      },
+      {
+        "type": "header",
+        "content": "Google rating"
+      },
+      {
+        "type": "paragraph",
+        "content": "Shown in the reviews section and the Why choose us stats. Leave empty to hide the rating line; never type a figure you can't point to."
+      },
+      {
+        "type": "text",
+        "id": "snh_rating_value",
+        "label": "Rating (e.g. 4.8)"
+      },
+      {
+        "type": "text",
+        "id": "snh_rating_count",
+        "label": "Number of reviews (e.g. 827)"
+      },
+      {
+        "type": "text",
+        "id": "snh_rating_source",
+        "label": "Source",
+        "default": "Google reviews"
+      },
+      {
+        "type": "header",
+        "content": "SNH FAQ"
+      },
+      {
+        "type": "textarea",
+        "id": "snh_faq_global",
+        "label": "Global FAQ",
+        "default": "How fast is delivery? :: Colombo orders arrive the same day. Outside Colombo, 2–3 working days. Delivery is free over Rs 17,000.\nWhere are your stores? :: Three stores: Dehiwala (133A Kawdana Road), Wattala (880 Negombo Road) and Nugegoda (555 High Level Road). Search “Sports Nutrition Hub” on Google Maps.\nHow can I pay? :: Card, bank transfer, cash on delivery, or Koko: split your order into 3 interest-free payments at checkout.\nAre your supplements genuine? :: Yes. We stock only genuine products sourced directly from authorised distributors and the brands themselves.\nHow do SNH Elite points work? :: Every paid order earns points: 3% back at Bronze, 7% at Silver and 10% at Gold. Trade them for cash off from your account. Joining is free.\nCan I return or exchange a product? :: Unopened, unused products in their original sealed condition can be returned or exchanged under our return policy. If an order arrives damaged or wrong, contact us within 24 hours and we'll fix it.\nWhich supplement is right for me? :: Tell us your goal, diet and training, or build your plan in your account. Call or WhatsApp [whatsapp] and our team will recommend only what you need.",
+        "info": "One per line: Question :: Answer. Used by every SNH FAQ section without its own questions (product pages first use the product's custom.faqs metafield). [whatsapp] = the number above."
+      },
+      {
+        "type": "header",
+        "content": "Instagram feed"
+      },
+      {
+        "type": "text",
+        "id": "snh_instagram_token",
+        "label": "Instagram access token (private: paste only, never share)",
+        "info": "A long-lived Instagram API token. It expires about every 60 days; refresh it (see THEME-V2.md) or the homepage falls back to the curated posts. Empty = curated posts only."
+      }
+    ]
+  },
+  {
+    "name": "SNH product images",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Most packshots carry SNH's orange frame and logo baked into the file. Product cards crop inside the frame automatically. The product page gallery shows images whole."
+      },
+      {
+        "type": "checkbox",
+        "id": "snh_clean_images",
+        "label": "Prefer clean images",
+        "default": false,
+        "info": "Product page gallery leaves out images whose file name or alt text contains a keyword below, when at least one other image remains. Variant images that are left out can't be shown when that variant is picked."
+      },
+      {
+        "type": "text",
+        "id": "snh_frame_keywords",
+        "label": "Framed image keywords",
+        "default": "snh-frame, snh_frame, fromsportsnutritionhub",
+        "info": "Comma separated, matched case-insensitively against the file name and alt text."
+      }
+    ]
+  }
+]
