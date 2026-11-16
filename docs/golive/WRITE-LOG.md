@@ -617,3 +617,7 @@ Backup: docs/golive/backup-2026-11-14/bundles-before-activation.json.
 | 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Executive Stack (/products/executive-stack) | DRAFT | ACTIVE |
 | 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Longevity Premium (/products/longevity-premium) | DRAFT | ACTIVE |
 | 2026-11-16 04:20 | theme (feat/theme-v2 ca9cf83) | snh-app-rewards/reward/overview.liquid, settings_schema.json, settings_data.json | redeem button shown when eligible | setting loyalty_redeem_paused = true: no Redeem button/form, "Rewards are being updated" (backup docs/golive/backup-2026-11-16/) |
+| 2026-11-16 04:48 | customerCreate (loyalty flow test) | QA customer pabasarawasava+qa (31482633617662) | did not exist | created, tag qa-test; activated through the activation link |
+| 2026-11-16 04:51 | orderCreate ×2, orderCancel ×2 (loyalty flow test) | SNH40969 (Rs 0), SNH40970 (Rs 1,000 manual) for the QA customer | - | created paid, custom line, no stock, no emails; both cancelled, SNH40970 refunded |
+| 2026-11-16 04:54 | metafieldsSet, tagsAdd (loyalty flow test) | QA customer 31482633617662 | 500 points | 2,500 points; tag Trigger_Redeem_2500 added |
+| 2026-11-16 05:01 | discountCodeBasicCreate, metafieldsSet, tagsRemove, discountCodeDeactivate (loyalty flow test) | DiscountCodeNode/1895880261886 (ELITE-17662-QAB4DA); QA customer | 2,500 points, tag on | code created for the QA customer only, points 0, last_reward_code set, tag removed; code then deactivated (unused) |
