@@ -25,7 +25,7 @@
   function wordsOf(v) { return normalise(v).split(' ').filter(Boolean); }
   function rs(n) { return 'Rs ' + Math.round(Number(n) || 0).toLocaleString('en-US'); }
   function sized(u, w) { u = String(u || ''); return u ? u + (u.indexOf('?') > -1 ? '&' : '?') + 'width=' + w : ''; }
-  function tidy(t, v) { t = String(t || ''); v = String(v || ''); return v && t.toLowerCase().indexOf(v.toLowerCase() + ' ') === 0 && t.length > v.length + 3 ? t.slice(v.length + 1) : t; }
+  function tidy(t, v) { t = String(t || ''); v = String(v || ''); return v.length >= 5 && t.toLowerCase().indexOf(v.toLowerCase() + ' ') === 0 && t.length > v.length + 3 ? t.slice(v.length + 1) : t; }
   function uniq(a) { var s = {}, o = []; a.forEach(function (x) { if (!s[x]) { s[x] = 1; o.push(x); } }); return o; }
 
   /* "sis go electrolyte" → "science in sport go electrolyte", so Shopify itself can find products whose title never has the shorthand */
