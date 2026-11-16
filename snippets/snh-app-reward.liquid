@@ -46,6 +46,10 @@
         <p class="rwd__big">Reward on its way</p>
         <p class="rwd__p">Your redeem request is in. It arrives by email.</p>
         <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See rewards</span></a>
+      {%- elsif settings.loyalty_redeem_paused and m[14] == '1' -%}
+        <p class="rwd__big">Rewards are being updated</p>
+        <p class="rwd__p">Check back soon. Your points are safe.</p>
+        <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See rewards</span></a>
       {%- elsif m[14] == '1' -%}
         <p class="rwd__big">{{ redeem_from | times: per_point | times: 100 | money_without_trailing_zeros }} off is ready</p>
         <div class="rwd__bar" aria-hidden="true"><i style="width: 100%"></i></div>

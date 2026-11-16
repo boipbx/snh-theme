@@ -117,6 +117,7 @@
     "snh_rate_gold": 10,
     "snh_silver_threshold": 198000,
     "snh_gold_threshold": 300000,
+    "loyalty_redeem_paused": true,
     "snh_whatsapp": "94764863359",
     "snh_hero_preload": "shopify://shop_images/running.jpg",
     "snh_rating_source": "Google reviews"

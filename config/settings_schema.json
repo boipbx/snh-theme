@@ -1589,6 +1589,13 @@
         "info": "Optional. When set, members who tick \"Email me my plan and member offers\" are subscribed to this list."
       },
       {
+        "type": "checkbox",
+        "id": "loyalty_redeem_paused",
+        "label": "Pause redemption",
+        "info": "On: the account page hides the Redeem button and says rewards are being updated. Points and tiers are not changed.",
+        "default": false
+      },
+      {
         "type": "number",
         "id": "snh_redeem_from",
         "label": "Redeem from (points)",

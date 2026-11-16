@@ -50,6 +50,11 @@
     {%- elsif pending -%}
       <p class="bal__st"><span class="pill pill--wait">Request pending</span></p>
       <p class="bal__p">We've got your request to trade {% render 'snh-num', n: redeem_from %} points. Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} reward arrives by email, usually within a working day.</p>
+    {%- elsif settings.loyalty_redeem_paused -%}
+      {%- comment -%} 16 Nov: redemption paused while balances are reviewed (Theme settings → SNH Elite → Pause redemption).
+        No redeem button or form is printed. Points and tiers are untouched. {%- endcomment -%}
+      <p class="bal__st"><span class="pill pill--wait">Rewards are being updated</span></p>
+      <p class="bal__p">Rewards are being updated, check back soon. Your points are safe and you keep earning on every order.</p>
     {%- elsif m[14] == '1' -%}
       {%- capture ask -%}
         <div data-redeem-ask>

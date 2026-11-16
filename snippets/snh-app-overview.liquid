@@ -125,7 +125,7 @@
     {%- else -%}
       <li><a class="qact__a" href="{{ routes.all_products_collection_url }}">{% render 'snh-v2-icon', name: 'bag' %}<span><b>Start shopping</b><i>Earn {{ m[7] }}% back</i></span></a></li>
     {%- endif -%}
-    <li><a class="qact__a" href="#rewards" data-go="rewards"{% if m[14] == '1' and pending != true %} data-redeem-open{% endif %}>{% render 'snh-v2-icon', name: 'gift' %}<span><b>Redeem points</b><i>{% if pending %}Request pending{% elsif m[14] == '1' %}Reward ready{% elsif m[3] == 'x' %}From {% render 'snh-num', n: redeem_from %} points{% else %}{% render 'snh-num', n: m[15] %} to go{% endif %}</i></span></a></li>
+    <li><a class="qact__a" href="#rewards" data-go="rewards"{% if m[14] == '1' and pending != true and settings.loyalty_redeem_paused != true %} data-redeem-open{% endif %}>{% render 'snh-v2-icon', name: 'gift' %}<span><b>Redeem points</b><i>{% if pending %}Request pending{% elsif m[14] == '1' %}Reward ready{% elsif m[3] == 'x' %}From {% render 'snh-num', n: redeem_from %} points{% else %}{% render 'snh-num', n: m[15] %} to go{% endif %}</i></span></a></li>
   </ul>
   {%- comment -%}
     Refer a friend (Round 10): a referral app's block (Add block → Apps) replaces the card; with "Referral rewards
