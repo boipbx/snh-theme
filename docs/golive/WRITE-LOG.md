@@ -621,3 +621,12 @@ Backup: docs/golive/backup-2026-11-14/bundles-before-activation.json.
 | 2026-11-16 04:51 | orderCreate ×2, orderCancel ×2 (loyalty flow test) | SNH40969 (Rs 0), SNH40970 (Rs 1,000 manual) for the QA customer | - | created paid, custom line, no stock, no emails; both cancelled, SNH40970 refunded |
 | 2026-11-16 04:54 | metafieldsSet, tagsAdd (loyalty flow test) | QA customer 31482633617662 | 500 points | 2,500 points; tag Trigger_Redeem_2500 added |
 | 2026-11-16 05:01 | discountCodeBasicCreate, metafieldsSet, tagsRemove, discountCodeDeactivate (loyalty flow test) | DiscountCodeNode/1895880261886 (ELITE-17662-QAB4DA); QA customer | 2,500 points, tag on | code created for the QA customer only, points 0, last_reward_code set, tag removed; code then deactivated (unused) |
+| 2026-11-16 05:33 | Klaviyo: event (metric seed), template, flow | metric "Elite Reward Ready" (Uc8NXX), template Wsjeqh, flow "SNH · Elite · Reward ready" (YeK7UL) | did not exist | created; flow set live; seed event on the QA profile only |
+| 2026-11-16 05:34 | metafieldsSet (redeem test) | QA customer 31482633617662 | 0 points (backup in docs: points 0, last_reward_code ELITE-17662-QAB4DA) | 2,600 points |
+| 2026-11-16 05:36 | tagsAdd (redeem test) | QA customer 31482633617662 | no redeem tag | Trigger_Redeem_2500 |
+| 2026-11-16 05:40 | redeem service (qa mode): discountCodeBasicCreate, metafieldsSet, tagsRemove, Klaviyo event | QA customer 31482633617662; DiscountCodeNode/1895883964670 | 2,600 points | code ELITE-MBEWXJ, 100 points, last_reward_code + reward_codes + redeem_status=ready, tag removed |
+| 2026-11-16 09:27 | tagsAdd, then redeem service: metafieldsSet, tagsRemove | QA customer 31482633617662 | 100 points | refused (not enough points): redeem_status=not_enough_points, tag removed, balance unchanged |
+| 2026-11-16 09:27 | discountCodeDeactivate; redeem service metafieldsSet | ELITE-MBEWXJ; QA customer | active | deactivated (never used); reward_codes status → expired |
+| 2026-11-16 09:27 | customerCreate, metafieldsDelete (welcome test) | QA2 customer pabasarawasava+qa2 (31483154268414) | did not exist; old Flow wrote 500 / Bronze / 0.0 | created with tag qa-test; those three metafields removed to stand in for "old Flow off" |
+| 2026-11-16 09:28 | account activation; welcome service (qa mode): metafieldsSet, tagsAdd | QA2 customer 31483154268414 | no points | enabled; 500 points, Bronze, tag welcome_awarded |
+| 2026-11-16 09:27 | D1 shops.config | snh-ops | - | dailyWriteBudget 2,000,000 (paid plan); welcome QA customer ID added |

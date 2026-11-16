@@ -126,7 +126,10 @@ export async function processCustomer(env, shop, customerId, cfgR, m, now = Date
   if (have == null || have < cfgR.points) return refuse(env, shop, r, c, cfgR, `only ${have == null ? 0 : have} points`, 'not_enough_points', now);
   // one open reward at a time: a member who still holds an unused, active code keeps it instead of getting a second one
   const held = [...parseCodes(c).map((x) => x.code), c.last && c.last.value].filter(Boolean);
-  for (const code of [...new Set(held)]) { const s = await codeStatus(env, shop, code); if (s && s.status === 'active') return refuse(env, shop, r, c, cfgR, 'already holds unused code ' + code, 'ready', now); }
+  for (const code of [...new Set(held)]) { const s = await codeStatus(env, shop, code); if (!s || s.status !== 'active') continue;
+    // make sure that code shows under My rewards (codes issued by hand before this service are not in the list yet)
+    const list = parseCodes(c); if (!list.some((x) => x.code === code)) { list.push({ code, value: cfgR.value, created: null, expires: s.endsAt, status: 'active' }); await setMetafields(env, shop, [mf(c.id, 'reward_codes', 'json', JSON.stringify(list), c.codes ? c.codes.compareDigest : null)]); }
+    return refuse(env, shop, r, c, cfgR, 'already holds unused code ' + code + '; no new code, no points taken', 'ready', now); }
   const made = await createCode(env, shop, cfgR, cid, now);
   r.status = 'code_created'; r.code = made.code; r.discount_id = made.id; r.expires_at = made.ends; r.code_status = 'active'; r.updated_at = iso(now); await put(env, shop, r);
   return deduct(env, shop, r, await readCustomer(env, shop, cid), cfgR, now);                                                      // re-read right before the write

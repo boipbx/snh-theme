@@ -87,3 +87,18 @@ The earlier figure of Rs 1,087,818 covered 31 calendar days (it included 17 Oct,
 - Full data, every tab, 1440 and 390, light and dark: `overview-1440.png`, `loyalty-1440.png`, `bundles-1440.png`, `operations-1440.png`, the `-390` versions and the `-dark` versions.
 - Production right after deploy (member numbers pending the first sync): `prod-interim/`.
 - Time to data on screen: 0.3 to 0.5 s locally; 0.5 to 2.1 s from production through a proxy. The skeleton paints at once.
+
+## 16 Nov 2026: first production sync, redeem service, welcome points
+
+- **First v2 sync in production:** 20,274 rows written (first load of account states). Members 1,579; tiers for members Bronze 1,564 / Silver 10 / Gold 5; all records 20,062 / 78 / 22. Screenshot: `ops-app/v2/prod/overview-1440.png`.
+- **Paid plan:** `dailyWriteBudget` raised to 2,000,000.
+- **Redeem service + welcome points** added (`src/redeem.mjs`), both in QA mode. Details, test results and go-live steps: `REDEEM-GO-LIVE.md`. Latest deploy 16 Nov 09:30 UTC.
+
+**Decisions**
+- Modes are Worker variables `REDEEM_MODE` and `WELCOME_MODE` (`off`, `qa`, `live`); anything else counts as off. QA customer IDs are store config.
+- No enabled account → status `no_account` (kept apart from `not_enough_points`); the tag is removed either way.
+- One open reward at a time: a member holding an unused active code is not issued another. That code is added to My rewards if missing.
+- The code applies to all products, bundles included: neither the theme nor a policy page excludes bundles from rewards.
+- Rolling back a code uses "deactivate" on the code the service just created; it never deletes and never touches other discounts.
+- Welcome in live mode looks at customers updated in the last few minutes; one with a balance already is only tagged `welcome_awarded`, never changed.
+- The Redeem form is behind Shopify's captcha, so the automated test added the tag directly.

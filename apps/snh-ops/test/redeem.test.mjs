@@ -73,8 +73,9 @@ test('no enabled account: refused, no code', async () => {
   const W = world(); W.add(QA, { state: 'DISABLED' }); await withFetch(W, () => runRedeem(W.env, shop, NOW)); assert.equal(W.discounts.size, 0); assert.equal(pts(W, QA), 2600); assert.equal(W.customers.get(QA).mf.redeem_status, 'no_account');
 });
 test('a member who still holds an unused code does not get a second one', async () => {
-  const W = world(); W.add(QA, { mf: { loyalty_points: '3025', last_reward_code: 'ELITE-OLD' } }); W.discounts.set('ELITE-OLD', { id: 'x', input: {}, status: 'ACTIVE', used: 0 });
+  const W = world(); W.add(QA, { mf: { loyalty_points: '3025', last_reward_code: 'ELITE-OLD' } }); W.discounts.set('ELITE-OLD', { id: 'x', input: { endsAt: '2027-02-07T17:15:59Z' }, status: 'ACTIVE', used: 0 });
   const out = await withFetch(W, () => runRedeem(W.env, shop, NOW)); assert.equal(out.processed[0].status, 'refused'); assert.match(out.processed[0].note, /already holds/); assert.equal(pts(W, QA), 3025); assert.equal(W.discounts.size, 1); assert.deepEqual(W.customers.get(QA).tags, []);
+  const list = JSON.parse(W.customers.get(QA).mf.reward_codes); assert.deepEqual([list.length, list[0].code, list[0].status], [1, 'ELITE-OLD', 'active']); assert.equal(W.customers.get(QA).mf.redeem_status, 'ready'); assert.equal(W.events.length, 0);
 });
 test('rollback: if the deduction fails, the code is cancelled and no points are taken', async () => {
   const W = world(); W.add(QA, {}); W.failDeduct = true; const out = await withFetch(W, () => runRedeem(W.env, shop, NOW));
