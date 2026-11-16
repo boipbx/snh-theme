@@ -8,6 +8,20 @@
 {%- endcomment -%}
 {%- liquid
   assign redeem_from = settings.snh_redeem_from | default: 2500
+  # 16 Nov: redeem service state. reward_codes = JSON list written by the redeem service (code, value, created, expires, status).
+  assign r_status = customer.metafields.custom.redeem_status.value | default: ''
+  assign r_codes = customer.metafields.custom.reward_codes.value
+  assign r_ready = ''
+  for rc in r_codes
+    if rc.status == 'active'
+      assign r_ready = rc.code
+    endif
+  endfor
+  # redemption stays paused for everyone except test accounts (tag qa-test)
+  assign r_paused = settings.loyalty_redeem_paused
+  if customer.tags contains 'qa-test'
+    assign r_paused = false
+  endif
   assign per_point = settings.snh_point_value | default: 1
   assign redeem_rs = redeem_from | times: per_point
   assign welcome = settings.snh_welcome_points | default: 500
@@ -49,8 +63,12 @@
       <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
     {%- elsif pending -%}
       <p class="bal__st"><span class="pill pill--wait">Request pending</span></p>
-      <p class="bal__p">We've got your request to trade {% render 'snh-num', n: redeem_from %} points. Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} reward arrives by email, usually within a working day.</p>
-    {%- elsif settings.loyalty_redeem_paused -%}
+      <p class="bal__p">We've got your request to trade {% render 'snh-num', n: redeem_from %} points. Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} code will be ready in a few minutes. It shows under My rewards and we email it to you.</p>
+    {%- elsif r_ready != '' -%}
+      <p class="bal__st"><span class="pill pill--ok">Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} code is ready</span></p>
+      <p class="bal__p">Use it at checkout on your next order. You can trade more points once this code is used.</p>
+      <a class="v-btn v-btn--ink" href="#my-rewards"><span>See my rewards</span></a>
+    {%- elsif r_paused -%}
       {%- comment -%} 16 Nov: redemption paused while balances are reviewed (Theme settings → SNH Elite → Pause redemption).
         No redeem button or form is printed. Points and tiers are untouched. {%- endcomment -%}
       <p class="bal__st"><span class="pill pill--wait">Rewards are being updated</span></p>
@@ -76,12 +94,45 @@
           {{ ask }}
         {%- endform -%}
     {%- else -%}
-      <p class="bal__p"><b>{% render 'snh-num', n: m[15] %} points</b> to your first reward. At {{ m[7] }}% back that's about {{ m[15] | times: 100 | divided_by: m[7] | times: 100 | money_without_trailing_zeros }} of shopping.</p>
+      {%- if r_status == 'not_enough_points' -%}<p class="bal__st"><span class="pill pill--wait">Not enough points</span></p>{%- endif -%}
+      <p class="bal__p"><b>{% render 'snh-num', n: m[15] %} points</b> to your {% if r_codes.size > 0 %}next{% else %}first{% endif %} reward. At {{ m[7] }}% back that's about {{ m[15] | times: 100 | divided_by: m[7] | times: 100 | money_without_trailing_zeros }} of shopping.</p>
       <div class="bal__bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ redeem_from }}" aria-valuenow="{{ have }}" aria-label="Points towards your first reward"><i style="width: {{ pct }}%"></i></div>
       <a class="v-btn v-btn--ink" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
     {%- endif -%}
   </div>
 </div>
+
+{%- comment -%} 16 Nov: My rewards = every code the redeem service has issued to this member (custom.reward_codes). {%- endcomment -%}
+<section class="myr" id="my-rewards" aria-labelledby="{{ sid }}-myr-h">
+  <h2 class="app__h2" id="{{ sid }}-myr-h">My rewards</h2>
+  {%- if r_codes.size > 0 -%}
+    <ul class="myr__list" role="list">
+      {%- assign r_sorted = r_codes | reverse -%}
+      {%- for rc in r_sorted -%}
+        <li class="myr__i" data-status="{{ rc.status | escape }}">
+          <div class="myr__top">
+            <p class="myr__v">{{ rc.value | times: 100 | money_without_trailing_zeros }} off</p>
+            {%- case rc.status -%}
+              {%- when 'active' -%}<span class="pill pill--ok">Ready to use</span>
+              {%- when 'used' -%}<span class="pill">Used</span>
+              {%- else -%}<span class="pill">Expired</span>
+            {%- endcase -%}
+          </div>
+          <p class="myr__code" translate="no">{{ rc.code | escape }}</p>
+          <p class="myr__s">{% if rc.status == 'active' %}One use, on orders of {{ redeem_rs | plus: 1 | times: 100 | money_without_trailing_zeros }} or more. Expires {{ rc.expires | date: '%-d %b %Y' }}.{% elsif rc.status == 'used' %}Issued {{ rc.created | date: '%-d %b %Y' }}.{% else %}Expired {{ rc.expires | date: '%-d %b %Y' }}.{% endif %}</p>
+          {%- if rc.status == 'active' -%}
+            <div class="myr__btns">
+              <button class="v-btn v-btn--accent myr__copy" type="button" data-copy="{{ rc.code | escape }}"><span data-copy-label>Copy code</span></button>
+              <a class="v-btn v-btn--line" href="/discount/{{ rc.code | url_encode }}?redirect=/cart"><span>Use at checkout</span></a>
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    <p class="myr__empty">Reach {% render 'snh-num', n: redeem_from %} points to unlock your first {{ redeem_rs | times: 100 | money_without_trailing_zeros }} reward.</p>
+  {%- endif -%}
+</section>
 
 {%- liquid
   # earnings calculator: starts at the member's average month (spend this year ÷ 12), rounded to the slider step

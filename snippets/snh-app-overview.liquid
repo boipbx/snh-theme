@@ -125,7 +125,7 @@
     {%- else -%}
       <li><a class="qact__a" href="{{ routes.all_products_collection_url }}">{% render 'snh-v2-icon', name: 'bag' %}<span><b>Start shopping</b><i>Earn {{ m[7] }}% back</i></span></a></li>
     {%- endif -%}
-    <li><a class="qact__a" href="#rewards" data-go="rewards"{% if m[14] == '1' and pending != true and settings.loyalty_redeem_paused != true %} data-redeem-open{% endif %}>{% render 'snh-v2-icon', name: 'gift' %}<span><b>Redeem points</b><i>{% if pending %}Request pending{% elsif m[14] == '1' %}Reward ready{% elsif m[3] == 'x' %}From {% render 'snh-num', n: redeem_from %} points{% else %}{% render 'snh-num', n: m[15] %} to go{% endif %}</i></span></a></li>
+    <li><a class="qact__a" href="#rewards" data-go="rewards"{% unless customer.tags contains 'qa-test' %}{% assign ov_paused = settings.loyalty_redeem_paused %}{% endunless %}{% if m[14] == '1' and pending != true and ov_paused != true %} data-redeem-open{% endif %}>{% render 'snh-v2-icon', name: 'gift' %}<span><b>Redeem points</b><i>{% if pending %}Request pending{% elsif m[14] == '1' %}Reward ready{% elsif m[3] == 'x' %}From {% render 'snh-num', n: redeem_from %} points{% else %}{% render 'snh-num', n: m[15] %} to go{% endif %}</i></span></a></li>
   </ul>
   {%- comment -%}
     Refer a friend (Round 10): a referral app's block (Add block → Apps) replaces the card; with "Referral rewards
@@ -178,7 +178,7 @@
       {%- assign shown = 1 -%}
       <li class="feed__i feed__i--hot">
         <span class="feed__dot" aria-hidden="true">{% render 'snh-v2-icon', name: 'gift' %}</span>
-        <div class="feed__b"><p class="feed__t">Redeem request sent</p><p class="feed__s">Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} cash-off reward is on its way by email.</p></div>
+        <div class="feed__b"><p class="feed__t">Redeem request sent</p><p class="feed__s">Your {{ redeem_rs | times: 100 | money_without_trailing_zeros }} code will be ready in a few minutes, under My rewards.</p></div>
         <span class="pill pill--wait">Pending</span>
       </li>
     {%- endif -%}

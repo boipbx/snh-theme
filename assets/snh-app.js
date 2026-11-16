@@ -1093,4 +1093,12 @@
     $$('[data-quiz]').forEach(function (q) { if (!q.__quiz && q.getAttribute('data-mode') !== 'register') quizInit(q, null); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  /* 16 Nov: My rewards: copy a reward code */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-copy]'); if (!b) return;
+    var code = b.getAttribute('data-copy'), label = b.querySelector('[data-copy-label]') || b, old = label.textContent;
+    var done = function () { label.textContent = 'Copied'; setTimeout(function () { label.textContent = old; }, 1800); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done, function () { window.prompt('Copy your code', code); });
+    else window.prompt('Copy your code', code);
+  });
 })();

@@ -9,6 +9,20 @@
   assign per_point = settings.snh_point_value | default: 1
   assign welcome = settings.snh_welcome_points | default: 500
   assign cdn = 'https://cdn.shopify.com/s/files/1/0258/9625/5550/files/'
+  # 16 Nov: redeem service state. reward_codes = JSON list written by the redeem service (code, value, created, expires, status).
+  assign r_status = customer.metafields.custom.redeem_status.value | default: ''
+  assign r_codes = customer.metafields.custom.reward_codes.value
+  assign r_ready = ''
+  for rc in r_codes
+    if rc.status == 'active'
+      assign r_ready = rc.code
+    endif
+  endfor
+  # redemption stays paused for everyone except test accounts (tag qa-test)
+  assign r_paused = settings.loyalty_redeem_paused
+  if customer.tags contains 'qa-test'
+    assign r_paused = false
+  endif
 -%}
 <aside class="rwd" aria-labelledby="rwd-h-{{ id }}">
   <div class="rwd__stage" aria-hidden="true">
@@ -43,13 +57,22 @@
         assign g_month = g_spend | divided_by: 300.0 | ceil | times: 100
       -%}
       {%- if pending -%}
-        <p class="rwd__big">Reward on its way</p>
-        <p class="rwd__p">Your redeem request is in. It arrives by email.</p>
+        <p class="rwd__big">Request pending</p>
+        <p class="rwd__p">Your code will be ready in a few minutes.</p>
         <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See rewards</span></a>
-      {%- elsif settings.loyalty_redeem_paused and m[14] == '1' -%}
+      {%- elsif r_ready != '' -%}
+        <p class="rwd__big">Your {{ redeem_from | times: per_point | times: 100 | money_without_trailing_zeros }} code is ready</p>
+        <div class="rwd__bar" aria-hidden="true"><i style="width: 100%"></i></div>
+        <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See my rewards</span></a>
+      {%- elsif r_paused and m[14] == '1' -%}
         <p class="rwd__big">Rewards are being updated</p>
         <p class="rwd__p">Check back soon. Your points are safe.</p>
         <a class="v-btn rwd__btn" href="#rewards" data-go="rewards"><span>See rewards</span></a>
+      {%- elsif r_status == 'not_enough_points' and m[14] != '1' -%}
+        <p class="rwd__big">Not enough points</p>
+        <div class="rwd__bar" role="progressbar" aria-valuemin="0" aria-valuemax="{{ redeem_from }}" aria-valuenow="{{ have }}" aria-label="Progress to your next reward"><i style="width: {{ pct }}%"></i></div>
+        <p class="rwd__p">You need {% render 'snh-num', n: redeem_from %} points to redeem. <b>{% render 'snh-num', n: m[15] %}</b> to go.</p>
+        <a class="v-btn rwd__btn" href="{{ routes.all_products_collection_url }}"><span>Shop to earn</span></a>
       {%- elsif m[14] == '1' -%}
         <p class="rwd__big">{{ redeem_from | times: per_point | times: 100 | money_without_trailing_zeros }} off is ready</p>
         <div class="rwd__bar" aria-hidden="true"><i style="width: 100%"></i></div>
