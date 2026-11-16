@@ -115,11 +115,11 @@
             {%- case rc.status -%}
               {%- when 'active' -%}<span class="pill pill--ok">Ready to use</span>
               {%- when 'used' -%}<span class="pill">Used</span>
-              {%- else -%}<span class="pill">Expired</span>
+              {%- else -%}<span class="pill">Not valid</span>
             {%- endcase -%}
           </div>
           <p class="myr__code" translate="no">{{ rc.code | escape }}</p>
-          <p class="myr__s">{% if rc.status == 'active' %}One use, on orders of {{ redeem_rs | plus: 1 | times: 100 | money_without_trailing_zeros }} or more. Expires {{ rc.expires | date: '%-d %b %Y' }}.{% elsif rc.status == 'used' %}Issued {{ rc.created | date: '%-d %b %Y' }}.{% else %}Expired {{ rc.expires | date: '%-d %b %Y' }}.{% endif %}</p>
+          <p class="myr__s">{% if rc.status == 'active' %}One use, on orders of {{ redeem_rs | plus: 1 | times: 100 | money_without_trailing_zeros }} or more. Expires {{ rc.expires | date: '%-d %b %Y' }}.{% elsif rc.status == 'used' %}Issued {{ rc.created | date: '%-d %b %Y' }}.{% else %}No longer valid.{% endif %}</p>
           {%- if rc.status == 'active' -%}
             <div class="myr__btns">
               <button class="v-btn v-btn--accent myr__copy" type="button" data-copy="{{ rc.code | escape }}"><span data-copy-label>Copy code</span></button>
