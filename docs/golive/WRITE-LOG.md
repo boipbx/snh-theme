@@ -616,3 +616,4 @@ Backup: docs/golive/backup-2026-11-14/bundles-before-activation.json.
 | 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Longevity Duo (/products/longevity-duo) | DRAFT | ACTIVE |
 | 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Executive Stack (/products/executive-stack) | DRAFT | ACTIVE |
 | 2026-11-14 17:40 | productUpdate (activate-bundles.mjs) | Longevity Premium (/products/longevity-premium) | DRAFT | ACTIVE |
+| 2026-11-16 04:20 | theme (feat/theme-v2 ca9cf83) | snh-app-rewards/reward/overview.liquid, settings_schema.json, settings_data.json | redeem button shown when eligible | setting loyalty_redeem_paused = true: no Redeem button/form, "Rewards are being updated" (backup docs/golive/backup-2026-11-16/) |
