@@ -51,7 +51,7 @@ Other figures at the time of the test: Silver 78, Bronze 20,055; 18,274,568 poin
 
 ## 16 Nov 2026: v2 (definitions, redesign, exports, write budget)
 
-Deployed 16 Nov 04:41 UTC (10:11 Colombo), version 5bc8707f. Tests: 36 pass (`node --experimental-sqlite --test test/*.test.mjs`).
+Deployed 16 Nov 04:41 UTC (10:11 Colombo); redeployed shortly after with database reads batched (the free plan allows 50 database calls per Worker run). Tests: 36 pass (`node --experimental-sqlite --test test/*.test.mjs`).
 
 **Decisions (made without asking, as instructed)**
 - **Member = customer with an ENABLED account.** Everything else is a "customer record". Points are shown for members and for all records. Anything worked out from rules, not read from Shopify, carries an "Estimate" label (points issued, member growth).

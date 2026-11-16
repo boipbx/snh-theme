@@ -6,8 +6,8 @@ import fs from 'node:fs'; import http from 'node:http'; import { DatabaseSync } 
 import worker, { api } from './src/worker.mjs'; import { startSync, step, getState } from './src/sync.mjs'; import { sign } from './src/auth.mjs'; import { page } from './src/ui.mjs';
 fs.mkdirSync(new URL('./.local/', import.meta.url), { recursive: true });
 const db = new DatabaseSync(new URL('./.local/ops.sqlite', import.meta.url).pathname); db.exec(fs.readFileSync(new URL('./schema.sql', import.meta.url), 'utf8'));
-const stmt = (sql, args = []) => ({ bind: (...a) => stmt(sql, a), run: async () => { db.prepare(sql).run(...args); return { success: true }; }, all: async () => ({ results: db.prepare(sql).all(...args) }), first: async () => db.prepare(sql).get(...args) || null, _run: () => db.prepare(sql).run(...args) });
-const DB = { prepare: (sql) => stmt(sql), batch: async (list) => { db.exec('BEGIN'); try { for (const s of list) s._run(); db.exec('COMMIT'); } catch (e) { db.exec('ROLLBACK'); throw e; } return []; } };
+const stmt = (sql, args = []) => ({ bind: (...a) => stmt(sql, a), run: async () => { db.prepare(sql).run(...args); return { success: true }; }, all: async () => ({ results: db.prepare(sql).all(...args) }), first: async () => db.prepare(sql).get(...args) || null, _run: () => (/^\s*SELECT/i.test(sql) ? { results: db.prepare(sql).all(...args) } : { results: [], meta: { rows_written: Number(db.prepare(sql).run(...args).changes) } }) });
+const DB = { prepare: (sql) => stmt(sql), batch: async (list) => { db.exec('BEGIN'); const out = []; try { for (const s of list) out.push(s._run()); db.exec('COMMIT'); } catch (e) { db.exec('ROLLBACK'); throw e; } return out; } };
 const env = { ...process.env, DB, API_VERSION: '2026-10' }; const shop = process.env.SHOPIFY_STORE;
 const cfg = fs.readFileSync(new URL(process.env.STORE_CONFIG || './config/example-store.json', import.meta.url), 'utf8');
 db.prepare('INSERT INTO shops (shop, config) VALUES (?, ?) ON CONFLICT(shop) DO UPDATE SET config=excluded.config').run(shop, cfg);

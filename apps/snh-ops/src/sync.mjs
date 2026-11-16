@@ -11,7 +11,8 @@ import { startBulk, bulkStatus, customersQuery, ordersQuery, customerRow, orderR
 import { klaviyoData } from './klaviyo.mjs';
 import * as M from './metrics.mjs';
 
-const CHUNK = 1_500_000, MAX_ROWS = 12_000;
+// D1's free plan allows 50 database calls per Worker run (a batch is one call), so a step reads and writes in batches and takes at most MAX_ROWS lines.
+const CHUNK = 1_500_000, MAX_ROWS = 6_000;
 const RUNNING = (p) => !['idle', 'error'].includes(p);
 export const isLimitError = (e) => /daily row write limit|D1[^.]*exceeded|code: 7500/i.test(String((e && e.message) || e));
 export const LIMIT_MSG = 'The database has reached its daily write limit. Reads still work. The next sync runs after 00:00 UTC (05:30 Colombo).';
@@ -74,7 +75,7 @@ export async function upsertChanged(env, table, key, cols, rows, budget) {
   const shop = rows[0].shop; const have = new Map(); const sel = [];
   for (let i = 0; i < rows.length; i += 90) { const ids = rows.slice(i, i + 90).map((r) => r[key]);
     sel.push(env.DB.prepare(`SELECT ${[key, ...cols.filter((c) => c !== key)].join(',')} FROM ${table} WHERE shop=? AND ${key} IN (${ids.map(() => '?').join(',')})`).bind(shop, ...ids)); }
-  for (let i = 0; i < sel.length; i += 40) { const res = await Promise.all(sel.slice(i, i + 40).map((s) => s.all())); for (const r of res) for (const x of r.results) have.set(x[key], sig(x, cols)); }
+  for (let i = 0; i < sel.length; i += 50) { const res = await env.DB.batch(sel.slice(i, i + 50)); for (const r of res) for (const x of r.results) have.set(x[key], sig(x, cols)); }
   const last = new Map(); for (const r of rows) last.set(r[key], r);                         // the same key twice in one batch: the last one wins
   const changed = [...last.values()].filter((r) => have.get(r[key]) !== sig(r, cols));
   if (!changed.length) return { written: 0, changed: 0, same: rows.length };
@@ -197,8 +198,9 @@ export async function step(env, shop, now = Date.now()) {
 }
 async function deliveryRows(env, shop, pick) {
   // an order already marked PICK_UP stays PICK_UP
-  const ids = [...pick.keys()]; const cur = new Map();
-  for (let i = 0; i < ids.length; i += 90) { const part = ids.slice(i, i + 90); const r = await env.DB.prepare(`SELECT id, delivery FROM orders WHERE shop=? AND id IN (${part.map(() => '?').join(',')})`).bind(shop, ...part).all(); for (const x of r.results) cur.set(x.id, x.delivery); }
+  const ids = [...pick.keys()]; const cur = new Map(); const sel = [];
+  for (let i = 0; i < ids.length; i += 90) { const part = ids.slice(i, i + 90); sel.push(env.DB.prepare(`SELECT id, delivery FROM orders WHERE shop=? AND id IN (${part.map(() => '?').join(',')})`).bind(shop, ...part)); }
+  for (let i = 0; i < sel.length; i += 50) for (const r of await env.DB.batch(sel.slice(i, i + 50))) for (const x of r.results) cur.set(x.id, x.delivery);
   return ids.filter((id) => cur.has(id) && cur.get(id) !== 'PICK_UP').map((id) => ({ shop, id, delivery: pick.get(id) }));
 }
 async function nextOrders(env, shop, st, cfg, budget, add) {

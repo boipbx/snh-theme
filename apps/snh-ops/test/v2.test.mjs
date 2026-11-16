@@ -71,13 +71,13 @@ test('Klaviyo: only live flows with the store prefix count as current', () => {
 });
 
 // ── sync: write only what changed, stay inside the daily budget ──
-const mk = () => { const db = new DatabaseSync(':memory:'); const stmt = (sql, a = []) => ({ bind: (...x) => stmt(sql, x), run: async () => { const r = db.prepare(sql).run(...a); return { meta: { rows_written: Number(r.changes) } }; }, all: async () => ({ results: db.prepare(sql).all(...a) }), first: async () => db.prepare(sql).get(...a) || null, _run: () => db.prepare(sql).run(...a) });
-  return { db, env: { DB: { prepare: (s) => stmt(s), batch: async (l) => l.map((s) => ({ meta: { rows_written: Number(s._run().changes) } })) } } }; };
+const mk = () => { const db = new DatabaseSync(':memory:'); const stmt = (sql, a = []) => ({ bind: (...x) => stmt(sql, x), run: async () => { const r = db.prepare(sql).run(...a); return { meta: { rows_written: Number(r.changes) } }; }, all: async () => ({ results: db.prepare(sql).all(...a) }), first: async () => db.prepare(sql).get(...a) || null, _run: () => (/^\s*SELECT/i.test(sql) ? { results: db.prepare(sql).all(...a) } : { results: [], meta: { rows_written: Number(db.prepare(sql).run(...a).changes) } }) });
+  return { db, env: { DB: { prepare: (s) => stmt(s), batch: async (l) => { calls.n++; return l.map((s) => s._run()); } } }, calls }; }; const calls = { n: 0 };
 const cols = ['id', 'name', 'points', 'tier', 'annual_spend', 'state'];
 test('upsertChanged: unchanged rows are skipped, changed and new rows are written', async () => {
   const { db, env } = mk(); db.exec(fs.readFileSync(new URL('../schema.sql', import.meta.url), 'utf8')); const shop = 's.myshopify.com';
   const rows = Array.from({ length: 250 }, (_, i) => ({ shop, id: 'c' + i, name: 'N' + i, points: i, tier: 'Bronze', annual_spend: i * 1.5, state: 'DISABLED' }));
-  assert.deepEqual(await upsertChanged(env, 'customers', 'id', cols, rows), { written: 250, changed: 250, same: 0 });
+  calls.n = 0; assert.deepEqual(await upsertChanged(env, 'customers', 'id', cols, rows), { written: 250, changed: 250, same: 0 }); assert.ok(calls.n <= 3, 'database calls: ' + calls.n);   // reads and writes go in batches (50 calls per run on the free plan)
   assert.deepEqual(await upsertChanged(env, 'customers', 'id', cols, rows), { written: 0, changed: 0, same: 250 });
   const next = rows.map((r) => ({ ...r })); next[7].points = 999; next[8].state = 'ENABLED'; next.push({ shop, id: 'new', name: 'New', points: 500, tier: 'Bronze', annual_spend: null, state: 'ENABLED' });
   const r = await upsertChanged(env, 'customers', 'id', cols, next); assert.equal(r.written, 3); assert.equal(r.same, 248);
