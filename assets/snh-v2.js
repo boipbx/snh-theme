@@ -534,6 +534,8 @@
     function runSearch() {
       var q = sq.value.trim(), empty = srch.querySelector('.srch__empty'), res = srch.querySelector('.srch__res');
       if (q.length < 2) { empty.hidden = false; res.hidden = true; return; }
+      /* 16 Nov: smart engine (assets/snh-search.js, loaded when search opens). Until it has loaded, the plain search below answers. */
+      if (window.SNHSearch) { window.SNHSearch.search({ el: srch, q: q, whatsapp: srch.getAttribute('data-wa'), community: srch.getAttribute('data-community'), exclusive: srch.getAttribute('data-exclusive') }); return; }
       if (sCtl && sCtl.abort) sCtl.abort();
       sCtl = typeof AbortController === 'function' ? new AbortController() : null;
       /* 11 Nov: one mixed request shares its limit across types (creatine showed 2 products), so ask for
@@ -589,6 +591,11 @@
       requestAnimationFrame(function () { srch.classList.add('is-open'); if (sScrim) sScrim.classList.add('is-on'); });
       document.body.style.overflow = 'hidden';
       setTimeout(function () { sq.focus(); }, 60);
+      /* load the engine and the catalogue index on first open only; re-run if the customer has already typed */
+      var again = function () { if (!srch.hidden && sq.value.trim().length >= 2) runSearch(); };
+      var cat = function () { if (window.SNHSearch && !window.SNHSearch.ready()) window.SNHSearch.load().then(again); };
+      if (window.SNHSearch) cat();
+      else if (!srch.__eng && srch.getAttribute('data-engine')) { srch.__eng = 1; var sc = document.createElement('script'); sc.src = srch.getAttribute('data-engine'); sc.onload = function () { again(); cat(); }; document.head.appendChild(sc); }
     }
     function closeSearch() {
       if (!srch || srch.hidden) return;

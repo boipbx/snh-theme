@@ -2753,3 +2753,27 @@ html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bo
 @media (prefers-reduced-motion: reduce) {
   .v2 *, .v2 *::before, .v2 *::after, .snh-np__card, .snh-onb, .cmp-pop { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* 16 Nov: smart search rows (assets/snh-search.js) + restock links (snippets/snh-restock) */
+.srch__list .mini--s .mini__t { align-self: end; }
+.mini__v { display: block; margin-bottom: 2px; color: var(--grey-2); font: 600 11px/1.3 var(--sans); letter-spacing: .02em; }
+.mini__x { margin-left: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(191, 69, 18, .1); color: var(--v-accent); font: 700 9.5px/1.2 var(--sans); font-style: normal; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.srch__list .mini__p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.srch__list .mini__p s { color: var(--grey-2); font-weight: 400; }
+.mini__save { padding: 2px 7px; border-radius: 4px; background: var(--v-accent); color: #fff; font: 700 10.5px/1.3 var(--sans); font-style: normal; letter-spacing: .03em; white-space: nowrap; }
+.mini__out { color: #B23C11; font: 700 11.5px/1.3 var(--sans); font-style: normal; white-space: nowrap; }
+.mini.is-out img { opacity: .5; filter: grayscale(.35); }
+.mini.is-out .mini__t { color: var(--grey-1); }
+.rstk { display: grid; gap: 6px; }
+.rstk--row { margin: 8px 0 2px 68px; }
+.rstk--all { margin-top: 6px; }
+@media (min-width: 1024px) { .srch__res .srch__list[data-r="p"] .rstk--all { grid-column: 1 / -1; } }
+.rstk__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: var(--pill, 999px); background: #FFF1E8; color: var(--v-accent); font: 700 13.5px/1.2 var(--sans); text-decoration: none; transition: background 160ms var(--ease), color 160ms var(--ease); }
+.rstk__btn:hover { background: var(--v-accent); color: #fff; }
+.rstk__btn svg { width: 14px; height: 14px; flex: none; }
+.rstk__comm { justify-self: start; color: var(--grey-1); font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; }
+.rstk__comm:hover { color: var(--v-accent); }
+.rstk--pdp { margin-top: 12px; }
+.rstk--pdp .rstk__btn { width: 100%; min-height: 48px; font-size: 14.5px; }
+.srch__sugg { margin-bottom: 20px; }
+.srch__list--plain[hidden], .srch__list[hidden], .srch__sugg[hidden], .srch__col[hidden] { display: none; }

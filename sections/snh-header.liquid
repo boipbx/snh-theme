@@ -265,10 +265,12 @@
   <div class="mega-scrim" hidden></div>
 
   {%- comment -%} predictive search overlay {%- endcomment -%}
-  <div class="srch" id="srch-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Search" hidden>
+  {%- comment -%} 16 Nov: the smart search engine (assets/snh-search.js) loads only when search is opened {%- endcomment -%}
+  <div class="srch" id="srch-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Search" hidden data-engine="{{ 'snh-search.js' | asset_url }}" data-wa="{{ settings.snh_restock_whatsapp | default: settings.snh_whatsapp | default: '94764863359' | escape }}" data-community="{{ settings.snh_whatsapp_community | escape }}" data-exclusive="{{ settings.snh_exclusive_brands | default: 'Science in Sport, Revive, Healthspan Elite, Trace Minerals, Vitabiotics, Seven Seas' | escape }}">
     <div class="srch__bar"><form class="v-wrap srch__barin" action="{{ routes.search_url }}" method="get" role="search">
       <label class="srch__field">{% render 'snh-v2-icon', name: 'search' %}<input type="search" name="q" placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" aria-label="Search" aria-controls="srch-results-{{ section.id }}"></label>
       <input type="hidden" name="options[prefix]" value="last">
+      <input type="hidden" name="options[unavailable_products]" value="last">
       <input type="hidden" name="type" value="product">
       <button class="icon-btn srch__close" type="button" aria-label="Close search">{% render 'snh-v2-icon', name: 'close' %}</button>
     </form></div>

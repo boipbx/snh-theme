@@ -1654,6 +1654,30 @@
       },
       {
         "type": "header",
+        "content": "Search and restock"
+      },
+      {
+        "type": "text",
+        "id": "snh_restock_whatsapp",
+        "label": "Restock WhatsApp number",
+        "default": "94764863359",
+        "info": "Country code + number, no + or spaces. \"Update me when restocked\" in search and on sold-out product pages opens a chat with this number."
+      },
+      {
+        "type": "url",
+        "id": "snh_whatsapp_community",
+        "label": "WhatsApp community link",
+        "info": "Optional. When set, a small \"Join the SNH WhatsApp community for restock alerts\" link shows next to the restock button."
+      },
+      {
+        "type": "text",
+        "id": "snh_exclusive_brands",
+        "label": "Exclusive brands",
+        "default": "Science in Sport, Revive, Healthspan Elite, Trace Minerals, Vitabiotics, Seven Seas",
+        "info": "Comma separated. Tagged \"Exclusive to SNH\" in search and they win ties in ranking."
+      },
+      {
+        "type": "header",
         "content": "Google rating"
       },
       {
