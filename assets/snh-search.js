@@ -51,12 +51,13 @@
     return prev[b.length] <= max;
   }
   /* one token against whole words. Word-based, never a blind substring: "go" must not match "reGO". */
-  function tokenScore(token, words) {
-    if (!token) return 0; var best = 0;
+  /* pfx = shortest prefix that counts: 3 letters for a finished word, 2 for the word still being typed */
+  function tokenScore(token, words, pfx) {
+    if (!token) return 0; var best = 0; pfx = pfx || 3;
     for (var i = 0; i < words.length; i++) {
       var w = words[i];
       if (w === token) return 100;
-      if (token.length >= 3 && w.indexOf(token) === 0) { best = Math.max(best, 82); continue; }
+      if (token.length >= pfx && w.indexOf(token) === 0) { best = Math.max(best, 82); continue; }
       if (token.length >= 5 && w.length >= 5) {
         if (withinEdits(token, w, token.length >= 8 ? 2 : 1)) { best = Math.max(best, 68); continue; }
         if (w.indexOf(token) > -1) best = Math.max(best, 55);
@@ -126,21 +127,30 @@
 
   function render(el, query, rawProducts, R, cfg, isExcl) {
     var q = normalise(query), rawTokens = q.split(' ').filter(Boolean);
-    var groups = rawTokens.map(function (t) { return FORMS.indexOf(t) > -1 ? [t].concat(FORMS) : [t].concat((BRAND_ALIASES[t] || []).map(normalise)); });
-    var hasForm = rawTokens.some(function (t) { return FORMS.indexOf(t) > -1; });
+    /* 17 Nov: the LAST word is still being typed. From 2 letters it counts as a prefix ("caff" = caffeine, "caffeine ca" = capsules);
+       a single letter is too little to filter on, so it only nudges the order ("sis g" lifts SiS GO). */
+    var tail = '';
+    if (rawTokens.length > 1 && rawTokens[rawTokens.length - 1].length === 1) tail = rawTokens.pop();
+    var lastAt = rawTokens.length - 1;
+    /* a form word, finished or half-typed after another word: "caffeine tab" = caffeine capsules */
+    var isForm = function (t, i) { return FORMS.indexOf(t) > -1 || (i === lastAt && i > 0 && t.length >= 2 && FORMS.some(function (f) { return f.indexOf(t) === 0; })); };
+    var groups = rawTokens.map(function (t, i) { return isForm(t, i) ? [t].concat(FORMS) : [t].concat((BRAND_ALIASES[t] || []).map(normalise)); });
+    var hasForm = rawTokens.some(isForm);
     /* a group = the typed word or what it stands for; a two-word brand name counts only when both words are there */
-    var groupScore = function (g, words) { var best = 0; g.forEach(function (variant) { var parts = variant.split(' ').filter(Boolean), low = 100; parts.forEach(function (part) { low = Math.min(low, tokenScore(part, words)); }); if (parts.length) best = Math.max(best, low); }); return best; };
+    var groupScore = function (g, words, gi) { var best = 0; g.forEach(function (variant, vi) { var parts = variant.split(' ').filter(Boolean), low = 100; parts.forEach(function (part) { low = Math.min(low, tokenScore(part, words, gi === lastAt && vi === 0 ? 2 : 3)); }); if (parts.length) best = Math.max(best, low); }); return best; };
     function scoreProduct(p) {
       var titleWords = wordsOf(p.title), brandWords = wordsOf(p.vendor).concat(wordsOf(p.type || p.product_type)).concat(wordsOf(String(p.handle || '').replace(/-/g, ' ')));
       var title = titleWords.join(' '), score = 0, matched = 0, inTitle = 0;
       if (title === q) score += 1200; else if (title.indexOf(q) === 0) score += 700; else if (title.indexOf(q) > -1) score += 450;
-      groups.forEach(function (g) {
-        var inT = groupScore(g, titleWords), inB = groupScore(g, brandWords);
+      groups.forEach(function (g, gi) {
+        var inT = groupScore(g, titleWords, gi), inB = groupScore(g, brandWords, gi);
         if (inT >= 82) inTitle++;
         if (Math.max(inT, inB)) { matched++; score += inT >= inB ? inT : Math.round(inB * 0.7); }
       });
       /* every word the customer typed is accounted for somewhere */
-      if (rawTokens.length && matched === rawTokens.length) score += 320; else if (rawTokens.length) score -= (rawTokens.length - matched) * 90;
+      var all = rawTokens.length > 0 && matched === rawTokens.length;
+      if (all) score += 320; else if (rawTokens.length) score -= (rawTokens.length - matched) * 90;
+      if (tail && titleWords.some(function (w) { return w.indexOf(tail) === 0; })) score += 40;
       /* prefer the plainest product of an equally-matching set */
       score -= Math.min(titleWords.length, 12) * 2;
       /* a bundle whose contents cover everything typed clears the relevance floor, but stays below a product whose own title matches */
@@ -148,30 +158,35 @@
       /* not when a form was typed ("tablets", "capsules"): that customer wants one product, and every description mentions capsules */
       if (bm && rawTokens.length && !hasForm) {
         var bMatched = 0;
-        groups.forEach(function (g) { if (groupScore(g, bm.words) >= 68) bMatched++; });
+        groups.forEach(function (g, gi) { if (groupScore(g, bm.words, gi) >= 68) bMatched++; });
         if (bMatched === rawTokens.length) { score = Math.max(score, 305) + bMatched * 35; p.__hit = true; }
       }
       /* exclusive brands break ties in their favour, never ahead of a better match */
       if (isExcl(p)) score += 45;
-      p.__tm = inTitle;
+      p.__tm = inTitle; p.__all = all;   // __all: the title or brand has every typed word (the last one as a prefix)
       return score;
     }
     /* Shopify may never return the right product: score our own catalogue too and merge what genuinely matches */
     var merged = rawProducts.slice();
     if (catalogue && catalogue.length && rawTokens.length) {
       var seen = {}; merged.forEach(function (p) { seen[String(p.id || p.handle)] = 1; });
-      catalogue.map(function (p) { return { p: p, s: scoreProduct(p) }; }).filter(function (e) { return e.s >= 300; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 60)
+      catalogue.map(function (p) { return { p: p, s: scoreProduct(p), all: p.__all }; }).filter(function (e) { return e.s >= 300 || e.all; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 60)
         .forEach(function (e) { var k = String(e.p.id || e.p.handle); if (!seen[k]) { seen[k] = 1; merged.push(e.p); } });
     }
-    var scored = merged.map(function (p, i) { return { p: p, i: i, s: scoreProduct(p), ok: inStock(p) }; });
+    var scored = merged.map(function (p, i) { var sc = scoreProduct(p); return { p: p, i: i, s: sc, ok: inStock(p), all: p.__all }; });
     var top = scored.length ? Math.max.apply(null, scored.map(function (e) { return e.s; })) : 0;
     var weak = rawTokens.length > 0 && (scored.length === 0 || top < 260) && !!catalogue;
-    var real = scored.some(function (e) { return e.s >= 300; });
+    var real = scored.some(function (e) { return e.s >= 300 || e.all; });
     /* nothing matches every word: show the closest ones (a typed word is in the title) instead of a blank, never unrelated products */
     var close = !real && rawTokens.length > 1 ? scored.filter(function (e) { return e.p.__tm > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 8) : [];
-    var list = (real ? scored.filter(function (e) { return e.s >= 120; }) : close.length ? close : weak ? [] : scored)
-      /* in stock first and sold out last; inside each, best match first */
-      .sort(function (a, b) { if (a.ok !== b.ok) return a.ok ? -1 : 1; if (b.s !== a.s) return b.s - a.s; return a.i - b.i; });
+    /* a product named after every typed word is always shown, whatever its score */
+    var list = (real ? scored.filter(function (e) { return e.s >= 120 || e.all; }) : close.length ? close : weak ? [] : scored);
+    /* in stock first and sold out last; inside each, best match first. One exception: when fewer than three in-stock products are
+       named after the search, a sold-out product that IS named after it goes right after them, ahead of bundles that only
+       mention the word in their description ("caf" must not bury Caffeine Capsules under pre-workout bundles). */
+    var named = list.filter(function (e) { return e.ok && e.all; }).length, few = named < 3;
+    var tier = function (e) { return few ? (e.all ? (e.ok ? 0 : 1) : (e.ok ? 2 : 3)) : (e.ok ? 0 : 1); };
+    list.sort(function (a, b) { var ta = tier(a), tb = tier(b); if (ta !== tb) return ta - tb; if (b.s !== a.s) return b.s - a.s; return a.i - b.i; });
     /* a bundle that contains what was searched is lifted to position 2 at most */
     var at = -1; list.some(function (e, i) { if (e.p.__hit && e.p.__tm > 0 && e.ok) { at = i; return true; } return false; });   // only a bundle named after what was typed
     if (at > 2 && list.length > 2) list.splice(1, 0, list.splice(at, 1)[0]);
