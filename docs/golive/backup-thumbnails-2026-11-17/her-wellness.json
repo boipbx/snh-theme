@@ -1,0 +1,32 @@
+{
+ "product": "gid://shopify/Product/15506062278910",
+ "title": "Her Wellness",
+ "handle": "her-wellness",
+ "saved_at": "2026-11-17T04:04:43.029801+00:00",
+ "media": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46954278813950",
+   "alt": "Her Wellness \u2013 Revive Women's Health + CollaPURE Collagen",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/her-wellness-0.jpg?v=1794595081",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46954278846718",
+   "alt": "Her Wellness \u2013 REVIVE Women's Health - Female Hormone Support",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/her-wellness-1.jpg?v=1794595081",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46954278879486",
+   "alt": "Her Wellness \u2013 REVIVE CollaPURE - 100% Grass-Fed Collagen",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/her-wellness-2.jpg?v=1794595081",
+   "width": 2000,
+   "height": 2000
+  }
+ ]
+}

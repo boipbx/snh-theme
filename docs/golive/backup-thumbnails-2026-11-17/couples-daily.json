@@ -1,0 +1,32 @@
+{
+ "product": "gid://shopify/Product/15506068242686",
+ "title": "Couples Daily",
+ "handle": "couples-daily",
+ "saved_at": "2026-11-17T04:03:31.915590+00:00",
+ "media": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46954282320126",
+   "alt": "Couples Daily \u2013 2 x Revive Magnesium Glycinate + 2 x Vitamin D3 & K2",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/couples-daily-0.jpg?v=1794595151",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46954282352894",
+   "alt": "Couples Daily \u2013 REVIVE Magnesium Glycinate",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/couples-daily-1.jpg?v=1794595151",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46954282385662",
+   "alt": "Couples Daily \u2013 REVIVE Vitamin K2 & D3 (5000 IU)",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/couples-daily-2.jpg?v=1794595151",
+   "width": 2000,
+   "height": 2000
+  }
+ ]
+}

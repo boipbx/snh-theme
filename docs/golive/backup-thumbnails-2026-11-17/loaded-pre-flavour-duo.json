@@ -1,0 +1,24 @@
+{
+ "product": "gid://shopify/Product/15506057658622",
+ "title": "Loaded Pre Flavour Duo",
+ "handle": "loaded-pre-flavour-duo",
+ "saved_at": "2026-11-17T04:02:11.001593+00:00",
+ "media": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46954277863678",
+   "alt": "Loaded Pre Flavour Duo \u2013 2 x RYSE Loaded Pre-Workout",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/loaded-pre-flavour-duo-0.jpg?v=1794595057",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46954277896446",
+   "alt": "Loaded Pre Flavour Duo \u2013 RYSE Loaded Pre-Workout",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/loaded-pre-flavour-duo-1.jpg?v=1794595057",
+   "width": 2000,
+   "height": 2000
+  }
+ ]
+}

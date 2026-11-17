@@ -1,0 +1,40 @@
+{
+ "product": "gid://shopify/Product/15506066243838",
+ "title": "Full Reset",
+ "handle": "full-reset",
+ "saved_at": "2026-11-17T04:04:07.319059+00:00",
+ "media": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46954281009406",
+   "alt": "Full Reset \u2013 Revive Digest Aid + Liver Support + Glutamine",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/full-reset-0.jpg?v=1794595125",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46954281042174",
+   "alt": "Full Reset \u2013 Revive Digest Aid",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/full-reset-1.jpg?v=1794595125",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46954281074942",
+   "alt": "Full Reset \u2013 Revive Liver Support",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/full-reset-2.jpg?v=1794595126",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46954281107710",
+   "alt": "Full Reset \u2013 REVIVE Glutamine",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/full-reset-3.jpg?v=1794595126",
+   "width": 2000,
+   "height": 2000
+  }
+ ]
+}
