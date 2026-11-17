@@ -49,3 +49,26 @@ Top results before → after. Screenshots: `docs/golive/search-test/`.
 - **Console:** no errors from the theme. Two existing third-party messages (Clarity, Shop frame) are unchanged.
 - **Sideways scroll:** none at 375 or 1440.
 - **Speed:** the engine and the catalogue are not requested on page load (checked). Lighthouse mobile, home: 39, 40, 36 after; 40, 39, 41 on 14 Nov. Within run-to-run noise.
+
+## 17 Nov 2026: partial typing (commit 51d5522)
+
+Staff report: results only appeared once the full product name was typed. Only `assets/snh-search.js` changed.
+
+- **The word being typed is a prefix from 2 letters** ("caff" = caffeine, "caffeine ca" = capsules). Earlier words keep the existing rule (exact, typo, or a prefix of 3+ letters); they were not made stricter.
+- **A single trailing letter** ("caffeine t", "sis g") is too little to filter on: it no longer removes results, it only nudges the order.
+- **A half-typed form word after another word** counts as tablets = capsules ("caffeine tab", "caffeine cap").
+- **A product whose title or brand has every typed word is always shown**, also when Shopify's predictive search did not return it and whatever its score.
+- **Why caffeine capsules looked missing:** the product is sold out, so it sat last, under a dozen pre-workout bundles that only mention caffeine in their description. New rule: when fewer than three in-stock products are named after the search, a sold-out product that is named after it goes right after them, ahead of those bundles. With three or more in-stock matches, sold-out stays last as before ("ashwa").
+
+Live at 375px, expected product in the top 3. Screenshots: `docs/golive/search-test/prefix/`.
+
+| Query | Result |
+|---|---|
+| caf, caff, caffeine, caffeine t | Pass: Applied Nutrition Endurance Caffeine Capsules is 2nd (sold out, restock button), after SiS GO Energy + Caffeine Gels |
+| caffeine cap | Pass: 1st, the only result |
+| dym | Pass: Dymatize ISO 100 (sold out, restock button) |
+| crea | Pass: 32 creatine products |
+| ashwa | Pass: ashwagandha products first; REVIVE Ashwagandha KSM-66 still last with the restock button |
+| magn | Pass: magnesium products and the 3-Month Magnesium bundle |
+| sis g | Pass: SiS GO products first |
+| zzzz | Pass: "No products match" |
