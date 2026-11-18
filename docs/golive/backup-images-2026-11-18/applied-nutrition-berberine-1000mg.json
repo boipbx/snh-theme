@@ -1,0 +1,57 @@
+{
+ "product": "gid://shopify/Product/8684248006910",
+ "handle": "applied-nutrition-berberine-1000mg",
+ "title": "APPLIED NUTRITION Berberine Capsules 1000mg",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46189598114046",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/UntitledDesign_5.png?v=1790256243",
+   "alt": "APPLIED NUTRITION Berberine Capsules 1000mg - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46189542637822",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Berberine-1000mg-Capsules---Nutritionals---1000x1000.webp?v=1790256054",
+   "alt": "APPLIED NUTRITION Berberine Capsules 1000mg - Sports Nutrition Hub ",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46189542670590",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Berberine_1000mg_Capsules_-01_06ab21aa-55dd-4771-a9ed-dbfa4d34f4f2.webp?v=1790256054",
+   "alt": "APPLIED NUTRITION Berberine Capsules 1000mg - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46189542703358",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Berberine_1000mg_Capsules_-02_8f472672-9db7-4952-8b12-298f9c0efde7.webp?v=1790256054",
+   "alt": "APPLIED NUTRITION Berberine Capsules 1000mg - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/46189542736126",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Berberine_1000mg_Capsules_-03.webp?v=1790256054",
+   "alt": "APPLIED NUTRITION Berberine Capsules 1000mg - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/46189542965502",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Berberine_1000mg_Capsules_-04.webp?v=1790256054",
+   "alt": "APPLIED NUTRITION Berberine Capsules 1000mg - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954313842942\",\"gid://shopify/MediaImage/46189542637822\",\"gid://shopify/MediaImage/46189542670590\",\"gid://shopify/MediaImage/46189542703358\",\"gid://shopify/MediaImage/46189542736126\",\"gid://shopify/MediaImage/46189542965502\"]"
+}

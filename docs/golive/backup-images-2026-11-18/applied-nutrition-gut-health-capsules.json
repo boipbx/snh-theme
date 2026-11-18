@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9227362599166",
+ "handle": "applied-nutrition-gut-health-capsules",
+ "title": "Applied Nutrition Gut Health Capsules",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39154280595710",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GutHealthCapsulesbyAppliedNutritionfromSportsNutritionHub.png?v=1779085311",
+   "alt": "Applied Nutrition Gut Health Capsules bottle, UK-made daily gut health support for microbiome, digestion, and gut barrier function",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39154280694014",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GutHealthCapsulesbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779085311",
+   "alt": "Applied Nutrition Gut Health Capsules bottle, UK-made daily gut health support for microbiome, digestion, and gut barrier function",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39154280661246",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GutHealthCapsulesbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779085312",
+   "alt": "Applied Nutrition Gut Health Capsules bottle, UK-made daily gut health support for microbiome, digestion, and gut barrier function",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39154280628478",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GutHealthCapsulesbyAppliedNutritionfromSportsNutritionHub_3.png?v=1779085311",
+   "alt": "Applied Nutrition Gut Health Capsules bottle, UK-made daily gut health support for microbiome, digestion, and gut barrier function",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954326130942\",\"gid://shopify/MediaImage/39154280694014\",\"gid://shopify/MediaImage/39154280661246\",\"gid://shopify/MediaImage/39154280628478\"]"
+}

@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/9109266366718",
+ "handle": "trace-magnesium-glycinate-180",
+ "title": "TRACE Magnesium Glycinate Capsule 180 Capsules",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39100262940926",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinate180CapsulesbyTRACEfromSportsNutritionHub.png?v=1778480973",
+   "alt": "Trace Magnesium Glycinate 180-capsule bulk bottle, US-made daily magnesium glycinate for sleep, muscle, mood, and recovery support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39100262875390",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinate180CapsulesbyTRACEfromSportsNutritionHub_2.png?v=1778480970",
+   "alt": "Trace Magnesium Glycinate 180-capsule bulk bottle, US-made daily magnesium glycinate for sleep, muscle, mood, and recovery support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39100262908158",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinate180CapsulesbyTRACEfromSportsNutritionHub_1.png?v=1778480970",
+   "alt": "Trace Magnesium Glycinate 180-capsule bulk bottle, US-made daily magnesium glycinate for sleep, muscle, mood, and recovery support",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954321772798\",\"gid://shopify/MediaImage/39100262875390\",\"gid://shopify/MediaImage/39100262908158\"]"
+}

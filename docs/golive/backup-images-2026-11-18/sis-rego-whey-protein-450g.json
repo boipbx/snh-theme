@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/8756421525758",
+ "handle": "sis-rego-whey-protein-450g",
+ "title": "SiS Rego Whey Protein 450G",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39004430991614",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_2.png?v=1777456274",
+   "alt": "Science In Sport REGO Whey Protein 450g vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39004431122686",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_3.png?v=1777456274",
+   "alt": "Science In Sport REGO Whey Protein 450g vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39004431057150",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub.png?v=1777456274",
+   "alt": "Science In Sport REGO Whey Protein 450g vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39004431024382",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_1.png?v=1777456274",
+   "alt": "Science In Sport REGO Whey Protein 450g vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39004431089918",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_4.png?v=1777456274",
+   "alt": "Science In Sport REGO Whey Protein 450g vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954314793214\",\"gid://shopify/MediaImage/46954314825982\",\"gid://shopify/MediaImage/46954314858750\",\"gid://shopify/MediaImage/46954314891518\",\"gid://shopify/MediaImage/39004431089918\"]"
+}

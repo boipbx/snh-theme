@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/6757485674692",
+ "handle": "applied-nutrition-critical-greens",
+ "title": "APPLIED NUTRITION Critical Greens Powder",
+ "saved_at": "2026-11-18 04:53",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39213632291070",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CriticalGreensPowderbyAppliedNutritionfromSportsNutritionHub.png?v=1779795661",
+   "alt": "Applied Nutrition Critical Greens Powder tub, UK-made halal daily super-greens extracts blend with 17 ingredients per scoop, no fillers",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39213632323838",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CriticalGreensPowderbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779795662",
+   "alt": "Applied Nutrition Critical Greens Powder tub, UK-made halal daily super-greens extracts blend with 17 ingredients per scoop, no fillers",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954305126654\",\"gid://shopify/MediaImage/39213632323838\"]"
+}

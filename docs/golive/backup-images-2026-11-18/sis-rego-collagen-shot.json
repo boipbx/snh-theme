@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/9127451721982",
+ "handle": "sis-rego-collagen-shot",
+ "title": "SiS Rego Collagen Shot",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/38995342721278",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOCollagenShotbyScienceInSportfromSportsNutritionHub.png?v=1777372657",
+   "alt": "Science In Sport REGO Collagen Shot apple-flavoured collagen drink, UK-made 20g bovine collagen with 80mg vitamin C per single serve",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/38995342688510",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOCollagenShotbyScienceInSportfromSportsNutritionHub_1.png?v=1777372657",
+   "alt": "Science In Sport REGO Collagen Shot apple-flavoured collagen drink, UK-made 20g bovine collagen with 80mg vitamin C per single serve",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/38995342655742",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOCollagenShotbyScienceInSportfromSportsNutritionHub_2.png?v=1777372657",
+   "alt": "Science In Sport REGO Collagen Shot apple-flavoured collagen drink, UK-made 20g bovine collagen with 80mg vitamin C per single serve",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/38995342786814",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOCollagenShotbyScienceInSportfromSportsNutritionHub_3.png?v=1777372657",
+   "alt": "Science In Sport REGO Collagen Shot apple-flavoured collagen drink, UK-made 20g bovine collagen with 80mg vitamin C per single serve",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/38995342754046",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOCollagenShotbyScienceInSportfromSportsNutritionHub_4.png?v=1777372657",
+   "alt": "Science In Sport REGO Collagen Shot apple-flavoured collagen drink, UK-made 20g bovine collagen with 80mg vitamin C per single serve",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954322362622\",\"gid://shopify/MediaImage/46954322395390\",\"gid://shopify/MediaImage/38995342655742\",\"gid://shopify/MediaImage/46954322428158\",\"gid://shopify/MediaImage/38995342754046\"]"
+}

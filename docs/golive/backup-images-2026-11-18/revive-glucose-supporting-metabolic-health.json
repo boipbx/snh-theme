@@ -1,0 +1,81 @@
+{
+ "product": "gid://shopify/Product/15441856692478",
+ "handle": "revive-glucose-supporting-metabolic-health",
+ "title": "REVIVE Glucose - Supporting Metabolic Health",
+ "saved_at": "2026-11-18 04:57",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46575097315582",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Untitleddesign_2af570db-f78e-4964-a04d-f1defe1ca28c.png?v=1792497872",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46575100920062",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Glucose-SFP-blue.webp?v=1792497887",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46575100297470",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/COA-Glucose.webp?v=1792497885",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46575100264702",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GLUCOSE.webp?v=1792497885",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/46575099969790",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Title_755f5bd2-8c6f-4470-b82b-aa19bf34f11e.webp?v=1792497885",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/46575100657918",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Dr_Revive_3c47b6b5-027e-4874-8a4e-d736bea1a4f4.webp?v=1792497886",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 7,
+   "id": "gid://shopify/MediaImage/46575100330238",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/KeyIngredients_2b82ada3-b76a-43c6-890f-4d8116db1e6c.webp?v=1792497886",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 8,
+   "id": "gid://shopify/MediaImage/46575100690686",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Suppfacts_4c82403e-fbff-45b7-8e84-49b6d180be7c.webp?v=1792497886",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 9,
+   "id": "gid://shopify/MediaImage/46575100723454",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/forbestresults_83f7a27a-036b-4d75-ba79-e0e37235a85b.webp?v=1792497887",
+   "alt": "REVIVE Glucose - Supporting Metabolic Health - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954331341054\",\"gid://shopify/MediaImage/46575100920062\",\"gid://shopify/MediaImage/46575100297470\",\"gid://shopify/MediaImage/46575100264702\",\"gid://shopify/MediaImage/46575099969790\",\"gid://shopify/MediaImage/46575100657918\",\"gid://shopify/MediaImage/46575100330238\",\"gid://shopify/MediaImage/46575100690686\",\"gid://shopify/MediaImage/46575100723454\"]"
+}

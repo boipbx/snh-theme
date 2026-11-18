@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/6826123428036",
+ "handle": "applied-nutrition-vitamin-c-1000mg",
+ "title": "APPLIED NUTRITION Vitamin C 1000mg Veggie Tablets",
+ "saved_at": "2026-11-18 04:53",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39212848447742",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitCbyAppliedNutritionfromSportsNutritionHub.png?v=1779776824",
+   "alt": "Applied Nutrition Vitamin C 1000mg tablets bottle, UK-made halal vegan-friendly Vitamin C with Rose Hips for immune and antioxidant support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39212848480510",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitCbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779776824",
+   "alt": "Applied Nutrition Vitamin C 1000mg tablets bottle, UK-made halal vegan-friendly Vitamin C with Rose Hips for immune and antioxidant support",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954328785150\",\"gid://shopify/MediaImage/39212848480510\"]"
+}

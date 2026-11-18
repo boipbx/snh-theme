@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/9272440520958",
+ "handle": "applied-nutrition-creatine-effervescent-tablets",
+ "title": "APPLIED NUTRITION Creatine Monohydrate Effervescent Tablets - 3g per serving",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39355812970750",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrateEffervescentTabletsbyAPPLIEDNUTRITIONfromSportsNutritionHub.png?v=1780991883",
+   "alt": "Applied Nutrition Creatine Monohydrate Effervescent Tablets tube, UK-made fast-dissolving creatine effervescent with 5g per tablet for strength",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39355813101822",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrateEffervescentTabletsbyAPPLIEDNUTRITIONfromSportsNutritionHub_1.png?v=1780991883",
+   "alt": "Applied Nutrition Creatine Monohydrate Effervescent Tablets tube, UK-made fast-dissolving creatine effervescent with 5g per tablet for strength",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39355813069054",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrateEffervescentTabletsbyAPPLIEDNUTRITIONfromSportsNutritionHub_2.png?v=1780991882",
+   "alt": "Applied Nutrition Creatine Monohydrate Effervescent Tablets tube, UK-made fast-dissolving creatine effervescent with 5g per tablet for strength",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39355813003518",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrateEffervescentTabletsbyAPPLIEDNUTRITIONfromSportsNutritionHub_4.png?v=1780991883",
+   "alt": "Applied Nutrition Creatine Monohydrate Effervescent Tablets tube, UK-made fast-dissolving creatine effervescent with 5g per tablet for strength",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39355813036286",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrateEffervescentTabletsbyAPPLIEDNUTRITIONfromSportsNutritionHub_3.png?v=1780991883",
+   "alt": "Applied Nutrition Creatine Monohydrate Effervescent Tablets tube, UK-made fast-dissolving creatine effervescent with 5g per tablet for strength",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954327376126\",\"gid://shopify/MediaImage/46954327408894\",\"gid://shopify/MediaImage/46954327441662\",\"gid://shopify/MediaImage/46954327474430\",\"gid://shopify/MediaImage/39355813036286\"]"
+}

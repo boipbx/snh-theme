@@ -1,0 +1,73 @@
+{
+ "product": "gid://shopify/Product/9160352727294",
+ "handle": "myprotein-layered-bar",
+ "title": "MYPROTEIN Layered Bar",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39045259755774",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_7.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39045259624702",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_3.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39045259657470",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_2.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39045259690238",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_1.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39045259591934",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_4.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/39045259723006",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 7,
+   "id": "gid://shopify/MediaImage/39045259559166",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_5.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 8,
+   "id": "gid://shopify/MediaImage/39045259788542",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/LayeredBarbyMYPROTEINfromSportsNutritionHub_6.png?v=1777890035",
+   "alt": "Myprotein Layered Bar protein snack, six-layered indulgent protein bar with 20g protein, caramel centre, soya nuggets and chocolate coating",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954324164862\",\"gid://shopify/MediaImage/46954324197630\",\"gid://shopify/MediaImage/46954324230398\",\"gid://shopify/MediaImage/46954324263166\",\"gid://shopify/MediaImage/46954324295934\",\"gid://shopify/MediaImage/46954324328702\",\"gid://shopify/MediaImage/39045259559166\",\"gid://shopify/MediaImage/39045259788542\"]"
+}

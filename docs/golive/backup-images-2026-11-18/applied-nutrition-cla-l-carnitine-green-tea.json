@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/6629085118660",
+ "handle": "applied-nutrition-cla-l-carnitine-green-tea",
+ "title": "APPLIED NUTRITION CLA, L-Carnitine & Green Tea",
+ "saved_at": "2026-11-18 04:51",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39209794568446",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CLA_byAppliedNutritionfromSportsNutritionHub.png?v=1779706263",
+   "alt": "Applied Nutrition CLA, L-Carnitine & Green Tea bottle, UK-made halal triple-action energy boost and fat burn capsules in veggie shell",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46189715882238",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CLA_L-Carnitine_Green_Tea_Capsules_1.webp?v=1790256852",
+   "alt": "APPLIED NUTRITION CLA, L-Carnitine & Green Tea - Sports Nutrition Hub ",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39209794535678",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CLA_byAppliedNutritionfromSportsNutritionHub_1.png?v=1779706263",
+   "alt": "Applied Nutrition CLA, L-Carnitine & Green Tea bottle, UK-made halal triple-action energy boost and fat burn capsules in veggie shell",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39209794502910",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CLA_byAppliedNutritionfromSportsNutritionHub_2.png?v=1779706263",
+   "alt": "Applied Nutrition CLA, L-Carnitine & Green Tea bottle, UK-made halal triple-action energy boost and fat burn capsules in veggie shell",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954303881470\",\"gid://shopify/MediaImage/46189715882238\",\"gid://shopify/MediaImage/39209794535678\",\"gid://shopify/MediaImage/39209794502910\"]"
+}

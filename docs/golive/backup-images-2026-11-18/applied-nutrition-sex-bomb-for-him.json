@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/9272442749182",
+ "handle": "applied-nutrition-sex-bomb-for-him",
+ "title": "APPLIED NUTRITION Sex Bomb For Him",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39355840069886",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SexBombForHimbyAPPLIEDNUTRITIONfromSportsNutritionHub.png?v=1780992739",
+   "alt": "Applied Nutrition Sex Bomb For Him capsules bottle, UK-made daily libido enhancer with L-Arginine, Maca, Tribulus, and Zinc per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39355840102654",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SexBombForHimbyAPPLIEDNUTRITIONfromSportsNutritionHub_1.png?v=1780992739",
+   "alt": "Applied Nutrition Sex Bomb For Him capsules bottle, UK-made daily libido enhancer with L-Arginine, Maca, Tribulus, and Zinc per serving",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954329374974\",\"gid://shopify/MediaImage/39355840102654\"]"
+}

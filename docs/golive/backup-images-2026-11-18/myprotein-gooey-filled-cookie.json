@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9198253015294",
+ "handle": "myprotein-gooey-filled-cookie",
+ "title": "MYPROTEIN Gooey Filled Protein Cookie",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39045292327166",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CopyofGooeyFilledProteinCookiebyMyproteinfromSportsNutritionHub.png?v=1777890380",
+   "alt": "Myprotein Gooey Filled Protein Cookie, soft-centred protein snack with 20g protein per cookie and low sugar baked formulation",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39044177920254",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GooeyFilledProteinCookiebyMyproteinfromSportsNutritionHub_1.png?v=1777881133",
+   "alt": "Myprotein Gooey Filled Protein Cookie, soft-centred protein snack with 20g protein per cookie and low sugar baked formulation",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39044177821950",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GooeyFilledProteinCookiebyMyproteinfromSportsNutritionHub_4.png?v=1777881133",
+   "alt": "Myprotein Gooey Filled Protein Cookie, soft-centred protein snack with 20g protein per cookie and low sugar baked formulation",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39044177854718",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/GooeyFilledProteinCookiebyMyproteinfromSportsNutritionHub_3.png?v=1777881133",
+   "alt": "Myprotein Gooey Filled Protein Cookie, soft-centred protein snack with 20g protein per cookie and low sugar baked formulation",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954325016830\",\"gid://shopify/MediaImage/46954325049598\",\"gid://shopify/MediaImage/46954325082366\",\"gid://shopify/MediaImage/46954325115134\"]"
+}

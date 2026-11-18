@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8925314842878",
+ "handle": "applied-nutrition-critical-oats-porridge-pot",
+ "title": "APPLIED NUTRITION Critical Oats Protein Protein Porridge Pots",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39208237072638",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OatspotsbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779696937",
+   "alt": "Applied Nutrition Critical Oats Protein Porridge Pot, UK-made halal protein snack with organic wholegrain oats, whey isolate, and 3g MCT per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39208237138174",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OatspotsbyAppliedNutritionfromSportsNutritionHub.png?v=1779696937",
+   "alt": "Applied Nutrition Critical Oats Protein Porridge Pot, UK-made halal protein snack with organic wholegrain oats, whey isolate, and 3g MCT per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39208237105406",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OatspotsbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779696937",
+   "alt": "Applied Nutrition Critical Oats Protein Porridge Pot, UK-made halal protein snack with organic wholegrain oats, whey isolate, and 3g MCT per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39208237039870",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OatspotsbyAppliedNutritionfromSportsNutritionHub_3.png?v=1779696937",
+   "alt": "Applied Nutrition Critical Oats Protein Porridge Pot, UK-made halal protein snack with organic wholegrain oats, whey isolate, and 3g MCT per serving",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954317676798\",\"gid://shopify/MediaImage/39208237138174\",\"gid://shopify/MediaImage/46954317709566\",\"gid://shopify/MediaImage/46954317742334\"]"
+}

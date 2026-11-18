@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9227464507646",
+ "handle": "applied-nutrition-tudca-nac-capsules",
+ "title": "Applied Nutrition TUDCA + NAC CAPSULES",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39154874843390",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TUDCA_NACCAPSULESbyAppliedNutritionfromSportsNutritionHub.png?v=1779087117",
+   "alt": "Applied Nutrition TUDCA + NAC Capsules bottle, UK-made daily liver support capsules with clinical TUDCA and N-Acetyl Cysteine",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39154874941694",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TUDCA_NACCAPSULESbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779087117",
+   "alt": "Applied Nutrition TUDCA + NAC Capsules bottle, UK-made daily liver support capsules with clinical TUDCA and N-Acetyl Cysteine",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39154874876158",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TUDCA_NACCAPSULESbyAppliedNutritionfromSportsNutritionHub_3.png?v=1779087117",
+   "alt": "Applied Nutrition TUDCA + NAC Capsules bottle, UK-made daily liver support capsules with clinical TUDCA and N-Acetyl Cysteine",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39154874908926",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TUDCA_NACCAPSULESbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779087117",
+   "alt": "Applied Nutrition TUDCA + NAC Capsules bottle, UK-made daily liver support capsules with clinical TUDCA and N-Acetyl Cysteine",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954326163710\",\"gid://shopify/MediaImage/39154874941694\",\"gid://shopify/MediaImage/39154874876158\",\"gid://shopify/MediaImage/39154874908926\"]"
+}

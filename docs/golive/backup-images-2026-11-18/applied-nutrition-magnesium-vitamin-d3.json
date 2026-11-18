@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/9026050392318",
+ "handle": "applied-nutrition-magnesium-vitamin-d3",
+ "title": "APPLIED NUTRITION Magnesium & Vitamin D3",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39209833758974",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Magnesium_D3byAppliedNutritionfromSportsNutritionHub.png?v=1779708418",
+   "alt": "Applied Nutrition Magnesium & Vitamin D3 capsules bottle, UK-made halal magnesium supplement with 280mg magnesium and 200 IU D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39209833791742",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Magnesium_D3byAppliedNutritionfromSportsNutritionHub_2.png?v=1779708418",
+   "alt": "Applied Nutrition Magnesium & Vitamin D3 capsules bottle, UK-made halal magnesium supplement with 280mg magnesium and 200 IU D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39209833824510",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Magnesium_D3byAppliedNutritionfromSportsNutritionHub_1.png?v=1779708418",
+   "alt": "Applied Nutrition Magnesium & Vitamin D3 capsules bottle, UK-made halal magnesium supplement with 280mg magnesium and 200 IU D3 per serving",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954320593150\",\"gid://shopify/MediaImage/46954320625918\",\"gid://shopify/MediaImage/39209833824510\"]"
+}

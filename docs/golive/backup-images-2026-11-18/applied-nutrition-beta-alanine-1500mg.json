@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8829019160830",
+ "handle": "applied-nutrition-beta-alanine-1500mg",
+ "title": "APPLIED NUTRITION Beta Alanine 1500mg",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39109821759742",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/BetaAlanine1500mgbyAppliedNutritionfromSportsNutritionHub.png?v=1778586859",
+   "alt": "Applied Nutrition Beta Alanine 1500mg capsules, UK-made halal beta alanine for endurance and recovery during high-intensity training",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39109821825278",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/BetaAlanine1500mgbyAppliedNutritionfromSportsNutritionHub_1.png?v=1778586859",
+   "alt": "Applied Nutrition Beta Alanine 1500mg capsules, UK-made halal beta alanine for endurance and recovery during high-intensity training",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39109821792510",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/BetaAlanine1500mgbyAppliedNutritionfromSportsNutritionHub_2.png?v=1778586859",
+   "alt": "Applied Nutrition Beta Alanine 1500mg capsules, UK-made halal beta alanine for endurance and recovery during high-intensity training",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46189637271806",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/71_DbkbvlKL._AC_SL1500.webp?v=1790256387",
+   "alt": "APPLIED NUTRITION Beta Alanine 1500mg - Sports Nutrition Hub ",
+   "width": 1500,
+   "height": 1500
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954315612414\",\"gid://shopify/MediaImage/46954315645182\",\"gid://shopify/MediaImage/39109821792510\",\"gid://shopify/MediaImage/46189637271806\"]"
+}

@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8025215762686",
+ "handle": "applied-nutrition-creatine-monohydrate-100",
+ "title": "APPLIED NUTRITION Creatine Monohydrate 100 Servings",
+ "saved_at": "2026-11-18 04:53",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46188452905214",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_d6e4bddb-c9cc-4bb9-b775-bdd9509fcbf7.png?v=1790252942",
+   "alt": "APPLIED NUTRITION Creatine Monohydrate 100 Servings - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39184722723070",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrate100ServingsbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779339304",
+   "alt": "Applied Nutrition Creatine Monohydrate 100-serving bulk tub, UK-made Informed Sport micronised creatine for strength and muscle growth",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39184722755838",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrate100ServingsbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779339304",
+   "alt": "Applied Nutrition Creatine Monohydrate 100-serving bulk tub, UK-made Informed Sport micronised creatine for strength and muscle growth",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39184722690302",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CreatineMonohydrate100ServingsbyAppliedNutritionfromSportsNutritionHub_3.png?v=1779339305",
+   "alt": "Applied Nutrition Creatine Monohydrate 100-serving bulk tub, UK-made Informed Sport micronised creatine for strength and muscle growth",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954307453182\",\"gid://shopify/MediaImage/39184722723070\",\"gid://shopify/MediaImage/39184722755838\",\"gid://shopify/MediaImage/39184722690302\"]"
+}

@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8506888978686",
+ "handle": "applied-nutrition-l-carnitine-1500",
+ "title": "APPLIED NUTRITION L-Carnitine 1500",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46190471938302",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/UntitledDesign_1_c9afbc0a-c358-4c61-8c89-7bd77a207117.png?v=1790267329",
+   "alt": "APPLIED NUTRITION L-Carnitine 1500 - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46190471446782",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/817zLyJY-zL._AC_SL1500.webp?v=1790267306",
+   "alt": "APPLIED NUTRITION L-Carnitine 1500 - Sports Nutrition Hub ",
+   "width": 1500,
+   "height": 1500
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46190471381246",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/815hGWHAMQL._AC_SL1500.webp?v=1790267306",
+   "alt": "APPLIED NUTRITION L-Carnitine 1500 - Sports Nutrition Hub ",
+   "width": 1346,
+   "height": 1346
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46190471414014",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/81R42csRkRL._AC_SL1500.webp?v=1790267306",
+   "alt": "APPLIED NUTRITION L-Carnitine 1500 - Sports Nutrition Hub ",
+   "width": 1346,
+   "height": 1346
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954311221502\",\"gid://shopify/MediaImage/46190471446782\",\"gid://shopify/MediaImage/46190471381246\",\"gid://shopify/MediaImage/46190471414014\"]"
+}

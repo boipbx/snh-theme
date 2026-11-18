@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/8591200321790",
+ "handle": "applied-nutrition-taurine-supplement",
+ "title": "APPLIED NUTRITION Taurine Supplement",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39215966912766",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TaurinebyAppliedNutritionfromSportsNutritionHub.png?v=1779822824",
+   "alt": "Applied Nutrition Taurine Supplement tub, UK-made halal pure Taurine powder for energy and endurance, performance, and hydration support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39215966879998",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TaurinebyAppliedNutritionfromSportsNutritionHub_1.png?v=1779822825",
+   "alt": "Applied Nutrition Taurine Supplement tub, UK-made halal pure Taurine powder for energy and endurance, performance, and hydration support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39215966945534",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TaurinebyAppliedNutritionfromSportsNutritionHub_2.png?v=1779822824",
+   "alt": "Applied Nutrition Taurine Supplement tub, UK-made halal pure Taurine powder for energy and endurance, performance, and hydration support",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954311647486\",\"gid://shopify/MediaImage/39215966879998\",\"gid://shopify/MediaImage/39215966945534\"]"
+}

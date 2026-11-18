@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8756578615550",
+ "handle": "revive-magnesium-glycinate",
+ "title": "REVIVE Magnesium Glycinate",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/40379302379774",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/snh.png?v=1789745198",
+   "alt": "Stress & Recovery Bundle - Sports Nutrition Hub ",
+   "width": 1620,
+   "height": 1620
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39029643935998",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinatebyREVIVEfromSportsNutritionHub_4.png?v=1777705953",
+   "alt": "Revive Magnesium Glycinate supplement bottle, US-made Informed-Sport certified magnesium glycinate capsules with 200mg elemental magnesium",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39029644034302",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinatebyREVIVEfromSportsNutritionHub_1.png?v=1777705953",
+   "alt": "Revive Magnesium Glycinate supplement bottle, US-made Informed-Sport certified magnesium glycinate capsules with 200mg elemental magnesium",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39029644099838",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinatebyREVIVEfromSportsNutritionHub_6.png?v=1777705953",
+   "alt": "Revive Magnesium Glycinate supplement bottle, US-made Informed-Sport certified magnesium glycinate capsules with 200mg elemental magnesium",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954328850686\",\"gid://shopify/MediaImage/39029643935998\",\"gid://shopify/MediaImage/39029644034302\",\"gid://shopify/MediaImage/46954315186430\"]"
+}

@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9019069333758",
+ "handle": "applied-nutrition-joint-complex",
+ "title": "APPLIED NUTRITION Joint Complex Supplement",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39115344937214",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/JointComplexSupplementbyAppliedNutritionfromSportsNutritionHub_3.png?v=1778667056",
+   "alt": "Applied Nutrition Joint Complex Supplement tub, UK-made Informed Sport certified daily joint support drink with Glucosamine, MSM, and Turmeric",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46190462107902",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Nutritional_4.webp?v=1790267087",
+   "alt": "APPLIED NUTRITION Joint Complex Supplement - Sports Nutrition Hub ",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39115344904446",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/JointComplexSupplementbyAppliedNutritionfromSportsNutritionHub_4.png?v=1778667056",
+   "alt": "Applied Nutrition Joint Complex Supplement tub, UK-made Informed Sport certified daily joint support drink with Glucosamine, MSM, and Turmeric",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39115344871678",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/JointComplexSupplementbyAppliedNutritionfromSportsNutritionHub_5.png?v=1778667055",
+   "alt": "Applied Nutrition Joint Complex Supplement tub, UK-made Informed Sport certified daily joint support drink with Glucosamine, MSM, and Turmeric",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954319839486\",\"gid://shopify/MediaImage/46190462107902\",\"gid://shopify/MediaImage/39115344904446\",\"gid://shopify/MediaImage/39115344871678\"]"
+}

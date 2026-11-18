@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/9211462091006",
+ "handle": "ehplabs-oxyshred-hardcore",
+ "title": "EHPlabs OxyShred Hardcore",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39044797595902",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OxyShredHardcorebyEHPlabsfromSportsNutritionHub.png?v=1777885589",
+   "alt": "EHPlabs OxyShred Hardcore Thermogenic Fat Burner tub, high-stimulant fat burner for advanced cutters and serious cutting phases",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39044797497598",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OxyShredHardcorebyEHPlabsfromSportsNutritionHub_3.png?v=1777885589",
+   "alt": "EHPlabs OxyShred Hardcore Thermogenic Fat Burner tub, high-stimulant fat burner for advanced cutters and serious cutting phases",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39044797530366",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OxyShredHardcorebyEHPlabsfromSportsNutritionHub_2.png?v=1777885588",
+   "alt": "EHPlabs OxyShred Hardcore Thermogenic Fat Burner tub, high-stimulant fat burner for advanced cutters and serious cutting phases",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39044797563134",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OxyShredHardcorebyEHPlabsfromSportsNutritionHub_1.png?v=1777885588",
+   "alt": "EHPlabs OxyShred Hardcore Thermogenic Fat Burner tub, high-stimulant fat burner for advanced cutters and serious cutting phases",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39044797464830",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/OxyShredHardcorebyEHPlabsfromSportsNutritionHub_4.png?v=1777885588",
+   "alt": "EHPlabs OxyShred Hardcore Thermogenic Fat Burner tub, high-stimulant fat burner for advanced cutters and serious cutting phases",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954325639422\",\"gid://shopify/MediaImage/46954325672190\",\"gid://shopify/MediaImage/46954325704958\",\"gid://shopify/MediaImage/39044797563134\",\"gid://shopify/MediaImage/46954325737726\"]"
+}

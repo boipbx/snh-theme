@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8631084122366",
+ "handle": "applied-nutrition-pure-shilajit",
+ "title": "APPLIED NUTRITION Pure Shilajit",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39215999779070",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/PureShilajitCapsulesbyAppliedNutritionfromSportsNutritionHub.png?v=1779823302",
+   "alt": "Applied Nutrition Pure Shilajit capsules bottle, UK-made halal Himalayan Shilajit energy and wellness adaptogen with 20:1 extract and Fulvic Acid",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46190519255294",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Shilajit_Capsules_-_Nutritionals_-_1000x1000_b67d432d-508a-4e32-99cf-d244e25afa93.webp?v=1790268197",
+   "alt": "APPLIED NUTRITION Pure Shilajit - Sports Nutrition Hub ",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39215999844606",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/PureShilajitCapsulesbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779823302",
+   "alt": "Applied Nutrition Pure Shilajit capsules bottle, UK-made halal Himalayan Shilajit energy and wellness adaptogen with 20:1 extract and Fulvic Acid",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39215999811838",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/PureShilajitCapsulesbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779823303",
+   "alt": "Applied Nutrition Pure Shilajit capsules bottle, UK-made halal Himalayan Shilajit energy and wellness adaptogen with 20:1 extract and Fulvic Acid",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954328555774\",\"gid://shopify/MediaImage/46190519255294\",\"gid://shopify/MediaImage/39215999844606\",\"gid://shopify/MediaImage/39215999811838\"]"
+}

@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/8483489710334",
+ "handle": "muscletech-hydroxycut-hardcore-elite",
+ "title": "MUSCLETECH Hydroxycut Hardcore Elite",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39053801750782",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/HydroxycutHardcoreElitebyMUSCLETECHfromSportsNutritionHub.png?v=1777986098",
+   "alt": "MuscleTech Hydroxycut Hardcore Elite Fat Burner capsules, US-made high-intensity thermogenic fat burner for advanced cutters and cutting phases",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39053801783550",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/HydroxycutHardcoreElitebyMUSCLETECHfromSportsNutritionHub_1.png?v=1777986097",
+   "alt": "MuscleTech Hydroxycut Hardcore Elite Fat Burner capsules, US-made high-intensity thermogenic fat burner for advanced cutters and cutting phases",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954311057662\",\"gid://shopify/MediaImage/39053801783550\"]"
+}

@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/8903017627902",
+ "handle": "applied-nutrition-digestive-enzymes",
+ "title": "APPLIED NUTRITION Digestive Enzyme Capsules - 60 Servings",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39146962551038",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/DigestiveEnzymeCapsulesbyAppliedNutritionfromSportsNutritionHub.png?v=1778915614",
+   "alt": "Applied Nutrition Digestive Enzyme Capsules bottle, UK-made halal 10-enzyme digestion support with lactase, bromelain, and protease",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39146962682110",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/DigestiveEnzymeCapsulesbyAppliedNutritionfromSportsNutritionHub_1.png?v=1778915614",
+   "alt": "Applied Nutrition Digestive Enzyme Capsules bottle, UK-made halal 10-enzyme digestion support with lactase, bromelain, and protease",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39146962649342",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/DigestiveEnzymeCapsulesbyAppliedNutritionfromSportsNutritionHub_2.png?v=1778915614",
+   "alt": "Applied Nutrition Digestive Enzyme Capsules bottle, UK-made halal 10-enzyme digestion support with lactase, bromelain, and protease",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39146962616574",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/DigestiveEnzymeCapsulesbyAppliedNutritionfromSportsNutritionHub_3.png?v=1778915614",
+   "alt": "Applied Nutrition Digestive Enzyme Capsules bottle, UK-made halal 10-enzyme digestion support with lactase, bromelain, and protease",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39146962583806",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/DigestiveEnzymeCapsulesbyAppliedNutritionfromSportsNutritionHub_4.png?v=1778915614",
+   "alt": "Applied Nutrition Digestive Enzyme Capsules bottle, UK-made halal 10-enzyme digestion support with lactase, bromelain, and protease",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954315874558\",\"gid://shopify/MediaImage/39146962682110\",\"gid://shopify/MediaImage/46954315907326\",\"gid://shopify/MediaImage/39146962616574\",\"gid://shopify/MediaImage/39146962583806\"]"
+}

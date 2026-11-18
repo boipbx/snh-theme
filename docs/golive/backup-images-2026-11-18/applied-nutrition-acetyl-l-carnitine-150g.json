@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8707508011262",
+ "handle": "applied-nutrition-acetyl-l-carnitine-150g",
+ "title": "APPLIED NUTRITION Acetyl L-Carnitine 150G - Premium Performance Compound",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39209767371006",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AcetylL-Carnitine150gbyAppliedNutritionfromSportsNutritionHub.png?v=1779705421",
+   "alt": "Applied Nutrition Acetyl L-Carnitine 150g tub, UK-made halal pure acetyl L-Carnitine powder for energy boost and fat metabolism support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39209767338238",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AcetylL-Carnitine150gbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779705420",
+   "alt": "Applied Nutrition Acetyl L-Carnitine 150g tub, UK-made halal pure acetyl L-Carnitine powder for energy boost and fat metabolism support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39209767305470",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AcetylL-Carnitine150gbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779705421",
+   "alt": "Applied Nutrition Acetyl L-Carnitine 150g tub, UK-made halal pure acetyl L-Carnitine powder for energy boost and fat metabolism support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46189440172286",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/image_3_cdb254aa-5656-417b-8ee7-b611c5f2a0c7.webp?v=1790255508",
+   "alt": "APPLIED NUTRITION Acetyl L-Carnitine 150G - Premium Performance Compound - Sports Nutrition Hub ",
+   "width": 2000,
+   "height": 2000
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954314006782\",\"gid://shopify/MediaImage/46954314039550\",\"gid://shopify/MediaImage/39209767305470\",\"gid://shopify/MediaImage/46189440172286\"]"
+}

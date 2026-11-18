@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/8591212609790",
+ "handle": "applied-nutrition-tongkat-ali-long-jack",
+ "title": "APPLIED NUTRITION Tongkat Ali Long Jack - Testosterone Supplement",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39109911576830",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TongkatAlibyAppliedNutritionfromSportsNutritionHub.png?v=1778589418",
+   "alt": "Applied Nutrition Tongkat Ali Long Jack tablets, UK-made halal testosterone supplement with 1200mg 100:1 extract per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39109911544062",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/TongkatAlibyAppliedNutritionfromSportsNutritionHub_1.png?v=1778589418",
+   "alt": "Applied Nutrition Tongkat Ali Long Jack tablets, UK-made halal testosterone supplement with 1200mg 100:1 extract per serving",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954311745790\",\"gid://shopify/MediaImage/39109911544062\"]"
+}

@@ -1,0 +1,73 @@
+{
+ "product": "gid://shopify/Product/7852783141118",
+ "handle": "myprotein-crispy-protein-wafers",
+ "title": "MYPROTEIN Crispy Protein Wafers",
+ "saved_at": "2026-11-18 04:53",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39046661931262",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub.png?v=1777897905",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39046661898494",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_1.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39046661865726",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_2.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39046661832958",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_3.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39046662062334",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_4.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/39046662029566",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_5.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 7,
+   "id": "gid://shopify/MediaImage/39046661964030",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_7.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 8,
+   "id": "gid://shopify/MediaImage/39046661996798",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrispyProteinWaferbyMYPROTEINfromSportsNutritionHub_6.png?v=1777897904",
+   "alt": "Myprotein Crispy Protein Wafers protein snack, multi-layer wafer with 15g protein per pack and reduced sugar and fat content",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954306699518\",\"gid://shopify/MediaImage/46954306732286\",\"gid://shopify/MediaImage/46954306765054\",\"gid://shopify/MediaImage/46954306797822\",\"gid://shopify/MediaImage/46954306830590\",\"gid://shopify/MediaImage/46954306863358\",\"gid://shopify/MediaImage/46954306896126\",\"gid://shopify/MediaImage/39046661996798\"]"
+}

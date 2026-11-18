@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/4728562516030",
+ "handle": "applied-nutrition-zma",
+ "title": "APPLIED NUTRITION Zinc, Magnesium & Vitamin B6 Capsules With Ashwagandha (ZMA)",
+ "saved_at": "2026-11-18 04:51",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46205771120894",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_4d9d775f-188f-4734-aa59-390e9694aa16.png?v=1790408071",
+   "alt": "APPLIED NUTRITION Zinc, Magnesium & Vitamin B6 Capsules With Ashwagandha (ZMA) - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39209862103294",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ZMAbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779709309",
+   "alt": "Applied Nutrition ZMA capsules bottle, UK-made halal magnesium and zinc supplement with B6, Ashwagandha, and AstraGin for recovery and sleep",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954303848702\",\"gid://shopify/MediaImage/39209862103294\"]"
+}

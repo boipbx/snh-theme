@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9427352027390",
+ "handle": "daily-foundation",
+ "title": "Daily Health Foundation Bundle",
+ "saved_at": "2026-11-18 04:57",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/40100253565182",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/dailyfoundation.jpg?v=1788011343",
+   "alt": "Daily Health Foundation Bundle - Sports Nutrition Hub ",
+   "width": 2000,
+   "height": 2000
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39029644067070",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumGlycinatebyREVIVEfromSportsNutritionHub.png?v=1777705953",
+   "alt": "Revive Magnesium Glycinate supplement bottle, US-made Informed-Sport certified magnesium glycinate capsules with 200mg elemental magnesium",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39212768559358",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/D3_K2byAppliedNutritionfromSportsNutritionHub.png?v=1779774722",
+   "alt": "Applied Nutrition Vitamin D3 & K2 capsules bottle, UK-made halal high-strength Vitamin D3 with K2 for bone, heart, and immune support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39213646348542",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Omega3SoftgelsbyAppliedNutritionfromSportsNutritionHub.png?v=1779796691",
+   "alt": "Applied Nutrition Omega 3 softgels bottle, UK-made halal daily omega 3 fish oil supplement with EPA and DHA for heart and brain support",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/40100253565182\",\"gid://shopify/MediaImage/39029644067070\",\"gid://shopify/MediaImage/46954329014526\",\"gid://shopify/MediaImage/46954303914238\"]"
+}

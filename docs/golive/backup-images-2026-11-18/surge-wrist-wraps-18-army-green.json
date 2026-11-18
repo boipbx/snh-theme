@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/8921483804926",
+ "handle": "surge-wrist-wraps-18-army-green",
+ "title": "SURGE Wrist Wraps | 18'' Weightlifting Wrist Support - ARMY GREEN",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39108256596222",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/WristWraps-GreenbySURGEfromSportsNutritionHub.png?v=1778575288",
+   "alt": "SURGE 18\" Weightlifting Wrist Wraps in onyx, premium wrist support for powerlifting, bench press, and overhead pressing",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39108256661758",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/WristWraps-GreenbySURGEfromSportsNutritionHub_1.png?v=1778575288",
+   "alt": "SURGE 18\" Weightlifting Wrist Wraps in onyx, premium wrist support for powerlifting, bench press, and overhead pressing",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39108256628990",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/WristWraps-GreenbySURGEfromSportsNutritionHub_2.png?v=1778575288",
+   "alt": "SURGE 18\" Weightlifting Wrist Wraps in onyx, premium wrist support for powerlifting, bench press, and overhead pressing",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954317480190\",\"gid://shopify/MediaImage/46954317512958\",\"gid://shopify/MediaImage/46954317545726\"]"
+}

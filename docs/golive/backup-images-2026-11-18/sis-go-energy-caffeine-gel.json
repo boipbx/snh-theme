@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/8907784618238",
+ "handle": "sis-go-energy-caffeine-gel",
+ "title": "SiS GO Energy + Caffeine Gels",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/38996597211390",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SiSGOEnergy_CaffeineGelsbyScienceInSportfromSportsNutritionHub.png?v=1777380449",
+   "alt": "Science In Sport GO caffeine energy gels, UK-made 60ml isotonic endurance gel with 22g carbs and 75mg caffeine per sachet",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/38996597309694",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SiSGOEnergy_CaffeineGelsbyScienceInSportfromSportsNutritionHub_2.png?v=1777380449",
+   "alt": "Science In Sport GO caffeine energy gels, UK-made 60ml isotonic endurance gel with 22g carbs and 75mg caffeine per sachet",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/38996597178622",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SiSGOEnergy_CaffeineGelsbyScienceInSportfromSportsNutritionHub_1.png?v=1777380450",
+   "alt": "Science In Sport GO caffeine energy gels, UK-made 60ml isotonic endurance gel with 22g carbs and 75mg caffeine per sachet",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/38996597276926",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SiSGOEnergy_CaffeineGelsbyScienceInSportfromSportsNutritionHub_3_1.png?v=1777380450",
+   "alt": "Science In Sport GO caffeine energy gels, UK-made 60ml isotonic endurance gel with 22g carbs and 75mg caffeine per sachet",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/38996597244158",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SiSGOEnergy_CaffeineGelsbyScienceInSportfromSportsNutritionHub_3.png?v=1777380449",
+   "alt": "Science In Sport GO caffeine energy gels, UK-made 60ml isotonic endurance gel with 22g carbs and 75mg caffeine per sachet",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954316595454\",\"gid://shopify/MediaImage/46954316628222\",\"gid://shopify/MediaImage/46954316890366\",\"gid://shopify/MediaImage/46954316923134\",\"gid://shopify/MediaImage/38996597244158\"]"
+}

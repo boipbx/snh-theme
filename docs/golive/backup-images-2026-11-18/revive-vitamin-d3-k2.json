@@ -1,0 +1,65 @@
+{
+ "product": "gid://shopify/Product/8756581138686",
+ "handle": "revive-vitamin-d3-k2",
+ "title": "REVIVE Vitamin K2 & D3 (5000 IU)",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39029484683518",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39029484847358",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub_2.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39029484814590",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub_3.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39029484781822",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub_4.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39029484749054",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub_5.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/39029484880126",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub_1.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 7,
+   "id": "gid://shopify/MediaImage/39029484716286",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/VitaminK2_D3byREVIVEfromSportsNutritionHub_6.png?v=1777700616",
+   "alt": "Revive Vitamin D3 & K2 supplement bottle, US-made physician-formulated D3 K2 vitamin capsules with 5000iu vitamin D3 per serving",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954315219198\",\"gid://shopify/MediaImage/39029484847358\",\"gid://shopify/MediaImage/39029484814590\",\"gid://shopify/MediaImage/39029484781822\",\"gid://shopify/MediaImage/39029484749054\",\"gid://shopify/MediaImage/39029484880126\",\"gid://shopify/MediaImage/39029484716286\"]"
+}

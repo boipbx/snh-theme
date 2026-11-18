@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/15441544970494",
+ "handle": "phd-diet-plant-protein-500g",
+ "title": "PhD Diet Plant Protein - 500g",
+ "saved_at": "2026-11-18 04:57",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46573867925758",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_aeac7565-f67a-400c-9b88-2ea816adf240.png?v=1792491909",
+   "alt": "PhD Diet Plant Protein - 500g - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46573867958526",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_c7b0b5dc-11cf-4929-afaf-46c671389bab.png?v=1792491909",
+   "alt": "PhD Diet Plant Protein - 500g - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46573837287678",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Screenshot2026-10-20at3.51.19PM.png?v=1792491694",
+   "alt": "PhD Diet Plant Protein - 500g - Sports Nutrition Hub ",
+   "width": 1274,
+   "height": 1324
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46573844234494",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Screenshot2026-10-20at3.51.59PM.png?v=1792491730",
+   "alt": "PhD Diet Plant Protein - 500g - Sports Nutrition Hub ",
+   "width": 1274,
+   "height": 1324
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954331177214\",\"gid://shopify/MediaImage/46954331209982\",\"gid://shopify/MediaImage/46573837287678\",\"gid://shopify/MediaImage/46573844234494\"]"
+}

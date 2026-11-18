@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/8840933179646",
+ "handle": "veg-omega-3-1000mg",
+ "title": "HEALTHSPAN ELITE Vegan-Omega\u00ae 3 1000mg",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/38989636632830",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Veg_Omega_31000mgbyHealthspanElitefromSportsNutritionHub.png?v=1777313491",
+   "alt": "Healthspan Elite Veg-Omega 3 1000mg vegan omega 3 capsules from algae, UK-made Informed-Sport certified plant-based supplement",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/38989636501758",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Veg_Omega_31000mgbyHealthspanElitefromSportsNutritionHub_4.png?v=1777313491",
+   "alt": "Healthspan Elite Veg-Omega 3 1000mg vegan omega 3 capsules from algae, UK-made Informed-Sport certified plant-based supplement",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/38989636567294",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Veg_Omega_31000mgbyHealthspanElitefromSportsNutritionHub_2.png?v=1777313491",
+   "alt": "Healthspan Elite Veg-Omega 3 1000mg vegan omega 3 capsules from algae, UK-made Informed-Sport certified plant-based supplement",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/38989636600062",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Veg_Omega_31000mgbyHealthspanElitefromSportsNutritionHub_1.png?v=1777313491",
+   "alt": "Healthspan Elite Veg-Omega 3 1000mg vegan omega 3 capsules from algae, UK-made Informed-Sport certified plant-based supplement",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/38989636534526",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Veg_Omega_31000mgbyHealthspanElitefromSportsNutritionHub_3.png?v=1777313491",
+   "alt": "Healthspan Elite Veg-Omega 3 1000mg vegan omega 3 capsules from algae, UK-made Informed-Sport certified plant-based supplement",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954315841790\",\"gid://shopify/MediaImage/38989636501758\",\"gid://shopify/MediaImage/38989636567294\",\"gid://shopify/MediaImage/38989636600062\",\"gid://shopify/MediaImage/38989636534526\"]"
+}

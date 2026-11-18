@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/8756506460414",
+ "handle": "sis-rego-whey-protein-1-35kg",
+ "title": "SiS Rego Whey Protein 1.35KG",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/38996662485246",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_1.png?v=1777382044",
+   "alt": "Science In Sport REGO Whey Protein 1.35kg vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/38996662583550",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_3.png?v=1777382044",
+   "alt": "Science In Sport REGO Whey Protein 1.35kg vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/38996662452478",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_2.png?v=1777382044",
+   "alt": "Science In Sport REGO Whey Protein 1.35kg vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/38996662518014",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub.png?v=1777382044",
+   "alt": "Science In Sport REGO Whey Protein 1.35kg vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/38996662550782",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_4.png?v=1777382044",
+   "alt": "Science In Sport REGO Whey Protein 1.35kg vanilla tub, UK-made post-training whey protein with 22g protein per 30g scoop",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954314924286\",\"gid://shopify/MediaImage/46954314957054\",\"gid://shopify/MediaImage/46954314989822\",\"gid://shopify/MediaImage/46954315022590\",\"gid://shopify/MediaImage/38996662550782\"]"
+}

@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8970847256830",
+ "handle": "applied-nutrition-vitamin-d3-k2",
+ "title": "APPLIED NUTRITION Vitamin D3 & K2 (4000 IU)",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39212768559358",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/D3_K2byAppliedNutritionfromSportsNutritionHub.png?v=1779774722",
+   "alt": "Applied Nutrition Vitamin D3 & K2 capsules bottle, UK-made halal high-strength Vitamin D3 with K2 for bone, heart, and immune support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39212768657662",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/D3_K2byAppliedNutritionfromSportsNutritionHub_1.png?v=1779774722",
+   "alt": "Applied Nutrition Vitamin D3 & K2 capsules bottle, UK-made halal high-strength Vitamin D3 with K2 for bone, heart, and immune support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39212768624894",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/D3_K2byAppliedNutritionfromSportsNutritionHub_2.png?v=1779774722",
+   "alt": "Applied Nutrition Vitamin D3 & K2 capsules bottle, UK-made halal high-strength Vitamin D3 with K2 for bone, heart, and immune support",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39212768592126",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/D3_K2byAppliedNutritionfromSportsNutritionHub_3.png?v=1779774722",
+   "alt": "Applied Nutrition Vitamin D3 & K2 capsules bottle, UK-made halal high-strength Vitamin D3 with K2 for bone, heart, and immune support",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954329014526\",\"gid://shopify/MediaImage/39212768657662\",\"gid://shopify/MediaImage/46954318528766\",\"gid://shopify/MediaImage/39212768592126\"]"
+}

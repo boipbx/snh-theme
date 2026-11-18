@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/8965083398398",
+ "handle": "trace-shilajit-capsules",
+ "title": "TRACE Shilajit Capsule",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39101972513022",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShilajitCapsulebyTRACEfromSportsNutritionHub.png?v=1778484960",
+   "alt": "Trace Shilajit Capsules bottle, US-made daily Himalayan shilajit in capsule format with 75% fulvic acid and ConcenTrace mineral complex",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39101972545790",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShilajitCapsulebyTRACEfromSportsNutritionHub_1.png?v=1778484960",
+   "alt": "Trace Shilajit Capsules bottle, US-made daily Himalayan shilajit in capsule format with 75% fulvic acid and ConcenTrace mineral complex",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39101972578558",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShilajitCapsulebyTRACEfromSportsNutritionHub_2.png?v=1778484960",
+   "alt": "Trace Shilajit Capsules bottle, US-made daily Himalayan shilajit in capsule format with 75% fulvic acid and ConcenTrace mineral complex",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954318397694\",\"gid://shopify/MediaImage/46954318430462\",\"gid://shopify/MediaImage/39101972578558\"]"
+}

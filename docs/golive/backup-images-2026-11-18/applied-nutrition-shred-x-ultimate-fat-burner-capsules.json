@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/15395602301182",
+ "handle": "applied-nutrition-shred-x-ultimate-fat-burner-capsules",
+ "title": "APPLIED NUTRITION Shred X Ultimate Fat Burner Capsules",
+ "saved_at": "2026-11-18 04:57",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46236443312382",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_b747f102-7949-4b10-ab6a-8a556b1b5b6b.png?v=1790579475",
+   "alt": "APPLIED NUTRITION Shred X Ultimate Fat Burner Capsules - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46236452225278",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Shred-X_Capsules_Nuritional_panel.webp?v=1790579496",
+   "alt": "APPLIED NUTRITION Shred X Ultimate Fat Burner Capsules - Sports Nutrition Hub ",
+   "width": 2500,
+   "height": 2500
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954330194174\",\"gid://shopify/MediaImage/46236452225278\"]"
+}

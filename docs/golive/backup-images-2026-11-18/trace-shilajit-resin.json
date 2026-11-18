@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/8915148767486",
+ "handle": "trace-shilajit-resin",
+ "title": "TRACE Shilajit Resin",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39101608788222",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShilajitResinbyTRACEfromSportsNutritionHub.png?v=1778484591",
+   "alt": "Trace Shilajit Resin tub, US-made Himalayan shilajit resin with 75% naturally occurring fulvic acid and ConcenTrace mineral complex",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39101608820990",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShilajitResinbyTRACEfromSportsNutritionHub_1.png?v=1778484591",
+   "alt": "Trace Shilajit Resin tub, US-made Himalayan shilajit resin with 75% naturally occurring fulvic acid and ConcenTrace mineral complex",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39101608853758",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ShilajitResinbyTRACEfromSportsNutritionHub_2.png?v=1778484591",
+   "alt": "Trace Shilajit Resin tub, US-made Himalayan shilajit resin with 75% naturally occurring fulvic acid and ConcenTrace mineral complex",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954328621310\",\"gid://shopify/MediaImage/46954317021438\",\"gid://shopify/MediaImage/39101608853758\"]"
+}

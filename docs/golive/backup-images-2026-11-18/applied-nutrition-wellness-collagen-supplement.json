@@ -1,0 +1,81 @@
+{
+ "product": "gid://shopify/Product/8591216509182",
+ "handle": "applied-nutrition-wellness-collagen-supplement",
+ "title": "APPLIED NUTRITION Collagen Wellness & Beauty Supplement with Vitamin C, Biotin and Hyaluronic Acid",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46186407330046",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/4_0c7067da-928e-47b6-8ba4-1b8c118dd6bf.png?v=1790250446",
+   "alt": "A tub of Applied Nutrition Collagen Powder in Strawberry & Raspberry flavor, featuring a white label with blue text and a blue lid, set against a white background with an orange border.",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46186423025918",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Flavoured-Collagen-Powder-165g---Nutritionals---1000x1000.webp?v=1790250464",
+   "alt": "Nutritional information label for flavoured collagen powder on a blue background",
+   "width": 1500,
+   "height": 1500
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46186407264510",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/collagen.png?v=1790250941",
+   "alt": "A tub of Applied Nutrition Collagen Powder in Tropical Vibes flavor, featuring a white label with blue text and a blue lid, set against a white background with an orange border.",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/46186407297278",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/collagen-beauty.png?v=1790250960",
+   "alt": "A tub of Applied Nutrition Collagen Powder in Citrus Twist flavor, featuring a white label with blue text and a blue lid, set against a white background with an orange border.",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/46186422403326",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Product_Image_1STRW_1.webp?v=1790250463",
+   "alt": "Applied Nutrition Collagen Powder in Strawberry & Raspberry flavor, shown in a white tub with a blue lid on a blue promotional background with text highlighting benefits for hair, skin, nails, and joints.",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/46186422796542",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Product_Image_2STRW.webp?v=1790250463",
+   "alt": "Woman holding a mug of pink drink next to a container of Applied Nutrition Collagen Powder with Coleen Rooney branding.",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 7,
+   "id": "gid://shopify/MediaImage/46186423058686",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Product_Image_3CT.webp?v=1790250464",
+   "alt": "Collagen powder packaging with ingredients listed on a blue background",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 8,
+   "id": "gid://shopify/MediaImage/46186422010110",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Product_Image_4S_1d761e8a-3258-43b0-9b2f-696ff6250db1.webp?v=1790250463",
+   "alt": "Applied Nutrition Collagen Powder in a blue and white tub, shown next to text highlighting key features: SUGAR FREE, FAT FREE, PALEO FRIENDLY, SOY & DAIRY FREE, HALAL CERTIFIED. The background is white with a green graphic accent.",
+   "width": 1200,
+   "height": 1200
+  },
+  {
+   "position": 9,
+   "id": "gid://shopify/MediaImage/46186482630910",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/collagen-unflavored.png?v=1790251001",
+   "alt": "A tub of Applier Nutrition Collagen Powder, unflavoured, with a white and blue label and a blue lid, shown on a white background with an orange border and an SNH logo in the top right corner.",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954311778558\",\"gid://shopify/MediaImage/46186423025918\",\"gid://shopify/MediaImage/46186407264510\",\"gid://shopify/MediaImage/46186407297278\",\"gid://shopify/MediaImage/46186422403326\",\"gid://shopify/MediaImage/46186422796542\",\"gid://shopify/MediaImage/46186423058686\",\"gid://shopify/MediaImage/46186422010110\",\"gid://shopify/MediaImage/46186482630910\"]"
+}

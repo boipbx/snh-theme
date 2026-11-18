@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9227313414398",
+ "handle": "applied-nutrition-sleep-support-capsules",
+ "title": "APPLIED NUTRITION Sleep Support Capsules",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39154112102654",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SleepSupportCapsulesbyAppliedNutritionfromSportsNutritionHub.png?v=1779084459",
+   "alt": "Applied Nutrition Sleep Support Capsules bottle, UK-made natural daily sleep support capsules for sleep onset and recovery quality",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39154112069886",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SleepSupportCapsulesbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779084459",
+   "alt": "Applied Nutrition Sleep Support Capsules bottle, UK-made natural daily sleep support capsules for sleep onset and recovery quality",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39154112168190",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SleepSupportCapsulesbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779084459",
+   "alt": "Applied Nutrition Sleep Support Capsules bottle, UK-made natural daily sleep support capsules for sleep onset and recovery quality",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39154112135422",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/SleepSupportCapsulesbyAppliedNutritionfromSportsNutritionHub_3.png?v=1779084459",
+   "alt": "Applied Nutrition Sleep Support Capsules bottle, UK-made natural daily sleep support capsules for sleep onset and recovery quality",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954326098174\",\"gid://shopify/MediaImage/39154112069886\",\"gid://shopify/MediaImage/39154112168190\",\"gid://shopify/MediaImage/39154112135422\"]"
+}

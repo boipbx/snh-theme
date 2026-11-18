@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9132268323070",
+ "handle": "applied-nutrition-protein-wafers",
+ "title": "APPLIED NUTRITION Protein Wafers",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39208151974142",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ProteinWafersbyAppliedNutritionfromSportsNutritionHub.png?v=1779696076",
+   "alt": "Applied Nutrition Protein Wafers bar, UK-made crispy protein snack with 10g protein per 39g bar in a wafer and milk chocolate format",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39208151941374",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ProteinWafersbyAppliedNutritionfromSportsNutritionHub_1.png?v=1779696076",
+   "alt": "Applied Nutrition Protein Wafers bar, UK-made crispy protein snack with 10g protein per 39g bar in a wafer and milk chocolate format",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39208151908606",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ProteinWafersbyAppliedNutritionfromSportsNutritionHub_2.png?v=1779696076",
+   "alt": "Applied Nutrition Protein Wafers bar, UK-made crispy protein snack with 10g protein per 39g bar in a wafer and milk chocolate format",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39208151875838",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/ProteinWafersbyAppliedNutritionfromSportsNutritionHub_3.png?v=1779696076",
+   "alt": "Applied Nutrition Protein Wafers bar, UK-made crispy protein snack with 10g protein per 39g bar in a wafer and milk chocolate format",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954322886910\",\"gid://shopify/MediaImage/46954322919678\",\"gid://shopify/MediaImage/46954322952446\",\"gid://shopify/MediaImage/46954322985214\"]"
+}

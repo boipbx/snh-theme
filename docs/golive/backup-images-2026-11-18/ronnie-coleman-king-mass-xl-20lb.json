@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/9268545224958",
+ "handle": "ronnie-coleman-king-mass-xl-20lb",
+ "title": "Ronnie Coleman King Mass XL",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39335217856766",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/RCKingMassbyRonnieColemanfromSportsNutritionHub.png?v=1780815942",
+   "alt": "Ronnie Coleman King Mass XL 20lb tub, USA-made high-calorie mass gainer for hardgainers and bulking phases from 8x Mr. Olympia signature series",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39335217889534",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/RCKingMassbyRonnieColemanfromSportsNutritionHub_1.png?v=1780815942",
+   "alt": "Ronnie Coleman King Mass XL 20lb tub, USA-made high-calorie mass gainer for hardgainers and bulking phases from 8x Mr. Olympia signature series",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954326589694\",\"gid://shopify/MediaImage/39335217889534\"]"
+}

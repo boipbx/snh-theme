@@ -1,0 +1,57 @@
+{
+ "product": "gid://shopify/Product/9127400440062",
+ "handle": "sis-go-energy-oat-bar",
+ "title": "SiS Energy Oat Bar",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/38996057161982",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/EnergyOatBarbyScienceInSportfromSportsNutritionHub.png?v=1777375150",
+   "alt": "Science In Sport GO Energy Oat Bar with soft fruit centre, UK-made endurance oat bar with 30g dual-source carbohydrate per bake",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/38996057194750",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/EnergyOatBarbyScienceInSportfromSportsNutritionHub_5.png?v=1777375150",
+   "alt": "Science In Sport GO Energy Oat Bar with soft fruit centre, UK-made endurance oat bar with 30g dual-source carbohydrate per bake",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/38996057030910",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/EnergyOatBarbyScienceInSportfromSportsNutritionHub_4.png?v=1777375150",
+   "alt": "Science In Sport GO Energy Oat Bar with soft fruit centre, UK-made endurance oat bar with 30g dual-source carbohydrate per bake",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/38996057129214",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/EnergyOatBarbyScienceInSportfromSportsNutritionHub_1.png?v=1777375150",
+   "alt": "Science In Sport GO Energy Oat Bar with soft fruit centre, UK-made endurance oat bar with 30g dual-source carbohydrate per bake",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/38996057063678",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/EnergyOatBarbyScienceInSportfromSportsNutritionHub_3.png?v=1777375150",
+   "alt": "Science In Sport GO Energy Oat Bar with soft fruit centre, UK-made endurance oat bar with 30g dual-source carbohydrate per bake",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 6,
+   "id": "gid://shopify/MediaImage/38996057096446",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/EnergyOatBarbyScienceInSportfromSportsNutritionHub_2.png?v=1777375150",
+   "alt": "Science In Sport GO Energy Oat Bar with soft fruit centre, UK-made endurance oat bar with 30g dual-source carbohydrate per bake",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954322067710\",\"gid://shopify/MediaImage/38996057194750\",\"gid://shopify/MediaImage/38996057030910\",\"gid://shopify/MediaImage/46954322100478\",\"gid://shopify/MediaImage/38996057063678\",\"gid://shopify/MediaImage/46954322329854\"]"
+}

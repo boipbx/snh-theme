@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8699012841726",
+ "handle": "magnesium-plus",
+ "title": "HEALTHSPAN ELITE Magnesium Plus",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/38990135034110",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumPlusbyHealthspanElitefromSportsNutritionHub.png?v=1777319581",
+   "alt": "Healthspan Elite Magnesium Plus 375mg magnesium tablets in Sri Lanka, UK-made vegan dual-source magnesium with B vitamins",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/38990135066878",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumPlusbyHealthspanElitefromSportsNutritionHub_3.png?v=1777319581",
+   "alt": "Healthspan Elite Magnesium Plus 375mg magnesium tablets in Sri Lanka, UK-made vegan dual-source magnesium with B vitamins",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/38990135001342",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumPlusbyHealthspanElitefromSportsNutritionHub_1.png?v=1777319581",
+   "alt": "Healthspan Elite Magnesium Plus 375mg magnesium tablets in Sri Lanka, UK-made vegan dual-source magnesium with B vitamins",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/38990135099646",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/MagnesiumPlusbyHealthspanElitefromSportsNutritionHub_2.png?v=1777319581",
+   "alt": "Healthspan Elite Magnesium Plus 375mg magnesium tablets in Sri Lanka, UK-made vegan dual-source magnesium with B vitamins",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954313875710\",\"gid://shopify/MediaImage/38990135066878\",\"gid://shopify/MediaImage/38990135001342\",\"gid://shopify/MediaImage/38990135099646\"]"
+}

@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/8915699630334",
+ "handle": "muscletech-platinum-creatine",
+ "title": "MUSCLETECH Platinum 100% Creatine 400G",
+ "saved_at": "2026-11-18 04:55",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39052947685630",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Platinum100_Creatine400GbyMUSCLETECHfromSportsNutritionHub.png?v=1777980848",
+   "alt": "MuscleTech Platinum 100% Creatine 400g tub, US-made HPLC-tested daily creatine with 5g micronized creatine monohydrate per scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39052947652862",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Platinum100_Creatine400GbyMUSCLETECHfromSportsNutritionHub_1.png?v=1777980848",
+   "alt": "MuscleTech Platinum 100% Creatine 400g tub, US-made HPLC-tested daily creatine with 5g micronized creatine monohydrate per scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39052947587326",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Platinum100_Creatine400GbyMUSCLETECHfromSportsNutritionHub_3.png?v=1777980848",
+   "alt": "MuscleTech Platinum 100% Creatine 400g tub, US-made HPLC-tested daily creatine with 5g micronized creatine monohydrate per scoop",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39052947620094",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Platinum100_Creatine400GbyMUSCLETECHfromSportsNutritionHub_2.png?v=1777980848",
+   "alt": "MuscleTech Platinum 100% Creatine 400g tub, US-made HPLC-tested daily creatine with 5g micronized creatine monohydrate per scoop",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954317316350\",\"gid://shopify/MediaImage/46954317349118\",\"gid://shopify/MediaImage/39052947587326\",\"gid://shopify/MediaImage/39052947620094\"]"
+}

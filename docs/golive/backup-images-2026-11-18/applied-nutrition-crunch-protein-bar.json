@@ -1,0 +1,41 @@
+{
+ "product": "gid://shopify/Product/9272429052158",
+ "handle": "applied-nutrition-crunch-protein-bar",
+ "title": "APPLIED NUTRITION Crunch Protein Bar (HFSS Compliant)",
+ "saved_at": "2026-11-18 04:56",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39355626914046",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrunchProteinBarbyAPPLIEDNUTRITIONfromSportsNutritionHub_4.png?v=1780987525",
+   "alt": "Applied Nutrition Crunch Protein Bar 62g, UK-made HFSS compliant protein bar with soft protein base and crispy crunch layer for daily macros",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39355626979582",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrunchProteinBarbyAPPLIEDNUTRITIONfromSportsNutritionHub_1.png?v=1780987525",
+   "alt": "Applied Nutrition Crunch Protein Bar 62g, UK-made HFSS compliant protein bar with soft protein base and crispy crunch layer for daily macros",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39355627012350",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrunchProteinBarbyAPPLIEDNUTRITIONfromSportsNutritionHub_2.png?v=1780987525",
+   "alt": "Applied Nutrition Crunch Protein Bar 62g, UK-made HFSS compliant protein bar with soft protein base and crispy crunch layer for daily macros",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39355627045118",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/CrunchProteinBarbyAPPLIEDNUTRITIONfromSportsNutritionHub_3.png?v=1780987525",
+   "alt": "Applied Nutrition Crunch Protein Bar 62g, UK-made HFSS compliant protein bar with soft protein base and crispy crunch layer for daily macros",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954326917374\",\"gid://shopify/MediaImage/46954326950142\",\"gid://shopify/MediaImage/46954326982910\",\"gid://shopify/MediaImage/46954327015678\"]"
+}

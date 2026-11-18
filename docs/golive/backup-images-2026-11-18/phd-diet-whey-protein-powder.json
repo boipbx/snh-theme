@@ -1,0 +1,33 @@
+{
+ "product": "gid://shopify/Product/15441148674302",
+ "handle": "phd-diet-whey-protein-powder",
+ "title": "PhD Diet Whey Protein Powder - 1KG",
+ "saved_at": "2026-11-18 04:57",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/46572346507518",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/1_1fdec72b-8919-4938-a5c6-b556859f7706.png?v=1792483144",
+   "alt": "PhD Diet Whey Protein Powder - 1KG - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/46572346540286",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/2_9b01adb5-1d74-486d-bdd0-3a8d7e6fb6b9.png?v=1792483144",
+   "alt": "PhD Diet Whey Protein Powder - 1KG - Sports Nutrition Hub ",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/46572324651262",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Screenshot2026-10-20at1.25.16PM.png?v=1792482925",
+   "alt": "PhD Diet Whey Protein Powder - 1KG - Sports Nutrition Hub ",
+   "width": 1272,
+   "height": 1348
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954331111678\",\"gid://shopify/MediaImage/46954331144446\",\"gid://shopify/MediaImage/46572324651262\"]"
+}

@@ -1,0 +1,49 @@
+{
+ "product": "gid://shopify/Product/8907755290878",
+ "handle": "ehplabs-aqua-collagen",
+ "title": "EHPlabs Aqua Collagen Protein + Hydration",
+ "saved_at": "2026-11-18 04:54",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39037463199998",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AquaCollagenProtein_HydrationbyEHPlabsfromSportsNutritionHub.png?v=1777809425",
+   "alt": "EHPlabs Aqua Collagen Protein + Hydration tub, fruit-flavoured collagen drink with 22g bovine collagen peptides and coconut water electrolytes",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39037471916286",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AquaCollagenProtein_HydrationbyEHPlabsfromSportsNutritionHub11_6bbaa0a1-a18e-4ec8-8380-f115c2b95b81.png?v=1777809883",
+   "alt": "EHPlabs Aqua Collagen Protein + Hydration tub, fruit-flavoured collagen drink with 22g bovine collagen peptides and coconut water electrolytes",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 3,
+   "id": "gid://shopify/MediaImage/39037471949054",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AquaCollagenProtein_HydrationbyEHPlabsfromSportsNutritionHub_1_1_549f3136-8e88-46d2-b623-e21eb3efa74e.png?v=1777809883",
+   "alt": "EHPlabs Aqua Collagen Protein + Hydration tub, fruit-flavoured collagen drink with 22g bovine collagen peptides and coconut water electrolytes",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 4,
+   "id": "gid://shopify/MediaImage/39037463265534",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AquaCollagenProtein_HydrationbyEHPlabsfromSportsNutritionHub_2.png?v=1777809426",
+   "alt": "EHPlabs Aqua Collagen Protein + Hydration tub, fruit-flavoured collagen drink with 22g bovine collagen peptides and coconut water electrolytes",
+   "width": 1080,
+   "height": 1080
+  },
+  {
+   "position": 5,
+   "id": "gid://shopify/MediaImage/39037463232766",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/AquaCollagenProtein_HydrationbyEHPlabsfromSportsNutritionHub_3.png?v=1777809426",
+   "alt": "EHPlabs Aqua Collagen Protein + Hydration tub, fruit-flavoured collagen drink with 22g bovine collagen peptides and coconut water electrolytes",
+   "width": 1080,
+   "height": 1080
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954316300542\",\"gid://shopify/MediaImage/39037471916286\",\"gid://shopify/MediaImage/39037471949054\",\"gid://shopify/MediaImage/46954316333310\",\"gid://shopify/MediaImage/46954316366078\"]"
+}

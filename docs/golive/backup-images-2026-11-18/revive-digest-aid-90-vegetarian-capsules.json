@@ -1,0 +1,25 @@
+{
+ "product": "gid://shopify/Product/9410567471358",
+ "handle": "revive-digest-aid-90-vegetarian-capsules",
+ "title": "Revive Digest Aid",
+ "saved_at": "2026-11-18 04:57",
+ "media_order": [
+  {
+   "position": 1,
+   "id": "gid://shopify/MediaImage/39960545657086",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Revive_Digest_Aid_by_SNH.png?v=1786589498",
+   "alt": "Revive Digest Aid - Sports Nutrition Hub ",
+   "width": 1620,
+   "height": 1620
+  },
+  {
+   "position": 2,
+   "id": "gid://shopify/MediaImage/39960539463934",
+   "url": "https://cdn.shopify.com/s/files/1/0258/9625/5550/files/Digest-Aid-SFP-blue.webp?v=1786589284",
+   "alt": "Revive Digest Aid - Sports Nutrition Hub ",
+   "width": 1200,
+   "height": 1200
+  }
+ ],
+ "clean_images": "[\"gid://shopify/MediaImage/46954328228094\",\"gid://shopify/MediaImage/39960539463934\"]"
+}
