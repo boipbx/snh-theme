@@ -16,6 +16,10 @@
   if ci_pt contains 'bundle'
     assign ci_fi = nil
   endif
+  # 18 Nov: Theme settings → "Use cleaned product images" off, or the product tag "orig-images": the original shows
+  if settings.snh_use_clean_images == false or product.tags contains 'orig-images'
+    assign ci_fi = nil
+  endif
   if ci_fi
     assign ci_base = ci_fi.src | split: '?' | first | split: '/' | last
     assign ci_key = ',' | append: product.handle | append: ':' | append: ci_base | append: ','

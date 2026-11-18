@@ -1732,6 +1732,13 @@
       },
       {
         "type": "checkbox",
+        "id": "snh_use_clean_images",
+        "label": "Use cleaned product images",
+        "default": true,
+        "info": "Off: every product page and card shows the original Shopify images, never the cleaned copies. To do this for one product only, add the tag orig-images to it."
+      },
+      {
+        "type": "checkbox",
         "id": "snh_clean_images",
         "label": "Prefer clean images",
         "default": false,
