@@ -20,6 +20,10 @@
   if settings.snh_use_clean_images == false or product.tags contains 'orig-images'
     assign ci_fi = nil
   endif
+  # 18 Nov: card thumbnails always show the product's original image. The cleaned pc-<handle>.webp copies smeared
+  # labels and cut packs (Nitrotech 5LB, SiS Rego Whey, Healthspan Sports Essentials). The files stay in assets; delete
+  # the next line to bring them back.
+  assign ci_fi = nil
   if ci_fi
     assign ci_base = ci_fi.src | split: '?' | first | split: '/' | last
     assign ci_key = ',' | append: product.handle | append: ':' | append: ci_base | append: ','

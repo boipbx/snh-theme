@@ -108,8 +108,10 @@
      into the cream tile (R18: no brightness lift / fade mask). Runs once per image on load. */
   var liftCanvas = null;
   function lift(img) {
+    /* 18 Nov: no more trim / zoom / clip on thumbnails: the original image shows whole (object-fit: contain, CSS).
+       The measuring code below is kept but never runs. */
+    img.__v2lift = true; img.style.transform = ''; img.style.clipPath = ''; img.classList.add('is-ready'); if (img) return;
     if (img.__v2lift || !img.complete || !img.naturalWidth) return;
-    img.__v2lift = true;
     try {
       // 11 Nov: images from another domain (cdn.shopify.com, e.g. swapped in by tabs/pop-ups) can't be read on a
       // canvas; measure a CORS copy of the same file instead and style the original
@@ -204,6 +206,7 @@
      fit, so every thumbnail on the site reads the same size. Banners, heroes and logos are left alone. */
   var PRICE = /Rs\s?[\d,]{3,}/;
   function autoLift(img) {
+    return; // 18 Nov: switched off with the trim above
     if (img.__snhAuto || img.hasAttribute('data-v2-lift')) return;
     var src = img.currentSrc || img.src || '';
     if (!/\/(files|products)\//.test(src) || /logo|icon|badge|koko|payment/i.test(src)) return;

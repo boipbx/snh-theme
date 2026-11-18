@@ -2777,3 +2777,11 @@ html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bo
 .rstk--pdp .rstk__btn { width: 100%; min-height: 48px; font-size: 14.5px; }
 .srch__sugg { margin-bottom: 20px; }
 .srch__list--plain[hidden], .srch__list[hidden], .srch__sugg[hidden], .srch__col[hidden] { display: none; }
+
+/* 18 Nov: card and list thumbnails show the original Shopify image, whole: contain in the 1:1 tile at about 85 %,
+   centred; no zoom, no trim, no clip (the cleaned assets/pc-*.webp copies are no longer used anywhere) */
+.card__img { display: grid !important; place-items: center; }
+.card__img img, .card__img.is-framed img, .card__img.is-clean img, .pc--sis .card__img.is-clean img { width: 85% !important; height: 85% !important; object-fit: contain !important; transform: none !important; clip-path: none !important; filter: none !important; }
+img[data-v2-lift], .sline__img img, .smini__img img, .ssug__img img, .oimg img, .hs__img img, .elpromo__img img, .sp-sticky__img img, .mini img, .cmpx__pic img,
+.sline__img.is-framed img, .smini__img.is-framed img, .ssug__img.is-framed img, .oimg.is-framed img { object-fit: contain !important; transform: none !important; clip-path: none !important; }
+.v-lift .card__img img[data-v2-lift] { opacity: 1; }
