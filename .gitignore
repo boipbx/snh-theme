@@ -3,3 +3,4 @@ prototype/shots/
 prototype/__pycache__/
 prototype/images/__pycache__/
 node_modules/
+docs/case-study/*.zip
