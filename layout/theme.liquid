@@ -9,7 +9,7 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
 
 <!doctype html>
 
-<html lang="{{ request.locale.iso_code }}" dir="{% render 'direction' %}">
+<html lang="{{ request.locale.iso_code }}" dir="{% render 'direction' %}" class="snh-accent-{{ settings.snh_heading_accent | default: 'orange' }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

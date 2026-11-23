@@ -484,6 +484,27 @@
         "id": "text_font_letter_spacing",
         "label": "Body letter spacing",
         "default": 0
+      },
+      {
+        "type": "header",
+        "content": "SNH heading accent"
+      },
+      {
+        "type": "select",
+        "id": "snh_heading_accent",
+        "label": "Heading accent style",
+        "options": [
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "serif",
+            "label": "Italic serif"
+          }
+        ],
+        "default": "orange",
+        "info": "The highlighted word in headings (written as *word* in a heading field). Orange: same font, weight and size as the heading, upright, in SNH orange. Italic serif: the earlier Instrument Serif italic. Brand lockups such as \"SNH Elite\" keep the serif either way."
       }
     ]
   },
