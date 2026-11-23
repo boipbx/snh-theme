@@ -1007,3 +1007,13 @@ Klaviyo segment counts once processed (23 Nov): "SNH · Reorder-ready" 846 profi
 
 # 23 Nov 2026: subscriptions scaffold. No live writes
 Code only, commit fca7e33: `apps/snh-ops/src/subs.mjs`, the `subscriptions` and `subscription_charges` tables in `schema.sql`, `SUBS_MODE = "off"` in `wrangler.toml`, 10 tests. **Not deployed**; production D1 unchanged; no Onepay credentials exist. Plan: `docs/subscriptions/PLAN.md`.
+
+# Write log (23 Nov 2026): loyalty go-live checks. Both failed, nothing switched to live
+| time | what | object | before | after |
+|---|---|---|---|---|
+| 10:45 | read-only check: QA Redeem press | QA customer 31482633617662; D1 `redeem_requests`; Shopify `ELITE-` codes | - | **Failed.** No `Trigger_Redeem_2500` tag, points still 2,600, no new code, no new request in D1 since 16 Nov. The customer record's last change was our own 10:20 points write, so the press never reached Shopify |
+| 10:48 | customerCreate (dry run shown first) | test record `snh-flowtest-…@example.com` (31507878281470), tag `qa-test`, no account | did not exist | created DISABLED |
+| 10:48 | read after 5 s and 70 s | same record | - | **Failed.** Got `loyalty_points` 500, `loyalty_tier` Bronze and tag `Welcome_Free_Shipping` within 5 s. That is the old "customer created" welcome automation; our service is in qa mode and never touches DISABLED records |
+| 10:49 | customerDelete | test record 31507878281470 | existed | deleted |
+
+**State:** `WELCOME_MODE` and `REDEEM_MODE` stay "qa", "Pause redemption" stays on, and the 4 waiting requests are untouched. The QA customer is unchanged at 2,600 points.
