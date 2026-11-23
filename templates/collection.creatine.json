@@ -31,10 +31,45 @@
       "settings": {
         "style": "light"
       }
+    },
+    "creatine_guide": {
+      "type": "rich-text",
+      "blocks": {
+        "sub": {
+          "type": "subheading",
+          "settings": {
+            "text": "Buying guide"
+          }
+        },
+        "head": {
+          "type": "heading",
+          "settings": {
+            "text": "How to know your creatine is genuine",
+            "heading_tag": "h2"
+          }
+        },
+        "body": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Creatine is one of the most copied supplements. A few quick checks, before you buy and when the tub arrives, keep you safe.</p><ul><li><strong>Buy from an authorised seller.</strong> Fakes usually come through unofficial importers and online marketplaces. SNH is an authorised distributor of leading brands. If you are unsure about any seller, ask the brand who its Sri Lankan distributors are.</li><li><strong>Check the batch code and best-before date.</strong> A genuine tub has a printed batch (lot) number and best-before date, usually on the base or the label. They should be crisp, not scratched off or covered by a sticker, and match any outer box.</li><li><strong>Look for a test you can verify.</strong> Informed Sport products are batch-tested for banned substances. Search the batch number on the Informed Sport website to confirm it.</li><li><strong>Inspect the seal and label.</strong> The inner foil seal should be intact, and the label sharp and correctly spelt, with no second label stuck over the original.</li><li><strong>Be wary of very low prices.</strong> A price far below every authorised seller is the most common sign of a counterfeit or out-of-date product.</li><li><strong>Not sure? Ask us.</strong> If anything about a product looks or smells unusual, send our team a photo of the batch code on WhatsApp before you use it.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "sub",
+        "head",
+        "body"
+      ],
+      "settings": {
+        "full_width": false,
+        "content_width": "medium",
+        "text_position": "start"
+      }
     }
   },
   "order": [
     "main",
+    "creatine_guide",
     "faq_bygKrK"
   ]
 }
