@@ -17,6 +17,8 @@ API_VERSION = "2026-10"
 # off = do nothing · qa = only the QA customer IDs in the store config · live = every customer. Change to "live" only on the owner's say-so.
 REDEEM_MODE = "qa"
 WELCOME_MODE = "qa"
+# Subscribe & save (docs/subscriptions/PLAN.md): "off" or "sandbox" (Onepay sandbox credentials, no Shopify orders, no points). Anything else = off; live needs a code change.
+SUBS_MODE = "off"
 # secrets (wrangler secret put …): SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY
 # Per-store settings live in D1 (table shops, column config): see config/example-store.json.
 # SHOP_CONFIG (optional) = deploy-time defaults per shop, as JSON keyed by shop domain; the D1 config wins. Nothing secret.

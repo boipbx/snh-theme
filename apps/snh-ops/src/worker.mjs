@@ -7,6 +7,7 @@ import { verify } from './auth.mjs';
 import { getConfig, getState, startSync, step, compute, syncLog, writtenToday, migrated, isLimitError, LIMIT_MSG } from './sync.mjs';
 import { page } from './ui.mjs';
 import { runRedeem, runWelcome, redeemStatus } from './redeem.mjs';
+import { subsApi, runSubs } from './subs.mjs';
 
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 const SHOP_RE = /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/;
@@ -42,6 +43,7 @@ export async function api(req, env, ctx, who, now = Date.now()) {
       writes: { today: used, budget: Number(cfg.dailyWriteBudget) || 0, pendingSetup: !mig },
       config: { currency: cfg.currency, brand: cfg.brand, newBundleTag: cfg.newBundleTag, klaviyoFlowPrefix: cfg.klaviyoFlowPrefix }, user: { id: who.user || '', admin: isAdmin(cfg, who.user) } });
   }
+  if (path === 'subs' || path.startsWith('subs/')) return subsApi(path, req, env, shop, now); // SUBS_MODE off → 404
   if (path === 'redeem') return json(await redeemStatus(env, shop, now));
   if (path === 'redeem/run' && req.method === 'POST') {
     if (!isAdmin(cfg, who.user)) return json({ error: 'Only an admin can run this.' }, 403);
@@ -77,7 +79,7 @@ export default {
   },
   async scheduled(event, env, ctx) {
     const shops = (await env.DB.prepare('SELECT shop FROM shops').all()).results.map((r) => r.shop); const nightly = event.cron === '30 20 * * *';
-    if (event.cron === '*/5 * * * *') { for (const shop of shops) ctx.waitUntil((async () => { try { await runRedeem(env, shop, event.scheduledTime); await runWelcome(env, shop, event.scheduledTime); } catch (e) { console.log('redeem run error', shop, String(e.message || e).slice(0, 200)); } })()); return; }
+    if (event.cron === '*/5 * * * *') { for (const shop of shops) ctx.waitUntil((async () => { try { await runRedeem(env, shop, event.scheduledTime); await runWelcome(env, shop, event.scheduledTime); await runSubs(env, shop, event.scheduledTime); } catch (e) { console.log('redeem run error', shop, String(e.message || e).slice(0, 200)); } })()); return; }
     const t = new Date(event.scheduledTime || Date.now()); const justAfterReset = t.getUTCHours() === 0 && t.getUTCMinutes() < 10;   // the daily write allowance starts again at 00:00 UTC
     for (const shop of shops) ctx.waitUntil((async () => { try {
       const s = await getState(env, shop); const running = !['idle', 'error'].includes(s.phase);

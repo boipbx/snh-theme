@@ -22,3 +22,15 @@ CREATE TABLE IF NOT EXISTS sync_log (shop TEXT NOT NULL, started_at TEXT NOT NUL
 CREATE TABLE IF NOT EXISTS redeem_requests (shop TEXT NOT NULL, id TEXT NOT NULL, customer_id TEXT NOT NULL, status TEXT NOT NULL, code TEXT, discount_id TEXT, points_before INTEGER, points_after INTEGER,
   created_at TEXT NOT NULL, updated_at TEXT, note TEXT, mode TEXT, code_status TEXT, expires_at TEXT, notified INTEGER NOT NULL DEFAULT 0, backup TEXT, PRIMARY KEY (shop, id));
 CREATE TABLE IF NOT EXISTS redeem_locks (shop TEXT NOT NULL, customer_id TEXT NOT NULL, request_id TEXT NOT NULL, locked_at TEXT NOT NULL, PRIMARY KEY (shop, customer_id));
+
+-- Subscribe & save (scaffold, SUBS_MODE off; docs/subscriptions/PLAN.md). Card details never stored: only Onepay's
+-- customer id and card token. Times are epoch milliseconds.
+CREATE TABLE IF NOT EXISTS subscriptions (shop TEXT NOT NULL, id TEXT NOT NULL, customer_id TEXT NOT NULL, onepay_customer_id TEXT, token_id TEXT,
+  card_last4 TEXT, card_expiry TEXT, variant_id TEXT NOT NULL, product_title TEXT, quantity INTEGER NOT NULL DEFAULT 1, unit_price REAL NOT NULL,
+  discount_pct REAL NOT NULL DEFAULT 0, interval_days INTEGER NOT NULL DEFAULT 30, anchor_day INTEGER, next_charge_at INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending_card', failures INTEGER NOT NULL DEFAULT 0, retry_at INTEGER, skip_next INTEGER NOT NULL DEFAULT 0,
+  paused_reason TEXT, tier_rate REAL NOT NULL DEFAULT 0.03, consent_text TEXT, consent_at INTEGER, last_charged_at INTEGER, cancelled_at INTEGER,
+  created_at INTEGER NOT NULL, PRIMARY KEY (shop, id));
+-- One row per charge attempt; id = "<sub id>:<due at>" so the same due date can never be charged twice.
+CREATE TABLE IF NOT EXISTS subscription_charges (shop TEXT NOT NULL, id TEXT NOT NULL, sub_id TEXT NOT NULL, due_at INTEGER NOT NULL, amount REAL NOT NULL,
+  status TEXT NOT NULL, transaction_id TEXT, message TEXT, plan TEXT, shopify_order_id TEXT, created_at INTEGER NOT NULL, PRIMARY KEY (shop, id));
