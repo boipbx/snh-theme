@@ -2785,3 +2785,28 @@ html[data-sun-deal] .pc--sis:not(.pc--out) .pc__frame:has(.pc__chip)::after { bo
 img[data-v2-lift], .sline__img img, .smini__img img, .ssug__img img, .oimg img, .hs__img img, .elpromo__img img, .sp-sticky__img img, .mini img, .cmpx__pic img,
 .sline__img.is-framed img, .smini__img.is-framed img, .ssug__img.is-framed img, .oimg.is-framed img { object-fit: contain !important; transform: none !important; clip-path: none !important; }
 .v-lift .card__img img[data-v2-lift] { opacity: 1; }
+
+/* ── Heading accent style (23 Nov 2026; Theme settings → Typography → "Heading accent style") ──
+   Orange (default): the highlighted heading word keeps the heading's own font, weight and size, upright, in SNH orange.
+   Italic serif: nothing below applies, the earlier Instrument Serif italic rules stay as they were.
+   Covers every heading accent: .serif (from *word* in heading fields, snippets/snh-v2-heading) and <em> inside the
+   headings listed. Brand lockups ("SNH Elite": .eltm__e, *__brand em), testimonial quotes (.quote__text) and article
+   tiles (.art-tile__t) are not heading accents and keep the serif. The serif font has no preload, so a page whose
+   only serif text was a heading accent no longer downloads it.
+   Colour: --v-accent (#BF4512) on light backgrounds (4.2–5.2:1); dark sections get --snh-accent-on-dark. */
+.snh-accent-orange { --snh-accent-on-dark: #E0521C; } /* the original, lighter SNH orange: 4.96:1 on ink #0E0E0E vs 3.75:1 for #BF4512 */
+.snh-accent-orange :is(.serif, .acc__h em, .acc__h2 em, .rcard__h em, .auth__h em, .auth__title em, .ep__h em, .ep__h2 em,
+  .app__h em, .app__h2 em, .refer__h em, .elpromo__t em, .qz__game .quiz__q em, .out__h em, .wk-gate__h em, .biz-hero__h em,
+  .biz-h em, .ecm__h em, .ftr__news-h em, .scp__head .v-h1 em, .scp__bt em, .ptn__h em, .ptn__h2 em, .ttk__fb-h em,
+  .acp__h em, .qzb__h em, .qzb__ih em) {
+  font-family: inherit !important; font-style: normal !important; font-weight: inherit !important;
+  letter-spacing: inherit !important; font-size: inherit !important; color: var(--v-accent, #BF4512) !important;
+}
+/* dark backgrounds, photo and video overlays: the lighter brand orange */
+.snh-accent-orange :is(.hero__slide, .qzb, .mqd, .v-section--dark, .eband, .ftr, .auth--bg, .biz-hero, .ep2__hero, .ep__end, .sbx, .acp, .wk-gate)
+  :is(.serif, .acc__h em, .acc__h2 em, .rcard__h em, .auth__h em, .auth__title em, .ep__h em, .ep__h2 em,
+    .app__h em, .app__h2 em, .refer__h em, .elpromo__t em, .qz__game .quiz__q em, .out__h em, .wk-gate__h em, .biz-hero__h em,
+    .biz-h em, .ecm__h em, .ftr__news-h em, .scp__head .v-h1 em, .scp__bt em, .ptn__h em, .ptn__h2 em, .ttk__fb-h em,
+    .acp__h em, .qzb__h em, .qzb__ih em) { color: var(--snh-accent-on-dark) !important; }
+/* sign-in / register over a warm photo (.auth--bg): even #E0521C is 2.0:1 there; the theme's light accent #FFB27A is 4.4:1 */
+.snh-accent-orange .auth--bg { --snh-accent-on-dark: #FFB27A; }
