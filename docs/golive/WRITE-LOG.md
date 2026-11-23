@@ -1017,3 +1017,23 @@ Code only, commit fca7e33: `apps/snh-ops/src/subs.mjs`, the `subscriptions` and 
 | 10:49 | customerDelete | test record 31507878281470 | existed | deleted |
 
 **State:** `WELCOME_MODE` and `REDEEM_MODE` stay "qa", "Pause redemption" stays on, and the 4 waiting requests are untouched. The QA customer is unchanged at 2,600 points.
+
+# 23 Nov 2026: heading accent style (theme change on a preview branch, NOT live)
+| time | what | object | before | after |
+|---|---|---|---|---|
+| 11:40 | git push, commit 0f7ffc5 | branch `claude/gallant-lovelace-wtdgxt` (not connected to any theme yet; the live theme follows `feat/theme-v2`, which is unchanged) | - | new setting Theme settings → Typography → "Heading accent style" (Orange default / Italic serif); `<html class="snh-accent-…">`; override block at the end of `assets/snh-v2.css` |
+
+- **Accents covered:** `.serif` (from `*word*` in heading fields) and `<em>` in about 30 heading classes across `snh-v2.css`, `snh-account.css`, `snh-app.css`, `snh-biz.css`, `snh-capture.css`, `snh-cart.css`, `snh-partner.css`, `snh-product.css` and `snh-social.css`.
+- **Kept in the serif (not heading accents):**
+  - the "SNH *Elite*" lockup (`.eltm__e`, in the header on every page)
+  - Elite card brand names (`*__brand em`, `.elc__brand em`)
+  - testimonial quotes (`.quote__text`)
+  - blog tile titles (`.art-tile__t`)
+  - the canvas share image
+  So the serif font still downloads on pages that show those. It no longer downloads on pages without them (wholesale, cart: checked).
+- **Contrast** (90 accents, 8 page types, 375 + 1440, pixels sampled behind each word): all medians are 3.79:1 or better.
+  - #BF4512 (`--v-accent`) on light backgrounds: 4.6–5.2:1
+  - #E0521C (the lighter original brand orange) on dark sections and hero/video overlays: 3.9–5.0:1. #BF4512 was 2.9–3.75:1 there
+  - #FFB27A on the sign-in/register photo backgrounds: there #E0521C measured 2.0:1
+- **CLS and sideways scroll:** CLS is unchanged by the switch (all pages within ±0.01 of before; the highest change is register 1440, 0.074). No sideways scroll anywhere. Existing issue, not caused by this change: `/cart` at 375 already measures CLS ≈ 0.42 before and after.
+- **Screenshots:** `docs/golive/accent-2026-11-23/` (before/after pairs, 375 and 1440). Rendered from the live pages with the new CSS and class swapped in, because no preview theme exists yet.
