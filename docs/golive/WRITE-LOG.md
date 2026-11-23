@@ -1002,3 +1002,8 @@ Times Sri Lanka. Guide followed: docs/golive/CLICK-COLLECT-DEPLOY.md, option 1 (
 | 11:00 | read-only export | `docs/golive/unit-cost-missing-2026-11-23.csv`: every variant with no unit cost (OxyShred first) | - | 1,062 of 1,351 variants (891 on active products, 171 on drafts; 641 are bundle variants). No cost was entered |
 
 Segment counts vs the expected ~33 / ~351: no reading of the definitions gets close. All channels, as defined: 918 / 1,442. Email-subscribed only: 74 / 208. Enabled accounts only: 89 / 173. D1 cross-check (non-cancelled orders): 872 / 1,327. The definitions behind the expected numbers need confirming with Khizer.
+
+Klaviyo segment counts once processed (23 Nov): "SNH · Reorder-ready" 846 profiles, "SNH · VIP" 1,504 profiles (Klaviyo counts its own synced Shopify orders, so the numbers differ from Shopify's 918 / 1,442).
+
+# 23 Nov 2026: subscriptions scaffold. No live writes
+Code only, commit fca7e33: `apps/snh-ops/src/subs.mjs`, the `subscriptions` and `subscription_charges` tables in `schema.sql`, `SUBS_MODE = "off"` in `wrangler.toml`, 10 tests. **Not deployed**; production D1 unchanged; no Onepay credentials exist. Plan: `docs/subscriptions/PLAN.md`.
