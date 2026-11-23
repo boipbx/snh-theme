@@ -959,3 +959,22 @@ Backup: docs/golive/backup-2026-11-14/bundles-before-activation.json.
 | 2026-11-18 04:57 | metafieldsSet custom.clean_images | /products/revive-vitamin-c | 1 clean copies | 0 clean copies kept, the rest point back to the original media (backup docs/golive/backup-images-2026-11-18/revive-vitamin-c.json) |
 | 2026-11-18 04:57 | metafieldsSet custom.clean_images | /products/revive-collapure-grass-fed-collagen | 1 clean copies | 0 clean copies kept, the rest point back to the original media (backup docs/golive/backup-images-2026-11-18/revive-collapure-grass-fed-collagen.json) |
 | 2026-11-18 04:57 | metafieldsSet custom.clean_images | /products/revive-glucose-supporting-metabolic-health | 1 clean copies | 0 clean copies kept, the rest point back to the original media (backup docs/golive/backup-images-2026-11-18/revive-glucose-supporting-metabolic-health.json) |
+
+# Write log (23 Nov 2026): click & collect service deployed (dry run)
+Times Sri Lanka. Guide followed: docs/golive/CLICK-COLLECT-DEPLOY.md, option 1 (Cloudflare Worker).
+
+| time | what | object | before | after |
+|---|---|---|---|---|
+| 2026-11-23 10:17 | read-only dry run (local, launch set to 14 Nov to include old orders) | 448 orders since 14 Nov, 12 pickup | - | no write; per-order result in the 23 Nov report below |
+| 2026-11-23 10:30 | `wrangler deploy` | Cloudflare Worker `snh-click-collect` (version 75e4881d), cron `*/30 * * * *` | did not exist | deployed, `DRY_RUN = "true"`, `PICKUP_LAUNCH_AT = 2026-11-23T10:30:00+05:30` |
+| 2026-11-23 10:32 | `wrangler secret put` ×4 | SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, KLAVIYO_KEY, RUN_KEY (values not logged) | none | set |
+| 2026-11-23 10:33 | on-demand run (dry) | worker `/?key=…` | - | `{"scanned":0,"pickup":0,"acted":0,"dry":true}` |
+
+**Dry run over the 12 existing pickup orders (14–21 Nov)**: all 12 PAID. None is marked "Ready for pickup" in Shopify (staff fulfil them directly), so no 48 h clock starts.
+- Picked up / fulfilled, nothing to do: SNH40848, SNH40908, SNH40915, SNH40986, SNH41012, SNH41018, SNH41035, SNH41103, SNH41184.
+- Not marked ready yet (paid, unfulfilled), nothing yet: SNH41198, SNH41237.
+- Digest only ("not marked ready after 72 h"): SNH41131 (paid, partially fulfilled).
+- Reminder 24 h: none. Cancel unpaid 48 h: none. `pickup-overdue`: none. `check-payment`: none (no delivery order paid at the store; the method doesn't exist yet).
+- These 12 are older than `PICKUP_LAUNCH_AT`, so the deployed service never touches them.
+
+**Still dry:** `DRY_RUN` stays "true" until the owner OKs live cancels (asked in the report).
