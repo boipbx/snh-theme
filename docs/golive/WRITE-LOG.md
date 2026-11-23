@@ -1037,3 +1037,14 @@ Code only, commit fca7e33: `apps/snh-ops/src/subs.mjs`, the `subscriptions` and 
   - #FFB27A on the sign-in/register photo backgrounds: there #E0521C measured 2.0:1
 - **CLS and sideways scroll:** CLS is unchanged by the switch (all pages within ±0.01 of before; the highest change is register 1440, 0.074). No sideways scroll anywhere. Existing issue, not caused by this change: `/cart` at 375 already measures CLS ≈ 0.42 before and after.
 - **Screenshots:** `docs/golive/accent-2026-11-23/` (before/after pairs, 375 and 1440). Rendered from the live pages with the new CSS and class swapped in, because no preview theme exists yet.
+
+# 23 Nov 2026: heading accent published (owner said "publish fonts")
+| time | what | object | before | after |
+|---|---|---|---|---|
+| 11:18 | git merge --no-ff (ec1c343) of `claude/gallant-lovelace-wtdgxt` (0f7ffc5) into `feat/theme-v2` | live theme 189832462590: `assets/snh-v2.css`, `config/settings_schema.json`, `layout/theme.liquid` | heading accents in Instrument Serif italic | "Heading accent style" = Orange (the setting default): upright, heading font, SNH orange |
+| 11:19 | live check | the theme sync had already applied: `<html class="snh-accent-orange">`, new block in the live `snh-v2.css` | - | home, /collections/whey-protein, /products/muscletech-nitrotech-ripped-4lb at 375 and 1440: every heading accent upright Inter in orange (24 / 2 / 8 accents, 0 still serif or italic), no sideways scroll, CLS 0.001–0.038, no page errors. Screenshots: `docs/golive/accent-2026-11-23/live/` |
+
+To go back: Theme settings → Typography → Heading accent style → Italic serif (no code change), or revert ec1c343.
+
+# 23 Nov 2026: QA Redeem button check (read-only, no change)
+`snippets/snh-app-rewards.liquid` lines 20–23 and `snh-app-reward.liquid` lines 21–24: `loyalty_redeem_paused` is ignored for customers tagged `qa-test`, live since 16 Nov. The QA customer has `qa-test`, 2,600 points and no active code, so the button renders for it. The pause did not cause the failed press. Most likely cause: the form submission stops at Shopify's captcha page unless that is completed. Nothing changed.
