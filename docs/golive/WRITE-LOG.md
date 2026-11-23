@@ -978,3 +978,12 @@ Times Sri Lanka. Guide followed: docs/golive/CLICK-COLLECT-DEPLOY.md, option 1 (
 - These 12 are older than `PICKUP_LAUNCH_AT`, so the deployed service never touches them.
 
 **Still dry:** `DRY_RUN` stays "true" until the owner OKs live cancels (asked in the report).
+
+# Write log (23 Nov 2026): loyalty go-live, step 2.1–2.2
+| time | what | object | before | after |
+|---|---|---|---|---|
+| 2026-11-23 10:48 | decision recorded | `docs/golive/LOYALTY-DECISION.md` (audit option 1) | not recorded | recorded; already applied in code, no change |
+| 2026-11-23 10:44 | attempt: sign in as the QA customer for the manual Redeem press | live /account/login | - | **blocked by Shopify's hCaptcha**; nothing submitted, no write |
+| 2026-11-23 10:50 | metafieldsSet (dry run shown first) | QA customer 31482633617662 `custom.loyalty_points` | 100 | 2,600 (so a manual Redeem press can be tested) |
+
+**Stopped here (go-live steps 2.3 onward not started):** the manual Redeem press needs a person, because of the captcha. `WELCOME_MODE` and `REDEEM_MODE` stay "qa"; "Pause redemption" stays on.
