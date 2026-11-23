@@ -987,3 +987,18 @@ Times Sri Lanka. Guide followed: docs/golive/CLICK-COLLECT-DEPLOY.md, option 1 (
 | 2026-11-23 10:50 | metafieldsSet (dry run shown first) | QA customer 31482633617662 `custom.loyalty_points` | 100 | 2,600 (so a manual Redeem press can be tested) |
 
 **Stopped here (go-live steps 2.3 onward not started):** the manual Redeem press needs a person, because of the captcha. `WELCOME_MODE` and `REDEEM_MODE` stay "qa"; "Pause redemption" stays on.
+
+# Write log (23 Nov 2026): Sidekick quick wins (Khizer approved)
+| time | what | object | before | after |
+|---|---|---|---|---|
+| 10:55 | **not done**: 301 redirect for the legacy whey URL | - | - | Blocked: the app has no `read_reports` scope (can't confirm the old path from Analytics, so it wasn't guessed) and no navigation scope (`urlRedirectCreate`) |
+| 10:52 | theme push 5491247 | `templates/collection.creatine.json`: new rich-text section `creatine_guide` ("How to know your creatine is genuine") between the products and the FAQ | main → FAQ | main → buyer guide → FAQ. Checked live at 375 and 1440: shows, no sideways scroll. Backup: the file at the parent commit |
+| 10:58 | collectionUpdate (dry run shown first) | CREATINE collection (159668994110) SEO title | empty | "Creatine Sri Lanka \| Monohydrate, Capsules & Gummies \| SNH" (58 chars) |
+| 10:58 | collectionUpdate | CREATINE collection SEO description | empty | "Genuine creatine in Sri Lanka from Applied Nutrition, RAW, MuscleTech and REVIVE: monohydrate, capsules and gummies, with fast delivery across Sri Lanka." (153 chars) |
+| 10:24 | segmentCreate (dry run shown first) | Shopify segment "Reorder-ready" (1174315434238): `last_order_date >= -90d AND last_order_date <= -60d` | did not exist | 918 customers |
+| 10:24 | segmentCreate | Shopify segment "VIP" (1174315467006): `orders_placed MATCHES (count >= 3, date >= -12m)` | did not exist | 1,442 customers. (The first attempt with the pre-2026-10 syntax was rejected; nothing created) |
+| 10:27 | Klaviyo segment create (dry run shown first) | "SNH · Reorder-ready (last order 60–90 days ago)" (XJRaxJ): Shopify Placed Order ≥1 in last 90 days AND 0 in last 60 days | did not exist | created; Klaviyo counts it in the background |
+| 10:27 | Klaviyo segment create | "SNH · VIP (3+ orders in 12 months)" (VeLY5e): Placed Order ≥3 in last 365 days | did not exist | created |
+| 11:00 | read-only export | `docs/golive/unit-cost-missing-2026-11-23.csv`: every variant with no unit cost (OxyShred first) | - | 1,062 of 1,351 variants (891 on active products, 171 on drafts; 641 are bundle variants). No cost was entered |
+
+Segment counts vs the expected ~33 / ~351: no reading of the definitions gets close. All channels, as defined: 918 / 1,442. Email-subscribed only: 74 / 208. Enabled accounts only: 89 / 173. D1 cross-check (non-cancelled orders): 872 / 1,327. The definitions behind the expected numbers need confirming with Khizer.
