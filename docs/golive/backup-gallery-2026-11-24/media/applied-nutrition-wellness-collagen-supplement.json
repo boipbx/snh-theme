@@ -1,0 +1,64 @@
+{
+ "at": "2026-11-24T15:27:13.613Z",
+ "id": "gid://shopify/Product/8591216509182",
+ "media": [
+  [
+   "gid://shopify/MediaImage/46186407330046",
+   "4_0c7067da-928e-47b6-8ba4-1b8c118dd6bf.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46186422796542",
+   "Product_Image_2STRW.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46186423025918",
+   "Flavoured-Collagen-Powder-165g---Nutritionals---1000x1000.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46186407264510",
+   "collagen.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46186407297278",
+   "collagen-beauty.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46186422403326",
+   "Product_Image_1STRW_1.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46186423058686",
+   "Product_Image_3CT.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46186422010110",
+   "Product_Image_4S_1d761e8a-3258-43b0-9b2f-696ff6250db1.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46186482630910",
+   "collagen-unflavored.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/45624005558526",
+   "Strawberry Raspberry / 30 Servings",
+   "gid://shopify/MediaImage/46186407330046"
+  ],
+  [
+   "gid://shopify/ProductVariant/45624005525758",
+   "Citrus Twist / 30 Servings",
+   "gid://shopify/MediaImage/46186407297278"
+  ],
+  [
+   "gid://shopify/ProductVariant/45761054245118",
+   "Tropical Vibes / 30 Servings",
+   "gid://shopify/MediaImage/46186407264510"
+  ],
+  [
+   "gid://shopify/ProductVariant/50538563895550",
+   "Unflavored / 30 Servings",
+   "gid://shopify/MediaImage/46186482630910"
+  ]
+ ]
+}

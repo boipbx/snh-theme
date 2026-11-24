@@ -1,0 +1,69 @@
+{
+ "at": "2026-11-24T15:27:12.145Z",
+ "id": "gid://shopify/Product/7518536794366",
+ "media": [
+  [
+   "gid://shopify/MediaImage/39146909958398",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_3.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909991166",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_2.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146910023934",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_1.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909827326",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_7.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909925630",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_4.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909892862",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_5.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909761790",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909794558",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_8.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39146909860094",
+   "CriticalMassOriginalbyAppliedNutritionfromSportsNutritionHub_6.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/42324547174654",
+   "6kg - 25 Servings / Strawberry",
+   "gid://shopify/MediaImage/39146910023934"
+  ],
+  [
+   "gid://shopify/ProductVariant/42324547240190",
+   "6kg - 25 Servings / Chocolate",
+   "gid://shopify/MediaImage/39146909991166"
+  ],
+  [
+   "gid://shopify/ProductVariant/44114338513150",
+   "6kg - 25 Servings / Vanilla",
+   "gid://shopify/MediaImage/39146909958398"
+  ],
+  [
+   "gid://shopify/ProductVariant/45002577182974",
+   "6kg - 25 Servings / White Chocolate Hazelnut",
+   "gid://shopify/MediaImage/39146909925630"
+  ],
+  [
+   "gid://shopify/ProductVariant/45746051678462",
+   "6kg - 25 Servings / Cookies & Cream",
+   "gid://shopify/MediaImage/39146909892862"
+  ]
+ ]
+}

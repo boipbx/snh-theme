@@ -1,0 +1,63 @@
+{
+ "at": "2026-11-24T15:27:12.619Z",
+ "id": "gid://shopify/Product/10323974291710",
+ "media": [
+  [
+   "gid://shopify/MediaImage/46190062797054",
+   "4_6b17046d-dfe0-45d6-bbbd-cf486d9e7a72.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059127038",
+   "81vJsyHk_FL._AC_SL1500_465c56c1-4d0c-44d5-ad9e-272430da9c2c.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059225342",
+   "81cHHJayKbL._AC_SL1500_9c42619b-7f88-478e-8751-d4c9a2cd49e7.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190062665982",
+   "5_d46663a4-5842-4f63-b6ad-f3fb708820a5.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190062829822",
+   "6_7b76b41f-7f37-4592-b4bb-d783ff1d2b2b.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059192574",
+   "81dDtTR-7vL._AC_SL1500_a33e9fc9-36fa-4a21-82fb-b4d9c3eb2291.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059356414",
+   "81Hu6XWkrdL._AC_SL1500_7b564441-3501-492b-9a7d-69f9d47ca921.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059323646",
+   "Critical_Plant_Protein_450g_Bag_-_Chocolate_08c69b72-8e62-4fc6-a8ed-f0db9dacfdc9.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059290878",
+   "Critical_Plant_Protein_450g_Bag_-_Strawberry_a6efc1f6-1701-4476-99e8-11338e884c21.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190059159806",
+   "PLANT_f0ed75a1-a125-44c2-84d7-8671fc8f9aed.webp"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/50542258585854",
+   "15 Servings / Chocolate",
+   "gid://shopify/MediaImage/46190059323646"
+  ],
+  [
+   "gid://shopify/ProductVariant/50542258618622",
+   "15 Servings / Strawberry",
+   "gid://shopify/MediaImage/46190059290878"
+  ],
+  [
+   "gid://shopify/ProductVariant/50542258651390",
+   "15 Servings / Vanilla",
+   "gid://shopify/MediaImage/46190062829822"
+  ]
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "at": "2026-11-24T15:27:12.372Z",
+ "id": "gid://shopify/Product/6766845624516",
+ "media": [
+  [
+   "gid://shopify/MediaImage/46190055162110",
+   "1_4d4d3bef-af05-4e86-b6cb-a864c2ffc79a.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46189993951486",
+   "81cHHJayKbL._AC_SL1500.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46189994049790",
+   "81vJsyHk_FL._AC_SL1500.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190055194878",
+   "2_ca673212-f53f-403a-b81b-54632ebc4143.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190055227646",
+   "3_4d93bca7-7bac-4874-8cbd-33a7ad4a0224.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46189993984254",
+   "81dDtTR-7vL._AC_SL1500.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46189994082558",
+   "81Hu6XWkrdL._AC_SL1500_45559249-4256-4a4e-b3c6-dcc3956bd4b8.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46189994017022",
+   "PLANT.webp"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/40212153139396",
+   "60 Servings / Chocolate",
+   "gid://shopify/MediaImage/46190055162110"
+  ],
+  [
+   "gid://shopify/ProductVariant/40212153172164",
+   "60 Servings / Strawberry",
+   "gid://shopify/MediaImage/46190055194878"
+  ],
+  [
+   "gid://shopify/ProductVariant/40212153204932",
+   "60 Servings / Vanilla",
+   "gid://shopify/MediaImage/46190055227646"
+  ]
+ ]
+}

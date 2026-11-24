@@ -1,0 +1,38 @@
+{
+ "at": "2026-11-24T15:27:15.516Z",
+ "id": "gid://shopify/Product/8995228614910",
+ "media": [
+  [
+   "gid://shopify/MediaImage/37452460982526",
+   "MagnesiumEffervescentOrange-Box-SAND_1_jpg.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/37452460916990",
+   "MAGEFF01-OrangeMangesiumEffervescent-Tube-Front-SAND_jpg.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/37452460949758",
+   "MAGEFF04-RaspberryMangesiumEffervescent-Tube-Front-SAND_jpg.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/37452461015294",
+   "MagnesiumEffervescentRaspberry-SAND_jpg.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/37452461048062",
+   "magnesium-effervescent-tablets-trace-minerals-4_jpg.webp"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/67959492804862",
+   "1 Tube / Orange",
+   null
+  ],
+  [
+   "gid://shopify/ProductVariant/67959492837630",
+   "1 Tube / Raspberry",
+   null
+  ]
+ ]
+}

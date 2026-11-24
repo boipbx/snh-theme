@@ -1,0 +1,43 @@
+{
+ "at": "2026-11-24T15:27:14.959Z",
+ "id": "gid://shopify/Product/8756421525758",
+ "media": [
+  [
+   "gid://shopify/MediaImage/39004430991614",
+   "REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_2.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39004431122686",
+   "REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_3.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39004431057150",
+   "REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39004431024382",
+   "REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_1.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39004431089918",
+   "REGOWheyProtein-450gbyScienceInSportfromSportsNutritionHub_4.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/46215249002750",
+   "15 Servings / Strawberry",
+   "gid://shopify/MediaImage/39004431024382"
+  ],
+  [
+   "gid://shopify/ProductVariant/46215249330430",
+   "15 Servings / Vanilla",
+   "gid://shopify/MediaImage/39004430991614"
+  ],
+  [
+   "gid://shopify/ProductVariant/46215249363198",
+   "15 Servings / Chocolate",
+   "gid://shopify/MediaImage/39004431057150"
+  ]
+ ]
+}

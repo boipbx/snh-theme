@@ -1048,3 +1048,20 @@ To go back: Theme settings → Typography → Heading accent style → Italic se
 
 # 23 Nov 2026: QA Redeem button check (read-only, no change)
 `snippets/snh-app-rewards.liquid` lines 20–23 and `snh-app-reward.liquid` lines 21–24: `loyalty_redeem_paused` is ignored for customers tagged `qa-test`, live since 16 Nov. The QA customer has `qa-test`, 2,600 points and no active code, so the button renders for it. The pause did not cause the failed press. Most likely cause: the form submission stops at Shopify's captcha page unless that is completed. Nothing changed.
+
+# 24 Nov 2026: product gallery round 2 + title spacing (owner: autonomous, small commits, check live after each)
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 14:41 | git push cabab53 | live theme `config/settings_data.json` `snh_use_clean_images` | true (cleaned `pdp-` copies on 1st slides) | **false**: originals only |
+| 14:41 | same commit | `assets/snh-product.js` / `.css`, `sections/snh-product.liquid`, `assets/snh-v2.js` | bleed slides, `data-v2-lift` fill, lift on slides/thumbs/sticky | one white frame, `object-fit: contain`, no transform/clip/blend on every slide, thumb and sticky image |
+| 14:43 | live check | all 273 product pages | - | 0 `pdp-` images, 0 bleed, every gallery image `contain\|none\|none` |
+| 14:53 | git push 4c43295 | `snh-product.liquid` vendor block, `snh-product.css`, `snippets/css-variables.liquid` (Inter 800 face) | plain vendor text, title 400–600 | brand eyebrow, title Inter 800 / 1.1 / −0.02em, clamp(26px,7vw,32px) phone, 36px desktop, price right under |
+| 14:55 | git push d92e6d9 | `snh-product.css` | title 49px under gallery on phone | gallery → eyebrow 12px phone / 20px desktop, title 2px under eyebrow; no sideways scroll; sticky bar overlaps 0 elements. Before/after: `docs/golive/title-2026-11-24/` |
+| 20:40 | Admin API `productReorderMedia` ×19 (dry-run first: `scratchpad/gallery/fixrun/dry-run.json`) | 19 products (critical mass, plant protein 1.8kg/450g, critical whey 25/2kg/sample, diet whey, collagen, mass-tech 12lb, RYSE pre/protein/pump, SiS Rego rapid 500g + whey 1.35kg/450g, both shakers, Trace magnesium effervescent, Athlete Essential Stack) | lifestyle / label / info shots between flavour shots | flavour & variant shots first, then lifestyle, then info. Per-product before lists: `docs/golive/backup-gallery-2026-11-24/media/<handle>.json` |
+| 20:40 | `productVariantsBulkUpdate` mediaId ×6 products, 16 variants | Nitrotech 5LB (5), Tingle-Free (3), Essential Performance Citrus Grapefruit, RYSE Loaded Protein JIF, Trace Orange/Raspberry tube, Plant Protein 450g Chocolate/Strawberry | no image (or grey near-duplicate for 450g) | the matching framed flavour shot, each confirmed by eye on the pack label |
+| 20:44 | `fileUpdate` | `immunity-daily` slide 4 | old Vitamin C 1000 pack design `5_b132e29b….png` (file kept in Files, only unlinked) | current original `VitCbyAppliedNutritionfromSportsNutritionHub.png` (same file as the Vitamin C 1000mg product) |
+
+- **Winterberry:** not found (12 product media, Files "winter"/"berry", other variants, Drive). Nothing made. Top of `docs/golive/gallery-review/NEEDS-NEW-PHOTO.md`.
+- **Review:** 273 products by eye at 375 px, `docs/golive/gallery-review/r1/sheet-01..46.jpg`; notes and decisions in `docs/golive/gallery-review/REVIEW-NOTES.md`.
+- **Decisions logged:** "mismatched framing" = display framing (all one frame now); unframed/grey source files among framed ones are noted, not edited. Bundles keep the designer hero first. Desktop eyebrow 20px below gallery top (side-by-side columns).
+- **To go back:** media order/variant images from the backup JSONs (`productReorderMedia` / `productVariantsBulkUpdate`); immunity-daily `fileUpdate` add 33173811790078 / remove 39212848447742; theme: revert d92e6d9, 4c43295, cabab53.

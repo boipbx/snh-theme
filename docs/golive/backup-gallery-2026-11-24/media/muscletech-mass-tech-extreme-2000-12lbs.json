@@ -1,0 +1,42 @@
+{
+ "at": "2026-11-24T15:27:13.812Z",
+ "id": "gid://shopify/Product/8634053656830",
+ "media": [
+  [
+   "gid://shopify/MediaImage/39092948893950",
+   "Mass-TechExtreme200012LBbyMUSCLETECHfromSportsNutritionHub_1.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39092948861182",
+   "Mass-TechExtreme200012LBbyMUSCLETECHfromSportsNutritionHub_2.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39092948959486",
+   "Mass-TechExtreme200012LBbyMUSCLETECHfromSportsNutritionHub_5.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39092948926718",
+   "Mass-TechExtreme200012LBbyMUSCLETECHfromSportsNutritionHub.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39092948992254",
+   "Mass-TechExtreme200012LBbyMUSCLETECHfromSportsNutritionHub_4.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39092948828414",
+   "Mass-TechExtreme200012LBbyMUSCLETECHfromSportsNutritionHub_3.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/45744386474238",
+   "12LB / Triple Chocolate Brownie",
+   "gid://shopify/MediaImage/39092948893950"
+  ],
+  [
+   "gid://shopify/ProductVariant/45744387653886",
+   "12LB / Vanilla Ice-cream",
+   "gid://shopify/MediaImage/39092948861182"
+  ]
+ ]
+}

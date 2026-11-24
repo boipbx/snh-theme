@@ -1,0 +1,43 @@
+{
+ "at": "2026-11-24T15:27:14.764Z",
+ "id": "gid://shopify/Product/8756506460414",
+ "media": [
+  [
+   "gid://shopify/MediaImage/38996662485246",
+   "REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_1.png"
+  ],
+  [
+   "gid://shopify/MediaImage/38996662583550",
+   "REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_3.png"
+  ],
+  [
+   "gid://shopify/MediaImage/38996662452478",
+   "REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_2.png"
+  ],
+  [
+   "gid://shopify/MediaImage/38996662518014",
+   "REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub.png"
+  ],
+  [
+   "gid://shopify/MediaImage/38996662550782",
+   "REGOWheyProtein-1.35kgbyScienceInSportfromSportsNutritionHub_4.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/46215253459198",
+   "45 Servings / Strawberry",
+   "gid://shopify/MediaImage/38996662485246"
+  ],
+  [
+   "gid://shopify/ProductVariant/46215253491966",
+   "45 Servings / Vanilla",
+   "gid://shopify/MediaImage/38996662452478"
+  ],
+  [
+   "gid://shopify/ProductVariant/46215253524734",
+   "45 Servings / Chocolate",
+   "gid://shopify/MediaImage/38996662518014"
+  ]
+ ]
+}

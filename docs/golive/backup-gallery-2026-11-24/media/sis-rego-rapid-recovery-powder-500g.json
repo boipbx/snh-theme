@@ -1,0 +1,43 @@
+{
+ "at": "2026-11-24T15:27:14.589Z",
+ "id": "gid://shopify/Product/9206814343422",
+ "media": [
+  [
+   "gid://shopify/MediaImage/39019257233662",
+   "REGORapidRecoverybyScienceInSportfromSportsNutritionHub.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39019257135358",
+   "REGORapidRecoverybyScienceInSportfromSportsNutritionHub_3.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39019257168126",
+   "REGORapidRecoverybyScienceInSportfromSportsNutritionHub_2.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39019257200894",
+   "REGORapidRecoverybyScienceInSportfromSportsNutritionHub_1.png"
+  ],
+  [
+   "gid://shopify/MediaImage/39019257266430",
+   "REGORapidRecoverybyScienceInSportfromSportsNutritionHub_4.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/67959489200382",
+   "500g / Chocolate",
+   "gid://shopify/MediaImage/39019257168126"
+  ],
+  [
+   "gid://shopify/ProductVariant/67959489233150",
+   "500g / Strawberry",
+   "gid://shopify/MediaImage/39019257200894"
+  ],
+  [
+   "gid://shopify/ProductVariant/67959489265918",
+   "500g / Vanilla",
+   "gid://shopify/MediaImage/39019257233662"
+  ]
+ ]
+}

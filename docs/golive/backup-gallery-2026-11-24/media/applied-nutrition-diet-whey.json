@@ -1,0 +1,68 @@
+{
+ "at": "2026-11-24T15:27:13.420Z",
+ "id": "gid://shopify/Product/6694562398404",
+ "media": [
+  [
+   "gid://shopify/MediaImage/46190330085630",
+   "4_0aa81a2b-5ff4-4095-824b-eff752396c88.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190329987326",
+   "1_a9603a4a-0d39-48d9-b57f-a61189dfc6d1.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190330020094",
+   "2_c26a4613-80dc-480d-981b-899bcb614085.png"
+  ],
+  [
+   "gid://shopify/MediaImage/46190322581758",
+   "Diet_Protein_450g_-_Lifestyle.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190322712830",
+   "Diet_Protein_1.8kg.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190322548990",
+   "Diet_Protein_1kg_Bag_-_Strawberry_Milkshake_-_How_to_use.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190322614526",
+   "Diet_Protein_1kg_Bag_-_Vanilla_Ice_Cream_-_How_to_use.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190322647294",
+   "81LwvUFNvDL._AC_SL1500.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190322680062",
+   "81-A9iBonhL._AC_SL1500.webp"
+  ],
+  [
+   "gid://shopify/MediaImage/46190330052862",
+   "3_3cb29b66-d4aa-4458-877c-d02ffd81eac8.png"
+  ]
+ ],
+ "variants": [
+  [
+   "gid://shopify/ProductVariant/39930334576836",
+   "40 Servings / Chocolate",
+   "gid://shopify/MediaImage/46190330085630"
+  ],
+  [
+   "gid://shopify/ProductVariant/39930334609604",
+   "40 Servings / Strawberry",
+   "gid://shopify/MediaImage/46190329987326"
+  ],
+  [
+   "gid://shopify/ProductVariant/40169715204292",
+   "40 Servings / Vanilla",
+   "gid://shopify/MediaImage/46190330020094"
+  ],
+  [
+   "gid://shopify/ProductVariant/43948932759806",
+   "40 Servings / Banana",
+   "gid://shopify/MediaImage/46190330052862"
+  ]
+ ]
+}
