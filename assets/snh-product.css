@@ -479,3 +479,22 @@
 .sp-thumb, .sp-rail .sp-thumb { background: #fff !important; }
 .sp-thumb img, .sp-rail .sp-thumb img { width: 100%; height: 100%; object-fit: contain !important; object-position: 50% 50% !important; transform: none !important; clip-path: none !important; mix-blend-mode: normal !important; }
 .sp-sticky__img img { object-fit: contain !important; transform: none !important; clip-path: none !important; }
+
+/* 24 Nov: title block. Brand eyebrow → title → price (+ its Koko / points lines) directly under each other, then the
+   rating row, the short description, options and add to cart. Phone: 12px from the gallery (thumb strip / progress bar)
+   to the eyebrow, no grid gap. Desktop (columns side by side): the eyebrow starts 20px below the gallery's top edge. */
+.sp-buy { display: flex; flex-direction: column; }
+.sp-buy > * { order: 7; }
+.sp-buy > .sp-vendor { order: 1; }
+.sp-buy > .sp-title { order: 2; }
+.sp-buy > .sp-price { order: 3; }
+.sp-buy > .sp-line { order: 4; }
+.sp-buy > .sp-meta { order: 5; }
+.sp-buy > .sp-sub { order: 6; }
+.sp-b.sp-vendor { display: block !important; margin-top: 12px; line-height: 1; }
+.sp-vendor .sp-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--sp-muted, #6B6660); }
+.sp-b.sp-title { margin-top: 6px; font-family: var(--heading-font-family, "Inter"), system-ui, sans-serif; font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+  font-size: clamp(26px, 7vw, 32px); text-wrap: balance; }
+.sp-b.sp-price { margin-top: 12px; }
+@media (max-width: 1023px) { .sp-grid { row-gap: 0; } }
+@media (min-width: 1024px) { .sp-b.sp-vendor { margin-top: 20px; } .sp-b.sp-title { font-size: 36px; } }

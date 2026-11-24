@@ -25,6 +25,12 @@ note that this may have impact on different places.
     {{ heading_font_bold | font_face: font_display: 'swap' }}
   {%- endif -%}
 
+  {%- comment -%} 24 Nov: weight 800 for the product page title (declared only; the browser fetches it only where used) {%- endcomment -%}
+  {%- assign heading_font_xbold = settings.heading_font | font_modify: 'weight', '800' -%}
+  {%- if heading_font_xbold -%}
+    {{ heading_font_xbold | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
   /* Typography (body) */
   {{ settings.text_font | font_face: font_display: 'swap' }}
 
