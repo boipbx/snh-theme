@@ -498,3 +498,5 @@
 .sp-b.sp-price { margin-top: 12px; }
 @media (max-width: 1023px) { .sp-grid { row-gap: 0; } }
 @media (min-width: 1024px) { .sp-b.sp-vendor { margin-top: 20px; } .sp-b.sp-title { font-size: 36px; } }
+.sp-buy > .sp-b.sp-vendor + .sp-b.sp-title, .sp-buy > .sp-b.sp-title { margin-top: 2px; }
+.sp-vendor .sp-eyebrow { display: inline-flex; align-items: center; min-height: 24px; line-height: 1; }
