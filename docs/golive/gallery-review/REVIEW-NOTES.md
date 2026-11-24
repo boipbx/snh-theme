@@ -52,3 +52,8 @@ sheet 46 (271-273): ORDER #273 whey-training-stack (shaker info 4 before lifesty
 - Wrong image: immunity-daily slide 4 swapped to the current Vitamin C original.
 - Checked, no change: #227 sis-beta-fuel-gel slide 4 is the Neutral flavour; #259 Onyx wraps are the brand's ONYX shots; #171 CBUM slide 8 is Rocky Road (not Fudge Brownie) → photo list; #173 slide 4 is Fruit Punch → Cherry Limeade on photo list.
 - Everything else that failed only for a missing photo is on NEEDS-NEW-PHOTO.md.
+
+## Round 2 re-capture (24 Nov, after fixes): `r2/sheet-01..46.jpg`
+- 273/273 captured, 0 errors. 0 style/bleed/cleaned images; thumbs = slides on every product.
+- All 19 new orders match live exactly; all 16 variant images confirmed in Admin (r2 "variant w/o image" flags for those come from the stale local variant list).
+- Remaining red flags are informational: "<800px" (source size) and variants on NEEDS-NEW-PHOTO.md. Zero fixable fails left.
