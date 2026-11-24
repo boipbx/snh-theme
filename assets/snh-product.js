@@ -58,7 +58,7 @@
         if (n < 150) return;                                   // transparent cut-out: keep the white frame
         r /= n; g /= n; b /= n;
         if ((r + g + b) / 3 > 238) return;                     // white / near-white background: nothing to do
-        sl.classList.add('sp-slide--bleed'); sl.style.backgroundColor = 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
+        // 24 Nov: no full-bleed slides any more: every slide keeps the same white frame (one look per gallery)
         // a dark photo: the floating brand logo (no plate behind it any more) steps aside while this slide shows
         if ((r * .299 + g * .587 + b * .114) < 170) { sl.__dark = true; var stg2 = root.querySelector('.sp-stage'); if (stg2 && sl.hasAttribute('data-active')) stg2.classList.add('is-dark'); }
       } catch (e) {}

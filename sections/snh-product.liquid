@@ -419,7 +419,7 @@
     {%- assign thumb = v.featured_media | default: product.featured_media -%}
     <div class="sp-sticky" data-sp-sticky aria-hidden="true">
       <div class="sp-wrap sp-sticky__in">
-        {%- if thumb -%}<span class="sp-sticky__img">{{ thumb | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy', data-v2-lift: '' }}</span>{%- endif -%}
+        {%- if thumb -%}<span class="sp-sticky__img">{{ thumb | image_url: width: 120 | image_tag: width: 40, height: 40, alt: '', loading: 'lazy', data-no-lift: '' }}</span>{%- endif -%}
         <span class="sp-sticky__text">
           <span class="sp-sticky__name">{{ short_title | strip }}</span>
           <span class="sp-sticky__price" data-sp-sync="sprice">{{ v.price | money_without_trailing_zeros }}{% unless product.has_only_default_variant %}<span> · {{ v.title | remove: ' - Informed-Sport Tested' | replace: ' / ', ' · ' | escape }}</span>{% endunless %}</span>

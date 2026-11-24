@@ -343,8 +343,6 @@
 /* 11 Nov: product photos are trimmed to the product like the cards (assets/snh-v2.js lift): less padding around the
    main photo and the thumbnails, the product fills ~84 % of the frame whatever white space the file has */
 .sp-slide { padding: 3%; }
-.sp-slide img[data-v2-lift] { --lift-fill: .84; }
-.sp-thumb img[data-v2-lift], .sp-sticky__img img[data-v2-lift] { --lift-fill: .9; }
 .sp-sticky__img { overflow: hidden; }
 
 /* 11 Nov: no cream shade behind the product photos — the gallery, thumbnails and sticky-bar image sit on white
@@ -472,3 +470,12 @@
 .det__more { display: inline-flex; align-items: center; min-height: 44px; margin: 4px 0 12px; padding: 0; border: 0; background: none; color: var(--sp-ink, #0C0C0D); font: 600 15px/1 var(--sans); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 .det__acc[aria-expanded="false"] ~ .det__more { display: none; }
 @media (min-width: 1024px) { .det__more { display: none; } .det__body.is-clamped { max-height: none; } .det__body.is-clamped::after { display: none; } }
+
+/* 24 Nov: ONE frame for every slide and thumbnail. The original photo whole, centred, object-fit contain, on white,
+   the same padding on every slide (photo, info panel or former clean copy), no full-bleed, no crop, no transform,
+   no JS trim. Thumbnails: the same image, the same rule. */
+.sp-slide, .sp-slide--clean, .sp-slide--info, .sp-slide--bleed { --pad: 3%; background: #fff !important; }
+.sp-slide > img { object-fit: contain !important; object-position: 50% 50% !important; transform: none !important; clip-path: none !important; mix-blend-mode: normal !important; }
+.sp-thumb, .sp-rail .sp-thumb { background: #fff !important; }
+.sp-thumb img, .sp-rail .sp-thumb img { width: 100%; height: 100%; object-fit: contain !important; object-position: 50% 50% !important; transform: none !important; clip-path: none !important; mix-blend-mode: normal !important; }
+.sp-sticky__img img { object-fit: contain !important; transform: none !important; clip-path: none !important; }
