@@ -510,3 +510,6 @@
 .sp-btn[data-sp-buynow] { background: transparent; color: var(--sp-ink, #0C0C0D); box-shadow: inset 0 0 0 2px currentColor; font-weight: 700; }
 .sp-btn[data-sp-buynow]:hover { background: var(--sp-ink, #0C0C0D); color: #fff; }
 @media (prefers-reduced-motion: reduce) { .sp-btn[data-sp-add] { transition: none; transform: none !important; } }
+.sp-sticky .sp-btn[data-sp-sync="satc"]:not([disabled]) { background: #BF4512; color: #fff; font-weight: 700; box-shadow: 0 0 0 1px rgba(246, 89, 34, .95), 0 0 0 3px rgba(246, 89, 34, .16), 0 8px 18px -8px rgba(246, 89, 34, .85); }
+.sp-sticky .sp-btn[data-sp-sync="satc"]:not([disabled]):hover { background: #A83A0E; }
+.sp-sticky .sp-btn[data-sp-sync="satc"]:not([disabled]):active { transform: scale(.97); }
