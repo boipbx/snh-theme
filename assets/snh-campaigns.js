@@ -63,7 +63,7 @@
         if (wrap.querySelector('[data-campaign="' + c.id + '"]')) return;
         var a = document.createElement('a');
         a.className = 'announce__item'; a.href = c.link || '#'; a.tabIndex = -1; a.setAttribute('data-campaign', c.id); a.setAttribute('data-tone', c.tone || 'orange');
-        a.innerHTML = (c.tag ? '<b>' + esc(c.tag) + '</b>' : '') + esc(c.message || c.heading || c.name) + (c.code ? ' · <span class="announce__code">' + esc(c.code) + '</span>' : '') + '<span aria-hidden="true">→</span>';
+        a.innerHTML = (c.tag ? '<b>' + esc(c.tag) + '</b>' : '') + '<span class="announce__txt">' + esc(c.message || c.heading || c.name) + (c.code ? ' · <span class="announce__code">' + esc(c.code) + '</span>' : '') + '</span>' + '<span class="announce__cta">' + esc(c.cta || (/register|elite/.test(c.link || '') ? 'Join free' : 'Shop now')) + '<i aria-hidden="true">→</i></span>';
         if ((c.priority || 0) > 0) wrap.insertBefore(a, wrap.firstChild); else wrap.appendChild(a);
       });
       // show the first live item and take its colour here (the bar keeps it while the items rotate), whatever order
