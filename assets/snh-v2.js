@@ -963,6 +963,14 @@
     var phone = window.matchMedia('(max-width: 767px)');
     var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
     var active = null, openDot = null;
+    // 25 Nov: reveal the markers 1→2→3→4 the first time the image comes into view (CSS does the motion)
+    dots.forEach(function (d, k) { d.style.setProperty('--n', k); });
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && frame) {
+      hs.classList.add('is-reveal-wait');
+      var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); hs.classList.remove('is-reveal-wait'); hs.classList.add('is-reveal');
+        setTimeout(function () { hs.classList.remove('is-reveal'); }, 900 + dots.length * 280); } }, { threshold: .35 });
+      io.observe(frame);
+    }
     function idx(el) { return el.getAttribute('data-spot'); }
     function dotOf(i) { return hs.querySelector('.hs__dot[data-spot="' + i + '"]'); }
     function itemOf(i) { return hs.querySelector('.hs__item[data-spot="' + i + '"]'); }
