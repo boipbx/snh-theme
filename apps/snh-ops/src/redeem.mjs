@@ -12,6 +12,7 @@
 // without a code, and a code without a deduction is undone.
 import { gql } from './shopify.mjs';
 import { getConfig } from './sync.mjs';
+import { ledger } from './console-db.mjs';
 
 export const DEFAULT_REDEEM = { tag: 'Trigger_Redeem_2500', points: 2500, value: 2500, minOrder: 2501, expiryDays: 90, dailyCap: 50, qaCustomerIds: [], eventName: 'Elite Reward Ready', accountUrl: '',
   welcome: { points: 500, tier: 'Bronze', tag: 'welcome_awarded', qaCustomerIds: [] } };
@@ -99,6 +100,7 @@ async function deduct(env, shop, r, customer, cfgR, now) {
     mf(customer.id, 'reward_codes', 'json', JSON.stringify(list), customer.codes ? customer.codes.compareDigest : null), mf(customer.id, 'redeem_status', 'single_line_text_field', 'ready')]); }
   catch (e) { return undo((e.stale ? 'balance changed during the deduction' : 'deduction failed: ' + String(e.message).slice(0, 120)) + '; code cancelled, no points taken'); }
   r.status = 'deducted'; r.points_before = have; r.points_after = have - cfgR.points; r.code_status = 'active'; r.updated_at = iso(now); await put(env, shop, r);
+  await ledger(env, shop, { id: 'redeem-' + r.id, at: now, customer_id: r.customer_id, delta: -cfgR.points, before: have, after: have - cfgR.points, source: 'redeem', reason: 'Redeemed for ' + r.code, ref: r.code });
   return finish(env, shop, r, customer, cfgR, now);
 }
 async function refuse(env, shop, r, customer, cfgR, why, status, now) {
@@ -164,7 +166,8 @@ export async function welcomeCustomer(env, shop, c, cfgR) {
   const have = points(c);
   if (have == null) {       // never had points: give the welcome
     await setMetafields(env, shop, [mf(c.id, 'loyalty_points', 'number_integer', w.points, c.pts ? c.pts.compareDigest : null), ...(c.tier && c.tier.value ? [] : [mf(c.id, 'loyalty_tier', 'single_line_text_field', w.tier)])]);
-    await tags(env, shop, c.id, 'tagsAdd', [w.tag]); return 'awarded';
+    await tags(env, shop, c.id, 'tagsAdd', [w.tag]);
+    await ledger(env, shop, { id: 'welcome-' + num(c.id), customer_id: c.id, delta: w.points, before: null, after: w.points, source: 'welcome', reason: 'Welcome points on account activation' }); return 'awarded';
   }
   await tags(env, shop, c.id, 'tagsAdd', [w.tag]); return 'marked';       // already has a balance (older welcome): mark only, balance untouched
 }

@@ -1,0 +1,9 @@
+# Copy to shopify.app.toml with `shopify app config link` (it fills client_id and the rest from the SNH Ops app).
+# Only the POS tile extension is managed by the CLI; the app itself runs on Cloudflare (application_url below).
+name = "SNH Ops"
+client_id = "SET-BY-CONFIG-LINK"
+application_url = "https://snh-ops.raspy-wind-fe2d.workers.dev"
+embedded = true
+
+[access_scopes]
+use_legacy_install_flow = false

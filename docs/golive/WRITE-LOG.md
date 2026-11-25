@@ -1065,3 +1065,18 @@ To go back: Theme settings → Typography → Heading accent style → Italic se
 - **Review:** 273 products by eye at 375 px, `docs/golive/gallery-review/r1/sheet-01..46.jpg`; notes and decisions in `docs/golive/gallery-review/REVIEW-NOTES.md`.
 - **Decisions logged:** "mismatched framing" = display framing (all one frame now); unframed/grey source files among framed ones are noted, not edited. Bundles keep the designer hero first. Desktop eyebrow 20px below gallery top (side-by-side columns).
 - **To go back:** media order/variant images from the backup JSONs (`productReorderMedia` / `productVariantsBulkUpdate`); immunity-daily `fileUpdate` add 33173811790078 / remove 39212848447742; theme: revert d92e6d9, 4c43295, cabab53.
+
+# 25 Nov 2026: SNH Staff console (Phase 1)
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 14:11 | backup | D1 tables shops, redeem_requests, redeem_locks, sync_state exported (session scratch) | - | - |
+| 14:12 | `wrangler deploy` c04a5494 (then fixes 92161f4e, 59d31088, 4b570202) | Worker `snh-ops` | a32e6017 (16 Nov) | + `/console` staff app, ledger writes in redeem/welcome, `/api/pos/customer` (read-only, POS tile). Also ships the 23 Nov subscriptions scaffold, still `SUBS_MODE=off`. `REDEEM_MODE`/`WELCOME_MODE` unchanged (qa). |
+| 14:12 | D1 tables created on first call | staff, console_devices, console_sessions, console_tokens, console_rate, audit_log, points_ledger | did not exist | created |
+| 14:14 | console test (QA only) | QA2 Test 31483154268414 | 500 pts | +100, −100, +2,000 (reasons logged), counter redeem → **ELITE-BC7R5S** (active, QA2 only, 90 days), 0 pts. 4 ledger rows. |
+| 14:15 | console test | new customer **QA3 Console** (tag qa-test, staff-created, owner's QA mailbox, invite sent) → edited last name + birthday | did not exist | INVITED account |
+| 14:15 | console test | QA1 31482633617662 | 2,600 pts | **untouched** (kept for the pending storefront Redeem test) |
+| 14:20 | D1 cleanup | temporary test admin, test staff, test devices, their sessions | present | removed; audit rows kept (+ a `test.cleanup` row) |
+| 14:24 | first-admin setup link (one-time, 24 h, hash only in D1) | console_tokens | - | given to the owner in the report; expires 26 Nov 14:24 LK |
+
+Tests: 70 unit tests pass (12 new in `test/console.test.mjs`). Live: setup link, search, create + duplicate block, edit, redeem (qa), adjust ±100 + limits, ledger, audit CSV, 5-wrong-PIN lockout, 5-minute idle lock + unlock, unregistered device blocked (API 401). Screenshots 390/1024 (customer data masked): `docs/golive/console-2026-11-25/`.
+Rollback: `wrangler rollback a32e6017-7696-43cc-84d7-3474df706258` (console tables stay, unused).

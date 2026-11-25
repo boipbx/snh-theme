@@ -8,6 +8,8 @@ import { getConfig, getState, startSync, step, compute, syncLog, writtenToday, m
 import { page } from './ui.mjs';
 import { runRedeem, runWelcome, redeemStatus } from './redeem.mjs';
 import { subsApi, runSubs } from './subs.mjs';
+import { consoleFetch } from './console.mjs';
+import { gql } from './shopify.mjs';
 
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 const SHOP_RE = /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/;
@@ -43,6 +45,13 @@ export async function api(req, env, ctx, who, now = Date.now()) {
       writes: { today: used, budget: Number(cfg.dailyWriteBudget) || 0, pendingSetup: !mig },
       config: { currency: cfg.currency, brand: cfg.brand, newBundleTag: cfg.newBundleTag, klaviyoFlowPrefix: cfg.klaviyoFlowPrefix }, user: { id: who.user || '', admin: isAdmin(cfg, who.user) } });
   }
+  if (path === 'x-pos/customer') {                                                    // POS tile: one customer's points (read-only)
+    const id = String(u.searchParams.get('id') || '').replace(/\D/g, ''); if (!id) return json({ error: 'no customer' }, 400);
+    const d = await gql(env, shop, `query($id:ID!){customer(id:$id){displayName state pts:metafield(namespace:"custom",key:"loyalty_points"){value} tier:metafield(namespace:"custom",key:"loyalty_tier"){value} codes:metafield(namespace:"custom",key:"reward_codes"){value}}}`, { id: 'gid://shopify/Customer/' + id });
+    const c = d.customer; if (!c) return json({ error: 'Customer not found' }, 404); const pts = Math.round(Number((c.pts && c.pts.value) || 0)); let codes = []; try { codes = JSON.parse((c.codes && c.codes.value) || '[]').filter((x) => x && x.status === 'active').map((x) => x.code); } catch (e) {}
+    const status = c.state === 'ENABLED' ? 'enabled' : c.state === 'INVITED' ? 'invited' : 'no account';
+    return json({ name: c.displayName, points: pts, value: Math.floor(pts * (cfg.pointValue || 1)), tier: (c.tier && c.tier.value) || '', status, codes, canRedeem: status === 'enabled' && pts >= 2500 });
+  }
   if (path === 'subs' || path.startsWith('subs/')) return subsApi(path, req, env, shop, now); // SUBS_MODE off → 404
   if (path === 'redeem') return json(await redeemStatus(env, shop, now));
   if (path === 'redeem/run' && req.method === 'POST') {
@@ -66,13 +75,17 @@ export async function api(req, env, ctx, who, now = Date.now()) {
   }
   return json({ error: 'not found' }, 404);
 }
-export default {
+const handler = {
   async fetch(req, env, ctx) {
     const u = new URL(req.url);
+    const pos = u.pathname.startsWith('/api/pos/'); const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Access-Control-Max-Age': '600' };
+    if (pos && req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });   // POS tile: bearer token only, no cookies
+    if (pos) { const r = await handler.fetch(new Request(req.url.replace('/api/pos/', '/api/x-pos/'), req), env, ctx); const h = new Headers(r.headers); for (const [k, v] of Object.entries(cors)) h.set(k, v); return new Response(r.body, { status: r.status, headers: h }); }
     if (u.pathname.startsWith('/api/')) {
       let who; try { who = await verify((req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, ''), { clientId: env.SHOPIFY_CLIENT_ID, clientSecret: env.SHOPIFY_CLIENT_SECRET }); } catch (e) { return json({ error: 'unauthorized' }, 401); }
       try { return await api(req, env, ctx, who); } catch (e) { if (isLimitError(e)) return json({ error: LIMIT_MSG }, 503); console.log('api error', String(e.message || e).slice(0, 200)); return json({ error: 'Something went wrong. Try again.' }, 500); }
     }
+    if (u.pathname === '/console' || u.pathname.startsWith('/console/')) return consoleFetch(req, env, ctx);
     if (u.pathname === '/health') return new Response('ok');
     const shop = u.searchParams.get('shop') || ''; const fa = SHOP_RE.test(shop) ? `https://${shop} https://admin.shopify.com` : 'https://admin.shopify.com https://*.myshopify.com';
     return new Response(page(env.SHOPIFY_CLIENT_ID || ''), { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': `frame-ancestors ${fa};`, 'Cache-Control': 'no-store' } });
@@ -90,3 +103,4 @@ export default {
     } catch (e) { console.log('sync error', shop, String(e.message || e).slice(0, 200)); } })());
   },
 };
+export default handler;
