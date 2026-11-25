@@ -183,6 +183,7 @@ export async function step(env, shop, now = Date.now()) {
       await snapshot(env, shop, now); wrote += 3;
       try { const k = await klaviyoData(env, now, cfg); await env.DB.prepare('INSERT OR REPLACE INTO snapshots (shop,key,json,updated_at) VALUES (?,?,?,?)').bind(shop, 'klaviyo', JSON.stringify(k), new Date(now).toISOString()).run(); wrote += 1; } catch (e) { if (isLimitError(e)) throw e; console.log('klaviyo skipped', String(e.message || e).slice(0, 120)); }
       wrote += 4;                                                                              // this state row + the log row
+      try { await saveDash(env, shop, now); wrote += 1; } catch (e) { if (isLimitError(e)) throw e; console.log('dash snapshot skipped', String(e.message || e).slice(0, 120)); }
       const total = (st.rows || 0) + wrote; const msg = `Up to date: ${total.toLocaleString('en')} rows written`;
       // next time, ask only for what changed after this sync began (5 minutes of overlap, harmless: unchanged rows are skipped)
       st = await setState(env, shop, { phase: 'idle', op_id: null, url: null, offset: 0, finished_at: new Date(now).toISOString(), message: msg, counts, rows: total, cursor: new Date(Date.parse(st.started_at) - 5 * 60e3).toISOString() });
@@ -226,3 +227,14 @@ export async function snapshot(env, shop, now = Date.now()) {
   return data;
 }
 export async function syncLog(env, shop, limit = 15) { try { return (await env.DB.prepare('SELECT started_at,finished_at,kind,rows_written,status,message FROM sync_log WHERE shop=? ORDER BY started_at DESC LIMIT ?').bind(shop, limit).all()).results; } catch (e) { return []; } }
+
+// The dashboard's first screen as ONE row (snapshots key 'dash'): the numbers, Klaviyo, the sync log. Written at the end of
+// every sync, so the page needs a single read before it can draw. The live sync state and the write counter are added on request.
+export async function saveDash(env, shop, now = Date.now()) {
+  const rows = (await env.DB.prepare(`SELECT key, json, updated_at FROM snapshots WHERE shop=? AND key IN ('data','klaviyo')`).bind(shop).all()).results;
+  const by = Object.fromEntries(rows.map((r) => [r.key, r])); if (!by.data) return null;
+  const k = by.klaviyo ? JSON.parse(by.klaviyo.json) : null;
+  const dash = { data: JSON.parse(by.data.json), klaviyo: k && k.flows ? k : null, klaviyo_at: by.klaviyo ? by.klaviyo.updated_at : null, log: await syncLog(env, shop), built_at: new Date(now).toISOString() };
+  await env.DB.prepare('INSERT OR REPLACE INTO snapshots (shop,key,json,updated_at) VALUES (?,?,?,?)').bind(shop, 'dash', JSON.stringify(dash), dash.built_at).run();
+  return dash;
+}

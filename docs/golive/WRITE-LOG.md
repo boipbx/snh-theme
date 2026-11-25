@@ -1080,3 +1080,12 @@ To go back: Theme settings → Typography → Heading accent style → Italic se
 
 Tests: 70 unit tests pass (12 new in `test/console.test.mjs`). Live: setup link, search, create + duplicate block, edit, redeem (qa), adjust ±100 + limits, ledger, audit CSV, 5-wrong-PIN lockout, 5-minute idle lock + unlock, unregistered device blocked (API 401). Screenshots 390/1024 (customer data masked): `docs/golive/console-2026-11-25/`.
 Rollback: `wrangler rollback a32e6017-7696-43cc-84d7-3474df706258` (console tables stay, unused).
+
+# 25 Nov 2026: Ops dashboard speed + welcome preloader (Phase 2)
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 14:45 | `wrangler deploy` 634eae4c, 356a618f | Worker `snh-ops` | `/api/data` read 5 sources per request; fonts blocked the first paint | precomputed `snapshots.dash` row (built at the end of each sync; built once on the first request), Server-Timing header, cached first paint, welcome preloader, non-blocking fonts |
+| 14:45 | D1 write | `snapshots` key `dash` (1 row) | none | written by the first `/api/data` call, then by every sync |
+| 14:45 | config | `wrangler.toml` SHOP_CONFIG `brand.loopVideoUrl` = theme asset `snh-brand-loop.mp4` | - | set |
+
+Timings and method: `docs/golive/OPS-DASHBOARD-SPEED.md`. Rollback: `wrangler rollback 4b570202-25c0-41f4-b2e8-bda27bbc4983` (console without the dashboard changes).

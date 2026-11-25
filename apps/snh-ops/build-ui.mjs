@@ -6,7 +6,8 @@ export const source = (h) => `// GENERATED from ui/app.html by build-ui.mjs. Edi
 // The app page. It holds no store data: everything is fetched from /api with a Shopify session token.
 const HTML = ${JSON.stringify(h)};
 const safe = (s) => String(s || '').replace(/[^A-Za-z0-9._-]/g, '');
-export const page = (apiKey, devToken = '') => HTML.replace('__API_KEY__', safe(apiKey)).replace('__DEV_TOKEN__', safe(devToken));
+const safeUrl = (u) => (String(u || '').startsWith('https://') && !/["'<>\\s]/.test(String(u)) ? String(u) : '');
+export const page = (apiKey, devToken = '', video = '') => HTML.replace('__API_KEY__', safe(apiKey)).replace('__DEV_TOKEN__', safe(devToken)).replace('__VIDEO__', safeUrl(video));
 `;
 const rd = (p, enc = 'utf8') => fs.readFileSync(new URL(p, import.meta.url), enc);
 export const MANIFEST = { name: 'SNH Staff', short_name: 'SNH Staff', start_url: '/console', scope: '/console', display: 'standalone', orientation: 'any', background_color: '#141210', theme_color: '#141210',

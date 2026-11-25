@@ -4,11 +4,13 @@
 <title>Ops dashboard</title>
 <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" media="print" onload="this.media='all'">
+<link rel="preconnect" href="https://www.sportsnutritionhub.lk">
 <style>
 :root{--brand:#F65922;--accent:#BF4512;--ink:#0C0C0D;--sub:#5F5F61;--mute:#8B8B8D;--line:rgba(12,12,13,.1);--bg:#F5F2EC;--card:#FFFFFF;--soft:#FAF8F4;--ok:#0A7D4F;--warn:#9A6700;--bad:#C4320A;
 --bronze:#B8743F;--silver:#A9B0B8;--gold:#D9A521;--s1:#D9531E;--s2:#2F6FB7;--s3:#2E9E83;--s4:#8A5CC2;--s5:#B8860B;--s6:#9A9A9C;--guest:#B9B4AA;--grid:rgba(12,12,13,.07);
---r:16px;--sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Instrument Serif",Georgia,serif}
+--logo:url("https://www.sportsnutritionhub.lk/cdn/shop/t/36/assets/snh-logo-mark.png?width=320");--r:16px;--sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Instrument Serif",Georgia,serif}
 @media (prefers-color-scheme:dark){:root{--ink:#F3F1EC;--sub:#B9B6AE;--mute:#8E8B84;--line:rgba(255,255,255,.14);--bg:#111112;--card:#1B1B1D;--soft:#232325;--ok:#3CCB8C;--warn:#E3B341;--bad:#FF8A65;--accent:#F0703C;
 --s1:#E0602B;--s2:#3D7EC6;--s3:#2E9E83;--s4:#9368CC;--s5:#B8860B;--s6:#77777A;--guest:#5E5B55;--grid:rgba(255,255,255,.08);--silver:#C9CED4;--bronze:#D49461;--gold:#F0C04A}}
 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
@@ -66,8 +68,27 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}td.w{white-space:no
 @media (prefers-reduced-motion:reduce){.sk,.dot{animation:none}}
 .pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px;font-size:12px;color:var(--sub)}
 [hidden]{display:none!important}
+
+/* welcome preloader (first load only; at most 1 s on repeat visits) */
+.pl{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#0C0C0D;color:#F3F1EC;transition:opacity .4s ease;overflow:hidden}
+.pl.out{opacity:0;pointer-events:none}.pl video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.pl::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(12,12,13,.35),rgba(12,12,13,.85))}
+.pl__in{position:relative;z-index:1;text-align:center;padding:24px;width:min(420px,90vw)}
+.pl__logo{display:inline-flex;align-items:baseline;gap:10px;font-size:34px;line-height:1}.pl__logo i{display:block;height:30px;aspect-ratio:600/175;background:var(--brand);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
+.pl__logo em{font-family:var(--serif);font-style:italic;color:#F2C9A6}.pl h1{font:600 22px/1.2 var(--sans);margin:18px 0 16px;letter-spacing:-.01em}
+.pl ol{list-style:none;margin:0 auto;padding:0;text-align:left;display:inline-grid;gap:8px;font:500 14px/1.3 var(--sans);color:#B9B6AE}
+.pl li{display:flex;gap:10px;align-items:center;opacity:.35;transition:opacity .25s,color .25s}.pl li::before{content:"";width:14px;height:14px;border-radius:50%;border:2px solid currentColor;flex:none;box-sizing:border-box}
+.pl li.on{opacity:1;color:#F3F1EC}.pl li.on::before{border-color:var(--brand);border-right-color:transparent;animation:plspin .8s linear infinite}
+.pl li.done{opacity:1;color:#F3F1EC}.pl li.done::before{background:var(--brand);border-color:var(--brand);animation:none}
+.pl__bar{height:4px;border-radius:9px;background:rgba(255,255,255,.15);margin:18px auto 0;overflow:hidden;width:100%}.pl__bar i{display:block;height:100%;width:0;background:var(--brand);transition:width .35s ease}
+@keyframes plspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.pl,.pl li,.pl__bar i{transition:none}.pl li.on::before{animation:none}.pl ol{display:none}}
+.datafrom{font-size:12px;color:var(--sub);margin-left:6px}
 </style></head>
-<body><div class="wrap">
+<body><div class="pl" id="pl" hidden aria-live="polite" aria-busy="true"><video id="plv" muted loop playsinline preload="auto" aria-hidden="true"></video>
+<div class="pl__in"><div class="pl__logo"><i role="img" aria-label="SNH"></i><em>Elite</em></div><h1>Welcome back</h1>
+<ol id="pls"><li>Collecting Elite members…</li><li>Counting bundle sales…</li><li>Checking emails…</li><li>Ready</li></ol><div class="pl__bar"><i id="plb"></i></div></div></div>
+<div class="wrap">
 <div class="top">
   <div class="logo" id="logo"><b>Ops</b></div>
   <div class="ctl">
@@ -98,7 +119,7 @@ var tierColor = function (t) { t = String(t || '').toLowerCase(); return t === '
 var tierCell = function (t) { return t ? '<span class="tier" style="--tc:' + tierColor(t) + '">' + esc(t) + '</span>' : ''; };
 
 async function token() { if (DEV) return DEV; if (window.shopify && shopify.idToken) return shopify.idToken(); throw new Error('Open this app from the Shopify admin.'); }
-async function api(path, opt) { var r = await fetch('/api/' + path, Object.assign({ headers: { Authorization: 'Bearer ' + await token() } }, opt || {})); var j = await r.json().catch(function () { return {}; }); if (!r.ok) throw new Error(j.error || 'Request failed (' + r.status + ')'); return j; }
+async function api(path, opt) { var r = await fetch('/api/' + path, Object.assign({ headers: { Authorization: 'Bearer ' + await token() } }, opt || {})); var j = await r.json().catch(function () { return {}; }); if (r.status === 401) { try { localStorage.removeItem(CK); } catch (e) {} } if (!r.ok) throw new Error(j.error || 'Request failed (' + r.status + ')'); return j; }
 
 // ── date range → sums (same maths as rangeTotals in src/metrics.mjs) ──
 function range() {
@@ -282,7 +303,7 @@ function render() {
 }
 function status(sync) {
   var el = $('#status'), run = sync && sync.running, bad = sync && sync.phase === 'error';
-  el.innerHTML = '<span class="dot" data-s="' + (run ? 'run' : bad ? 'bad' : '') + '"></span><span>' + esc(run ? 'Syncing: ' + (sync.message || '') : (sync && sync.message) || 'Ready') + (S.D ? ' · numbers from ' + dtime(S.D.computed_at) + ' (Colombo time)' : '') + '</span>';
+  el.innerHTML = '<span class="dot" data-s="' + (run ? 'run' : bad ? 'bad' : '') + '"></span><span>' + esc(run ? 'Syncing: ' + (sync.message || '') : (sync && sync.message) || 'Ready') + (S.D ? ' · <b>Data from ' + dtime(S.D.computed_at) + '</b> (Colombo time)' + (S.cached ? ' · refreshing…' : '') : '') + '</span>';
   $('#refresh').disabled = !!run; var r2 = $('#refresh2'); if (r2) r2.disabled = !!run;
 }
 function notes() {
@@ -291,14 +312,35 @@ function notes() {
   if (S.W && S.W.pendingSetup) n.push('The database reached its free daily write limit earlier today. Reads work. The first sync on this version starts by itself after 00:00 UTC (05:30 Colombo).');
   $('#notes').innerHTML = n.map(function (t) { return '<div class="note">' + esc(t) + '</div>'; }).join('');
 }
-async function load() {
-  var j = await api('data'); S.D = j.data; S.K = j.klaviyo; S.K_at = j.klaviyo_at; S.W = j.writes; S.log = j.log; S.cfg = j.config; S.cfg.brand = S.cfg.brand || {}; S.user = j.user; S.interim = j.interim; cur = j.config.currency || cur;
+// First paint: the last snapshot cached in this browser (inside the admin only), then the fresh one in the background.
+var VIDEO = '__VIDEO__', CK = 'snh-ops-dash:' + (new URLSearchParams(location.search).get('shop') || 'store');
+function cacheGet() { try { if (window.top === window && !DEV) return null; var c = JSON.parse(localStorage.getItem(CK) || 'null'); return c && c.data && c.data.version === 2 ? c : null; } catch (e) { return null; } }
+function cachePut(j) { try { localStorage.setItem(CK, JSON.stringify({ data: j.data, klaviyo: j.klaviyo, klaviyo_at: j.klaviyo_at, log: j.log, writes: j.writes, config: j.config, user: j.user, sync: j.sync, interim: j.interim })); } catch (e) {} }
+var PL = (function () {
+  var el = $('#pl'), on = false, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, cur = -1;
+  function step(i) { if (!on || i <= cur) return; cur = i; el.querySelectorAll('#pls li').forEach(function (x, k) { x.className = k < i || i === 3 ? 'done' : k === i ? 'on' : ''; }); $('#plb').style.width = (i === 3 ? 100 : Math.round((i + 0.6) / 4 * 100)) + '%'; }
+  function show(maxMs) { on = true; el.hidden = false; var v = $('#plv');
+    if (VIDEO) { v.src = VIDEO; if (reduce) v.addEventListener('loadeddata', function () { try { v.currentTime = 0.4; } catch (e) {} }, { once: true }); else { v.autoplay = true; var pp = v.play(); if (pp && pp.catch) pp.catch(function () {}); } }
+    step(0); setTimeout(function () { step(1); }, 450); if (maxMs) setTimeout(done, maxMs); }
+  function done() { if (!on || el.classList.contains('out')) return; step(2); setTimeout(function () { step(3); setTimeout(function () { el.classList.add('out'); el.setAttribute('aria-busy', 'false');
+    setTimeout(function () { el.hidden = true; var v = $('#plv'); try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {} }, 420); }, reduce ? 0 : 220); }, reduce ? 0 : 160); }
+  return { show: show, step: step, done: done };
+})();
+function apply(j, cached) {
+  S.D = j.data; S.K = j.klaviyo; S.K_at = j.klaviyo_at; S.W = j.writes; S.log = j.log; S.cfg = j.config; S.cfg.brand = S.cfg.brand || {}; S.user = j.user; S.interim = j.interim; cur = j.config.currency || cur; S.cached = !!cached;
   var b = S.cfg.brand, lg = $('#logo'); if (b.logoUrl) document.documentElement.style.setProperty('--logo', 'url("' + String(b.logoUrl).replace(/["\\)]/g, '') + '")');
   lg.innerHTML = (b.logoUrl ? '<i role="img" aria-label="' + esc(b.name || '') + '"></i>' : '<b>' + esc(b.name || '') + '</b>') + (b.program ? '<em>' + esc(b.program) + '</em>' : '') + '<span>Ops</span>';
   var f = $('#from'), t = $('#to'); f.min = t.min = S.D.days[0]; f.max = t.max = S.D.days[S.D.days.length - 1];
-  notes(); status(j.sync); render(); if (j.sync.running) poll();
+  notes(); status(j.sync); render();
 }
-var polling; function poll() { if (polling) return; polling = setInterval(async function () { try { var j = await api('status'); status(j.sync); if (!j.sync.running) { clearInterval(polling); polling = null; await load(); } } catch (e) {} }, 4000); }
+async function load(background) {
+  var c = background ? null : cacheGet(), seen = false;
+  if (!background) { try { seen = !!sessionStorage.getItem('snh-ops-pl'); sessionStorage.setItem('snh-ops-pl', '1'); } catch (e) {}
+    if (c) { if (!seen) PL.show(600); apply(c, true); } else PL.show(0); }
+  var j; try { j = await api('data'); } catch (e) { PL.done(); if (c) { toast('Showing saved numbers: ' + e.message, true); return; } throw e; }
+  PL.step(2); apply(j, false); cachePut(j); PL.done(); if (j.sync.running) poll();
+}
+var polling; function poll() { if (polling) return; polling = setInterval(async function () { try { var j = await api('status'); status(j.sync); if (!j.sync.running) { clearInterval(polling); polling = null; await load(true); } } catch (e) {} }, 4000); }
 async function start(path, btn) { btn.disabled = true; try { var j = await api(path, { method: 'POST' }); status(j.sync); if (j.sync.refused) toast(j.sync.message, true); else if (j.sync.running) { toast('Sync started'); poll(); } } catch (e) { toast(e.message, true); } btn.disabled = false; }
 
 document.addEventListener('click', function (e) {

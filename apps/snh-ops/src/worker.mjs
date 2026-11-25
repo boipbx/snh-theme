@@ -4,7 +4,7 @@
 // - cron 20:30 UTC   → nightly incremental sync (02:00 Asia/Colombo); every 2 min → advance a sync that is in progress
 // READ-ONLY against Shopify and Klaviyo. The page's numbers come from D1 only.
 import { verify } from './auth.mjs';
-import { getConfig, getState, startSync, step, compute, syncLog, writtenToday, migrated, isLimitError, LIMIT_MSG } from './sync.mjs';
+import { getConfig, getState, startSync, step, compute, syncLog, writtenToday, migrated, isLimitError, LIMIT_MSG, saveDash } from './sync.mjs';
 import { page } from './ui.mjs';
 import { runRedeem, runWelcome, redeemStatus } from './redeem.mjs';
 import { subsApi, runSubs } from './subs.mjs';
@@ -40,10 +40,20 @@ export async function api(req, env, ctx, who, now = Date.now()) {
     const s = await startSync(env, shop, now, path === 'resync' ? 'full' : 'incremental'); return json({ sync: pubState(s) });
   }
   if (path === 'data') {
-    const [d, kl, log, used, mig] = await Promise.all([dataFor(env, shop, now), snap(env, shop, 'klaviyo'), syncLog(env, shop), writtenToday(env, now), migrated(env)]);
-    return json({ data: d.data, interim: d.interim, klaviyo: kl.data && kl.data.flows ? kl.data : null, klaviyo_at: kl.updated_at, sync: pubState(state), log,
-      writes: { today: used, budget: Number(cfg.dailyWriteBudget) || 0, pendingSetup: !mig },
+    // one precomputed row ('dash', written at the end of every sync) + the live sync state and write counter.
+    // Server-Timing shows where the time goes (see docs/golive/OPS-DASHBOARD-SPEED.md).
+    const T = []; const tm = async (name, f) => { const a = Date.now(); const v = await f(); T.push(`${name};dur=${Date.now() - a}`); return v; };
+    const [dash, used, mig] = await Promise.all([tm('dash', () => snap(env, shop, 'dash')), tm('writes', () => writtenToday(env, now)), tm('migrated', () => migrated(env))]);
+    let body;
+    if (dash.data && dash.data.data && dash.data.data.version === 2) body = { ...dash.data, interim: false, source: 'dash' };
+    else {                                                                                     // no dash row yet: build it from the parts once
+      const [d, kl, log] = await tm('parts', () => Promise.all([dataFor(env, shop, now), snap(env, shop, 'klaviyo'), syncLog(env, shop)]));
+      body = { data: d.data, interim: d.interim, klaviyo: kl.data && kl.data.flows ? kl.data : null, klaviyo_at: kl.updated_at, log, source: 'parts' };
+      if (!d.interim) { const pr = saveDash(env, shop, now).catch(() => {}); if (ctx && ctx.waitUntil) ctx.waitUntil(pr); else await pr; }
+    }
+    const res = json({ ...body, sync: pubState(state), writes: { today: used, budget: Number(cfg.dailyWriteBudget) || 0, pendingSetup: !mig },
       config: { currency: cfg.currency, brand: cfg.brand, newBundleTag: cfg.newBundleTag, klaviyoFlowPrefix: cfg.klaviyoFlowPrefix }, user: { id: who.user || '', admin: isAdmin(cfg, who.user) } });
+    res.headers.set('Server-Timing', T.join(', ')); return res;
   }
   if (path === 'x-pos/customer') {                                                    // POS tile: one customer's points (read-only)
     const id = String(u.searchParams.get('id') || '').replace(/\D/g, ''); if (!id) return json({ error: 'no customer' }, 400);
@@ -88,7 +98,8 @@ const handler = {
     if (u.pathname === '/console' || u.pathname.startsWith('/console/')) return consoleFetch(req, env, ctx);
     if (u.pathname === '/health') return new Response('ok');
     const shop = u.searchParams.get('shop') || ''; const fa = SHOP_RE.test(shop) ? `https://${shop} https://admin.shopify.com` : 'https://admin.shopify.com https://*.myshopify.com';
-    return new Response(page(env.SHOPIFY_CLIENT_ID || ''), { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': `frame-ancestors ${fa};`, 'Cache-Control': 'no-store' } });
+    let video = ''; try { video = ((JSON.parse(env.SHOP_CONFIG || '{}')[shop] || {}).brand || {}).loopVideoUrl || ''; } catch (e) {}
+    return new Response(page(env.SHOPIFY_CLIENT_ID || '', '', video), { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': `frame-ancestors ${fa};`, 'Cache-Control': 'no-store' } });
   },
   async scheduled(event, env, ctx) {
     const shops = (await env.DB.prepare('SELECT shop FROM shops').all()).results.map((r) => r.shop); const nightly = event.cron === '30 20 * * *';
