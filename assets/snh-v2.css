@@ -1175,7 +1175,7 @@
 /* =====================================================================================================
    THEME LAYER (round 5): what the Shopify build needs on top of the ported prototype styles
    ===================================================================================================== */
-@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("instrument-serif-italic-latin.woff2") format("woff2"); }
+/* 25 Nov: the Instrument Serif face is no longer loaded (one font everywhere). */
 :root { --sans: var(--text-font-family, "Inter"), system-ui, -apple-system, "Segoe UI", sans-serif; }
 
 /* header: the section wrapper is the sticky element; the ticker + announcement scroll away (negative top) */
@@ -2882,3 +2882,18 @@ img[data-v2-lift], .sline__img img, .smini__img img, .ssug__img img, .oimg img, 
 @media (max-width: 1023px) { .hs .hs__dot { width: 40px; height: 40px; margin: -20px 0 0 -20px; font-size: 16px; } }
 @media (prefers-reduced-motion: reduce) { .hs .hs__dot::before, .hs .hs__dot::after, .hs.is-reveal .hs__dot { animation: none !important; } .hs.is-reveal-wait .hs__dot { opacity: 1; transform: none; } }
 @media (max-width: 480px) { .v-btn--accent:not(.v-btn--sm), .v-btn--line:not(.v-btn--sm) { padding-left: 18px; padding-right: 16px; font-size: 14.5px; } .v-btn--accent:not(.v-btn--sm):not(:has(svg))::after { width: 14px; height: 14px; margin-left: 0; } }
+
+/* ── 25 Nov: ONE font everywhere. No italic serif: the brand lockup "SNH Elite", accent words in headings, brand names on
+   cards, quotes and article titles all use the theme's display font (Inter, as the home page headings), with weight and
+   SNH orange for emphasis. --serif now points at the same font, so any rule still naming it renders upright Inter. ── */
+:root { --serif: var(--sans); }
+html body :is(.eltm__e, .elc__brand em, .acp__brand em, .acp__h em, .qzb__h em, .qzb__brand em, .qzb__ih em, .serif, .sp-head__t .serif,
+  .acc__h em, .acc__h2 em, .rcard__h em, .auth__h em, .auth__title em, .ep__h em, .ep__h2 em, .ecard__brand em, .auth__brand em,
+  .app__h em, .app__h2 em, .refer__h em, .metal__brand em, .elpromo__t em, .qz__game .quiz__q em, .out__h em, .wk-gate__h em,
+  .biz-hero__h em, .biz-h em, .ecm__h em, .ftr__news-h em, .scp__head .v-h1 em, .scp__bt em, .ptn__h em, .ptn__h2 em, .ttk__fb-h em) {
+  font-family: var(--sans) !important; font-style: normal !important; font-weight: 800 !important; letter-spacing: -.01em !important;
+}
+html body .eltm__e { font-size: .86em; opacity: 1; letter-spacing: -.005em !important; }
+html body :is(.elc__brand em, .ecard__brand em, .metal__brand em, .acp__brand em, .qzb__brand em, .auth__brand em) { font-size: .9em; }
+html body :is(.quote__text, .art-tile__t) { font-family: var(--sans) !important; font-style: normal !important; font-weight: 600 !important; letter-spacing: -.01em; }
+html body .quote__text { font-size: max(1em, .92em); line-height: 1.45; }

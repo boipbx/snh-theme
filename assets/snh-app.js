@@ -453,18 +453,18 @@
   // the shareable plan card, drawn as an image (1080 × 1350, Instagram portrait)
   function drawCard(c, a, lab, stack, app) {
     if (!c || !c.getContext) return;
-    var x = c.getContext('2d'), W = c.width, H = c.height, sans = 'Inter, Helvetica, Arial, sans-serif', serif = '"Instrument Serif", Georgia, serif';
+    var x = c.getContext('2d'), W = c.width, H = c.height, sans = 'Inter, Helvetica, Arial, sans-serif', serif = 'Inter, Helvetica, Arial, sans-serif';   // 25 Nov: one font (Inter); emphasis by weight, no italic serif
     x.fillStyle = '#0C0C0D'; x.fillRect(0, 0, W, H);
     var g = x.createRadialGradient(W * .85, 0, 0, W * .85, 0, W * .9);
     g.addColorStop(0, 'rgba(224,82,28,.75)'); g.addColorStop(1, 'rgba(224,82,28,0)');
     x.fillStyle = g; x.fillRect(0, 0, W, H);
     x.fillStyle = '#fff'; x.textBaseline = 'alphabetic';
     x.font = '600 40px ' + sans; x.fillText('SNH', 80, 120);
-    x.font = 'italic 40px ' + serif; x.fillText('Elite', 182, 120);
+    x.font = '800 38px ' + serif; x.fillText('Elite', 182, 120);
     x.font = '600 28px ' + sans; x.fillStyle = 'rgba(255,255,255,.7)'; x.fillText('MY SNH PLAN', 80, 250);
     var name = app && app.getAttribute('data-first') ? app.getAttribute('data-first') + '’s stack' : 'My stack';
     x.fillStyle = '#fff'; x.font = '600 96px ' + sans; x.fillText(name, 80, 360, W - 160);
-    x.font = 'italic 64px ' + serif; x.fillStyle = '#FFB27A';
+    x.font = '800 60px ' + serif; x.fillStyle = '#FFB27A';
     x.fillText([lab('goal'), lab('sport')].filter(Boolean).join(' · ') || 'Built for me', 80, 450, W - 160);
     x.font = '500 34px ' + sans; x.fillStyle = 'rgba(255,255,255,.75)';
     x.fillText([lab('freq') ? lab('freq') + ' a week' : '', lab('lvl')].filter(Boolean).join(' · '), 80, 515, W - 160);

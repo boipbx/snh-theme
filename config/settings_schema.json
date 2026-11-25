@@ -504,7 +504,7 @@
           }
         ],
         "default": "orange",
-        "info": "The highlighted word in headings (written as *word* in a heading field). Orange: same font, weight and size as the heading, upright, in SNH orange. Italic serif: the earlier Instrument Serif italic. Brand lockups such as \"SNH Elite\" keep the serif either way."
+        "info": "The highlighted word in headings (written as *word* in a heading field). Orange: same font, weight and size as the heading, upright, in SNH orange. Since 25 Nov the theme uses one font everywhere: the italic serif option no longer changes anything (no serif font is loaded)."
       }
     ]
   },

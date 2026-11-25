@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "snh_heading_accent": "orange",
     "snh_use_clean_images": false,
     "page_width": 1320,
     "section_vertical_spacing": "xsmall",
