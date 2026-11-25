@@ -2881,3 +2881,4 @@ img[data-v2-lift], .sline__img img, .smini__img img, .ssug__img img, .oimg img, 
 .hs__stack .hs__n { background: var(--cta-bg); color: #fff; box-shadow: 0 0 0 3px rgba(var(--cta-glow), .18); }
 @media (max-width: 1023px) { .hs .hs__dot { width: 40px; height: 40px; margin: -20px 0 0 -20px; font-size: 16px; } }
 @media (prefers-reduced-motion: reduce) { .hs .hs__dot::before, .hs .hs__dot::after, .hs.is-reveal .hs__dot { animation: none !important; } .hs.is-reveal-wait .hs__dot { opacity: 1; transform: none; } }
+@media (max-width: 480px) { .v-btn--accent:not(.v-btn--sm), .v-btn--line:not(.v-btn--sm) { padding-left: 18px; padding-right: 16px; font-size: 14.5px; } .v-btn--accent:not(.v-btn--sm):not(:has(svg))::after { width: 14px; height: 14px; margin-left: 0; } }
