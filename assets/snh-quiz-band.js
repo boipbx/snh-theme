@@ -53,10 +53,17 @@
     }
     sec.querySelectorAll('[data-qzb-open]').forEach(function (b) { b.addEventListener('click', open); });
     // R19: the onboarding prompt (and any link to /?snh-quiz=open or #find-my-stack) opens the quiz here
-    if (!window.SNHQuiz) window.SNHQuiz = { open: function () { return open({ currentTarget: sec.querySelector('[data-qzb-open]') }); } };
+    // 25 Nov: open({ goal }) answers the first question (goal) and moves on to question 2
+    function withGoal(goal) {
+      return function () { if (!goal || !q) return; var inp = q.querySelector('.qz__step[data-step="goal"] input[value="' + String(goal).replace(/[^a-z0-9-]/g, '') + '"]'); if (!inp) return;
+        inp.checked = true; inp.dispatchEvent(new Event('change', { bubbles: true }));
+        var nx = q.querySelector('[data-quiz-next]'); var st = q.querySelector('.qz__step[data-step="goal"]'); if (nx && st && !st.hidden) setTimeout(function () { nx.click(); }, 60); };
+    }
+    if (!window.SNHQuiz) window.SNHQuiz = { open: function (o) { return open({ currentTarget: sec.querySelector('[data-qzb-open]') }).then(withGoal(o && o.goal)); } };
     if (/[?&]snh-quiz=open/.test(location.search) || location.hash === '#find-my-stack') {
-      try { history.replaceState(null, '', location.pathname + location.search.replace(/([?&])snh-quiz=open&?/, '$1').replace(/[?&]$/, '')); } catch (x) {}
-      setTimeout(function () { open({ currentTarget: sec.querySelector('[data-qzb-open]') }); }, 50);
+      var g0 = (location.search.match(/[?&]goal=([a-z0-9-]+)/) || [])[1];
+      try { history.replaceState(null, '', location.pathname + location.search.replace(/([?&])snh-quiz=open&?/, '$1').replace(/([?&])goal=[a-z0-9-]+&?/, '$1').replace(/[?&]$/, '')); } catch (x) {}
+      setTimeout(function () { open({ currentTarget: sec.querySelector('[data-qzb-open]') }).then(withGoal(g0)); }, 50);
     }
     sec.querySelector('[data-qzb-close]').addEventListener('click', close);
     ov.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });

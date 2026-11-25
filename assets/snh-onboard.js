@@ -29,6 +29,23 @@
   function cleanup() { clearTimeout(timer); window.removeEventListener('scroll', onScroll); }
   el.querySelectorAll('[data-onb-close]').forEach(function (b) { b.addEventListener('click', hide); });
   el.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+  // 25 Nov: goal chips. A tap shows "3 products picked for you" (the goal collection's first three) and opens the quiz
+  // with that goal answered: in place on the homepage (SNHQuiz.open({ goal })), else /?snh-quiz=open&goal=…
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.querySelectorAll('[data-onb-goal]').forEach(function (c) {
+    c.setAttribute('aria-pressed', 'false');
+    c.addEventListener('click', function () {
+      var g = c.getAttribute('data-onb-goal'); if (el.__going) return; el.__going = true;
+      el.querySelectorAll('[data-onb-goal]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
+      var t = el.querySelector('[data-onb-tease]'), th = el.querySelector('[data-onb-thumbs]'); th.textContent = '';
+      (c.getAttribute('data-imgs') || '').split(' ').filter(Boolean).slice(0, 3).forEach(function (u) { var i = new Image(); i.src = u; i.alt = ''; i.width = 40; i.height = 40; th.appendChild(i); });
+      t.hidden = false; try { localStorage.setItem('snh_onb_goal', g); } catch (x) {}
+      setTimeout(function () {
+        if (window.SNHQuiz && SNHQuiz.open) { hide(); SNHQuiz.open({ goal: g }); el.__going = false; }
+        else location.href = '/?snh-quiz=open&goal=' + encodeURIComponent(g);
+      }, reduce ? 300 : 1100);
+    });
+  });
   el.querySelector('[data-onb-go]').addEventListener('click', function (e) {
     if (window.SNHQuiz && SNHQuiz.open && !el.querySelector('[data-onb-go]').getAttribute('href').replace(/^\/\?snh-quiz=open$/, '')) { e.preventDefault(); hide(); SNHQuiz.open(); }
   });
