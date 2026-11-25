@@ -2810,3 +2810,74 @@ img[data-v2-lift], .sline__img img, .smini__img img, .ssug__img img, .oimg img, 
     .acp__h em, .qzb__h em, .qzb__ih em) { color: var(--snh-accent-on-dark) !important; }
 /* sign-in / register over a warm photo (.auth--bg): even #E0521C is 2.0:1 there; the theme's light accent #FFB27A is 4.4:1 */
 .snh-accent-orange .auth--bg { --snh-accent-on-dark: #FFB27A; }
+
+/* ── 25 Nov: CTA system. ONE primary (SNH orange, ≥48px, bold + arrow, orange glow edge, press animation; white on
+   #BF4512 = 5.2:1) and ONE secondary (outline). Covers every primary action: hero, collection banners, quiz, Elite,
+   bundles, cart checkout, popups (email + campaign). Small card buttons (.v-btn--sm, "+ Add") keep their size. ── */
+:root { --cta-bg: #BF4512; --cta-bg-hover: #A83A0E; --cta-glow: 246, 89, 34; }
+.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go {
+  position: relative; min-height: 48px; padding-left: 26px; padding-right: 24px; background: var(--cta-bg); color: #fff; font-weight: 700; letter-spacing: .005em;
+  box-shadow: 0 0 0 1px rgba(var(--cta-glow), .95), 0 0 0 4px rgba(var(--cta-glow), .16), 0 10px 24px -10px rgba(var(--cta-glow), .85);
+  transition: transform .14s cubic-bezier(.2, .8, .3, 1), box-shadow .22s ease, background-color .2s ease;
+}
+.v-btn--accent:not(.v-btn--sm):hover, .qzb__cta:hover, .scheck:hover, .snh-np__go:hover, .cmp-pop__go:hover, .cmp-ban__go:hover {
+  background: var(--cta-bg-hover); transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(var(--cta-glow), 1), 0 0 0 5px rgba(var(--cta-glow), .24), 0 14px 30px -10px rgba(var(--cta-glow), .95);
+}
+.v-btn--accent:not(.v-btn--sm):active, .qzb__cta:active, .scheck:active, .snh-np__go:active, .cmp-pop__go:active, .cmp-ban__go:active {
+  transform: translateY(0) scale(.97); box-shadow: 0 0 0 1px rgba(var(--cta-glow), 1), 0 0 0 2px rgba(var(--cta-glow), .3), 0 4px 10px -4px rgba(var(--cta-glow), .7);
+}
+.v-btn--accent:not(.v-btn--sm):focus-visible, .qzb__cta:focus-visible, .scheck:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px var(--cta-bg); }
+/* the arrow, where the button has no icon of its own */
+.v-btn--accent:not(.v-btn--sm):not(:has(svg))::after, .snh-np__go:not(:has(svg))::after, .cmp-pop__go:not(:has(svg))::after, .cmp-ban__go:not(:has(svg))::after {
+  content: ""; width: 16px; height: 16px; flex: none; margin-left: 2px; background: currentColor; transition: transform .2s ease;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.v-btn--accent:not(.v-btn--sm):hover::after, .snh-np__go:hover::after, .cmp-pop__go:hover::after, .cmp-ban__go:hover::after { transform: translateX(3px); }
+.qzb__cta svg { transition: transform .2s ease; } .qzb__cta:hover svg { transform: translateX(3px); }
+.v-btn--accent.v-btn--sm { box-shadow: 0 0 0 1px rgba(var(--cta-glow), .9), 0 6px 14px -8px rgba(var(--cta-glow), .8); font-weight: 700; }
+/* secondary: one outline style, same height */
+.v-btn--line:not(.v-btn--sm) { min-height: 48px; font-weight: 700; box-shadow: inset 0 0 0 2px currentColor; transition: background-color .2s ease, color .2s ease, transform .14s ease; }
+.v-btn--line:not(.v-btn--sm):active { transform: scale(.97); }
+@media (prefers-reduced-motion: reduce) {
+  .v-btn--accent, .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .v-btn--line { transition: none !important; transform: none !important; }
+  .v-btn--accent::after, .qzb__cta svg { transition: none !important; }
+}
+
+/* ── 25 Nov: announcement bar: a visible pill button in the bar, one attention nudge per page load ── */
+.announce__item { gap: 10px; }
+.announce__cta { display: inline-flex; align-items: center; gap: 4px; flex: none; min-height: 22px; padding: 0 10px; border-radius: 999px; background: #fff; color: var(--cta-bg); font: 700 12px/1 var(--sans); letter-spacing: .01em; white-space: nowrap; box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+.announce__cta i { font-style: normal; transition: transform .2s ease; }
+.announce__item:hover .announce__cta i { transform: translateX(2px); }
+.announce__item:hover { text-decoration: none; }
+.announce[data-tone="ink"] .announce__cta { color: #0C0C0D; }
+.announce[data-tone="cream"] .announce__cta { background: var(--cta-bg); color: #fff; }
+.announce[data-tone="green"] .announce__cta { color: #14532D; }
+.announce__item.is-on .announce__cta { animation: snhBarNudge 1.6s ease 1.2s 1 both; }
+@keyframes snhBarNudge { 0%, 100% { transform: none; box-shadow: 0 1px 0 rgba(0, 0, 0, .12); } 20% { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(255, 255, 255, .35); } 40% { transform: scale(.98); } 60% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); } }
+.announce.is-nudged .announce__item .announce__cta { animation: none; }
+@media (max-width: 767px) {
+  .announce__item { display: flex; justify-content: center; gap: 8px; padding: 0 10px; }
+  .announce__item > b { flex: none; }
+  .announce__txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .announce__cta { min-height: 21px; padding: 0 9px; font-size: 11.5px; }
+}
+@media (prefers-reduced-motion: reduce) { .announce__item.is-on .announce__cta { animation: none; } }
+
+/* ── 25 Nov: shop-the-look hotspots: glowing orange markers, big numbers, a ring pulse, revealed 1→2→3→4 on first view ── */
+.hs .hs__dot { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: var(--cta-bg); color: #fff; font: 800 17px/1 var(--sans);
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(var(--cta-glow), .55), 0 0 22px 6px rgba(var(--cta-glow), .55); }
+.hs .hs__dot::before { inset: -10px; border: 2px solid rgba(var(--cta-glow), .9); animation: snhSpotRing 2.2s ease-out infinite; animation-delay: calc(var(--n, 0) * .35s); }
+.hs .hs__dot::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(var(--cta-glow), .7); opacity: .6; animation: snhSpotGlow 2.2s ease-in-out infinite; animation-delay: calc(var(--n, 0) * .35s); pointer-events: none; }
+.hs .hs__dot:hover { background: #fff; color: var(--cta-bg); transform: scale(1.1); }
+.hs .hs__dot.is-hot, .hs .hs__dot[aria-expanded="true"] { background: #fff; color: var(--cta-bg); transform: scale(1.12); box-shadow: 0 0 0 3px var(--cta-bg), 0 0 0 7px rgba(var(--cta-glow), .4), 0 0 26px 8px rgba(var(--cta-glow), .6); }
+@keyframes snhSpotRing { 0% { transform: scale(.8); opacity: .95; } 80%, 100% { transform: scale(1.65); opacity: 0; } }
+@keyframes snhSpotGlow { 0%, 100% { opacity: .35; } 50% { opacity: .9; } }
+.hs.is-reveal-wait .hs__dot { opacity: 0; transform: scale(.3); }
+.hs.is-reveal .hs__dot { animation: snhSpotIn .55s cubic-bezier(.2, .9, .3, 1.35) both; animation-delay: calc(.15s + var(--n, 0) * .28s); }
+@keyframes snhSpotIn { from { opacity: 0; transform: scale(.3); } 70% { opacity: 1; transform: scale(1.18); } to { opacity: 1; transform: none; } }
+.hs .hs__n { width: 30px; height: 30px; font-size: 14px; font-weight: 800; }
+.hs__stack .hs__n { background: var(--cta-bg); color: #fff; box-shadow: 0 0 0 3px rgba(var(--cta-glow), .18); }
+@media (max-width: 1023px) { .hs .hs__dot { width: 40px; height: 40px; margin: -20px 0 0 -20px; font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { .hs .hs__dot::before, .hs .hs__dot::after, .hs.is-reveal .hs__dot { animation: none !important; } .hs.is-reveal-wait .hs__dot { opacity: 1; transform: none; } }
