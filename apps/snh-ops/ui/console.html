@@ -9,8 +9,9 @@
 <meta name="apple-mobile-web-app-title" content="SNH Staff">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="/console/manifest.webmanifest">
-<link rel="icon" href="/console/icon-192.png">
-<link rel="apple-touch-icon" href="/console/icon-192.png">
+<link rel="icon" href="/console/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/console/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/console/apple-touch-icon.png">
 <style>
 :root{--bg:#F6F3EE;--card:#FFFFFF;--ink:#141210;--muted:#5E5850;--line:#E4DED4;--accent:#BF4512;--accent-ink:#FFFFFF;--accent-soft:#FBE9DF;--ok:#1E7A46;--ok-soft:#E3F3E9;--bad:#B3261E;--bad-soft:#FCE8E6;
   --bronze:#9A5B2E;--bronze-soft:#F4E4D7;--silver:#5C6670;--silver-soft:#E7EAEE;--gold:#8A6A00;--gold-soft:#F8EDC8;--r:14px;--shadow:0 1px 2px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);color-scheme:light dark}
@@ -21,7 +22,7 @@ button,input,select,textarea{font:inherit;color:inherit}a{color:var(--accent)}
 .wrap{max-width:980px;margin:0 auto;padding:0 16px calc(24px + env(safe-area-inset-bottom))}
 .top{position:sticky;top:0;z-index:5;background:var(--ink);color:#F3EFE9;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px}
 @media (prefers-color-scheme:dark){.top{background:#0A0908;border-bottom:1px solid var(--line)}}
-.top img{height:22px;display:block}.top .elite{font-family:Georgia,serif;font-style:italic;color:#F2C9A6;font-size:19px;margin-left:-4px}
+.top img{height:22px;display:block}.top .elite{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-style:normal;font-weight:800;letter-spacing:-.02em;color:#fff;font-size:18px;margin-left:-2px}
 .top .who{margin-left:auto;text-align:right;font-size:13px;line-height:1.25;color:#CFC7BC}.top .who b{color:#fff;font-size:14px}
 .iconbtn{min-width:48px;min-height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0 12px;gap:6px;font-weight:600}
 .btn{min-height:52px;padding:0 20px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--ink)}
@@ -48,7 +49,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:10px 6px;
 .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}td:not(.num){overflow-wrap:anywhere}.plus{color:var(--ok);font-weight:700}.minus{color:var(--bad);font-weight:700}
 .msg{padding:12px 14px;border-radius:12px;font-weight:600}.msg--bad{background:var(--bad-soft);color:var(--bad)}.msg--ok{background:var(--ok-soft);color:var(--ok)}.msg--info{background:var(--accent-soft);color:var(--accent)}
 .center{min-height:calc(100vh - 40px);display:flex;align-items:center;justify-content:center;padding:24px 16px}.center>.card{width:100%;max-width:440px}
-.brandhead{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:16px}.brandhead img{height:30px}.brandhead .elite{font-family:Georgia,serif;font-style:italic;font-size:24px;color:var(--muted)}
+.brandhead{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:16px}.brandhead img{height:30px}.brandhead .elite{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-style:normal;font-weight:800;letter-spacing:-.02em;font-size:22px;color:var(--muted)}
 .pin-dots{display:flex;gap:12px;justify-content:center;margin:16px 0}.pin-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--muted)}.pin-dots i.on{background:var(--accent);border-color:var(--accent)}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pad button{min-height:68px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-size:26px;font-weight:700;cursor:pointer}
 .pad button:active{background:var(--accent-soft)}.pad .ghost{background:transparent;border-color:transparent;font-size:16px}
@@ -61,6 +62,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:10px 6px;
 @media (min-width:760px){.modal{align-items:center;padding:24px}.modal>.card{border-radius:20px}}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0;margin-top:12px}.tabs a{flex:none;min-height:44px;padding:0 14px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);background:var(--card);text-decoration:none;color:var(--ink);font-weight:600;font-size:14px}
 .tabs a.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.demo-badge{display:inline-flex;align-items:center;min-height:24px;padding:0 10px;border-radius:999px;background:#F2C94C;color:#141210;font:800 12px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-left:4px}
 .offline{position:fixed;left:0;right:0;bottom:0;background:var(--bad);color:#fff;text-align:center;padding:10px calc(10px + env(safe-area-inset-bottom));font-weight:700;z-index:30;display:none}
 .offline.on{display:block}.sk{background:linear-gradient(90deg,var(--line),var(--card),var(--line));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:10px;min-height:72px}
 @keyframes sk{to{background-position:-200% 0}}@media (prefers-reduced-motion:reduce){.sk{animation:none}.btn:active,.item:active{transform:none}}
@@ -86,6 +88,7 @@ const tierBadge = (t) => `<span class="badge ${tierCls(t)}">${esc(t || 'No tier'
 const stBadge = (s) => `<span class="badge ${s === 'enabled' ? 'st-enabled' : s === 'invited' ? 'st-invited' : 'st-no'}">${s === 'enabled' ? 'Account active' : s === 'invited' ? 'Invited' : 'No account'}</span>`;
 
 async function api(path, opts = {}) {
+  if (window.SNHDemo) return SNHDemo.api(path, opts);                                     // /console/demo: fake data, nothing leaves the page
   let r;
   try { r = await fetch('/console/api/' + path, { method: opts.method || 'GET', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-SNH': '1' }, body: opts.body ? JSON.stringify(opts.body) : undefined }); }
   catch (e) { $('#offline').classList.add('on'); throw Object.assign(new Error('No connection. Try again.'), { offline: true }); }
@@ -162,7 +165,7 @@ function lockScreen() {
 // ── main ──
 function frame(inner, tab) {
   const me = S.meta.me; const admin = me.role === 'admin';
-  app.innerHTML = `<header class="top"><img src="${LOGO}" alt="SNH"><span class="elite">Staff</span>
+  app.innerHTML = `<header class="top"><img src="${LOGO}" alt="SNH"><span class="elite">Staff</span>${window.SNHDemo ? '<span class="demo-badge" title="Sample data only. Nothing is saved.">Demo</span>' : ''}
     <div class="who"><b>${esc(me.name)}</b><br>${esc(S.meta.device.location || me.location || '')}${admin ? ' · Admin' : ''}</div>
     <button class="iconbtn" id="lockbtn" aria-label="Lock">🔒</button></header>
     <div class="wrap"><nav class="tabs"><a href="#/" class="${tab === 'search' ? 'on' : ''}">Customers</a><a href="#/new" class="${tab === 'new' ? 'on' : ''}">+ New customer</a>
@@ -193,7 +196,7 @@ async function customerView(id) {
   <div class="hero"><div class="card stack"><div class="row"><h1 style="margin:0">${esc(c.name)}</h1>${c.qa ? '<span class="badge qa">QA</span>' : ''}</div>
       <div class="row">${tierBadge(c.tier)} ${stBadge(c.status)}</div>
       <dl class="kv"><dt>Phone</dt><dd>${esc(c.phone || '—')}</dd><dt>Email</dt><dd>${esc(c.email || '—')}</dd><dt>Birthday</dt><dd>${esc(c.birthday ? day(c.birthday) : '—')}</dd>
-      <dt>Email offers</dt><dd>${c.consent === 'SUBSCRIBED' ? 'Yes' : 'No'}</dd><dt>Orders</dt><dd>${c.orders == null ? '—' : fmt(c.orders)}</dd></dl>
+      <dt>Email offers</dt><dd>${c.consent === 'SUBSCRIBED' ? 'Yes' : 'No'}</dd><dt>Orders</dt><dd>${c.orderCount == null ? '—' : fmt(c.orderCount)}</dd></dl>
       <div class="row"><a class="btn" href="#/c/${c.id}/edit">Edit details</a></div></div>
     <div class="card stack"><h3>Elite points</h3><div class="big-pts">${fmt(c.points)}</div><div class="muted">worth ${rs(c.value)}</div>
       <div><div class="small muted">Annual spend ${rs(c.annualSpend)}${c.next ? ` · ${rs(c.toNext)} to ${esc(c.next)}` : ' · top tier'}</div><div class="bar"><i style="width:${Math.round(c.progress * 100)}%"></i></div></div>
@@ -297,7 +300,7 @@ async function auditView() {
   const today = new Date(Date.now() + 330 * 60e3).toISOString().slice(0, 10); const wk = new Date(Date.now() - 6 * 864e5).toISOString().slice(0, 10);
   frame(`<h1>Audit log</h1><form id="af" class="row"><label class="f">From<input type="date" name="from" value="${wk}"></label><label class="f">To<input type="date" name="to" value="${today}"></label>
     <div class="row" style="align-self:end"><button class="btn btn--primary">Show</button><a class="btn" id="csv">Export CSV</a></div></form><div id="al" style="margin-top:12px"><div class="sk"></div></div>`, 'audit');
-  const load = async () => { const f = Object.fromEntries(new FormData($('#af'))); const qs = `from=${f.from}T00:00:00%2B05:30&to=${f.to}T23:59:59%2B05:30`; $('#csv').href = '/console/api/audit.csv?' + qs;
+  const load = async () => { const f = Object.fromEntries(new FormData($('#af'))); const qs = `from=${f.from}T00:00:00%2B05:30&to=${f.to}T23:59:59%2B05:30`; $('#csv').href = window.SNHDemo ? SNHDemo.csv() : '/console/api/audit.csv?' + qs; if (window.SNHDemo) $('#csv').setAttribute('download', 'snh-audit-demo.csv');
     try { const j = await api('audit?' + qs); $('#al').innerHTML = `<p class="small muted">${fmt(j.total)} actions${j.total > j.rows.length ? ', newest ' + j.rows.length + ' shown (CSV has all)' : ''}</p><div class="card" style="overflow:auto"><table><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Customer</th><th>Details</th></tr></thead><tbody>
       ${j.rows.map((r) => `<tr><td>${when(r.at)}</td><td>${esc(r.staff_name || '—')}<div class="small muted">${esc([r.device_name, r.location].filter(Boolean).join(' · '))}</div></td><td>${r.ok ? '' : '⚠ '}${esc(r.action)}</td><td>${r.customer_id ? `<a href="#/c/${esc(r.customer_id)}">${esc(r.customer_id)}</a>` : ''}</td>
       <td class="small">${esc([r.reason, r.before && 'before ' + r.before, r.after && 'after ' + r.after].filter(Boolean).join(' · ')).slice(0, 300)}</td></tr>`).join('')}</tbody></table></div>`; } catch (e) { showErr($('#al'), e); } };
@@ -322,7 +325,7 @@ async function boot() {
 ['pointerdown', 'keydown'].forEach((ev) => addEventListener(ev, () => { S.lastAct = Date.now(); }, { passive: true }));
 setInterval(() => { if (S.meta && !S.locked && Date.now() - S.lastAct > S.idleMs) lockScreen(); }, 5000);
 addEventListener('hashchange', route); addEventListener('online', () => $('#offline').classList.remove('on')); addEventListener('offline', () => $('#offline').classList.add('on'));
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('/console/sw.js', { scope: '/console/' }).catch(() => {});
+if ('serviceWorker' in navigator && !window.SNHDemo) navigator.serviceWorker.register('/console/sw.js', { scope: '/console/' }).catch(() => {});
 boot();
 })();
 </script>

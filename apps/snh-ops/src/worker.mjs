@@ -96,6 +96,7 @@ const handler = {
       try { return await api(req, env, ctx, who); } catch (e) { if (isLimitError(e)) return json({ error: LIMIT_MSG }, 503); console.log('api error', String(e.message || e).slice(0, 200)); return json({ error: 'Something went wrong. Try again.' }, 500); }
     }
     if (u.pathname === '/console' || u.pathname.startsWith('/console/')) return consoleFetch(req, env, ctx);
+    if (u.pathname === '/favicon.ico') return Response.redirect(new URL('/console/favicon.ico', req.url).toString(), 301);
     if (u.pathname === '/health') return new Response('ok');
     const shop = u.searchParams.get('shop') || ''; const fa = SHOP_RE.test(shop) ? `https://${shop} https://admin.shopify.com` : 'https://admin.shopify.com https://*.myshopify.com';
     let video = ''; try { video = ((JSON.parse(env.SHOP_CONFIG || '{}')[shop] || {}).brand || {}).loopVideoUrl || ''; } catch (e) {}

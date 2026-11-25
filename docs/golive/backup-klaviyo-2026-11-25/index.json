@@ -1,0 +1,506 @@
+[
+ {
+  "id": "TUUfNi",
+  "name": "SNH · Abandoned cart · Cart 1: reminder",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "ThTdbF",
+  "name": "SNH · Abandoned cart · Cart 2: social proof + Koko",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "RqQ5jN",
+  "name": "SNH · Abandoned cart · Cart 3: last call (+ bundle)",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "TKDK7w",
+  "name": "SNH · Abandoned checkout · Checkout 1: finish your order",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "Udqh3m",
+  "name": "SNH · Abandoned checkout · Checkout 2: questions? we can help",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "RCGQdt",
+  "name": "SNH · Back in stock · Back in stock",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "X6BK6i",
+  "name": "SNH · Browse abandonment · goes well with",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "YkDQjy",
+  "name": "SNH · Browse abandonment · still interested?",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "X2zJMg",
+  "name": "SNH · Business · Franchise enquiry auto-reply",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "YbYzF8",
+  "name": "SNH · Business · Referral “coming soon” confirmation",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "Sgj8Ss",
+  "name": "SNH · Business · Wholesale enquiry auto-reply",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "VFUpcC",
+  "name": "SNH · Campaign · Brand of the month",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "XyXx4v",
+  "name": "SNH · Campaign · New launch",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "Yz7Rfz",
+  "name": "SNH · Campaign · Newsletter (3 article cards)",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "S2rmQg",
+  "name": "SNH · Campaign · Sale / offer",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "XRtyhy",
+  "name": "SNH · Campaign · Store event / news",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "X3ZuTr",
+  "name": "SNH · Email popup game · Popup 1: your discount code",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "VMXpEb",
+  "name": "SNH · Email popup game · Popup 2: code expiring",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UD9NNF",
+  "name": "SNH · Post-purchase · Cross-sell bundle",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UT3zQR",
+  "name": "SNH · Post-purchase · How to use: creatine",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UbpgSQ",
+  "name": "SNH · Post-purchase · How to use: hydration (SiS)",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "RQzB78",
+  "name": "SNH · Post-purchase · How to use: pre-workout",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "THCJWZ",
+  "name": "SNH · Post-purchase · How to use: protein",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "XFBMyq",
+  "name": "SNH · Post-purchase · Replenishment: running low",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "SVmbDA",
+  "name": "SNH · Post-purchase · Review request (Judge.me)",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "TNfZip",
+  "name": "SNH · Post-purchase · Thank you + points earned",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "WikbLT",
+  "name": "SNH · Price drop · Price drop",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "X8CKeP",
+  "name": "SNH · Quiz + workout plan · day-3 check-in",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "REHQmY",
+  "name": "SNH · Quiz + workout plan · save your plan (guest → account)",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "WDstcP",
+  "name": "SNH · SNH Elite · Birthday reward (Silver 10% / Gold 15%)",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "QNqgKx",
+  "name": "SNH · SNH Elite · Close to next tier",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "QXEMsj",
+  "name": "SNH · SNH Elite · Monthly points statement",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "TFBJNu",
+  "name": "SNH · SNH Elite · Points expiring",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "SwcTUC",
+  "name": "SNH · SNH Elite · Redeem confirmation",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "Xm6LaQ",
+  "name": "SNH · SNH Elite · Reward ready (2,500 points)",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "TQSfvg",
+  "name": "SNH · SNH Elite · Tier upgrade: Gold",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "Rw4zHy",
+  "name": "SNH · SNH Elite · Tier upgrade: Silver",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "TCqezf",
+  "name": "SNH · Welcome series · best sellers + quiz",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "USsjNv",
+  "name": "SNH · Welcome series · how SNH Elite works",
+  "before": 2,
+  "after": 0,
+  "bytes": -19,
+  "patch": 200
+ },
+ {
+  "id": "XUUiye",
+  "name": "SNH · Welcome series · welcome + 500 Elite points",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "RHVkBd",
+  "name": "SNH · Win-back · Sunset: still want our emails?",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "WyPcRr",
+  "name": "SNH · Win-back · a reason to come back",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "RNyAWB",
+  "name": "SNH · Win-back · we miss you",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UZNAke",
+  "name": "flow copy: SNH · Post-purchase (live): Thank you. Here's what happens next.",
+  "before": 4,
+  "after": 0,
+  "bytes": -21,
+  "patch": 200
+ },
+ {
+  "id": "RXkBAv",
+  "name": "flow copy: SNH · Post-purchase (live): Complete your stack for less",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "ULw5kq",
+  "name": "flow copy: SNH · Franchise enquiry reply (live): Your SNH franchise enquiry is in",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "Uu247m",
+  "name": "flow copy: SNH · Sunset (live): Should we stop emailing you?",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "TrftHq",
+  "name": "flow copy: SNH · How to use (live): Protein timing matters less than this",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "XnDggt",
+  "name": "flow copy: SNH · Abandoned cart (live): {{ event.Items.0.ProductName|default:'Yo",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UXck9m",
+  "name": "flow copy: SNH · Abandoned cart (live): Pay a third today with Koko",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "Yy47aj",
+  "name": "flow copy: SNH · Abandoned cart (live): Last look at your basket",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UCFiKM",
+  "name": "flow copy: SNH · Browse abandonment (live): Still thinking about {{ event.ProductNam",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "TZEg9a",
+  "name": "flow copy: SNH · Browse abandonment (live): What goes with {{ event.ProductName }}",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "WAmGX4",
+  "name": "flow copy: SNH · Abandoned checkout (live): One step left on your order",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UaULPW",
+  "name": "flow copy: SNH · Abandoned checkout (live): Flavour, size or dose? Ask us.",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "SwjDU6",
+  "name": "flow copy: SNH · Wholesale enquiry reply (live): Got it. Here's what happens next.",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "UBU8ra",
+  "name": "flow copy: SNH · Replenishment (live): Don't run out mid-week",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "YiKAav",
+  "name": "flow copy: SNH · Win-back (live): It's been a while, {{ first_name|default",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "RFrQpN",
+  "name": "flow copy: SNH · Win-back (live): Back in training?",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "QYC3vA",
+  "name": "flow copy: SNH · Welcome series (live): 500 points are already yours",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "VJSDqq",
+  "name": "flow copy: SNH · Welcome series (live): Your next order pays you back",
+  "before": 4,
+  "after": 0,
+  "bytes": -21,
+  "patch": 200
+ },
+ {
+  "id": "TjrHhi",
+  "name": "flow copy: SNH · Welcome series (live): What Colombo is reordering right now",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ },
+ {
+  "id": "VZWUxi",
+  "name": "flow copy: SNH · Review request (live): How's your order working out?",
+  "before": 1,
+  "after": 0,
+  "bytes": -18,
+  "patch": 200
+ }
+]

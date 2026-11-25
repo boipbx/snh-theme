@@ -150,3 +150,13 @@ test('audit CSV export (admin) is CSV with a header and guards formula cells', a
 test('writes need the X-SNH header', async () => {
   const W = world(); const req = new Request('https://x/console/api/login', { method: 'POST', body: '{}' }); const r = await consoleFetch(req, W.env, {}, T0); assert.equal(r.status, 400);
 });
+test('demo link: needs a valid demo token, serves the fake-data layer, no cookies', async () => {
+  const W = world(); const { sha256 } = await import('../src/console-db.mjs');
+  const get = async (q, now = T0) => consoleFetch(new Request('https://x/console/demo' + q), W.env, {}, now);
+  assert.equal((await get('')).status, 403); assert.equal((await get('?k=nope')).status, 403);
+  W.db.exec("CREATE TABLE IF NOT EXISTS console_tokens (token_hash TEXT PRIMARY KEY, shop TEXT NOT NULL, kind TEXT NOT NULL, expires_at INTEGER NOT NULL, used_at INTEGER, created_at INTEGER NOT NULL)");
+  W.db.prepare('INSERT INTO console_tokens VALUES (?,?,?,?,NULL,?)').run(await sha256('demo123'), shop, 'demo', T0 + 14 * 864e5, T0);
+  const r = await get('?k=demo123'); assert.equal(r.status, 200); const h = await r.text(); assert.match(h, /window\.SNHDemo = \{ api, csv \}/); assert.equal(r.headers.get('Set-Cookie'), null); assert.match(r.headers.get('Content-Security-Policy'), /connect-src 'none'/);
+  assert.equal((await get('?k=demo123', T0 + 15 * 864e5)).status, 403);
+  W.db.prepare('INSERT INTO console_tokens VALUES (?,?,?,?,NULL,?)').run(await sha256('setup1'), shop, 'setup', T0 + 864e5, T0); assert.equal((await get('?k=setup1')).status, 403);   // a setup token is not a demo token
+});

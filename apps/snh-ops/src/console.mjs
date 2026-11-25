@@ -10,10 +10,10 @@ import { gql } from './shopify.mjs';
 import { getConfig } from './sync.mjs';
 import { mode, allowed, redeemCfg, processCustomer, doneToday, parseCodes } from './redeem.mjs';
 import { ensureConsoleTables, hashPin, validPin, sameHex, randomHex, sha256, newId, audit, ledger, rateOk, PBKDF2_ITERATIONS } from './console-db.mjs';
-import { CONSOLE_HTML, MANIFEST, SW_JS, ICON_192, ICON_512, ICON_MASK, LOGO_PNG } from './console-ui.mjs';
+import { CONSOLE_HTML, MANIFEST, SW_JS, DEMO_JS, ICON_192, ICON_512, ICON_MASK, LOGO_PNG, APPLE_ICON, FAVICON_ICO, FAVICON_32 } from './console-ui.mjs';
 
 const MIN = 60e3, HOUR = 3600e3;
-export const LIMITS = { sessionMs: 12 * HOUR, idleMs: 5 * MIN, maxFails: 5, lockMs: 15 * MIN, adjustMax: 5000, adjustDay: 20000, codeMs: 24 * HOUR, setupMs: 24 * HOUR };
+export const LIMITS = { sessionMs: 12 * HOUR, idleMs: 5 * MIN, maxFails: 5, lockMs: 15 * MIN, adjustMax: 5000, adjustDay: 20000, codeMs: 24 * HOUR, setupMs: 7 * 24 * HOUR };
 export const REASONS = ['Missed order points', 'Goodwill', 'Correction', 'Other'];
 const FALLBACK_LOCATIONS = ['Nugegoda', 'Dehiwala', 'Wattala'];
 const CONSENT_TEXT = 'Yes, send me SNH offers, Elite rewards and new arrivals by email. I can unsubscribe at any time.';
@@ -105,7 +105,7 @@ function summary(c, cfg) {
     phone: (c.defaultPhoneNumber && c.defaultPhoneNumber.phoneNumber) || '', email: (c.defaultEmailAddress && c.defaultEmailAddress.emailAddress) || '',
     consent: (c.defaultEmailAddress && c.defaultEmailAddress.marketingState) || 'NOT_SUBSCRIBED', status: accountStatus(c.state), state: c.state, points: pts, value: Math.floor(pts * (cfg.pointValue || 1)),
     ...tierInfo(c, cfg), lastOrder: c.lastOrder ? { name: c.lastOrder.name, at: c.lastOrder.createdAt } : null, qa: (c.tags || []).includes('qa-test'), birthday: birthday(c),
-    orders: c.numberOfOrders != null ? Number(c.numberOfOrders) : null };
+    orderCount: c.numberOfOrders != null ? Number(c.numberOfOrders) : null };
 }
 export function searchQuery(q) {
   q = String(q || '').trim(); if (!q) return '';
@@ -134,8 +134,19 @@ export async function consoleFetch(req, env, ctx, now = Date.now()) {
   const shop = env.CONSOLE_SHOP || 'sports-nutrition-hub.myshopify.com';
   if (path === '/console/manifest.webmanifest') return new Response(MANIFEST, { headers: { 'Content-Type': 'application/manifest+json', 'Cache-Control': 'public, max-age=3600' } });
   if (path === '/console/sw.js') return new Response(SW_JS, { headers: { 'Content-Type': 'text/javascript', 'Cache-Control': 'no-cache', 'Service-Worker-Allowed': '/console/' } });
-  const icon = { '/console/icon-192.png': ICON_192, '/console/icon-512.png': ICON_512, '/console/icon-mask.png': ICON_MASK, '/console/logo.png': LOGO_PNG }[path];
+  const icon = { '/console/icon-192.png': ICON_192, '/console/icon-512.png': ICON_512, '/console/icon-mask.png': ICON_MASK, '/console/logo.png': LOGO_PNG, '/console/apple-touch-icon.png': APPLE_ICON, '/console/favicon-32.png': FAVICON_32 }[path];
+  if (path === '/console/favicon.ico') return new Response(Uint8Array.from(atob(FAVICON_ICO), (c) => c.charCodeAt(0)), { headers: { 'Content-Type': 'image/x-icon', 'Cache-Control': 'public, max-age=86400' } });
   if (icon) return new Response(Uint8Array.from(atob(icon), (c) => c.charCodeAt(0)), { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' } });
+  // read-only demo with fake data (link with a random token, 14 days). No session, no cookies, no Shopify calls.
+  if (path === '/console/demo') {
+    await ensureConsoleTables(env); const k = clean(u.searchParams.get('k'), 80);
+    const t = k ? await env.DB.prepare('SELECT * FROM console_tokens WHERE token_hash=?').bind(await sha256(k)).first() : null;
+    if (!t || t.kind !== 'demo' || t.shop !== shop || t.expires_at < now) return new Response('This demo link is not valid or has expired.', { status: 403, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } });
+    const nonce = randomHex(12);
+    const html = CONSOLE_HTML.replace('<script nonce="__NONCE__">', `<script nonce="${nonce}">${DEMO_JS}</script>\n<script nonce="__NONCE__">`).replaceAll('__NONCE__', nonce).replace('<title>SNH Staff</title>', '<title>SNH Staff (demo)</title><meta name="robots" content="noindex">');
+    return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex',
+      'Content-Security-Policy': `default-src 'self'; script-src 'nonce-${nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`, 'Referrer-Policy': 'no-referrer' } });
+  }
   if (!path.startsWith('/console/api/')) {
     const nonce = randomHex(12);
     return new Response(CONSOLE_HTML.replaceAll('__NONCE__', nonce), { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache',

@@ -6,6 +6,8 @@
     "test": "node --experimental-sqlite --test test/*.test.mjs",
     "local": "node --experimental-sqlite local.mjs",
     "db:init": "wrangler d1 execute snh-ops --remote --file=schema.sql",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "admin-link": "node scripts/console-setup-link.mjs",
+    "demo-link": "node scripts/console-demo-link.mjs"
   }
 }

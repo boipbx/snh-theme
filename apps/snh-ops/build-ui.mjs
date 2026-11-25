@@ -10,17 +10,21 @@ const safeUrl = (u) => (String(u || '').startsWith('https://') && !/["'<>\\s]/.t
 export const page = (apiKey, devToken = '', video = '') => HTML.replace('__API_KEY__', safe(apiKey)).replace('__DEV_TOKEN__', safe(devToken)).replace('__VIDEO__', safeUrl(video));
 `;
 const rd = (p, enc = 'utf8') => fs.readFileSync(new URL(p, import.meta.url), enc);
-export const MANIFEST = { name: 'SNH Staff', short_name: 'SNH Staff', start_url: '/console', scope: '/console', display: 'standalone', orientation: 'any', background_color: '#141210', theme_color: '#141210',
+export const MANIFEST = { name: 'SNH Staff', short_name: 'SNH Staff', start_url: '/console', scope: '/console', display: 'standalone', orientation: 'any', background_color: '#F65A22', theme_color: '#141210',
   description: 'Look up SNH customers and Elite points at the counter.',
-  icons: [{ src: '/console/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/console/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/console/icon-mask.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }] };
+  icons: [{ src: '/console/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/console/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/console/icon-mask.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }, { src: '/console/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] };
 export const consoleSource = () => `// GENERATED from ui/console.html, ui/console-sw.js and ui/console-assets/ by build-ui.mjs. Edit those, not this.
 export const CONSOLE_HTML = ${JSON.stringify(rd('./ui/console.html'))};
 export const SW_JS = ${JSON.stringify(rd('./ui/console-sw.js'))};
+export const DEMO_JS = ${JSON.stringify(rd('./ui/console-demo.js'))};
 export const MANIFEST = ${JSON.stringify(JSON.stringify(MANIFEST))};
 export const ICON_192 = ${JSON.stringify(rd('./ui/console-assets/icon-192.png', 'base64'))};
 export const ICON_512 = ${JSON.stringify(rd('./ui/console-assets/icon-512.png', 'base64'))};
 export const ICON_MASK = ${JSON.stringify(rd('./ui/console-assets/icon-mask.png', 'base64'))};
 export const LOGO_PNG = ${JSON.stringify(rd('./ui/console-assets/logo.png', 'base64'))};
+export const APPLE_ICON = ${JSON.stringify(rd('./ui/console-assets/apple-touch-icon.png', 'base64'))};
+export const FAVICON_ICO = ${JSON.stringify(rd('./ui/console-assets/favicon.ico', 'base64'))};
+export const FAVICON_32 = ${JSON.stringify(rd('./ui/console-assets/favicon-32.png', 'base64'))};
 `;
 if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())) {
   fs.writeFileSync(new URL('./src/ui.mjs', import.meta.url), source(html)); console.log('src/ui.mjs written,', html.length, 'bytes');

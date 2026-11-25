@@ -1100,3 +1100,15 @@ Timings and method: `docs/golive/OPS-DASHBOARD-SPEED.md`. Rollback: `wrangler ro
 | 15:45 | push bddd7df + sticky 48 px | product sticky Add to cart | black | primary |
 
 Lighthouse mobile home median 37 → 36 (3 runs each). To go back: revert those commits, or restore the files from the backup folder.
+
+# 25 Nov 2026: console preview, app icon, one font
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 17:05 | D1 update | console_tokens: the owner's setup link (expiring 26 Nov) | valid | **revoked** (expired + marked used; audit row `setup.link_revoked`) |
+| 17:06 | code | `scripts/console-setup-link.mjs` (`npm run admin-link`), 7 days by default | 24 h | 7 days; not generated |
+| 17:14 | `wrangler deploy` 9ed2b9cf, eb95a9cc | Worker `snh-ops` | - | `/console/demo?k=…` read-only demo (fake data built in the browser, CSP `connect-src 'none'`, no cookies, no Shopify), new SNH icons + favicons, "Orders" count fix, one font in console + dashboard |
+| 17:15 | D1 insert | console_tokens kind `demo` (hash only), 14 days (until 9 Dec) | - | demo link given to the owner |
+| 17:40 | git push 7ab2954 | theme: `snh-v2.css` one-font block (+ serif @font-face removed), `snh-app.js` share image, account section, settings `snh_heading_accent = orange` | italic Instrument Serif in 28 rule groups (SNH Elite lockup, accent words, card brands, quotes) | Inter, upright, 800 (quotes 600); Elite page check: 0 serif elements at 390 and 1440 |
+| 17:55 | Klaviyo `PATCH /api/templates` ×63 (dry run first; HTML backed up in `docs/golive/backup-klaviyo-2026-11-25/`) | 43 "SNH ·" templates + 20 flow-email copies | serif/italic accent | Inter 800 upright; re-check: 0 templates with serif |
+
+Screenshots: `docs/golive/one-font-2026-11-25/` (before/after 390 + 1440: Elite page, Elite card, product Elite strip, dashboard header, console). Demo screenshots: `docs/golive/console-2026-11-25/demo/`.

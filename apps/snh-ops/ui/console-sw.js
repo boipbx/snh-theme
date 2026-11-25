@@ -10,7 +10,7 @@ self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) =
 self.addEventListener('fetch', (e) => {
   const u = new URL(e.request.url); if (u.origin !== location.origin || e.request.method !== 'GET' || u.pathname.startsWith('/console/api/')) return;
   if (e.request.mode === 'navigate') {
-    e.respondWith(fetch(e.request).then((r) => { const copy = r.clone(); caches.open(C).then((c) => c.put('/console', copy)); return r; })
+    e.respondWith(fetch(e.request).then((r) => { if (u.pathname === '/console' && r.ok) { const copy = r.clone(); caches.open(C).then((c) => c.put('/console', copy)); } return r; })
       .catch(() => new Response(OFFLINE, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })));
     return;
   }
