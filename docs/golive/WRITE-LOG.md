@@ -1089,3 +1089,14 @@ Rollback: `wrangler rollback a32e6017-7696-43cc-84d7-3474df706258` (console tabl
 | 14:45 | config | `wrangler.toml` SHOP_CONFIG `brand.loopVideoUrl` = theme asset `snh-brand-loop.mp4` | - | set |
 
 Timings and method: `docs/golive/OPS-DASHBOARD-SPEED.md`. Rollback: `wrangler rollback 4b570202-25c0-41f4-b2e8-bda27bbc4983` (console without the dashboard changes).
+
+# 25 Nov 2026: storefront CTAs, onboarding, announcement bar, hotspots (Phase 3, live theme `feat/theme-v2`)
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 15:20 | backup | `docs/golive/backup-storefront-2026-11-25/` (onboarding section + JS, quiz band JS, snh-v2.css/js, snh-product.css, snh-cart.css, header, shop-the-look, campaigns JS) | - | - |
+| 15:22 | push 61f1db3, eecf4c9, f8d11d9 | CTA system (snh-v2.css, snh-product.css); announcement pill (snh-header.liquid + schema setting `cta`, snh-campaigns.js); hotspot markers + reveal (snh-v2.css/js) | flat buttons, bare "→" in the bar, small white dots | as `docs/golive/storefront-2026-11-25/README.md`; checked live after ~30 s |
+| 15:30 | push a53389a | hero buttons on phones | wrapped onto 2 rows | 1 row |
+| 15:31 | push 017cb9c | onboarding card (snh-onboarding-prompt.liquid, snh-onboard.js, snh-quiz-band.js) | plain "Not sure what to buy?" banner | goal chips → quiz with the goal answered (10/10 tests) |
+| 15:45 | push bddd7df + sticky 48 px | product sticky Add to cart | black | primary |
+
+Lighthouse mobile home median 37 → 36 (3 runs each). To go back: revert those commits, or restore the files from the backup folder.

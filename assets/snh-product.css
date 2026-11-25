@@ -513,3 +513,4 @@
 .sp-sticky .sp-btn[data-sp-sync="satc"]:not([disabled]) { background: #BF4512; color: #fff; font-weight: 700; box-shadow: 0 0 0 1px rgba(246, 89, 34, .95), 0 0 0 3px rgba(246, 89, 34, .16), 0 8px 18px -8px rgba(246, 89, 34, .85); }
 .sp-sticky .sp-btn[data-sp-sync="satc"]:not([disabled]):hover { background: #A83A0E; }
 .sp-sticky .sp-btn[data-sp-sync="satc"]:not([disabled]):active { transform: scale(.97); }
+.sp-sticky .sp-btn[data-sp-sync="satc"] { min-height: 48px; }
