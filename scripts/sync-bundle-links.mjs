@@ -1,8 +1,15 @@
 #!/usr/bin/env node
-// "Save with a bundle": write custom.in_bundles (list.product_reference) on every component product of an ACTIVE bundle
-// (productType "Bundle", native bundleComponents). Value = the active bundles that contain the product, ordered by the
-// bundle's saving (compare-at − price), biggest first, cheapest saving last. Products that were linked before but are
-// no longer in any active bundle get an empty list (the theme hides the row). Drafts never appear.
+// "Save with a bundle": write custom.in_bundles (list.product_reference) on every component product of an ACTIVE bundle.
+// Value = the active bundles that contain the product, ordered by the bundle's saving (compare-at − price), biggest
+// first. Products that were linked before but are no longer in any active bundle get an empty list (the theme hides the
+// row). Drafts never appear.
+// 26 Nov: a bundle is any active product with productType "Bundle", the tag "bundle", or a variant that requires
+// components. Its components are read from every source, merged:
+//   1. bundleComponents (bundles owned by the Shopify Bundles app),
+//   2. each variant's productVariantComponents (bundles built by SNH Ops / the API: these list the component variants),
+//   3. fallback when a component points at a deleted variant (or nothing is listed): active products whose title is
+//      named in the bundle's description or in a component variant's title (whole title, case-insensitive, the brand
+//      prefix and "GO" optional, so "SiS GO Hydro Tablets" finds "SiS Hydro Tablets").
 //
 // Before writing it backs up every current value to docs/golive/backup-bundle-links/<timestamp>.json and appends each
 // write to docs/golive/WRITE-LOG.md. Unchanged values are skipped.
@@ -46,15 +53,37 @@ async function all(query, key) {
 export async function syncBundleLinks({ dry = false, log = console.log } = {}) {
   if (!S || !ID || !SECRET) throw new Error('Missing SHOPIFY_STORE / SHOPIFY_CLIENT_ID / SHOPIFY_CLIENT_SECRET');
   T = T || await token();
-  const bundles = await all(`query($c:String){products(first:50,after:$c,query:"product_type:Bundle status:active"){pageInfo{hasNextPage endCursor}
-    nodes{id title handle status productType variants(first:1){nodes{price compareAtPrice}} bundleComponents(first:30){nodes{componentProduct{id}}}}}}`, 'products');
+  const bundles = (await all(`query($c:String){products(first:25,after:$c,query:"status:active AND (product_type:Bundle OR tag:bundle)"){pageInfo{hasNextPage endCursor}
+    nodes{id title handle status productType tags description variants(first:40){nodes{price compareAtPrice requiresComponents productVariantComponents(first:20){nodes{productVariant{id title product{id status}}}}}}
+    bundleComponents(first:30){nodes{componentProduct{id}}}}}}`, 'products')).filter((b) => b.status === 'ACTIVE');
+  // every active non-bundle product (id, title, vendor), for the description fallback
+  const catalogue = (await all(`query($c:String){products(first:250,after:$c,query:"status:active"){pageInfo{hasNextPage endCursor} nodes{id title vendor productType tags}}}`, 'products'))
+    .filter((p) => p.productType !== 'Bundle' && !p.tags.map((t) => t.toLowerCase()).includes('bundle'));
+  const norm = (t) => ` ${String(t).toLowerCase().replace(/[^a-z0-9+ ]+/g, ' ').replace(/\s+/g, ' ').trim()} `;
+  const keys = catalogue.map((p) => {
+    const t = norm(p.title), v = norm(p.vendor).trim(); const ks = new Set([t]);
+    const noBrand = v && t.startsWith(' ' + v + ' ') ? ' ' + t.slice(v.length + 2) : t; ks.add(noBrand);
+    for (const k of [...ks]) ks.add(k.replace(/ go /g, ' '));
+    return { id: p.id, ks: [...ks].filter((k) => k.trim().split(' ').length >= 2) };
+  });
+  const findIn = (text) => { const T = norm(text), T2 = T.replace(/ go /g, ' '); return keys.filter((k) => k.ks.some((x) => T.includes(x) || T2.includes(x))).map((k) => k.id); };
   const map = new Map();   // component id -> [{id, title, save}]
+  const sources = [];
   for (const b of bundles) {
-    if (b.status !== 'ACTIVE' || b.productType !== 'Bundle') continue;
+    const isBundle = b.productType === 'Bundle' || b.tags.map((t) => t.toLowerCase()).includes('bundle') || b.variants.nodes.some((v) => v.requiresComponents);
+    if (!isBundle) continue;
     const v = b.variants.nodes[0] || {}; const save = Math.max(0, Number(v.compareAtPrice || 0) - Number(v.price || 0));
-    const comps = [...new Set(b.bundleComponents.nodes.map((n) => n.componentProduct && n.componentProduct.id).filter(Boolean))];
-    for (const c of comps) { if (c === b.id) continue; if (!map.has(c)) map.set(c, []); map.get(c).push({ id: b.id, title: b.title, save }); }
+    const fromApp = b.bundleComponents.nodes.map((n) => n.componentProduct && n.componentProduct.id).filter(Boolean);
+    const pvc = b.variants.nodes.flatMap((x) => x.productVariantComponents.nodes);
+    const fromPvc = pvc.map((n) => n.productVariant && n.productVariant.product && n.productVariant.product.status === 'ACTIVE' && n.productVariant.product.id).filter(Boolean);
+    const broken = pvc.some((n) => !n.productVariant || !n.productVariant.product);
+    let fromText = [];
+    if (broken || (!fromApp.length && !fromPvc.length)) fromText = findIn(b.description + ' ' + pvc.map((n) => (n.productVariant && n.productVariant.title) || '').join(' '));
+    const comps = [...new Set([...fromApp, ...fromPvc, ...fromText])];
+    sources.push(`${b.handle}: app ${fromApp.length}, variants ${new Set(fromPvc).size}, text ${fromText.length}${broken ? ' (deleted component variant)' : ''}`);
+    for (const c of comps) { if (c === b.id) continue; if (!map.has(c)) map.set(c, []); if (!map.get(c).some((x) => x.id === b.id)) map.get(c).push({ id: b.id, title: b.title, save }); }
   }
+  if (process.argv.includes('--sources')) sources.forEach((x) => log('  src ' + x));
   // current values (to back up, to skip unchanged, and to clear stale ones)
   const current = await all(`query($c:String){products(first:100,after:$c){pageInfo{hasNextPage endCursor} nodes{id handle metafield(namespace:"custom",key:"in_bundles"){value}}}}`, 'products');
   const cur = new Map(current.map((p) => [p.id, p])); const had = current.filter((p) => p.metafield);
