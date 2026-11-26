@@ -1,0 +1,113 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "custom.overlay",
+  "name": "Overlay group",
+  "sections": {
+    "snh_envelope_popup_4fhFpY": {
+      "type": "snh-envelope-popup",
+      "disabled": true,
+      "name": "SNH envelope voucher",
+      "settings": {
+        "creative": "shopify://shop_images/WhatsApp_Image_2026-09-08_at_12.30.08.jpg",
+        "creative_url": "",
+        "eyebrow": "Subscriber voucher",
+        "headline": "Flat 15% off",
+        "badge": "Ends 12 Sep",
+        "blurb": "Drop your email and the code is yours ,first order, in-store and online.",
+        "placeholder": "your@email.com",
+        "button": "Reveal my code",
+        "code": "HYROX",
+        "success_text": "You're in. Here's your code:",
+        "terms": "One use per customer. Cannot be combined with other offers.",
+        "accent": "#e0521c",
+        "ink": "#17130f",
+        "delay_seconds": 2,
+        "max_shows": 3,
+        "revisit_mins": 30,
+        "show_only_on_index": false
+      }
+    },
+    "privacy-banner": {
+      "type": "privacy-banner",
+      "settings": {
+        "privacy_bar_title": "Cookie policy",
+        "privacy_bar_content": "<p>We use cookies and similar technologies to provide the best experience on our website. Refer to our Privacy Policy for more information.</p>"
+      }
+    },
+    "cart-drawer": {
+      "type": "cart-drawer",
+      "settings": {
+        "free_shipping_threshold": 17000,
+        "free_delivery_tolerance": 100,
+        "show_gap_picks": true,
+        "show_fbt": true,
+        "empty_cart_link": "",
+        "picks_products": [
+          "applied-nutrition-creatine-monohydrate",
+          "sis-go-hydro-tablets",
+          "applied-nutrition-critical-whey-2kg",
+          "sis-go-isotonic-energy-gel",
+          "raw-cbum-itholate-protein",
+          "raw-thavage-pre-workout",
+          "ryse-loaded-protein-2lb",
+          "ryse-loaded-pre-workout"
+        ]
+      }
+    },
+    "search-drawer": {
+      "type": "search-drawer",
+      "settings": {
+        "full_width": false,
+        "show_article_category": true,
+        "search_menu": "",
+        "search_menu_show_title": true
+      }
+    },
+    "snh_onboarding": {
+      "type": "snh-onboarding-prompt",
+      "settings": {}
+    },
+    "email-capture": {
+      "type": "snh-email-capture",
+      "settings": {
+        "code": "SNH10",
+        "image": "shopify://shop_images/cricket.jpg"
+      },
+      "disabled": true
+    },
+    "newsletter-popup": {
+      "type": "newsletter-popup",
+      "settings": {
+        "ask_name": false,
+        "button_text": "Subscribe",
+        "caption": "Fuelling Athletes.",
+        "code": "",
+        "fine": "Unsubscribe any time.",
+        "kicker": "Welcome to SNH",
+        "media_url": "",
+        "show_only_for_visitors": true,
+        "show_only_on_index": false,
+        "show_only_once": true,
+        "subtext": "New drops, restocks and members-only offers. No spam.",
+        "title": "Join the SNH list"
+      }
+    }
+  },
+  "order": [
+    "snh_onboarding",
+    "newsletter-popup",
+    "email-capture",
+    "snh_envelope_popup_4fhFpY",
+    "privacy-banner",
+    "cart-drawer",
+    "search-drawer"
+  ]
+}

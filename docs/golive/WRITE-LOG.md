@@ -1151,3 +1151,6 @@ Backups: `docs/golive/backup-ship-2026-11-27/` (each touched file as live `*.liv
 | 04:10 | push 9c5a9c4 | SNH list popup (newsletter-popup.liquid, overlay-group.json) | "Join the SNH list" | restock / new-drops value, 3 benefits, Get alerts, No thanks, Elite link | `git revert 9c5a9c4` |
 
 Basket test (cart only, never checkout): `docs/golive/ship-2026-11-27/basket-test/results-390.txt`; test baskets cleared afterwards.
+| 04:30 | push ba1a08f | Compare heading on phones (snh-compare.liquid) | 13px (phone text floor) | 24px | `git revert ba1a08f` |
+
+Lighthouse mobile after all merges: home median 50 (25 Nov baseline 36), product median 36 (no earlier baseline). Details: `docs/golive/ship-2026-11-27/README.md`.

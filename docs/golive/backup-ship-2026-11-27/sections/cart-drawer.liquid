@@ -1,0 +1,108 @@
+{%- comment -%}
+  SNH cart drawer (Round 11): your cart drawer (OLD-COMPONENTS.md §4) rebuilt in v2 with the conversion upgrades.
+  Round 12: compact free-delivery bar under the header, lines → one suggestion carousel (max 3) → a collapsed bundle
+  row; one fixed footer (savings, total, points, Secure checkout, Koko, payment logos).
+  Kept: free-delivery card (with the Rs 100 tolerance), qty steppers, smart gap picks, "goes with your basket" picks,
+  SNH Elite points line, subtotal + tax note, View basket + Checkout (Koko intercepts it), empty state, the basket
+  toast after closing. Added: unlocked state, auto-discount banner, brand / variant / subscription / saving tags per
+  line, remove, compare-at, the smart gap-filler ("Cart add-ons" collection → recommendations), bundle upsell
+  (bundle_N offers), personalised picks (goal) or bestsellers, summary with savings, points, Koko 3×, trust row.
+  The element is Impact's plain <x-drawer id="cart-drawer"> so header buttons still open it, but only
+  assets/snh-cart.js renders its content (from /cart.js), so nothing re-renders it behind our back. Max 440px wide;
+  a full-screen sheet on phones. The cart page (sections/snh-cart-page) uses the same renderer and summary.
+{%- endcomment -%}
+{%- comment -%} Round 12: not render-blocking (the drawer is closed at load) {%- endcomment -%}
+<link rel="stylesheet" href="{{ 'snh-cart.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'snh-cart.css' | asset_url | stylesheet_tag }}</noscript>
+<script src="{{ 'snh-cart-reco.js' | asset_url }}" defer></script>
+<script src="{{ 'snh-cart.js' | asset_url }}" defer></script>
+<x-drawer class="cart-drawer drawer snh-cd" id="cart-drawer" open-from="right" aria-label="Your basket" data-snh-elite>
+  <div class="scd" data-cart-root data-mode="drawer">
+    {%- render 'snh-cart-cfg', threshold: section.settings.free_shipping_threshold, tolerance: section.settings.free_delivery_tolerance, addons: section.settings.addons.handle, bestsellers: section.settings.bestsellers.handle, rating: section.settings.rating, picks_products: section.settings.picks_products, show_sugg: section.settings.show_gap_picks -%}
+    <header class="scd__head">
+      <h2 class="scd__title">Your basket <span class="scd__count" data-cart-count>{{ cart.item_count }}</span></h2>
+      <a class="scd__view" href="{{ routes.cart_url }}">View basket</a>
+      <button type="button" is="close-button" class="scd__x" aria-label="Close basket">{% render 'snh-v2-icon', name: 'close' %}</button>
+    </header>
+    <div class="scd__bar" data-cart-bar></div>
+    <div data-campaign-slot="cart" hidden></div>
+    <div class="scd__body" data-cart-body>
+      {%- if cart.item_count == 0 -%}
+        <div class="scd__empty"><p class="scd__empty-h">Your basket is empty</p><p>Add your favourites and they'll appear here instantly.</p><a class="v-btn v-btn--accent" href="{{ section.settings.empty_cart_link | default: routes.all_products_collection_url }}"><span>Start shopping</span></a></div>
+      {%- else -%}
+        <div class="scd__skel" aria-hidden="true"><i></i><i></i><i></i></div>
+      {%- endif -%}
+    </div>
+    <footer class="scd__foot" data-cart-foot{% if cart.item_count == 0 %} hidden{% endif %}></footer>
+    {%- capture cc_outlets -%}{% render 'snh-pickup-outlets' %}{%- endcapture -%}
+    <a class="scd__cc" href="/pages/click-and-collect">{% render 'snh-v2-icon', name: 'pin' %}<span>Free click &amp; collect at {{ cc_outlets | strip }}, held for 48 hours</span></a>
+  </div>
+</x-drawer>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "class": "shopify-section--cart-drawer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The SNH cart drawer. Rates and points come from Theme settings → SNH Elite; bundle upsells from Theme settings → SNH bundle offers."
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free delivery over (Rs)",
+      "default": 17000
+    },
+    {
+      "type": "number",
+      "id": "free_delivery_tolerance",
+      "label": "Hide the bar within (Rs) of free delivery",
+      "default": 100,
+      "info": "Within this gap the order is treated as free delivery."
+    },
+    {
+      "type": "collection",
+      "id": "addons",
+      "label": "Cart add-ons",
+      "info": "Low-ticket gap-closers (bars, snacks, gels, shakers). Empty or no match = Shopify's recommendations for the basket."
+    },
+    {
+      "type": "product_list",
+      "id": "picks_products",
+      "label": "Bestsellers (hand-picked)",
+      "limit": 8,
+      "info": "Shown to guests and members without a goal (and in the empty basket). Empty = the collection below."
+    },
+    {
+      "type": "collection",
+      "id": "bestsellers",
+      "label": "Bestsellers (guests)",
+      "info": "Members with a goal see their goal's collection. Empty = all products."
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Rating line",
+      "info": "Your real rating, e.g. 4.9 on Google · 1,200+ reviews. Shown under the payment logos only when filled."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gap_picks",
+      "label": "Show suggestions",
+      "info": "Rules: Theme settings → SNH cart suggestions.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fbt",
+      "label": "Show picks",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "empty_cart_link",
+      "label": "Empty basket link"
+    }
+  ]
+}
+{% endschema %}

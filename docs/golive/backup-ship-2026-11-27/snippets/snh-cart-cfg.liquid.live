@@ -1,0 +1,131 @@
+{%- comment -%}
+  SNH cart (Round 11): the settings + store data assets/snh-cart.js needs, as JSON, shared by the cart drawer and the
+  cart page. threshold/tolerance in cents · member tier and rate (Theme settings → SNH Elite, tier from
+  custom.loyalty_tier) · gap-filler collection ("Cart add-ons") · picks collection (the member's goal collection, else
+  bestsellers) · bundle offers bundle_1…12 (Theme settings → SNH bundle offers) · trust rating text (shown only when filled) ·
+  suggestion rules (Theme settings → SNH cart suggestions) · the payment logo row.
+  threshold, tolerance (rupees), addons, bestsellers: collection handles · picks_products: hand-picked bestsellers
+  (used before the bestsellers collection for guests and members without a goal) · rating · page: true on the cart page
+{%- endcomment -%}
+{%- liquid
+  assign t = customer.metafields.custom.loyalty_tier.value | downcase
+  assign rate = settings.snh_rate_bronze | default: 3
+  assign tier = 'Bronze'
+  if t == 'silver'
+    assign rate = settings.snh_rate_silver | default: 7
+    assign tier = 'Silver'
+  elsif t == 'gold' or t == 'maxed out'
+    assign rate = settings.snh_rate_gold | default: 10
+    assign tier = 'Gold'
+  endif
+  assign goal = ''
+  for tg in customer.tags
+    assign tl = tg | downcase
+    if tl contains 'goal:'
+      assign goal = tl | remove: 'goal:' | strip
+      break
+    endif
+  endfor
+  case goal
+    when 'build-muscle'
+      assign gh = 'muscle-and-strength'
+    when 'lose-fat'
+      assign gh = 'fat-loss'
+    when 'endurance'
+      assign gh = 'energy-and-endurance'
+    when 'hydration-recovery'
+      assign gh = 'hydration-recovery'
+    when 'daily-health'
+      assign gh = 'health-wellness'
+    when 'sport-specific'
+      assign gh = 'train-perform'
+    else
+      assign gh = ''
+  endcase
+  assign picks = bestsellers | default: 'all'
+  assign picks_label = 'Bestsellers right now'
+  if customer and gh != ''
+    assign picks = gh
+    assign picks_label = 'Picked for your goal'
+  endif
+  assign silver = settings.snh_silver_threshold | default: 198000
+  assign gold = settings.snh_gold_threshold | default: 300000
+  assign spend = customer.metafields.custom.annual_spend.value | default: 0 | plus: 0
+-%}
+<script type="application/json" data-cart-cfg>{
+  "threshold": {{ threshold | default: 17000 | times: 100 }},
+  "tolerance": {{ tolerance | default: 100 | times: 100 }},
+  "member": {% if customer %}true{% else %}false{% endif %},
+  "first": {{ customer.first_name | default: '' | json }},
+  "tier": {{ tier | json }},
+  "rate": {{ rate }},
+  "baseRate": {{ settings.snh_rate_bronze | default: 3 }},
+  "pointValue": {{ settings.snh_point_value | default: 1 }},
+  "spend": {{ spend }},
+  "silver": {{ silver }},
+  "gold": {{ gold }},
+  "addons": {{ addons | default: 'cart-add-ons' | json }},
+  "picks": {{ picks | json }},
+  "picksLabel": {{ picks_label | json }},
+  "rating": {{ rating | default: '' | json }},
+  "showSugg": {% if show_sugg == false %}false{% else %}true{% endif %},
+  "sugg": {
+    "closeMin": {{ settings.snh_cart_close_min | default: 3000 }},
+    "closePct": {{ settings.snh_cart_close_pct | default: 25 }},
+    "band": {{ settings.snh_cart_close_band | default: 1500 }},
+    "addonMax": {{ settings.snh_cart_addon_max | default: 2000 }},
+    "addonPct": {{ settings.snh_cart_addon_pct | default: 15 }},
+    "compPct": {{ settings.snh_cart_comp_pct | default: 20 }},
+    "max": {{ settings.snh_cart_max | default: 3 }},
+    "pairs": {{ settings.snh_cart_pairs | default: "creatine => shaker, bottle\nwhey, protein, isolate => bar, snack, cookie\npre-workout, pre workout => shaker, bottle\nelectrolyte, hydration, isotonic => gel, chew, bar\ngel => electrolyte, hydro, tablet\nmass, gainer => shaker, creatine" | json }}
+  },
+  "login": {{ routes.account_login_url | json }},
+  "register": {{ routes.account_register_url | json }},
+  "account": {{ routes.account_url | json }},
+  "cartUrl": {{ routes.cart_url | json }},
+  "shop": {{ routes.all_products_collection_url | json }},
+  "plan": {% if customer %}{{ routes.account_url | append: '#goals' | json }}{% else %}{{ routes.account_register_url | json }}{% endif %},
+  "page": {% if page %}true{% else %}false{% endif %},
+  "picksProducts": [
+    {%- if gh == '' or customer == nil -%}
+      {%- for p in picks_products -%}{%- unless p.available -%}{%- continue -%}{%- endunless -%}{%- assign v = p.selected_or_first_available_variant -%}
+        {"id": {{ p.id }}, "vid": {{ v.id }}, "title": {{ p.title | json }}, "vendor": {{ p.vendor | json }}, "price": {{ v.price }}, "image": {{ p.featured_image | image_url: width: 200 | json }}, "url": {{ p.url | json }}, "multi": {% if p.variants.size > 1 %}true{% else %}false{% endif %}}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+  ],
+  "autoBundles": {
+    "on": {% if settings.snh_bundle_cart == false %}false{% else %}true{% endif %},
+    "confetti": {% if settings.snh_bundle_confetti == false %}false{% else %}true{% endif %},
+    "cols": {{ settings.snh_bundle_collections | default: 'training-strength-bundles, daily-health-wellness-bundles, endurance-bundles, bundle-offers' | remove: ' ' | split: ',' | json }},
+    "map": {{ settings.snh_bundle_map | default: '' | json }},
+    "retail": "testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800"
+  },
+  "bundles": [
+    {%- assign first_b = true -%}
+    {%- comment -%} Round 12: "SNH bundle" metaobject entries first (BUNDLES.md), then Theme settings → SNH bundle offers {%- endcomment -%}
+    {%- for e in shop.metaobjects.snh_bundle.values -%}
+      {%- assign list = e.products.value -%}
+      {%- if list == blank or list.size == 0 -%}{%- continue -%}{%- endif -%}
+      {%- unless first_b -%},{%- endunless -%}{%- assign first_b = false -%}
+      {"title": {{ e.title.value | json }}, "save": {{ e.save_label.value | json }}, "items": [
+        {%- for p in list -%}{%- assign v = p.selected_or_first_available_variant -%}{"pid": {{ p.id }}, "vid": {{ v.id }}, "title": {{ p.title | json }}, "price": {{ v.price }}, "available": {{ p.available | json }}, "image": {{ p.featured_image | image_url: width: 200 | json }}, "single": {{ list.size | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+      ]}
+    {%- endfor -%}
+    {%- for i in (1..12) -%}
+      {%- assign lk = 'bundle_' | append: i | append: '_products' -%}
+      {%- assign list = settings[lk] -%}
+      {%- if list == blank or list.size == 0 -%}{%- continue -%}{%- endif -%}
+      {%- assign tk = 'bundle_' | append: i | append: '_title' -%}
+      {%- assign sk = 'bundle_' | append: i | append: '_save' -%}
+      {%- unless first_b -%},{%- endunless -%}{%- assign first_b = false -%}
+      {"title": {{ settings[tk] | json }}, "save": {{ settings[sk] | json }}, "items": [
+        {%- for p in list -%}{%- assign v = p.selected_or_first_available_variant -%}{"pid": {{ p.id }}, "vid": {{ v.id }}, "title": {{ p.title | json }}, "price": {{ v.price }}, "available": {{ p.available | json }}, "image": {{ p.featured_image | image_url: width: 200 | json }}, "single": {{ list.size | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+      ]}
+    {%- endfor -%}
+  ]
+}</script>
+{%- render 'snh-cart-reco', goal: goal -%}
+<script type="application/json" data-cart-initial>{{ cart | json }}</script>
+{%- comment -%} the footer's payment row: Shopify's own card logos (Visa, Mastercard, Amex), cash on delivery, bank transfer (Koko has its own line above) {%- endcomment -%}
+{%- assign pay_types = 'visa,master,american_express' | split: ',' -%}
+<template data-cart-pay><ul class="spay" role="list" aria-label="Ways to pay">{%- for t in pay_types -%}<li>{{ t | payment_type_svg_tag: class: 'spay__card' }}</li>{%- endfor -%}<li class="spay__cod"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M6 9.5v5M18 9.5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Cash on delivery</span></li><li class="spay__cod"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5M5 10v7M9.5 10v7M14.5 10v7M19 10v7M3.5 19.5h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Bank transfer</span></li></ul></template>
