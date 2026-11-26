@@ -186,7 +186,7 @@
       // at most one bundle, and the cheapest relevant one
       var hasB = false; pick = pick.filter(function (p) { if (p.cat !== 'bundle') return true; if (hasB || p !== bundles[0]) return false; hasB = true; return true; });
       if (pick.length) {
-        items = pick.slice(0, 2).map(function (p) { return Object.assign({ why: !unlocked && p.price >= gap ? 'Unlocks free delivery' : p.cat === 'bundle' ? 'Bundle · better value' : 'Bigger pack, better value', cat: p.cat }, p); });
+        items = pick.slice(0, 2).map(function (p) { return Object.assign({ why: !unlocked && p.price >= gap ? 'Unlocks free delivery' : p.cat === 'bundle' ? 'Bundle · better value' : /sachet|sample/.test(hay(p)) ? 'Try a sample' : 'Bigger pack, better value', cat: p.cat }, p); });
         mode2 = 'aov'; head = unlocked ? 'Worth adding' : 'Get to free delivery';
       }
       log.aovCandidates = big.length;
