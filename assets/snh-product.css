@@ -576,3 +576,6 @@
 .sp-buy > .sp-hr + .sp-b { margin-top: 14px; }
 .sp-opts { gap: 14px; }
 .sp-buy > .sp-opts + .sp-b, .sp-buy > [data-g="buy"] { margin-top: 16px; }
+/* 27 Nov: a variant without its own photo: honest note on the image */
+.sp-nophoto { position: absolute; left: 12px; bottom: 12px; z-index: 2; margin: 0; padding: 4px 10px; border-radius: 999px; background: rgba(23, 19, 15, .72); color: #fff; font: 600 12px/1.4 var(--sans, Inter, sans-serif); pointer-events: none; }
+.sp-nophoto[hidden] { display: none; }
