@@ -80,7 +80,7 @@
         '<section class="scd__block snh-reco" data-snh-reco="empty" data-limit="' + (this.mode === 'page' ? 4 : 3) + '" data-heading="Picked for you" hidden></section>' +
         '<section class="scd__block" data-cart-picks></section>';
       this.foot.hidden = true;
-      var eb = $('[data-cart-bar]', this.el); if (eb) eb.innerHTML = '';
+      var eb = $('[data-cart-bar]', this.el); if (eb) { var cc0 = $('.scd__cc', eb); eb.innerHTML = ''; if (cc0) this.el.appendChild(cc0); } this.__pct = 0;
       this.el.removeAttribute('data-cart-decision');
       if (this.mode === 'page') this.pageExtras(cart);
       this.picks(cart);
@@ -92,26 +92,154 @@
     }
     this.foot.hidden = false;
     var gap = c.threshold - cart.total_price, waived = gap > 0 && gap <= c.tolerance, unlocked = gap <= 0 || waived;
-    var pct = Math.max(4, Math.min(100, Math.round(cart.total_price / c.threshold * 100)));
-    var bar = '<div class="sfree' + (unlocked ? ' is-on' : '') + '" role="status">' +
-      '<p class="sfree__t">' + (unlocked ? icons.check + '<b>Free delivery unlocked</b>' : icons.truck + '<span><b>' + rsUp(gap) + '</b> to free delivery</span>') + '<span class="sfree__th">' + rs(c.threshold) + '</span></p>' +
-      '<div class="sfree__bar"><i style="width:' + (unlocked ? 100 : pct) + '%"></i></div></div>';
+    var pct = unlocked ? 100 : Math.max(4, Math.min(100, Math.round(cart.total_price / c.threshold * 100)));
     // discounts: cart-level applications + line discounts, by title
     var disc = {};
     (cart.cart_level_discount_applications || []).forEach(function (d) { disc[d.title] = (disc[d.title] || 0) + Number(d.total_allocated_amount || 0); });
     cart.items.forEach(function (it) { (it.line_level_discount_allocations || []).forEach(function (a) { var t = a.discount_application && a.discount_application.title || 'Discount'; disc[t] = (disc[t] || 0) + Number(a.amount || 0); }); });
     var dkeys = Object.keys(disc).filter(function (k) { return disc[k] > 0; });
-    var banner = dkeys.length ? '<div class="sdisc" role="status">' + icons.tag + '<p><b>' + esc(dkeys.join(' + ')) + '</b> applied automatically · you save ' + rs(dkeys.reduce(function (s, k) { return s + disc[k]; }, 0)) + '</p></div>' : '';
+    /* 26 Nov: no discount banner: each discount shows once, as a green line in the totals (summary) */
     var lines = '<ul class="slines" role="list">' + cart.items.map(function (it, i) { return self.line(it, i + 1); }).join('') + '</ul>';
-    this.body.innerHTML = banner + lines + '<section class="scd__block" data-cart-sugg hidden></section><div class="sbd" data-cart-bundle hidden></div>';
-    var pb = $('[data-cart-bar]', this.el); if (pb) pb.innerHTML = bar;
+    this.body.innerHTML = lines + '<section class="scd__block" data-cart-sugg hidden></section>';
+    this.freeBar(pct, unlocked, gap);
     this.summary(cart, disc);
     this.enrich(cart);
+    this.__lastCart = cart;
+    this.__upsellP = this.upsell(cart);   // 27 Nov: per-item bundle upsell (replaces "Make it a bundle" + the bundle card)
     this.suggest(cart);
-    this.bundle(cart);
-    this.__lastCart = cart; this.autoBundles(cart);
     if (this.mode === 'page') this.pageExtras(cart);
     this.emit('render', cart);
+  };
+
+  /* 27 Nov: the ONE free-delivery tracker (drawer + cart page). Copy: "Rs 1,002 away from free delivery" / a green
+     check + "Free delivery unlocked". 8px bar, orange gradient fill that moves .6s, a 16px truck at the tip that rides
+     with it; at 100 % the fill turns green, the truck becomes a check, and one soft sheen crosses the bar on the first
+     unlock of the session only. Removing items animates it back down. Under it: one muted click & collect line. */
+  var TRUCK = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6.5h11v10H3zM14 9.5h4l3 3v4h-7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="17.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"/></svg>';
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  Cart.prototype.freeBar = function (pct, unlocked, gap) {
+    var pb = $('[data-cart-bar]', this.el); if (!pb) return;
+    var box = $('.sfree', pb);
+    if (!box) {
+      pb.innerHTML = '<div class="sfree" role="status" aria-live="polite"><p class="sfree__t"></p><div class="sfree__bar"><i class="sfree__fill" style="width:0%"></i><span class="sfree__tip" style="left:0%"></span></div></div>';
+      box = $('.sfree', pb);
+    }
+    var cc = $('.scd__cc', this.el) || $('[data-cart-cc]', this.el.closest('section') || document);
+    if (cc && cc.parentNode !== pb) pb.appendChild(cc);
+    var was = box.classList.contains('is-on');
+    box.classList.toggle('is-on', unlocked);
+    $('.sfree__t', box).innerHTML = unlocked ? '<span class="sfree__ok">' + CHECK + '</span><b>Free delivery unlocked</b>' : '<span><b>' + rsUp(gap) + '</b> away from free delivery</span>';
+    var tip = $('.sfree__tip', box), fill = $('.sfree__fill', box);
+    tip.innerHTML = unlocked ? CHECK : TRUCK;
+    requestAnimationFrame(function () { fill.style.width = pct + '%'; tip.style.left = pct + '%'; });
+    if (unlocked && !was) {
+      var first = false; try { first = !sessionStorage.getItem('snh_free_sheen'); sessionStorage.setItem('snh_free_sheen', '1'); } catch (e) {}
+      if (first && !reduce) { box.classList.remove('is-sheen'); void box.offsetWidth; box.classList.add('is-sheen'); setTimeout(function () { box.classList.remove('is-sheen'); }, 1600); }
+    }
+  };
+
+  /* 27 Nov: BUNDLE UPSELL. For each basket line that is a component of an active bundle (custom.in_bundles is written
+     from the same components; assets/snh-bundle-map.js lists every bundle variant's components), work out what is
+     missing and show ONE compact row under that line: [thumbnail] "Add SNH 2.0 Shaker (Black) and save Rs 1,999" + Add,
+     and "Switches you to Creatine Starter Pack" under it. Saving = the bundle variant's compare-at minus its price, read
+     live from /products/<bundle>.js (no compare-at → no offer). Best saving per line, at most 2 offers per basket.
+     Add (Cart AJAX only): add the bundle variant, then lower each covered component line by its quantity
+     (/cart/add.js, then /cart/change.js). The basket line's own variant must be in the bundle variant (clean mapping);
+     when only the missing item's colour / flavour varies, the first in-stock one is used and named in the row. When the
+     line's product is in a bundle but not this variant, Add opens the bundle's quick view instead (no swap). */
+  var mapP = null;
+  function bundleMap() {
+    if (window.SNHBundleMap) return Promise.resolve(window.SNHBundleMap);
+    if (mapP) return mapP;
+    var src = (window.SNHCartAssets && SNHCartAssets.bundleMap) || ($('script[data-bundle-map-src]') || {}).getAttribute && $('script[data-bundle-map-src]').getAttribute('data-bundle-map-src');
+    if (!src) return Promise.resolve(null);
+    mapP = new Promise(function (ok) { var sc = document.createElement('script'); sc.src = src; sc.async = true; sc.onload = function () { ok(window.SNHBundleMap || null); }; sc.onerror = function () { mapP = null; ok(null); }; document.head.appendChild(sc); });
+    return mapP;
+  }
+  function offersFor(cart, M, live) {
+    // live: bundleHandle → product.js (variants with price, compare_at_price, available)
+    var lineByV = {}, qtyByV = {};
+    cart.items.forEach(function (it) { qtyByV[it.variant_id] = (qtyByV[it.variant_id] || 0) + it.quantity; if (!lineByV[it.variant_id]) lineByV[it.variant_id] = it; });
+    var inCartP = {}; cart.items.forEach(function (it) { inCartP[it.product_id] = 1; });
+    var offers = [];
+    cart.items.forEach(function (it) {
+      if (/bundle/i.test(it.product_type || '')) return;
+      var best = null;
+      Object.keys(M.b).forEach(function (bid) {
+        if (inCartP[bid]) return;
+        var B = M.b[bid], prod = live[B[0]]; if (!prod) return;
+        var vById = {}; (prod.variants || []).forEach(function (v) { vById[v.id] = v; });
+        var hasProduct = false, cands = [];
+        B[2].forEach(function (bv) {
+          var comps = bv[1], mine = comps.filter(function (c) { return c[0] === it.variant_id; })[0];
+          if (!mine) { if (comps.some(function (c) { return M.c[c[0]] && M.c[c[0]][0] === it.product_id; })) hasProduct = true; return; }
+          var v = vById[bv[0]]; if (!v || !v.available) return;
+          var save = (v.compare_at_price || 0) - v.price; if (save <= 0) return;
+          if ((qtyByV[it.variant_id] || 0) < mine[1]) return;
+          var missing = comps.filter(function (c) { return (qtyByV[c[0]] || 0) < c[1]; });
+          var covered = comps.filter(function (c) { return (qtyByV[c[0]] || 0) >= c[1]; });
+          // a bundle variant must be a real bundle (2+ units in all); one listing only this item is incomplete data
+          if (comps.reduce(function (n, c) { return n + c[1]; }, 0) < 2) return;
+          cands.push({ bid: +bid, handle: B[0], title: B[1], vid: bv[0], save: save, price: v.price, missing: missing, covered: covered });
+        });
+        if (!cands.length) {
+          if (hasProduct) { var bv0 = (prod.variants || []).filter(function (v) { return v.available && (v.compare_at_price || 0) > v.price; }).sort(function (a, b) { return (b.compare_at_price - b.price) - (a.compare_at_price - a.price); })[0];
+            if (bv0 && (!best || bv0.compare_at_price - bv0.price > best.save)) best = { bid: +bid, handle: B[0], title: B[1], vid: 0, save: bv0.compare_at_price - bv0.price, quick: true, missing: [], covered: [] }; }
+          return;
+        }
+        // fewest missing items first, then the biggest saving
+        cands.sort(function (a, b) { return a.missing.length - b.missing.length || b.save - a.save; });
+        var c = cands[0];
+        if (!best || c.save > best.save) best = c;
+      });
+      if (best) { best.key = it.key; best.line = it; offers.push(best); }
+    });
+    // one offer per bundle, at most 2 per basket, biggest saving first
+    var seenB = {}; offers.sort(function (a, b) { return b.save - a.save; });
+    return offers.filter(function (o) { if (seenB[o.bid]) return false; seenB[o.bid] = 1; return true; }).slice(0, 2);
+  }
+  Cart.prototype.upsell = function (cart) {
+    var self = this;
+    return bundleMap().then(function (M) {
+      if (!M || self.__lastCart !== cart) return [];
+      // only bundles that contain a basket variant / product are fetched live
+      var vids = {}, pids = {}; cart.items.forEach(function (it) { vids[it.variant_id] = 1; pids[it.product_id] = 1; });
+      var need = Object.keys(M.b).filter(function (bid) { return M.b[bid][2].some(function (bv) { return bv[1].some(function (c) { return vids[c[0]] || (M.c[c[0]] && pids[M.c[c[0]][0]]); }); }); });
+      return Promise.all(need.map(function (bid) { var h = M.b[bid][0]; return self.product(h).then(function (p) { return [h, p]; }).catch(function () { return [h, null]; }); })).then(function (rows) {
+        if (self.__lastCart !== cart) return [];
+        var live = {}; rows.forEach(function (r) { if (r[1] && r[1].available !== false) live[r[0]] = r[1]; });
+        var offers = offersFor(cart, M, live);
+        $$('.sup', self.el).forEach(function (n) { n.remove(); });
+        offers.forEach(function (o) {
+          var li = $('.sline[data-key="' + (window.CSS && CSS.escape ? CSS.escape(o.key) : o.key) + '"] .sline__b', self.el); if (!li) return;
+          var m0 = o.missing[0] && M.c[o.missing[0][0]], more = o.missing.length - 1;
+          var what = m0 ? String(m0[1]).replace(/\s*\d+(\.\d+)?\s?(ml|l|g|kg|lb|lbs)\b/ig, '').replace(/\s{2,}/g, ' ').trim() + (m0[4] && o.missing.length === 1 && /colou?r|black|white|grey|blue|red|pink|green/i.test(m0[4]) ? ' (' + m0[4] + ')' : '') + (o.missing[0][1] > 1 ? ' ×' + o.missing[0][1] : '') + (more > 0 ? ' + ' + more + ' more' : '') : '';
+          var row = document.createElement('div'); row.className = 'sup';
+          row.innerHTML = '<span class="sup__img">' + (m0 && m0[3] ? '<img src="' + esc(img(m0[3], 96)) + '" alt="" width="40" height="40" loading="lazy">' : '') + '</span>' +
+            '<span class="sup__t"><span class="sup__l">' + (o.quick ? 'Get the <b>' + esc(o.title) + '</b> and <b class="sup__save">save ' + rs(o.save) + '</b>' : o.missing.length ? 'Add ' + esc(what) + ' and <b class="sup__save">save ' + rs(o.save) + '</b>' : 'Switch to the bundle and <b class="sup__save">save ' + rs(o.save) + '</b>') + '</span>' +
+            '<small>' + (o.quick ? 'Pick your options in the bundle' : 'Switches you to ' + esc(o.title)) + '</small></span>' +
+            (o.quick ? '<button type="button" class="sup__go" data-v2-pick="' + esc(o.handle) + '" aria-haspopup="dialog">Add</button>'
+                     : '<button type="button" class="sup__go" data-upsell="' + o.vid + '" data-upsell-cover="' + esc(o.covered.map(function (c) { return c[0] + ':' + c[1]; }).join(',')) + '" aria-label="Switch to the ' + esc(o.title) + ' and save ' + rs(o.save) + '">Add</button>');
+          li.appendChild(row);
+        });
+        self.__upsell = offers;
+        return offers;
+      });
+    }).catch(function () { return []; });
+  };
+  Cart.prototype.doUpsell = function (btn) {
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    var self = this, cart = this.__lastCart || { items: [] }, vid = +btn.getAttribute('data-upsell');
+    var cover = String(btn.getAttribute('data-upsell-cover') || '').split(',').filter(Boolean).map(function (x) { var a = x.split(':'); return [+a[0], +a[1]]; });
+    btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Adding…';
+    var post = function (u, body) { return fetch(root + u, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.description || r.status); return j; }); }); };
+    // 1. add the bundle (if this fails nothing is removed)
+    post('cart/add.js', { items: [{ id: vid, quantity: 1 }] }).then(function () {
+      // 2. lower each covered component line by its quantity, one line at a time (keys from the cart we rendered)
+      var steps = cover.map(function (c) { var it = cart.items.filter(function (x) { return x.variant_id === c[0]; })[0]; return it ? { key: it.key, q: Math.max(0, it.quantity - c[1]) } : null; }).filter(Boolean);
+      return steps.reduce(function (p, st) { return p.then(function () { return post('cart/change.js', { id: st.key, quantity: st.q }); }); }, Promise.resolve());
+    }).then(function () { return json(root + 'cart.js'); }).then(function (c) { broadcast(c, null); })
+      .catch(function () { btn.removeAttribute('aria-busy'); btn.textContent = 'Try again'; refreshAll(false); });
   };
 
   /* ---------- cart page extras: complete your stack, bundle swaps, try something new, delivery date ---------- */
@@ -133,7 +261,7 @@
     if (empty) return;
     // complete your stack: Shopify's complementary / related products for the basket
     var stack = $('[data-cart-stack]', this.el);
-    if (stack) {
+    if (stack && false) {
       Promise.all(cart.items.slice(0, 3).map(function (it) {
         var k = 'rec_' + it.product_id;
         if (!listCache[k]) listCache[k] = Promise.all(['complementary', 'related'].map(function (intent) { return json(root + 'recommendations/products.json?product_id=' + it.product_id + '&limit=10&intent=' + intent).then(function (j) { return j.products || []; }).catch(function () { return []; }); })).then(function (two) { return two[0].concat(two[1]); });
@@ -191,11 +319,10 @@
     return '<li class="sline" data-line="' + n + '" data-key="' + esc(it.key) + '" data-handle="' + esc(it.handle) + '" data-vid="' + it.variant_id + '">' +
       '<a class="sline__img' + (framed(it.image) ? ' is-framed' : '') + '" href="' + esc(it.url) + '" tabindex="-1">' + (it.image ? '<img src="' + esc(img(it.image, 200)) + '" alt="" width="88" height="88" loading="lazy" data-v2-lift>' : '') + '</a>' +
       '<div class="sline__b">' +
-        '<p class="sline__brand">' + esc(it.vendor) + '</p>' +
         '<a class="sline__t" href="' + esc(it.url) + '">' + esc(shortTitle(it.product_title, it.vendor)) + '</a>' +
         (variant ? '<p class="sline__v">' + esc(variant) + '</p>' : '') +
         (sub ? '<p class="sline__sub">' + icons.bolt + esc(sub) + '</p>' : '') +
-        (tags.length ? '<p class="sline__tags">' + tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</p>' : '') +
+
         '<div class="sline__row">' +
           '<div class="sqty" role="group" aria-label="Quantity of ' + esc(it.product_title) + '"><button type="button" data-qty="' + (it.quantity - 1) + '" aria-label="One fewer">−</button><span aria-live="polite">' + it.quantity + '</span><button type="button" data-qty="' + (it.quantity + 1) + '" aria-label="One more">+</button></div>' +
           '<button type="button" class="sline__rm" data-qty="0" aria-label="Remove ' + esc(it.product_title) + '">' + icons.trash + '</button>' +
@@ -239,14 +366,19 @@
       if (next) tier = '<p class="sft__line">' + icons.bolt + '<span>' + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>' : rs((next[1] - after) * 100) + ' more to <b>' + next[0] + '</b> after this order') + '</span></p>';
     }
     var points = '<p class="sft__line">' + icons.bolt + (c.member ? '<span>Earn <b>' + pts.toLocaleString('en-US') + ' points</b> · ' + esc(c.tier) + ' ' + c.rate + '%</span>' : '<span><a href="' + esc(c.login) + '" data-account-open>Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b></span>') + '</p>';
+    // 27 Nov: the totals hold only: Savings (green, if > 0), Total, the delivery line, ONE primary CTA, the Koko line,
+    // payment icons, and a small points line ("Sign in to earn X points" / "Earn X points"). Nothing else.
+    var bsave = 0; cart.items.forEach(function (it) { if (/bundle/i.test(it.product_type || '') && it.__cmp) bsave += Math.max(0, it.__cmp - it.final_line_price); });
+    var allSave = Math.max(save, bsave);
+    var ptsLine = '<p class="sft__pts">' + (c.member ? 'Earn <b>' + pts.toLocaleString('en-US') + ' points</b> on this order' : '<a href="' + esc(c.login) + '" data-account-open>Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b>') + '</p>';
     this.foot.innerHTML =
-      (save ? '<p class="sft__save">' + icons.tag + '<span>You save <b>' + rs(save) + '</b></span></p>' : '') +
-      '<div class="sft__tot"><span>Total<small>' + (free ? 'Free delivery' : 'Delivery at checkout') + ' · taxes included</small></span><b>' + rs(cart.total_price) + '</b></div>' +
-      points + tier +
+      (allSave > 0 ? '<p class="sft__save"><span>Savings</span><b>−' + rs(allSave) + '</b></p>' : '') +
+      '<div class="sft__tot"><span>Total</span><b>' + rs(cart.total_price) + '</b></div>' +
+      '<p class="sft__del">' + (free ? 'Free delivery' : 'Delivery calculated at checkout') + ' · taxes included</p>' +
       '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout</span></button></form>' +
-      '<p class="sft__koko">' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(15) : 'Koko') + '<span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b>, interest-free</span></p>' +
-      this.payRow() +
-      (c.rating ? '<p class="sft__rate">' + icons.star + '<span>' + esc(c.rating) + '</span></p>' : '');
+      '<p class="sft__koko"><span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b> with</span>' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(15) : 'Koko') + '</p>' +
+      this.payRow() + ptsLine;
+    void tier;
   };
   Cart.prototype.payRow = function () {
     if (this.__pay == null) { var t = $('[data-cart-pay]', this.el); this.__pay = t ? t.innerHTML : ''; }
@@ -288,15 +420,17 @@
       var catLists = Object.keys(targets).slice(0, 5).map(function (t) { return Promise.all((cols[t] || []).map(function (h) { return listOf(h, 30); })).then(function (ls) { return [].concat.apply([], ls).map(function (p) { var n = norm(p, 'category'); n.cat = t; return n; }); }); });
       var bars = Promise.all((cols['bars-snacks'] || []).map(function (h) { return listOf(h, 40); })).then(function (ls) { return [].concat.apply([], ls).map(function (p) { var n = norm(p, 'bars'); n.cat = 'bars-snacks'; return n; }); });
       var best = reco.bestsellers ? listOf(reco.bestsellers, 30) : this.picksList();
+      var bundlesL = reco.bundlesCol ? listOf(reco.bundlesCol, 60) : Promise.resolve([]);
       var viewed = Promise.all(R.viewed().slice(0, 4).map(function (h) { return productCache[h] || (productCache[h] = json(root + 'products/' + h + '.js').catch(function () { return null; })); }));
       return Promise.all([
         Promise.all(ids.map(function (id) { return recs(id, 'complementary'); })),
         Promise.all(ids.map(function (id) { return recs(id, 'related'); })),
-        Promise.all(catLists), bars, best, viewed
+        Promise.all(catLists), bars, best, viewed, bundlesL
       ]).then(function (r) {
         var flat = function (a) { return [].concat.apply([], a); };
         return { comp: flat(r[0]).map(function (p) { return norm(p, 'complementary'); }), related: flat(r[1]).map(function (p) { return norm(p, 'related'); }),
-          cat: flat(r[2]), bars: r[3], best: r[4].map(function (p) { return norm(p, 'best'); }), viewed: r[5].filter(Boolean).map(function (p) { return norm(p, 'viewed'); }) };
+          cat: flat(r[2]), bars: r[3], best: r[4].map(function (p) { return norm(p, 'best'); }), viewed: r[5].filter(Boolean).map(function (p) { return norm(p, 'viewed'); }),
+          bundles: r[6].map(function (p) { var n = norm(p, 'bundle'); n.cat = 'bundle'; return n; }) };
       });
     }
     var addons = c.addons ? (listCache[key] || (listCache[key] = json(root + 'collections/' + encodeURIComponent(c.addons) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }))) : Promise.resolve([]);
@@ -377,10 +511,19 @@
     var self = this, box = $('[data-cart-sugg]', this.el);
     if (!box || this.cfg.showSugg === false) return;
     var run = this.suggRun = (this.suggRun || 0) + 1;
-    this.pool(cart).then(function (pool) {
+    Promise.all([this.pool(cart), this.__upsellP || Promise.resolve([])]).then(function (both) {
+      var pool = both[0], ups = both[1] || [], M = window.SNHBundleMap, hide = {};
+      var hideCat = {};
+      ups.forEach(function (o) { (o.missing || []).forEach(function (c) { var m = M && M.c[c[0]]; if (m) { hide[m[0]] = 1; if (window.SNHReco) hideCat[SNHReco.detect({ title: m[1] })] = 1; } }); });
+      delete hideCat[''];
       if (run !== self.suggRun) return;
       var cards, head;
-      if (window.SNHReco && pool.bars) {
+      if (window.SNHReco && SNHReco.rules && pool.bars) {
+        var d = SNHReco.rules(cart, pool, Object.assign({}, self.cfg, { aov: (self.reco || {}).aov, aovWindow: (self.reco || {}).aovWindow }), self.reco, self.mode);
+        self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
+        cards = d.items.filter(function (p) { return !hide[p.id] && !hideCat[p.cat || SNHReco.detect(p)]; }).slice(0, 2).map(function (p) { return self.card(p, p.why); });
+        head = '<span>Goes well with your order</span>';
+      } else if (window.SNHReco && pool.bars) {
         var d = SNHReco.decide(cart, pool, self.cfg, self.reco, self.mode);
         self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
         cards = d.items.map(function (p) { return self.card(p, p.why); });
@@ -393,7 +536,7 @@
         head = '<span>' + (d.rule === 'close' ? 'Close the gap' : 'Goes with your order') + '</span>';
       }
       if (!cards.length) { box.hidden = true; box.innerHTML = ''; return; }
-      box.innerHTML = '<p class="scd__bh">' + (d.rule === 'close' ? icons.truck : icons.plus) + head + '</p><ul class="ssugs" role="list">' + cards.join('') + '</ul>';
+      box.innerHTML = '<p class="scd__bh">' + head + '</p><ul class="ssugs ssugs--two" role="list">' + cards.join('') + '</ul>';
       box.hidden = false;
       self.emit('suggest', d);
     });
@@ -413,6 +556,7 @@
 
   /* ---------- bundle upsell (Theme settings → SNH bundle offers) ---------- */
   Cart.prototype.bundle = function (cart) {
+    return;   // 27 Nov: retired; see Cart.prototype.upsell
     var box = $('[data-cart-bundle]', this.el), bs = this.cfg.bundles || [];
     if (!box) return;
     var inCart = {};
@@ -538,6 +682,7 @@
     return bundlePromise;
   }
   Cart.prototype.autoBundles = function (cart) {
+    return;   // 27 Nov: retired; the per-item bundle upsell (Cart.prototype.upsell) replaces "Make it a bundle"
     var self = this, ab = this.cfg.autoBundles;
     if (!ab || !ab.on || !cart.item_count) { var bn = $('[data-bundle-win]', this.el); if (bn) bn.remove(); return; }
     loadBundles(ab).then(function (bundles) {
@@ -554,10 +699,11 @@
       (self.cfg.bundles || []).forEach(function (o) { if (o.items.length > 1 && o.items.every(function (x) { return inCart[x.pid]; })) names.push(o.title); });
       self.bundleWin(names, saving, ab);
       // 2. make it a bundle: under the first basket line a bundle contains (bundle not in the basket yet)
-      var used = {};
+      // 26 Nov: ONE "Make it a bundle" row for the whole basket (the best match), under the items, not one per item
+      var used = {}, row = $('[data-cart-bundle-row]', self.el), done = false;
+      if (row) { row.hidden = true; row.innerHTML = ''; }
       lines.forEach(function (l, n) {
-        var li = $('.sline[data-line="' + (n + 1) + '"]', self.el); if (!li) return;
-        var old = $('.sbo', li); if (old) old.remove();
+        if (done) return;
         if (byId[l.it.product_id] || /bundle/i.test(l.it.product_type || '')) return;
         var best = null;
         bundles.forEach(function (b) {
@@ -577,11 +723,14 @@
         box.innerHTML = '<a class="sbo__t" href="' + esc(best.b.u) + '" title="' + esc(best.b.t + ' · ' + rs(best.b.p) + ' · swaps your ' + (what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0])) + '">' + icons.tag +
           '<span><span class="sbo__lead">Make it a bundle</span><span class="sbo__short">Bundle</span>' + (best.b.s ? ', <b>save ' + rs(best.b.s) + '</b>' : '') + '</span></a>' +
           '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Add</button>';
-        $('.sline__b', li).appendChild(box);
+        if (row) { row.appendChild(box); row.hidden = false; done = true; var sbd = $('[data-cart-bundle]', self.el); if (sbd) { sbd.hidden = true; sbd.innerHTML = ''; } }
       });
     });
   };
   Cart.prototype.bundleWin = function (names, saving, ab) {
+    // 26 Nov: no "Bundle unlocked" banner any more: the bundle saving shows once, as a green line in the totals
+    var old = $('[data-bundle-win]', this.el); if (old) old.remove();
+    return;
     // 14 Nov: a rounded card — 24 px tick, "Bundle unlocked" + "You're saving Rs X" — that slides in with a short
     // confetti burst once per unlock (not on re-renders or reloads); reduced motion: a plain fade, no confetti
     var cur = $('[data-bundle-win]', this.el);
@@ -650,6 +799,7 @@
     if (acc && document.querySelector('.acp')) { e.preventDefault(); var d = drawerEl(); if (d && d.open && typeof d.hide === 'function') d.hide(); document.dispatchEvent(new CustomEvent('snh:account-open', { detail: { from: acc } })); return; }
     if (q) { e.preventDefault(); this.change(q.closest('[data-key]').getAttribute('data-key'), +q.getAttribute('data-qty'), q); }
     else if (a) { e.preventDefault(); this.add(a.getAttribute('data-add'), a); }
+    else if (e.target.closest('[data-upsell]')) { e.preventDefault(); this.doUpsell(e.target.closest('[data-upsell]')); }
     else if (e.target.closest('[data-swap]')) { var sw = e.target.closest('[data-swap]'); e.preventDefault(); this.swap(sw.getAttribute('data-swap'), sw.getAttribute('data-swap-keys'), sw); }
   };
   Cart.prototype.change = function (key, qty, btn) {
@@ -770,7 +920,7 @@
   }
   function widgets() { $$('[data-snh-reco]').forEach(widget); }
 
-  window.SNHCart = { bundleMatch: bundleMatch, bundleBase: bBase, loadBundles: loadBundles, refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
+  window.SNHCart = { offersFor: offersFor, bundleMatch: bundleMatch, bundleBase: bBase, loadBundles: loadBundles, refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   // the widgets wait for idle time (they fetch a few collection lists)
   var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 1200); };

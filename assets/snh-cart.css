@@ -465,3 +465,100 @@
 .sbw .sbw__fx { position: absolute; left: -20px; top: -60px; right: auto; bottom: auto; z-index: 5; pointer-events: none; }
 .sbw .sbw__ic { animation: none; }
 @media (prefers-reduced-motion: reduce) { .sbw.is-new { animation: sbw-fade 300ms ease-out both; } .sbw .sbw__fx { display: none; } }
+
+/* ── 26 Nov: BASKET, simplified and a little game-like (drawer + cart page, assets/snh-cart.js) ──
+   Top: one free-delivery bar that fills smoothly on every add (milestone ticks at 50 % and 75 %, a check + sheen when
+   one is passed, 🎉 + confetti when delivery unlocks), then at most one info line (click & collect). Items: image, name,
+   variant, stepper, price (no brand, no tags). One "Make it a bundle" row. Two suggestions. Savings = green lines in the
+   totals. */
+.scd__bar { display: grid; gap: 6px; }
+.sfree { position: relative; }
+.sfree__t { gap: 8px; }
+.sfree__ic { display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none; color: var(--v-accent, #C9481A); }
+.sfree__ic svg { width: 16px; height: 16px; }
+.sfree.is-on .sfree__ic { color: #1E7A43; }
+.sfree__txt b { font-weight: 700; }
+.sfree__bar, .snh-cd .sfree__bar { position: relative; height: 6px; border-radius: 999px; background: #ECE8E2; overflow: visible; }
+.sfree__bar i { position: relative; height: 100%; border-radius: inherit; overflow: hidden; background: linear-gradient(90deg, #E0521C, #F08A3C); transition: width .7s cubic-bezier(.2, .8, .3, 1); }
+.sfree__mk { position: absolute; top: 50%; width: 2px; height: 10px; margin: -5px 0 0 -1px; border-radius: 2px; background: rgba(255, 255, 255, .9); box-shadow: 0 0 0 1px rgba(12, 12, 13, .08); }
+.sfree.is-on .sfree__bar i { background: linear-gradient(90deg, #1E7A43, #34B36A); }
+.sfree.is-on .sfree__mk { display: none; }
+.scd__bar .sfree.is-on .sfree__bar { display: block; }
+.sfree.is-mile .sfree__bar i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .75) 50%, transparent 80%); transform: translateX(-100%); animation: sfreeSheen .9s ease .25s 1 both; }
+.sfree.is-mile .sfree__ic { animation: sfreePop .5s cubic-bezier(.2, .9, .3, 1.4); }
+@keyframes sfreeSheen { to { transform: translateX(100%); } }
+@keyframes sfreePop { 0% { transform: scale(.6); } 60% { transform: scale(1.25); } 100% { transform: none; } }
+.sfree .sbw__fx { position: absolute; left: -20px; top: -60px; pointer-events: none; z-index: 2; }
+.scd__bar .scd__cc { padding: 0; border: 0; background: none; font-size: 12.5px; color: #5A5650; }
+@media (prefers-reduced-motion: reduce) { .sfree__bar i { transition: none; } .sfree.is-mile .sfree__bar i::after, .sfree.is-mile .sfree__ic { animation: none; } }
+
+/* items: no brand line, no saving tags */
+.sline__brand, .sline__tags, .sdisc { display: none !important; }
+.sline__t { font-weight: 700; }
+
+/* one "Make it a bundle" row under the items */
+.sbo-one { margin-top: 12px; }
+.sbo-one .sbo.sbo--row { margin-top: 0; }
+
+/* two suggestions, side by side */
+.scd__bh { font: 700 14px/1.3 var(--sans); }
+.snh-cd .ssugs.ssugs--two, .scp .ssugs.ssugs--two { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: auto; overflow: visible; }
+
+/* savings: one green line per saving, in the totals */
+.sft__save { justify-content: space-between; gap: 12px; font: 600 13.5px/1.5 var(--sans); color: #1E7A43; }
+.sft__save b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.sft__elite { margin-top: 4px; padding-top: 12px; border-top: 1px solid #EEEBE6; }
+.sft__elite .sft__line { justify-content: center; }
+
+/* ── 27 Nov: FREE-DELIVERY TRACKER (the one component; replaces the 26 Nov bar, its milestone ticks and confetti) ── */
+.sfree, .scd__bar .sfree, .scd__bar .sfree.is-on { display: grid; gap: 8px; padding: 0; background: none; }
+.sfree__t, .snh-cd .sfree__t { display: flex; align-items: center; gap: 6px; margin: 0; font: 500 13.5px/1.35 var(--sans); color: var(--ink, #17130F); white-space: normal; }
+.sfree__t b { font-weight: 700; }
+.sfree__ok { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #2F9E6B; color: #fff; flex: none; }
+.sfree__ok svg { width: 12px; height: 12px; }
+.sfree.is-on .sfree__t { color: #1F7A50; }
+.sfree__bar, .snh-cd .sfree__bar, .scd__bar .sfree.is-on .sfree__bar { position: relative; display: block; height: 8px; margin: 4px 0; border-radius: 999px; background: rgba(23, 19, 15, .08); overflow: visible; }
+.sfree__fill, .sfree__bar i.sfree__fill { position: absolute; left: 0; top: 0; bottom: 0; display: block; height: 100%; border-radius: 999px; overflow: hidden; background: linear-gradient(90deg, #C9481A, #E8743F); transition: width .6s cubic-bezier(.16, 1, .3, 1), background-color .3s; }
+.sfree.is-on .sfree__fill { background: #2F9E6B; }
+.sfree__tip { position: absolute; top: 50%; display: grid; place-items: center; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; background: #fff; color: #C9481A; box-shadow: 0 1px 4px rgba(23, 19, 15, .18); transition: left .6s cubic-bezier(.16, 1, .3, 1), color .3s; }
+.sfree__tip svg { width: 16px; height: 16px; display: block; }
+.sfree.is-on .sfree__tip { background: #2F9E6B; color: #fff; margin-left: -20px; }
+.sfree.is-on .sfree__tip svg { width: 13px; height: 13px; }
+.sfree.is-sheen .sfree__fill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .6) 50%, transparent 80%); transform: translateX(-100%); animation: sfreeSheen 1.2s ease .3s 1 both; }
+.sfree__mk, .sfree__ic { display: none !important; }
+.scd__bar .scd__cc, .scd__bar [data-cart-cc], .scd__bar .scp__cc { margin: 0; padding: 0; border: 0; background: none; font: 400 13px/1.4 var(--sans); color: rgba(23, 19, 15, .58); }
+.scd__bar .scp__cc a { color: inherit; display: inline-flex; gap: 6px; align-items: center; }
+.scd__bar .scd__cc svg, .scd__bar .scp__cc svg { width: 14px; height: 14px; flex: none; }
+.scp [data-cart-bar] { display: grid; gap: 6px; margin-bottom: 16px; }
+@media (prefers-reduced-motion: reduce) { .sfree__fill, .sfree__tip { transition: none; } .sfree.is-sheen .sfree__fill::after { animation: none; } }
+
+/* ── 27 Nov: item rows: image 64px, name (2 lines), variant (muted), stepper, price ── */
+.sline { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; }
+.sline__img { width: 64px; height: 64px; }
+.sline__img img { width: 64px; height: 64px; object-fit: contain; }
+.sline__t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font: 600 14px/1.3 var(--sans); }
+.sline__v { color: rgba(23, 19, 15, .58); font-size: 12.5px; }
+
+/* ── 27 Nov: BUNDLE UPSELL row (one per item, max 2 per basket) ── */
+.sup { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 10px; padding: 8px 8px 8px 8px; border: 1px solid rgba(47, 158, 107, .28); border-radius: 12px; background: #F3FAF6; }
+.sup__img { width: 40px; height: 40px; border-radius: 8px; background: #fff; overflow: hidden; }
+.sup__img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.sup__t { display: grid; gap: 2px; min-width: 0; }
+.sup__l { font: 500 13px/1.3 var(--sans); color: var(--ink, #17130F); }
+.sup__save { color: #2F9E6B; font-weight: 700; }
+.sup__t small { font: 400 11.5px/1.3 var(--sans); color: rgba(23, 19, 15, .58); }
+.sup__go { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 14px; border: 0; border-radius: 999px; background: #C9481A; color: #fff; font: 700 13px/1 var(--sans); cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -2px 0 rgba(0, 0, 0, .12); }
+.sup__go:hover { background: #D4511F; }
+.sup__go[aria-busy="true"] { opacity: .7; }
+.sbo-one, .sbd, [data-bundle-win] { display: none !important; }
+
+/* ── 27 Nov: totals: Savings (green) · Total · delivery line · CTA · Koko · payment icons · points ── */
+.sft__save { display: flex; justify-content: space-between; color: #2F9E6B; font: 600 13.5px/1.4 var(--sans); }
+.sft__tot { display: flex; align-items: baseline; justify-content: space-between; }
+.sft__tot > span { font: 700 16px/1.2 var(--sans); }
+.sft__del { margin: -4px 0 0; font: 400 12.5px/1.4 var(--sans); color: rgba(23, 19, 15, .58); }
+.sft__koko { justify-content: center; gap: 6px; font-size: 13px; }
+.sft__pts { margin: 0; text-align: center; font: 400 12.5px/1.4 var(--sans); color: rgba(23, 19, 15, .62); }
+.sft__pts a { color: var(--ink, #17130F); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.sft__line, .sft__rate, .sft__elite { display: none !important; }
+.sup__save { white-space: nowrap; }

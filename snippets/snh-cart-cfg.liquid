@@ -125,6 +125,8 @@
   ]
 }</script>
 {%- render 'snh-cart-reco', goal: goal -%}
+{%- comment -%} 27 Nov: the bundle component map for the basket bundle upsell, loaded only when the basket has items (assets/snh-cart.js) {%- endcomment -%}
+<script type="application/json" data-bundle-map-src="{{ 'snh-bundle-map.js' | asset_url }}">{}</script>
 <script type="application/json" data-cart-initial>{{ cart | json }}</script>
 {%- comment -%} the footer's payment row: Shopify's own card logos (Visa, Mastercard, Amex), cash on delivery, bank transfer (Koko has its own line above) {%- endcomment -%}
 {%- assign pay_types = 'visa,master,american_express' | split: ',' -%}

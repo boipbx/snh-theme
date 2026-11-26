@@ -5,8 +5,11 @@
   goal: passed in by snh-cart-cfg.
 {%- endcomment -%}
 <script type="application/json" data-cart-reco>{
-  "complements": {{ settings.snh_reco_complements | default: "creatine => pre-workout, bars-snacks, accessories, whey\nwhey, isolate => creatine, bars-snacks, accessories, oats\npre-workout => creatine, bcaa-eaa, accessories\nmass-gainer => creatine, accessories\nelectrolytes, gels => gels, electrolytes, bars-snacks\nvitamins => omega, magnesium, probiotics\n* => bars-snacks" | json }},
-  "collections": {{ settings.snh_reco_collections | default: "creatine => creatine\nwhey => whey-protein\nisolate => isolate-protein\nmass-gainer => mass-gainer\npre-workout => pre-workout-1\nbcaa-eaa => bcaa-eaa\nelectrolytes => hydration-recovery\ngels => energy-gels\nbars-snacks => protein-bars, protein-snacks\noats => protein-oats\nvitamins => multivitamins\nomega => fish-oil-omega\nmagnesium => magnesium\nprobiotics => probiotics\ncollagen => collagen\naccessories => accessories-1" | json }},
+  "complements": {{ settings.snh_reco_complements | default: "creatine => accessories, bars-snacks\nwhey, isolate => accessories, creatine, bars-snacks\npre-workout => bars-snacks, creatine\nmass-gainer => creatine, accessories\nelectrolytes, gels => gels, electrolytes, bars-snacks\nvitamins, magnesium, omega, probiotics, collagen => vitamins, magnesium\n* => bars-snacks" | json }},
+  "collections": {{ settings.snh_reco_collections | default: "creatine => creatine\nwhey => whey-protein\nisolate => isolate-protein\nmass-gainer => mass-gainer\npre-workout => pre-workout-1\nbcaa-eaa => bcaa-eaa\nelectrolytes => hydration-recovery\ngels => energy-gels\nbars-snacks => protein-bars, protein-snacks\noats => protein-oats\nvitamins => multivitamins, letter-vitamins, minerals\nomega => fish-oil-omega\nmagnesium => magnesium, minerals\nprobiotics => probiotics\ncollagen => collagen\naccessories => accessories-1" | json }},
+  "aov": {{ settings.snh_reco_aov | default: 18600 }},
+  "aovWindow": {{ settings.snh_reco_aov_window | default: 8000 }},
+  "bundlesCol": "bundle-offers",
   "bestsellers": {{ settings.snh_reco_bestsellers.handle | default: '' | json }},
   "goal": {{ goal | default: '' | json }},
   "history": [
