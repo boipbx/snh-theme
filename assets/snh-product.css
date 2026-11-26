@@ -563,3 +563,16 @@
   @keyframes spSheetIn { from { transform: translateY(100%); } }
 }
 @media (prefers-reduced-motion: reduce) { .sp-modal[open], .sp-modal[open]::backdrop { animation: none; } }
+
+/* ── 27 Nov: buy box tighter (price, options and Add to basket sit higher); savings green #2F9E6B ── */
+.sp-price__save, .sp-price__up { color: #2F9E6B; }
+.sp-price__up { text-decoration-color: rgba(47, 158, 107, .4); }
+.sp-price__per { font-size: 13.5px; }
+.sp-b.sp-title { margin-top: 10px; }
+@media (min-width: 1024px) { .sp-b.sp-title { margin-top: 16px; } }
+.sp-buy > .sp-b.sp-kokoline { margin-top: 6px; }
+.sp-buy > .sp-b.sp-meta { margin-top: 10px; }
+.sp-buy > .sp-hr, .sp-buy > .sp-b.sp-meta + .sp-hr { margin-top: 14px; margin-bottom: 0; }
+.sp-buy > .sp-hr + .sp-b { margin-top: 14px; }
+.sp-opts { gap: 14px; }
+.sp-buy > .sp-opts + .sp-b, .sp-buy > [data-g="buy"] { margin-top: 16px; }

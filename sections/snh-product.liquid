@@ -208,7 +208,12 @@
                 elsif m_tier == 'gold' or m_tier == 'maxed out'
                   assign m_rate = rate_hi
                 endif
-                assign m_pts = v.price | times: m_rate | divided_by: 100 | divided_by: 100 | times: 100 | money_without_currency | split: '.' | first
+                # 27 Nov: guests see "Earn up to N points" (the Gold rate), members the exact amount at their own rate
+                if customer
+                  assign m_pts = v.price | times: m_rate | divided_by: 100 | divided_by: 100 | times: 100 | money_without_currency | split: '.' | first
+                else
+                  assign m_pts = v.price | times: rate_hi | divided_by: 100 | divided_by: 100 | times: 100 | money_without_currency | split: '.' | first
+                endif
               -%}
               <div class="sp-b sp-meta" data-g="head" data-sp-sync="meta" {{ block.shopify_attributes }}>
                 <span class="sp-meta__i sp-stock">
@@ -220,7 +225,7 @@
                   <a class="sp-meta__i sp-stars" href="#reviews" aria-label="Rated {{ r_val | round: 1 }} out of 5 from {{ r_count }} review{% if r_count != 1 %}s{% endif %}"><span class="sp-star" aria-hidden="true">★</span>{{ r_val | round: 1 }} <span class="sp-meta__n">({{ r_count }})</span></a>
                 {%- endif -%}
                 {%- if v.price > 0 -%}
-                  <button type="button" class="sp-meta__i sp-earn" data-sp-modal="elite">Earn <b>{{ m_pts }}</b> points</button>
+                  <button type="button" class="sp-meta__i sp-earn" data-sp-modal="elite">Earn {% unless customer %}up to {% endunless %}<b>{{ m_pts }}</b> points</button>
                 {%- endif -%}
               </div>
 
@@ -359,7 +364,7 @@
             {%- when 'koko' -%}
               {%- if v.price > 0 -%}
                 <p class="sp-b sp-line sp-kokoline" data-g="price" data-sp-sync="koko" {{ block.shopify_attributes }}>
-                  <span>or 3 × <b>{{ v.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</b> interest-free with</span>{% render 'snh-koko-logo', h: 16, class: 'sp-koko' %}
+                  <span>or 3 × <b>{{ v.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</b> with</span>{% render 'snh-koko-logo', h: 16, class: 'sp-koko' %}
                   <button type="button" class="sp-info" data-sp-modal="payment" aria-label="How Koko and other payment options work">i</button>
                 </p>
               {%- endif -%}

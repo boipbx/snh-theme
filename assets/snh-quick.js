@@ -49,11 +49,15 @@
     var price = planAlloc ? planAlloc.price : v ? v.price : p.price, cmp = planAlloc ? planAlloc.compare_at_price || v.price : v && v.compare_at_price;
     var pic = (v && v.featured_image && v.featured_image.src) || p.featured_image;
     var opts = p.options.length === 1 && p.variants.length === 1 && p.variants[0].title === 'Default Title' ? [] : p.options;
+    var fixed = opts.filter(function (o) { return (o.values || []).length === 1; }).map(function (o) { return o.values[0]; });
     b.innerHTML =
       '<div class="sqb__head"><span class="sqb__img">' + (pic ? '<img src="' + esc(img(pic, 300)) + '" alt="" width="96" height="96">' : '') + '</span>' +
       '<div><p class="sqb__t" id="sqb-t">' + esc(short(p.title, p.vendor)) + '</p>' +
-      '<p class="sqb__price"><b>' + rs(price) + '</b>' + (cmp && cmp > price ? '<s><span class="v-sr">Was </span>' + rs(cmp) + '</s>' : '') + '</p></div></div>' +
+      '<p class="sqb__price"><b>' + rs(price) + '</b>' + (cmp && cmp > price ? '<s><span class="v-sr">Was </span>' + rs(cmp) + '</s>' : '') + '</p>' +
+      /* 27 Nov: an option with only one value is not a choice: shown as muted text under the price, no selector */
+      (fixed.length ? '<p class="sqb__fixed">' + fixed.map(function (x) { return esc(x); }).join(' · ') + '</p>' : '') + '</div></div>' +
       '<div class="sqb__opts">' + opts.map(function (o, i) {
+        if ((o.values || []).length < 2) return '';
         var name = o.name || o;
         return '<fieldset class="sqb__opt"><legend>' + esc(name) + ': <b>' + esc(state.sel[i]) + '</b></legend><div class="sqb__pills">' +
           (o.values || []).map(function (val) { var ok = canPick(i, val), on = state.sel[i] === val; return '<button type="button" class="sqb__pill' + (on ? ' is-on' : '') + (ok ? '' : ' is-out') + '" data-sqb-i="' + i + '" data-sqb-opt="' + esc(val) + '" aria-pressed="' + on + '"' + (ok ? '' : ' aria-label="' + esc(val) + ', sold out"') + '>' + esc(val) + '</button>'; }).join('') +

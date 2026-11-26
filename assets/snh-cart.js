@@ -100,42 +100,146 @@
     var dkeys = Object.keys(disc).filter(function (k) { return disc[k] > 0; });
     /* 26 Nov: no discount banner: each discount shows once, as a green line in the totals (summary) */
     var lines = '<ul class="slines" role="list">' + cart.items.map(function (it, i) { return self.line(it, i + 1); }).join('') + '</ul>';
-    this.body.innerHTML = lines + '<div class="sbo-one" data-cart-bundle-row hidden></div><div class="sbd" data-cart-bundle hidden></div><section class="scd__block" data-cart-sugg hidden></section>';
+    this.body.innerHTML = lines + '<section class="scd__block" data-cart-sugg hidden></section>';
     this.freeBar(pct, unlocked, gap);
     this.summary(cart, disc);
     this.enrich(cart);
+    this.__lastCart = cart;
+    this.__upsellP = this.upsell(cart);   // 27 Nov: per-item bundle upsell (replaces "Make it a bundle" + the bundle card)
     this.suggest(cart);
-    this.bundle(cart);
-    this.__lastCart = cart; this.autoBundles(cart);
     if (this.mode === 'page') this.pageExtras(cart);
     this.emit('render', cart);
   };
 
-  /* 26 Nov: ONE free-delivery bar, built once and updated in place so the fill animates on every add. Crossing 50 % and
-     75 % shows a small celebration (a check pops in, a sheen runs along the fill); unlocking free delivery says so with
-     🎉 and a short confetti burst, once per unlock. Under it, max one info line: free click & collect. */
+  /* 27 Nov: the ONE free-delivery tracker (drawer + cart page). Copy: "Rs 1,002 away from free delivery" / a green
+     check + "Free delivery unlocked". 8px bar, orange gradient fill that moves .6s, a 16px truck at the tip that rides
+     with it; at 100 % the fill turns green, the truck becomes a check, and one soft sheen crosses the bar on the first
+     unlock of the session only. Removing items animates it back down. Under it: one muted click & collect line. */
+  var TRUCK = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6.5h11v10H3zM14 9.5h4l3 3v4h-7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="17.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"/></svg>';
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   Cart.prototype.freeBar = function (pct, unlocked, gap) {
     var pb = $('[data-cart-bar]', this.el); if (!pb) return;
     var box = $('.sfree', pb);
     if (!box) {
-      pb.innerHTML = '<div class="sfree" role="status" aria-live="polite"><p class="sfree__t"><span class="sfree__ic" aria-hidden="true"></span><span class="sfree__txt"></span></p><div class="sfree__bar"><i style="width:0%"></i><span class="sfree__mk" style="left:50%"></span><span class="sfree__mk" style="left:75%"></span></div></div>';
+      pb.innerHTML = '<div class="sfree" role="status" aria-live="polite"><p class="sfree__t"></p><div class="sfree__bar"><i class="sfree__fill" style="width:0%"></i><span class="sfree__tip" style="left:0%"></span></div></div>';
       box = $('.sfree', pb);
     }
     var cc = $('.scd__cc', this.el) || $('[data-cart-cc]', this.el.closest('section') || document);
     if (cc && cc.parentNode !== pb) pb.appendChild(cc);
-    var prev = this.__pct == null ? (function () { try { return +sessionStorage.getItem('snh_free_pct') || 0; } catch (e) { return 0; } })() : this.__pct;
-    this.__pct = pct; try { sessionStorage.setItem('snh_free_pct', String(pct)); } catch (e) {}
+    var was = box.classList.contains('is-on');
     box.classList.toggle('is-on', unlocked);
-    $('.sfree__ic', box).innerHTML = unlocked ? icons.check : icons.truck;
-    $('.sfree__txt', box).innerHTML = unlocked ? '<b>Free delivery unlocked</b> 🎉' : '<b>' + rsUp(gap) + '</b> to free delivery';
-    var fill = $('.sfree__bar i', box);
-    requestAnimationFrame(function () { fill.style.width = pct + '%'; });
-    var crossed = [50, 75].filter(function (m) { return prev < m && pct >= m && pct < 100; });
-    if (pct > prev && (crossed.length || (unlocked && prev < 100))) {
-      box.classList.remove('is-mile'); void box.offsetWidth; box.classList.add('is-mile');
-      setTimeout(function () { box.classList.remove('is-mile'); }, 1400);
-      if (unlocked && prev < 100 && !reduce) setTimeout(function () { confetti(box); }, 350);
+    $('.sfree__t', box).innerHTML = unlocked ? '<span class="sfree__ok">' + CHECK + '</span><b>Free delivery unlocked</b>' : '<span><b>' + rsUp(gap) + '</b> away from free delivery</span>';
+    var tip = $('.sfree__tip', box), fill = $('.sfree__fill', box);
+    tip.innerHTML = unlocked ? CHECK : TRUCK;
+    requestAnimationFrame(function () { fill.style.width = pct + '%'; tip.style.left = pct + '%'; });
+    if (unlocked && !was) {
+      var first = false; try { first = !sessionStorage.getItem('snh_free_sheen'); sessionStorage.setItem('snh_free_sheen', '1'); } catch (e) {}
+      if (first && !reduce) { box.classList.remove('is-sheen'); void box.offsetWidth; box.classList.add('is-sheen'); setTimeout(function () { box.classList.remove('is-sheen'); }, 1600); }
     }
+  };
+
+  /* 27 Nov: BUNDLE UPSELL. For each basket line that is a component of an active bundle (custom.in_bundles is written
+     from the same components; assets/snh-bundle-map.js lists every bundle variant's components), work out what is
+     missing and show ONE compact row under that line: [thumbnail] "Add SNH 2.0 Shaker (Black) and save Rs 1,999" + Add,
+     and "Switches you to Creatine Starter Pack" under it. Saving = the bundle variant's compare-at minus its price, read
+     live from /products/<bundle>.js (no compare-at → no offer). Best saving per line, at most 2 offers per basket.
+     Add (Cart AJAX only): add the bundle variant, then lower each covered component line by its quantity
+     (/cart/add.js, then /cart/change.js). The basket line's own variant must be in the bundle variant (clean mapping);
+     when only the missing item's colour / flavour varies, the first in-stock one is used and named in the row. When the
+     line's product is in a bundle but not this variant, Add opens the bundle's quick view instead (no swap). */
+  var mapP = null;
+  function bundleMap() {
+    if (window.SNHBundleMap) return Promise.resolve(window.SNHBundleMap);
+    if (mapP) return mapP;
+    var src = (window.SNHCartAssets && SNHCartAssets.bundleMap) || ($('script[data-bundle-map-src]') || {}).getAttribute && $('script[data-bundle-map-src]').getAttribute('data-bundle-map-src');
+    if (!src) return Promise.resolve(null);
+    mapP = new Promise(function (ok) { var sc = document.createElement('script'); sc.src = src; sc.async = true; sc.onload = function () { ok(window.SNHBundleMap || null); }; sc.onerror = function () { mapP = null; ok(null); }; document.head.appendChild(sc); });
+    return mapP;
+  }
+  function offersFor(cart, M, live) {
+    // live: bundleHandle → product.js (variants with price, compare_at_price, available)
+    var lineByV = {}, qtyByV = {};
+    cart.items.forEach(function (it) { qtyByV[it.variant_id] = (qtyByV[it.variant_id] || 0) + it.quantity; if (!lineByV[it.variant_id]) lineByV[it.variant_id] = it; });
+    var inCartP = {}; cart.items.forEach(function (it) { inCartP[it.product_id] = 1; });
+    var offers = [];
+    cart.items.forEach(function (it) {
+      if (/bundle/i.test(it.product_type || '')) return;
+      var best = null;
+      Object.keys(M.b).forEach(function (bid) {
+        if (inCartP[bid]) return;
+        var B = M.b[bid], prod = live[B[0]]; if (!prod) return;
+        var vById = {}; (prod.variants || []).forEach(function (v) { vById[v.id] = v; });
+        var hasProduct = false, cands = [];
+        B[2].forEach(function (bv) {
+          var comps = bv[1], mine = comps.filter(function (c) { return c[0] === it.variant_id; })[0];
+          if (!mine) { if (comps.some(function (c) { return M.c[c[0]] && M.c[c[0]][0] === it.product_id; })) hasProduct = true; return; }
+          var v = vById[bv[0]]; if (!v || !v.available) return;
+          var save = (v.compare_at_price || 0) - v.price; if (save <= 0) return;
+          if ((qtyByV[it.variant_id] || 0) < mine[1]) return;
+          var missing = comps.filter(function (c) { return (qtyByV[c[0]] || 0) < c[1]; });
+          var covered = comps.filter(function (c) { return (qtyByV[c[0]] || 0) >= c[1]; });
+          // a bundle variant must be a real bundle (2+ units in all); one listing only this item is incomplete data
+          if (comps.reduce(function (n, c) { return n + c[1]; }, 0) < 2) return;
+          cands.push({ bid: +bid, handle: B[0], title: B[1], vid: bv[0], save: save, price: v.price, missing: missing, covered: covered });
+        });
+        if (!cands.length) {
+          if (hasProduct) { var bv0 = (prod.variants || []).filter(function (v) { return v.available && (v.compare_at_price || 0) > v.price; }).sort(function (a, b) { return (b.compare_at_price - b.price) - (a.compare_at_price - a.price); })[0];
+            if (bv0 && (!best || bv0.compare_at_price - bv0.price > best.save)) best = { bid: +bid, handle: B[0], title: B[1], vid: 0, save: bv0.compare_at_price - bv0.price, quick: true, missing: [], covered: [] }; }
+          return;
+        }
+        // fewest missing items first, then the biggest saving
+        cands.sort(function (a, b) { return a.missing.length - b.missing.length || b.save - a.save; });
+        var c = cands[0];
+        if (!best || c.save > best.save) best = c;
+      });
+      if (best) { best.key = it.key; best.line = it; offers.push(best); }
+    });
+    // one offer per bundle, at most 2 per basket, biggest saving first
+    var seenB = {}; offers.sort(function (a, b) { return b.save - a.save; });
+    return offers.filter(function (o) { if (seenB[o.bid]) return false; seenB[o.bid] = 1; return true; }).slice(0, 2);
+  }
+  Cart.prototype.upsell = function (cart) {
+    var self = this;
+    return bundleMap().then(function (M) {
+      if (!M || self.__lastCart !== cart) return [];
+      // only bundles that contain a basket variant / product are fetched live
+      var vids = {}, pids = {}; cart.items.forEach(function (it) { vids[it.variant_id] = 1; pids[it.product_id] = 1; });
+      var need = Object.keys(M.b).filter(function (bid) { return M.b[bid][2].some(function (bv) { return bv[1].some(function (c) { return vids[c[0]] || (M.c[c[0]] && pids[M.c[c[0]][0]]); }); }); });
+      return Promise.all(need.map(function (bid) { var h = M.b[bid][0]; return self.product(h).then(function (p) { return [h, p]; }).catch(function () { return [h, null]; }); })).then(function (rows) {
+        if (self.__lastCart !== cart) return [];
+        var live = {}; rows.forEach(function (r) { if (r[1] && r[1].available !== false) live[r[0]] = r[1]; });
+        var offers = offersFor(cart, M, live);
+        $$('.sup', self.el).forEach(function (n) { n.remove(); });
+        offers.forEach(function (o) {
+          var li = $('.sline[data-key="' + (window.CSS && CSS.escape ? CSS.escape(o.key) : o.key) + '"] .sline__b', self.el); if (!li) return;
+          var m0 = o.missing[0] && M.c[o.missing[0][0]], more = o.missing.length - 1;
+          var what = m0 ? m0[1] + (m0[4] && o.missing.length === 1 && /colou?r|black|white|grey|blue|red|pink|green/i.test(m0[4]) ? ' (' + m0[4] + ')' : '') + (o.missing[0][1] > 1 ? ' ×' + o.missing[0][1] : '') + (more > 0 ? ' + ' + more + ' more' : '') : '';
+          var row = document.createElement('div'); row.className = 'sup';
+          row.innerHTML = '<span class="sup__img">' + (m0 && m0[3] ? '<img src="' + esc(img(m0[3], 96)) + '" alt="" width="40" height="40" loading="lazy">' : '') + '</span>' +
+            '<span class="sup__t"><span class="sup__l">' + (o.quick ? 'Get the <b>' + esc(o.title) + '</b> and <b class="sup__save">save ' + rs(o.save) + '</b>' : o.missing.length ? 'Add ' + esc(what) + ' and <b class="sup__save">save ' + rs(o.save) + '</b>' : 'Switch to the bundle and <b class="sup__save">save ' + rs(o.save) + '</b>') + '</span>' +
+            '<small>' + (o.quick ? 'Pick your options in the bundle' : 'Switches you to ' + esc(o.title)) + '</small></span>' +
+            (o.quick ? '<button type="button" class="sup__go" data-v2-pick="' + esc(o.handle) + '" aria-haspopup="dialog">Add</button>'
+                     : '<button type="button" class="sup__go" data-upsell="' + o.vid + '" data-upsell-cover="' + esc(o.covered.map(function (c) { return c[0] + ':' + c[1]; }).join(',')) + '" aria-label="Switch to the ' + esc(o.title) + ' and save ' + rs(o.save) + '">Add</button>');
+          li.appendChild(row);
+        });
+        self.__upsell = offers;
+        return offers;
+      });
+    }).catch(function () { return []; });
+  };
+  Cart.prototype.doUpsell = function (btn) {
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    var self = this, cart = this.__lastCart || { items: [] }, vid = +btn.getAttribute('data-upsell');
+    var cover = String(btn.getAttribute('data-upsell-cover') || '').split(',').filter(Boolean).map(function (x) { var a = x.split(':'); return [+a[0], +a[1]]; });
+    btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Adding…';
+    var post = function (u, body) { return fetch(root + u, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.description || r.status); return j; }); }); };
+    // 1. add the bundle (if this fails nothing is removed)
+    post('cart/add.js', { items: [{ id: vid, quantity: 1 }] }).then(function () {
+      // 2. lower each covered component line by its quantity, one line at a time (keys from the cart we rendered)
+      var steps = cover.map(function (c) { var it = cart.items.filter(function (x) { return x.variant_id === c[0]; })[0]; return it ? { key: it.key, q: Math.max(0, it.quantity - c[1]) } : null; }).filter(Boolean);
+      return steps.reduce(function (p, st) { return p.then(function () { return post('cart/change.js', { id: st.key, quantity: st.q }); }); }, Promise.resolve());
+    }).then(function () { return json(root + 'cart.js'); }).then(function (c) { broadcast(c, null); })
+      .catch(function () { btn.removeAttribute('aria-busy'); btn.textContent = 'Try again'; refreshAll(false); });
   };
 
   /* ---------- cart page extras: complete your stack, bundle swaps, try something new, delivery date ---------- */
@@ -262,25 +366,19 @@
       if (next) tier = '<p class="sft__line">' + icons.bolt + '<span>' + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>' : rs((next[1] - after) * 100) + ' more to <b>' + next[0] + '</b> after this order') + '</span></p>';
     }
     var points = '<p class="sft__line">' + icons.bolt + (c.member ? '<span>Earn <b>' + pts.toLocaleString('en-US') + ' points</b> · ' + esc(c.tier) + ' ' + c.rate + '%</span>' : '<span><a href="' + esc(c.login) + '" data-account-open>Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b></span>') + '</p>';
-    // 26 Nov: savings as green lines in the totals, each once: "Bundle saving −Rs 2,000", other discounts by name, sale prices
-    var dl = {}, dsum = 0;
-    (cart.cart_level_discount_applications || []).forEach(function (d) { dl[d.title] = (dl[d.title] || 0) + Number(d.total_allocated_amount || 0); });
-    cart.items.forEach(function (it) { (it.line_level_discount_allocations || []).forEach(function (a) { var t = a.discount_application && a.discount_application.title || 'Discount'; dl[t] = (dl[t] || 0) + Number(a.amount || 0); }); });
-    var bundleItems = 0; cart.items.forEach(function (it) { if (/bundle/i.test(it.product_type || '') && it.__cmp) bundleItems += Math.max(0, it.__cmp - it.final_line_price); });
-    var saveLines = Object.keys(dl).filter(function (k) { return dl[k] > 0; }).map(function (k) { dsum += dl[k]; return [/bundle/i.test(k) ? 'Bundle saving' : /member|elite/i.test(k) ? 'Member price' : k, dl[k]]; });
-    var rest = save - dsum - bundleItems;
-    if (bundleItems > 0) saveLines.unshift(['Bundle saving', bundleItems]);
-    if (rest > 0) saveLines.push(['Sale savings', rest]);
-    var merged = {}; saveLines.forEach(function (x) { merged[x[0]] = (merged[x[0]] || 0) + x[1]; });
+    // 27 Nov: the totals hold only: Savings (green, if > 0), Total, the delivery line, ONE primary CTA, the Koko line,
+    // payment icons, and a small points line ("Sign in to earn X points" / "Earn X points"). Nothing else.
+    var bsave = 0; cart.items.forEach(function (it) { if (/bundle/i.test(it.product_type || '') && it.__cmp) bsave += Math.max(0, it.__cmp - it.final_line_price); });
+    var allSave = Math.max(save, bsave);
+    var ptsLine = '<p class="sft__pts">' + (c.member ? 'Earn <b>' + pts.toLocaleString('en-US') + ' points</b> on this order' : '<a href="' + esc(c.login) + '" data-account-open>Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b>') + '</p>';
     this.foot.innerHTML =
-      Object.keys(merged).map(function (k) { return '<p class="sft__save"><span>' + esc(k) + '</span><b>−' + rs(merged[k]) + '</b></p>'; }).join('') +
-      '<div class="sft__tot"><span>Total<small>' + (free ? 'Free delivery' : 'Delivery at checkout') + ' · taxes included</small></span><b>' + rs(cart.total_price) + '</b></div>' +
-      (this.mode === 'page' ? '' : points + tier) +
+      (allSave > 0 ? '<p class="sft__save"><span>Savings</span><b>−' + rs(allSave) + '</b></p>' : '') +
+      '<div class="sft__tot"><span>Total</span><b>' + rs(cart.total_price) + '</b></div>' +
+      '<p class="sft__del">' + (free ? 'Free delivery' : 'Delivery calculated at checkout') + ' · taxes included</p>' +
       '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout</span></button></form>' +
-      '<p class="sft__koko">' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(15) : 'Koko') + '<span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b>, interest-free</span></p>' +
-      this.payRow() +
-      (this.mode === 'page' ? '<div class="sft__elite">' + points + tier + '</div>' : '') +
-      (c.rating ? '<p class="sft__rate">' + icons.star + '<span>' + esc(c.rating) + '</span></p>' : '');
+      '<p class="sft__koko"><span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b> with</span>' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(15) : 'Koko') + '</p>' +
+      this.payRow() + ptsLine;
+    void tier;
   };
   Cart.prototype.payRow = function () {
     if (this.__pay == null) { var t = $('[data-cart-pay]', this.el); this.__pay = t ? t.innerHTML : ''; }
@@ -413,14 +511,16 @@
     var self = this, box = $('[data-cart-sugg]', this.el);
     if (!box || this.cfg.showSugg === false) return;
     var run = this.suggRun = (this.suggRun || 0) + 1;
-    this.pool(cart).then(function (pool) {
+    Promise.all([this.pool(cart), this.__upsellP || Promise.resolve([])]).then(function (both) {
+      var pool = both[0], ups = both[1] || [], M = window.SNHBundleMap, hide = {};
+      ups.forEach(function (o) { (o.missing || []).forEach(function (c) { var m = M && M.c[c[0]]; if (m) hide[m[0]] = 1; }); });
       if (run !== self.suggRun) return;
       var cards, head;
       if (window.SNHReco && SNHReco.rules && pool.bars) {
         var d = SNHReco.rules(cart, pool, Object.assign({}, self.cfg, { aov: (self.reco || {}).aov, aovWindow: (self.reco || {}).aovWindow }), self.reco, self.mode);
         self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
-        cards = d.items.slice(0, 2).map(function (p) { return self.card(p, p.why); });
-        head = '<span>' + esc(d.head) + '</span>';
+        cards = d.items.filter(function (p) { return !hide[p.id]; }).slice(0, 2).map(function (p) { return self.card(p, p.why); });
+        head = '<span>Goes well with your order</span>';
       } else if (window.SNHReco && pool.bars) {
         var d = SNHReco.decide(cart, pool, self.cfg, self.reco, self.mode);
         self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
@@ -454,6 +554,7 @@
 
   /* ---------- bundle upsell (Theme settings → SNH bundle offers) ---------- */
   Cart.prototype.bundle = function (cart) {
+    return;   // 27 Nov: retired; see Cart.prototype.upsell
     var box = $('[data-cart-bundle]', this.el), bs = this.cfg.bundles || [];
     if (!box) return;
     var inCart = {};
@@ -579,6 +680,7 @@
     return bundlePromise;
   }
   Cart.prototype.autoBundles = function (cart) {
+    return;   // 27 Nov: retired; the per-item bundle upsell (Cart.prototype.upsell) replaces "Make it a bundle"
     var self = this, ab = this.cfg.autoBundles;
     if (!ab || !ab.on || !cart.item_count) { var bn = $('[data-bundle-win]', this.el); if (bn) bn.remove(); return; }
     loadBundles(ab).then(function (bundles) {
@@ -695,6 +797,7 @@
     if (acc && document.querySelector('.acp')) { e.preventDefault(); var d = drawerEl(); if (d && d.open && typeof d.hide === 'function') d.hide(); document.dispatchEvent(new CustomEvent('snh:account-open', { detail: { from: acc } })); return; }
     if (q) { e.preventDefault(); this.change(q.closest('[data-key]').getAttribute('data-key'), +q.getAttribute('data-qty'), q); }
     else if (a) { e.preventDefault(); this.add(a.getAttribute('data-add'), a); }
+    else if (e.target.closest('[data-upsell]')) { e.preventDefault(); this.doUpsell(e.target.closest('[data-upsell]')); }
     else if (e.target.closest('[data-swap]')) { var sw = e.target.closest('[data-swap]'); e.preventDefault(); this.swap(sw.getAttribute('data-swap'), sw.getAttribute('data-swap-keys'), sw); }
   };
   Cart.prototype.change = function (key, qty, btn) {
@@ -815,7 +918,7 @@
   }
   function widgets() { $$('[data-snh-reco]').forEach(widget); }
 
-  window.SNHCart = { bundleMatch: bundleMatch, bundleBase: bBase, loadBundles: loadBundles, refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
+  window.SNHCart = { offersFor: offersFor, bundleMatch: bundleMatch, bundleBase: bBase, loadBundles: loadBundles, refresh: refreshAll, open: openDrawer, carts: carts, decide: decide, widget: widget, norm: norm };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   // the widgets wait for idle time (they fetch a few collection lists)
   var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 1200); };
