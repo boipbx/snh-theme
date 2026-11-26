@@ -97,7 +97,7 @@
               <span class="bx__price">{{ bp.price | money_without_trailing_zeros }}</span>
               {%- if saving > 0 -%}<span class="save">Save {{ saving | money_without_trailing_zeros }}</span>{%- endif -%}
             </div>
-            {%- capture add_label -%}Add bundle · {{ bp.price | money_without_trailing_zeros }}{%- endcapture -%}
+            {%- capture add_label -%}{% if saving > 0 %}Get the bundle · Save {{ saving | money_without_trailing_zeros }}{% else %}Get the bundle · {{ bp.price | money_without_trailing_zeros }}{% endif %}{%- endcapture -%}
             {%- render 'snh-v2-stl-add', product: bp, cls: 'v-btn v-btn--accent v-btn--block', label: add_label -%}
             {%- unless bp.has_only_default_variant -%}<a class="v-link bx__view" href="{{ bp.url }}">See what's inside</a>{%- endunless -%}
           </div>

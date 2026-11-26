@@ -309,7 +309,7 @@
               </div>
 
             {%- when 'buy_buttons' -%}
-              {%- capture atc_label -%}{%- if v.available -%}{{ block.settings.atc_label | default: 'Add to cart' }}{%- else -%}Sold out{%- endif -%}{%- endcapture -%}
+              {%- capture atc_label -%}{%- if v.available -%}{{ block.settings.atc_label | default: 'Add to basket' }}{%- else -%}Sold out{%- endif -%}{%- endcapture -%}
               <div class="sp-b sp-buttons" data-g="buy" {{ block.shopify_attributes }}>
                 <div class="sp-buyrow">
                   <div class="sp-qty">
@@ -317,7 +317,7 @@
                     <input type="number" name="quantity" value="1" min="1" inputmode="numeric" form="{{ form_id }}" aria-label="Quantity" data-sp-qtyin>
                     <button type="button" data-sp-qty="1" aria-label="Increase quantity"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
                   </div>
-                  <button type="submit" class="sp-btn sp-btn--ink" form="{{ form_id }}" data-sp-add data-sp-sync="atc"{% unless v.available %} disabled{% endunless %}>{{ atc_label | strip }}</button>
+                  <button type="submit" class="sp-btn sp-btn--ink" form="{{ form_id }}" data-sp-add data-label="{{ block.settings.atc_label | default: 'Add to basket' | escape }}" data-sp-sync="atc"{% unless v.available %} disabled{% endunless %}>{{ atc_label | strip }}</button>
                 </div>
                 {%- if block.settings.show_buy_now -%}
                   <button type="submit" class="sp-btn sp-btn--accent" form="{{ form_id }}" name="return_to" value="/checkout" data-snh-checkout-trigger data-snh-product-buy-now data-sp-buynow{% unless v.available %} hidden{% endunless %}>Buy it now</button>
@@ -413,7 +413,7 @@
           <span class="sp-sticky__name">{{ short_title | strip }}</span>
           <span class="sp-sticky__price" data-sp-sync="sprice">{{ v.price | money_without_trailing_zeros }}{% unless product.has_only_default_variant %}<span> · {{ v.title | remove: ' - Informed-Sport Tested' | replace: ' / ', ' · ' | escape }}</span>{% endunless %}</span>
         </span>
-        <button type="submit" class="sp-btn sp-btn--ink" form="{{ form_id }}" tabindex="-1" data-sp-sync="satc"{% unless v.available %} disabled{% endunless %}>{% if v.available %}Add to cart{% else %}Sold out{% endif %}</button>
+        <button type="submit" class="sp-btn sp-btn--ink" form="{{ form_id }}" tabindex="-1" data-sp-sync="satc"{% unless v.available %} disabled{% endunless %}>{% if v.available %}Add to basket{% else %}Sold out{% endif %}</button>
       </div>
     </div>
   {%- endif -%}
@@ -491,7 +491,7 @@
       { "type": "text", "id": "label", "label": "Label", "default": "Gift note" }
     ] },
     { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
-      { "type": "text", "id": "atc_label", "label": "Add to cart label", "default": "Add to cart", "info": "E.g. \"Pre-order\" on the pre-order template." },
+      { "type": "text", "id": "atc_label", "label": "Add to basket label", "default": "Add to basket", "info": "E.g. \"Pre-order\" on the pre-order template." },
       { "type": "checkbox", "id": "show_buy_now", "label": "Buy it now button", "default": true }
     ] },
     { "type": "whatsapp", "name": "WhatsApp order", "limit": 1, "settings": [

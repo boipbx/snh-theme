@@ -166,7 +166,7 @@
         .catch(function () {});
     }
     function setAvailable(ok) {
-      root.querySelectorAll('[data-sp-add], [data-sp-sync="satc"]').forEach(function (b) { b.disabled = !ok; b.textContent = ok ? 'Add to cart' : 'Sold out'; });
+      root.querySelectorAll('[data-sp-add], [data-sp-sync="satc"]').forEach(function (b) { b.disabled = !ok; b.textContent = ok ? (b.getAttribute('data-label') || 'Add to basket') : 'Sold out'; });
       var bn = root.querySelector('[data-sp-buynow]');
       if (bn) bn.hidden = !ok;
     }

@@ -57,7 +57,7 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "atc_label": "Add to cart",
+            "atc_label": "Add to basket",
             "show_buy_now": true
           }
         },

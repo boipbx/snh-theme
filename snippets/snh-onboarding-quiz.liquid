@@ -183,7 +183,7 @@
   <div class="quiz__nav">
     <button class="v-btn v-btn--line" type="button" data-quiz-back hidden><span>Back</span></button>
     <button class="v-link quiz__skip" type="button" data-quiz-skip>{% if mode == 'register' %}Skip the rest{% else %}Skip this question{% endif %}</button>
-    <button class="v-btn v-btn--ink" type="button" data-quiz-next><span>Next</span></button>
+    <button class="v-btn v-btn--accent" type="button" data-quiz-next><span>Next</span></button>
     {%- if mode == 'app' -%}
       <button class="v-btn v-btn--accent" type="submit" form="{{ id }}-form" data-quiz-save hidden{% if mock %} disabled{% endif %}><span>Save my plan</span></button>
     {%- endif -%}
