@@ -214,40 +214,28 @@
       {%- endif -%}
     {%- endif -%}
   </div>
+  {%- comment -%} 26 Nov: the card shows only what helps someone buy: name (2 lines) → price + small struck compare-at → the
+    saving as small green text. No brand line, rating, options/per-serving line, Koko line or points line (the product
+    page has them); one chip ("3 flavours") sits on the image corner. Every card is the same height and the prices line
+    up (assets/snh-v2.css, 26 Nov block). {%- endcomment -%}
   <div class="pc__body">
-    <div class="pc__top">
-      {%- comment -%} 11 Nov: no brand line on bundles (they're all "Sports Nutrition Hub") {%- endcomment -%}
-      {%- assign is_bundle = false -%}{%- assign pt = product.type | downcase -%}{%- assign tg = product.tags | join: ',' | downcase -%}
-      {%- if pt contains 'bundle' or tg contains 'bundle' or product.variants.first.requires_components -%}{%- assign is_bundle = true -%}{%- endif -%}
-      {%- unless is_bundle -%}<p class="pc__brand">{{ product.vendor | escape }}</p>{%- endunless -%}
-      {%- if r_count > 0 -%}
-        <p class="pc__rating" role="img" aria-label="Rated {{ r_value }} out of 5 from {{ r_count }} reviews"><span class="pc__star" aria-hidden="true">★</span><span aria-hidden="true">{{ r_value }} <span class="pc__count">({{ r_count }})</span></span></p>
-      {%- endif -%}
-    </div>
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
     <h3 class="pc__name"><a href="{{ product.url }}" title="{{ title_full }}">{{ short | strip }}</a></h3>
-    <p class="pc__sub">{{ sub | escape }}{% if per > 0 %} · <span class="pc__per">{{ per | money_without_trailing_zeros }}/serving</span>{% endif %}</p>
     {%- if price_note != blank -%}
-    {%- comment -%} Round 17: wholesale grids show a note instead of the retail price, Koko line, quick-add and earn line {%- endcomment -%}
+    {%- comment -%} Round 17: wholesale grids show a note instead of the retail price and quick-add {%- endcomment -%}
     <div class="pc__foot pc__foot--req"><p class="pc__req">{{ price_note | escape }}</p></div>
     {%- else -%}
     <div class="pc__foot">
       <p class="pc__price{% if saving > 0 %} pc__price--sale{% endif %}">
         <span class="pc__now">{% if product.price_varies %}<span class="pc__from">From </span>{% endif %}{{ product.price | money_without_trailing_zeros }}</span>
-        {%- if saving > 0 -%}<s class="pc__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s><span class="pc__save">Save {{ saving | money_without_trailing_zeros }}</span>{%- endif -%}
+        {%- if saving > 0 -%}<s class="pc__was"><span class="v-sr">Was </span>{{ retail | money_without_trailing_zeros }}</s>{%- endif -%}
       </p>
-      {%- if product.available -%}
-        <p class="pc__koko">or 3 × {{ third | money_without_trailing_zeros }} <span class="pc__with">with </span>{% render 'snh-koko-logo', h: 14, class: 'pc__kk' %}</p>
-      {%- else -%}
-        <p class="pc__koko pc__koko--out">Sold out</p>
+      {%- if product.available == false -%}
+        <p class="pc__note pc__note--out">Sold out</p>
+      {%- elsif saving > 0 -%}
+        <p class="pc__note pc__save">Save {{ saving | money_without_trailing_zeros }}</p>
       {%- endif -%}
     </div>
-    {%- comment -%} points: desktop hover only (hidden on touch / phones) {%- endcomment -%}
-    {%- endif -%}
-    {%- if price_note != blank -%}{%- elsif customer -%}
-      <p class="pc__earn">Earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back in points</p>
-    {%- else -%}
-      <a class="pc__earn" href="{{ routes.account_login_url }}" tabindex="-1">Sign in to earn <strong>{{ earn | money_without_trailing_zeros }}</strong> back</a>
     {%- endif -%}
   </div>
 </product-card>
