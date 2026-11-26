@@ -1,0 +1,6 @@
+1 upsell row: Add SNH 2.0 Shaker Bottle (Black) and save Rs 1,999 Switches you to Creatine Starter Pack Add
+1 after Add: Creatine Starter Pack ×1 Rs 8999 · bundle price 8999, compare-at 10998
+1 RESULT: PASS (bundle at bundle price, creatine line swapped out)
+2 suggestions: ["Popped Protein Crisps"] · rule rules
+3 free delivery: {"on":true,"text":"Free delivery unlocked","fill":"100%"}
+4 after removing whey: {"on":false,"text":"Rs 2,001 away from free delivery","fill":"88%","px":"315.031px"} · width mid-animation 358px

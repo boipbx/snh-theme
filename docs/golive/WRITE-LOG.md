@@ -1120,3 +1120,37 @@ Screenshots: `docs/golive/one-font-2026-11-25/` (before/after 390 + 1440: Elite 
 | 10:55 | first-admin setup link, one-time, 7 days (hash only in D1) | console_tokens | - | given to the owner; expires 3 Dec 10:42 LK |
 
 Screenshots of Loyalty/Operations mask customer names and IDs (no customer data in the repo). Details, audit fixes and screenshots: `docs/golive/ops-v3/README.md`. Rollback: `wrangler rollback eb95a9cc-3d46-476e-bb6f-29b087f42818`.
+
+# 26 Nov 2026: storefront conversion polish (live theme `feat/theme-v2`)
+Backups: `docs/golive/backup-polish-2026-11-26/` (every theme file touched, as it was before). Screenshots and critique notes: `docs/golive/polish-2026-11-26/`.
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9051839758590 (snh-2-0-shaker-bottle-750ml-teal-blue) custom.in_bundles | ["gid://shopify/Product/9433933218046","gid://shopify/Product/9434011730174","gid://shopify/Product/9434937065726","gid://shopify/Product/9434950500606"] | Creatine Starter Pack (save 1999), Athlete Essential Stack (save 0), Lean Muscle Building Stack (save 0) |
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8167657832702 (raw-essential-pre-workout) custom.in_bundles | ["gid://shopify/Product/9434950500606","gid://shopify/Product/9434960920830"] | [] (no active bundle any more) |
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8608641548542 (raw-creatine-monohydrate-500g) custom.in_bundles | ["gid://shopify/Product/9434950500606"] | [] (no active bundle any more) |
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9198200553726 (raw-creatine-monohydrate-30-servings) custom.in_bundles | ["gid://shopify/Product/9434960920830"] | [] (no active bundle any more) |
+| 11:48 | `sync-bundle-links.mjs` (new sources: Bundles app + variant components + text fallback), dry run then live | `custom.in_bundles` ×4 (rows above) | backup `docs/golive/backup-bundle-links/2026-11-26T06-18-39-300Z.json` | shaker +3 bundles; 3 RAW products cleared (their 2 bundles are drafts) |
+| 12:05 | git push fc05105 → `feat/theme-v2` (live) | button system v2 (snh-v2.css, snh-product.css), "Add to basket" (snh-product.liquid/js, 16 product templates), "Get the bundle · Save Rs X" (snh-v2-bundles, snh-cart.js), quiz Next primary | flat primary, black Buy it now outline, "Add to cart" | checked live by page fetch: 0 Liquid errors on product / collection / cart / home, new labels present. Revert: `git revert fc05105` |
+| - | commits 38a6475 … 46b724e (pill, product page, cards, quick view, compare, basket, popup) | branch `claude/gallant-lovelace-wtdgxt` only | - | **not live**: no visual check possible (browser checks of the live store refused this session); see `docs/golive/polish-2026-11-26/README.md` |
+
+# 27 Nov 2026: storefront ship-and-fix round (live theme `feat/theme-v2`, theme files only)
+Backups: `docs/golive/backup-ship-2026-11-27/` (each touched file as live `*.live` and as on the work branch). Screenshots: `docs/golive/ship-2026-11-27/`. Verification per component: pre-merge preview (local CSS/JS served into the live page), then after the push: the live asset polled until the new code is in it, each page fetched (status 200, no "Liquid error", new markup present, removed markup gone), and rendered screenshots (HTML fetched outside the browser, fallback a; the headless browser was rate-limited by the store after ~20 loads).
+| time (LK) | what | object | before | after | revert |
+|---|---|---|---|---|---|
+| 00:55 | push 016b3c8 | primary button (snh-v2.css) | conic rotating stroke, `@property`, gradient | solid #C9481A spec, hover #D4511F + halo, press .98 | `git revert 016b3c8` |
+| 01:10 | push 6fc67f0 | quick view (snh-quick.js, snh-v2.css) | brand + Koko lines, one-value selectors | spec layout; one-value options as muted text | `git revert 6fc67f0` |
+| 01:35 | push e34fd04 | product page (snh-product.liquid/.css/.js, snh-v2-bundles, snh-v2.css) | brand line, 4 meta rows, "389–1,299" points | head, value line, "Earn up to N points", Koko line, sheets, bundle block from custom.in_bundles, no-photo note | `git revert e34fd04` |
+| - | product media | Essential Pre-Workout Winter Berry | no image | **no write**: no real Winter Berry image in Files or the product's media; listed as needs-photo | - |
+| 01:50 | push 13e9fa4 | product meta row (snh-product.css) | double gaps in "Earn up to N points" | normal word spacing | `git revert 13e9fa4` |
+| 02:20 | push 25e4c15 | basket (snh-cart.js/.css, snh-cart-reco.js/.liquid, snh-cart-cfg, snh-cart-page, new asset snh-bundle-map.js) | bar + milestones + confetti, banners, "Make it a bundle" rows, totals clutter | one tracker, per-item bundle upsell via Cart AJAX (live compare-at saving), 2 suggestions, trimmed totals, simpler cart page | `git revert 25e4c15` |
+| 02:45 | push d78402b | basket upsell thumbnail (snh-cart.js) | lazy (blank when the drawer opened) | eager | `git revert d78402b` |
+| 03:05 | push 5f33061 | product cards (snh-v2-card, snh-v2.css) | - | **did not sync**: Shopify rejected `snh-v2.css` at 263,103 bytes (> 256 KiB), and with it the whole commit. Nothing broke; the live theme kept the previous files | - |
+| 03:30 | push ca2d7d9 | Compare and save (snh-compare.liquid) | brand rows, bare checkbox | heading + switch + label-left rows + best value | `git revert ca2d7d9` |
+| 03:50 | push dc236f9 | cards live + CSS split: 26–27 Nov blocks moved to new `assets/snh-v2-ship.css` (layout loads it right after snh-v2.css; snh-v2.css back to 255,025 bytes) | old cards | new cards | `git revert dc236f9` (then the cards go back to the old markup; snh-v2.css keeps working) |
+| 04:00 | push d59c927 | announcement pill (snh-v2-ship.css) | solid white pill + scale nudge | 22px see-through pill + one shimmer | `git revert d59c927` |
+| 04:10 | push 9c5a9c4 | SNH list popup (newsletter-popup.liquid, overlay-group.json) | "Join the SNH list" | restock / new-drops value, 3 benefits, Get alerts, No thanks, Elite link | `git revert 9c5a9c4` |
+
+Basket test (cart only, never checkout): `docs/golive/ship-2026-11-27/basket-test/results-390.txt`; test baskets cleared afterwards.
+| 04:30 | push ba1a08f | Compare heading on phones (snh-compare.liquid) | 13px (phone text floor) | 24px | `git revert ba1a08f` |
+
+Lighthouse mobile after all merges: home median 50 (25 Nov baseline 36), product median 36 (no earlier baseline). Details: `docs/golive/ship-2026-11-27/README.md`.
