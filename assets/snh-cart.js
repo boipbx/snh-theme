@@ -213,7 +213,7 @@
         offers.forEach(function (o) {
           var li = $('.sline[data-key="' + (window.CSS && CSS.escape ? CSS.escape(o.key) : o.key) + '"] .sline__b', self.el); if (!li) return;
           var m0 = o.missing[0] && M.c[o.missing[0][0]], more = o.missing.length - 1;
-          var what = m0 ? m0[1] + (m0[4] && o.missing.length === 1 && /colou?r|black|white|grey|blue|red|pink|green/i.test(m0[4]) ? ' (' + m0[4] + ')' : '') + (o.missing[0][1] > 1 ? ' ×' + o.missing[0][1] : '') + (more > 0 ? ' + ' + more + ' more' : '') : '';
+          var what = m0 ? String(m0[1]).replace(/\s*\d+(\.\d+)?\s?(ml|l|g|kg|lb|lbs)\b/ig, '').replace(/\s{2,}/g, ' ').trim() + (m0[4] && o.missing.length === 1 && /colou?r|black|white|grey|blue|red|pink|green/i.test(m0[4]) ? ' (' + m0[4] + ')' : '') + (o.missing[0][1] > 1 ? ' ×' + o.missing[0][1] : '') + (more > 0 ? ' + ' + more + ' more' : '') : '';
           var row = document.createElement('div'); row.className = 'sup';
           row.innerHTML = '<span class="sup__img">' + (m0 && m0[3] ? '<img src="' + esc(img(m0[3], 96)) + '" alt="" width="40" height="40" loading="lazy">' : '') + '</span>' +
             '<span class="sup__t"><span class="sup__l">' + (o.quick ? 'Get the <b>' + esc(o.title) + '</b> and <b class="sup__save">save ' + rs(o.save) + '</b>' : o.missing.length ? 'Add ' + esc(what) + ' and <b class="sup__save">save ' + rs(o.save) + '</b>' : 'Switch to the bundle and <b class="sup__save">save ' + rs(o.save) + '</b>') + '</span>' +
@@ -513,13 +513,15 @@
     var run = this.suggRun = (this.suggRun || 0) + 1;
     Promise.all([this.pool(cart), this.__upsellP || Promise.resolve([])]).then(function (both) {
       var pool = both[0], ups = both[1] || [], M = window.SNHBundleMap, hide = {};
-      ups.forEach(function (o) { (o.missing || []).forEach(function (c) { var m = M && M.c[c[0]]; if (m) hide[m[0]] = 1; }); });
+      var hideCat = {};
+      ups.forEach(function (o) { (o.missing || []).forEach(function (c) { var m = M && M.c[c[0]]; if (m) { hide[m[0]] = 1; if (window.SNHReco) hideCat[SNHReco.detect({ title: m[1] })] = 1; } }); });
+      delete hideCat[''];
       if (run !== self.suggRun) return;
       var cards, head;
       if (window.SNHReco && SNHReco.rules && pool.bars) {
         var d = SNHReco.rules(cart, pool, Object.assign({}, self.cfg, { aov: (self.reco || {}).aov, aovWindow: (self.reco || {}).aovWindow }), self.reco, self.mode);
         self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
-        cards = d.items.filter(function (p) { return !hide[p.id]; }).slice(0, 2).map(function (p) { return self.card(p, p.why); });
+        cards = d.items.filter(function (p) { return !hide[p.id] && !hideCat[p.cat || SNHReco.detect(p)]; }).slice(0, 2).map(function (p) { return self.card(p, p.why); });
         head = '<span>Goes well with your order</span>';
       } else if (window.SNHReco && pool.bars) {
         var d = SNHReco.decide(cart, pool, self.cfg, self.reco, self.mode);
