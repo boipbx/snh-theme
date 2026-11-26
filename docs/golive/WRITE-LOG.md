@@ -1143,3 +1143,11 @@ Backups: `docs/golive/backup-ship-2026-11-27/` (each touched file as live `*.liv
 | - | product media | Essential Pre-Workout Winter Berry | no image | **no write**: no real Winter Berry image in Files or the product's media; listed as needs-photo | - |
 | 01:50 | push 13e9fa4 | product meta row (snh-product.css) | double gaps in "Earn up to N points" | normal word spacing | `git revert 13e9fa4` |
 | 02:20 | push 25e4c15 | basket (snh-cart.js/.css, snh-cart-reco.js/.liquid, snh-cart-cfg, snh-cart-page, new asset snh-bundle-map.js) | bar + milestones + confetti, banners, "Make it a bundle" rows, totals clutter | one tracker, per-item bundle upsell via Cart AJAX (live compare-at saving), 2 suggestions, trimmed totals, simpler cart page | `git revert 25e4c15` |
+| 02:45 | push d78402b | basket upsell thumbnail (snh-cart.js) | lazy (blank when the drawer opened) | eager | `git revert d78402b` |
+| 03:05 | push 5f33061 | product cards (snh-v2-card, snh-v2.css) | - | **did not sync**: Shopify rejected `snh-v2.css` at 263,103 bytes (> 256 KiB), and with it the whole commit. Nothing broke; the live theme kept the previous files | - |
+| 03:30 | push ca2d7d9 | Compare and save (snh-compare.liquid) | brand rows, bare checkbox | heading + switch + label-left rows + best value | `git revert ca2d7d9` |
+| 03:50 | push dc236f9 | cards live + CSS split: 26–27 Nov blocks moved to new `assets/snh-v2-ship.css` (layout loads it right after snh-v2.css; snh-v2.css back to 255,025 bytes) | old cards | new cards | `git revert dc236f9` (then the cards go back to the old markup; snh-v2.css keeps working) |
+| 04:00 | push d59c927 | announcement pill (snh-v2-ship.css) | solid white pill + scale nudge | 22px see-through pill + one shimmer | `git revert d59c927` |
+| 04:10 | push 9c5a9c4 | SNH list popup (newsletter-popup.liquid, overlay-group.json) | "Join the SNH list" | restock / new-drops value, 3 benefits, Get alerts, No thanks, Elite link | `git revert 9c5a9c4` |
+
+Basket test (cart only, never checkout): `docs/golive/ship-2026-11-27/basket-test/results-390.txt`; test baskets cleared afterwards.
