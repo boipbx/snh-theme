@@ -217,7 +217,7 @@
   {%- comment -%} 26 Nov: the card shows only what helps someone buy: name (2 lines) → price + small struck compare-at → the
     saving as small green text. No brand line, rating, options/per-serving line, Koko line or points line (the product
     page has them); one chip ("3 flavours") sits on the image corner. Every card is the same height and the prices line
-    up (assets/snh-v2.css, 26 Nov block). {%- endcomment -%}
+    up (assets/snh-v2-ship.css, PRODUCT CARDS block). {%- endcomment -%}
   <div class="pc__body">
     {%- capture short -%}{% render 'snh-v2-title', product: product, short: true %}{%- endcapture -%}
     <h3 class="pc__name"><a href="{{ product.url }}" title="{{ title_full }}">{{ short | strip }}</a></h3>
