@@ -72,10 +72,10 @@
   <div class="v-wrap">
     <div class="cmpx__top">
       <div>
-        <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare</h2>
-        <p class="cmpx__lead">Tap a product below to compare it. Best value per serving first.</p>
+        <h2 class="cmpx__h" id="cmpx-h-{{ product.id }}">Compare and save</h2>
+        <p class="cmpx__lead">Best value per serving first. Tap one to put it side by side.</p>
       </div>
-      <label class="cmpx__diff"><input type="checkbox" data-cmpx-diff> <span>Only differences</span></label>
+      <label class="cmpx__diff"><input type="checkbox" role="switch" data-cmpx-diff><span class="cmpx__sw" aria-hidden="true"></span><span>Only differences</span></label>
     </div>
     <div class="cmpx__rail" data-cmpx-rail role="list" aria-label="Products you can compare"></div>
     <div class="cmpx__grid">
@@ -157,6 +157,37 @@
     .cmpx__grid { padding-inline: 12px; }
   }
   @media (prefers-reduced-motion: reduce) { .cmpx__mini { transition: none; } }
+  /* 26 Nov: "Compare and save": a strong heading + one helper line, the "Only differences" switch beside it (under it on
+     phones), no brand rows, rows with the label on the left and values aligned in columns, the best value highlighted */
+  .cmpx__top { align-items: center; margin-bottom: 18px; }
+  .cmpx__h { font: 800 clamp(24px, 2.6vw, 32px)/1.1 var(--sans); letter-spacing: -.02em; }
+  .cmpx__lead { margin-top: 6px; font-size: 14px; color: #6B665E; }
+  .cmpx__diff { gap: 10px; min-height: 44px; font-size: 14px; font-weight: 600; }
+  .cmpx__diff input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .cmpx__sw { position: relative; width: 40px; height: 24px; border-radius: 999px; background: #D9D5CE; transition: background-color .2s ease; }
+  .cmpx__sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s cubic-bezier(.2,.8,.3,1); }
+  .cmpx__diff input:checked + .cmpx__sw { background: #1E7A43; }
+  .cmpx__diff input:checked + .cmpx__sw::after { transform: translateX(16px); }
+  .cmpx__diff input:focus-visible + .cmpx__sw { outline: 2px solid #C9481A; outline-offset: 2px; }
+  .cmpx__os em { color: #1E7A43; font-weight: 700; }
+  .cmpx__row { display: grid; grid-template-columns: 140px minmax(0, 1fr); align-items: start; gap: 0 16px; padding: 14px 0; border-top: 1px solid #EEEBE6; }
+  .cmpx__row[hidden] { display: none; }
+  .cmpx__lbl { margin: 0; padding-top: 2px; font-size: 13px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #6B665E; }
+  .cmpx__heads { margin-left: 156px; }
+  .cmpx__v { position: relative; font-variant-numeric: tabular-nums; }
+  .cmpx__v.is-best b, .cmpx__v.is-best { color: #1E7A43; }
+  .cmpx__best { display: block; margin-top: 4px; font-size: 11.5px; font-weight: 700; color: #1E7A43; }
+  .cmpx__save { padding: 0; background: none; color: #1E7A43; font-weight: 700; font-size: 12.5px; }
+  .cmpx__v small + small { margin-top: 4px; }
+  .cmpx__row--go { border-top: 0; padding-top: 8px; }
+  @media (max-width: 749px) {
+    .cmpx__top { flex-direction: column; align-items: flex-start; gap: 8px; }
+    /* phones: two columns are already narrow, so the label sits above its values (left aligned) */
+    .cmpx__row { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 12px 0; }
+    .cmpx__heads { margin-left: 0; }
+    .cmpx__lbl { font-size: 12.5px; }
+    .cmpx__row--go .cmpx__lbl { display: none; }
+  }
 </style>
 <script>
 (function () {
@@ -199,26 +230,31 @@
       if (!d) return '<div class="cmpx__col"><span class="cmpx__tag"></span><div class="cmpx__add">Tap a product above to add it here</div></div>';
       return '<div class="cmpx__col' + (d.h === me.h ? ' is-me' : '') + '">' + (d.h === me.h ? '<span class="cmpx__tag">This product</span>' : '<button type="button" class="cmpx__x" data-rm="' + i + '" aria-label="Remove ' + esc(short(d)) + '">×</button><span class="cmpx__tag"></span>') +
         '<a class="cmpx__pic" href="' + esc(d.u) + '" tabindex="-1">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" width="150" height="150"' + (d.cl ? ' data-no-lift' : ' data-v2-lift') + '>' : '') + '</a>' +
-        '<a class="cmpx__name" href="' + esc(d.u) + '">' + esc(short(d)) + '</a><span class="cmpx__brand">' + esc(d.v) + '</span></div>';
+        '<a class="cmpx__name" href="' + esc(d.u) + '">' + esc(short(d)) + '</a></div>';
     }).join('');
     var ROWS = [
       ['Price', function (d) { return '<b>' + rs(d.p) + '</b>' + (d.was ? '<s>' + rs(d.was) + '</s>' : ''); }, function (d) { return d.p; }],
       ['Per serving', function (d) { if (!d.ps) return ''; var sv = saving(d); return '<b>' + rs(d.ps) + '</b>' + (sv ? '<br><span class="cmpx__save">Save ' + sv + '%</span>' : ''); }, function (d) { return Math.round(d.ps / 100); }],
       ['Servings', function (d) { return d.sv ? String(d.sv) : ''; }, function (d) { return d.sv; }],
       ['Flavours', function (d) { var f = list(d.fl); if (!f.length) return ''; return '<b>' + f.length + '</b><small>' + esc(f.slice(0, 3).join(', ')) + (f.length > 3 ? ' +' + (f.length - 3) : '') + '</small>'; }, function (d) { return d.fl; }],
-      ['Key specs', function (d) { var k = (d.kb || []).filter(Boolean); return k.length ? k.map(function (x) { return '<small>' + esc(x) + '</small>'; }).join('') : ''; }, function (d) { return (d.kb || []).join('|'); }],
+      ['Key specs', function (d) { var k = (d.kb || []).filter(Boolean).map(function (x) { return String(x).split(/[:.]/)[0].trim(); }).filter(Boolean).slice(0, 3); return k.length ? k.map(function (x) { return '<small>' + esc(x) + '</small>'; }).join('') : ''; }, function (d) { return (d.kb || []).join('|'); }],
       ['Rating', function (d) { return d.rc > 0 ? '<span class="cmpx__stars" aria-hidden="true">★</span> ' + esc(d.rv) + ' <span class="cmpx__na">(' + d.rc + ')</span>' : ''; }, function (d) { return d.rc ? d.rv : ''; }]
     ];
     var only = diff && diff.checked, real = cur.filter(Boolean), html = '';
+    /* 26 Nov: the best value in a row is highlighted: lowest price and lowest price per serving, most servings */
+    var BEST = { 'Price': function (d) { return -d.p; }, 'Per serving': function (d) { return d.ps ? -d.ps : null; }, 'Servings': function (d) { return d.sv || null; } };
     ROWS.forEach(function (r) {
       var cells = cur.map(function (d) { return d ? r[1](d) : ''; });
+      var best = -1, bf = BEST[r[0]];
+      if (bf && real.length > 1) { var sc = cur.map(function (d) { return d ? bf(d) : null; }), top = Math.max.apply(null, sc.filter(function (x) { return x != null; }));
+        if (sc.filter(function (x) { return x === top; }).length === 1) best = sc.indexOf(top); }
       if (cells.every(function (x) { return !x; })) return;
       var keys = real.map(function (d) { return String(r[2](d) || '').toLowerCase(); });
       var differs = keys.some(function (k) { return k !== keys[0]; });
       html += '<div class="cmpx__row"' + (only && !differs ? ' hidden' : '') + '><p class="cmpx__lbl">' + r[0] + '</p><div class="cmpx__vals">' +
-        cells.map(function (x, i) { return '<div class="cmpx__v">' + (x || (cur[i] ? '<span class="cmpx__na">–</span>' : '')) + '</div>'; }).join('') + '</div></div>';
+        cells.map(function (x, i) { return '<div class="cmpx__v' + (i === best && x ? ' is-best' : '') + '">' + (x || (cur[i] ? '<span class="cmpx__na">–</span>' : '')) + (i === best && x ? '<span class="cmpx__best">Best value</span>' : '') + '</div>'; }).join('') + '</div></div>';
     });
-    html += '<div class="cmpx__row"><div class="cmpx__vals">' + cur.map(function (d) {
+    html += '<div class="cmpx__row cmpx__row--go"><p class="cmpx__lbl"></p><div class="cmpx__vals">' + cur.map(function (d) {
       return '<div class="cmpx__v">' + (!d || d.h === me.h ? '' : '<a class="cmpx__go" href="' + esc(d.u) + '">View product</a>') + '</div>';
     }).join('') + '</div></div>';
     rowsEl.innerHTML = html;
