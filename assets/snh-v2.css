@@ -3000,3 +3000,7 @@ html body .quote__text { font-size: max(1em, .92em); line-height: 1.45; }
 .sqb__foot, .sqb .sqb__foot { box-shadow: none; border-top: 1px solid rgba(23, 19, 15, .06); }
 .sqb__body .sqb__more { padding-left: 0; padding-right: 0; justify-content: flex-start; align-self: flex-start; }
 
+/* ── 26 Nov: "Save with a bundle" in the buy box: one plain heading (no kicker, no "N bundles include this" line) ── */
+.bx__h { display: block; font: 800 17px/1.25 var(--sans); letter-spacing: -.01em; color: var(--ink); }
+.bx__hero strong { font-weight: 700; }
+

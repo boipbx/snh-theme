@@ -1,6 +1,6 @@
 {%- comment -%}
-  Bundle & save (prototype .bx): the store's real bundle products that contain this product. A bundle matches when its
-  description names this product's base name (title without vendor and size, e.g. "Critical Whey Protein").
+  Save with a bundle (prototype .bx): the store's real bundle products that contain this product: custom.in_bundles
+  first (26 Nov), then bundles whose description names this product's base name (e.g. "Critical Whey Protein").
   "Separately" = the bundle's compare-at price, else SNH's bundle sheet (same figures as snippets/product-card), so no
   saving is invented; a bundle with neither just shows its price. Up to 3 bundles, as pills.
   product, handles (comma-separated collection handles to search), limit
@@ -23,7 +23,19 @@
   assign retail_sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
   assign found = ','
   assign count = 0
-  if base.size > 5
+  # 26 Nov: first the bundles that really contain this product (custom.in_bundles, written from the bundles' own
+  # components by scripts/sync-bundle-links.mjs, biggest saving first), then description matches as before.
+  for bp in product.metafields.custom.in_bundles.value
+    if count >= limit
+      break
+    endif
+    if bp.id == product.id or bp.available == false or bp.published_at == blank
+      continue
+    endif
+    assign found = found | append: bp.id | append: ','
+    assign count = count | plus: 1
+  endfor
+  if base.size > 5 and count < limit
     for h in handle_list
       assign hh = h | strip
       assign c = collections[hh]
@@ -54,7 +66,7 @@
   {%- assign ids = found | remove_first: ',' | split: ',' -%}
   {%- assign rendered = ',' -%}
   <div class="bx" data-v2-bundles>
-    <p class="bx__head"><span class="eyebrow eyebrow--accent">Bundle &amp; save</span><span class="meta">{{ count }} bundle{% if count > 1 %}s{% endif %} include{% if count == 1 %}s{% endif %} this</span></p>
+    <h2 class="bx__head bx__h">Save with a bundle</h2>
     {%- capture pills -%}{%- endcapture -%}
     {%- capture panels -%}
       {%- assign n = 0 -%}
@@ -90,7 +102,7 @@
           <div class="bx__panel" id="bx-{{ section.id }}-{{ n }}" role="tabpanel" aria-labelledby="bxp-{{ section.id }}-{{ n }}"{% if n > 1 %} hidden{% endif %}>
             <div class="bx__hero">
               {%- if bp.featured_image -%}{{ bp.featured_image | image_url: width: 400 | image_tag: width: 112, height: 112, loading: 'lazy', alt: bp.title }}{%- endif -%}
-              <div><strong>{{ bp.title | escape }}</strong><span>{{ bp.description | strip_html | truncatewords: 14 | escape }}</span></div>
+              <div><strong>{{ bp.title | escape }}</strong></div>
             </div>
             <div class="bx__total">
               {%- if saving > 0 -%}<span>Separately <s>{{ retail | money_without_trailing_zeros }}</s></span>{%- endif -%}

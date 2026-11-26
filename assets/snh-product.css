@@ -504,3 +504,78 @@
 /* 26 Nov: product-page buttons follow the shared button system v2 (assets/snh-v2.css, end): Add to cart = primary,
    Buy it now = bare text secondary. */
 .sp-sticky .sp-btn[data-sp-sync="satc"] { min-height: 48px; }
+
+
+/* ── 26 Nov: buy-box head, one hierarchy: title → price (8px under) → one value line → Koko (one small line) → one
+   meta row (stock · rating · points). No brand line, no description paragraph up here. ── */
+.sp-buy > .sp-title { order: 2; }
+.sp-buy > .sp-price { order: 3; }
+.sp-buy > .sp-kokoline { order: 4; }
+.sp-buy > .sp-meta { order: 5; }
+.sp-b.sp-title { margin-top: 14px; }
+@media (min-width: 1024px) { .sp-b.sp-title { margin-top: 20px; } }
+.sp-buy > .sp-b.sp-price { margin-top: 8px; gap: 4px; }
+.sp-price__row { gap: 4px 10px; align-items: baseline; }
+.sp-price__now { font-size: 32px; font-weight: 800; line-height: 1.1; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+.sp-price__was { font-size: 17px; font-weight: 500; color: var(--sp-muted); text-decoration-thickness: 1px; }
+.sp-price__save { font-size: 14px; font-weight: 700; color: #1E7A43; }
+.sp-price__per { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-size: 14px; line-height: 1.45; color: var(--sp-muted); }
+.sp-price__up { font-weight: 700; color: #1E7A43; text-decoration: underline; text-decoration-color: rgba(30, 122, 67, .35); text-underline-offset: 3px; }
+.sp-price__up:hover { text-decoration-color: currentColor; }
+.sp-buy > .sp-b.sp-kokoline { margin-top: 8px; gap: 6px; font-size: 13px; color: var(--sp-muted); }
+.sp-kokoline .sp-koko { height: 15px; width: auto; margin-left: -2px; }
+.sp-kokoline .sp-info { width: 18px; height: 18px; margin-left: 2px; font-size: 11px; color: var(--sp-muted); }
+.sp-buy > .sp-b.sp-meta { margin-top: 14px; justify-content: flex-start; flex-wrap: wrap; gap: 6px 0; font-size: 13.5px; color: var(--sp-ink); }
+.sp-meta__i { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0; border: 0; background: none; font: inherit; color: inherit; white-space: nowrap; }
+.sp-meta__i + .sp-meta__i::before { content: "·"; margin: 0 10px; color: var(--sp-muted); }
+.sp-dot { width: 8px; height: 8px; border-radius: 50%; background: #1E9E55; box-shadow: 0 0 0 3px rgba(30, 158, 85, .16); }
+.sp-dot--low { background: #D9711C; box-shadow: 0 0 0 3px rgba(217, 113, 28, .16); }
+.sp-dot--out { background: #9A9A9A; box-shadow: none; }
+.sp-stock { font-weight: 600; }
+.sp-meta .sp-stars { gap: 4px; color: var(--sp-ink); }
+.sp-star { color: #E8A317; font-size: 14px; }
+.sp-meta__n { color: var(--sp-muted); }
+.sp-earn { cursor: pointer; }
+.sp-earn b { font-weight: 700; }
+@media (hover: hover) { .sp-earn:hover, .sp-meta .sp-stars:hover { text-decoration: underline; text-underline-offset: 3px; } }
+.sp-buy > .sp-b.sp-meta + .sp-hr, .sp-buy > .sp-hr { margin-top: 20px; }
+
+/* ── 26 Nov: info sheets (delivery / payment / authenticity / Elite): title + 44px close on one aligned row, 3 short
+   lines, actions. Desktop: centred card. Phones: a bottom sheet that slides up. Esc and a tap outside close it. ── */
+.sp-modal { width: min(420px, calc(100vw - 32px)); padding: 20px 24px 24px; border-radius: 20px; }
+.sp-modal form { position: static; }
+.sp-modal__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 -10px 12px 0; }
+.sp-modal__t { margin: 0; font-size: 20px; font-weight: 800; line-height: 1.2; letter-spacing: -.015em; }
+.sp-modal__x { display: grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--sp-ink); cursor: pointer; }
+.sp-modal__x:hover { background: #F2F0EC; }
+.sp-modal__x:focus-visible { outline: 2px solid #C9481A; outline-offset: 0; }
+.sp-modal__b p { position: relative; padding-left: 18px; font-size: 15px; line-height: 1.45; color: #3F3F3F; }
+.sp-modal__b p::before { content: ""; position: absolute; left: 2px; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #C9481A; }
+.sp-modal__b p + p { margin-top: 10px; }
+.sp-modal__a { margin-top: 20px; gap: 4px; }
+.sp-modal[open] { animation: spSheetIn .26s cubic-bezier(.2, .8, .3, 1); }
+.sp-modal[open]::backdrop { animation: spFade .26s ease; }
+@keyframes spSheetIn { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+@keyframes spFade { from { opacity: 0; } }
+@media (max-width: 767px) {
+  .sp-modal { width: 100%; max-width: 100%; margin: auto 0 0; padding: 12px 20px calc(20px + env(safe-area-inset-bottom)); border-radius: 20px 20px 0 0; }
+  .sp-modal::before { content: ""; display: block; width: 36px; height: 4px; margin: 0 auto 8px; border-radius: 4px; background: #DDD9D2; }
+  @keyframes spSheetIn { from { transform: translateY(100%); } }
+}
+@media (prefers-reduced-motion: reduce) { .sp-modal[open], .sp-modal[open]::backdrop { animation: none; } }
+
+/* ── 27 Nov: buy box tighter (price, options and Add to basket sit higher); savings green #2F9E6B ── */
+.sp-price__save, .sp-price__up { color: #2F9E6B; }
+.sp-price__up { text-decoration-color: rgba(47, 158, 107, .4); }
+.sp-price__per { font-size: 13.5px; }
+.sp-b.sp-title { margin-top: 10px; }
+@media (min-width: 1024px) { .sp-b.sp-title { margin-top: 16px; } }
+.sp-buy > .sp-b.sp-kokoline { margin-top: 6px; }
+.sp-buy > .sp-b.sp-meta { margin-top: 10px; }
+.sp-buy > .sp-hr, .sp-buy > .sp-b.sp-meta + .sp-hr { margin-top: 14px; margin-bottom: 0; }
+.sp-buy > .sp-hr + .sp-b { margin-top: 14px; }
+.sp-opts { gap: 14px; }
+.sp-buy > .sp-opts + .sp-b, .sp-buy > [data-g="buy"] { margin-top: 16px; }
+/* 27 Nov: a variant without its own photo: honest note on the image */
+.sp-nophoto { position: absolute; left: 12px; bottom: 12px; z-index: 2; margin: 0; padding: 4px 10px; border-radius: 999px; background: rgba(23, 19, 15, .72); color: #fff; font: 600 12px/1.4 var(--sans, Inter, sans-serif); pointer-events: none; }
+.sp-nophoto[hidden] { display: none; }

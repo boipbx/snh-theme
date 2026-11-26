@@ -113,8 +113,19 @@
         new ResizeObserver(function () { if (list.clientWidth !== lastW) { lastW = list.clientWidth; go(current, false); } }).observe(list);
       }
     }
+    /* 27 Nov: a variant without its own photo (while other variants have one) goes to the first image and says so
+       ("Photo shows another flavour") instead of silently keeping the last flavour's photo */
     function showMedia(mediaId) {
-      if (!mediaId) return;
+      var gal = root.querySelector('[data-sp-gal]'), note = gal && gal.querySelector('.sp-nophoto');
+      var others = (data.variants || []).some(function (v) { return v.media; });
+      if (!mediaId) {
+        if (others && gal) {
+          if (!note) { note = document.createElement('p'); note.className = 'sp-nophoto'; note.textContent = 'Photo shows another flavour'; (gal.querySelector('.sp-stage') || gal).appendChild(note); }
+          note.hidden = false; go(0);
+        }
+        return;
+      }
+      if (note) note.hidden = true;
       var k = slides.findIndex(function (s) { return s.getAttribute('data-media') === String(mediaId); });
       if (k > -1) go(k);
     }

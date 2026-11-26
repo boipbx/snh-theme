@@ -188,45 +188,57 @@
               <div class="sp-b sp-app" {{ block.shopify_attributes }}>{% render block %}</div>
 
             {%- when 'vendor' -%}
-              {%- comment -%} 24 Nov: the brand as a small text eyebrow above the title (the brand logo stays on the photo) {%- endcomment -%}
-              {%- assign bl_h = product.vendor | handleize -%}{%- assign bl_col = collections[bl_h] -%}
-              {%- assign bl_href = product.vendor | url_for_vendor -%}{%- if bl_col.url != blank -%}{%- assign bl_href = bl_col.url -%}{%- endif -%}
-              <div class="sp-b sp-vendor" data-g="head" {{ block.shopify_attributes }}><a class="sp-eyebrow" href="{{ bl_href }}">{{ product.vendor | escape }}</a></div>
+              {%- comment -%} 26 Nov: no brand line above the title on any product (the brand logo on the photo stays and
+                links to the brand). The block stays in the templates so nothing breaks; it renders nothing. {%- endcomment -%}
 
             {%- when 'title' -%}
               <h1 class="sp-b sp-title" data-g="head" {{ block.shopify_attributes }}>{{ short_title | strip }}</h1>
 
             {%- when 'rating' -%}
+              {%- comment -%} 26 Nov: ONE meta row: stock · ★ rating (count) · Earn N points (the SNH points line merged in here;
+                tap opens the SNH Elite sheet). Member tier rate when signed in, the entry (Bronze) rate for guests. {%- endcomment -%}
               {%- liquid
                 assign r_count = product.metafields.reviews.rating_count.value | default: 0
                 assign r_val = product.metafields.reviews.rating.value.rating | default: 0
                 assign low_at = block.settings.low_stock
+                assign m_rate = rate_lo
+                assign m_tier = customer.metafields.custom.loyalty_tier.value | downcase
+                if m_tier == 'silver'
+                  assign m_rate = settings.snh_rate_silver | default: 7
+                elsif m_tier == 'gold' or m_tier == 'maxed out'
+                  assign m_rate = rate_hi
+                endif
+                # 27 Nov: guests see "Earn up to N points" (the Gold rate), members the exact amount at their own rate
+                if customer
+                  assign m_pts = v.price | times: m_rate | divided_by: 100 | divided_by: 100 | times: 100 | money_without_currency | split: '.' | first
+                else
+                  assign m_pts = v.price | times: rate_hi | divided_by: 100 | divided_by: 100 | times: 100 | money_without_currency | split: '.' | first
+                endif
               -%}
-              <div class="sp-b sp-meta" data-g="head" {{ block.shopify_attributes }}>
-                {%- if r_count > 0 -%}
-                  <a class="sp-stars" href="#reviews" style="--r: {{ r_val | divided_by: 5.0 | times: 100 }}%"><span class="sp-stars__ico" aria-hidden="true"></span><span>{{ r_val | round: 1 }} · {{ r_count }} review{% if r_count != 1 %}s{% endif %}</span></a>
-                {%- else -%}
-                  <a class="sp-stars sp-stars--none" href="#reviews">Be the first to review</a>
-                {%- endif -%}
-                <span class="sp-stock" data-sp-sync="stock">
-                  {%- if v.available == false -%}
-                    <span class="sp-pillstate sp-pillstate--out">Sold out</span>
-                  {%- elsif v.inventory_management == 'shopify' and v.inventory_quantity > 0 and v.inventory_quantity <= low_at -%}
-                    <span class="sp-pillstate sp-pillstate--low">Only {{ v.inventory_quantity }} left</span>
-                  {%- else -%}
-                    <span class="sp-pillstate">In stock</span>
-                  {%- endif -%}
+              <div class="sp-b sp-meta" data-g="head" data-sp-sync="meta" {{ block.shopify_attributes }}>
+                <span class="sp-meta__i sp-stock">
+                  {%- if v.available == false -%}<span class="sp-dot sp-dot--out"></span>Sold out
+                  {%- elsif v.inventory_management == 'shopify' and v.inventory_quantity > 0 and v.inventory_quantity <= low_at -%}<span class="sp-dot sp-dot--low"></span>Only {{ v.inventory_quantity }} left
+                  {%- else -%}<span class="sp-dot"></span>In stock{%- endif -%}
                 </span>
+                {%- if r_count > 0 -%}
+                  <a class="sp-meta__i sp-stars" href="#reviews" aria-label="Rated {{ r_val | round: 1 }} out of 5 from {{ r_count }} review{% if r_count != 1 %}s{% endif %}"><span class="sp-star" aria-hidden="true">★</span>{{ r_val | round: 1 }} <span class="sp-meta__n">({{ r_count }})</span></a>
+                {%- endif -%}
+                {%- if v.price > 0 -%}
+                  <button type="button" class="sp-meta__i sp-earn" data-sp-modal="elite">Earn {% unless customer %}up to {% endunless %}<b>{{ m_pts }}</b> points</button>
+                {%- endif -%}
               </div>
 
             {%- when 'subtitle' -%}
-              {%- liquid
-                assign sub = product.metafields.custom.subtitle.value | default: product.metafields.custom.summery_brief.value
-                assign sub = sub | strip_html | strip
-              -%}
-              {%- if sub != blank -%}<p class="sp-b sp-sub" data-g="head" {{ block.shopify_attributes }}>{{ sub | escape }}</p>{%- endif -%}
+              {%- comment -%} 26 Nov: the short-description paragraph under the title is gone (it repeated the description
+                below the fold); the block renders nothing. {%- endcomment -%}
 
             {%- when 'price' -%}
+              {%- comment -%} 26 Nov: price directly under the title (8px): big and bold, compare-at struck through and muted
+                beside it, then ONE value line: "Rs 170 per serving · 50 servings". When a bigger size costs less per serving
+                (another size of this product, or the same product sold as its own bigger pack: same brand, type and name
+                apart from the numbers, from this product's category collections), the saving shows in green and links there.
+                Nothing is invented: both prices are the live prices. {%- endcomment -%}
               {%- liquid
                 assign servings = 0
                 for o in v.options
@@ -235,12 +247,103 @@
                     assign servings = o | split: ' ' | first | plus: 0
                   endif
                 endfor
+                if servings == 0
+                  capture sv_txt
+                    render 'snh-servings', product: product, text: product.title
+                  endcapture
+                  assign servings = sv_txt | strip | plus: 0
+                endif
+                assign per_now = 0
+                assign up_pct = 0
+                assign up_url = ''
+                assign up_sv = 0
+                if servings > 1 and v.price > 0
+                  assign per_now = v.price | times: 1.0 | divided_by: servings
+                  # (a) a bigger size of this product (same other options where possible)
+                  for x in product.variants
+                    if x.id == v.id or x.available == false
+                      continue
+                    endif
+                    assign xs = 0
+                    for o in x.options
+                      assign od = o | downcase
+                      if od contains 'serving'
+                        assign xs = o | split: ' ' | first | plus: 0
+                      endif
+                    endfor
+                    if xs > servings
+                      assign xper = x.price | times: 1.0 | divided_by: xs
+                      assign pct = per_now | minus: xper | times: 100 | divided_by: per_now | floor
+                      if pct >= 5 and pct > up_pct
+                        assign up_pct = pct
+                        assign up_sv = xs
+                        assign up_url = product.url | append: '?variant=' | append: x.id
+                      endif
+                    endif
+                  endfor
+                  # (b) the same product sold as its own bigger pack
+                  assign my_base = ''
+                  assign tw = product.title | downcase | split: ' '
+                  for w in tw
+                    assign wd = w | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+                    if wd != w or w contains 'serving'
+                      continue
+                    endif
+                    assign my_base = my_base | append: w | append: ' '
+                  endfor
+                  assign seen = ','
+                  assign ncol = 0
+                  for c in product.collections
+                    if ncol >= 4
+                      break
+                    endif
+                    if c.products_count > 400
+                      continue
+                    endif
+                    assign ncol = ncol | plus: 1
+                    for p2 in c.products limit: 60
+                      if p2.id == product.id or p2.available == false or p2.vendor != product.vendor or p2.type != product.type
+                        continue
+                      endif
+                      assign k2 = ',' | append: p2.id | append: ','
+                      if seen contains k2
+                        continue
+                      endif
+                      assign seen = seen | append: p2.id | append: ','
+                      assign b2 = ''
+                      assign tw2 = p2.title | downcase | split: ' '
+                      for w in tw2
+                        assign wd = w | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+                        if wd != w or w contains 'serving'
+                          continue
+                        endif
+                        assign b2 = b2 | append: w | append: ' '
+                      endfor
+                      if b2 != my_base
+                        continue
+                      endif
+                      assign p2v = p2.selected_or_first_available_variant
+                      capture s2
+                        render 'snh-servings', product: p2, text: p2.title
+                      endcapture
+                      assign s2 = s2 | strip | plus: 0
+                      if s2 > servings and p2v.price > 0
+                        assign xper = p2v.price | times: 1.0 | divided_by: s2
+                        assign pct = per_now | minus: xper | times: 100 | divided_by: per_now | floor
+                        if pct >= 5 and pct > up_pct
+                          assign up_pct = pct
+                          assign up_sv = s2
+                          assign up_url = p2.url
+                        endif
+                      endif
+                    endfor
+                  endfor
+                endif
               -%}
               <div class="sp-b sp-price" data-g="price" data-sp-sync="price" {{ block.shopify_attributes }}>
                 <p class="sp-price__row">
                   <span class="sp-price__now">{{ v.price | money_without_trailing_zeros }}</span>
-                  {%- comment -%} 11 Nov: bundles without a compare-at price show their bought-separately total too
-                    (same rule as the cards, snippets/snh-v2-retail) {%- endcomment -%}
+                  {%- comment -%} bundles without a compare-at price show their bought-separately total (snippets/snh-v2-retail) {%- endcomment -%}
                   {%- assign p_was = v.compare_at_price | default: 0 -%}
                   {%- unless p_was > v.price -%}
                     {%- capture p_was -%}{% render 'snh-v2-retail', product: product %}{%- endcapture -%}
@@ -248,30 +351,26 @@
                   {%- endunless -%}
                   {%- if p_was > v.price -%}
                     <s class="sp-price__was"><span class="visually-hidden">Was </span>{{ p_was | money_without_trailing_zeros }}</s>
-                    <span class="sp-chip">Save {{ p_was | minus: v.price | money_without_trailing_zeros }}</span>
+                    <span class="sp-price__save">Save {{ p_was | minus: v.price | money_without_trailing_zeros }}</span>
                   {%- endif -%}
                 </p>
-                {%- if servings > 0 -%}<p class="sp-price__per">{{ v.price | divided_by: servings | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros }} per serving · {{ servings }} servings</p>{%- endif -%}
+                {%- if servings > 1 -%}
+                  <p class="sp-price__per">{{ v.price | divided_by: servings | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros }} per serving · {{ servings }} servings
+                    {%- if up_url != '' -%}<a class="sp-price__up" href="{{ up_url }}">Save {{ up_pct }}% per serving with {{ up_sv }} servings</a>{%- endif -%}
+                  </p>
+                {%- endif -%}
               </div>
 
             {%- when 'koko' -%}
               {%- if v.price > 0 -%}
-                <p class="sp-b sp-line" data-g="price" data-sp-sync="koko" {{ block.shopify_attributes }}>
-                  {% render 'snh-koko-logo', h: 18, class: 'sp-koko' %}
-                  <span>or 3 × <b>{{ v.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</b>, interest-free</span>
-                  <button type="button" class="sp-info" data-sp-modal="payment" aria-label="Payment options">i</button>
+                <p class="sp-b sp-line sp-kokoline" data-g="price" data-sp-sync="koko" {{ block.shopify_attributes }}>
+                  <span>or 3 × <b>{{ v.price | divided_by: 300.0 | round | times: 100 | money_without_trailing_zeros }}</b> with</span>{% render 'snh-koko-logo', h: 16, class: 'sp-koko' %}
+                  <button type="button" class="sp-info" data-sp-modal="payment" aria-label="How Koko and other payment options work">i</button>
                 </p>
               {%- endif -%}
 
             {%- when 'points' -%}
-              {%- liquid
-                assign pts_lo = v.price | times: rate_lo | divided_by: 100 | money_without_currency | split: '.' | first
-                assign pts_hi = v.price | times: rate_hi | divided_by: 100 | money_without_currency | split: '.' | first
-              -%}
-              <button type="button" class="sp-b sp-line sp-line--btn" data-g="price" data-sp-modal="elite" data-sp-sync="points" {{ block.shopify_attributes }}>
-                {%- render 'snh-product-icon', name: 'zap' -%}
-                <span>Earn <b>{{ pts_lo }}–{{ pts_hi }}</b> SNH points on this order</span>
-              </button>
+              {%- comment -%} 26 Nov: the points line is part of the meta row (rating block) now; renders nothing here. {%- endcomment -%}
 
             {%- when 'divider' -%}
               <hr class="sp-b sp-hr" {{ block.shopify_attributes }}>
@@ -344,7 +443,7 @@
 
             {%- when 'bundles' -%}
               {%- capture bx -%}{%- render 'snh-v2-bundles', product: product, handles: block.settings.handles, limit: 3 -%}{%- endcapture -%}
-              {%- if bx != blank -%}<div class="sp-b sp-bundles" {{ block.shopify_attributes }}>{{ bx }}</div>{%- endif -%}
+              {%- if bx != blank -%}<div class="sp-b sp-bundles" {{ block.shopify_attributes }}>{{ bx }}</div>{%- assign bx_shown = true -%}{%- endif -%}
 
             {%- when 'benefits' -%}
               {%- liquid
@@ -396,7 +495,8 @@
       <div class="swb__item">{%- render 'product-card', product: b, position: swb_n -%}</div>
     {%- endfor -%}
   {%- endcapture -%}
-  {%- if swb_n > 0 -%}
+  {%- comment -%} 26 Nov: one "Save with a bundle" per page: this row only shows when the buy box has no bundle block {%- endcomment -%}
+  {%- if swb_n > 0 and bx_shown != true -%}
     <section class="sp-wrap swb" aria-labelledby="swb-h-{{ section.id }}">
       <div class="swb__head"><h2 class="swb__h" id="swb-h-{{ section.id }}">Save with a bundle</h2><a class="swb__all" href="/collections/bundle-offers">All bundles</a></div>
       <div class="swb__row" role="list">{{ swb_cards }}</div>
@@ -419,28 +519,30 @@
   {%- endif -%}
 
   {%- comment -%} ── Info dialogs (delivery / payment / authentic / Elite) ── {%- endcomment -%}
-  {%- capture m_delivery -%}<p>Free delivery on every order over {{ free_from }}.</p><p>Colombo orders placed before 2 PM arrive the same day.</p><p>Everywhere else in Sri Lanka in 1 to 3 working days, fully tracked.</p>{%- endcapture -%}
-  {%- capture m_payment -%}<p>Visa and Mastercard, direct bank transfer, or cash on delivery.</p><p>Split any order into 3 interest-free instalments with Koko at checkout.</p><p>Every checkout is SSL-encrypted and secure.</p>{%- endcapture -%}
-  {%- capture m_authentic -%}<p>Sports Nutrition Hub is an official distributor: every product comes directly from the brand or its certified distributor.</p><p>Batch codes are verifiable with the manufacturer.</p><p>Informed-Sport certified ranges are available for tested athletes.</p>{%- endcapture -%}
-  {%- capture m_elite -%}<p>Members earn points back on every eligible order: Bronze {{ settings.snh_rate_bronze | default: 3 }}%, Silver {{ settings.snh_rate_silver | default: 7 }}%, Gold {{ rate_hi }}%.</p><p>Points add up automatically and convert to money off your next order.</p>{%- endcapture -%}
+  {%- comment -%} 26 Nov: every info sheet = title + 3 short lines (+ actions for Elite). No kicker label. {%- endcomment -%}
+  {%- capture m_delivery -%}<p>Free delivery on orders over {{ free_from }}.</p><p>Colombo: order before 2 PM and it arrives today.</p><p>Rest of Sri Lanka: 1–3 working days, tracked.</p>{%- endcapture -%}
+  {%- capture m_payment -%}<p>Split any order into 3 interest-free payments with Koko at checkout.</p><p>Or pay by Visa, Mastercard, bank transfer or cash on delivery.</p><p>Every checkout is encrypted and secure.</p>{%- endcapture -%}
+  {%- capture m_authentic -%}<p>Official distributor: straight from the brand or its certified distributor.</p><p>Batch codes you can check with the maker.</p><p>Informed-Sport certified ranges for tested athletes.</p>{%- endcapture -%}
+  {%- capture m_elite -%}<p>Earn {{ settings.snh_rate_bronze | default: 3 }}–{{ rate_hi }}% back in points on every order (Bronze {{ settings.snh_rate_bronze | default: 3 }}%, Silver {{ settings.snh_rate_silver | default: 7 }}%, Gold {{ rate_hi }}%).</p><p>Points add up by themselves and turn into money off your next order.</p><p>Joining is free.</p>{%- endcapture -%}
   {%- capture m_elite_actions -%}
-    {%- if customer -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_url }}#rewards">See my points</a><a class="sp-btn sp-btn--line" href="{% render 'snh-elite-url' %}">How it works</a>
-    {%- else -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_register_url }}">Join free</a><a class="sp-btn sp-btn--line" href="{{ routes.account_login_url }}">Log in</a>{%- endif -%}
+    {%- if customer -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_url }}#rewards">See my points</a><a class="sp-btn sp-btn--line" href="{% render 'snh-elite-url' %}"><span>How it works</span></a>
+    {%- else -%}<a class="sp-btn sp-btn--accent" href="{{ routes.account_register_url }}">Join free</a><a class="sp-btn sp-btn--line" href="{{ routes.account_login_url }}"><span>Sign in</span></a>{%- endif -%}
   {%- endcapture -%}
   {%- liquid
     assign modal_keys = 'delivery,payment,authentic,elite' | split: ','
   -%}
   {%- for k in modal_keys -%}
     {%- case k -%}
-      {%- when 'delivery' -%}{%- assign m_k = 'Delivery' -%}{%- assign m_t = 'Fast, tracked, island-wide' -%}{%- assign m_b = m_delivery -%}{%- assign m_a = '' -%}
-      {%- when 'payment' -%}{%- assign m_k = 'Payment' -%}{%- assign m_t = 'Pay the way you want' -%}{%- assign m_b = m_payment -%}{%- assign m_a = '' -%}
-      {%- when 'authentic' -%}{%- assign m_k = 'Authenticity' -%}{%- assign m_t = '100% authentic, always' -%}{%- assign m_b = m_authentic -%}{%- assign m_a = '' -%}
-      {%- when 'elite' -%}{%- assign m_k = 'SNH Elite' -%}{%- assign m_t = 'Earn on every order' -%}{%- assign m_b = m_elite -%}{%- assign m_a = m_elite_actions -%}
+      {%- when 'delivery' -%}{%- assign m_k = 'Delivery' -%}{%- assign m_t = 'Delivery' -%}{%- assign m_b = m_delivery -%}{%- assign m_a = '' -%}
+      {%- when 'payment' -%}{%- assign m_k = 'Payment' -%}{%- assign m_t = 'Pay your way' -%}{%- assign m_b = m_payment -%}{%- assign m_a = '' -%}
+      {%- when 'authentic' -%}{%- assign m_k = 'Authenticity' -%}{%- assign m_t = '100% authentic' -%}{%- assign m_b = m_authentic -%}{%- assign m_a = '' -%}
+      {%- when 'elite' -%}{%- assign m_k = 'SNH Elite' -%}{%- assign m_t = 'Earn points with SNH Elite' -%}{%- assign m_b = m_elite -%}{%- assign m_a = m_elite_actions -%}
     {%- endcase -%}
     <dialog class="sp-modal" id="sp-m-{{ k }}-{{ section.id }}" data-sp-dialog="{{ k }}" aria-labelledby="sp-m-{{ k }}-{{ section.id }}-t">
-      <form method="dialog"><button class="sp-modal__x" aria-label="Close">×</button></form>
-      <p class="sp-modal__k">{{ m_k }}</p>
-      <h2 class="sp-modal__t" id="sp-m-{{ k }}-{{ section.id }}-t">{{ m_t }}</h2>
+      <div class="sp-modal__head">
+        <h2 class="sp-modal__t" id="sp-m-{{ k }}-{{ section.id }}-t">{{ m_t }}</h2>
+        <form method="dialog"><button class="sp-modal__x" aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></form>
+      </div>
       <div class="sp-modal__b">{{ m_b }}</div>
       {%- if m_a != '' -%}<div class="sp-modal__a">{{ m_a }}</div>{%- endif -%}
     </dialog>
