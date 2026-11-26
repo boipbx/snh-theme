@@ -3004,3 +3004,31 @@ html body .quote__text { font-size: max(1em, .92em); line-height: 1.45; }
 .bx__h { display: block; font: 800 17px/1.25 var(--sans); letter-spacing: -.01em; color: var(--ink); }
 .bx__hero strong { font-weight: 700; }
 
+/* ── 26 Nov: PRODUCT CARDS, simplified (collections, search, rows, cart suggestions). image → name (2 lines) → price +
+   small struck compare-at → saving as small green text. One chip on the image corner. Cards in a row share one height
+   and their prices sit on one line (the foot keeps room for the saving line even when there is none). The "Save Rs"
+   pill leaves the photo on phones and on every bundle card (it covered the photo's green BUNDLE ribbon). ── */
+.pc { display: flex; flex-direction: column; height: 100%; }
+.pc__body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 12px 14px 14px; }
+.pc__name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; height: 2.6em; min-height: 0; margin: 0;
+  font: 700 16px/1.3 var(--sans); letter-spacing: -.01em; text-wrap: pretty; }
+.pc__foot { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 2px; min-height: 46px; margin-top: auto; padding-top: 10px; }
+.pc__price { display: flex; flex-wrap: nowrap; align-items: baseline; gap: 0 8px; min-height: 0; margin: 0; padding: 0; background: none; white-space: nowrap; }
+.pc__now, .pc__price--sale .pc__now { font: 800 18px/1.15 var(--sans); letter-spacing: -.015em; color: #0E0E0E; font-variant-numeric: tabular-nums; }
+.pc__from { font-weight: 600; font-size: .78em; color: #6B665E; }
+.pc__was { font: 500 13px/1.15 var(--sans); color: #8A857D; text-decoration-thickness: 1px; }
+.pc__note { margin: 0; font: 700 13px/1.3 var(--sans); }
+.pc__save { color: #1E7A43; }
+.pc__note--out { color: #8A857D; font-weight: 600; }
+.pc--bundle .pc__badge:not(.pc__badge--note) { display: none; }
+.pc--bundle .pc__frame:not(:has(.pc__badge--note)) .pc__inf { top: 12px; }
+@media (max-width: 767px) {
+  .pc__body { padding: 10px 12px 12px; }
+  .pc__name { font-size: 14.5px; }
+  .pc__now, .pc__price--sale .pc__now { font-size: 16px; }
+  .pc__was { font-size: 12.5px !important; }
+  .pc__foot { min-height: 42px; padding-top: 8px; }
+  .pc__badge:not(.pc__badge--note) { display: none; }
+  .pc__frame:not(:has(.pc__badge--note)) .pc__inf, .pc--bundle .pc__frame:not(:has(.pc__badge--note)) .pc__inf { top: 10px; }
+}
+
