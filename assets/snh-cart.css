@@ -465,3 +465,47 @@
 .sbw .sbw__fx { position: absolute; left: -20px; top: -60px; right: auto; bottom: auto; z-index: 5; pointer-events: none; }
 .sbw .sbw__ic { animation: none; }
 @media (prefers-reduced-motion: reduce) { .sbw.is-new { animation: sbw-fade 300ms ease-out both; } .sbw .sbw__fx { display: none; } }
+
+/* ── 26 Nov: BASKET, simplified and a little game-like (drawer + cart page, assets/snh-cart.js) ──
+   Top: one free-delivery bar that fills smoothly on every add (milestone ticks at 50 % and 75 %, a check + sheen when
+   one is passed, 🎉 + confetti when delivery unlocks), then at most one info line (click & collect). Items: image, name,
+   variant, stepper, price (no brand, no tags). One "Make it a bundle" row. Two suggestions. Savings = green lines in the
+   totals. */
+.scd__bar { display: grid; gap: 6px; }
+.sfree { position: relative; }
+.sfree__t { gap: 8px; }
+.sfree__ic { display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none; color: var(--v-accent, #C9481A); }
+.sfree__ic svg { width: 16px; height: 16px; }
+.sfree.is-on .sfree__ic { color: #1E7A43; }
+.sfree__txt b { font-weight: 700; }
+.sfree__bar, .snh-cd .sfree__bar { position: relative; height: 6px; border-radius: 999px; background: #ECE8E2; overflow: visible; }
+.sfree__bar i { position: relative; height: 100%; border-radius: inherit; overflow: hidden; background: linear-gradient(90deg, #E0521C, #F08A3C); transition: width .7s cubic-bezier(.2, .8, .3, 1); }
+.sfree__mk { position: absolute; top: 50%; width: 2px; height: 10px; margin: -5px 0 0 -1px; border-radius: 2px; background: rgba(255, 255, 255, .9); box-shadow: 0 0 0 1px rgba(12, 12, 13, .08); }
+.sfree.is-on .sfree__bar i { background: linear-gradient(90deg, #1E7A43, #34B36A); }
+.sfree.is-on .sfree__mk { display: none; }
+.scd__bar .sfree.is-on .sfree__bar { display: block; }
+.sfree.is-mile .sfree__bar i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .75) 50%, transparent 80%); transform: translateX(-100%); animation: sfreeSheen .9s ease .25s 1 both; }
+.sfree.is-mile .sfree__ic { animation: sfreePop .5s cubic-bezier(.2, .9, .3, 1.4); }
+@keyframes sfreeSheen { to { transform: translateX(100%); } }
+@keyframes sfreePop { 0% { transform: scale(.6); } 60% { transform: scale(1.25); } 100% { transform: none; } }
+.sfree .sbw__fx { position: absolute; left: -20px; top: -60px; pointer-events: none; z-index: 2; }
+.scd__bar .scd__cc { padding: 0; border: 0; background: none; font-size: 12.5px; color: #5A5650; }
+@media (prefers-reduced-motion: reduce) { .sfree__bar i { transition: none; } .sfree.is-mile .sfree__bar i::after, .sfree.is-mile .sfree__ic { animation: none; } }
+
+/* items: no brand line, no saving tags */
+.sline__brand, .sline__tags, .sdisc { display: none !important; }
+.sline__t { font-weight: 700; }
+
+/* one "Make it a bundle" row under the items */
+.sbo-one { margin-top: 12px; }
+.sbo-one .sbo.sbo--row { margin-top: 0; }
+
+/* two suggestions, side by side */
+.scd__bh { font: 700 14px/1.3 var(--sans); }
+.snh-cd .ssugs.ssugs--two, .scp .ssugs.ssugs--two { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: auto; overflow: visible; }
+
+/* savings: one green line per saving, in the totals */
+.sft__save { justify-content: space-between; gap: 12px; font: 600 13.5px/1.5 var(--sans); color: #1E7A43; }
+.sft__save b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.sft__elite { margin-top: 4px; padding-top: 12px; border-top: 1px solid #EEEBE6; }
+.sft__elite .sft__line { justify-content: center; }

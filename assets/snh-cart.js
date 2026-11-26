@@ -80,7 +80,7 @@
         '<section class="scd__block snh-reco" data-snh-reco="empty" data-limit="' + (this.mode === 'page' ? 4 : 3) + '" data-heading="Picked for you" hidden></section>' +
         '<section class="scd__block" data-cart-picks></section>';
       this.foot.hidden = true;
-      var eb = $('[data-cart-bar]', this.el); if (eb) eb.innerHTML = '';
+      var eb = $('[data-cart-bar]', this.el); if (eb) { var cc0 = $('.scd__cc', eb); eb.innerHTML = ''; if (cc0) this.el.appendChild(cc0); } this.__pct = 0;
       this.el.removeAttribute('data-cart-decision');
       if (this.mode === 'page') this.pageExtras(cart);
       this.picks(cart);
@@ -92,19 +92,16 @@
     }
     this.foot.hidden = false;
     var gap = c.threshold - cart.total_price, waived = gap > 0 && gap <= c.tolerance, unlocked = gap <= 0 || waived;
-    var pct = Math.max(4, Math.min(100, Math.round(cart.total_price / c.threshold * 100)));
-    var bar = '<div class="sfree' + (unlocked ? ' is-on' : '') + '" role="status">' +
-      '<p class="sfree__t">' + (unlocked ? icons.check + '<b>Free delivery unlocked</b>' : icons.truck + '<span><b>' + rsUp(gap) + '</b> to free delivery</span>') + '<span class="sfree__th">' + rs(c.threshold) + '</span></p>' +
-      '<div class="sfree__bar"><i style="width:' + (unlocked ? 100 : pct) + '%"></i></div></div>';
+    var pct = unlocked ? 100 : Math.max(4, Math.min(100, Math.round(cart.total_price / c.threshold * 100)));
     // discounts: cart-level applications + line discounts, by title
     var disc = {};
     (cart.cart_level_discount_applications || []).forEach(function (d) { disc[d.title] = (disc[d.title] || 0) + Number(d.total_allocated_amount || 0); });
     cart.items.forEach(function (it) { (it.line_level_discount_allocations || []).forEach(function (a) { var t = a.discount_application && a.discount_application.title || 'Discount'; disc[t] = (disc[t] || 0) + Number(a.amount || 0); }); });
     var dkeys = Object.keys(disc).filter(function (k) { return disc[k] > 0; });
-    var banner = dkeys.length ? '<div class="sdisc" role="status">' + icons.tag + '<p><b>' + esc(dkeys.join(' + ')) + '</b> applied automatically · you save ' + rs(dkeys.reduce(function (s, k) { return s + disc[k]; }, 0)) + '</p></div>' : '';
+    /* 26 Nov: no discount banner: each discount shows once, as a green line in the totals (summary) */
     var lines = '<ul class="slines" role="list">' + cart.items.map(function (it, i) { return self.line(it, i + 1); }).join('') + '</ul>';
-    this.body.innerHTML = banner + lines + '<section class="scd__block" data-cart-sugg hidden></section><div class="sbd" data-cart-bundle hidden></div>';
-    var pb = $('[data-cart-bar]', this.el); if (pb) pb.innerHTML = bar;
+    this.body.innerHTML = lines + '<div class="sbo-one" data-cart-bundle-row hidden></div><div class="sbd" data-cart-bundle hidden></div><section class="scd__block" data-cart-sugg hidden></section>';
+    this.freeBar(pct, unlocked, gap);
     this.summary(cart, disc);
     this.enrich(cart);
     this.suggest(cart);
@@ -112,6 +109,33 @@
     this.__lastCart = cart; this.autoBundles(cart);
     if (this.mode === 'page') this.pageExtras(cart);
     this.emit('render', cart);
+  };
+
+  /* 26 Nov: ONE free-delivery bar, built once and updated in place so the fill animates on every add. Crossing 50 % and
+     75 % shows a small celebration (a check pops in, a sheen runs along the fill); unlocking free delivery says so with
+     🎉 and a short confetti burst, once per unlock. Under it, max one info line: free click & collect. */
+  Cart.prototype.freeBar = function (pct, unlocked, gap) {
+    var pb = $('[data-cart-bar]', this.el); if (!pb) return;
+    var box = $('.sfree', pb);
+    if (!box) {
+      pb.innerHTML = '<div class="sfree" role="status" aria-live="polite"><p class="sfree__t"><span class="sfree__ic" aria-hidden="true"></span><span class="sfree__txt"></span></p><div class="sfree__bar"><i style="width:0%"></i><span class="sfree__mk" style="left:50%"></span><span class="sfree__mk" style="left:75%"></span></div></div>';
+      box = $('.sfree', pb);
+    }
+    var cc = $('.scd__cc', this.el) || $('[data-cart-cc]', this.el.closest('section') || document);
+    if (cc && cc.parentNode !== pb) pb.appendChild(cc);
+    var prev = this.__pct == null ? (function () { try { return +sessionStorage.getItem('snh_free_pct') || 0; } catch (e) { return 0; } })() : this.__pct;
+    this.__pct = pct; try { sessionStorage.setItem('snh_free_pct', String(pct)); } catch (e) {}
+    box.classList.toggle('is-on', unlocked);
+    $('.sfree__ic', box).innerHTML = unlocked ? icons.check : icons.truck;
+    $('.sfree__txt', box).innerHTML = unlocked ? '<b>Free delivery unlocked</b> 🎉' : '<b>' + rsUp(gap) + '</b> to free delivery';
+    var fill = $('.sfree__bar i', box);
+    requestAnimationFrame(function () { fill.style.width = pct + '%'; });
+    var crossed = [50, 75].filter(function (m) { return prev < m && pct >= m && pct < 100; });
+    if (pct > prev && (crossed.length || (unlocked && prev < 100))) {
+      box.classList.remove('is-mile'); void box.offsetWidth; box.classList.add('is-mile');
+      setTimeout(function () { box.classList.remove('is-mile'); }, 1400);
+      if (unlocked && prev < 100 && !reduce) setTimeout(function () { confetti(box); }, 350);
+    }
   };
 
   /* ---------- cart page extras: complete your stack, bundle swaps, try something new, delivery date ---------- */
@@ -133,7 +157,7 @@
     if (empty) return;
     // complete your stack: Shopify's complementary / related products for the basket
     var stack = $('[data-cart-stack]', this.el);
-    if (stack) {
+    if (stack && false) {
       Promise.all(cart.items.slice(0, 3).map(function (it) {
         var k = 'rec_' + it.product_id;
         if (!listCache[k]) listCache[k] = Promise.all(['complementary', 'related'].map(function (intent) { return json(root + 'recommendations/products.json?product_id=' + it.product_id + '&limit=10&intent=' + intent).then(function (j) { return j.products || []; }).catch(function () { return []; }); })).then(function (two) { return two[0].concat(two[1]); });
@@ -191,11 +215,10 @@
     return '<li class="sline" data-line="' + n + '" data-key="' + esc(it.key) + '" data-handle="' + esc(it.handle) + '" data-vid="' + it.variant_id + '">' +
       '<a class="sline__img' + (framed(it.image) ? ' is-framed' : '') + '" href="' + esc(it.url) + '" tabindex="-1">' + (it.image ? '<img src="' + esc(img(it.image, 200)) + '" alt="" width="88" height="88" loading="lazy" data-v2-lift>' : '') + '</a>' +
       '<div class="sline__b">' +
-        '<p class="sline__brand">' + esc(it.vendor) + '</p>' +
         '<a class="sline__t" href="' + esc(it.url) + '">' + esc(shortTitle(it.product_title, it.vendor)) + '</a>' +
         (variant ? '<p class="sline__v">' + esc(variant) + '</p>' : '') +
         (sub ? '<p class="sline__sub">' + icons.bolt + esc(sub) + '</p>' : '') +
-        (tags.length ? '<p class="sline__tags">' + tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</p>' : '') +
+
         '<div class="sline__row">' +
           '<div class="sqty" role="group" aria-label="Quantity of ' + esc(it.product_title) + '"><button type="button" data-qty="' + (it.quantity - 1) + '" aria-label="One fewer">−</button><span aria-live="polite">' + it.quantity + '</span><button type="button" data-qty="' + (it.quantity + 1) + '" aria-label="One more">+</button></div>' +
           '<button type="button" class="sline__rm" data-qty="0" aria-label="Remove ' + esc(it.product_title) + '">' + icons.trash + '</button>' +
@@ -239,13 +262,24 @@
       if (next) tier = '<p class="sft__line">' + icons.bolt + '<span>' + (after >= next[1] ? 'This order takes you to <b>' + next[0] + '</b>' : rs((next[1] - after) * 100) + ' more to <b>' + next[0] + '</b> after this order') + '</span></p>';
     }
     var points = '<p class="sft__line">' + icons.bolt + (c.member ? '<span>Earn <b>' + pts.toLocaleString('en-US') + ' points</b> · ' + esc(c.tier) + ' ' + c.rate + '%</span>' : '<span><a href="' + esc(c.login) + '" data-account-open>Sign in</a> to earn <b>' + pts.toLocaleString('en-US') + ' points</b></span>') + '</p>';
+    // 26 Nov: savings as green lines in the totals, each once: "Bundle saving −Rs 2,000", other discounts by name, sale prices
+    var dl = {}, dsum = 0;
+    (cart.cart_level_discount_applications || []).forEach(function (d) { dl[d.title] = (dl[d.title] || 0) + Number(d.total_allocated_amount || 0); });
+    cart.items.forEach(function (it) { (it.line_level_discount_allocations || []).forEach(function (a) { var t = a.discount_application && a.discount_application.title || 'Discount'; dl[t] = (dl[t] || 0) + Number(a.amount || 0); }); });
+    var bundleItems = 0; cart.items.forEach(function (it) { if (/bundle/i.test(it.product_type || '') && it.__cmp) bundleItems += Math.max(0, it.__cmp - it.final_line_price); });
+    var saveLines = Object.keys(dl).filter(function (k) { return dl[k] > 0; }).map(function (k) { dsum += dl[k]; return [/bundle/i.test(k) ? 'Bundle saving' : /member|elite/i.test(k) ? 'Member price' : k, dl[k]]; });
+    var rest = save - dsum - bundleItems;
+    if (bundleItems > 0) saveLines.unshift(['Bundle saving', bundleItems]);
+    if (rest > 0) saveLines.push(['Sale savings', rest]);
+    var merged = {}; saveLines.forEach(function (x) { merged[x[0]] = (merged[x[0]] || 0) + x[1]; });
     this.foot.innerHTML =
-      (save ? '<p class="sft__save">' + icons.tag + '<span>You save <b>' + rs(save) + '</b></span></p>' : '') +
+      Object.keys(merged).map(function (k) { return '<p class="sft__save"><span>' + esc(k) + '</span><b>−' + rs(merged[k]) + '</b></p>'; }).join('') +
       '<div class="sft__tot"><span>Total<small>' + (free ? 'Free delivery' : 'Delivery at checkout') + ' · taxes included</small></span><b>' + rs(cart.total_price) + '</b></div>' +
-      points + tier +
+      (this.mode === 'page' ? '' : points + tier) +
       '<form action="' + esc(c.cartUrl) + '" method="post" class="ssum__go"><button type="submit" name="checkout" class="scheck">' + icons.lock + '<span>Secure checkout</span></button></form>' +
       '<p class="sft__koko">' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(15) : 'Koko') + '<span>or 3 × <b>' + rs(Math.ceil(cart.total_price / 3)) + '</b>, interest-free</span></p>' +
       this.payRow() +
+      (this.mode === 'page' ? '<div class="sft__elite">' + points + tier + '</div>' : '') +
       (c.rating ? '<p class="sft__rate">' + icons.star + '<span>' + esc(c.rating) + '</span></p>' : '');
   };
   Cart.prototype.payRow = function () {
@@ -288,15 +322,17 @@
       var catLists = Object.keys(targets).slice(0, 5).map(function (t) { return Promise.all((cols[t] || []).map(function (h) { return listOf(h, 30); })).then(function (ls) { return [].concat.apply([], ls).map(function (p) { var n = norm(p, 'category'); n.cat = t; return n; }); }); });
       var bars = Promise.all((cols['bars-snacks'] || []).map(function (h) { return listOf(h, 40); })).then(function (ls) { return [].concat.apply([], ls).map(function (p) { var n = norm(p, 'bars'); n.cat = 'bars-snacks'; return n; }); });
       var best = reco.bestsellers ? listOf(reco.bestsellers, 30) : this.picksList();
+      var bundlesL = reco.bundlesCol ? listOf(reco.bundlesCol, 60) : Promise.resolve([]);
       var viewed = Promise.all(R.viewed().slice(0, 4).map(function (h) { return productCache[h] || (productCache[h] = json(root + 'products/' + h + '.js').catch(function () { return null; })); }));
       return Promise.all([
         Promise.all(ids.map(function (id) { return recs(id, 'complementary'); })),
         Promise.all(ids.map(function (id) { return recs(id, 'related'); })),
-        Promise.all(catLists), bars, best, viewed
+        Promise.all(catLists), bars, best, viewed, bundlesL
       ]).then(function (r) {
         var flat = function (a) { return [].concat.apply([], a); };
         return { comp: flat(r[0]).map(function (p) { return norm(p, 'complementary'); }), related: flat(r[1]).map(function (p) { return norm(p, 'related'); }),
-          cat: flat(r[2]), bars: r[3], best: r[4].map(function (p) { return norm(p, 'best'); }), viewed: r[5].filter(Boolean).map(function (p) { return norm(p, 'viewed'); }) };
+          cat: flat(r[2]), bars: r[3], best: r[4].map(function (p) { return norm(p, 'best'); }), viewed: r[5].filter(Boolean).map(function (p) { return norm(p, 'viewed'); }),
+          bundles: r[6].map(function (p) { var n = norm(p, 'bundle'); n.cat = 'bundle'; return n; }) };
       });
     }
     var addons = c.addons ? (listCache[key] || (listCache[key] = json(root + 'collections/' + encodeURIComponent(c.addons) + '/products.json?limit=250').then(function (j) { return j.products || []; }).catch(function () { return []; }))) : Promise.resolve([]);
@@ -380,7 +416,12 @@
     this.pool(cart).then(function (pool) {
       if (run !== self.suggRun) return;
       var cards, head;
-      if (window.SNHReco && pool.bars) {
+      if (window.SNHReco && SNHReco.rules && pool.bars) {
+        var d = SNHReco.rules(cart, pool, Object.assign({}, self.cfg, { aov: (self.reco || {}).aov, aovWindow: (self.reco || {}).aovWindow }), self.reco, self.mode);
+        self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
+        cards = d.items.slice(0, 2).map(function (p) { return self.card(p, p.why); });
+        head = '<span>' + esc(d.head) + '</span>';
+      } else if (window.SNHReco && pool.bars) {
         var d = SNHReco.decide(cart, pool, self.cfg, self.reco, self.mode);
         self.el.setAttribute('data-cart-decision', JSON.stringify(d.log));
         cards = d.items.map(function (p) { return self.card(p, p.why); });
@@ -393,7 +434,7 @@
         head = '<span>' + (d.rule === 'close' ? 'Close the gap' : 'Goes with your order') + '</span>';
       }
       if (!cards.length) { box.hidden = true; box.innerHTML = ''; return; }
-      box.innerHTML = '<p class="scd__bh">' + (d.rule === 'close' ? icons.truck : icons.plus) + head + '</p><ul class="ssugs" role="list">' + cards.join('') + '</ul>';
+      box.innerHTML = '<p class="scd__bh">' + head + '</p><ul class="ssugs ssugs--two" role="list">' + cards.join('') + '</ul>';
       box.hidden = false;
       self.emit('suggest', d);
     });
@@ -554,10 +595,11 @@
       (self.cfg.bundles || []).forEach(function (o) { if (o.items.length > 1 && o.items.every(function (x) { return inCart[x.pid]; })) names.push(o.title); });
       self.bundleWin(names, saving, ab);
       // 2. make it a bundle: under the first basket line a bundle contains (bundle not in the basket yet)
-      var used = {};
+      // 26 Nov: ONE "Make it a bundle" row for the whole basket (the best match), under the items, not one per item
+      var used = {}, row = $('[data-cart-bundle-row]', self.el), done = false;
+      if (row) { row.hidden = true; row.innerHTML = ''; }
       lines.forEach(function (l, n) {
-        var li = $('.sline[data-line="' + (n + 1) + '"]', self.el); if (!li) return;
-        var old = $('.sbo', li); if (old) old.remove();
+        if (done) return;
         if (byId[l.it.product_id] || /bundle/i.test(l.it.product_type || '')) return;
         var best = null;
         bundles.forEach(function (b) {
@@ -577,11 +619,14 @@
         box.innerHTML = '<a class="sbo__t" href="' + esc(best.b.u) + '" title="' + esc(best.b.t + ' · ' + rs(best.b.p) + ' · swaps your ' + (what.length > 1 ? what.slice(0, -1).join(', ') + ' and ' + what[what.length - 1] : what[0])) + '">' + icons.tag +
           '<span><span class="sbo__lead">Make it a bundle</span><span class="sbo__short">Bundle</span>' + (best.b.s ? ', <b>save ' + rs(best.b.s) + '</b>' : '') + '</span></a>' +
           '<button type="button" class="sbo__go" data-swap="' + best.b.vid + '" data-swap-keys="' + esc(keys) + '" aria-label="Swap to the ' + esc(best.b.t) + ', ' + rs(best.b.p) + '">Add</button>';
-        $('.sline__b', li).appendChild(box);
+        if (row) { row.appendChild(box); row.hidden = false; done = true; var sbd = $('[data-cart-bundle]', self.el); if (sbd) { sbd.hidden = true; sbd.innerHTML = ''; } }
       });
     });
   };
   Cart.prototype.bundleWin = function (names, saving, ab) {
+    // 26 Nov: no "Bundle unlocked" banner any more: the bundle saving shows once, as a green line in the totals
+    var old = $('[data-bundle-win]', this.el); if (old) old.remove();
+    return;
     // 14 Nov: a rounded card — 24 px tick, "Bundle unlocked" + "You're saving Rs X" — that slides in with a short
     // confetti burst once per unlock (not on re-renders or reloads); reduced motion: a plain fade, no confetti
     var cur = $('[data-bundle-win]', this.el);

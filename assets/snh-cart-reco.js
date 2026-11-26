@@ -131,6 +131,83 @@
     return { rule: log.rule, head: head, cap: (close || unlocked) ? '' : 'under ' + rsTxt(capR), items: picked.map(function (x) { return Object.assign({ why: x.label, cat: x.cat }, x.p); }), log: log, targets: Object.keys(comp) };
   }
 
+  /* 26 Nov: RULES FIRST (docs/golive/BASKET-SUGGESTIONS.md). What the basket holds decides what goes with it:
+       creatine → a shaker · pre-workout → protein bars, chips, snacks · whey / isolate → a shaker, creatine ·
+       gels / electrolytes → more gels and electrolytes, energy bars · vitamins → their partner (D3 ↔ K2,
+       magnesium ↔ zinc), else other vitamins · anything else → bestsellers.
+     2 items at most, never one already in the basket, in stock only. Real catalogue, real prices.
+     Order-value push: when the basket is within cfg.aovWindow (Rs 8,000) of free delivery, or, once delivery is free,
+     of the store's average order value (cfg.aov, from SNH Ops orders), the suggestions switch to bigger, still relevant
+     adds: sample / multi-pack sachets, bar boxes, and the cheapest bundle that matches the basket. The smallest one that
+     closes the gap comes first. */
+  var RULES = {
+    creatine: [['accessories', /shaker|bottle/]],
+    'pre-workout': [['bars-snacks', /bar|chip|crisp|snack|cookie|wafer/]],
+    whey: [['accessories', /shaker|bottle/], ['creatine', null]],
+    isolate: [['accessories', /shaker|bottle/], ['creatine', null]],
+    gels: [['gels', null], ['electrolytes', null], ['bars-snacks', /energy|bar|chew/]],
+    electrolytes: [['electrolytes', null], ['gels', null], ['bars-snacks', /energy|bar|chew/]],
+    vitamins: [['vitamins', null]],
+    magnesium: [['vitamins', /zinc/]]
+  };
+  var PAIRS = [[/\bd3\b/, /\bk2\b/], [/\bk2\b/, /\bd3\b/], [/magnesium/, /\bzinc\b/], [/\bzinc\b/, /magnesium/]];
+  var BIG = /sachet|sample|multi-?pack|\bbox\b|pack of|\bx ?\d{1,2}\b|\d{1,2} ?x\b|variety/;
+  function catsOf(p) { var t = ((p.type || '') + ' ' + (p.title || '') + ' ' + (p.tags || '')).toLowerCase(), out = {}; ORDER.forEach(function (o) { if (o[1].test(t)) out[o[0]] = 1; }); return out; }
+  function rules(cart, pool, cfg, reco, mode) {
+    var sub = cart.total_price, unlocked = cfg.threshold - sub <= 0 || cfg.threshold - sub <= cfg.tolerance;
+    var aov = (cfg.aov || 0) * 100, win = (cfg.aovWindow || 8000) * 100, target = unlocked ? aov : cfg.threshold, gap = target - sub;
+    var inCart = {}, items = [], wanted = [], cartCats = {}, titles = '';
+    cart.items.forEach(function (it) {
+      inCart[it.product_id] = 1; var t = String(it.product_title || '').toLowerCase(); titles += ' ' + t;
+      var c = detect({ type: it.product_type, title: it.product_title });
+      if (c && c !== 'bundle') { cartCats[c] = 1; (RULES[c] || []).forEach(function (r) { wanted.push({ cat: r[0], re: r[1], from: c }); }); }
+      if (c === 'vitamins' || c === 'magnesium') PAIRS.forEach(function (pr) { if (pr[0].test(t) && !pr[1].test(t)) wanted.unshift({ cat: 'vitamins|magnesium', re: pr[1], from: c, pair: 1 }); });
+    });
+    var seen = {}, all = [];
+    [].concat(pool.cat || [], pool.bars || [], pool.comp || [], pool.related || [], pool.best || [], pool.viewed || [], pool.bundles || []).forEach(function (p) {
+      if (!p || seen[p.id] || inCart[p.id] || p.soldOut || !p.vid) return; seen[p.id] = 1;
+      p.cat = p.cat || detect(p); all.push(p);
+    });
+    var hay = function (p) { return (p.title + ' ' + (p.vtitle || '') + ' ' + (p.tags || '')).toLowerCase(); };
+    var log = { subtotal: sub / 100, threshold: cfg.threshold / 100, aov: aov / 100, target: unlocked ? 'aov' : 'free delivery', gap: Math.max(0, gap) / 100, cartCats: Object.keys(cartCats), wanted: wanted.map(function (w) { return w.from + '→' + w.cat + (w.re ? ' ' + w.re.source : ''); }), pool: all.length };
+    var mode2 = 'rules', head = 'Goes well with your order';
+    // order-value push
+    if (gap > 0 && gap <= win) {
+      var rel = {}; Object.keys(cartCats).forEach(function (c) { rel[c] = 1; }); wanted.forEach(function (w) { w.cat.split('|').forEach(function (c) { rel[c] = 1; }); });
+      var big = all.filter(function (p) {
+        var cs = p.cat === 'bundle' ? catsOf(p) : (function () { var o = {}; o[p.cat] = 1; return o; })();
+        var relevant = Object.keys(cs).some(function (c) { return rel[c]; });
+        return relevant && (p.cat === 'bundle' || BIG.test(hay(p))) && p.price <= gap + 4000 * 100;
+      });
+      var closes = big.filter(function (p) { return p.price >= gap; }).sort(function (a, b) { return a.price - b.price; });
+      var rest = big.filter(function (p) { return p.price < gap; }).sort(function (a, b) { return b.price - a.price; });
+      var bundles = big.filter(function (p) { return p.cat === 'bundle'; }).sort(function (a, b) { return a.price - b.price; });
+      var pick = closes.concat(rest);
+      // at most one bundle, and the cheapest relevant one
+      var hasB = false; pick = pick.filter(function (p) { if (p.cat !== 'bundle') return true; if (hasB || p !== bundles[0]) return false; hasB = true; return true; });
+      if (pick.length) {
+        items = pick.slice(0, 2).map(function (p) { return Object.assign({ why: !unlocked && p.price >= gap ? 'Unlocks free delivery' : p.cat === 'bundle' ? 'Bundle · better value' : 'Bigger pack, better value', cat: p.cat }, p); });
+        mode2 = 'aov'; head = unlocked ? 'Worth adding' : 'Get to free delivery';
+      }
+      log.aovCandidates = big.length;
+    }
+    if (!items.length) {
+      var used = {};
+      wanted.forEach(function (w) {
+        if (items.length >= 2) return;
+        var m = all.filter(function (p) { return w.cat.split('|').indexOf(p.cat) > -1 && p.cat !== 'bundle' && !used[p.id] && (!w.re || w.re.test(hay(p))); })
+          .sort(function (a, b) { return (b.src === 'best') - (a.src === 'best') || a.price - b.price; })[0];
+        if (m) { used[m.id] = 1; items.push(Object.assign({ why: w.pair ? 'Works with your ' + (w.from === 'magnesium' ? 'magnesium' : 'vitamins') : 'Goes with your ' + (NAME[w.from] || w.from), cat: m.cat }, m)); }
+      });
+      if (!items.length) {
+        items = (pool.best || []).filter(function (p) { return seen[p.id] && p.cat !== 'bundle'; }).slice(0, 2).map(function (p) { return Object.assign({ why: 'Bestseller', cat: p.cat }, p); });
+        mode2 = 'bestsellers';
+      }
+    }
+    log.rule = mode2; log.picked = items.map(function (p) { return p.title + ' @' + p.price / 100 + ' "' + p.why + '"'; });
+    return { rule: mode2, head: head, cap: '', items: items, log: log };
+  }
+
   // recently viewed: product pages record their handle (newest first, 8 max)
   function viewedHandles() { try { return JSON.parse(localStorage.getItem('snh_rv') || '[]'); } catch (e) { return []; } }
   var m = location.pathname.match(/\/products\/([^/?#]+)/);
@@ -179,5 +256,5 @@
     return { items: picked.map(function (x) { return Object.assign({ why: x.label, cat: x.cat }, x.p); }), log: { seeds: Object.keys(seedCats), member: !!cfg.member, goal: reco.goal || '', history: Object.keys(histCat), picked: picked.map(function (x) { return x.p.title + ' @' + x.p.price / 100 + ' [' + x.cat + ' ' + x.score + ': ' + x.why + '] "' + x.label + '"'; }) }, targets: Object.keys(comp) };
   }
 
-  window.SNHReco = { decide: decide, browse: browse, detect: detect, parseMap: parseMap, viewed: viewedHandles, NAME: NAME, GOALS: GOALS };
+  window.SNHReco = { rules: rules, decide: decide, browse: browse, detect: detect, parseMap: parseMap, viewed: viewedHandles, NAME: NAME, GOALS: GOALS };
 })();
