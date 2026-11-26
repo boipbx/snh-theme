@@ -1,0 +1,121 @@
+{%- comment -%}
+  Bundle & save (prototype .bx): the store's real bundle products that contain this product. A bundle matches when its
+  description names this product's base name (title without vendor and size, e.g. "Critical Whey Protein").
+  "Separately" = the bundle's compare-at price, else SNH's bundle sheet (same figures as snippets/product-card), so no
+  saving is invented; a bundle with neither just shows its price. Up to 3 bundles, as pills.
+  product, handles (comma-separated collection handles to search), limit
+{%- endcomment -%}
+{%- liquid
+  capture short
+    render 'snh-v2-title', product: product, short: true
+  endcapture
+  assign words = short | strip | split: ' '
+  assign base = ''
+  for w in words
+    assign digits = w | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+    if digits != w
+      break
+    endif
+    assign base = base | append: ' ' | append: w
+  endfor
+  assign base = base | strip | downcase | replace: '&amp;', '&'
+  assign handle_list = handles | split: ','
+  assign retail_sheet = 'testosterone-support=1649800,testosterone-support-max=2239800,gut-metabolic-support=1429800,bone-strength=1319800,scar-tissue-recovery-repair=2369700,daily-foundation=2209700,stress-recovery=1649800,main-mineral-trio=2099700,immunity-daily=1989700,everyday-essentials=1439800,revive-daily=1729800,deep-sleep=2309800,couples-bedroom-bundle=1799800,endurance-trial-pack=509500,race-day-pack-1-0=939300,race-day-pack-2-0=999300,strength-foundation=2499700,strength-skin=1799800,creatine-starter=1099800,whey-pre-stack=3099800,whey-training-stack=3099700,isolate-pre-stack=3399800,isolate-training-stack=3399700,raw-loaded-stack=3049700,raw-training-stack=1849800' | split: ','
+  assign found = ','
+  assign count = 0
+  if base.size > 5
+    for h in handle_list
+      assign hh = h | strip
+      assign c = collections[hh]
+      for bp in c.products limit: 60
+        if bp.id == product.id or bp.available == false
+          continue
+        endif
+        assign key = ',' | append: bp.id | append: ','
+        if found contains key
+          continue
+        endif
+        assign d = bp.description | strip_html | downcase | replace: '&amp;', '&'
+        if d contains base
+          assign found = found | append: bp.id | append: ','
+          assign count = count | plus: 1
+          if count >= limit
+            break
+          endif
+        endif
+      endfor
+      if count >= limit
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if count > 0 -%}
+  {%- assign ids = found | remove_first: ',' | split: ',' -%}
+  {%- assign rendered = ',' -%}
+  <div class="bx" data-v2-bundles>
+    <p class="bx__head"><span class="eyebrow eyebrow--accent">Bundle &amp; save</span><span class="meta">{{ count }} bundle{% if count > 1 %}s{% endif %} include{% if count == 1 %}s{% endif %} this</span></p>
+    {%- capture pills -%}{%- endcapture -%}
+    {%- capture panels -%}
+      {%- assign n = 0 -%}
+      {%- for h in handle_list -%}
+        {%- assign hh = h | strip -%}{%- assign c = collections[hh] -%}
+        {%- for bp in c.products limit: 60 -%}
+          {%- assign key = bp.id | append: '' -%}
+          {%- unless ids contains key -%}{%- continue -%}{%- endunless -%}
+          {%- assign rkey = ',' | append: key | append: ',' -%}
+          {%- if rendered contains rkey -%}{%- continue -%}{%- endif -%}
+          {%- assign rendered = rendered | append: key | append: ',' -%}
+          {%- assign n = n | plus: 1 -%}
+          {%- liquid
+            assign retail = 0
+            if bp.compare_at_price > bp.price
+              assign retail = bp.compare_at_price
+            else
+              assign tk = bp.handle
+              for pair in retail_sheet
+                assign kv = pair | split: '='
+                if kv[0] == tk
+                  assign retail = kv[1] | times: 1
+                endif
+              endfor
+            endif
+            assign saving = 0
+            if retail > bp.price
+              assign saving = retail | minus: bp.price
+            endif
+          -%}
+          {%- capture pill -%}<button type="button" role="tab" aria-selected="{% if n == 1 %}true{% else %}false{% endif %}" aria-controls="bx-{{ section.id }}-{{ n }}" id="bxp-{{ section.id }}-{{ n }}">{{ bp.title | escape }}{% if saving > 0 %}<span>Save {{ saving | money_without_trailing_zeros }}</span>{% endif %}</button>{%- endcapture -%}
+          {%- assign pills = pills | append: pill -%}
+          <div class="bx__panel" id="bx-{{ section.id }}-{{ n }}" role="tabpanel" aria-labelledby="bxp-{{ section.id }}-{{ n }}"{% if n > 1 %} hidden{% endif %}>
+            <div class="bx__hero">
+              {%- if bp.featured_image -%}{{ bp.featured_image | image_url: width: 400 | image_tag: width: 112, height: 112, loading: 'lazy', alt: bp.title }}{%- endif -%}
+              <div><strong>{{ bp.title | escape }}</strong><span>{{ bp.description | strip_html | truncatewords: 14 | escape }}</span></div>
+            </div>
+            <div class="bx__total">
+              {%- if saving > 0 -%}<span>Separately <s>{{ retail | money_without_trailing_zeros }}</s></span>{%- endif -%}
+              <span class="bx__price">{{ bp.price | money_without_trailing_zeros }}</span>
+              {%- if saving > 0 -%}<span class="save">Save {{ saving | money_without_trailing_zeros }}</span>{%- endif -%}
+            </div>
+            {%- capture add_label -%}Add bundle · {{ bp.price | money_without_trailing_zeros }}{%- endcapture -%}
+            {%- render 'snh-v2-stl-add', product: bp, cls: 'v-btn v-btn--accent v-btn--block', label: add_label -%}
+            {%- unless bp.has_only_default_variant -%}<a class="v-link bx__view" href="{{ bp.url }}">See what's inside</a>{%- endunless -%}
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if count > 1 -%}<div class="bx__pills" role="tablist" aria-label="Bundles" data-v2="tabs">{{ pills }}</div>{%- endif -%}
+    {{ panels }}
+    {%- assign drawn = ',' -%}
+    {%- for h in handle_list -%}{%- assign hh = h | strip -%}{%- assign c = collections[hh] -%}{%- for bp in c.products limit: 60 -%}
+      {%- assign key = bp.id | append: '' -%}
+      {%- assign dkey = ',' | append: key | append: ',' -%}
+      {%- if ids contains key and bp.has_only_default_variant == false and bp.available -%}
+        {%- unless drawn contains dkey -%}
+          {%- assign drawn = drawn | append: key | append: ',' -%}
+          <quick-buy-drawer id="v2-qb-{{ section.id }}-{{ bp.id }}" header-bordered open-from="bottom" handle="{{ bp.handle }}?variant={{ bp.selected_or_first_available_variant.id }}" role="region" aria-live="polite" class="quick-buy-drawer drawer"></quick-buy-drawer>
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}{%- endfor -%}
+  </div>
+{%- endif -%}

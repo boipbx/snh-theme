@@ -1120,3 +1120,15 @@ Screenshots: `docs/golive/one-font-2026-11-25/` (before/after 390 + 1440: Elite 
 | 10:55 | first-admin setup link, one-time, 7 days (hash only in D1) | console_tokens | - | given to the owner; expires 3 Dec 10:42 LK |
 
 Screenshots of Loyalty/Operations mask customer names and IDs (no customer data in the repo). Details, audit fixes and screenshots: `docs/golive/ops-v3/README.md`. Rollback: `wrangler rollback eb95a9cc-3d46-476e-bb6f-29b087f42818`.
+
+# 26 Nov 2026: storefront conversion polish (live theme `feat/theme-v2`)
+Backups: `docs/golive/backup-polish-2026-11-26/` (every theme file touched, as it was before). Screenshots and critique notes: `docs/golive/polish-2026-11-26/`.
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9051839758590 (snh-2-0-shaker-bottle-750ml-teal-blue) custom.in_bundles | ["gid://shopify/Product/9433933218046","gid://shopify/Product/9434011730174","gid://shopify/Product/9434937065726","gid://shopify/Product/9434950500606"] | Creatine Starter Pack (save 1999), Athlete Essential Stack (save 0), Lean Muscle Building Stack (save 0) |
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8167657832702 (raw-essential-pre-workout) custom.in_bundles | ["gid://shopify/Product/9434950500606","gid://shopify/Product/9434960920830"] | [] (no active bundle any more) |
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/8608641548542 (raw-creatine-monohydrate-500g) custom.in_bundles | ["gid://shopify/Product/9434950500606"] | [] (no active bundle any more) |
+| 2026-11-26 06:18 | metafieldsSet (sync-bundle-links) | gid://shopify/Product/9198200553726 (raw-creatine-monohydrate-30-servings) custom.in_bundles | ["gid://shopify/Product/9434960920830"] | [] (no active bundle any more) |
+| 11:48 | `sync-bundle-links.mjs` (new sources: Bundles app + variant components + text fallback), dry run then live | `custom.in_bundles` ×4 (rows above) | backup `docs/golive/backup-bundle-links/2026-11-26T06-18-39-300Z.json` | shaker +3 bundles; 3 RAW products cleared (their 2 bundles are drafts) |
+| 12:05 | git push fc05105 → `feat/theme-v2` (live) | button system v2 (snh-v2.css, snh-product.css), "Add to basket" (snh-product.liquid/js, 16 product templates), "Get the bundle · Save Rs X" (snh-v2-bundles, snh-cart.js), quiz Next primary | flat primary, black Buy it now outline, "Add to cart" | checked live by page fetch: 0 Liquid errors on product / collection / cart / home, new labels present. Revert: `git revert fc05105` |
+| - | commits 38a6475 … 46b724e (pill, product page, cards, quick view, compare, basket, popup) | branch `claude/gallant-lovelace-wtdgxt` only | - | **not live**: no visual check possible (browser checks of the live store refused this session); see `docs/golive/polish-2026-11-26/README.md` |
