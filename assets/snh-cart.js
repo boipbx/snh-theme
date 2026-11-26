@@ -215,7 +215,7 @@
           var m0 = o.missing[0] && M.c[o.missing[0][0]], more = o.missing.length - 1;
           var what = m0 ? String(m0[1]).replace(/\s*\d+(\.\d+)?\s?(ml|l|g|kg|lb|lbs)\b/ig, '').replace(/\s{2,}/g, ' ').trim() + (m0[4] && o.missing.length === 1 && /colou?r|black|white|grey|blue|red|pink|green/i.test(m0[4]) ? ' (' + m0[4] + ')' : '') + (o.missing[0][1] > 1 ? ' ×' + o.missing[0][1] : '') + (more > 0 ? ' + ' + more + ' more' : '') : '';
           var row = document.createElement('div'); row.className = 'sup';
-          row.innerHTML = '<span class="sup__img">' + (m0 && m0[3] ? '<img src="' + esc(img(m0[3], 96)) + '" alt="" width="40" height="40" loading="lazy">' : '') + '</span>' +
+          row.innerHTML = '<span class="sup__img">' + (m0 && m0[3] ? '<img src="' + esc(img(m0[3], 96)) + '" alt="" width="40" height="40" loading="eager" decoding="async">' : '') + '</span>' +
             '<span class="sup__t"><span class="sup__l">' + (o.quick ? 'Get the <b>' + esc(o.title) + '</b> and <b class="sup__save">save ' + rs(o.save) + '</b>' : o.missing.length ? 'Add ' + esc(what) + ' and <b class="sup__save">save ' + rs(o.save) + '</b>' : 'Switch to the bundle and <b class="sup__save">save ' + rs(o.save) + '</b>') + '</span>' +
             '<small>' + (o.quick ? 'Pick your options in the bundle' : 'Switches you to ' + esc(o.title)) + '</small></span>' +
             (o.quick ? '<button type="button" class="sup__go" data-v2-pick="' + esc(o.handle) + '" aria-haspopup="dialog">Add</button>'
