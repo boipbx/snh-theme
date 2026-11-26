@@ -14,11 +14,14 @@
   function short(t, v) { if (!v) return t; var low = t.toLowerCase(), vl = v.toLowerCase(); var r = low.indexOf(vl) === 0 ? t.slice(v.length).replace(/^\s*(nutrition)?\s+/i, '') : t; return r || t; }
   function get(h) { return cache[h] || (cache[h] = fetch(root + 'products/' + encodeURIComponent(h) + '.js', { headers: { Accept: 'application/json' } }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })); }
 
+  /* 26 Nov: same stroke icons as the product page stepper, so − and + sit on the exact centre line */
+  var ICO_MINUS = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  var ICO_PLUS = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
   function build() {
     dlg = document.createElement('dialog');
     dlg.className = 'sqb';
     dlg.setAttribute('aria-labelledby', 'sqb-t');
-    dlg.innerHTML = '<div class="sqb__in"><button type="button" class="sqb__x" data-sqb-close aria-label="Close">×</button><div class="sqb__body" data-sqb-body></div></div>';
+    dlg.innerHTML = '<div class="sqb__in"><button type="button" class="sqb__x" data-sqb-close aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><div class="sqb__body" data-sqb-body></div></div>';
     document.body.appendChild(dlg);
     dlg.addEventListener('click', function (e) {
       if (e.target === dlg || e.target.closest('[data-sqb-close]')) return close();
@@ -46,20 +49,23 @@
     var price = planAlloc ? planAlloc.price : v ? v.price : p.price, cmp = planAlloc ? planAlloc.compare_at_price || v.price : v && v.compare_at_price;
     var pic = (v && v.featured_image && v.featured_image.src) || p.featured_image;
     var opts = p.options.length === 1 && p.variants.length === 1 && p.variants[0].title === 'Default Title' ? [] : p.options;
+    var fixed = opts.filter(function (o) { return (o.values || []).length === 1; }).map(function (o) { return o.values[0]; });
     b.innerHTML =
       '<div class="sqb__head"><span class="sqb__img">' + (pic ? '<img src="' + esc(img(pic, 300)) + '" alt="" width="96" height="96">' : '') + '</span>' +
-      '<div><p class="sqb__brand">' + esc(p.vendor) + '</p><p class="sqb__t" id="sqb-t">' + esc(short(p.title, p.vendor)) + '</p>' +
+      '<div><p class="sqb__t" id="sqb-t">' + esc(short(p.title, p.vendor)) + '</p>' +
       '<p class="sqb__price"><b>' + rs(price) + '</b>' + (cmp && cmp > price ? '<s><span class="v-sr">Was </span>' + rs(cmp) + '</s>' : '') + '</p>' +
-      '<p class="sqb__koko">or 3 × ' + rs(Math.ceil(price * state.qty / 3)) + ' with ' + (window.SNH && SNH.kokoImg ? SNH.kokoImg(14) : 'Koko') + ' · Cash on delivery</p></div></div>' +
-      opts.map(function (o, i) {
-        var name = o.name || o;
+      /* 27 Nov: an option with only one value is not a choice: shown as muted text under the price, no selector */
+      (fixed.length ? '<p class="sqb__fixed">' + fixed.map(function (x) { return esc(x); }).join(' · ') + '</p>' : '') + '</div></div>' +
+      '<div class="sqb__opts">' + opts.map(function (o, i) {
+        if ((o.values || []).length < 2) return '';
+        var name = String(o.name || o).replace(/Flavor/g, 'Flavour');
         return '<fieldset class="sqb__opt"><legend>' + esc(name) + ': <b>' + esc(state.sel[i]) + '</b></legend><div class="sqb__pills">' +
           (o.values || []).map(function (val) { var ok = canPick(i, val), on = state.sel[i] === val; return '<button type="button" class="sqb__pill' + (on ? ' is-on' : '') + (ok ? '' : ' is-out') + '" data-sqb-i="' + i + '" data-sqb-opt="' + esc(val) + '" aria-pressed="' + on + '"' + (ok ? '' : ' aria-label="' + esc(val) + ', sold out"') + '>' + esc(val) + '</button>'; }).join('') +
           '</div></fieldset>';
       }).join('') +
       (plans.length ? '<fieldset class="sqb__opt"><legend>Purchase</legend><div class="sqb__pills">' + (must ? '' : '<button type="button" class="sqb__pill' + (state.plan ? '' : ' is-on') + '" data-sqb-plan="one" aria-pressed="' + !state.plan + '">One-time</button>') +
-        '<button type="button" class="sqb__pill' + (state.plan ? ' is-on' : '') + '" data-sqb-plan="sub" aria-pressed="' + state.plan + '">' + esc(plans[0].name) + '</button></div></fieldset>' : '') +
-      '<div class="sqb__foot"><div class="sqb__qty" role="group" aria-label="Quantity"><button type="button" data-sqb-q="-1" aria-label="Decrease quantity">−</button><output aria-live="polite">' + state.qty + '</output><button type="button" data-sqb-q="1" aria-label="Increase quantity">+</button></div>' +
+        '<button type="button" class="sqb__pill' + (state.plan ? ' is-on' : '') + '" data-sqb-plan="sub" aria-pressed="' + state.plan + '">' + esc(plans[0].name) + '</button></div></fieldset>' : '') + '</div>' +
+      '<div class="sqb__foot"><div class="sqb__qty" role="group" aria-label="Quantity"><button type="button" data-sqb-q="-1" aria-label="Decrease quantity">' + ICO_MINUS + '</button><output aria-live="polite">' + state.qty + '</output><button type="button" data-sqb-q="1" aria-label="Increase quantity">' + ICO_PLUS + '</button></div>' +
       '<button type="button" class="sqb__add" data-sqb-add' + (v && v.available ? '' : ' disabled') + '>' + (!v ? 'Choose an option' : v.available ? 'Add to basket · ' + rs(price * state.qty) : 'Sold out') + '</button></div>' +
       '<a class="sqb__more" href="' + esc(root.replace(/\/$/, '') + '/products/' + p.handle + (v ? '?variant=' + v.id : '')) + '">Full details</a>' +
       (v && v.available && typeof v.inventory_quantity === 'number' && v.inventory_quantity > 0 && v.inventory_quantity <= 5 ? '<p class="sqb__low">Only ' + v.inventory_quantity + ' left</p>' : '');
