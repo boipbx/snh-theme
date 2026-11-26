@@ -87,17 +87,17 @@
       "type": "newsletter-popup",
       "settings": {
         "ask_name": false,
-        "button_text": "Subscribe",
+        "button_text": "Get alerts",
         "caption": "Fuelling Athletes.",
         "code": "",
-        "fine": "Unsubscribe any time.",
-        "kicker": "Welcome to SNH",
+        "fine": "By signing up you agree to get emails from SNH. No spam; unsubscribe any time.",
+        "kicker": "",
         "media_url": "",
         "show_only_for_visitors": true,
         "show_only_on_index": false,
         "show_only_once": true,
-        "subtext": "New drops, restocks and members-only offers. No spam.",
-        "title": "Join the SNH list"
+        "subtext": "",
+        "title": "Be first to know about restocks and new drops"
       }
     }
   },

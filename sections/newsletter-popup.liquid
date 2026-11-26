@@ -36,13 +36,13 @@
     </button>
 
     <div class="snh-np__panel">
-      {%- if section.settings.kicker != blank -%}
-        <span class="snh-np__kicker">{{ section.settings.kicker }}</span>
-      {%- endif -%}
-      <h2 class="snh-np__title">{{ section.settings.title | default: 'Join SNH Elite' }}</h2>
-      {%- if section.settings.subtext != blank -%}
-        <p class="snh-np__sub">{{ section.settings.subtext }}</p>
-      {%- endif -%}
+      {%- comment -%} 26 Nov: the value first, honestly: what they get (3 lines with icons), no kicker, no vague subline {%- endcomment -%}
+      <h2 class="snh-np__title">{{ section.settings.title | default: 'Be first to know about restocks and new drops' }}</h2>
+      <ul class="snh-np__perks" role="list">
+        <li><span class="snh-np__pi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10.3 20a1.9 1.9 0 0 0 3.4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span>{{ section.settings.perk_1 | default: 'Restock alerts on the items you want' }}</span></li>
+        <li><span class="snh-np__pi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span><span>{{ section.settings.perk_2 | default: 'New arrivals before everyone else' }}</span></li>
+        <li><span class="snh-np__pi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 12.5v-8h8l9 9-8 8-9-9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg></span><span>{{ section.settings.perk_3 | default: 'Member-only offers' }}</span></li>
+      </ul>
 
       {%- form 'customer', id: fid, class: 'snh-np__form' -%}
         {%- if form.posted_successfully? -%}
@@ -61,14 +61,19 @@
           {%- if section.settings.ask_name -%}
             <input type="text" name="contact[first_name]" placeholder="First name" autocomplete="given-name">
           {%- endif -%}
-          <input type="email" name="contact[email]" placeholder="Email address" autocomplete="email" enterkeyhint="send" required>
-          <button type="submit" class="snh-np__go">{{ section.settings.button_text | default: 'Subscribe' }}</button>
+          <label class="visually-hidden" for="{{ fid }}-email">Email address</label>
+          <input id="{{ fid }}-email" type="email" name="contact[email]" placeholder="Your email address" autocomplete="email" enterkeyhint="send" required>
+          <button type="submit" class="snh-np__go">{{ section.settings.button_text | default: 'Get alerts' }}</button>
         {%- endif -%}
       {%- endform -%}
 
       {%- if section.settings.fine != blank -%}
         <p class="snh-np__fine">{{ section.settings.fine }}</p>
       {%- endif -%}
+      <div class="snh-np__more">
+        <button type="button" class="snh-np__no" data-np-close>No thanks</button>
+        {%- unless customer -%}<a class="snh-np__elite" href="{{ routes.account_register_url }}">Already shopping? <b>Join SNH Elite and earn {{ settings.snh_welcome_points | default: 500 }} points</b></a>{%- endunless -%}
+      </div>
     </div>
 
     <div class="snh-np__art">
@@ -298,6 +303,36 @@
   @media (prefers-reduced-motion: reduce) {
     #{{ nid }}, #{{ nid }} .snh-np__card { transition: none; }
   }
+  /* 26 Nov: the form side, designed: headline → 3 benefit lines with icons → email → "Get alerts" (primary) → consent →
+     a bare "No thanks" + the SNH Elite link. Desktop keeps the clip on the left; phones show it as a short strip on top. */
+  #{{ nid }} .snh-np__card { inline-size: min(720px, 100%); grid-template-columns: 280px minmax(0, 1fr); border-radius: 20px; }
+  #{{ nid }} .snh-np__panel { align-content: center; gap: 0; padding: 36px 32px 28px; }
+  #{{ nid }} .snh-np__title { margin: 0 0 16px; font-size: clamp(1.35rem, 2.1vw, 1.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -.02em; padding-right: 24px; }
+  #{{ nid }} .snh-np__perks { display: grid; gap: 10px; margin: 0 0 20px; padding: 0; list-style: none; }
+  #{{ nid }} .snh-np__perks li { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: center; gap: 10px; font-size: .92rem; font-weight: 500; line-height: 1.35; color: var(--snh-ink); }
+  #{{ nid }} .snh-np__pi { display: grid; place-items: center; inline-size: 28px; block-size: 28px; border-radius: 8px; background: #FFF1E8; color: #C9481A; }
+  #{{ nid }} .snh-np__pi svg { inline-size: 16px; block-size: 16px; }
+  #{{ nid }} .snh-np__form { gap: 10px; }
+  #{{ nid }} .snh-np__form input[type="email"] { min-block-size: 48px; border-radius: 12px; }
+  #{{ nid }} .snh-np__go { min-height: 48px; border-radius: 999px; font-size: 15px; font-weight: 700; }
+  #{{ nid }} .snh-np__fine { margin: 10px 0 0; font-size: .74rem; line-height: 1.45; color: rgba(23, 19, 15, .55); }
+  #{{ nid }} .snh-np__more { display: grid; justify-items: center; gap: 2px; margin-top: 8px; }
+  #{{ nid }} .snh-np__no { min-height: 44px; font-size: .9rem; color: rgba(23, 19, 15, .72); }
+  #{{ nid }} .snh-np__elite { font-size: .8rem; line-height: 1.4; text-align: center; color: rgba(23, 19, 15, .7); text-decoration: none; }
+  #{{ nid }} .snh-np__elite b { color: #C9481A; font-weight: 700; }
+  #{{ nid }} .snh-np__elite:hover b { text-decoration: underline; text-underline-offset: 3px; }
+  #{{ nid }} .snh-np__x { inline-size: 44px; block-size: 44px; inset-block-start: 10px; inset-inline-end: 10px; }
+  @media screen and (max-width: 749px) {
+    #{{ nid }} .snh-np__card { inline-size: min(400px, 100%); grid-template-columns: minmax(0, 1fr); grid-template-rows: 110px auto; max-block-size: calc(100dvh - 28px); overflow-y: auto; }
+    #{{ nid }} .snh-np__art { grid-row: 1; grid-column: 1; aspect-ratio: auto; block-size: 110px; min-block-size: 0; }
+    #{{ nid }} .snh-np__art img { object-position: center 30%; }
+    #{{ nid }} .snh-np__panel { grid-row: 2; grid-column: 1; padding: 18px 20px 14px; }
+    #{{ nid }} .snh-np__title { font-size: 1.2rem; margin-bottom: 12px; padding-right: 0; }
+    #{{ nid }} .snh-np__perks { gap: 8px; margin-bottom: 14px; }
+    #{{ nid }} .snh-np__perks li { font-size: .88rem; }
+    #{{ nid }} .snh-np__fine { font-size: .72rem; }
+    #{{ nid }} .snh-np__x { inset-block-start: 8px; inset-inline-end: 8px; }
+  }
 </style>
 
 <script>
@@ -400,7 +435,10 @@
     { "type": "text", "id": "kicker", "label": "Eyebrow", "default": "Welcome to SNH" },
     { "type": "text", "id": "title", "label": "Heading", "default": "Join SNH Elite" },
     { "type": "inline_richtext", "id": "subtext", "label": "Subheading", "default": "Subscribe and get an extra <strong>10% off</strong> your first order." },
-    { "type": "text", "id": "button_text", "label": "Button", "default": "Subscribe" },
+    { "type": "text", "id": "button_text", "label": "Button", "default": "Get alerts" },
+    { "type": "text", "id": "perk_1", "label": "Benefit 1", "default": "Restock alerts on the items you want" },
+    { "type": "text", "id": "perk_2", "label": "Benefit 2", "default": "New arrivals before everyone else" },
+    { "type": "text", "id": "perk_3", "label": "Benefit 3", "default": "Member-only offers" },
     { "type": "inline_richtext", "id": "fine", "label": "Small print", "default": "One use per customer. Unsubscribe any time." },
     { "type": "checkbox", "id": "ask_name", "label": "Also ask for a first name", "default": false },
     { "type": "header", "content": "Behaviour" },
