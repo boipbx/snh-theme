@@ -58,7 +58,7 @@
       (fixed.length ? '<p class="sqb__fixed">' + fixed.map(function (x) { return esc(x); }).join(' · ') + '</p>' : '') + '</div></div>' +
       '<div class="sqb__opts">' + opts.map(function (o, i) {
         if ((o.values || []).length < 2) return '';
-        var name = o.name || o;
+        var name = String(o.name || o).replace(/Flavor/g, 'Flavour');
         return '<fieldset class="sqb__opt"><legend>' + esc(name) + ': <b>' + esc(state.sel[i]) + '</b></legend><div class="sqb__pills">' +
           (o.values || []).map(function (val) { var ok = canPick(i, val), on = state.sel[i] === val; return '<button type="button" class="sqb__pill' + (on ? ' is-on' : '') + (ok ? '' : ' is-out') + '" data-sqb-i="' + i + '" data-sqb-opt="' + esc(val) + '" aria-pressed="' + on + '"' + (ok ? '' : ' aria-label="' + esc(val) + ', sold out"') + '>' + esc(val) + '</button>'; }).join('') +
           '</div></fieldset>';

@@ -3047,3 +3047,5 @@ html body .quote__text { font-size: max(1em, .92em); line-height: 1.45; }
   .sqb__in { padding: 20px 16px calc(12px + env(safe-area-inset-bottom)); }
   .sqb__foot { grid-template-columns: auto 1fr; }
 }
+.sqb__foot, .sqb .sqb__foot { box-shadow: none; border-top: 1px solid rgba(23, 19, 15, .06); }
+.sqb__body .sqb__more { padding-left: 0; padding-right: 0; justify-content: flex-start; align-self: flex-start; }
