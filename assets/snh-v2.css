@@ -2898,46 +2898,30 @@ html body :is(.elc__brand em, .ecard__brand em, .metal__brand em, .acp__brand em
 html body :is(.quote__text, .art-tile__t) { font-family: var(--sans) !important; font-style: normal !important; font-weight: 600 !important; letter-spacing: -.01em; }
 html body .quote__text { font-size: max(1em, .92em); line-height: 1.45; }
 
-/* ── 26 Nov: BUTTON SYSTEM v2 (docs/golive/polish-2026-11-26/README.md). ONE primary everywhere: SNH orange on #C9481A
-   (white text 4.75:1; the gradient never drops below 4.49:1), raised by a soft drop shadow plus an inset top light and
-   inset bottom shade. Hover (mouse only): a thin conic stroke (orange → amber → light) turns slowly round the edge with
-   a soft bloom behind it; @property animates the angle, so only the 2px ring repaints. Press: scale .98, the shadow
-   tightens. Reduced motion: the stroke shows still, no lift, no scale. Disabled buttons keep their own grey style.
-   ONE secondary: a bare text button (no outline), underline on hover, same height as the primary so rows line up.
-   Outlines stay only where two equal choices sit side by side (hero pairs, Elite page). ── */
-@property --snh-ring { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-:root { --cta-bg: #C9481A; --cta-bg-hover: #BC4316; --cta-hi: #CD4D1C; --cta-lo: #B23E12; --cta-glow: 201, 72, 26; }
-:is(.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added) {
-  position: relative; isolation: isolate; min-height: 48px; border: 0; border-radius: 999px; color: #fff; font-weight: 700;
-  background: linear-gradient(180deg, var(--cta-hi) 0%, var(--cta-bg) 50%, var(--cta-lo) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .34), inset 0 -2px 0 rgba(84, 24, 4, .26), 0 1px 1px rgba(84, 24, 4, .22), 0 6px 14px -5px rgba(var(--cta-glow), .5), 0 16px 30px -16px rgba(var(--cta-glow), .6);
-  transition: transform .16s cubic-bezier(.2, .8, .3, 1), box-shadow .24s ease, filter .2s ease; -webkit-tap-highlight-color: transparent;
+/* ── 27 Nov: PRIMARY BUTTON (replaces the 26 Nov conic-stroke version: no ::before ring, no @property). One solid
+   SNH orange #C9481A (white text 4.75:1), a soft inset top light / bottom shade and a short orange drop shadow.
+   Hover: #D4511F, lifts 1px, a 4px orange halo. Press: scale .98. Label and icon always centred (inline-flex, line-height 1).
+   Covers: .btn-primary, .v-btn--accent (Elite, bundles, popups, quiz), product Add to basket + sticky bar, quick view,
+   basket checkout (.scheck), the SNH list popup, campaign popups, "Find my stack" (.qzb__cta). Disabled keeps its grey. ── */
+:root { --cta-bg: #C9481A; --cta-bg-hover: #D4511F; --cta-glow: 201, 72, 26; }
+:is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px; line-height: 1; text-align: center;
+  background: #C9481A; color: #fff; border: 0; border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -2px 0 rgba(0, 0, 0, .12), 0 6px 16px -6px rgba(201, 72, 26, .45);
+  transition: transform .2s cubic-bezier(.16, 1, .3, 1), box-shadow .2s, background-color .2s; -webkit-tap-highlight-color: transparent;
 }
-:is(.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added)::before {
-  content: ""; position: absolute; inset: -2px; z-index: -1; padding: 2px; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s ease;
-  background: conic-gradient(from var(--snh-ring), #C9481A 0deg, #F59E0B 80deg, #FFE6C4 140deg, #F59E0B 200deg, #C9481A 290deg, #C9481A 360deg);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+:is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added)::before { content: none !important; }
+:is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added) > span { display: inline-flex; align-items: center; line-height: 1; }
+:is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added):hover {
+  background: #D4511F; transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), inset 0 -2px 0 rgba(0, 0, 0, .12), 0 10px 24px -8px rgba(201, 72, 26, .55), 0 0 0 4px rgba(201, 72, 26, .10);
 }
-@media (hover: hover) {
-  :is(.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added):hover {
-    background: linear-gradient(180deg, var(--cta-hi) 0%, var(--cta-bg-hover) 50%, var(--cta-lo) 100%); transform: translateY(-1px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .38), inset 0 -2px 0 rgba(84, 24, 4, .26), 0 1px 1px rgba(84, 24, 4, .2), 0 0 26px -2px rgba(245, 158, 11, .5), 0 10px 22px -8px rgba(var(--cta-glow), .6);
-  }
-  :is(.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added):hover::before { opacity: 1; animation: snhRing 3.2s linear infinite; }
-}
-@keyframes snhRing { to { --snh-ring: 360deg; } }
-:is(.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added):active {
-  transform: scale(.98); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -1px 0 rgba(84, 24, 4, .3), 0 1px 2px rgba(84, 24, 4, .3), 0 3px 8px -4px rgba(var(--cta-glow), .55);
-}
-:is(.v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):focus-visible { outline: 2px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px var(--cta-bg); }
-@media (prefers-reduced-motion: reduce) {
-  :is(.v-btn--accent, .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn, .sp-modal .sp-btn--accent, .snh-cta) { transition: none !important; transform: none !important; }
-  :is(.v-btn--accent, .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn, .sp-modal .sp-btn--accent, .snh-cta)::before { animation: none !important; --snh-ring: 40deg; }
-}
-/* small card buttons ("+ Add", "Add bundle" in the basket) share the colour and the raised edge, not the ring */
-.v-btn--accent.v-btn--sm:not([disabled]) { background: linear-gradient(180deg, var(--cta-hi), var(--cta-bg) 50%, var(--cta-lo)); color: #fff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), inset 0 -1px 0 rgba(84, 24, 4, .25), 0 4px 10px -5px rgba(var(--cta-glow), .6); }
+:is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):not([disabled]):not(.is-added):active { transform: translateY(0) scale(.98); }
+:is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta):focus-visible { outline: 2px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px #C9481A; }
+@media (prefers-reduced-motion: reduce) { :is(.btn-primary, .v-btn--accent:not(.v-btn--sm), .qzb__cta, .scheck, .snh-np__go, .cmp-pop__go, .cmp-ban__go, .sqb__add, .sp-btn[data-sp-add], .sp-sticky .sp-btn[data-sp-sync="satc"], .sp-modal .sp-btn--accent, .snh-cta) { transition: none !important; transform: none !important; } }
+/* small card buttons ("+ Add", bundle buttons in the basket) share the colour and the inset edge */
+.v-btn--accent.v-btn--sm:not([disabled]) { background: #C9481A; color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -2px 0 rgba(0, 0, 0, .12), 0 4px 10px -5px rgba(201, 72, 26, .45); }
+.v-btn--accent.v-btn--sm:not([disabled]):hover { background: #D4511F; }
 
 /* secondary: a bare text button (one style everywhere), same height as the primary */
 :is(.snh-text-btn, .sp-btn[data-sp-buynow], .sp-modal .sp-btn--line, .sqb__more, [data-quiz-back], [data-qz-retake], .snh-np__no) {
@@ -2953,3 +2937,4 @@ html body .quote__text { font-size: max(1em, .92em); line-height: 1.45; }
 :is(.snh-text-btn, .sp-btn[data-sp-buynow], .sp-modal .sp-btn--line, .sqb__more, [data-quiz-back], [data-qz-retake], .snh-np__no):focus-visible { outline: 2px solid var(--cta-bg); outline-offset: 2px; }
 
 :is(.snh-text-btn, .sp-btn[data-sp-buynow], .sp-modal .sp-btn--line, .sqb__more, [data-quiz-back], [data-qz-retake], .snh-np__no)[hidden] { display: none !important; }
+
