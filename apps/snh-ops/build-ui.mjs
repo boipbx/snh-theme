@@ -1,7 +1,7 @@
 // Turns ui/app.html into src/ui.mjs and ui/console.html (+ manifest, service worker, icons) into src/console-ui.mjs.
 // The Worker serves them as strings. Run after editing the page:  node build-ui.mjs
 import fs from 'node:fs';
-const html = fs.readFileSync(new URL('./ui/app.html', import.meta.url), 'utf8');
+const html = fs.readFileSync(new URL('./ui/app.html', import.meta.url), 'utf8').replace('/*__LIB__*/', () => fs.readFileSync(new URL('./ui/lib.js', import.meta.url), 'utf8'));
 export const source = (h) => `// GENERATED from ui/app.html by build-ui.mjs. Edit that file, not this one.
 // The app page. It holds no store data: everything is fetched from /api with a Shopify session token.
 const HTML = ${JSON.stringify(h)};

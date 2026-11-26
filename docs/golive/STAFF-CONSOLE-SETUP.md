@@ -11,6 +11,17 @@ After that, staff tap the icon, tap their name and type their 6-digit PIN.
 
 ---
 
+## First-time setup for Pabasara (about 10 minutes, once)
+
+1. **Open the setup link** you were given. It works once, for 7 days, and only while no admin exists. Open it on the device you will use as the admin device (laptop or iPad).
+2. **Set your name and your 6-digit PIN.** Pick your shop and name the device (for example "Office laptop"). Avoid simple PINs like 123456; the console refuses them. This creates the first admin **and registers this device** in one step, and signs you in.
+3. **Add the home-screen icon on this device** (see section 2 above), then open SNH Staff from the icon once to check it signs straight in.
+4. **Create your staff:** **Staff** → **Add staff** → name, shop, role (Staff, or Admin for managers), and their PIN → **Add** (your PIN confirms). Tell each person their PIN in person.
+5. **Register each POS device:** **Devices** → type the device name and shop → **New code** (your PIN confirms). On that device, add the icon, open SNH Staff and type the code under "Register this device". Each code works once, for 24 hours.
+6. **Check:** on each counter device, tap a staff name, enter the PIN and search for a QA customer.
+
+If the link has expired or was used by mistake, ask for "new admin link" (it is made with `npm run admin-link` in `apps/snh-ops`).
+
 ## 1. Admin: make a device code (30 seconds)
 
 1. On your own device, open SNH Staff and sign in.

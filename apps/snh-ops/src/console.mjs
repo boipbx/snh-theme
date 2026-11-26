@@ -145,7 +145,7 @@ export async function consoleFetch(req, env, ctx, now = Date.now()) {
     const nonce = randomHex(12);
     const html = CONSOLE_HTML.replace('<script nonce="__NONCE__">', `<script nonce="${nonce}">${DEMO_JS}</script>\n<script nonce="__NONCE__">`).replaceAll('__NONCE__', nonce).replace('<title>SNH Staff</title>', '<title>SNH Staff (demo)</title><meta name="robots" content="noindex">');
     return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex',
-      'Content-Security-Policy': `default-src 'self'; script-src 'nonce-${nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`, 'Referrer-Policy': 'no-referrer' } });
+      'Content-Security-Policy': `default-src 'self'; script-src 'nonce-${nonce}'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`, 'Referrer-Policy': 'no-referrer' } });
   }
   if (!path.startsWith('/console/api/')) {
     const nonce = randomHex(12);

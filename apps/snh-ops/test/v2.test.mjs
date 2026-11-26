@@ -110,5 +110,5 @@ test('a sync is skipped, with a clear message, once the day\'s budget is used; a
   assert.equal(isLimitError(new Error("D1_ERROR: Your account has exceeded D1's free tier daily row write limit. [code: 7500]")), true); assert.equal(isLimitError(new Error('Shopify: throttled')), false);
 });
 test('src/ui.mjs is the built copy of ui/app.html', () => {
-  assert.equal(fs.readFileSync(new URL('../src/ui.mjs', import.meta.url), 'utf8'), source(fs.readFileSync(new URL('../ui/app.html', import.meta.url), 'utf8')));
+  assert.equal(fs.readFileSync(new URL('../src/ui.mjs', import.meta.url), 'utf8'), source(fs.readFileSync(new URL('../ui/app.html', import.meta.url), 'utf8').replace('/*__LIB__*/', () => fs.readFileSync(new URL('../ui/lib.js', import.meta.url), 'utf8'))));
 });

@@ -1112,3 +1112,11 @@ Lighthouse mobile home median 37 → 36 (3 runs each). To go back: revert those 
 | 17:55 | Klaviyo `PATCH /api/templates` ×63 (dry run first; HTML backed up in `docs/golive/backup-klaviyo-2026-11-25/`) | 43 "SNH ·" templates + 20 flow-email copies | serif/italic accent | Inter 800 upright; re-check: 0 templates with serif |
 
 Screenshots: `docs/golive/one-font-2026-11-25/` (before/after 390 + 1440: Elite page, Elite card, product Elite strip, dashboard header, console). Demo screenshots: `docs/golive/console-2026-11-25/demo/`.
+
+# 26 Nov 2026: SNH Ops dashboard v3 (presentation only) + console restyle
+| time (LK) | what | object | before | after |
+|---|---|---|---|---|
+| 10:40 | `wrangler deploy` 1dad5688, then e476978e (console table wrap) | Worker `snh-ops` | eb95a9cc (rollback ID) | v3 design system, SVG charts (Chart.js removed), tier rows, tables, motion; console on the same tokens. Data, endpoints, exports, snapshot, auth unchanged. |
+| 10:55 | first-admin setup link, one-time, 7 days (hash only in D1) | console_tokens | - | given to the owner; expires 3 Dec 10:42 LK |
+
+Screenshots of Loyalty/Operations mask customer names and IDs (no customer data in the repo). Details, audit fixes and screenshots: `docs/golive/ops-v3/README.md`. Rollback: `wrangler rollback eb95a9cc-3d46-476e-bb6f-29b087f42818`.

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SNH Staff</title>
+<meta name="theme-color" content="#141210">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SNH Staff">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/console/manifest.webmanifest">
+<link rel="icon" href="/console/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/console/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/console/apple-touch-icon.png">
+<style>
+:root{--bg:#F6F3EE;--card:#FFFFFF;--ink:#141210;--muted:#5E5850;--line:#E4DED4;--accent:#BF4512;--accent-ink:#FFFFFF;--accent-soft:#FBE9DF;--ok:#1E7A46;--ok-soft:#E3F3E9;--bad:#B3261E;--bad-soft:#FCE8E6;
+  --bronze:#9A5B2E;--bronze-soft:#F4E4D7;--silver:#5C6670;--silver-soft:#E7EAEE;--gold:#8A6A00;--gold-soft:#F8EDC8;--r:14px;--shadow:0 1px 2px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#121110;--card:#1D1B19;--ink:#F3EFE9;--muted:#ABA398;--line:#34302B;--accent:#F06A2E;--accent-ink:#140A04;--accent-soft:#3A2116;--ok:#5BC98A;--ok-soft:#173324;--bad:#FF8A80;--bad-soft:#3B1A18;
+  --bronze:#E0A274;--bronze-soft:#3A2618;--silver:#C3CBD3;--silver-soft:#2A2F34;--gold:#F0C94A;--gold-soft:#3A3014;--shadow:none}}
+*{box-sizing:border-box;min-width:0}html,body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}a{color:var(--accent)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px calc(24px + env(safe-area-inset-bottom))}
+.top{position:sticky;top:0;z-index:5;background:var(--ink);color:#F3EFE9;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px}
+@media (prefers-color-scheme:dark){.top{background:#0A0908;border-bottom:1px solid var(--line)}}
+.top img{height:22px;display:block}.top .elite{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-style:normal;font-weight:800;letter-spacing:-.02em;color:#fff;font-size:18px;margin-left:-2px}
+.top .who{margin-left:auto;text-align:right;font-size:13px;line-height:1.25;color:#CFC7BC}.top .who b{color:#fff;font-size:14px}
+.iconbtn{min-width:48px;min-height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0 12px;gap:6px;font-weight:600}
+.btn{min-height:52px;padding:0 20px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--ink)}
+.btn:active{transform:scale(.98)}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn--big{min-height:64px;font-size:20px;width:100%}.btn--wide{width:100%}.btn--danger{color:var(--bad);border-color:var(--bad)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}
+h1{font-size:24px;margin:20px 0 12px;letter-spacing:-.01em}h2{font-size:18px;margin:0 0 10px}h3{font-size:15px;margin:0 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.muted{color:var(--muted)}.small{font-size:13px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grow{flex:1 1 auto}
+.stack>*+*{margin-top:12px}.grid{display:grid;gap:12px}@media (min-width:760px){.grid--2{grid-template-columns:1fr 1fr}.grid--3{grid-template-columns:repeat(3,1fr)}}
+label.f{display:block;font-weight:600;font-size:14px}label.f input,label.f select,label.f textarea{display:block;width:100%;margin-top:6px;min-height:52px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:17px}
+label.f textarea{min-height:80px}input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}.check input{width:26px;height:26px;margin:0;flex:none;accent-color:var(--accent)}
+.search{display:flex;gap:10px;margin:16px 0}.search input{flex:1;min-width:0;width:100%;min-height:60px;font-size:19px;padding:0 18px;border-radius:14px;border:2px solid var(--line);background:var(--card)}
+.list{display:grid;gap:10px}.item{display:flex;gap:12px;align-items:center;padding:14px;border-radius:var(--r);border:1px solid var(--line);background:var(--card);cursor:pointer;text-align:left;width:100%;min-height:72px}
+.item:active{transform:scale(.995)}.item .nm{font-weight:700;font-size:17px}.item .sub{color:var(--muted);font-size:14px}
+.pts{margin-left:auto;text-align:right;white-space:nowrap}.pts b{font-size:20px;display:block}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border:1px solid transparent}
+.t-bronze{background:var(--bronze-soft);color:var(--bronze)}.t-silver{background:var(--silver-soft);color:var(--silver)}.t-gold{background:var(--gold-soft);color:var(--gold)}.t-none{background:var(--line);color:var(--muted)}
+.st-enabled{background:var(--ok-soft);color:var(--ok)}.st-invited{background:var(--accent-soft);color:var(--accent)}.st-no{background:var(--line);color:var(--muted)}.qa{background:#2F2A8F;color:#fff}
+.hero{display:grid;gap:12px}@media (min-width:760px){.hero{grid-template-columns:1.2fr 1fr}}
+.big-pts{font-size:44px;font-weight:800;letter-spacing:-.02em;line-height:1}.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 4px}.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:10px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}td:not(.num){overflow-wrap:anywhere}.plus{color:var(--ok);font-weight:700}.minus{color:var(--bad);font-weight:700}
+.msg{padding:12px 14px;border-radius:12px;font-weight:600}.msg--bad{background:var(--bad-soft);color:var(--bad)}.msg--ok{background:var(--ok-soft);color:var(--ok)}.msg--info{background:var(--accent-soft);color:var(--accent)}
+.center{min-height:calc(100vh - 40px);display:flex;align-items:center;justify-content:center;padding:24px 16px}.center>.card{width:100%;max-width:440px}
+.brandhead{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:16px}.brandhead img{height:30px}.brandhead .elite{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-style:normal;font-weight:800;letter-spacing:-.02em;font-size:22px;color:var(--muted)}
+.pin-dots{display:flex;gap:12px;justify-content:center;margin:16px 0}.pin-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--muted)}.pin-dots i.on{background:var(--accent);border-color:var(--accent)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pad button{min-height:68px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-size:26px;font-weight:700;cursor:pointer}
+.pad button:active{background:var(--accent-soft)}.pad .ghost{background:transparent;border-color:transparent;font-size:16px}
+.people{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.people button{min-height:72px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:17px;cursor:pointer;padding:10px}
+.people small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+.code{font:800 40px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;text-align:center;padding:20px 10px;border:3px dashed var(--accent);border-radius:16px;background:var(--accent-soft);color:var(--ink);word-break:break-all}
+@media (min-width:760px){.code{font-size:56px}}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;z-index:20;padding:0}
+.modal>.card{width:100%;max-width:520px;border-radius:20px 20px 0 0;max-height:92vh;overflow:auto;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+@media (min-width:760px){.modal{align-items:center;padding:24px}.modal>.card{border-radius:20px}}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0;margin-top:12px}.tabs a{flex:none;min-height:44px;padding:0 14px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);background:var(--card);text-decoration:none;color:var(--ink);font-weight:600;font-size:14px}
+.tabs a.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.demo-badge{display:inline-flex;align-items:center;min-height:24px;padding:0 10px;border-radius:999px;background:#F2C94C;color:#141210;font:800 12px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-left:4px}
+.offline{position:fixed;left:0;right:0;bottom:0;background:var(--bad);color:#fff;text-align:center;padding:10px calc(10px + env(safe-area-inset-bottom));font-weight:700;z-index:30;display:none}
+.offline.on{display:block}.sk{background:linear-gradient(90deg,var(--line),var(--card),var(--line));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:10px;min-height:72px}
+@keyframes sk{to{background-position:-200% 0}}@media (prefers-reduced-motion:reduce){.sk{animation:none}.btn:active,.item:active{transform:none}}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:15px}.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:600;word-break:break-word}
+.codes span{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-weight:700;padding:6px 10px;border-radius:8px;background:var(--accent-soft);margin:0 6px 6px 0}
+</style>
+</head>
+<body>
+<div id="app"><div class="center"><div class="card"><div class="sk"></div></div></div></div>
+<div class="offline" id="offline">No connection. Check the Wi-Fi; your work is not lost.</div>
+<script nonce="__NONCE__">
+(() => {
+'use strict';
+const LOGO = '/console/logo.png';
+const $ = (s, el = document) => el.querySelector(s); const app = $('#app');
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (n) => Number(n || 0).toLocaleString('en-LK'); const rs = (n) => 'Rs ' + fmt(Math.round(n || 0));
+const day = (s) => s ? new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+const when = (t) => t ? new Date(t).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+let S = { state: null, meta: null, idleMs: 300000, lastAct: Date.now(), locked: false };
+const tierCls = (t) => { t = String(t || '').toLowerCase(); return t === 'gold' ? 't-gold' : t === 'silver' ? 't-silver' : t === 'bronze' ? 't-bronze' : 't-none'; };
+const tierBadge = (t) => `<span class="badge ${tierCls(t)}">${esc(t || 'No tier')}</span>`;
+const stBadge = (s) => `<span class="badge ${s === 'enabled' ? 'st-enabled' : s === 'invited' ? 'st-invited' : 'st-no'}">${s === 'enabled' ? 'Account active' : s === 'invited' ? 'Invited' : 'No account'}</span>`;
+
+async function api(path, opts = {}) {
+  if (window.SNHDemo) return SNHDemo.api(path, opts);                                     // /console/demo: fake data, nothing leaves the page
+  let r;
+  try { r = await fetch('/console/api/' + path, { method: opts.method || 'GET', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-SNH': '1' }, body: opts.body ? JSON.stringify(opts.body) : undefined }); }
+  catch (e) { $('#offline').classList.add('on'); throw Object.assign(new Error('No connection. Try again.'), { offline: true }); }
+  $('#offline').classList.remove('on');
+  if (opts.raw) return r;
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (r.status === 423 && j.locked) { lockScreen(); throw Object.assign(new Error(j.error), { handled: true }); }
+  if (r.status === 401 && (j.login || j.register)) { boot(); throw Object.assign(new Error(j.error), { handled: true }); }
+  if (!r.ok) throw Object.assign(new Error(j.error || 'Something went wrong.'), { data: j, status: r.status });
+  return j;
+}
+const showErr = (el, e) => { if (e && e.handled) return; el.innerHTML = `<div class="msg msg--bad" role="alert">${esc(e.message || e)}</div>`; };
+
+// ── PIN pad ──
+function pinPad(onDone, { label = 'Enter your PIN' } = {}) {
+  let v = '';
+  const html = `<p class="muted" style="text-align:center;margin:0">${esc(label)}</p><div class="pin-dots" aria-live="polite">${'<i></i>'.repeat(6)}</div><div class="pin-err" style="min-height:24px;text-align:center"></div>
+    <div class="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" class="ghost" data-k="c">Clear</button><button type="button" data-k="0">0</button><button type="button" class="ghost" data-k="b" aria-label="Delete">⌫</button></div>`;
+  const mount = (root) => {
+    const dots = root.querySelectorAll('.pin-dots i'); const err = root.querySelector('.pin-err');
+    const draw = () => dots.forEach((d, i) => d.classList.toggle('on', i < v.length));
+    const press = async (k) => { if (k === 'c') v = ''; else if (k === 'b') v = v.slice(0, -1); else if (v.length < 6) v += k; draw();
+      if (v.length === 6) { const p = v; v = ''; err.textContent = 'Checking…'; try { await onDone(p); } catch (e) { draw(); if (!e.handled) err.innerHTML = `<span style="color:var(--bad);font-weight:700">${esc(e.message)}</span>`; } } };
+    root.querySelector('.pad').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) press(b.dataset.k); });
+    const kh = (e) => { if (!root.isConnected) return document.removeEventListener('keydown', kh); if (/^\d$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('b'); };
+    document.addEventListener('keydown', kh);
+  };
+  return { html, mount };
+}
+function askPin(title) {
+  return new Promise((resolve, reject) => {
+    const m = document.createElement('div'); m.className = 'modal'; const p = pinPad(async (pin) => { m.remove(); resolve(pin); }, { label: 'Admin PIN to confirm' });
+    m.innerHTML = `<div class="card" role="dialog" aria-modal="true"><h2>${esc(title)}</h2>${p.html}<button class="btn btn--wide" style="margin-top:12px" data-x>Cancel</button></div>`;
+    document.body.appendChild(m); p.mount(m); m.querySelector('[data-x]').onclick = () => { m.remove(); reject(Object.assign(new Error('Cancelled'), { handled: true })); };
+  });
+}
+// ── screens before sign-in ──
+const shell = (inner) => `<div class="center"><div class="card stack"><div class="brandhead"><img src="${LOGO}" alt="SNH"><span class="elite">Staff</span></div>${inner}</div></div>`;
+function setupScreen(token) {
+  app.innerHTML = shell(`<h2 style="text-align:center">Set up the first admin</h2><p class="muted small">This link works once and expires 24 hours after it was made. Choose a 6-digit PIN only you know.</p>
+    <form id="f" class="stack"><label class="f">Your name<input name="name" required autocomplete="name" maxlength="60"></label>
+    <label class="f">Your shop<select name="location">${['Nugegoda', 'Dehiwala', 'Wattala'].map((l) => `<option>${l}</option>`).join('')}</select></label>
+    <label class="f">Name this device<input name="deviceName" value="Admin device" maxlength="60"></label>
+    <label class="f">PIN (6 digits)<input name="pin" inputmode="numeric" pattern="\\d{6}" maxlength="6" type="password" required autocomplete="new-password"></label>
+    <label class="f">PIN again<input name="pin2" inputmode="numeric" pattern="\\d{6}" maxlength="6" type="password" required autocomplete="new-password"></label>
+    <div id="e"></div><button class="btn btn--primary btn--big">Create admin</button></form>`);
+  $('#f').onsubmit = async (ev) => { ev.preventDefault(); const f = Object.fromEntries(new FormData(ev.target)); const e = $('#e');
+    if (f.pin !== f.pin2) return showErr(e, new Error('The two PINs are different.'));
+    try { await api('setup', { method: 'POST', body: { token, name: f.name, location: f.location, deviceName: f.deviceName, pin: f.pin } }); history.replaceState(null, '', '/console'); boot(); } catch (x) { showErr(e, x); } };
+}
+function registerScreen() {
+  app.innerHTML = shell(`<h2 style="text-align:center">Register this device</h2><p class="muted">Ask an admin for a device code (Admin → Devices → New code). You only do this once per device.</p>
+    <form id="f" class="stack"><label class="f">Device code<input name="code" autocapitalize="characters" autocomplete="off" placeholder="ABCD-2345" maxlength="9" style="font-size:26px;letter-spacing:.1em;text-transform:uppercase;text-align:center" required></label>
+    <div id="e"></div><button class="btn btn--primary btn--big">Register</button></form>`);
+  $('#f').onsubmit = async (ev) => { ev.preventDefault(); try { await api('register', { method: 'POST', body: { code: ev.target.code.value } }); boot(); } catch (x) { showErr($('#e'), x); } };
+}
+function loginScreen(st, pick) {
+  if (!pick) {
+    app.innerHTML = shell(`<p class="muted small" style="text-align:center;margin-top:-8px">${esc(st.device.name)}${st.device.location ? ' · ' + esc(st.device.location) : ''}</p><h2 style="text-align:center">Who is signing in?</h2>
+      <div class="people">${st.staff.map((s) => `<button data-id="${esc(s.id)}">${esc(s.name)}<small>${s.role === 'admin' ? 'Admin' : 'Staff'}${s.location ? ' · ' + esc(s.location) : ''}${s.locked ? ' · locked' : ''}</small></button>`).join('') || '<p class="muted">No staff yet.</p>'}</div>`);
+    app.querySelectorAll('.people button').forEach((b) => { b.onclick = () => loginScreen(st, st.staff.find((s) => s.id === b.dataset.id)); }); return;
+  }
+  const p = pinPad(async (pin) => { await api('login', { method: 'POST', body: { staff_id: pick.id, pin } }); S.lastAct = Date.now(); boot(); }, { label: 'Hi ' + pick.name.split(' ')[0] + ', enter your PIN' });
+  app.innerHTML = shell(`${p.html}<button class="btn btn--wide" data-back>Not ${esc(pick.name.split(' ')[0])}?</button>`); p.mount(app); $('[data-back]').onclick = () => loginScreen(st);
+}
+function lockScreen() {
+  if (S.locked) return; S.locked = true; const me = S.state && S.state.session ? S.state.session.staff : { name: '' };
+  const m = document.createElement('div'); m.className = 'modal'; m.style.alignItems = 'center'; m.style.background = 'var(--bg)';
+  const p = pinPad(async (pin) => { await api('unlock', { method: 'POST', body: { pin } }); S.locked = false; S.lastAct = Date.now(); m.remove(); route(); }, { label: 'Locked. ' + (me.name ? me.name.split(' ')[0] + ', enter' : 'Enter') + ' your PIN' });
+  m.innerHTML = `<div class="card" style="border-radius:20px;max-width:420px"><div class="brandhead"><img src="${LOGO}" alt="SNH"><span class="elite">Staff</span></div>${p.html}<button class="btn btn--wide" style="margin-top:12px" data-out>Sign out (someone else)</button></div>`;
+  document.body.appendChild(m); p.mount(m);
+  m.querySelector('[data-out]').onclick = async () => { try { await api('logout', { method: 'POST' }); } catch (e) {} S.locked = false; m.remove(); boot(); };
+}
+// ── main ──
+function frame(inner, tab) {
+  const me = S.meta.me; const admin = me.role === 'admin';
+  app.innerHTML = `<header class="top"><img src="${LOGO}" alt="SNH"><span class="elite">Staff</span>${window.SNHDemo ? '<span class="demo-badge" title="Sample data only. Nothing is saved.">Demo</span>' : ''}
+    <div class="who"><b>${esc(me.name)}</b><br>${esc(S.meta.device.location || me.location || '')}${admin ? ' · Admin' : ''}</div>
+    <button class="iconbtn" id="lockbtn" aria-label="Lock">🔒</button></header>
+    <div class="wrap"><nav class="tabs"><a href="#/" class="${tab === 'search' ? 'on' : ''}">Customers</a><a href="#/new" class="${tab === 'new' ? 'on' : ''}">+ New customer</a>
+    ${admin ? `<a href="#/staff" class="${tab === 'staff' ? 'on' : ''}">Staff</a><a href="#/devices" class="${tab === 'devices' ? 'on' : ''}">Devices</a><a href="#/audit" class="${tab === 'audit' ? 'on' : ''}">Audit</a>` : ''}</nav>${inner}</div>`;
+  $('#lockbtn').onclick = () => lockScreen();
+}
+let lastQ = '';
+function searchView() {
+  frame(`<form class="search" id="sf" role="search"><input id="q" type="search" placeholder="Phone, email or name" autocomplete="off" enterkeyhint="search" value="${esc(lastQ)}" aria-label="Search customers">
+    <button class="btn btn--primary" style="min-height:60px">Search</button></form><div id="res"><p class="muted">Tip: type the phone the way the customer says it, e.g. 077 123 4567.</p></div>`, 'search');
+  const q = $('#q'); if (!matchMedia('(pointer:coarse)').matches) q.focus();
+  const run = async () => { const v = q.value.trim(); lastQ = v; if (v.length < 2) return; const res = $('#res'); res.innerHTML = '<div class="list"><div class="sk"></div><div class="sk"></div></div>';
+    try { const j = await api('search?q=' + encodeURIComponent(v));
+      res.innerHTML = j.results.length ? `<div class="list">${j.results.map((c) => `<button class="item" data-id="${c.id}"><div class="grow"><div class="nm">${esc(c.name)} ${c.qa ? '<span class="badge qa">QA</span>' : ''}</div>
+        <div class="sub">${esc(c.phone || c.email || '')}${c.lastOrder ? ' · last order ' + day(c.lastOrder.at) : ''}</div><div class="row" style="margin-top:6px">${tierBadge(c.tier)} ${stBadge(c.status)}</div></div>
+        <div class="pts"><b>${fmt(c.points)}</b><span class="small muted">pts · ${rs(c.value)}</span></div></button>`).join('')}</div>`
+        : `<div class="card stack"><p><b>No customer found for "${esc(j.query || v)}".</b></p><a class="btn btn--primary" href="#/new?q=${encodeURIComponent(v)}">+ Create this customer</a></div>`;
+      res.querySelectorAll('.item').forEach((b) => { b.onclick = () => { location.hash = '#/c/' + b.dataset.id; }; });
+    } catch (e) { showErr(res, e); } };
+  $('#sf').onsubmit = (e) => { e.preventDefault(); run(); }; if (lastQ) run();
+}
+async function customerView(id) {
+  frame('<div id="cv" class="stack" style="margin-top:16px"><div class="sk" style="min-height:180px"></div><div class="sk"></div></div>', 'search');
+  const el = $('#cv'); let c;
+  try { c = (await api('customer?id=' + encodeURIComponent(id))).customer; } catch (e) { return showErr(el, e); }
+  const admin = S.meta.me.role === 'admin'; const R = S.meta.redeem;
+  el.innerHTML = `<div class="row"><a href="#/" class="btn">← Back</a><div class="grow"></div><a class="btn" href="${esc(c.adminUrl)}" target="_blank" rel="noopener">Open in Shopify ↗</a></div>
+  <div class="hero"><div class="card stack"><div class="row"><h1 style="margin:0">${esc(c.name)}</h1>${c.qa ? '<span class="badge qa">QA</span>' : ''}</div>
+      <div class="row">${tierBadge(c.tier)} ${stBadge(c.status)}</div>
+      <dl class="kv"><dt>Phone</dt><dd>${esc(c.phone || '—')}</dd><dt>Email</dt><dd>${esc(c.email || '—')}</dd><dt>Birthday</dt><dd>${esc(c.birthday ? day(c.birthday) : '—')}</dd>
+      <dt>Email offers</dt><dd>${c.consent === 'SUBSCRIBED' ? 'Yes' : 'No'}</dd><dt>Orders</dt><dd>${c.orderCount == null ? '—' : fmt(c.orderCount)}</dd></dl>
+      <div class="row"><a class="btn" href="#/c/${c.id}/edit">Edit details</a></div></div>
+    <div class="card stack"><h3>Elite points</h3><div class="big-pts">${fmt(c.points)}</div><div class="muted">worth ${rs(c.value)}</div>
+      <div><div class="small muted">Annual spend ${rs(c.annualSpend)}${c.next ? ` · ${rs(c.toNext)} to ${esc(c.next)}` : ' · top tier'}</div><div class="bar"><i style="width:${Math.round(c.progress * 100)}%"></i></div></div>
+      ${c.codes.length ? `<div><h3>Active reward codes</h3><div class="codes">${c.codes.map((x) => `<span>${esc(x.code)}</span>`).join('')}</div></div>` : ''}
+      <button class="btn btn--primary btn--big" id="redeem" ${c.canRedeem ? '' : 'disabled'}>Redeem ${rs(R.value)}</button>
+      <p class="small muted" style="margin:0">${c.canRedeem ? `Uses ${fmt(R.points)} points. Code works on orders over ${rs(R.minOrder - 1)}.` : c.status !== 'enabled' ? 'Needs an active account (the customer accepts the invite email).' : `Needs ${fmt(R.points)} points.`}${R.mode !== 'live' ? ` <b>Test mode: QA customers only.</b>` : ''}</p>
+      ${admin ? '<button class="btn btn--wide" id="adjust">Adjust points (admin)</button>' : ''}</div></div>
+  <div class="card"><h2>Last 5 orders</h2>${c.orders && c.orders.length ? `<table><thead><tr><th>Order</th><th>Date</th><th>Where</th><th class="num">Total</th></tr></thead><tbody>${c.orders.map((o) => `<tr><td>${esc(o.name)}${o.cancelled ? ' <span class="small muted">(cancelled)</span>' : ''}</td><td>${day(o.at)}</td><td>${esc(o.location)}</td><td class="num">${rs(o.total)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">No orders yet.</p>'}</div>
+  <div class="card"><h2>Points history</h2>${c.ledger.length ? `<table><thead><tr><th>When</th><th>What</th><th class="num">Points</th><th class="num">Balance</th></tr></thead><tbody>${c.ledger.map((l) => `<tr><td>${when(l.at)}</td><td>${esc(l.reason || l.source)}<div class="small muted">${esc([l.source, l.staff_name, l.location].filter(Boolean).join(' · '))}</div></td><td class="num ${l.delta > 0 ? 'plus' : 'minus'}">${l.delta > 0 ? '+' : ''}${fmt(l.delta)}</td><td class="num">${l.balance_after == null ? '' : fmt(l.balance_after)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">No changes recorded yet. The history starts on 25 Nov 2026; Shopify keeps no points history before that.</p>'}</div>`;
+  const rb = $('#redeem'); if (rb) rb.onclick = () => redeemFlow(c);
+  const ab = $('#adjust'); if (ab) ab.onclick = () => adjustFlow(c);
+}
+function modal(inner) { const m = document.createElement('div'); m.className = 'modal'; m.innerHTML = `<div class="card stack" role="dialog" aria-modal="true">${inner}</div>`; document.body.appendChild(m); m.addEventListener('click', (e) => { if (e.target === m) m.remove(); }); return m; }
+function redeemFlow(c) {
+  const R = S.meta.redeem;
+  const m = modal(`<h2>Redeem ${rs(R.value)} for ${esc(c.name)}?</h2><p>This takes <b>${fmt(R.points)} points</b> (${fmt(c.points)} → ${fmt(c.points - R.points)}) and makes a one-time code for orders over ${rs(R.minOrder - 1)}.</p>
+    <div id="e"></div><button class="btn btn--primary btn--big" id="go">Yes, redeem</button><button class="btn btn--wide" data-x>Cancel</button>`);
+  m.querySelector('[data-x]').onclick = () => m.remove();
+  m.querySelector('#go').onclick = async (ev) => { ev.target.disabled = true; ev.target.textContent = 'Making the code…';
+    try { const j = await api('redeem', { method: 'POST', body: { id: c.id } });
+      m.querySelector('.card').innerHTML = `<h2>${j.existing ? 'Existing reward code' : 'Reward code ready'}</h2>${j.note ? `<div class="msg msg--info">${esc(j.note)}</div>` : ''}<div class="code" id="code">${esc(j.code)}</div>
+        <p class="muted">${rs(j.value)} off an order over ${rs(j.minOrder - 1)}. Apply it in POS as a discount code${j.expires ? ', valid until ' + day(j.expires) : ''}.</p>
+        <button class="btn btn--primary btn--big" id="copy">Copy code</button><button class="btn btn--wide" id="done">Done</button>`;
+      m.querySelector('#copy').onclick = async (e2) => { try { await navigator.clipboard.writeText(j.code); e2.target.textContent = 'Copied ✓'; } catch (x) { const r = document.createRange(); r.selectNodeContents(m.querySelector('#code')); getSelection().removeAllRanges(); getSelection().addRange(r); e2.target.textContent = 'Selected: press Ctrl+C'; } };
+      m.querySelector('#done').onclick = () => { m.remove(); customerView(c.id); };
+    } catch (e) { ev.target.disabled = false; ev.target.textContent = 'Yes, redeem'; showErr(m.querySelector('#e'), e); } };
+}
+function adjustFlow(c) {
+  const L = S.meta.limits;
+  const m = modal(`<h2>Adjust points: ${esc(c.name)}</h2><p class="muted small">Now ${fmt(c.points)} points. At most ±${fmt(L.adjustMax)} per change and ${fmt(L.adjustDay)} a day per admin. Tiers follow annual spend, so the tier does not change.</p>
+    <form id="af" class="stack"><div class="row"><label class="check grow" style="justify-content:center"><input type="radio" name="dir" value="1" checked> Add</label><label class="check grow" style="justify-content:center"><input type="radio" name="dir" value="-1"> Take away</label></div>
+    <label class="f">Points<input name="pts" inputmode="numeric" pattern="\\d+" required maxlength="5"></label>
+    <label class="f">Reason<select name="reason" required><option value="">Pick one</option>${S.meta.reasons.map((r) => `<option>${esc(r)}</option>`).join('')}</select></label>
+    <label class="f">Note (order number, what happened)<textarea name="note" maxlength="200"></textarea></label><div id="e"></div>
+    <button class="btn btn--primary btn--big">Continue</button><button type="button" class="btn btn--wide" data-x>Cancel</button></form>`);
+  m.querySelector('[data-x]').onclick = () => m.remove();
+  m.querySelector('#af').onsubmit = async (ev) => { ev.preventDefault(); const f = Object.fromEntries(new FormData(ev.target)); const delta = Number(f.dir) * Math.round(Number(f.pts));
+    try { const pin = await askPin(`${delta > 0 ? 'Add' : 'Take away'} ${fmt(Math.abs(delta))} points`); const j = await api('points', { method: 'POST', body: { id: c.id, delta, reason: f.reason, note: f.note, pin } });
+      m.remove(); toast(`Points ${fmt(j.before)} → ${fmt(j.after)}`); customerView(c.id); } catch (e) { showErr(m.querySelector('#e'), e); } };
+}
+function toast(t) { const d = document.createElement('div'); d.className = 'msg msg--ok'; d.setAttribute('role', 'status'); d.style.cssText = 'position:fixed;left:16px;right:16px;bottom:20px;z-index:40;max-width:520px;margin:auto;box-shadow:var(--shadow)'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 3500); }
+function customerForm(c, q) {
+  const edit = !!c; c = c || {}; const qv = q || ''; const isPh = /^[+\d][\d\s-]{7,}$/.test(qv), isEm = qv.includes('@');
+  const admin = S.meta.me.role === 'admin';
+  return `<form id="cf" class="stack" style="margin-top:16px"><div class="grid grid--2"><label class="f">First name<input name="firstName" required maxlength="60" value="${esc(c.firstName || (!isPh && !isEm ? qv.split(' ')[0] : ''))}" autocomplete="off"></label>
+    <label class="f">Last name<input name="lastName" maxlength="60" value="${esc(c.lastName || (!isPh && !isEm ? qv.split(' ').slice(1).join(' ') : ''))}" autocomplete="off"></label>
+    <label class="f">Mobile<input name="phone" type="tel" inputmode="tel" placeholder="077 123 4567" value="${esc(c.phone || (isPh ? qv : ''))}" autocomplete="off"></label>
+    <label class="f">Email${edit ? '' : ' (for the account invite)'}<input name="email" type="email" inputmode="email" value="${esc(c.email || (isEm ? qv : ''))}" autocomplete="off"></label>
+    <label class="f">Birthday (optional)<input name="birthday" type="date" value="${esc(c.birthday || '')}" max="${new Date().toISOString().slice(0, 10)}"></label></div>
+    <label class="check"><input type="checkbox" name="consent" ${c.consent === 'SUBSCRIBED' ? 'checked' : ''}><span><b>Email offers</b><br><span class="small">${esc(S.meta.consentText)}</span><br><span class="small muted">Tick only if the customer says yes.</span></span></label>
+    ${!edit && admin ? '<label class="check"><input type="checkbox" name="qa"><span><b>QA test customer</b><br><span class="small muted">Adds the qa-test tag (for testing only).</span></span></label>' : ''}
+    ${edit ? '<label class="f">Why are you changing this? (for the log)<input name="reason" required maxlength="200" placeholder="e.g. customer gave a new number"></label>' : ''}
+    <div id="e"></div><button class="btn btn--primary btn--big">${edit ? 'Save changes' : 'Create customer + send invite'}</button></form>`;
+}
+function newView(q) {
+  frame(`<h1>New customer</h1><p class="muted">We check for an existing customer with the same phone or email first. If there is an email, Shopify sends the account invite; welcome points arrive when they activate it.</p>${customerForm(null, q)}`, 'new');
+  $('#cf').onsubmit = async (ev) => { ev.preventDefault(); const f = new FormData(ev.target); const b = Object.fromEntries(f); b.consent = f.has('consent'); b.qa = f.has('qa'); const btn = ev.target.querySelector('button:last-child'); btn.disabled = true;
+    try { const j = await api('customer', { method: 'POST', body: b }); toast('Customer created. Invite ' + j.invite + '.'); location.hash = '#/c/' + j.id; }
+    catch (e) { btn.disabled = false; showErr($('#e'), e); if (e.data && e.data.duplicates) $('#e').insertAdjacentHTML('beforeend', `<div class="list" style="margin-top:10px">${e.data.duplicates.map((d) => `<a class="item" href="#/c/${d.id}"><div class="grow"><div class="nm">${esc(d.name)}</div><div class="sub">${esc(d.phone || '')} ${esc(d.email || '')}</div></div><div class="pts"><b>${fmt(d.points)}</b><span class="small muted">pts</span></div></a>`).join('')}</div>`); } };
+}
+async function editView(id) {
+  frame('<div id="ev"><div class="sk" style="margin-top:16px;min-height:300px"></div></div>', 'search'); let c;
+  try { c = (await api('customer?id=' + encodeURIComponent(id))).customer; } catch (e) { return showErr($('#ev'), e); }
+  $('#ev').innerHTML = `<div class="row" style="margin-top:16px"><a class="btn" href="#/c/${c.id}">← Back</a></div><h1>Edit ${esc(c.name)}</h1>${customerForm(c)}`;
+  $('#cf').onsubmit = async (ev) => { ev.preventDefault(); const f = new FormData(ev.target); const b = Object.fromEntries(f); b.consent = f.has('consent'); b.id = c.id;
+    try { const j = await api('customer/update', { method: 'POST', body: b }); toast(j.unchanged ? 'Nothing changed.' : 'Saved: ' + j.changed.join(', ')); location.hash = '#/c/' + c.id; } catch (e) { showErr($('#e'), e); } };
+}
+async function staffView() {
+  frame('<h1>Staff</h1><div id="sv"><div class="sk"></div></div>', 'staff'); const el = $('#sv');
+  const draw = async () => { let j; try { j = await api('staff'); } catch (e) { return showErr(el, e); } const locs = S.meta.locations;
+    el.innerHTML = `<div class="list">${j.staff.map((s) => `<div class="card row"><div class="grow"><b>${esc(s.name)}</b> <span class="badge ${s.role === 'admin' ? 't-gold' : 't-none'}">${s.role}</span>${s.active ? '' : ' <span class="badge st-no">disabled</span>'}${s.locked ? ' <span class="badge st-invited">locked</span>' : ''}<div class="small muted">${esc(s.location || '')}</div></div>
+      <button class="btn" data-a="reset_pin" data-id="${s.id}">Reset PIN</button><button class="btn" data-a="role" data-id="${s.id}" data-role="${s.role}">${s.role === 'admin' ? 'Make staff' : 'Make admin'}</button><button class="btn ${s.active ? 'btn--danger' : ''}" data-a="${s.active ? 'disable' : 'enable'}" data-id="${s.id}">${s.active ? 'Disable' : 'Enable'}</button></div>`).join('')}</div>
+      <div class="card stack" style="margin-top:16px"><h2>Add staff</h2><form id="nf" class="grid grid--3"><label class="f">Name<input name="name" required maxlength="60"></label><label class="f">Shop<select name="location">${locs.map((l) => `<option>${esc(l)}</option>`).join('')}</select></label>
+      <label class="f">Role<select name="role"><option value="staff">Staff</option><option value="admin">Admin</option></select></label><label class="f">Their PIN (6 digits)<input name="newPin" inputmode="numeric" pattern="\\d{6}" maxlength="6" required type="password" autocomplete="new-password"></label>
+      <div style="align-self:end"><button class="btn btn--primary btn--wide">Add</button></div></form><div id="e"></div><p class="small muted">Tell them their PIN in person. They can ask an admin to reset it any time.</p></div>`;
+    el.querySelectorAll('[data-a]').forEach((b) => { b.onclick = async () => { const s = j.staff.find((x) => x.id === b.dataset.id); const body = { action: b.dataset.a, staff_id: s.id };
+      try { if (b.dataset.a === 'reset_pin') { const np = prompt(`New 6-digit PIN for ${s.name}:`); if (!np) return; body.newPin = np; }
+        if (b.dataset.a === 'role') { body.action = 'update'; body.role = s.role === 'admin' ? 'staff' : 'admin'; body.name = s.name; body.location = s.location; }
+        body.pin = await askPin('Confirm: ' + b.textContent + ' for ' + s.name); await api('staff', { method: 'POST', body }); toast('Done'); draw(); } catch (e) { if (!e.handled) alert(e.message); } }; });
+    $('#nf').onsubmit = async (ev) => { ev.preventDefault(); const b = Object.fromEntries(new FormData(ev.target)); b.action = 'add';
+      try { b.pin = await askPin('Add ' + b.name); await api('staff', { method: 'POST', body: b }); toast('Added ' + b.name); draw(); } catch (e) { showErr($('#e'), e); } }; };
+  draw();
+}
+async function devicesView() {
+  frame('<h1>Devices</h1><div id="dv"><div class="sk"></div></div>', 'devices'); const el = $('#dv');
+  const draw = async () => { let j; try { j = await api('devices'); } catch (e) { return showErr(el, e); }
+    el.innerHTML = `<div class="card stack"><h2>Register a new device</h2><p class="small muted">Make a code here, then on the new device open the SNH Staff link and type the code. The code works once, for 24 hours.</p>
+      <form id="nf" class="grid grid--3"><label class="f">Device name<input name="name" required placeholder="Nugegoda counter iPad" maxlength="60"></label><label class="f">Shop<select name="location">${S.meta.locations.map((l) => `<option>${esc(l)}</option>`).join('')}</select></label>
+      <div style="align-self:end"><button class="btn btn--primary btn--wide">New code</button></div></form><div id="e"></div></div>
+      <div class="list" style="margin-top:16px">${j.devices.map((d) => `<div class="card row"><div class="grow"><b>${esc(d.name)}</b> <span class="badge ${d.status === 'active' ? 'st-enabled' : d.status === 'pending' ? 'st-invited' : 'st-no'}">${d.status}</span>${d.id === j.current ? ' <span class="badge t-none">this device</span>' : ''}
+        <div class="small muted">${esc(d.location || '')} · ${d.registered_at ? 'registered ' + when(d.registered_at) : d.status === 'pending' ? 'code valid until ' + when(d.code_expires) : ''}${d.last_seen ? ' · last used ' + when(d.last_seen) : ''}</div></div>
+        ${d.status !== 'revoked' && d.id !== j.current ? `<button class="btn btn--danger" data-id="${d.id}">Revoke</button>` : ''}</div>`).join('')}</div>`;
+    el.querySelectorAll('[data-id]').forEach((b) => { b.onclick = async () => { try { const pin = await askPin('Revoke this device'); await api('devices', { method: 'POST', body: { action: 'revoke', device_id: b.dataset.id, pin } }); toast('Revoked'); draw(); } catch (e) { if (!e.handled) alert(e.message); } }; });
+    $('#nf').onsubmit = async (ev) => { ev.preventDefault(); const b = Object.fromEntries(new FormData(ev.target)); b.action = 'new';
+      try { b.pin = await askPin('New device code'); const r = await api('devices', { method: 'POST', body: b });
+        const m = modal(`<h2>Device code for ${esc(b.name)}</h2><div class="code">${esc(r.code)}</div><p class="muted">Valid until ${when(r.expires)}. Type it on the new device under "Register this device".</p><button class="btn btn--primary btn--big" data-x>Done</button>`);
+        m.querySelector('[data-x]').onclick = () => { m.remove(); draw(); }; } catch (e) { showErr($('#e'), e); } }; };
+  draw();
+}
+async function auditView() {
+  const today = new Date(Date.now() + 330 * 60e3).toISOString().slice(0, 10); const wk = new Date(Date.now() - 6 * 864e5).toISOString().slice(0, 10);
+  frame(`<h1>Audit log</h1><form id="af" class="row"><label class="f">From<input type="date" name="from" value="${wk}"></label><label class="f">To<input type="date" name="to" value="${today}"></label>
+    <div class="row" style="align-self:end"><button class="btn btn--primary">Show</button><a class="btn" id="csv">Export CSV</a></div></form><div id="al" style="margin-top:12px"><div class="sk"></div></div>`, 'audit');
+  const load = async () => { const f = Object.fromEntries(new FormData($('#af'))); const qs = `from=${f.from}T00:00:00%2B05:30&to=${f.to}T23:59:59%2B05:30`; $('#csv').href = window.SNHDemo ? SNHDemo.csv() : '/console/api/audit.csv?' + qs; if (window.SNHDemo) $('#csv').setAttribute('download', 'snh-audit-demo.csv');
+    try { const j = await api('audit?' + qs); $('#al').innerHTML = `<p class="small muted">${fmt(j.total)} actions${j.total > j.rows.length ? ', newest ' + j.rows.length + ' shown (CSV has all)' : ''}</p><div class="card" style="overflow:auto"><table><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Customer</th><th>Details</th></tr></thead><tbody>
+      ${j.rows.map((r) => `<tr><td>${when(r.at)}</td><td>${esc(r.staff_name || '—')}<div class="small muted">${esc([r.device_name, r.location].filter(Boolean).join(' · '))}</div></td><td>${r.ok ? '' : '⚠ '}${esc(r.action)}</td><td>${r.customer_id ? `<a href="#/c/${esc(r.customer_id)}">${esc(r.customer_id)}</a>` : ''}</td>
+      <td class="small">${esc([r.reason, r.before && 'before ' + r.before, r.after && 'after ' + r.after].filter(Boolean).join(' · ')).slice(0, 300)}</td></tr>`).join('')}</tbody></table></div>`; } catch (e) { showErr($('#al'), e); } };
+  $('#af').onsubmit = (e) => { e.preventDefault(); load(); }; load();
+}
+function route() {
+  if (!S.meta || S.locked) return; const h = location.hash.replace(/^#/, '') || '/'; let m;
+  if ((m = h.match(/^\/c\/(\d+)\/edit$/))) return editView(m[1]); if ((m = h.match(/^\/c\/(\d+)$/))) return customerView(m[1]);
+  if (h.startsWith('/new')) return newView(decodeURIComponent((h.split('?q=')[1] || '')));
+  if (h === '/staff') return staffView(); if (h === '/devices') return devicesView(); if (h === '/audit') return auditView(); return searchView();
+}
+async function boot() {
+  S.meta = null; let st;
+  try { st = await api('state'); } catch (e) { app.innerHTML = shell(`<div class="msg msg--bad">${esc(e.message)}</div><button class="btn btn--primary btn--big" id="retry">Try again</button>`); $('#retry').onclick = () => location.reload(); return; }
+  S.state = st; S.idleMs = st.idleMs || 300000;
+  const setup = (location.hash.match(/[#&]t=([a-f0-9]{20,})/) || [])[1];
+  if (!st.device) return setup && st.setupNeeded ? setupScreen(setup) : registerScreen();
+  if (!st.session) return loginScreen(st);
+  try { S.meta = await api('meta'); } catch (e) { if (!e.handled) app.innerHTML = shell(`<div class="msg msg--bad">${esc(e.message)}</div>`); return; }
+  S.lastAct = Date.now(); if (st.session.locked) { lockScreen(); return; } route();
+}
+['pointerdown', 'keydown'].forEach((ev) => addEventListener(ev, () => { S.lastAct = Date.now(); }, { passive: true }));
+setInterval(() => { if (S.meta && !S.locked && Date.now() - S.lastAct > S.idleMs) lockScreen(); }, 5000);
+addEventListener('hashchange', route); addEventListener('online', () => $('#offline').classList.remove('on')); addEventListener('offline', () => $('#offline').classList.add('on'));
+if ('serviceWorker' in navigator && !window.SNHDemo) navigator.serviceWorker.register('/console/sw.js', { scope: '/console/' }).catch(() => {});
+boot();
+})();
+</script>
+</body>
+</html>
